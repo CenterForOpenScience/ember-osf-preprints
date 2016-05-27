@@ -6,7 +6,7 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('discover');
+  this.route('discovery');
   this.route('manuscript');
 });
 
