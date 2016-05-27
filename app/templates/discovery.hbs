@@ -1,13 +1,40 @@
-
-
 <body role="document">
 
-<div class="container">
-    <div class="navbar-header">
+<div class="container-full style-header">
+    <div id="top" class="container theme-showcase" >
+        <div class="jumbotron">
+            <h1>Discovery</h1>
+        </div>
+    </div>
+</div>
+
+
+<div id="upload">
+    <div class="row">
+        <div class="col-lg-5">
+            <p class="text-muted">Upload your research:</p>
+            {{file-chooser}}
+        </div>
+        <div class="col-lg-2">
+            <p><strong>or</strong></p>
+        </div>
+        <div class="col-lg-5">
+            <p class="text-muted">Choose from an existing project</p>
+        </div>
+    </div>
+</div>
+
+<div id="search">
+    <div class="container">
+    <div >
         <p class="text-muted">Manuscript Archive</p>
         <p>A growing repository of unpublished papers powered by the Open Science Framework.</p>
         {{input value="Search"}}
     </div>
+    </div>
 </div>
+
+
+
 
 </body>
