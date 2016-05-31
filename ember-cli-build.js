@@ -20,5 +20,13 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
+  // osf-style
+  app.import("bower_components/osf-style/vendor/prism/prism.css");
+  app.import("bower_components/osf-style/css/base.css");
+  app.import("bower_components/osf-style/page.css");
+  // Bootstrap
+  app.import("bower_components/bootstrap/dist/css/bootstrap.min.css");
+  //app.import("//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+
   return app.toTree();
 };
