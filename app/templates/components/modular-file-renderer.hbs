@@ -1,5 +1,26 @@
-<p>{{url}}</p>
-<p>{{link}}</p>
-<p>{{mfr_source}}</p>
-<iframe src={{link}}></iframe>
+<style>
+#mfr {
+    padding: 20px;
+}
+</style>
+<div class="m-b-md p-md osf-box-lt">
+    <div class="row">
+        <div id="mfr" class="col-md-8">
+            <iframe src={{link}} display="block" width=700 height=700></iframe>
+        </div>
+        <div class="col-md-4">
+            <p>Some <strong>example</strong> meta data</p>
+            <p>Title: {{title}}</p>
+            <p>Contributors: {{contributors}}</p>
+            <p>Date Created: {{dateCreated}}</p>
+            <p>Abstract: {{abstract}}</p>
+            <p>Publisher: {{publisher}}</p>
+            <p>Project: <a href={{project}}>Test Project</a></p>
+            <p>Supplemental Materials: {{supplementalMaterials}}</p>
+            <p>Figures: {{figures}}</p>
+            <p>License: {{license}}</p>
+        </div>
+    </div>
+</div>
+
 {{yield}}
