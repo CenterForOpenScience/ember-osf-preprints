@@ -1,13 +1,57 @@
-
-
 <body role="document">
 
-<div class="container">
-    <div class="navbar-header">
-        <p class="text-muted">Manuscript Archive</p>
-        <p>A growing repository of unpublished papers powered by the Open Science Framework.</p>
-        {{input value="Search"}}
+<div class="container-full style-header">
+    <div id="top" class="container theme-showcase" >
+        <div class="jumbotron">
+            <h1>Discovery</h1>
+        </div>
     </div>
 </div>
+
+
+<div id="upload">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Upload your research
+                    </div>
+                    <div class="panel-body">
+                        {{file-chooser}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Choose from an existing project
+                    </div>
+                    <div class="panel-body">
+                        TODO: Integrate menu selection with OSF project database
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="search">
+    <div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Manuscript Archive
+        </div>
+        <div class="panel-body">
+            A growing repository of unpublished papers powered by the Open Science Framework.<br>
+            {{input value="Search"}}
+        </div>
+    </div>
+    </div>
+</div>
+
+
+
 
 </body>
