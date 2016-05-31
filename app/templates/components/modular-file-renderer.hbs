@@ -1,26 +1,48 @@
+<body>
 <style>
 #mfr {
     padding: 20px;
+    padding-top: 30px;
+}
+#header {
+    padding: 20px;
+}
+hr {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    border-style: inset;
+    border-width: 1px;
+}
+#view_project {
+    margin-right: 20px;
 }
 </style>
-<div class="m-b-md p-md osf-box-lt">
+<div class="m-b-md p-md osf-box">
+    <div class="row" id="header">
+        <h1>{{title}}</h1>
+        <h5>{{contributors}}</h5>
+        <h5>Added on {{dateCreated}}</h5>
+    </div>
+    <hr color="#C7FFC7">
     <div class="row">
-        <div id="mfr" class="col-md-8">
+        <div id="mfr" class="col-md-7">
             <iframe src={{link}} display="block" width=700 height=700></iframe>
         </div>
-        <div class="col-md-4">
-            <p>Some <strong>example</strong> meta data</p>
-            <p>Title: {{title}}</p>
-            <p>Contributors: {{contributors}}</p>
-            <p>Date Created: {{dateCreated}}</p>
+        <div class="col-md-5">
+            <br>
+            <div class="row m-b-md p-md osf-box-lt" id="view_project">
+                <div class="col-md-8">
+                    <p>The project for this paper is available on the Open Science Framework</p>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary" onclick="window.location.href={{project}}">View Project</button>
+                </div>
+            </div>
             <p>Abstract: {{abstract}}</p>
             <p>Publisher: {{publisher}}</p>
-            <p>Project: <a href={{project}}>Test Project</a></p>
-            <p>Supplemental Materials: {{supplementalMaterials}}</p>
-            <p>Figures: {{figures}}</p>
-            <p>License: {{license}}</p>
         </div>
     </div>
 </div>
-
+</body>
 {{yield}}
