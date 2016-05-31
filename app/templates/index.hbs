@@ -1,9 +1,56 @@
-<h1>Pre Prints Home Page</h1>
+<body role="document">
 
-{{#link-to "discovery"}}Discovery{{/link-to}}
-{{#link-to "manuscript"}}Manuscript{{/link-to}}
+<div class="container-full style-header">
+    <div id="top" class="container theme-showcase" >
+        <div class="jumbotron">
+            <h1>Discovery</h1>
+        </div>
+    </div>
+</div>
 
-<!--
-<button class="btn btn-success" onclick={{action 'login'}}>Login</button>
--->
-{{outlet}}
+<div id="upload">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Upload your research
+                    </div>
+                    <div class="panel-body">
+                        {{file-chooser}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Choose from an existing project
+                    </div>
+                    <div class="panel-body">
+                        TODO: Integrate menu selection with OSF project database
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="search">
+    <div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Manuscript Archive
+        </div>
+        <div class="panel-body">
+            A growing repository of unpublished papers powered by the Open Science Framework.<br>
+            {{input value="Search"}}
+        </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+</body>

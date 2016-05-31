@@ -6,8 +6,8 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('discovery');
-  this.route('manuscript');
+  this.route('preprints', { path: '/preprints' });
+  this.route('preprints', { path: '/preprints/:file_guid'});
 });
 
 export default Router;
