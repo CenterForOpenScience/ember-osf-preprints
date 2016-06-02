@@ -1,0 +1,41 @@
+<style>
+   .btn{
+       background:#ddeeff;
+       margin-right:5px;
+       margin-bottom:5px;
+       color:#4c4c4c;
+       border-color:#ddeeff;
+   }
+
+    h4{
+        color:#337ab7;
+    }
+
+</style>
+
+<div class="row"> <!--ROW TITLE-->
+<h1>Search page</h1>
+</div>
+        <div class="row"> <!--CONTENT ROW-->
+    <div class="col-md-3"><!--COL TAGS-->
+        <h5> Improve your search:</h5>
+        <button type="button" class="btn btn-info">Psychology</button>
+        <button type="button" class="btn btn-info">Computer Science</button>
+        <button type="button" class="btn btn-info">Biology</button>
+        <button type="button" class="btn btn-info">Physics</button>
+        <button type="button" class="btn btn-info">Geology</button>
+        <button type="button" class="btn btn-info">Astronomy</button>
+        <button type="button" class="btn btn-info">Neurology</button>
+        <button type="button" class="btn btn-info">Medicine</button>
+    </div><!--END OF ROW TAGS-->
+
+
+<div class="col-md-9"><!--RESULTS COLUMN-->
+
+  {{#each model as |preprintEntry|}}
+  {{preprint-entry preprint=preprintEntry}}
+{{/each}}
+
+</div><!--END OF COL RESULTS-->
+</div><!--END OF CONTENT ROW-->
+
