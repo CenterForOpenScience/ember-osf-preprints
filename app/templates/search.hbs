@@ -1,4 +1,11 @@
 <style>
+    .container{
+        padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    }
+
    .btn{
        background:#ddeeff;
        margin-right:5px;
@@ -7,17 +14,26 @@
        border-color:#ddeeff;
    }
 
+   .btn:hover{
+       background-color:#337AB7;
+   }
+
     h4{
         color:#337ab7;
     }
 
-</style>
+    .subjects{
+        padding-left:0px;
+    }
 
+</style>
+<div class="container"><!--CONTAINER DIV-->
 <div class="row"> <!--ROW TITLE-->
 <h1>Search page</h1>
 </div>
         <div class="row"> <!--CONTENT ROW-->
     <div class="col-md-3"><!--COL TAGS-->
+            <div class="subjects"> <!--SUBJECT TAGS DIV-->
         <h5> Improve your search:</h5>
         <button type="button" class="btn btn-info">Psychology</button>
         <button type="button" class="btn btn-info">Computer Science</button>
@@ -27,6 +43,7 @@
         <button type="button" class="btn btn-info">Astronomy</button>
         <button type="button" class="btn btn-info">Neurology</button>
         <button type="button" class="btn btn-info">Medicine</button>
+                </div> <!--END SUNJECT TAGS DIV -->
     </div><!--END OF ROW TAGS-->
 
 
@@ -39,3 +56,4 @@
 </div><!--END OF COL RESULTS-->
 </div><!--END OF CONTENT ROW-->
 
+</div> <!--END OF CONTAINER DIV-->
