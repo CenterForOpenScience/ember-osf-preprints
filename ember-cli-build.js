@@ -30,6 +30,7 @@ module.exports = function(defaults) {
   app.import("bower_components/osf-style/img/cos-white2.png");
   // Bootstrap
   app.import("bower_components/bootstrap/dist/css/bootstrap.min.css");
+  app.import("bower_components/bootstrap/js/modal.js")
 
   return app.toTree();
 };

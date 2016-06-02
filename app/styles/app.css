@@ -94,11 +94,19 @@
     position: relative;
 }
 
-.preprint-feature a {
+.preprint-feature .btn {
     color: white;
-    font-weight: bold;
+    border-color: white;
+    border-width: 4px;
 }
 
+.preprint-feature .btn:hover {
+    background-color: #204762;
+}
+
+.modal {
+    color: #333333;
+}
 
 
 /* Search bar */
