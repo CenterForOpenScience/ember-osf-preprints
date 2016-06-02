@@ -4,6 +4,15 @@
     --osf-blue: #67a3bf;
 }
 
+/* UNIVERSAL */
+h1, h2, h3, h4, h5, H6 {
+    font-weight:300;
+}
+
+h5{
+    font-size:18px;
+}
+
 /* OSF Preprints langing page */
 .osf-preprint-header-img {
     background: var(--theme-color-primary);
