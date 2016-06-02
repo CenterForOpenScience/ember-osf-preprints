@@ -26,12 +26,10 @@ module.exports = function(defaults) {
   app.import("bower_components/osf-style/page.css");
 
   // TODO is there a better way to import osf-style??
-  app.import("bower_components/osf-style/img/cos-white2.png", {
-    destDir: 'assets'
-  });
+  // TODO determine exactly where the image should go and how it should be referenced
+  app.import("bower_components/osf-style/img/cos-white2.png");
   // Bootstrap
   app.import("bower_components/bootstrap/dist/css/bootstrap.min.css");
-  //app.import("//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
 
   return app.toTree();
 };

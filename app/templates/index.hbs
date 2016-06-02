@@ -1,56 +1,32 @@
-
 <body role="document">
 
-<div class="container-full style-header">
-    <div id="top" class="container theme-showcase" >
-        <div class="jumbotron">
-            <h1>Discovery</h1>
-        </div>
-    </div>
-</div>
-
-<div id="upload">
+<div class="osf-preprint-header-img">
     <div class="container">
+        <div class="text-center m-b-lg">
+            <h1 class="osf-preprint-lead">OSF Preprints</h1>
+        </div>
+
+        <div id="search">
+            {{search-preprints}}
+        </div>
+
+        <br><br>
+
         <div class="row">
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Upload your research
-                    </div>
-                    <div class="panel-body">
-                        {{file-chooser}}
-                    </div>
-                </div>
-
+            <div class="col-md-6 col-lg-5 col-xl-4 text-center m-b-lg preprint-feature" >
+                {{fa-icon icon="cloud-upload" size=5}}
+                <h3 class="f-w-xl">Upload your research</h3>
             </div>
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Choose from an existing project
-                    </div>
-                    <div class="panel-body">
-                        TODO: Integrate menu selection with OSF project database
-                    </div>
-                </div>
+            <div class="col-md-6 col-lg-5 col-lg-offset-2 col-xl-4 col-xl-offset-4 text-center m-b-lg preprint-feature">
+                {{fa-icon icon="cubes" size = 5}}
+                <h3 class="f-w-xl">Tag an existing file as a preprint</h3>
             </div>
         </div>
     </div>
 </div>
 
-<div id="search">
-    <div class="container">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            Manuscript Archive
-        </div>
-        <div class="panel-body">
-            A growing repository of unpublished papers powered by the Open Science Framework.<br>
-            {{input value="Search"}}
-        </div>
-    </div>
-    </div>
-</div>
 
+{{recent-uploads}}
 
 
 

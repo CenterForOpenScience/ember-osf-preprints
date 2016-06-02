@@ -20,3 +20,4 @@ testem.log
 .idea
 
 ./config/local.yml
+.editorconfig
