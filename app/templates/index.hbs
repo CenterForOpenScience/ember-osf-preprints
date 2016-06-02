@@ -1,6 +1,6 @@
 <body role="document">
 
-<div class="osf-preprint-header-img">
+<div class="osf-preprint-header-img-original">
     <div class="container">
         <div class="text-center m-b-lg">
             <h1 class="osf-preprint-lead">OSF Preprints</h1>
@@ -24,9 +24,12 @@
     </div>
 </div>
 
-
-
-{{recent-uploads}}
+<div class="container">
+    <h2>Recent Uploads</h2>
+    {{#each model as |preprintEntry|}}
+      {{preprint-entry preprint=preprintEntry}}
+    {{/each}}
+</div>
 
 
 
