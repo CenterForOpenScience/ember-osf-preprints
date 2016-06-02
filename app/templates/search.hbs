@@ -31,13 +31,11 @@
 
 
 <div class="col-md-9"><!--RESULTS COLUMN-->
-{{#each model as |rental|}}
-  <h4>{{rental.title}}</h4>
-  <p>Owner: {{rental.owner}}</p>
-  <p>Type: {{rental.type}}</p>
-  <p>Location: {{rental.city}}</p>
-  <p>Number of bedrooms: {{rental.bedrooms}}</p>
+
+  {{#each model as |preprintEntry|}}
+  {{preprint-entry preprint=preprintEntry}}
 {{/each}}
+
 </div><!--END OF COL RESULTS-->
 </div><!--END OF CONTENT ROW-->
 
