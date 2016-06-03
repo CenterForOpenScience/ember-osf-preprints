@@ -1,6 +1,6 @@
 <body role="document">
 
-<div class="osf-preprint-header-img">
+<div class="osf-preprint-header-img-original">
     <div class="container">
         <div class="text-center m-b-lg">
             <h1 class="osf-preprint-lead">OSF Preprints</h1>
@@ -14,19 +14,22 @@
 
         <div class="row">
             <div class="col-md-6 col-lg-5 col-xl-4 text-center m-b-lg preprint-feature" >
-                {{fa-icon icon="cloud-upload" size=5}}
-                <h3 class="f-w-xl">Upload your research</h3>
+                {{upload-button}}
             </div>
+
             <div class="col-md-6 col-lg-5 col-lg-offset-2 col-xl-4 col-xl-offset-4 text-center m-b-lg preprint-feature">
-                {{fa-icon icon="cubes" size = 5}}
-                <h3 class="f-w-xl">Tag an existing file as a preprint</h3>
+                {{project-button}}
             </div>
         </div>
     </div>
 </div>
 
-
-{{recent-uploads}}
+<div class="container">
+    <h2>Recent Uploads</h2>
+    {{#each model as |preprintEntry|}}
+      {{preprint-entry preprint=preprintEntry}}
+    {{/each}}
+</div>
 
 
 

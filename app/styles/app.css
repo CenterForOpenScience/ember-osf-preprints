@@ -1,7 +1,6 @@
 :root {
     --theme-color-primary: #BDA0CB;
     --theme-color-secondary: #660198;
-    --osf-blue: #67a3bf;
 }
 
 /* UNIVERSAL */
@@ -30,6 +29,28 @@ h5{
     background: linear-gradient(35deg, var(--theme-color-primary) 0%, var(--theme-color-secondary) 50%, #000000 100%);
     /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--theme-color-primary), endColorstr='#000000', GradientType=1);
+    /* IE6-9 fallback on horizontal gradient */
+    color: #fff;
+    padding-top: 80px;
+    position: relative;
+}
+
+.osf-preprint-header-img-original {
+    background: #67a3bf;
+    /* Old browsers */
+    background: -moz-linear-gradient(35deg, #67a3bf 0%, #166596 18%, #000000 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #67a3bf), color-stop(18%, #166596), color-stop(100%, #000000));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(35deg, #67a3bf 0%, #166596 18%, #000000 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(35deg, #67a3bf 0%, #166596 18%, #000000 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(35deg, #67a3bf 0%, #166596 18%, #000000 100%);
+    /* IE10+ */
+    background: linear-gradient(35deg, #67a3bf 0%, #166596 18%, #000000 100%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#67a3bf', endColorstr='#000000', GradientType=1);
     /* IE6-9 fallback on horizontal gradient */
     color: #fff;
     padding-top: 80px;
@@ -103,11 +124,24 @@ h5{
     position: relative;
 }
 
-.preprint-feature a {
+.preprint-feature .btn {
     color: white;
-    font-weight: bold;
+    border-color: white;
+    border-width: 4px;
 }
 
+.preprint-feature .btn:hover {
+    background-color: #204762;
+}
 
-
-/* Search bar */
+.modal {
+    color: #333333;
+}
+/*
+h4 {
+    color: var(--theme-color-secondary);
+}
+*/
+h4 {
+    color:#337ab7;
+}
