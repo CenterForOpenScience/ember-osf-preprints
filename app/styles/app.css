@@ -142,6 +142,183 @@ h4 {
     color: var(--theme-color-secondary);
 }
 */
-h4 {
-    color:#337ab7;
+#recentUploads h4 {
+    color: #67a3bf;
+    font-weight: bold;
+}
+
+#recentUploads {
+
+}
+
+#recentUploads h2 {
+    font-weight: bold;
+}
+
+
+
+/* Moving logo */
+.space-top {
+    padding-top: 50px;
+}
+.space-bottom {
+    padding-bottom: 65px;
+}
+#logo {
+    width: 200px;
+    height: 200px;
+    margin: 30px auto;
+    position: relative;
+    -webkit-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+#logo .circle {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+}
+#logo .circle:before {
+    content: "";
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    -webkit-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+    opacity: 1;
+}
+#logo .circle:after {
+    content: "";
+    width: 30px;
+    height: 30px;
+    background: #38b9eb;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -10px;
+    left: 10px;
+    -webkit-transition: all 0.6s ease-in-out;
+    -o-transition: all 0.6s ease-in-out;
+    transition: all 0.6s ease-in-out;
+    opacity: 1;
+}
+#logo .circle:hover:before {
+    top: -15px;
+}
+#logo .circle:hover:after {
+    bottom: -5px;
+}
+
+#logo.off {
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+#logo.off .circle:before {
+    top: -200px;
+    opacity: 0;
+}
+#logo.off .circle:after {
+    bottom: 200px;
+    opacity: 0;
+}
+#logo #circle-1 {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    left: 75px;
+    top: 0;
+}
+#logo #circle-2 {
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    left: 128px;
+    top: 22px;
+}
+#logo #circle-2:after {
+    z-index: -1;
+}
+#logo #circle-3 {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+    left: 150px;
+    top: 75px;
+}
+#logo #circle-4 {
+    -webkit-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    -o-transform: rotate(135deg);
+    transform: rotate(135deg);
+    left: 128px;
+    top: 128px;
+}
+#logo #circle-4:after {
+    z-index: -1;
+}
+#logo #circle-5 {
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+    left: 75px;
+    top: 150px;
+}
+#logo #circle-6 {
+    -webkit-transform: rotate(225deg);
+    -ms-transform: rotate(225deg);
+    -o-transform: rotate(225deg);
+    transform: rotate(225deg);
+    left: 22px;
+    top: 128px;
+}
+#logo #circle-6:after {
+    z-index: -1;
+}
+#logo #circle-7 {
+    -webkit-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    transform: rotate(270deg);
+    left: 0;
+    top: 75px;
+}
+#logo #circle-8 {
+    -webkit-transform: rotate(315deg);
+    -ms-transform: rotate(315deg);
+    -o-transform: rotate(315deg);
+    transform: rotate(315deg);
+    left: 22px;
+    top: 22px;
+}
+#logo #circle-8:after {
+    z-index: -1;
+}
+.moving-logo-section {
+    background-color: #474747;
+    color: #ffffff;
+    padding: 50px 0;
+    margin-bottom: 20px;
+}
+.moving-logo-section #logo {
+    transform: scale(2);
+}
+.moving-logo-section h4 {
+    margin-bottom: 40px;
+}
+.moving-logo-section h2 {
+    font-size: 48px;
+    margin-top: 50px;
+}
+.moving-logo-section .btn {
+    padding: 10px 50px;
 }
