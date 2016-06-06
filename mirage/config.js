@@ -78,4 +78,29 @@ export default function() {
       }]
     };
   });
+      this.get('/subjects', function() {
+    return {
+      data: [{
+        type: 'subjects',
+        id: 1,
+        attributes: {
+          subject: 'Biology',
+          sub_categories: ["Medicine", "Computational Biology, Pathogens"]
+
+        }
+      },
+        {
+        type: 'subjects',
+        id: 2,
+        attributes: {
+          subject: 'Psychology',
+          sub_categories: ["Medicine", "Computational Biology, Pathogens"]
+
+        }
+      },
+
+
+      ]
+    };
+  });
 }
