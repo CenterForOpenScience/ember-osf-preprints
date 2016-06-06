@@ -39,3 +39,5 @@ POST /preprints/<file_guid>
             license: string,
         }
     }
+
+Get all preprints, 
