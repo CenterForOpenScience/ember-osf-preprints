@@ -7,31 +7,14 @@
     <div class="row">
         <div class="col-md-7">
             <h4>Preview:</h4>
-            <iframe width=700 height=700></iframe>
+            <iframe src="http://google.com" style="width:100%; height:100%;"></iframe>
         </div>
         <div class="col-md-5">
-            <form>
-                Title: <br>
-                <input type="text" name="title" class="form-control"><br>
-                Abstract: <br>
-                <textarea class="form-control noresize" rows="5"></textarea><br>
-                Authors: <br>
-                <input type="text" name="authors" class="form-control"><br>
-                Subject: <br>
-                <input type="text" name="subject" class="form-control"><br>
-                Accepted in: <br>
-                <input type="text" name="journal" class="form-control"><br>
-                Content Type: <br>
-                <input type="text" name="content" text="Pre Print" class="form-control"><br>
-                Link an Existing OSF Project:
-                <input type="text" name="project" class="form-control"><br>
-                <select class="form-control">
-                    <option>APA</option>
-                    <option>MLA</option>
-                    <option>Chicago</option>
-                </select><br>
-                <button type="submit" class="btn btn-primary">Add Preprint</button>
-            </form>
+            {{preprint-form makePost=(action "makePost")}}
         </div>
     </div>
+    <div class="row">
+
+    </div>
 </div>
+<!--makePost=(action "makePost")-->

@@ -2,11 +2,14 @@ import Model from 'ember-data/model';
 import attr from 'ember-data/attr';
 
 export default Model.extend({
-  title: attr(),
-  abstract: attr(),
-  authors: attr(),
-  subject: attr(),
-  journal: attr(),
-  osf_project: attr(),
-  date: attr()
+    title: attr(),
+    authors: attr(),
+    date: attr(),
+    subject: attr(),
+    abstract: attr(),
+    publisher: attr(),
+    project: attr(),
+    supplementalMaterials: attr(),
+    figures: attr(),
+    license: attr()
 });

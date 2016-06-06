@@ -1,0 +1,21 @@
+Title: <br>
+{{input class="form-control" value=title}}<br>
+Abstract: <br>
+{{textarea class="form-control noresize" value=abstract rows="5"}}<br>
+Authors: <br>
+{{input class="form-control" value=authors}}<br>
+Subject: <br>
+{{input class="form-control" value=subject}}<br>
+Accepted in: <br>
+{{input class="form-control" value=journal}}<br>
+Content Type: <br>
+{{input class="form-control" value=preprint}}<br>
+Link an Existing OSF Project:<br>
+{{input class="form-control" value=project}}<br>
+Citation:<br>
+<select class="form-control">
+    <option>APA</option>
+    <option>MLA</option>
+    <option>Chicago</option>
+</select><br>
+<button class="btn btn-primary" {{action "makePost" title abstract authors subject journal preprint project}}>Add Preprint</button>
