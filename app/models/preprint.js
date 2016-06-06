@@ -11,5 +11,5 @@ export default Model.extend({
     project: attr(),
     supplementalMaterials: attr(),
     figures: attr(),
-    license: attr()
+    license: attr(),
 });

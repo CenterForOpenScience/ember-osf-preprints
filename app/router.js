@@ -7,7 +7,7 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('preprints', { path: '/preprints' });
-  this.route('preprints', { path: '/preprints/:file_guid'});
+  this.route('preprint', { path: '/preprints/:file_guid'});
   this.route('add-preprint', { path: '/add-preprint'});
   this.route('search');
 });
