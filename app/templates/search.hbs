@@ -31,46 +31,47 @@
         padding-left:0px;
     }
 
+
 </style>
 <div class="container"><!--CONTAINER DIV-->
-<div class="row"> <!--ROW TITLE-->
-<h1>Search page</h1>
-</div>
-        <div class="row"> <!--CONTENT ROW-->
-    <div class="col-md-3"><!--COL TAGS-->
+    <div class="row"> <!--ROW TITLE-->
+        <h1>Search page</h1>
+    </div>
+    <div class="row"> <!--CONTENT ROW-->
+        <div class="col-md-3"><!--COL TAGS-->
             <div class="subjects"> <!--SUBJECT TAGS DIV-->
-        <h5> Improve your search:</h5>
+                <h5> Improve your search:</h5>
                 <!--SUBJECTS BUTTONS-->
                 <h6>Subjects</h6>
-        <button type="button" class="btn btn-info">Psychology</button>
-        <button type="button" class="btn btn-info">Computer Science</button>
-        <button type="button" class="btn btn-info">Biology</button>
-        <button type="button" class="btn btn-info">Physics</button>
-        <button type="button" class="btn btn-info">Geology</button>
-        <button type="button" class="btn btn-info">Astronomy</button>
-        <button type="button" class="btn btn-info">Neurology</button>
-        <button type="button" class="btn btn-info">Medicine</button>
+                <button type="button" class="btn btn-info">Psychology</button>
+                <button type="button" class="btn btn-info">Computer Science</button>
+                <button type="button" class="btn btn-info">Biology</button>
+                <button type="button" class="btn btn-info">Physics</button>
+                <button type="button" class="btn btn-info">Geology</button>
+                <button type="button" class="btn btn-info">Astronomy</button>
+                <button type="button" class="btn btn-info">Neurology</button>
+                <button type="button" class="btn btn-info">Medicine</button>
 
                 <!--TAGS -->
                 <h6>Tags</h6>
-        <button type="button" class="tag btn btn-info">talk</button>
-        <button type="button" class="tag btn btn-info">CREP</button>
-        <button type="button" class="tag btn btn-info">Poster</button>
-        <button type="button" class="tag btn btn-info">Randolph-Macon</button>
-        <button type="button" class="tag btn btn-info">replication</button>
-        <button type="button" class="tag btn btn-info">reproduction</button>
-        <button type="button" class="tag btn btn-info">cancer biology</button>
-                </div> <!--END SUNJECT TAGS DIV -->
-    </div><!--END OF ROW TAGS-->
+                <button type="button" class="tag btn btn-info">talk</button>
+                <button type="button" class="tag btn btn-info">CREP</button>
+                <button type="button" class="tag btn btn-info">Poster</button>
+                <button type="button" class="tag btn btn-info">Randolph-Macon</button>
+                <button type="button" class="tag btn btn-info">replication</button>
+                <button type="button" class="tag btn btn-info">reproduction</button>
+                <button type="button" class="tag btn btn-info">cancer biology</button>
+            </div> <!--END SUBJECT TAGS DIV -->
+        </div><!--END OF ROW TAGS-->
 
 
-<div class="col-md-9"><!--RESULTS COLUMN-->
+        <div class="col-md-9"><!--RESULTS COLUMN-->
 
-  {{#each model as |preprintEntry|}}
-  {{preprint-entry preprint=preprintEntry}}
-{{/each}}
+            {{#each model as |preprintEntry|}}
+                {{preprint-entry preprint=preprintEntry}}
+            {{/each}}
 
-</div><!--END OF COL RESULTS-->
-</div><!--END OF CONTENT ROW-->
+        </div><!--END OF COL RESULTS-->
+    </div><!--END OF CONTENT ROW-->
 
 </div> <!--END OF CONTAINER DIV-->
