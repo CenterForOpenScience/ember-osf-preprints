@@ -1,0 +1,41 @@
+GET /preprints/<file_guid>
+    data: {
+        type: 'preprints',
+        id: <file_guid>,
+        attributes: {
+            title: string,
+            authors: string,
+            dateCreated: date,
+            subject: string,
+            abstract: string,
+            publisher: string,
+            project: {
+                name: string,
+                link: string
+            },
+            supplementalMaterials: not_sure,
+            figures: list of links?,
+            license: string,
+        }
+    }
+
+POST /preprints/<file_guid>
+    data: {
+        type: 'preprints',
+        id: <file_guid>,
+        attributes: {
+            title: string,
+            authors: string,
+            dateCreated: date,
+            subject: string,
+            abstract: string,
+            publisher: string,
+            project: {
+                name: string,
+                link: string
+            },
+            supplementalMaterials: not_sure,
+            figures: list of links?,
+            license: string,
+        }
+    }

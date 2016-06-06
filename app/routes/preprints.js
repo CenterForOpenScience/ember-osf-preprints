@@ -18,7 +18,7 @@ var meta = {
 };
 
 export default Ember.Route.extend({
-    model() {
-        return meta;
+    model(preprintId) {
+        return this.store.findAll('preprint');
     }
 });
