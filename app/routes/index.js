@@ -7,5 +7,10 @@ export default Ember.Route.extend({OsfLoginRouteMixin
 export default Ember.Route.extend({
     model() {
         return this.store.findAll('preprint');
+    },
+    actions: {
+        goToSubject(url) {
+            window.document.location = url;
+        }
     }
 });
