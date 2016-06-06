@@ -44,7 +44,7 @@ export default function() {
         id: 1,
         attributes: {
           subject: 'Biology',
-          sub_categories: ["Medicine", "Computational Biology, Pathogens"]
+          sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
 
         }
       },
@@ -53,12 +53,34 @@ export default function() {
         id: 2,
         attributes: {
           subject: 'Psychology',
-          sub_categories: ["Medicine", "Computational Biology, Pathogens"]
+          sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
 
         }
       },
-
-
+        {
+        type: 'subjects',
+        id: 3,
+        attributes: {
+          subject: 'Astronomy',
+          sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
+        }
+      },
+       {
+        type: 'subjects',
+        id: 3,
+        attributes: {
+          subject: 'Sociology',
+          sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
+        }
+      },
+       {
+        type: 'subjects',
+        id: 3,
+        attributes: {
+          subject: 'Technology',
+          sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
+        }
+      },
       ]
     };
   });
