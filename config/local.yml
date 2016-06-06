@@ -1,0 +1,22 @@
+
+######## ember-osf settings ########
+# local:
+#   CLIENT_ID: null
+#   PERSONAL_ACCESS_TOKEN: null
+#   OAUTH_SCOPES: osf.full_read osf.full_write
+
+# stage:
+#    CLIENT_ID: null
+#    PERSONAL_ACCESS_TOKEN: null
+#    OAUTH_SCOPES: osf.full_read osf.full_write
+
+# stage2:
+#   CLIENT_ID: null
+#   PERSONAL_ACCESS_TOKEN: null
+#   OAUTH_SCOPES: osf.full_read osf.full_write
+
+test:
+  CLIENT_ID: null
+  PERSONAL_ACCESS_TOKEN: null
+  OAUTH_SCOPES: osf.full_read osf.full_write
+######### end ember-osf ##########

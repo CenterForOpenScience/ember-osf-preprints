@@ -1,7 +1,11 @@
-<div class="btn" data-toggle="modal" data-target="#uploadModal">
-    {{fa-icon icon="cloud-upload" size=5}}
-    <h3 class="f-w-xl">Upload your research</h3>
-</div>
+{{fa-icon icon="cloud-upload" size=5}}
+<h1 class="f-w-xl">Contribute your research</h1>
+<h3 class="f-w-md" style="margin-left:auto; margin-right:auto; width:800px;">You can upload a preprint or choose a file from an existing OSF project to tag as a preprint if you are already have an OSF account.</h3>
+
+<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#uploadModal">
+    Add a preprint
+</button>
+
 
 <!-- Modal -->
 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -10,7 +14,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Upload your research</h4>
+                <h4 class="modal-title" id="myModalLabel">Contribute your research</h4>
             </div>
             <div class="modal-body">
                 {{file-chooser}}

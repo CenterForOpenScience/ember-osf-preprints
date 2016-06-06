@@ -47,7 +47,12 @@
     <div class="article">
 <h4>{{preprint.title}}</h4>
 <p><strong>Authors:</strong> {{preprint.authors}}</p>
-<p><strong>Abstract:</strong> {{preprint.abstract}}</p>
+<p id={{preprint.id}}>
+    <strong>Abstract:</strong>
+    {{#read-more openText='Show full abstract' closeText='Show less' maxHeight='100px' toggleClass='read-more-toggle-custom'}}
+        {{preprint.abstract}}
+    {{/read-more}}
+</p>
 <hr>
     </div>
 
