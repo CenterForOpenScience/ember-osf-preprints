@@ -10,6 +10,7 @@ Router.map(function() {
   this.route('preprint', { path: '/preprints/:file_guid'});
   this.route('add-preprint', { path: '/add-preprint'});
   this.route('search');
+  this.route('categories');
 });
 
 export default Router;
