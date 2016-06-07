@@ -1,3 +1,50 @@
+<style>
+
+    .smallTag{
+        width:5.5em;
+        text-align:center;
+        padding:0.4em;
+        border-radius:5px;
+        float:left;
+        margin:5px;
+        margin-left:0px;
+        margin-bottom:0px;
+        font-size:12px;
+    }
+
+    #date{
+        background-color:#4c4c4c;
+        color:white;
+    }
+
+    #subject{
+         background-color:#1f7a1f;
+        color:white;
+    }
+
+
+
+    .article{
+        padding-top:1.1em;
+    }
+
+</style>
+
+    <div class="tags"> <!--TAGS DIV-->
+<div class="smallTag" id="date"> <!--DATE-->
+    {{preprint.date}}
+</div> <!--END DATE-->
+
+<div class="smallTag" id="subject"> <!--SUBJECT-->
+    {{preprint.subject}}
+</div>  <!--END SUBJECT-->
+    </div> <!--END TAGS DIV-->
+
+
+<!--ARTICLE-->
+<br>
+
+    <div class="article">
 <h4>{{preprint.title}}</h4>
 <p><strong>Authors:</strong> {{preprint.authors}}</p>
 <p id={{preprint.id}}>
@@ -7,3 +54,5 @@
     {{/read-more}}
 </p>
 <hr>
+    </div>
+
