@@ -16,6 +16,7 @@ GET /preprints/<file_guid>
             supplementalMaterials: not_sure,
             figures: list of links?,
             license: string,
+            views: int,
         }
     }
 
@@ -37,7 +38,20 @@ POST /preprints/<file_guid>
             supplementalMaterials: not_sure,
             figures: list of links?,
             license: string,
+            views: int
         }
     }
 
-Get all preprints, 
+GET /preprints
+{
+    data: [list of file_guid's]
+}
+
+Users:
+add a preprint's entry to user JSON data.
+something along the lines of...
+preprint_data {
+    subjects_tagged: [list],
+    time_filter: day/week/month/year,
+
+}
