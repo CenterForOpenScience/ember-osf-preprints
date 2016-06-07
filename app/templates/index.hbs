@@ -6,59 +6,61 @@
         <!--TITLE-->
         <div class="text-center m-b-lg">
             <h1 class="osf-preprint-lead">OSF Preprints</h1>
-            <h2><span style="color: pink;">13,249</span> preprints from <span style="color: pink;">8,265</span> contributors hosted and promoting open science!</h2>
+            <h2>Fostering the <span class="highlight-bold">openness</span>, <span class="highlight-bold">integrity</span>, and <span class="highlight-bold">reproducibility</span> of scientific research</h2>
         </div>
 
         <!--SEARCH-->
-        <div id="search">
+        <div id="search" class="space-top space-bottom">
             {{search-preprints}}
+            <p><span class="highlight">13,249</span> preprints, <span class="highlight">8,265</span> contributors as of Mon Jun 06 2016</p>
         </div>
+
 
         <!--PREPRINT LIST-->
         <h2>Popular Uploads</h2>
-        <div id="landing-page-preprint-list">
+        <div id="landing-page-preprint-list-background">
+            <div id="landing-page-preprint-list">
             {{#each model as |preprintEntry|}}
                 {{preprint-entry preprint=preprintEntry}}
             {{/each}}
 
             <div class="text-center" style="padding-top: 20px; padding-bottom: 40px;">
-                <a type="button" class="btn btn-success" href="/search">Browse more preprints</a>
+                <a type="button" class="btn btn-success btn-lg" href="/search">Browse more preprints</a>
             </div>
         </div>
-
-
+        </div>
     </div>
 </div>
 
 <!--SUBJECTS-->
 <div class="subjects text-center">
     <div class="container">
-        <h1 class="f-w-xl">Subjects</h1>
+        <h1 class="f-w-xl">Browse preprints by subject</h1>
 
         <table class="table">
-            <tr {{action "goToSubject" "/search"}}><td>Astronomy</td></tr>
-            <tr {{action "goToSubject" "/search"}}><td>Biology</td></tr>
-            <tr {{action "goToSubject" "/search"}}><td>Computer Science</td></tr>
-            <tr {{action "goToSubject" "/search"}}><td>Geology</td></tr>
-            <tr {{action "goToSubject" "/search"}}><td>Medicine</td></tr>
-            <tr {{action "goToSubject" "/search"}}><td>Neurology</td></tr>
-            <tr {{action "goToSubject" "/search"}}><td>Physics</td></tr>
-            <tr {{action "goToSubject" "/search"}}><td>Psychology</td></tr>
+            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_astronomy.jpg");'><td>Astronomy</td></tr>
+            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_biology.jpg");'><td>Biology</td></tr>
+            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_computer_science.jpg");'><td>Computer Science</td></tr>
+            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_geology.jpg"); background-position: center bottom;'><td>Geology</td></tr>
+            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_medicine.jpg");'><td>Medicine</td></tr>
+            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_neurology.jpg");'><td>Neurology</td></tr>
+            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_physics.jpg"); background-position: 0% 15%;'><td>Physics</td></tr>
+            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_psychology.jpg"); background-position: 0% 60%;'><td>Psychology</td></tr>
         </table>
 
     </div>
 </div>
 
 <!--BRANDED PREPRINT SERVERS-->
-<div class="branded-servers bg-color-hover text-center" style="background-color: var(--theme-color-light); color: white;">
-    <div class="container">
-        <h1 class="space-bottom f-w-xl">Branded preprint servers powered by OSF Preprints</h1>
-        <div class="row">
-            <div class="col-md-6">
-                <a href="http://www.virginia.edu/"><img src="assets/img/banner_uva.png"/></a>
+<div class="branded-servers text-center">
+    <div class="container-fluid" style='background-image: url("assets/img/bg-web.png");'>
+        <h1 class="f-w-xl">Branded preprint servers powered by OSF Preprints</h1>
+        <div class="row-fluid">
+            <div class="col-sm-2">
+                <a href="http://www.virginia.edu/"><img class="img-circle img-responsive logo" src="assets/img/logo_uva.png" alt="University of Virginia"/></a>
             </div>
-            <div class="col-md-6">
-                <a href="http://monstersuniversity.com/edu/"><img src="assets/img/banner_monsters.jpg"/></a>
+            <div class="col-sm-2">
+                <a href="http://www.arizona.edu/"><img class="img-circle img-responsive logo" src="assets/img/logo_ua.png" alt="University of Arizona"/></a>
             </div>
         </div>
     </div>

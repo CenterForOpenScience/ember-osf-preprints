@@ -25,20 +25,19 @@ hr {
     margin-right: 20px;
 }
 </style>
-<!--
+
 <body>
-    {{#each model as preprint}}
     <div class="row">
         <div class="m-b-md p-md osf-box">
             <div class="row" id="header">
-                <h1>{{preprint.title}}</h1>
-                <h5>{{preprint.authors}}</h5>
-                <h5>Added on {{preprint.dateCreated}}</h5>
+                <h1>{{model.title}}</h1>
+                <h5>{{model.authors}}</h5>
+                <h5>Added on {{model.dateCreated}}</h5>
             </div>
             <hr color="#C7FFC7">
             <div class="row">
                 <div id="mfr" class="col-md-7">
-                    <iframe src={{preprint.link}} display="block" width=700 height=700></iframe>
+                    <iframe src={{model.link}} display="block" width=700 height=700></iframe>
                 </div>
                 <div class="col-md-5">
                     <br>
@@ -47,7 +46,7 @@ hr {
                             <p>The project for this paper is available on the Open Science Framework</p>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-primary" onclick="window.location.href={{preprint.link}}">View Project</button>
+                            <button type="button" class="btn btn-primary" onclick="window.location.href={{model.link}}">View Project</button>
                         </div>
                     </div>
                     <br>
@@ -59,7 +58,7 @@ hr {
                                     Absract:
                                 </div>
                                 <div class="panel-body">
-                                    {{preprint.abstract}}
+                                    {{model.abstract}}
                                 </div>
                             </div>
                         </div>
@@ -82,7 +81,11 @@ hr {
             </div>
         </div>
     </div>
-{{/each}}
 </body>
--->
+
 {{outlet}}
+<br>
+<br>
+<br>
+{{input value=id}}
+{{#link-to "preprints.preprint" id (query-params preprintId=id)}}Click{{/link-to}}

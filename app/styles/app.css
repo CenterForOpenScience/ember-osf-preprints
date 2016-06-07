@@ -2,6 +2,16 @@
     --theme-color-light: #67a3bf;
     --theme-color-dark: #166596;
     --gradient-percentage: 15%;
+    --highlight-color: #ffd27f;
+}
+
+.highlight {
+    color: var(--highlight-color);
+}
+
+.highlight-bold {
+    color: var(--highlight-color);
+    font-weight: 500;
 }
 
 /* OSF Preprints langing page */
@@ -33,7 +43,13 @@
 }
 
 /* UNIVERSAL */
+h1, h2, h3, h4, h5, H6 {
+    font-weight:300;
+}
 
+h5 {
+    font-size: 18px;
+}
 
 .icon-circle {
     display: inline-block  ;
@@ -108,18 +124,23 @@
 .modal {
     color: #333333;
 }
-/*
-h4 {
-    color: var(--theme-color-secondary);
+
+#landing-page-preprint-list-background {
+    background-color: rgba(255, 255, 255, .1);
+    padding: 20px 20px 0px 20px;
 }
-*/
+
 #landing-page-preprint-list h4 {
-    color: #67a3bf;
+    color: var(--theme-color-light);
     font-weight: bold;
 }
 
+#landing-page-preprint-list h4:hover {
+    color: var(--highlight-color);
+}
+
 #landing-page-preprint-list {
-    max-height: 700px;
+    max-height: 600px;
     overflow: auto;
 }
 
@@ -275,22 +296,27 @@ h4 {
 #logo #circle-8:after {
     z-index: -1;
 }
+
 .moving-logo-section {
     background-color: #474747;
     color: #ffffff;
     padding: 50px 0;
     margin-bottom: 20px;
 }
+
 .moving-logo-section #logo {
     transform: scale(2);
 }
+
 .moving-logo-section h4 {
     margin-bottom: 40px;
 }
+
 .moving-logo-section h2 {
     font-size: 48px;
     margin-top: 50px;
 }
+
 .moving-logo-section .btn {
     padding: 10px 50px;
 }
@@ -307,7 +333,12 @@ h4 {
 
 .subjects th, td {
     padding: 5px;
-    border-bottom: 4px solid #fff;
+    border-bottom: 10px solid #fff;
+    text-shadow:
+        -1px -1px 0 var(--theme-color-dark),
+        1px -1px 0 var(--theme-color-dark),
+        -1px 1px 0 var(--theme-color-dark),
+        1px 1px 0 var(--theme-color-dark);
 }
 
 .subjects tr {
@@ -316,6 +347,8 @@ h4 {
     padding-top: 5px;
     padding-bottom: 5px;
     background-color: var(--theme-color-dark);
+    background-position: center top;
+    background-size: cover;
     color: white;
     cursor: pointer;
 }
@@ -325,17 +358,45 @@ h4 {
 }
 
 .branded-servers {
-    padding: 50px 50px;
+    color: white;
+    background-color: #166595;
+    margin: auto;
+}
+
+.branded-servers .container-fluid {
+    background-position: center top;
+    background-size: cover;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.branded-servers .col-sm-2 {
+    display: inline-block;
+    float: none;
 }
 
 .read-more-toggle-custom {
-    color: pink;
+    color: var(--highlight-color);
 }
 
 .read-more-toggle-custom:hover {
-    color: pink;
+    color: var(--highlight-color);
 }
 
 .read-more-toggle-custom:visited {
-    color: pink;
+    color: var(--highlight-color);
+}
+
+.logo {
+    width: 150px;
+    height: 150px;
+}
+
+.row-fluid {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.row-fluid col-sm-6 {
+    display: inline-block;
 }

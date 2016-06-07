@@ -18,4 +18,5 @@ Citation:<br>
     <option>MLA</option>
     <option>Chicago</option>
 </select><br>
-<button class="btn btn-primary" {{action "makePost" title abstract authors subject journal preprint project}}>Add Preprint</button>
+<!--<button class="btn btn-primary" {{!--action "makePost" title abstract authors subject journal preprint project--}}>Add Preprint</button>-->
+{{#link-to "preprints" class="btn btn-primary"}}Add preprint{{/link-to}}
