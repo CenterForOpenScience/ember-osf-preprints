@@ -2,6 +2,7 @@ import Model from 'ember-data/model';
 import attr from 'ember-data/attr';
 
 export default Model.extend({
+    preprintId: attr(),
     title: attr(),
     authors: attr(),
     date: attr(),
