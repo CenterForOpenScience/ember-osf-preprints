@@ -2,29 +2,22 @@
 <h1 class="f-w-xl">Contribute your research</h1>
 <h3 class="f-w-md" style="margin-left:auto; margin-right:auto; width:800px;">You can upload a preprint or choose a file from an existing OSF file to tag as a preprint if you are already have an OSF account.</h3>
 
-<!--<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#uploadModal">-->
-    <!--Add a preprint-->
-<!--</button>-->
+<button {{action 'modalShow'}}class="btn btn-success btn-lg" data-toggle="modal" data-target="#bs-Modal">
+    Add a preprint
+</button>
 
-{{#link-to "add-preprint" class="btn btn-success btn-lg"}}Add a preprint{{/link-to}}
+{{!--#link-to "add-preprint" class="btn btn-success btn-lg" action "modalShow"}}Add a preprint{{/link-to--}}
 
 
 <!-- Modal -->
-<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Contribute your research</h4>
-            </div>
-            <div class="modal-body">
-                {{file-chooser}}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
+{{#if showModal}} <!--Open property of modals? Because this showModeal is wrong-->
+ {{#bs-modal body=false footer=false title="Attention" submitAction=(action "submit")}}
+   {{#bs-modal-body}}An OSF account is required to upload a preprint.{{/bs-modal-body}} <!--add the OSF logo here-->
+        {{#bs-modal-footer as |footer|}}
+          {{#link-to "add-preprint" type="button" class="btn btn-primary"}}Login{{/link-to}}
+          {{#bs-button action=(action "close" target=footer) class="btn btn-default"}}Cancel{{/bs-button}}
+   {{/bs-modal-footer}}
+ {{/bs-modal}}
+{{/if}}
+
+
