@@ -4,7 +4,7 @@ var dateCreated = new Date();
 
 var meta = {
     title: 'The Linux Command Line',
-    contributors: 'Zach Janicki',
+    authors: 'Zach Janicki',
     dateCreated: dateCreated,
     abstract: "This is a sample usage of the MFR on the preprint server. This document will teach you everything you would ever want to know about the linux command line. Enjoy!" +
         " From here on out this is just filler text to give a better sense of what the page layout may look like with a more real to life abstract length. Hopefully the scientists" +
