@@ -7,6 +7,7 @@ export default function() {
         type: 'preprints',
         id: 1,
         attributes: {
+          preprintID: '1',
           title: 'Eating toxic algae makes plankton speedy swimmers',
           date: "Mar 2015",
           authors: 'Veruca Salt',
@@ -22,6 +23,7 @@ export default function() {
         type: 'preprints',
         id: 2,
         attributes: {
+          preprintID: '2',
           title: 'Eating toxic algae makes plankton speedy swimmers',
           date: "Jan 2016",
           authors: 'Veruca Salt',
@@ -37,6 +39,7 @@ export default function() {
         type: 'preprints',
         id: 3,
         attributes: {
+          preprintID: '3',
           title: 'Eating toxic algae makes plankton speedy swimmers',
           authors: 'Veruca Salt',
           subject: 'Biology',
@@ -53,6 +56,7 @@ export default function() {
         type: 'preprints',
         id: 4,
         attributes: {
+          preprintID: '4',
           title: 'Eating toxic algae makes plankton speedy swimmers',
           authors: 'Veruca Salt',
           date: "Oct 2013",
@@ -69,6 +73,7 @@ export default function() {
         type: 'preprints',
         id: 5,
         attributes: {
+          preprintID: '5',
           title: 'Eating toxic algae makes plankton speedy swimmers',
           authors: 'Veruca Salt',
           date: 'Nov 1994',
@@ -83,7 +88,11 @@ export default function() {
       }]
     };
   });
-      this.get('/subjects', function() {
+  this.get('/preprints/:id', (schema, request) => {
+      var id = request.params.id;
+      return schema.preprints.find(id);
+  })
+  this.get('/subjects', function() {
     return {
       data: [{
         type: 'subjects',
