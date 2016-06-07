@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 var dateCreated = new Date();
-/*
+
 var meta = {
     title: 'The Linux Command Line',
     contributors: 'Zach Janicki',
@@ -16,10 +16,11 @@ var meta = {
     License: "Mit License",
     link: 'http://localhost:7778/render?url=http://localhost:5000/sqdwh/?action=download%26mode=render',
 };
-*/
+
 export default Ember.Route.extend({
     model() {
         console.log(this.store.findAll('preprint'));
         //return this.store.findRecord('preprint', 1);
+        return meta;
     }
 });
