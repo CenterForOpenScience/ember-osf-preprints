@@ -27,7 +27,7 @@ export default function() {
           title: 'Eating toxic algae makes plankton speedy swimmers',
           date: "Jan 2016",
           authors: 'Veruca Salt',
-          subject: 'Biology',
+          subject: 'Psychology',
           abstract: 'A meal of toxic algae puts a spring into a tiny ocean-dwelling plankton’s trek. The bad news: That just might send it straight into the jaws of a hungry fish. ' +
           'Copepods (KO-puh-podz) are relatives of shrimp and lobsters. But very tiny cousins. They grow to be only about 1.5 millimeters (less than 0.06 inch) long. Still, size isn’t everything. Each one can suck in 100 liters (26.4 gallons) of seawater per day.' +
           ' A meal of toxic algae puts a spring into a tiny ocean-dwelling plankton’s trek. The bad news: That just might send it straight into the jaws of a hungry fish. ' +
@@ -60,7 +60,7 @@ export default function() {
           title: 'Eating toxic algae makes plankton speedy swimmers',
           authors: 'Veruca Salt',
           date: "Oct 2013",
-          subject: 'Biology',
+          subject: 'Sociology',
           abstract: 'A meal of toxic algae puts a spring into a tiny ocean-dwelling plankton’s trek. The bad news: That just might send it straight into the jaws of a hungry fish. ' +
           'Copepods (KO-puh-podz) are relatives of shrimp and lobsters. But very tiny cousins. They grow to be only about 1.5 millimeters (less than 0.06 inch) long. Still, size isn’t everything. Each one can suck in 100 liters (26.4 gallons) of seawater per day.' +
           ' A meal of toxic algae puts a spring into a tiny ocean-dwelling plankton’s trek. The bad news: That just might send it straight into the jaws of a hungry fish. ' +
@@ -77,7 +77,7 @@ export default function() {
           title: 'Eating toxic algae makes plankton speedy swimmers',
           authors: 'Veruca Salt',
           date: 'Nov 1994',
-          subject: 'Biology',
+          subject: 'Technology',
           abstract: 'A meal of toxic algae puts a spring into a tiny ocean-dwelling plankton’s trek. The bad news: That just might send it straight into the jaws of a hungry fish. ' +
           'Copepods (KO-puh-podz) are relatives of shrimp and lobsters. But very tiny cousins. They grow to be only about 1.5 millimeters (less than 0.06 inch) long. Still, size isn’t everything. Each one can suck in 100 liters (26.4 gallons) of seawater per day.' +
           ' A meal of toxic algae puts a spring into a tiny ocean-dwelling plankton’s trek. The bad news: That just might send it straight into the jaws of a hungry fish. ' +
@@ -88,15 +88,26 @@ export default function() {
       }]
     };
   });
+
   this.get('/preprints/:id', (schema, request) => {
       var id = request.params.id;
       return schema.preprints.find(id);
-  })
+  });
+
   this.get('/subjects', function() {
     return {
-      data: [{
+      data: [
+      {
         type: 'subjects',
         id: 1,
+        attributes: {
+          subject: 'Astronomy',
+          sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
+        }
+      },
+      {
+        type: 'subjects',
+        id: 2,
         attributes: {
           subject: 'Biology',
           sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
@@ -105,24 +116,16 @@ export default function() {
       },
         {
         type: 'subjects',
-        id: 2,
+        id: 3,
         attributes: {
           subject: 'Psychology',
           sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
 
         }
       },
-        {
-        type: 'subjects',
-        id: 3,
-        attributes: {
-          subject: 'Astronomy',
-          sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
-        }
-      },
        {
         type: 'subjects',
-        id: 3,
+        id: 4,
         attributes: {
           subject: 'Sociology',
           sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
@@ -130,7 +133,7 @@ export default function() {
       },
        {
         type: 'subjects',
-        id: 3,
+        id: 5,
         attributes: {
           subject: 'Technology',
           sub_categories: ["Medicine", "Computational Biology", "Pathogens"]

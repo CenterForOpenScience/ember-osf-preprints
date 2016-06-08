@@ -1,8 +1,4 @@
 import Ember from 'ember';
-import OsfLoginRouteMixin from 'ember-osf/mixins/osf-login-route';
-
-export default Ember.Route.extend({OsfLoginRouteMixin
-});
 
 export default Ember.Route.extend({
     model() {
@@ -11,9 +7,13 @@ export default Ember.Route.extend({
             subjects: this.store.findAll('subject')
         };
     },
+
     actions: {
-        goToSubject(url) {
-            window.document.location = url;
+        filter: function(subject) {
+            alert(subject);
+            for (var preprint in this.store.findAll('preprint')) {
+                alert(preprint.get('subject'));
+            }
         }
     }
 });

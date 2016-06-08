@@ -1,0 +1,16 @@
+<div class="container" style="padding-top: 100px;">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="list-group">
+                {{#each model.subjects as |s|}}
+                    <button type="button" class="list-group-item" {{action "filter" s.subject}}>{{s.subject}}</button>
+                {{/each}}
+            </div>
+        </div>
+        <div class="col-lg-9">
+            {{#each model.preprints as |preprintEntry|}}
+                {{preprint-entry preprint=preprintEntry}}
+            {{/each}}
+        </div>
+    </div>
+</div>

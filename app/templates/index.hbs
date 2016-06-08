@@ -15,19 +15,18 @@
             <p><span class="highlight">13,249</span> preprints, <span class="highlight">8,265</span> contributors as of Mon Jun 06 2016</p>
         </div>
 
-
         <!--PREPRINT LIST-->
         <h2>Popular Uploads</h2>
         <div id="landing-page-preprint-list-background">
             <div id="landing-page-preprint-list">
-            {{#each model as |preprintEntry|}}
-                {{preprint-entry preprint=preprintEntry}}
-            {{/each}}
+                {{#each model.preprints as |preprintEntry|}}
+                    {{preprint-entry preprint=preprintEntry}}
+                {{/each}}
 
-            <div class="text-center" style="padding-top: 20px; padding-bottom: 40px;">
-                <a type="button" class="btn btn-success btn-lg" href="/search">Browse more preprints</a>
+                <div class="text-center" style="padding-top: 20px; padding-bottom: 40px;">
+                    <a type="button" class="btn btn-success btn-lg" href="/search">Browse more preprints</a>
+                </div>
             </div>
-        </div>
         </div>
     </div>
 </div>
