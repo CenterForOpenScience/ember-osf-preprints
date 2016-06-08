@@ -2,22 +2,37 @@
 <h1 class="f-w-xl">Contribute your research</h1>
 <h3 class="f-w-md" style="margin-left:auto; margin-right:auto; width:800px;">You can upload a preprint or choose a file from an existing OSF file to tag as a preprint if you are already have an OSF account.</h3>
 
-<button {{action 'modalShow'}}class="btn btn-success btn-lg" data-toggle="modal" data-target="#bs-Modal">
+<button {{action 'modalShow'}}type="button" class="btn btn-info btn-lg">
     Add a preprint
 </button>
 
 {{!--#link-to "add-preprint" class="btn btn-success btn-lg" action "modalShow"}}Add a preprint{{/link-to--}}
 
 
-<!-- Modal -->
-{{#if showModal}} <!--Open property of modals? Because this showModeal is wrong-->
- {{#bs-modal body=false footer=false title="Attention" submitAction=(action "submit")}}
+<!-- Modals -->
+ {{#bs-modal open=showModal body=false footer=false title="Attention" id="myModal" submitAction=(action "submit")}}
    {{#bs-modal-body}}An OSF account is required to upload a preprint.{{/bs-modal-body}} <!--add the OSF logo here-->
         {{#bs-modal-footer as |footer|}}
-          {{#link-to "add-preprint" type="button" class="btn btn-primary"}}Login{{/link-to}}
-          {{#bs-button action=(action "close" target=footer) class="btn btn-default"}}Cancel{{/bs-button}}
+          {{#bs-button  action='signupShow' class="btn btn-success"}}Sign up{{/bs-button}}
+          {{#bs-button action='loginShow' class="btn btn-primary"}}Sign in{{/bs-button}}
    {{/bs-modal-footer}}
  {{/bs-modal}}
-{{/if}}
+
+{{#bs-modal open=showLogin body=false footer=false}}
+   {{login-form}} <!--If they clicked sign up signup form-->
+{{#bs-modal-footer as |footer|}}{{/bs-modal-footer}}
+    {{#bs-button  action='projectShow' class="btn btn-success"}}Sign in{{/bs-button}}
+{{/bs-modal}}
+
+{{#bs-modal open=showSignup body=false footer=false}}
+   {{sign-up}} <!--If they clicked sign up signup form-->
+{{#bs-modal-footer as |footer|}}{{/bs-modal-footer}}
+    {{#bs-button  action='signupSuccessShow' class="btn btn-success"}}Create account{{/bs-button}}
+{{/bs-modal}}
+
+ {{#bs-modal open=showSignupSuccess title="Success!"}}
+   An OSF account has been created. Please check your email for confirmation.
+ {{/bs-modal}}
 
 
+<!--There is obviously an okay way to abstract this-->
