@@ -36,10 +36,7 @@ button.list-group-item:active{
             <div class="list-group"> <!--LEFT NAV-->
 
                 {{#each model.subjects as |s|}}
-                    <button type="button" class="list-group-item" {{action "filter" s.subject}}>{{s.subject}}
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" id="menuicon">
-                        </span> <!--ARROW ICON-->
-                    </button>
+                    <button type="button" class="list-group-item" {{action "filter" s.subject}}>{{s.subject}}</button>
                 {{/each}}
 
             </div> <!--END LEFT NAV-->
