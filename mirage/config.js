@@ -4,7 +4,7 @@ export default function() {
   this.get('/preprints', function() {
     return {
       data: [{
-        type: 'preprints',
+        type: 'preprint',
         id: 1,
         attributes: {
           preprintID: '1',
@@ -20,14 +20,14 @@ export default function() {
           ' Copepods (KO-puh-podz) are relatives of shrimp and lobsters. But very tiny cousins. They grow to be only about 1.5 millimeters (less than 0.06 inch) long. Still, size isn’t everything. Each one can suck in 100 liters (26.4 gallons) of seawater per day.',
         }
       }, {
-        type: 'preprints',
+        type: 'preprint',
         id: 2,
         attributes: {
           preprintID: '2',
           title: 'Eating toxic algae makes plankton speedy swimmers',
           date: "Jan 2016",
           authors: 'Veruca Salt',
-          subject: 'Biology',
+          subject: 'Psychology',
           abstract: 'A meal of toxic algae puts a spring into a tiny ocean-dwelling plankton’s trek. The bad news: That just might send it straight into the jaws of a hungry fish. ' +
           'Copepods (KO-puh-podz) are relatives of shrimp and lobsters. But very tiny cousins. They grow to be only about 1.5 millimeters (less than 0.06 inch) long. Still, size isn’t everything. Each one can suck in 100 liters (26.4 gallons) of seawater per day.' +
           ' A meal of toxic algae puts a spring into a tiny ocean-dwelling plankton’s trek. The bad news: That just might send it straight into the jaws of a hungry fish. ' +
@@ -36,7 +36,7 @@ export default function() {
           ' Copepods (KO-puh-podz) are relatives of shrimp and lobsters. But very tiny cousins. They grow to be only about 1.5 millimeters (less than 0.06 inch) long. Still, size isn’t everything. Each one can suck in 100 liters (26.4 gallons) of seawater per day.',
         }
       }, {
-        type: 'preprints',
+        type: 'preprint',
         id: 3,
         attributes: {
           preprintID: '3',
@@ -53,14 +53,14 @@ export default function() {
         }
       },
       {
-        type: 'preprints',
+        type: 'preprint',
         id: 4,
         attributes: {
           preprintID: '4',
           title: 'Eating toxic algae makes plankton speedy swimmers',
           authors: 'Veruca Salt',
           date: "Oct 2013",
-          subject: 'Biology',
+          subject: 'Sociology',
           abstract: 'A meal of toxic algae puts a spring into a tiny ocean-dwelling plankton’s trek. The bad news: That just might send it straight into the jaws of a hungry fish. ' +
           'Copepods (KO-puh-podz) are relatives of shrimp and lobsters. But very tiny cousins. They grow to be only about 1.5 millimeters (less than 0.06 inch) long. Still, size isn’t everything. Each one can suck in 100 liters (26.4 gallons) of seawater per day.' +
           ' A meal of toxic algae puts a spring into a tiny ocean-dwelling plankton’s trek. The bad news: That just might send it straight into the jaws of a hungry fish. ' +
@@ -70,14 +70,14 @@ export default function() {
         }
       },
       {
-        type: 'preprints',
+        type: 'preprint',
         id: 5,
         attributes: {
           preprintID: '5',
           title: 'Eating toxic algae makes plankton speedy swimmers',
           authors: 'Veruca Salt',
           date: 'Nov 1994',
-          subject: 'Biology',
+          subject: 'Technology',
           abstract: 'A meal of toxic algae puts a spring into a tiny ocean-dwelling plankton’s trek. The bad news: That just might send it straight into the jaws of a hungry fish. ' +
           'Copepods (KO-puh-podz) are relatives of shrimp and lobsters. But very tiny cousins. They grow to be only about 1.5 millimeters (less than 0.06 inch) long. Still, size isn’t everything. Each one can suck in 100 liters (26.4 gallons) of seawater per day.' +
           ' A meal of toxic algae puts a spring into a tiny ocean-dwelling plankton’s trek. The bad news: That just might send it straight into the jaws of a hungry fish. ' +
@@ -88,15 +88,31 @@ export default function() {
       }]
     };
   });
+
   this.get('/preprints/:id', (schema, request) => {
       var id = request.params.id;
       return schema.preprints.find(id);
+  });
+
+  this.get('/preprints/:subject', (schema, request) => {
+      var subject = request.params.subject;
+      return schema.preprints.where({subject: request.params.subject});
   })
+
   this.get('/subjects', function() {
     return {
-      data: [{
-        type: 'subjects',
+      data: [
+      {
+        type: 'subject',
         id: 1,
+        attributes: {
+          subject: 'Astronomy',
+          sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
+        }
+      },
+      {
+        type: 'subject',
+        id: 2,
         attributes: {
           subject: 'Biology',
           sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
@@ -104,38 +120,22 @@ export default function() {
         }
       },
         {
-        type: 'subjects',
-        id: 2,
+        type: 'subject',
+        id: 3,
         attributes: {
           subject: 'Psychology',
           sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
 
         }
       },
-        {
-        type: 'subjects',
-        id: 3,
-        attributes: {
-          subject: 'Astronomy',
-          sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
-        }
-      },
        {
-        type: 'subjects',
-        id: 3,
+        type: 'subject',
+        id: 4,
         attributes: {
           subject: 'Sociology',
           sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
         }
-      },
-       {
-        type: 'subjects',
-        id: 3,
-        attributes: {
-          subject: 'Technology',
-          sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
-        }
-      },
+      }
       ]
     };
   });

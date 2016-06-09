@@ -6,7 +6,10 @@ export default Ember.Route.extend({OsfLoginRouteMixin
 
 export default Ember.Route.extend({
     model() {
-        return this.store.findAll('preprint');
+        return {
+            preprints: this.store.findAll('preprint'),
+            subjects: this.store.findAll('subject')
+        };
     },
     actions: {
         goToSubject(url) {
