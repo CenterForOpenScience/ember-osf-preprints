@@ -1,16 +1,55 @@
-<div class="container" style="padding-top: 100px;">
-    <div class="row">
-        <div class="col-lg-3">
-            <div class="list-group">
+<style>
+
+/* LEFT NAVIGATION STYLE*/
+button.list-group-item:hover{
+    background-color:#E0EBF3;
+}
+
+button.list-group-item:active{
+    color:white;
+    background-color:#337AB7;
+}
+
+.glyphicon {
+    -webkit-transition: -webkit-transform 0.5s ease-in-out;
+       -moz-transition:    -moz-transform 0.5s ease-in-out;
+         -o-transition:      -o-transform 0.5s ease-in-out;
+            transition:         transform 0.5s ease-in-out;
+}
+
+.glyphicon:active {
+    -webkit-transform: rotate(90deg);
+       -moz-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+         -o-transform: rotate(90deg);
+            transform: rotate(90deg);
+}​
+
+</style>
+
+
+<!--CONTENT-->
+<div class="container" style="padding-top: 100px;"> <!--CONTAINER-->
+    <div class="row"> <!--ROW-->
+
+        <div class="col-lg-3"> <!-- COL-->
+            <div class="list-group"> <!--LEFT NAV-->
+
                 {{#each model.subjects as |s|}}
-                    <button type="button" class="list-group-item" {{action "filter" s.subject}}>{{s.subject}}</button>
+                    <button type="button" class="list-group-item" {{action "filter" s.subject}}>{{s.subject}}
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" id="menuicon">
+                        </span> <!--ARROW ICON-->
+                    </button>
                 {{/each}}
-            </div>
-        </div>
-        <div class="col-lg-9">
+
+            </div> <!--END LEFT NAV-->
+        </div> <!--END COL-->
+
+        <div class="col-lg-9"> <!--ARTICLE LIST-->
             {{#each model.preprints as |preprintEntry|}}
                 {{preprint-entry preprint=preprintEntry}}
             {{/each}}
-        </div>
-    </div>
-</div>
+        </div> <!--END ARTICLE LIST-->
+
+    </div> <!--END ROW-->
+</div> <!--END CONTAINER-->
