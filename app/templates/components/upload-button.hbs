@@ -24,7 +24,7 @@
 {{#bs-modal open=showLogin body=false footer=false title="Login"}}
     {{my-login}}<!--TODO: Add login-form component back in from ember-osf-->
     {{#bs-modal-footer as |footer|}}
-        {{#bs-button  action='projectChooserShow' class="btn btn-success"}}Sign in{{/bs-button}}
+        {{#bs-button  action='projectChooserShow' class="btn btn-primary"}}Sign in{{/bs-button}}
     {{/bs-modal-footer}}
 {{/bs-modal}}
 
@@ -45,13 +45,14 @@
  {{#bs-modal open=showProjectChooser body=false footer=false title="Add preprint"}}
    {{#bs-modal-body}}{{project-chooser}}{{/bs-modal-body}}
         {{#bs-modal-footer as |footer|}}
-            {{!--#bs-button  action='signupSuccessShow' class="btn btn-success"}}Continue{{/bs-button--}}
+             <!--still need to deal with picking a file-->
+            {{!--#bs-button  action='signupSuccessShow' class="btn btn-primary pull-right m-t-md"}}Continue{{/bs-button--}} <!--how do i know which form data im submitting? and which modal to go to next-->
             <!--<button type="submit" id="newProject" class="btn btn-primary pull-right m-t-md">Continue <i class="fa fa-angle-right"></i></button>-->
    {{/bs-modal-footer}}
  {{/bs-modal}}
 
 
-<!--File Chooser Modal-->
+<!--File Chooser Modal PROBABLY WONT USE THIS INSEAD GO TO FILE DETAIL PAGE-->
 {{#bs-modal open=showFileChooser body=false footer=false}}
    {{file-chooser}}
     {{#bs-modal-footer as |footer|}}
