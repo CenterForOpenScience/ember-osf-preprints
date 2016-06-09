@@ -4,7 +4,7 @@ export default function() {
   this.get('/preprints', function() {
     return {
       data: [{
-        type: 'preprints',
+        type: 'preprint',
         id: 1,
         attributes: {
           preprintID: '1',
@@ -20,7 +20,7 @@ export default function() {
           ' Copepods (KO-puh-podz) are relatives of shrimp and lobsters. But very tiny cousins. They grow to be only about 1.5 millimeters (less than 0.06 inch) long. Still, size isn’t everything. Each one can suck in 100 liters (26.4 gallons) of seawater per day.',
         }
       }, {
-        type: 'preprints',
+        type: 'preprint',
         id: 2,
         attributes: {
           preprintID: '2',
@@ -36,7 +36,7 @@ export default function() {
           ' Copepods (KO-puh-podz) are relatives of shrimp and lobsters. But very tiny cousins. They grow to be only about 1.5 millimeters (less than 0.06 inch) long. Still, size isn’t everything. Each one can suck in 100 liters (26.4 gallons) of seawater per day.',
         }
       }, {
-        type: 'preprints',
+        type: 'preprint',
         id: 3,
         attributes: {
           preprintID: '3',
@@ -53,7 +53,7 @@ export default function() {
         }
       },
       {
-        type: 'preprints',
+        type: 'preprint',
         id: 4,
         attributes: {
           preprintID: '4',
@@ -70,7 +70,7 @@ export default function() {
         }
       },
       {
-        type: 'preprints',
+        type: 'preprint',
         id: 5,
         attributes: {
           preprintID: '5',
@@ -94,11 +94,16 @@ export default function() {
       return schema.preprints.find(id);
   });
 
+  this.get('/preprints/:subject', (schema, request) => {
+      var subject = request.params.subject;
+      return schema.preprints.where({subject: request.params.subject});
+  })
+
   this.get('/subjects', function() {
     return {
       data: [
       {
-        type: 'subjects',
+        type: 'subject',
         id: 1,
         attributes: {
           subject: 'Astronomy',
@@ -106,7 +111,7 @@ export default function() {
         }
       },
       {
-        type: 'subjects',
+        type: 'subject',
         id: 2,
         attributes: {
           subject: 'Biology',
@@ -115,7 +120,7 @@ export default function() {
         }
       },
         {
-        type: 'subjects',
+        type: 'subject',
         id: 3,
         attributes: {
           subject: 'Psychology',
@@ -124,21 +129,13 @@ export default function() {
         }
       },
        {
-        type: 'subjects',
+        type: 'subject',
         id: 4,
         attributes: {
           subject: 'Sociology',
           sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
         }
-      },
-       {
-        type: 'subjects',
-        id: 5,
-        attributes: {
-          subject: 'Technology',
-          sub_categories: ["Medicine", "Computational Biology", "Pathogens"]
-        }
-      },
+      }
       ]
     };
   });
