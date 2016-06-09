@@ -2,29 +2,64 @@
 <h1 class="f-w-xl">Contribute your research</h1>
 <h3 class="f-w-md" style="margin-left:auto; margin-right:auto; width:800px;">You can upload a preprint or choose a file from an existing OSF file to tag as a preprint if you are already have an OSF account.</h3>
 
-<!--<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#uploadModal">-->
-    <!--Add a preprint-->
-<!--</button>-->
+<button {{action 'modalShow'}}type="button" class="btn btn-info btn-lg">
+    Add a preprint
+</button>
 
-{{#link-to "add-preprint" class="btn btn-success btn-lg"}}Add a preprint{{/link-to}}
+{{!--#link-to "add-preprint" class="btn btn-success btn-lg" action "modalShow"}}Add a preprint{{/link-to--}}
 
 
-<!-- Modal -->
-<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Contribute your research</h4>
-            </div>
-            <div class="modal-body">
-                {{file-chooser}}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Modals -->
+
+<!--User not logged in modal-->
+ {{#bs-modal open=showModal body=false footer=false title="Attention" id="myModal" submitAction=(action "submit")}}
+   {{#bs-modal-body}}An OSF account is required to upload a preprint.{{/bs-modal-body}} <!--add the OSF logo here-->
+        {{#bs-modal-footer as |footer|}}
+          {{#bs-button  action='signupShow' class="btn btn-success"}}Sign up{{/bs-button}}
+          {{#bs-button action='loginShow' class="btn btn-primary"}}Sign in{{/bs-button}}
+   {{/bs-modal-footer}}
+ {{/bs-modal}}
+
+<!--Login Modal-->
+{{#bs-modal open=showLogin body=false footer=false title="Login"}}
+    {{my-login}}<!--TODO: Add login-form component back in from ember-osf-->
+    {{#bs-modal-footer as |footer|}}
+        {{#bs-button  action='projectChooserShow' class="btn btn-success"}}Sign in{{/bs-button}}
+    {{/bs-modal-footer}}
+{{/bs-modal}}
+
+<!--Signup Modal-->
+{{#bs-modal open=showSignup body=false footer=false title="Create a free account"}}
+   {{my-signup}}  <!--TODO: Add sign-up component back in from ember-osf-->
+    {{#bs-modal-footer as |footer|}}
+        {{#bs-button  action='signupSuccessShow' class="btn btn-success"}}Create account{{/bs-button}}
+    {{/bs-modal-footer}}
+{{/bs-modal}}
+
+    <!--Signup Success Modal-->
+     {{#bs-modal open=showSignupSuccess title="Success!"}}
+       Registration successful. Please check ${email} to confirm your email address.
+     {{/bs-modal}}
+
+<!--Project Chooser Modal-->
+ {{#bs-modal open=showProjectChooser body=false footer=false title="Add preprint"}}
+   {{#bs-modal-body}}{{project-chooser}}{{/bs-modal-body}}
+        {{#bs-modal-footer as |footer|}}
+   {{/bs-modal-footer}}
+ {{/bs-modal}}
+
+
+<!--File Chooser Modal-->
+{{#bs-modal open=showFileChooser body=false footer=false}}
+   {{file-chooser}}
+    {{#bs-modal-footer as |footer|}}
+        {{#link-to "add-preprint" class="btn btn-success"}}Add preprint draft{{/link-to}}
+    {{/bs-modal-footer}}
+{{/bs-modal}}
+
+
+<!--upload to existing-->
+<!--Choose from existing file-->
+<!--create a new project-->
+<!--choose from an existing project-->
+    <!--just have an autopopulating thing like prereg-->

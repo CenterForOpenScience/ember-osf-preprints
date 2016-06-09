@@ -1,0 +1,55 @@
+   <div class="container"><!--CONTAINER DIV-->
+        <div class="row"> <!--CONTENT ROW-->
+
+<div class="row">
+        <div class="login">
+        <article class="login-form">
+    <div class="col-sm-4 col-sm-offset-1 toggle-box toggle-box-left p-h-lg">
+        <form id="logInForm" class="form-horizontal">
+            <h3 class="m-b-lg"></h3>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-3 control-label">Email</label>
+                <div class="col-sm-9">
+                    <input
+                    type="email"
+                    class="form-control"
+                    name="username"
+                    id="inputEmail3"
+                    placeholder="Email"
+                    >
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-9">
+                    <input
+                    type="password"
+                    class="form-control"
+                    id="inputPassword3"
+                    placeholder="Password"
+                    name="password"
+                    >
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Remember me</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    {{yield}}
+</article>
+    </div>
+</div>
+       <div class="text-center m-b-sm col-sm-10" style="padding-top: 15px"> <a href="https://osf.io/login/?campaign=institution">Login through your institution  <i class="fa fa-arrow-right"></i></a></div>    </div><!--END OF ROW TAGS-->
+
+
+<div class="col-md-9"><!--RESULTS COLUMN-->
+
+
+</div><!--END OF CONTENT ROW-->
+
+</div> <!--END OF CONTAINER DIV-->
