@@ -21,16 +21,16 @@
  {{/bs-modal}}
 
 <!--Login Modal-->
-{{#bs-modal open=showLogin body=false footer=false}}
-   {{login-form}}  <!--TODO: Add login-form component back in from ember-osf-->
+{{#bs-modal open=showLogin body=false footer=false title="Login"}}
+    {{my-login}}<!--TODO: Add login-form component back in from ember-osf-->
     {{#bs-modal-footer as |footer|}}
         {{#bs-button  action='projectChooserShow' class="btn btn-success"}}Sign in{{/bs-button}}
     {{/bs-modal-footer}}
 {{/bs-modal}}
 
 <!--Signup Modal-->
-{{#bs-modal open=showSignup body=false footer=false}}
-   {{sign-up}}  <!--TODO: Add sign-up component back in from ember-osf-->
+{{#bs-modal open=showSignup body=false footer=false title="Create a free account"}}
+   {{my-signup}}  <!--TODO: Add sign-up component back in from ember-osf-->
     {{#bs-modal-footer as |footer|}}
         {{#bs-button  action='signupSuccessShow' class="btn btn-success"}}Create account{{/bs-button}}
     {{/bs-modal-footer}}
