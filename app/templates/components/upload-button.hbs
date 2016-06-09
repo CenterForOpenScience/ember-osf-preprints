@@ -42,10 +42,9 @@
      {{/bs-modal}}
 
 <!--Project Chooser Modal-->
- {{#bs-modal open=showProjectChooser body=false footer=false title="Success"}}
-   {{#bs-modal-body}}A PROJECT CHOOSER WILL GO HERE{{/bs-modal-body}}
+ {{#bs-modal open=showProjectChooser body=false footer=false title="Add preprint"}}
+   {{#bs-modal-body}}{{project-chooser}}{{/bs-modal-body}}
         {{#bs-modal-footer as |footer|}}
-          {{#bs-button  action='fileChooserShow' class="btn btn-success"}}Choose project{{/bs-button}}
    {{/bs-modal-footer}}
  {{/bs-modal}}
 
@@ -58,3 +57,9 @@
     {{/bs-modal-footer}}
 {{/bs-modal}}
 
+
+<!--upload to existing-->
+<!--Choose from existing file-->
+<!--create a new project-->
+<!--choose from an existing project-->
+    <!--just have an autopopulating thing like prereg-->
