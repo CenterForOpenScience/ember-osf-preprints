@@ -1,11 +1,16 @@
 <style>
     .prereg-button {
         text-align:center;
+        cursor: pointer;
+    }
+    .active-custom {
+        background-color: #166595;
+        color: white;
     }
 
 </style>
-
-<div class="prereg-button m-b-md p-md osf-box-lt p-md box-round prereg active" data-qtoggle-group="prereg" data-qtoggle-target="#newPrereg" action="newFile" {{action 'toggleNewFile'}}>Upload a file and create an OSF project</div>
+<div id = "allButtons">
+<div id ="newFileButton" class="prereg-button m-b-md p-md osf-box-lt p-md box-round prereg" data-qtoggle-group="prereg" data-qtoggle-target="#newPrereg" action="newFile" {{action 'toggleNewFile'}}>Upload a file and create an OSF project</div>
 
 {{#if newFile}}
 <div id="newPrereg" class="prereg-new-prereg p-md osf-box box-round clearfix m-b-lg" style="display: block;">
@@ -15,7 +20,7 @@
 </div>
 {{/if}}
 
-<div class="prereg-button m-b-md p-md osf-box-lt p-md box-round prereg active" data-qtoggle-group="prereg" data-qtoggle-target="#newPrereg" {{action 'toggleExistingProject'}}>Upload a file to an existing OSF project</div>
+<div id="existingProjectButton" class="prereg-button m-b-md p-md osf-box-lt p-md box-round prereg active" data-qtoggle-group="prereg" data-qtoggle-target="#newPrereg" {{action 'toggleExistingProject'}}>Upload a file to an existing OSF project</div>
 
 {{#if existingProject}}
 <div id="existingPrereg" class="prereg-existing-prereg p-md osf-box box-round clearfix m-b-lg" style="width: 100%; display: block;">
@@ -25,7 +30,7 @@
 </div>
 {{/if}}
 
-<div class="prereg-button m-b-md p-md osf-box-lt p-md box-round prereg active" data-qtoggle-group="prereg" data-qtoggle-target="#newPrereg" {{action 'toggleExistingFile'}}>Choose a file from an existing OSF project</div>
+<div id="existingFileButton" class="prereg-button m-b-md p-md osf-box-lt p-md box-round prereg active" data-qtoggle-group="prereg" data-qtoggle-target="#newPrereg" {{action 'toggleExistingFile'}}>Choose a file from an existing OSF project</div>
 
 {{#if existingFile}}
 <div id="existingProject" class="prereg-existing-project p-md osf-box box-round clearfix m-b-lg" style="display: block;">
@@ -34,5 +39,6 @@
   <button type="submit" id="newProject" class="btn btn-primary pull-right m-t-md">Continue <i class="fa fa-angle-right"></i></button>
 </div>
 {{/if}}
+</div>
 
 {{yield}}
