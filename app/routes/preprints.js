@@ -14,7 +14,7 @@ var meta = {
     supplementalMaterials: "NONE",
     figures: "NONE",
     License: "Mit License",
-    link: 'http://localhost:7778/render?url=http://localhost:5000/sqdwh/?action=download%26mode=render',
+    link: "https://test-mfr.osf.io/render?url=https://test.osf.io/yr6ch/?action=download%26mode=render",
 };
 
 export default Ember.Route.extend({
@@ -24,3 +24,8 @@ export default Ember.Route.extend({
         return meta;
     }
 });
+//
+// 'https://test-mfr.osf.io/export?url=https://test.osf.io/2r4cz/?action=download%26direct%26mode=render&initialWidth=755&childId=mfrIframe&format=pdf'
+//
+// 'https://test-mfr.osf.io/export?url=https://test.osf.io/2r4cz/?action=download%26direct%26mode=render&initialWidth=755&childId=mfrIframe&format=pdf'
+
