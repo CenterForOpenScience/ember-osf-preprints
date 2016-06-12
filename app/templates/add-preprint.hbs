@@ -1,13 +1,32 @@
 <style>
 #main {
     margin-top: 100px;
+
+}
+#dropzone{
+    width:700px;
+    height:400px;
+    background:lightgrey;
 }
 </style>
 <div class="m-b-md p-md osf-box" id="main">
     <div class="row">
         <div class="col-md-7">
-            <h4>Preview:</h4>
-            <iframe src="http://google.com" style="width:100%; height:100%;"></iframe>
+             {{#if showMFR}}
+                 <h4>Preview:</h4>
+                 <!--TODO: Actually put a call here. To grab specific MFR data-->
+                <iframe src={{"https://test-mfr.osf.io/render?url=https://test.osf.io/yr6ch/?action=download%26mode=render"}} display="block" width=700 height=700></iframe>
+             {{else}}
+
+                 <!--This one is supposed to be a dropzone-->
+             <h4>Upload a preprint:</h4>
+               {{#drop-zone url='http://example.com/example' clickable=false addRemoveLinks=true id="dropzone" addfile=switchToMFR}} <div class="dz-message" data-dz-message><span></span></div>  <div class="space-top space-bottom text-center">
+        <p>Drop file here to upload</p> {{fa-icon icon="cloud-upload" size=5}} <p>or</p> {{bs-button text="Select from computer"}}
+    </div> {{/drop-zone}}
+<!--What class do I make this...AND WHERE DOES THE BUTTON COME FROM-->
+
+
+             {{/if}}
         </div>
         <div class="col-md-5">
             {{preprint-form makePost=(action "makePost")}}
