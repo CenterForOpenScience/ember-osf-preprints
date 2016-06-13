@@ -1,10 +1,17 @@
-<div class="container" style="padding-top: 100px;">
+<body role="document">
+
+<div class="container space-top space-bottom">
+    {{search-preprints}}
+</div>
+
+
+<div class="container" id="browse">
     <div class="row">
         <div class="col-lg-3">
             <div class="list-group" id="subjectList">
-                <button type="button" class="list-group-item active" id="all" {{action "filter"}}>All Subjects</button>
+                <button type="button" class="list-group-item active" id="all" {{action "filter" null}}>All subjects</button>
                 {{#each model.subjects as |s|}}
-                    <button type="button" id={{s.subject}} class="list-group-item" {{action "filter" s.subject}}>{{s.subject}}</button>
+                    <button type="button" id={{s.subjectid}} class="list-group-item" {{action "filter" s}}>{{s.subject}}</button>
                 {{/each}}
             </div>
         </div>
@@ -15,3 +22,6 @@
         </div>
     </div>
 </div>
+
+</body>
+
