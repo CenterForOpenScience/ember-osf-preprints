@@ -10,11 +10,11 @@ var meta = {
         " From here on out this is just filler text to give a better sense of what the page layout may look like with a more real to life abstract length. Hopefully the scientists" +
         " who write these abstracts have more to day about their own topics than I do about the linux command line...",
     publisher: "Linus Torvalds",
-    project: "http://localhost:5000/re58y/",
+    project: "https://test.osf.io/yr6ch/",
     supplementalMaterials: "NONE",
     figures: "NONE",
     License: "Mit License",
-    link: "https://test-mfr.osf.io/render?url=https://test.osf.io/yr6ch/?action=download%26mode=render",
+    link: "https://test-mfr.osf.io/render?url=https://test.osf.io/yr6ch/?action=download%26mode=render"
 };
 
 export default Ember.Route.extend({
@@ -24,8 +24,4 @@ export default Ember.Route.extend({
         return meta;
     }
 });
-//
-// 'https://test-mfr.osf.io/export?url=https://test.osf.io/2r4cz/?action=download%26direct%26mode=render&initialWidth=755&childId=mfrIframe&format=pdf'
-//
-// 'https://test-mfr.osf.io/export?url=https://test.osf.io/2r4cz/?action=download%26direct%26mode=render&initialWidth=755&childId=mfrIframe&format=pdf'
 
