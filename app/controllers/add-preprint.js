@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+    showMFR: false,
     actions: {
         makePost: function(title, abstract, authors, subject, journal, content, link, citation) {
             console.log("made it");
@@ -27,6 +28,16 @@ export default Ember.Controller.extend({
             });
             console.log(data);
             //formData.save();
-        }
+        },
+        switchToMFR(){
+            console.log("Well this happened");
+            this.toggleProperty('showMFR');
+        },
+        addedFileEvent: Ember.computed(function() {
+        return function() {
+        console.log("Well this happened");
+            this.toggleProperty('showMFR');
+    };
+  })
     }
 });
