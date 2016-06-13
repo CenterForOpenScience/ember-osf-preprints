@@ -13,10 +13,9 @@ Router.map(function() {
   });
   //this.route('preprint', { path: '/preprints/:file_guid'});
   this.route('add-preprint', { path: '/add-preprint'});
+  this.route('browse-preprints', { path: '/browse'});
   this.route('search');
   this.route('categories');
-  this.route('browse-preprints');
-  this.route('browse-preprints', { path: '/browse-preprints/:subject'});
 });
 
 export default Router;

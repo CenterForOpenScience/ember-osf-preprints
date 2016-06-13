@@ -12,8 +12,8 @@ export default Ember.Route.extend({
         };
     },
     actions: {
-        goToSubject(url) {
-            window.document.location = url;
+        goToSubject(sub, subID) {
+            this.transitionTo('browse-preprints', {queryParams: {subject: sub, subjectID: subID}});
         }
     }
 });
