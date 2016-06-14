@@ -43,6 +43,7 @@ body {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--theme-color-light), endColorstr='#000000', GradientType=1);
     /* IE6-9 fallback on horizontal gradient */
     color: #fff;
+    padding-top: 80px;
     position: relative;
 }
 
@@ -416,4 +417,21 @@ h5 {
 
 #browse .read-more-toggle-custom:visited {
     color: #337ab7;
+}
+
+#browse .read-more-toggle-custom {
+    color: #337ab7:
+}
+
+#browse .read-more-toggle-custom:hover {
+    color: #337ab7;
+}
+
+#browse .read-more-toggle-custom:visited {
+    color: #337ab7;
+}
+
+/*FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE*/
+.text-muted {
+    color: #777;
 }
