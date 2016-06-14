@@ -5,6 +5,7 @@
 #mfr {
     padding: 40px;
     padding-top: 30px;
+
 }
 #header {
     padding: 20px;
@@ -24,9 +25,15 @@ hr {
 #right_panel {
     margin-right: 20px;
 }
+
+    .osf-box{
+        border:0px;
+    }
 </style>
 
 <body>
+
+<div class="container"><!--CONATINER DIV-->
     <div class="row">
         <div class="m-b-md p-md osf-box">
             <div class="row" id="header">
@@ -37,7 +44,7 @@ hr {
             <hr color="#C7FFC7">
             <div class="row">
                 <div id="mfr" class="col-md-7">
-                    <iframe src={{model.link}} display="block" width=700 height=700></iframe>
+                    <iframe src={{model.link}} display="block" width=600 height=700></iframe>
                 </div>
                 <div class="col-md-5">
                     <br>
@@ -80,7 +87,8 @@ hr {
                 </div>
             </div>
         </div>
-    </div>
+    </div> <!--END ROW-->
+    </div><!--END DIV CONTAINER-->
 </body>
 
 {{outlet}}

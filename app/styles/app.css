@@ -3,6 +3,8 @@
     --theme-color-dark: #166596;
     --gradient-percentage: 15%;
     --highlight-color: #ffd27f;
+    --nav-bar-height: 40px;
+    --nav-bar-height: 30px;
 }
 
 .highlight {
@@ -12,6 +14,14 @@
 .highlight-bold {
     color: var(--highlight-color);
     font-weight: 500;
+}
+
+body {
+    padding-top: var(--nav-bar-height);
+}
+
+.navbar-header {
+    height: var(--nav-bar-height);
 }
 
 /* OSF Preprints langing page */
@@ -33,7 +43,6 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--theme-color-light), endColorstr='#000000', GradientType=1);
     /* IE6-9 fallback on horizontal gradient */
     color: #fff;
-    padding-top: 80px;
     position: relative;
 }
 
@@ -130,12 +139,12 @@ h5 {
     padding: 20px 20px 0px 20px;
 }
 
-#landing-page-preprint-list h4 {
+.preprintTitle {
     color: var(--theme-color-light);
     font-weight: bold;
 }
 
-#landing-page-preprint-list h4:hover {
+.preprintTitle:hover {
     color: var(--highlight-color);
 }
 
@@ -353,10 +362,6 @@ h5 {
     cursor: pointer;
 }
 
-.subjects tr:hover {
-
-}
-
 .branded-servers {
     color: white;
     background-color: #166595;
@@ -399,4 +404,21 @@ h5 {
 
 .row-fluid col-sm-6 {
     display: inline-block;
+}
+
+#browse .read-more-toggle-custom {
+    color: #337ab7:
+}
+
+#browse .read-more-toggle-custom:hover {
+    color: #337ab7;
+}
+
+#browse .read-more-toggle-custom:visited {
+    color: #337ab7;
+}
+
+/*FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE*/
+.text-muted {
+    color: #777;
 }
