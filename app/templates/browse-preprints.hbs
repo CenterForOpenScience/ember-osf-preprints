@@ -13,6 +13,17 @@
                     <button type="button" id={{s.subjectid}} class="list-group-item" {{action "filter" s}}>{{s.subject}}</button>
                 {{/each}}
             </div>
+
+            <div> <!--SUBJECT TAGS DIV-->
+                <!--SUBJECTS BUTTONS-->
+                <h6>Tags</h6>
+                <button type="button" class="btn btn-info">talk</button>
+                <button type="button" class="btn btn-info">CREP</button>
+                <button type="button" class="btn btn-info">Poster</button>
+                <button type="button" class="btn btn-info">Randolph-Macon</button>
+                <button type="button" class="btn btn-info">replication</button>
+            </div> <!--END SUBJECT TAGS DIV -->
+
         </div>
         <div class="col-lg-9" id="preprintList">
             {{#each filteredPreprints as |preprintEntry|}}

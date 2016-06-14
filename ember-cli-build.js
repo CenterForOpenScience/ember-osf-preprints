@@ -25,14 +25,15 @@ module.exports = function(defaults) {
   app.import("bower_components/osf-style/css/base.css");
   app.import("bower_components/osf-style/page.css");
 
-  // TODO is there a better way to import osf-style??
-  // TODO determine exactly where the image should go and how it should be referenced
   app.import("bower_components/osf-style/img/cos-white2.png", {
     destDir: 'vendor'
   });
   // Bootstrap
   app.import("bower_components/bootstrap/dist/css/bootstrap.min.css");
   app.import("bower_components/bootstrap/js/modal.js");
+
+//  app.import("bower_components/dropzone/dist/dropzone.js");
+  app.import("bower_components/dropzone/dist/min/dropzone.min.css");
 
   return app.toTree();
 };

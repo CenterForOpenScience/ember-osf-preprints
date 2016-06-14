@@ -4,7 +4,8 @@ export default [
 //        id: 1,
 //        attributes: {
           subject: 'Biology and life science',
-          subjectid: 'biology-and-life-science'
+          subjectid: 'biology-and-life-science',
+          color: '#FF69B4'
 //        }
       },
       {
@@ -12,7 +13,8 @@ export default [
 //        id: 2,
 //        attributes: {
           subject: 'Computer and information sciences',
-          subjectid: 'computer-and-information-sciences'
+          subjectid: 'computer-and-information-sciences',
+          color: '#FF69B4'
 //        }
       },
         {
@@ -20,7 +22,8 @@ export default [
 //        id: 3,
 //        attributes: {
           subject: 'Earth sciences',
-          subjectid: 'earth-sciences'
+          subjectid: 'earth-sciences',
+          color: '#FF69B4'
 //        }
       },
        {
@@ -28,7 +31,8 @@ export default [
 //        id: 4,
 //        attributes: {
           subject: 'Ecology and environmental sciences',
-          subjectid: 'ecology-and-environmental-sciences'
+          subjectid: 'ecology-and-environmental-sciences',
+          color: '#FF69B4'
 //        }
       },
        {
@@ -36,7 +40,8 @@ export default [
 //        id: 5,
 //        attributes: {
           subject: 'Engineering and technology',
-          subjectid: 'engineering-and-technology'
+          subjectid: 'engineering-and-technology',
+          color: '#FF69B4'
 //        }
       },
        {
@@ -44,7 +49,8 @@ export default [
 //        id: 6,
 //        attributes: {
           subject: 'Medicine and health sciences',
-          subjectid: 'medicine-and-health-sciences'
+          subjectid: 'medicine-and-health-sciences',
+          color: '#FF69B4'
 //        }
       },
        {
@@ -52,7 +58,8 @@ export default [
 //        id: 7,
 //        attributes: {
           subject: 'People and places',
-          subjectid: 'people-and-places'
+          subjectid: 'people-and-places',
+          color: '#FF69B4'
 //        }
       },
        {
@@ -60,7 +67,8 @@ export default [
 //        id: 8,
 //        attributes: {
           subject: 'Physical sciences',
-          subjectid: 'physical-sciences'
+          subjectid: 'physical-sciences',
+          color: '#FF69B4'
 //        }
       },
        {
@@ -68,7 +76,8 @@ export default [
 //        id: 9,
 //        attributes: {
           subject: 'Research and analysis methods',
-          subjectid: 'research-and-analysis-methods'
+          subjectid: 'research-and-analysis-methods',
+          color: '#FF69B4'
 //        }
       },
        {
@@ -76,7 +85,8 @@ export default [
 //        id: 10,
 //        attributes: {
           subject: 'Science policy',
-          subjectid: 'science-policy'
+          subjectid: 'science-policy',
+          color: '#FF69B4'
 //        }
       },
        {
@@ -84,7 +94,8 @@ export default [
 //        id: 11,
 //        attributes: {
           subject: 'Social sciences',
-          subjectid: 'social-sciences'
+          subjectid: 'social-sciences',
+          color: '#FF69B4'
 //        }
       }
 
