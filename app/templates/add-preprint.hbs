@@ -1,6 +1,6 @@
 <style>
 #main {
-    margin-top: 100px;
+    margin-top:10%;
 
 }
 #dropzone{
@@ -8,32 +8,55 @@
     height:400px;
     background:lightgrey;
 }
+
+    .container{
+        padding-right:10px;
+        padding-left:10px;
+    }
+
+    .dropzone{
+        max-width:650px; /*THIS HELPS ON LARGE MONITORS */
+    }
+
+    .osf-box{
+        border:0px;
+    }
+
+
 </style>
-<div class="m-b-md p-md osf-box" id="main">
-    <div class="row">
-        <div class="col-md-7">
+
+<div class="container"> <!--CONTAINER DIV-->
+
+<div class="m-b-md p-md osf-box" id="main"> <!--MAIN DIV-->
+
+    <h1>Add Preprint</h1>
+
+    <div class="row"> <!--ROW DIV-->
+        <div class="col-lg-7"> <!--COL 7 DIV-->
              {{#if showMFR}}
                  <h4>Preview:</h4>
                  <!--TODO: Actually put a call here. To grab specific MFR data-->
-                <iframe src={{"https://test-mfr.osf.io/render?url=https://test.osf.io/yr6ch/?action=download%26mode=render"}} display="block" width=700 height=700></iframe>
+                <iframe src={{"https://test-mfr.osf.io/render?url=https://test.osf.io/yr6ch/?action=download%26mode=render"}} display="block" width=650 height=700></iframe>
              {{else}}
 
                  <!--This one is supposed to be a dropzone-->
              <h4>Upload a preprint:</h4>
                {{#drop-zone url='http://example.com/example' clickable=false addRemoveLinks=true id="dropzone" addfile=addedFileEvent uploadMultiple=false createImageThumbnails=false}} <div class="dz-message" data-dz-message><span></span></div>  <div class="space-top space-bottom text-center">
-        <p>Drop file here to upload</p> {{fa-icon icon="cloud-upload" size=5}} <p>or</p> {{bs-button text="Select from computer"}}
+        <p>Drop file here to upload</p> {{fa-icon icon="cloud-upload" size=5}} <p>or</p> {{bs-button text="Select from computer" action="switchToMFR"}}
     </div> {{/drop-zone}}
 <!--What class do I make this...AND WHERE DOES THE BUTTON COME FROM-->
 
 
              {{/if}}
-        </div>
-        <div class="col-md-5">
+        </div> <!--END COL 7 DIV-->
+        <div class="col-lg-5"> <!--COL 5 DIV-->
             {{preprint-form makePost=(action "makePost")}}
-        </div>
-    </div>
-    <div class="row">
+        </div> <!--END COL 5 DIV-->
+    </div> <!--ROW DIV-->
+    <div class="row"> <!--2ND ROW DIV-->
 
-    </div>
-</div>
+    </div> <!--END OF 2ND ROW-->
+</div> <!--END MAIN DIV-->
+
+</div> <!--END CONTAINER DIV-->
 <!--makePost=(action "makePost")-->
