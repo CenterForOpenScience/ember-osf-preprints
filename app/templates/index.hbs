@@ -22,7 +22,6 @@
                 {{#each model.preprints as |preprintEntry|}}
                     {{preprint-entry preprint=preprintEntry}}
                 {{/each}}
-
                 <div class="text-center" style="padding-top: 20px; padding-bottom: 40px;">
                     <a type="button" class="btn btn-success btn-lg" href="/search">Browse more preprints</a>
                 </div>
@@ -37,14 +36,9 @@
         <h1 class="f-w-xl">Browse preprints by subject</h1>
 
         <table class="table">
-            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_astronomy.jpg");'><td>Astronomy</td></tr>
-            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_biology.jpg");'><td>Biology</td></tr>
-            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_computer_science.jpg");'><td>Computer Science</td></tr>
-            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_geology.jpg"); background-position: center bottom;'><td>Geology</td></tr>
-            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_medicine.jpg");'><td>Medicine</td></tr>
-            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_neurology.jpg");'><td>Neurology</td></tr>
-            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_physics.jpg"); background-position: 0% 15%;'><td>Physics</td></tr>
-            <tr {{action "goToSubject" "/search"}} style='background-image: url("assets/img/subject_banners/banner_psychology.jpg"); background-position: 0% 60%;'><td>Psychology</td></tr>
+            {{#each model.subjects as |s|}}
+                <tr {{action "goToSubject" s.subject s.subjectid}}><td>{{s.subject}}</td></tr>
+            {{/each}}
         </table>
 
     </div>

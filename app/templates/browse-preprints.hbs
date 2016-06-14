@@ -1,52 +1,26 @@
-<style>
+<body role="document">
 
-/* LEFT NAVIGATION STYLE*/
-button.list-group-item:hover{
-    background-color:#E0EBF3;
-}
+<div class="container space-top space-bottom">
+    {{search-preprints}}
+</div>
 
-button.list-group-item:active{
-    color:white;
-    background-color:#337AB7;
-}
-
-.glyphicon {
-    -webkit-transition: -webkit-transform 0.5s ease-in-out;
-       -moz-transition:    -moz-transform 0.5s ease-in-out;
-         -o-transition:      -o-transform 0.5s ease-in-out;
-            transition:         transform 0.5s ease-in-out;
-}
-
-.glyphicon:active {
-    -webkit-transform: rotate(90deg);
-       -moz-transform: rotate(90deg);
-        -ms-transform: rotate(90deg);
-         -o-transform: rotate(90deg);
-            transform: rotate(90deg);
-}​
-
-</style>
-
-
-<!--CONTENT-->
-<div class="container" style="padding-top: 100px;"> <!--CONTAINER-->
-    <div class="row"> <!--ROW-->
-
-        <div class="col-lg-3"> <!-- COL-->
-            <div class="list-group"> <!--LEFT NAV-->
-
+<div class="container" id="browse">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="list-group" id="subjectList">
+                <button type="button" class="list-group-item active" id="all" {{action "filter" null}}>All subjects</button>
                 {{#each model.subjects as |s|}}
-                    <button type="button" class="list-group-item" {{action "filter" s.subject}}>{{s.subject}}</button>
+                    <button type="button" id={{s.subjectid}} class="list-group-item" {{action "filter" s}}>{{s.subject}}</button>
                 {{/each}}
-
-            </div> <!--END LEFT NAV-->
-        </div> <!--END COL-->
-
-        <div class="col-lg-9"> <!--ARTICLE LIST-->
-            {{#each model.preprints as |preprintEntry|}}
+            </div>
+        </div>
+        <div class="col-lg-9" id="preprintList">
+            {{#each filteredPreprints as |preprintEntry|}}
                 {{preprint-entry preprint=preprintEntry}}
             {{/each}}
-        </div> <!--END ARTICLE LIST-->
+        </div>
+    </div>
+</div>
 
-    </div> <!--END ROW-->
-</div> <!--END CONTAINER-->
+</body>
+
