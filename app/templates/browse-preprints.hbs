@@ -6,14 +6,14 @@
 
 <div class="container" id="browse">
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-4">
             <!--<div class="list-group" id="subjectList">-->
                 <!--<button type="button" class="list-group-item active" id="all" {{!action "filter" null}}>All subjects</button>-->
                 <!--{{!#each model.subjects as |s|}}-->
                     <!--<button type="button" id={{!s.subjectid}} class="list-group-item" {{!action "filter" s}}>{{!s.subject}}</button>-->
                 <!--{{!/each}}-->
             <!--</div>-->
-            {{taxonomy-tree model.taxonomy}}
+            {{taxonomy-tree}}
 
 
             <div> <!--SUBJECT TAGS DIV-->
@@ -27,7 +27,7 @@
             </div> <!--END SUBJECT TAGS DIV -->
 
         </div>
-        <div class="col-lg-9" id="preprintList">
+        <div class="col-lg-8" id="preprintList">
             {{#each filteredPreprints as |preprintEntry|}}
                 {{preprint-entry preprint=preprintEntry}}
             {{/each}}
