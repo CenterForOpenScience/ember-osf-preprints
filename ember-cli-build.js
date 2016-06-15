@@ -35,5 +35,8 @@ module.exports = function(defaults) {
 //  app.import("bower_components/dropzone/dist/dropzone.js");
   app.import("bower_components/dropzone/dist/min/dropzone.min.css");
 
+  app.import("bower_components/bootstrap-treeview/public/css/bootstrap-treeview.css");
+  app.import("bower_components/bootstrap-treeview/public/js/bootstrap-treeview.js");
+
   return app.toTree();
 };

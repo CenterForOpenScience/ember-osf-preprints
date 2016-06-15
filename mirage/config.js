@@ -11,4 +11,8 @@ export default function() {
   this.get('/subjects', function(schema, request) {
     return schema.subjects.where(request.queryParams);
   });
+
+  this.get('/taxonomies', (schema, request) => {
+    return schema.taxonomies.all();
+  });
 }
