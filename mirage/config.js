@@ -8,11 +8,11 @@ export default function() {
       return schema.preprints.all();
   });
 
-//  this.get('/preprints', (schema, request) => {
-//  TODO
-//  });
-
   this.get('/subjects', function(schema, request) {
-    return schema.subjects.all();
+    return schema.subjects.where(request.queryParams);
+  });
+
+  this.get('/taxonomies', (schema, request) => {
+    return schema.taxonomies.all();
   });
 }
