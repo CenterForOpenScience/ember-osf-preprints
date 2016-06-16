@@ -41,7 +41,7 @@
 <br>
 
 <div class="article">
-    <h4><a href="/browse" class="preprintTitle">{{preprint.title}}</a></h4>
+    <h4><a href="/browse" class="preprintTitle">{{#link-to "preprints" preprint.id}}{{preprint.title}}{{/link-to}}</a></h4>
     <p><strong>Authors: </strong>{{preprint.authors}}</p>
     <p id={{preprint.id}}>
         <strong>Abstract:</strong>
