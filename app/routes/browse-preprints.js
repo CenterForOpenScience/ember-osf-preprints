@@ -1,13 +1,11 @@
 import Ember from 'ember';
+import $ from 'jquery';
 
 export default Ember.Route.extend({
     queryParams: {
         subject: {
             replace: true,
             refreshModel: true
-        },
-        subjectID: {
-            replace: true
         }
     },
 
@@ -19,13 +17,8 @@ export default Ember.Route.extend({
         });
     },
     actions: {
-        filter: function(s) {
-            if ( s ) {
-                this.transitionTo( {queryParams: { subject: s.get('subject'), subjectID: s.get('subjectid') } } );
-                this.refresh();
-            } else {
-                this.transitionTo( {queryParams: { subject: null, subjectID: null } } );
-            }
+        filter: function(subjectToFilter) {
+            this.transitionTo( {queryParams: { subject: subjectToFilter } } );
         }
     }
 });
