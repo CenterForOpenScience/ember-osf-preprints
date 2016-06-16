@@ -6,6 +6,9 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+    this.route('index', {
+        path: '/'
+    });
   this.route('preprints', function() {
       this.route('preprint', {
           path: '/:file_guid'
@@ -16,6 +19,7 @@ Router.map(function() {
   this.route('browse-preprints', { path: '/browse'});
   this.route('search');
   this.route('categories');
+  this.route('login');
 });
 
 export default Router;
