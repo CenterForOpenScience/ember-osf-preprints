@@ -1,14 +1,12 @@
 <style>
-table{
-    opacity:1:
-}
+
 </style>
 
 <body role="document">
 
  <!--HEADER-->
-<div class="osf-preprint-header-img">
-    <div class="container">
+<div class="osf-preprint-header-img"> <!--HEADER-->
+    <div class="container"> <!--CONTAINER-->
         <!--TITLE-->
         <div class="text-center m-b-lg">
             <h1 class="osf-preprint-lead">OSF Preprints</h1>
@@ -23,28 +21,28 @@ table{
 
         <!--PREPRINT LIST-->
         <h2>Popular Uploads</h2>
-        <div id="landing-page-preprint-list-background">
-            <div id="landing-page-preprint-list">
+        <div id="landing-page-preprint-list-background"> <!--BACKGROUND-->
+            <div id="landing-page-preprint-list"> <!--ARTICLE IN POPULAR UPLOADS-->
                 {{#each model.preprints as |preprintEntry|}}
                     {{preprint-entry preprint=preprintEntry}}
                 {{/each}}
-                <div class="text-center" style="padding-top: 20px; padding-bottom: 40px;">
-                    <a type="button" class="btn btn-success btn-lg" href="/search">Browse more preprints</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+            </div> <!--END POPULAR UPLOADS-->
+                <div class="text-center" style="padding-top: 20px; padding-bottom: 40px;"> <!-- READ MORE BUTTON-->
+                    <a type="button" class="btn btn-success btn-lg" href="/browse">Browse more preprints</a>
+                </div> <!--END READ MORE BUTTON-->
+        </div> <!--END BACKGROUND-->
+    </div> <!--END CONTAINER-->
+</div> <!--END HEADER-->
 
 <!--SUBJECTS-->
 <div class="subjects text-center"> <!--SUBJECTS LIST-->
     <div class="container"> <!--CONTAINER DIV-->
         <h1 class="f-w-xl">Browse preprints by subject</h1>
-            <div class="subjectsList"> <!--SUBJECTS LIST-->
+            <div class="subjectsList table-striped"> <!--SUBJECTS LIST-->
 
         <table class="table">
             {{#each model.subjects as |s|}}
-                <tr {{action "goToSubject" s.subject s.subjectid}} style='background-image: url({{s.background}});'> <td>{{s.subject}}</td></tr>
+                <tr {{action "goToSubject" s.subject s.subjectid}}> <td>{{s.subject}}</td></tr>
             {{/each}}
         </table>
 

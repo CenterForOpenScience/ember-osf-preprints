@@ -26,22 +26,24 @@ body {
 
 /* OSF Preprints langing page */
 .osf-preprint-header-img {
-    background: var(--theme-color-primary);
+    /*background: var(--theme-color-primary);
     /* Old browsers */
-    background: -moz-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
+    /*background: -moz-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
     /* FF3.6+ */
-    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, var(--theme-color-light)), color-stop(var(--gradient-percentage), var(--theme-color-dark)), color-stop(100%, #000000));
+    /*background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, var(--theme-color-light)), color-stop(var(--gradient-percentage), var(--theme-color-dark)), color-stop(100%, #000000));
     /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
+    /*background: -webkit-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
     /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
+    /*background: -o-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
     /* Opera 11.10+ */
-    background: -ms-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
+    /*background: -ms-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
     /* IE10+ */
-    background: linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
+    /*background: linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
     /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--theme-color-light), endColorstr='#000000', GradientType=1);
+    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--theme-color-light), endColorstr='#000000', GradientType=1);
     /* IE6-9 fallback on horizontal gradient */
+    background: linear-gradient(#0e405f, #d9edf7);
+    background-color:#0e405f;
     color: #fff;
     padding-top: 80px;
     position: relative;
@@ -350,13 +352,17 @@ h5 {
 
 .subjects th, td {
     padding: 5px;
-    border-bottom: 10px solid #a7a7a7;
-    text-shadow:
+    border-bottom: 10px solid #d9edf7;
+    /*text-shadow:
         -1px -1px 0 black,
         1px -1px 0 black,
         -1px 1px 0 black,
-        1px 1px 0 black;
-    font-weight:400;
+        1px 1px 0 black; */
+    font-weight:300;
+}
+
+td:hover{
+    background-color:#4c4c4c;
 }
 
 .subjects tr {
@@ -364,19 +370,17 @@ h5 {
     font-weight: bold;
     padding-top: 5px;
     padding-bottom: 5px;
-    background-color: var(--theme-color-dark);
+    background-color: /*var(--theme-color-dark)*/ #a7a7a7;
     background-position: center top;
     background-size: cover;
     color: white;
     cursor: pointer;
 }
 
-.subjects tr::before{
-    opacity:0.3;
-}
+
 
 .subjects {
-    background-color: #a7a7a7;
+    background-color: #d9edf7;
     font-weight: 300;
 }
 
