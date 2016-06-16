@@ -3,7 +3,6 @@ import attr from 'ember-data/attr';
 import Ember from 'ember';
 
 export default Model.extend({
-    preprintId: attr(),
     title: attr(),
     authors: attr(),
     date: attr(),
@@ -14,4 +13,5 @@ export default Model.extend({
     supplementalMaterials: attr(),
     figures: attr(),
     license: attr(),
+    link: attr(), //Change to just a FID later
 });

@@ -18,10 +18,8 @@ var meta = {
 };
 
 export default Ember.Route.extend({
-    model() {
-        console.log(this.store.findAll('preprint'));
-        //return this.store.findRecord('preprint', 1);
-        return meta;
+    model(params) {
+        return this.store.findRecord('preprint', params.file_id);
     }
 });
 
