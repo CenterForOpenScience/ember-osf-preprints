@@ -3,7 +3,7 @@ export default [
 //        type: 'subjects',
 //        id: 1,
 //        attributes: {
-          subject: 'Biology and life science'
+          subject: 'Biology and life sciences'
 //        }
       },
       {

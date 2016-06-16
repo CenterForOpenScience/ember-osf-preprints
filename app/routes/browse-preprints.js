@@ -12,7 +12,6 @@ export default Ember.Route.extend({
     model() {
         return Ember.RSVP.hash({
             preprints: this.store.findAll('preprint'),
-            subjects: this.store.findAll('subject'),
             taxonomy: this.store.findAll('taxonomy')
         });
     },

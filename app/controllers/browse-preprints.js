@@ -2,7 +2,7 @@ import Ember from 'ember';
 import $ from 'jquery';
 
 export default Ember.Controller.extend({
-    queryParams: ['subject', 'subjectID'],
+    queryParams: ['subject'],
     subject: null,
 
     filteredPreprints: Ember.computed('subject', 'model', function() {
