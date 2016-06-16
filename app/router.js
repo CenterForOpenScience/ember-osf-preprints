@@ -16,6 +16,7 @@ Router.map(function() {
   this.route('browse-preprints', { path: '/browse'});
   this.route('search');
   this.route('categories');
+  this.route('login');
 });
 
 export default Router;

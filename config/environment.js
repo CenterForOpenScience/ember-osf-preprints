@@ -16,7 +16,16 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-    }
+    },
+
+      'ember-simple-auth': {
+            authenticationRoute: 'login',
+            routeAfterAuthentication: 'index'
+        },
+    //Change here to switch back to mirage calls. Examples fo calls in index.js
+      'ember-cli-mirage': {
+            enabled: false
+        }
   };
 
   if (environment === 'development') {
