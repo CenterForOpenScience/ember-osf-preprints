@@ -5,7 +5,8 @@ export default [
 //        attributes: {
           subject: 'Biology and life science',
           subjectid: 'biology-and-life-science',
-          color: '#FF69B4'
+          color: '#FF69B4',
+          background: "assets/img/front_banners/cells.jpg"
 //        }
       },
       {
@@ -14,7 +15,8 @@ export default [
 //        attributes: {
           subject: 'Computer and information sciences',
           subjectid: 'computer-and-information-sciences',
-          color: '#FF69B4'
+          color: '#FF69B4',
+          background: "assets/img/front_banners/computer.jpg"
 //        }
       },
         {
@@ -23,7 +25,8 @@ export default [
 //        attributes: {
           subject: 'Earth sciences',
           subjectid: 'earth-sciences',
-          color: '#FF69B4'
+          color: '#FF69B4',
+          background: "assets/img/front_banners/earth.jpg"
 //        }
       },
        {
@@ -32,7 +35,8 @@ export default [
 //        attributes: {
           subject: 'Ecology and environmental sciences',
           subjectid: 'ecology-and-environmental-sciences',
-          color: '#FF69B4'
+          color: '#FF69B4',
+          background: "assets/img/front_banners/ecology.jpg"
 //        }
       },
        {
@@ -41,7 +45,8 @@ export default [
 //        attributes: {
           subject: 'Engineering and technology',
           subjectid: 'engineering-and-technology',
-          color: '#FF69B4'
+          color: '#FF69B4',
+          background: "assets/img/front_banners/technology.jpg"
 //        }
       },
        {
@@ -50,7 +55,8 @@ export default [
 //        attributes: {
           subject: 'Medicine and health sciences',
           subjectid: 'medicine-and-health-sciences',
-          color: '#FF69B4'
+          color: '#FF69B4',
+          background: "assets/img/front_banners/medicine.jpg"
 //        }
       },
        {
@@ -59,7 +65,8 @@ export default [
 //        attributes: {
           subject: 'People and places',
           subjectid: 'people-and-places',
-          color: '#FF69B4'
+          color: '#FF69B4',
+          background: "assets/img/front_banners/people.jpg"
 //        }
       },
        {
@@ -68,7 +75,8 @@ export default [
 //        attributes: {
           subject: 'Physical sciences',
           subjectid: 'physical-sciences',
-          color: '#FF69B4'
+          color: '#FF69B4',
+          background: "assets/img/front_banners/physics.jpg"
 //        }
       },
        {
@@ -77,7 +85,8 @@ export default [
 //        attributes: {
           subject: 'Research and analysis methods',
           subjectid: 'research-and-analysis-methods',
-          color: '#FF69B4'
+          color: '#FF69B4',
+          background: "assets/img/front_banners/research.jpg"
 //        }
       },
        {
@@ -86,7 +95,8 @@ export default [
 //        attributes: {
           subject: 'Science policy',
           subjectid: 'science-policy',
-          color: '#FF69B4'
+          color: '#FF69B4',
+          background: "assets/img/front_banners/policy.jpg"
 //        }
       },
        {
@@ -95,7 +105,8 @@ export default [
 //        attributes: {
           subject: 'Social sciences',
           subjectid: 'social-sciences',
-          color: '#FF69B4'
+          color: '#FF69B4',
+          background: "assets/img/front_banners/social.jpg"
 //        }
       }
 

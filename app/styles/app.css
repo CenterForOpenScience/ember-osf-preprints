@@ -158,6 +158,13 @@ h5 {
     font-weight: bold;
 }
 
+/*FOR SUBJECTS LIST ON INDEX */
+.subjectList img{
+    opacity:1.0;
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.2);
+}
+
+
 
 
 /* Moving logo */
@@ -343,12 +350,13 @@ h5 {
 
 .subjects th, td {
     padding: 5px;
-    border-bottom: 10px solid #fff;
+    border-bottom: 10px solid #a7a7a7;
     text-shadow:
-        -1px -1px 0 var(--theme-color-dark),
-        1px -1px 0 var(--theme-color-dark),
-        -1px 1px 0 var(--theme-color-dark),
-        1px 1px 0 var(--theme-color-dark);
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black;
+    font-weight:400;
 }
 
 .subjects tr {
@@ -361,6 +369,19 @@ h5 {
     background-size: cover;
     color: white;
     cursor: pointer;
+}
+
+.subjects tr::before{
+    opacity:0.3;
+}
+
+.subjects {
+    background-color: #a7a7a7;
+    font-weight: 300;
+}
+
+.f-w-xl{
+    font-weight:300;
 }
 
 .branded-servers {

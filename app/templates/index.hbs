@@ -1,3 +1,9 @@
+<style>
+table{
+    opacity:1:
+}
+</style>
+
 <body role="document">
 
  <!--HEADER-->
@@ -31,18 +37,20 @@
 </div>
 
 <!--SUBJECTS-->
-<div class="subjects text-center">
-    <div class="container">
+<div class="subjects text-center"> <!--SUBJECTS LIST-->
+    <div class="container"> <!--CONTAINER DIV-->
         <h1 class="f-w-xl">Browse preprints by subject</h1>
+            <div class="subjectsList"> <!--SUBJECTS LIST-->
 
         <table class="table">
             {{#each model.subjects as |s|}}
-                <tr {{action "goToSubject" s.subject s.subjectid}}><td>{{s.subject}}</td></tr>
+                <tr {{action "goToSubject" s.subject s.subjectid}} style='background-image: url({{s.background}});'> <td>{{s.subject}}</td></tr>
             {{/each}}
         </table>
 
-    </div>
-</div>
+        </div> <!--END SUBJECTS LIST-->
+    </div> <!--END CONTAINER-->
+</div> <!--END SUBJECTS LIST-->
 
 <!--BRANDED PREPRINT SERVERS-->
 <div class="branded-servers text-center">
