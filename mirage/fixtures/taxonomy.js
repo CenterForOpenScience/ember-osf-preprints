@@ -5,6 +5,11 @@ export default [
 [
   {
     "text": [
+       "All subjects"
+    ]
+  },
+  {
+    "text": [
       "Biology and life sciences"
     ],
     "nodes": [
