@@ -7,10 +7,10 @@ export default Ember.Route.extend({
     fileManager: Ember.inject.service(),
     model() {
     //MIRAGE
-//        return {
-//            preprints: this.store.findAll('preprint'),
-//            subjects: this.store.findAll('subject')
-//        };
+        return {
+            preprints: this.store.findAll('preprint'),
+            subjects: this.store.findAll('subject')
+        };
 
     //EMBER OSF
     //return this.store.findAll('Node');
