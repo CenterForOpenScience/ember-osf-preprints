@@ -26,19 +26,19 @@ body {
 
 /* OSF Preprints langing page */
 .osf-preprint-header-img {
-    /*background: var(--theme-color-primary);
+    background: var(--theme-color-primary);
     /* Old browsers */
-    /*background: -moz-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
+    background: -moz-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
     /* FF3.6+ */
-    /*background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, var(--theme-color-light)), color-stop(var(--gradient-percentage), var(--theme-color-dark)), color-stop(100%, #000000));
+    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, var(--theme-color-light)), color-stop(var(--gradient-percentage), var(--theme-color-dark)), color-stop(100%, #000000));
     /* Chrome,Safari4+ */
-    /*background: -webkit-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
+    background: -webkit-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
     /* Chrome10+,Safari5.1+ */
-    /*background: -o-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
+    background: -o-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
     /* Opera 11.10+ */
-    /*background: -ms-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
+    background: -ms-linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
     /* IE10+ */
-    /*background: linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
+    background: linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
     /* W3C */
     /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--theme-color-light), endColorstr='#000000', GradientType=1);
     /* IE6-9 fallback on horizontal gradient */
@@ -141,7 +141,6 @@ h5 {
 #landing-page-preprint-list-background {
     background-color: rgba(255, 255, 255, .1);
     padding: 20px 20px 0px 20px;
-    padding-bottom:0px;
 }
 
 .preprintTitle {
@@ -364,7 +363,7 @@ h5 {
 }
 
 td:hover{
-    background-color:#262626;
+    background-color:#4c4c4c;
 }
 
 .subjects tr {
@@ -372,7 +371,7 @@ td:hover{
     font-weight: bold;
     padding-top: 5px;
     padding-bottom: 5px;
-    background-color: #545454; /*THIS GRAY IS THE LIGHTEST IT CAN BE WITHOUT FAILING WEBAIM STANDARDS */
+    background-color: #a7a7a7; /*THIS GRAY IS THE LIGHTEST IT CAN BE WITHOUT FAILING WEBAIM STANDARDS */
     background-position: center top;
     background-size: cover;
     color: white;
