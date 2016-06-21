@@ -40,10 +40,13 @@ body {
     /* IE10+ */
     background: linear-gradient(35deg, var(--theme-color-light) 0%, var(--theme-color-dark) var(--gradient-percentage), #000000 100%);
     /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--theme-color-light), endColorstr='#000000', GradientType=1);
+    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--theme-color-light), endColorstr='#000000', GradientType=1);
     /* IE6-9 fallback on horizontal gradient */
+    /*background: linear-gradient(#0e405f, #d9edf7);*/
+    background-color:#145a85;
     color: #fff;
     padding-top: 80px;
+    margin-botom:20px;
     position: relative;
 }
 
@@ -150,13 +153,20 @@ h5 {
 }
 
 #landing-page-preprint-list {
-    max-height: 600px;
+    max-height: 700px;
     overflow: auto;
 }
 
 #landing-page-preprint-list h2 {
     font-weight: bold;
 }
+
+/*FOR SUBJECTS LIST ON INDEX */
+.subjectList img{
+    opacity:1.0;
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.2);
+}
+
 
 
 
@@ -343,12 +353,17 @@ h5 {
 
 .subjects th, td {
     padding: 5px;
-    border-bottom: 10px solid #fff;
-    text-shadow:
-        -1px -1px 0 var(--theme-color-dark),
-        1px -1px 0 var(--theme-color-dark),
-        -1px 1px 0 var(--theme-color-dark),
-        1px 1px 0 var(--theme-color-dark);
+    border-bottom: 10px solid #d9edf7;
+    /*text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black; */
+    font-weight:300;
+}
+
+td:hover{
+    background-color:#4c4c4c;
 }
 
 .subjects tr {
@@ -356,11 +371,22 @@ h5 {
     font-weight: bold;
     padding-top: 5px;
     padding-bottom: 5px;
-    background-color: var(--theme-color-dark);
+    background-color: #a7a7a7; /*THIS GRAY IS THE LIGHTEST IT CAN BE WITHOUT FAILING WEBAIM STANDARDS */
     background-position: center top;
     background-size: cover;
     color: white;
     cursor: pointer;
+}
+
+
+
+.subjects {
+    background-color: #d9edf7;
+    font-weight: 300;
+}
+
+.f-w-xl{
+    font-weight:300;
 }
 
 .branded-servers {

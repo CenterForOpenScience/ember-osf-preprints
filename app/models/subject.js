@@ -3,5 +3,6 @@ import attr from 'ember-data/attr';
 
 export default Model.extend({
   subject: attr(),
-  subjectid: attr()
+  subjectid: attr(),
+  background: attr()
 });

@@ -1,8 +1,12 @@
+<style>
+
+</style>
+
 <body role="document">
 
  <!--HEADER-->
-<div class="osf-preprint-header-img">
-    <div class="container">
+<div class="osf-preprint-header-img"> <!--HEADER-->
+    <div class="container"> <!--CONTAINER-->
         <!--TITLE-->
         <div class="text-center m-b-lg">
             <h1 class="osf-preprint-lead">OSF Preprints</h1>
@@ -17,42 +21,44 @@
 
         <!--PREPRINT LIST-->
         <h2>Popular Uploads</h2>
-        <div id="landing-page-preprint-list-background">
-            <div id="landing-page-preprint-list">
+        <div id="landing-page-preprint-list-background"> <!--BACKGROUND-->
+            <div id="landing-page-preprint-list"> <!--ARTICLE IN POPULAR UPLOADS-->
                 {{#each model.preprints as |preprintEntry|}}
                     {{preprint-entry preprint=preprintEntry}}
                 {{/each}}
-                <div class="text-center" style="padding-top: 20px; padding-bottom: 40px;">
-                    <a type="button" class="btn btn-success btn-lg" href="/search">Browse more preprints</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+            </div> <!--END POPULAR UPLOADS-->
+        </div> <!--END BACKGROUND-->
+            <div class="text-center" style="padding-top: 20px; padding-bottom: 40px;"> <!-- READ MORE BUTTON-->
+                    <a type="button" class="btn btn-success btn-lg" href="/browse">Browse more preprints</a>
+            </div> <!--END READ MORE BUTTON-->
+    </div> <!--END CONTAINER-->
+</div> <!--END HEADER-->
 
 <!--SUBJECTS-->
-<div class="subjects text-center">
-    <div class="container">
+<div class="subjects text-center"> <!--SUBJECTS LIST-->
+    <div class="container"> <!--CONTAINER DIV-->
         <h1 class="f-w-xl">Browse preprints by subject</h1>
+            <div class="subjectsList table-striped"> <!--SUBJECTS LIST-->
 
         <table class="table">
             {{#each model.subjects as |s|}}
-                <tr {{action "goToSubject" s.subject s.subjectid}}><td>{{s.subject}}</td></tr>
+                <tr {{action "goToSubject" s.subject s.subjectid}}> <td>{{s.subject}}</td></tr>
             {{/each}}
         </table>
 
-    </div>
-</div>
+        </div> <!--END SUBJECTS LIST-->
+    </div> <!--END CONTAINER-->
+</div> <!--END SUBJECTS LIST-->
 
 <!--BRANDED PREPRINT SERVERS-->
 <div class="branded-servers text-center">
     <div class="container-fluid" style='background-image: url("assets/img/bg-web.png");'>
         <h1 class="f-w-xl">Branded preprint servers powered by OSF Preprints</h1>
         <div class="row-fluid">
-            <div class="col-sm-2">
+            <div class="col-sm-2 col-lg-2">
                 <a href="http://www.virginia.edu/"><img class="img-circle img-responsive logo" src="assets/img/logo_uva.png" alt="University of Virginia"/></a>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2 col-lg-2">
                 <a href="http://www.arizona.edu/"><img class="img-circle img-responsive logo" src="assets/img/logo_ua.png" alt="University of Arizona"/></a>
             </div>
         </div>
