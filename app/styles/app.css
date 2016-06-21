@@ -42,10 +42,11 @@ body {
     /* W3C */
     /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--theme-color-light), endColorstr='#000000', GradientType=1);
     /* IE6-9 fallback on horizontal gradient */
-    background: linear-gradient(#0e405f, #d9edf7);
-    background-color:#0e405f;
+    /*background: linear-gradient(#0e405f, #d9edf7);*/
+    background-color:#145a85;
     color: #fff;
     padding-top: 80px;
+    margin-botom:20px;
     position: relative;
 }
 
@@ -140,6 +141,7 @@ h5 {
 #landing-page-preprint-list-background {
     background-color: rgba(255, 255, 255, .1);
     padding: 20px 20px 0px 20px;
+    padding-bottom:0px;
 }
 
 .preprintTitle {
@@ -152,7 +154,7 @@ h5 {
 }
 
 #landing-page-preprint-list {
-    max-height: 600px;
+    max-height: 700px;
     overflow: auto;
 }
 
@@ -362,7 +364,8 @@ h5 {
 }
 
 td:hover{
-    background-color:#4c4c4c;
+    background-color:#262626;
+    font-weight:500;
 }
 
 .subjects tr {
@@ -370,7 +373,7 @@ td:hover{
     font-weight: bold;
     padding-top: 5px;
     padding-bottom: 5px;
-    background-color: /*var(--theme-color-dark)*/ #a7a7a7;
+    background-color: #545454; /*THIS GRAY IS THE LIGHTEST IT CAN BE WITHOUT FAILING WEBAIM STANDARDS */
     background-position: center top;
     background-size: cover;
     color: white;
