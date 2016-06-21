@@ -12,16 +12,6 @@
             <!--the taxonomy-tree calls sendAction("filter") with arguments that aren't explicitly defined here-->
             {{taxonomy-tree filter="filter"}}
 
-            <div> <!--SUBJECT TAGS DIV-->
-                <!--SUBJECTS BUTTONS-->
-                <h6>Tags</h6>
-                <button type="button" class="btn btn-info">talk</button>
-                <button type="button" class="btn btn-info">CREP</button>
-                <button type="button" class="btn btn-info">Poster</button>
-                <button type="button" class="btn btn-info">Randolph-Macon</button>
-                <button type="button" class="btn btn-info">replication</button>
-            </div> <!--END SUBJECT TAGS DIV -->
-
         </div>
         <div class="col-lg-8" id="preprintList">
             {{#each filteredPreprints as |preprintEntry|}}
