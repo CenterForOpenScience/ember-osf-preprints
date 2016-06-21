@@ -6,16 +6,17 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('preprints', function() {
-      this.route('preprint', {
-          path: '/:file_guid'
-      });
-  });
-  //this.route('preprint', { path: '/preprints/:file_guid'});
+
+//  this.route('preprints', function(){
+//    this.route('view', { path: '/:file_id' });
+//  });
+
+  this.route('preprints', { path: '/preprints/:file_id'});
   this.route('add-preprint', { path: '/add-preprint'});
   this.route('browse-preprints', { path: '/browse'});
   this.route('search');
   this.route('categories');
+  this.route('login');
 });
 
 export default Router;

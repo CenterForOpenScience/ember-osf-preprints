@@ -6,13 +6,11 @@
 
 <div class="container" id="browse">
     <div class="row">
-        <div class="col-lg-3">
-            <div class="list-group" id="subjectList">
-                <button type="button" class="list-group-item active" id="all" {{action "filter" null}}>All subjects</button>
-                {{#each model.subjects as |s|}}
-                    <button type="button" id={{s.subjectid}} class="list-group-item" {{action "filter" s}}>{{s.subject}}</button>
-                {{/each}}
-            </div>
+        <div class="col-lg-4">
+
+            <!--"filter" is defined in the browse-preprints route-->
+            <!--the taxonomy-tree calls sendAction("filter") with arguments that aren't explicitly defined here-->
+            {{taxonomy-tree filter="filter"}}
 
             <div> <!--SUBJECT TAGS DIV-->
                 <!--SUBJECTS BUTTONS-->
@@ -25,7 +23,7 @@
             </div> <!--END SUBJECT TAGS DIV -->
 
         </div>
-        <div class="col-lg-9" id="preprintList">
+        <div class="col-lg-8" id="preprintList">
             {{#each filteredPreprints as |preprintEntry|}}
                 {{preprint-entry preprint=preprintEntry}}
             {{/each}}

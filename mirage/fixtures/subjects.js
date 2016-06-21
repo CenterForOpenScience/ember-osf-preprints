@@ -3,110 +3,77 @@ export default [
 //        type: 'subjects',
 //        id: 1,
 //        attributes: {
-          subject: 'Biology and life science',
-          subjectid: 'biology-and-life-science',
-          color: '#FF69B4',
-          background: "assets/img/front_banners/cells.jpg"
+          subject: 'Biology and life sciences'
 //        }
       },
       {
 //        type: 'subjects',
 //        id: 2,
 //        attributes: {
-          subject: 'Computer and information sciences',
-          subjectid: 'computer-and-information-sciences',
-          color: '#FF69B4',
-          background: "assets/img/front_banners/computer.jpg"
+          subject: 'Computer and information sciences'
 //        }
       },
         {
 //        type: 'subjects',
 //        id: 3,
 //        attributes: {
-          subject: 'Earth sciences',
-          subjectid: 'earth-sciences',
-          color: '#FF69B4',
-          background: "assets/img/front_banners/earth.jpg"
+          subject: 'Earth sciences'
 //        }
       },
        {
 //        type: 'subjects',
 //        id: 4,
 //        attributes: {
-          subject: 'Ecology and environmental sciences',
-          subjectid: 'ecology-and-environmental-sciences',
-          color: '#FF69B4',
-          background: "assets/img/front_banners/ecology.jpg"
+          subject: 'Ecology and environmental sciences'
 //        }
       },
        {
 //        type: 'subjects',
 //        id: 5,
 //        attributes: {
-          subject: 'Engineering and technology',
-          subjectid: 'engineering-and-technology',
-          color: '#FF69B4',
-          background: "assets/img/front_banners/technology.jpg"
+          subject: 'Engineering and technology'
 //        }
       },
        {
 //        type: 'subjects',
 //        id: 6,
 //        attributes: {
-          subject: 'Medicine and health sciences',
-          subjectid: 'medicine-and-health-sciences',
-          color: '#FF69B4',
-          background: "assets/img/front_banners/medicine.jpg"
+          subject: 'Medicine and health sciences'
 //        }
       },
        {
 //        type: 'subjects',
 //        id: 7,
 //        attributes: {
-          subject: 'People and places',
-          subjectid: 'people-and-places',
-          color: '#FF69B4',
-          background: "assets/img/front_banners/people.jpg"
+          subject: 'People and places'
 //        }
       },
        {
 //        type: 'subjects',
 //        id: 8,
 //        attributes: {
-          subject: 'Physical sciences',
-          subjectid: 'physical-sciences',
-          color: '#FF69B4',
-          background: "assets/img/front_banners/physics.jpg"
+          subject: 'Physical sciences'
 //        }
       },
        {
 //        type: 'subjects',
 //        id: 9,
 //        attributes: {
-          subject: 'Research and analysis methods',
-          subjectid: 'research-and-analysis-methods',
-          color: '#FF69B4',
-          background: "assets/img/front_banners/research.jpg"
+          subject: 'Research and analysis methods'
 //        }
       },
        {
 //        type: 'subjects',
 //        id: 10,
 //        attributes: {
-          subject: 'Science policy',
-          subjectid: 'science-policy',
-          color: '#FF69B4',
-          background: "assets/img/front_banners/policy.jpg"
+          subject: 'Science policy'
 //        }
       },
        {
 //        type: 'subjects',
 //        id: 11,
 //        attributes: {
-          subject: 'Social sciences',
-          subjectid: 'social-sciences',
-          color: '#FF69B4',
-          background: "assets/img/front_banners/social.jpg"
+          subject: 'Social sciences'
 //        }
       }
 
