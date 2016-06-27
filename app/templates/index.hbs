@@ -4,19 +4,22 @@
 
 <body role="document">
 
- <!--HEADER-->
+<!--HEADER-->
 <div class="osf-preprint-header-img"> <!--HEADER-->
     <div class="container"> <!--CONTAINER-->
         <!--TITLE-->
         <div class="text-center m-b-lg">
             <h1 class="osf-preprint-lead">OSF Preprints</h1>
-            <h2>Fostering the <span class="highlight-bold">openness</span>, <span class="highlight-bold">integrity</span>, and <span class="highlight-bold">reproducibility</span> of scientific research</h2>
+            <h2>Fostering the <span class="highlight-bold">openness</span>, <span
+                    class="highlight-bold">integrity</span>, and <span class="highlight-bold">reproducibility</span> of
+                scientific research</h2>
         </div>
 
         <!--SEARCH-->
         <div id="search" class="space-top space-bottom">
             {{search-preprints}}
-            <p><span class="highlight">13,249</span> preprints, <span class="highlight">8,265</span> contributors as of Mon Jun 06 2016</p>
+            <p><span class="highlight">13,249</span> preprints, <span class="highlight">8,265</span> contributors as of
+                Mon Jun 06 2016</p>
         </div>
 
         <!--PREPRINT LIST-->
@@ -28,9 +31,12 @@
                 {{/each}}
             </div> <!--END POPULAR UPLOADS-->
         </div> <!--END BACKGROUND-->
-            <div class="text-center" style="padding-top: 20px; padding-bottom: 40px;"> <!-- READ MORE BUTTON-->
-                    <a type="button" class="btn btn-success btn-lg" href="/browse">Browse more preprints</a>
-            </div> <!--END READ MORE BUTTON-->
+        <button class="show-more-button col-sm-12 text-muted" {{action "showPopularUploads"}}>
+                <i id = "show-more-icon" class="fa fa-caret-down m-b-lg"></i>
+        </button>
+        <div class="text-center" style="padding-top: 20px; padding-bottom: 40px;"> <!-- READ MORE BUTTON-->
+            <a type="button" class="btn btn-success btn-lg" href="/browse">Browse more preprints</a>
+        </div> <!--END READ MORE BUTTON-->
     </div> <!--END CONTAINER-->
 </div> <!--END HEADER-->
 
@@ -38,13 +44,15 @@
 <div class="subjects text-center"> <!--SUBJECTS LIST-->
     <div class="container"> <!--CONTAINER DIV-->
         <h1 class="f-w-xl">Browse preprints by subject</h1>
-            <div class="subjectsList table-striped"> <!--SUBJECTS LIST-->
+        <div class="subjectsList table-striped"> <!--SUBJECTS LIST-->
 
-        <table class="table">
-            {{#each model.subjects as |s|}}
-                <tr {{action "goToSubject" s.subject s.subjectid}}> <td>{{s.subject}}</td></tr>
-            {{/each}}
-        </table>
+            <table class="table">
+                {{#each model.subjects as |s|}}
+                    <tr {{action "goToSubject" s.subject s.subjectid}}>
+                        <td>{{s.subject}}</td>
+                    </tr>
+                {{/each}}
+            </table>
 
         </div> <!--END SUBJECTS LIST-->
     </div> <!--END CONTAINER-->
@@ -56,10 +64,12 @@
         <h1 class="f-w-xl">Branded preprint servers powered by OSF Preprints</h1>
         <div class="row-fluid">
             <div class="col-sm-2 col-lg-2">
-                <a href="http://www.virginia.edu/"><img class="img-circle img-responsive logo" src="assets/img/logo_uva.png" alt="University of Virginia"/></a>
+                <a href="http://www.virginia.edu/"><img class="img-circle img-responsive logo"
+                                                        src="assets/img/logo_uva.png" alt="University of Virginia"/></a>
             </div>
             <div class="col-sm-2 col-lg-2">
-                <a href="http://www.arizona.edu/"><img class="img-circle img-responsive logo" src="assets/img/logo_ua.png" alt="University of Arizona"/></a>
+                <a href="http://www.arizona.edu/"><img class="img-circle img-responsive logo"
+                                                       src="assets/img/logo_ua.png" alt="University of Arizona"/></a>
             </div>
         </div>
     </div>
