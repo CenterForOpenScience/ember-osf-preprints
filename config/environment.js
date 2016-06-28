@@ -13,6 +13,12 @@ module.exports = function(environment) {
       }
     },
 
+    JamDB: {
+        url: 'http://localhost:1212',
+        namespace: 'Preprints',
+        authorizer: 'jam-jwt'
+    },
+
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
