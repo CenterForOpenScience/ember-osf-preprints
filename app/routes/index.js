@@ -20,12 +20,10 @@ export default Ember.Route.extend({
         goToSubject(sub, subID) {
             this.transitionTo('browse-preprints', {queryParams: {subject: sub, subjectID: subID}});
         },
-        showPopularUploads() {
-            $('.show-more-button').click(function () {
-                var newHeight = ($('#landing-page-preprint-list').height() === 700) ? 2500 : 700;
-                $('#landing-page-preprint-list').css('max-height', newHeight);
-                $('#show-more-icon').toggleClass('fa fa-caret-down fa fa-caret-up');
-            });
-        },
+        togglePopularUploads(   ) {
+            var newHeight = ($('#landing-page-preprint-list').height() === 700) ? 2500 : 700;
+            $('#landing-page-preprint-list').css('max-height', newHeight);
+            $('#show-more-icon').toggleClass('fa fa-caret-down fa fa-caret-up');
+        }
     }
 });
