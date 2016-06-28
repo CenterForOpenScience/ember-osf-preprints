@@ -2,6 +2,7 @@
 /* global require, module */
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
+//TODO: Add an actual sass file to this application. I don't think this does anything
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
         sassOptions: {
