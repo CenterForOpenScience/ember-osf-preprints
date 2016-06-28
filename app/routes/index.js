@@ -6,11 +6,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {});
 export default Ember.Route.extend({
     fileManager: Ember.inject.service(),
     model() {
-    //MIRAGE
-        return {
-            preprints: this.store.findAll('preprint'),
-            subjects: this.store.findAll('subject')
-        };
+    // JamDB
+//        return {
+//            preprints: this.store.findAll('preprint')
+//        };
 
     //EMBER OSF
     //return this.store.findAll('Node');

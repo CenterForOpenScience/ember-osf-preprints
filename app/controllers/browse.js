@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import $ from 'jquery';
 
 export default Ember.Controller.extend({
     queryParams: ['subject'],
@@ -7,7 +6,7 @@ export default Ember.Controller.extend({
 
     filteredPreprints: Ember.computed('subject', 'model', function() {
         var subject = this.get('subject');
-        var preprints = this.get('model').preprints;
+        var preprints = this.get('model');
 
         if (subject) {
             return preprints.filterBy('subject', subject);
