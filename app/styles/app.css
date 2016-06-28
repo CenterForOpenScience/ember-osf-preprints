@@ -1,6 +1,8 @@
 :root {
     --theme-color-light: #67a3bf;
     --theme-color-dark: #166596;
+    --preprint-title: #d2d2d2;
+    --preprint-title-hover: #d5e6ed;
     --gradient-percentage: 15%;
     --highlight-color: #ffd27f;
     --nav-bar-height: 40px;
@@ -53,6 +55,11 @@ body {
 .osf-preprint-lead {
     font-weight: 100;
     font-size: 8em;
+}
+/*FOR SPACE */
+.index{
+    padding-left:10px;
+    padding-right:10px;
 }
 
 /* UNIVERSAL */
@@ -143,22 +150,33 @@ h5 {
     padding: 20px 20px 0px 20px;
 }
 
-.preprintTitle {
-    color: var(--theme-color-light);
+/*.preprintTitle {
+    color: var(--preprint-title);
     font-weight: bold;
 }
 
 .preprintTitle:hover {
-    color: var(--highlight-color);
-}
+    color: var(--preprint-title-hover);
+} */
 
 #landing-page-preprint-list {
     max-height: 700px;
     overflow: auto;
 }
 
-#landing-page-preprint-list h2 {
+#landing-page-preprint-list .preprintTitle {
     font-weight: bold;
+    font-size:18px;
+}
+
+#landing-page-preprint-list a {
+    color: var(--highlight-color);
+    font-weight:bold;
+}
+
+#landing-page-preprint-list a:hover{
+    color: var(--preprint-title-hover);
+    text-decoration: none;
 }
 
 /*FOR SUBJECTS LIST ON INDEX */
@@ -363,7 +381,7 @@ h5 {
 }
 
 td:hover{
-    background-color:#4c4c4c;
+    background-color:#3d3d3d;
 }
 
 .subjects tr {
@@ -371,7 +389,7 @@ td:hover{
     font-weight: bold;
     padding-top: 5px;
     padding-bottom: 5px;
-    background-color: #a7a7a7; /*THIS GRAY IS THE LIGHTEST IT CAN BE WITHOUT FAILING WEBAIM STANDARDS */
+    background-color: #686868; /*THIS GRAY IS THE LIGHTEST IT CAN BE WITHOUT FAILING WEBAIM STANDARDS */
     background-position: center top;
     background-size: cover;
     color: white;
