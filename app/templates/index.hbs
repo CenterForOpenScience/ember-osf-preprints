@@ -24,7 +24,7 @@
         <div id="landing-page-preprint-list-background"> <!--BACKGROUND-->
             <div id="landing-page-preprint-list"> <!--ARTICLE IN POPULAR UPLOADS-->
                 {{#each model.preprints as |preprintEntry|}}
-                    {{preprint-entry preprint=preprintEntry}}
+                    {{preprint-entry preprint=preprintEntry.attributes}}
                 {{/each}}
             </div> <!--END POPULAR UPLOADS-->
         </div> <!--END BACKGROUND-->
