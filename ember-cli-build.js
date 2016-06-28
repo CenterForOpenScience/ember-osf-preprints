@@ -4,7 +4,12 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
-    // Add options here
+        sassOptions: {
+            includePaths: [
+                '../ember-osf/tests/dummy/app/components',
+                '../ember-osf/addon/styles'
+            ]
+        },
   });
 
   // Use `app.import` to add additional libraries to the generated
@@ -29,7 +34,8 @@ module.exports = function(defaults) {
     destDir: 'vendor'
   });
   // Bootstrap
-  app.import("bower_components/bootstrap/dist/css/bootstrap.min.css");
+  app.import("bower_components/bootstrap/dist/js/bootstrap.js");
+  app.import("bower_components/bootstrap/dist/css/bootstrap.css");
   app.import("bower_components/bootstrap/js/modal.js");
 
 //  app.import("bower_components/dropzone/dist/dropzone.js");

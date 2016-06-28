@@ -24,7 +24,7 @@ module.exports = function(environment) {
         },
     //Change here to switch back to mirage calls. Examples fo calls in index.js
       'ember-cli-mirage': {
-            enabled: true
+            enabled: false
         }
   };
 

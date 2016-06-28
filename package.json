@@ -43,6 +43,7 @@
     "ember-osf": "file:../ember-osf",
     "ember-read-more": "0.0.13",
     "ember-resolver": "^2.0.3",
+    "ember-truth-helpers": "1.2.0",
     "loader.js": "^4.0.1"
   }
 }

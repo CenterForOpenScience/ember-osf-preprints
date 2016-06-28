@@ -8,8 +8,8 @@ export default Ember.Route.extend({
     model() {
     //MIRAGE
         return {
-            preprints: this.store.findAll('preprint'),
-            subjects: this.store.findAll('subject')
+            //preprints: this.store.findAll('preprint'),
+            //subjects: this.store.findAll('subject')
         };
 
     //EMBER OSF
