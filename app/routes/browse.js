@@ -8,7 +8,8 @@ export default Ember.Route.extend({
         }
     },
     model() {
-        return this.store.findAll('preprint');
+        // JamDB
+//        return this.store.findAll('preprint');
     },
     actions: {
         filter: function(subjectToFilter) {
