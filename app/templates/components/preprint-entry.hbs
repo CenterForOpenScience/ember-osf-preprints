@@ -24,6 +24,9 @@
     }
 
 
+
+
+
 </style>
 
 <div class="tags"> <!--TAGS DIV-->
@@ -41,7 +44,10 @@
 <br>
 
 <div class="article">
-    <h4><a href="/browse" class="preprintTitle">{{#link-to "preprints" preprint.id}}{{preprint.title}}{{/link-to}}</a></h4>
+    <div class="preprintTitle"> <!--TITLE DIV-->
+        <a href="/browse" class="preprintTitle">{{#link-to "preprints" preprint.id}}{{preprint.title}}{{/link-to}}
+        </a>
+    </div> <!--END TITLE DIV-->
     <p><strong>Authors: </strong>{{preprint.authors}}</p>
     <p id={{preprint.id}}>
         <strong>Abstract:</strong>
