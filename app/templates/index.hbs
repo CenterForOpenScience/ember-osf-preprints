@@ -18,8 +18,8 @@
         <!--SEARCH-->
         <div id="search" class="space-top space-bottom">
             {{search-preprints}}
-            <p><span class="highlight">13,249</span> preprints, <span class="highlight">8,265</span> contributors as of
-                Mon Jun 06 2016</p>
+            <p><span class="highlight">{{model.preprints.length}}</span> preprints, <span class="highlight">8,265</span> contributors as of
+                <span>{{model.theDate}}</span></p>
         </div>
 
         <!--PREPRINT LIST-->
