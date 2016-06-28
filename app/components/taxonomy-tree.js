@@ -5,9 +5,10 @@ export default Ember.Component.extend({
     store: Ember.inject.service(),
 
     didInsertElement() {
-        this.get('store').findAll('taxonomy').then(function(taxonomy) {
+        this.get('store').find('taxonomy', 'top3levels')
+        .then(function(taxonomy) {
             $('#taxonomyTree').treeview({
-                data: taxonomy.get('firstObject').get('tree'),
+                data: taxonomy.get('attributes').tree,
                 levels: 1,
                 selectedBackColor: '#67a3bf',
 
@@ -17,6 +18,10 @@ export default Ember.Component.extend({
                     } else {
                         this.sendAction('filter', data.text);
                     }
+//                    // How to iterate over the child nodes of given node
+//                    for (var i=0; i<data.nodes.length; i++) {
+
+//                    }
                 }.bind(this)
             });
         }.bind(this));

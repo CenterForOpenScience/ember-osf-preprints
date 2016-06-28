@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import $ from 'jquery';
 
 export default Ember.Route.extend({
     queryParams: {
@@ -8,18 +7,12 @@ export default Ember.Route.extend({
             refreshModel: true
         }
     },
-
     model() {
-        return Ember.RSVP.hash({
-            preprints: this.store.findAll('preprint'),
-            taxonomy: this.store.findAll('taxonomy')
-        });
+        return this.store.findAll('preprint');
     },
     actions: {
         filter: function(subjectToFilter) {
-            this.transitionTo( {queryParams: { subject: subjectToFilter } } );
+            this.transitionTo( { queryParams: { subject: subjectToFilter } } );
         }
     }
 });
-
-
