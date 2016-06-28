@@ -8,6 +8,7 @@ export default Ember.Mixin.create({
     createRecordUrlTemplate: '{+host}/{+namespace}/collections{/namespaceId}.{collectionId}/documents',
 
     queryUrlTemplate: '{+host}/{+namespace}/collections{/namespaceId}.{collectionId{/search}',
+//    queryUrlTemplate: '{+host}/v1/id/collections{/collectionId}/_search',
     queryRecordUrlTemplate: '{+host}/{+namespace}/collections{/namespaceId}.{collectionId{/search}',
 
     urlSegments: {

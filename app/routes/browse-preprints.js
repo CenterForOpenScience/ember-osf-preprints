@@ -7,12 +7,8 @@ export default Ember.Route.extend({
             refreshModel: true
         }
     },
-
     model() {
-        return Ember.RSVP.hash({
-//            preprints: this.store.findAll('preprint'),
-//            taxonomy: this.store.find('taxonomy', 'taxonomy')
-        });
+        return this.store.findAll('preprint');
     },
     actions: {
         filter: function(subjectToFilter) {
