@@ -9,10 +9,10 @@ export default Ember.Route.extend({
     },
     model() {
         // JamDB
-//        return this.store.findAll('preprint');
+//        return this.store.query('preprint', { "sort": "createdOn",  "page[size]": "10" } );
     },
     actions: {
-        filter: function(subjectToFilter) {
+        filter: function( subjectToFilter ) {
             this.transitionTo( { queryParams: { subject: subjectToFilter } } );
         }
     }

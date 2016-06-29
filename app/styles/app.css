@@ -5,8 +5,7 @@
     --preprint-title-hover: #d5e6ed;
     --gradient-percentage: 15%;
     --highlight-color: #ffd27f;
-    --nav-bar-height: 40px;
-    --nav-bar-height: 30px;
+    --nav-bar-height: 25px;
 }
 
 .highlight {
@@ -161,7 +160,7 @@ h5 {
 
 #landing-page-preprint-list {
     max-height: 700px;
-    overflow: auto;
+    overflow: hidden;
 }
 
 #landing-page-preprint-list .preprintTitle {
@@ -478,6 +477,13 @@ td:hover{
 /*FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE*/
 .text-muted {
     color: #777;
+}
+
+.show-more-button {
+    background: 0;
+    border: 0;
+    outline: none;
+    font-size: 2em;
 }
 
 
