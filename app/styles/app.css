@@ -160,7 +160,7 @@ h5 {
 
 #landing-page-preprint-list {
     max-height: 700px;
-    overflow: auto;
+    overflow: hidden;
 }
 
 #landing-page-preprint-list .preprintTitle {
@@ -477,6 +477,13 @@ td:hover{
 /*FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE*/
 .text-muted {
     color: #777;
+}
+
+.show-more-button {
+    background: 0;
+    border: 0;
+    outline: none;
+    font-size: 2em;
 }
 
 
