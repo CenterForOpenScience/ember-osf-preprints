@@ -479,3 +479,12 @@ td:hover{
 .text-muted {
     color: #777;
 }
+
+
+/*TODO: Import this from the cottect place*/
+.osf-gravatar>img {
+    border: 1px solid #CDCDCD;
+    border-radius: 13px;
+    margin-right: 5px;
+    height: 27px;
+}
