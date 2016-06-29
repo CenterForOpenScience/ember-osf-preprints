@@ -25,7 +25,6 @@ export default Ember.Component.extend({
             this.open('search');
         },
         modalShow(){
-            //TODO: If logged in show the login signup modal, else show file chooser
 //            if(this.loggedIn===true){
                 this.set('showProjectChooser', true);
 //            }
