@@ -4,14 +4,17 @@ export default Ember.Controller.extend({
     queryParams: ['subject'],
     subject: null,
 
+    store: Ember.inject.service(),
+
     filteredPreprints: Ember.computed('subject', 'model', function() {
-        var subject = this.get('subject');
-        var preprints = this.get('model');
+        let subject = this.get('subject');
+        let model = this.get('model');
+        let store = this.get('store');
 
         if (subject) {
-            return preprints.filterBy('subject', subject);
+            return store.query('preprint', { "filter[subject]": subject });
         } else {
-            return preprints;
+            return model;
         }
     })
 });

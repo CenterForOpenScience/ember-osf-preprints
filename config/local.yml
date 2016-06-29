@@ -1,4 +1,0 @@
-test:
-  CLIENT_ID: 0c258595fe95465db7d061c25afb2ce1
-  PERSONAL_ACCESS_TOKEN: WS47utfzbreX85xDtqCkrXbX2CmFG5LHj1aWRqsV
-  OAUTH_SCOPES: osf.full_read osf.full_write
