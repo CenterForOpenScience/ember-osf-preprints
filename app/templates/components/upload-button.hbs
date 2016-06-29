@@ -6,7 +6,7 @@
 {{#oauth-popup authUrl=authUrl loginSuccess=(action 'loginSuccess') loginFail=(action 'loginFail') as |popup|}}
         <div class="col-sm-12">
             <!--TODO: Don't create the same button twice-->
-            {{#if user}}
+            {{#if session.isAuthenticated}}
                     <button {{action 'modalShow'}}type="button" class="btn btn-info btn-lg">
                         Add a preprint
                     </button>
@@ -25,7 +25,7 @@
 <!-- Modals -->
 
 <!--User not logged in modal-->
- {{#bs-modal open=showModal body=false footer=false title="Attention" id="myModal" submitAction=(action "submit")}}
+ {{#bs-modal open=false body=false footer=false title="Attention" id="myModal" submitAction=(action "submit")}}
    {{#bs-modal-body}}An OSF account is required to upload a preprint.{{/bs-modal-body}} <!--add the OSF logo here-->
         {{#bs-modal-footer as |footer|}}
           {{#bs-button  action='signupShow' class="btn btn-success"}}Sign up{{/bs-button}}

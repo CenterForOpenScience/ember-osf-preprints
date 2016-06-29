@@ -14,6 +14,7 @@ export default Ember.Component.extend({
     showSignupSuccess: false,
 
     currentUser: Ember.inject.service(),
+    session: Ember.inject.service(),
     authUrl: getAuthUrl(),
     user: null,
     _loadCurrentUser() {
@@ -25,12 +26,12 @@ export default Ember.Component.extend({
         },
         modalShow(){
             //TODO: If logged in show the login signup modal, else show file chooser
-            if(this.loggedIn===true){
+//            if(this.loggedIn===true){
                 this.set('showProjectChooser', true);
-            }
-            else {
-                this.set('showModal', true);
-            }
+//            }
+//            else {
+                //this.set('showModal', true);
+//            }
         },
         loginShow(){
             this.set('showLogin', true);
