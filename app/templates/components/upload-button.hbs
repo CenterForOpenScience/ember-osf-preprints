@@ -1,18 +1,31 @@
+<div class="col-sm-12" style="padding-bottom:30px;"><!--COL-->
 {{fa-icon icon="cloud-upload" size=5}}
 <h1 class="f-w-xl">Contribute your research</h1>
-<h3 class="f-w-md" style="margin-left:auto; margin-right:auto; width:800px;">You can upload a preprint or choose a file from an existing OSF file to tag as a preprint if you are already have an OSF account.</h3>
+<h3 class="f-w-md" style="margin-left:auto; margin-right:auto;">You can upload a preprint or choose a file from an existing OSF file to tag as a preprint if you are already have an OSF account.</h3>
 
-<button {{action 'modalShow'}}type="button" class="btn btn-info btn-lg">
-    Add a preprint
-</button>
+{{#oauth-popup authUrl=authUrl loginSuccess=(action 'loginSuccess') loginFail=(action 'loginFail') as |popup|}}
+        <div class="col-sm-12">
+            <!--TODO: Don't create the same button twice-->
+            {{#if session.isAuthenticated}}
+                    <button {{action 'modalShow'}}type="button" class="btn btn-info btn-lg">
+                        Add a preprint
+                    </button>
+            {{else}}
+                    <button class="btn btn-info btn-lg" onclick={{action 'login' target=popup}} >
+                        Add a preprint
+                    </button>
+            {{/if}}
+        </div>
+{{/oauth-popup}}
 
-{{!--#link-to "add-preprint" class="btn btn-success btn-lg" action "modalShow"}}Add a preprint{{/link-to--}}
+</div> <!--END COL-->
+
 
 
 <!-- Modals -->
 
 <!--User not logged in modal-->
- {{#bs-modal open=showModal body=false footer=false title="Attention" id="myModal" submitAction=(action "submit")}}
+ {{#bs-modal open=false body=false footer=false title="Attention" id="myModal" submitAction=(action "submit")}}
    {{#bs-modal-body}}An OSF account is required to upload a preprint.{{/bs-modal-body}} <!--add the OSF logo here-->
         {{#bs-modal-footer as |footer|}}
           {{#bs-button  action='signupShow' class="btn btn-success"}}Sign up{{/bs-button}}
@@ -52,7 +65,7 @@
  {{/bs-modal}}
 
 
-<!--File Chooser Modal PROBABLY WONT USE THIS INSEAD GO TO FILE DETAIL PAGE-->
+<!--File Chooser Modal PROBABLY WONT USE THIS INSTEAD GO TO FILE DETAIL PAGE-->
 {{#bs-modal open=showFileChooser body=false footer=false}}
    {{file-chooser}}
     {{#bs-modal-footer as |footer|}}

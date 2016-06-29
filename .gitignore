@@ -19,5 +19,5 @@ testem.log
 # idea
 .idea
 
-./config/local.yml
+/config/local.yml
 .editorconfig

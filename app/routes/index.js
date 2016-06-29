@@ -7,17 +7,19 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {});
 export default Ember.Route.extend({
     fileManager: Ember.inject.service(),
     model() {
-        //MIRAGE
         var todaysDate = new Date();
         var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         var formattedDate = days[todaysDate.getDay()] + " " + months[todaysDate.getMonth()] + " "
         + todaysDate.getDate() + ", " + todaysDate.getFullYear();
+
         return {
-            preprints: this.store.findAll('preprint'),
-            subjects: this.store.findAll('subject'),
             theDate: formattedDate
         };
+    // JamDB
+//        return {
+//            preprints: this.store.findAll('preprint')
+//        };
 
         //EMBER OSF
         //return this.store.findAll('Node');

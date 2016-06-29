@@ -1,18 +1,14 @@
-<style>
-
-</style>
-
 <body role="document">
+<div class="index"> <!--INDEX-->
 
-<!--HEADER-->
+ <!--HEADER-->
+ <div class="row"><!--HEADER ROW-->
 <div class="osf-preprint-header-img"> <!--HEADER-->
     <div class="container"> <!--CONTAINER-->
         <!--TITLE-->
         <div class="text-center m-b-lg">
             <h1 class="osf-preprint-lead">OSF Preprints</h1>
-            <h2>Fostering the <span class="highlight-bold">openness</span>, <span
-                    class="highlight-bold">integrity</span>, and <span class="highlight-bold">reproducibility</span> of
-                scientific research</h2>
+            <h2>The <span class="highlight-bold">open</span> preprint server for <span class="highlight-bold">all</span> academic disciplines</h2>
         </div>
 
         <!--SEARCH-->
@@ -27,7 +23,7 @@
         <div id="landing-page-preprint-list-background"> <!--BACKGROUND-->
             <div id="landing-page-preprint-list"> <!--ARTICLE IN POPULAR UPLOADS-->
                 {{#each model.preprints as |preprintEntry|}}
-                    {{preprint-entry preprint=preprintEntry}}
+                    {{preprint-entry preprint=preprintEntry.attributes}}
                 {{/each}}
             </div> <!--END POPULAR UPLOADS-->
         </div> <!--END BACKGROUND-->
@@ -39,8 +35,10 @@
         </div> <!--END READ MORE BUTTON-->
     </div> <!--END CONTAINER-->
 </div> <!--END HEADER-->
+</div> <!--END ROW-->
 
 <!--SUBJECTS-->
+ <div class="row"><!--SUBJECTS ROW-->
 <div class="subjects text-center"> <!--SUBJECTS LIST-->
     <div class="container"> <!--CONTAINER DIV-->
         <h1 class="f-w-xl">Browse preprints by subject</h1>
@@ -57,32 +55,36 @@
         </div> <!--END SUBJECTS LIST-->
     </div> <!--END CONTAINER-->
 </div> <!--END SUBJECTS LIST-->
+</div><!--END ROW-->
 
 <!--BRANDED PREPRINT SERVERS-->
-<div class="branded-servers text-center">
-    <div class="container-fluid" style='background-image: url("assets/img/bg-web.png");'>
+ <div class="row"><!--BRANDED ROW-->
+<div class="branded-servers text-center"> <!--center text-->
+    <div class="container-fluid" style='background-image: url("assets/img/bg-web.png");'> <!--CONTAINER-->
         <h1 class="f-w-xl">Branded preprint servers powered by OSF Preprints</h1>
-        <div class="row-fluid">
-            <div class="col-sm-2 col-lg-2">
-                <a href="http://www.virginia.edu/"><img class="img-circle img-responsive logo"
-                                                        src="assets/img/logo_uva.png" alt="University of Virginia"/></a>
-            </div>
-            <div class="col-sm-2 col-lg-2">
-                <a href="http://www.arizona.edu/"><img class="img-circle img-responsive logo"
-                                                       src="assets/img/logo_ua.png" alt="University of Arizona"/></a>
-            </div>
-        </div>
-    </div>
-</div>
+        <div class="row-fluid"> <!--FLUID ROW-->
+            <div class="col-sm-2 col-lg-2"> <!--UVA LOGO-->
+                <a href="http://www.virginia.edu/"><img class="img-circle img-responsive logo" src="assets/img/logo_uva.png" alt="University of Virginia"/></a>
+            </div> <!--END UVA LOGO-->
+            <div class="col-sm-2 col-lg-2"> <!--ARIZONA LOGO-->
+                <a href="http://www.arizona.edu/"><img class="img-circle img-responsive logo" src="assets/img/logo_ua.png" alt="University of Arizona"/></a>
+            </div> <!--END ARIZONA LOGO-->
+        </div> <!--END FLUID ROW-->
+    </div> <!--END CONTAINER-->
+</div> <!--END CENTER TEXT-->
+ </div> <!--END ROW-->
 
 <!--CONTRIBUTE YOUR RESEARCH-->
-<div class="container">
-    <div class="space-top space-bottom text-center">
+<div class="row"><!--ROW-->
+ <div class="container"> <!--CONTAINER-->
+    <div class="space-top space-bottom text-center"> <!--STYLING-->
         {{upload-button}}
-    </div>
-</div>
+    </div> <!--END STYLING-->
+</div> <!--END CONTAINER-->
+</div> <!--END ROW-->
 
 <!--FOOTER-->
+ <div class="row"> <!--ROW-->
 <div class="space-top space-bottom moving-logo-section">
     <div class="container">
         <div class="row">
@@ -106,5 +108,8 @@
         </div>
     </div>
 </div>
+ </div> <!--END ROW-->
 
+
+    </div> <!--END INDEX-->
 </body>
