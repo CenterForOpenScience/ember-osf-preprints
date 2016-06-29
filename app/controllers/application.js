@@ -11,7 +11,7 @@ export default Ember.Controller.extend(OsfLoginControllerMixin, {
     authUrl: getAuthUrl(),
     actions: {
         loginSuccess() {
-            this.transitionToRoute('index');
+            this.refresh();
         },
         loginFail(/* err */) {
             this.get('toast').error('Login failed');
