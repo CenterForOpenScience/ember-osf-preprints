@@ -10,13 +10,11 @@
 
 {{!--#link-to "add-preprint" class="btn btn-success btn-lg" action "modalShow"}}Add a preprint{{/link-to--}}
                             {{#oauth-popup authUrl=authUrl loginSuccess=(action 'loginSuccess') loginFail=(action 'loginFail') as |popup|}}
-                                <li class="dropdown sign-in">
                                     <div class="col-sm-12">
                                         <button class="btn btn-success btn-top-signup m-r-xs" onclick={{action 'login' target=popup}} >
                                             Login
                                         </button>
                                     </div>
-                                </li>
                             {{/oauth-popup}}
 
 <!-- Modals -->

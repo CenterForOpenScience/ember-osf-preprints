@@ -5,7 +5,6 @@ import {
 } from 'ember-osf/utils/auth';
 
 export default Ember.Component.extend({
-    authUrl: getAuthUrl(),
     loggedIn: false, //This ia a fake helper variable so that we can check slash pretend we're logged in
     showModal: false, //TODO: Refactor obviously - there is OBVIOUSLY...a way better way to do tis...DRY!!
     showLogin: false,
@@ -13,6 +12,13 @@ export default Ember.Component.extend({
     showProjectChooser: false,
     showFileChooser: false,
     showSignupSuccess: false,
+
+    currentUser: Ember.inject.service(),
+    authUrl: getAuthUrl(),
+    user: null,
+    _loadCurrentUser() {
+        this.get('currentUser').load().then((user) => this.set('user', user));
+    },
     actions:{
         submit(){
             this.open('search');
