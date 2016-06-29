@@ -1,6 +1,11 @@
 import Ember from 'ember';
 
+import {
+    getAuthUrl
+} from 'ember-osf/utils/auth';
+
 export default Ember.Component.extend({
+    authUrl: getAuthUrl(),
     loggedIn: false, //This ia a fake helper variable so that we can check slash pretend we're logged in
     showModal: false, //TODO: Refactor obviously - there is OBVIOUSLY...a way better way to do tis...DRY!!
     showLogin: false,
@@ -42,6 +47,13 @@ export default Ember.Component.extend({
         fileChooserShow(){
             this.set('showFileChooser', true);
             this.set('showProjectChooser', false);
+        },
+        loginSuccess() {
+            this._loadCurrentUser();
+            this.sendAction('loginSuccess');
+        },
+        loginFail() {
+            this.sendAction('loginFail');
         }
     }
 });
