@@ -11,7 +11,7 @@ export default Ember.Route.extend({
     },
     model() {
         // JamDB
-        return this.store.query('preprint', { "sort": "createdOn",  "page[size]": "10" } );
+//        return this.store.query('preprint', { "sort": "createdOn",  "page[size]": "10" } );
     },
     actions: {
         filter: function( subjectToFilter ) {
