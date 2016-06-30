@@ -6,7 +6,9 @@ export default Ember.Component.extend({
         search(self) {
             self = self ? self : this; // Handle context switch for 'this' keyword
             let query = $('#searchBox').val();
-            self.sendAction("search", query);
+            if (query != "") {
+                self.sendAction("search", query);
+            }
         }
     },
 

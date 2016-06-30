@@ -13,16 +13,17 @@ export default Ember.Controller.extend({
         let model = this.get('model');
         let store = this.get('store');
 
+        let params = {};
         if (query) {
-            return store.query('preprint', { 'q': "title:" + query + "*" });
+            params['q'] = 'title:' + query;
         } else if (subject) {
-            let toReturn = store.query('preprint', { "filter[subject]": subject }).then(function(results) {
-                debugger;
-            });
-
-            return toReturn;
-        } else {
+            params["filter[subject]"] = subject
+        }
+        // If neither query nor subject exists, just return the default model
+        else {
             return model;
         }
+        // Query store with accumulated parameters
+        return store.query('preprint', params);
     })
 });
