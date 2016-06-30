@@ -6,7 +6,7 @@ export default Ember.Component.extend({
 
     // JamDB
 
-    /*
+
     didInsertElement() {
         this.get('store').find('taxonomy', 'top3levels')
         .then(function(taxonomy) {
@@ -29,7 +29,7 @@ export default Ember.Component.extend({
             });
         }.bind(this));
     }
-    */
+
 
 
 });
