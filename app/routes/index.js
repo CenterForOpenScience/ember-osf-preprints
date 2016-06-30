@@ -14,9 +14,9 @@ export default Ember.Route.extend({
         + todaysDate.getDate() + ", " + todaysDate.getFullYear();
 
         return {
-            theDate: formattedDate,
-            preprints: this.store.findAll('preprint')
+            theDate: formattedDate
         };
+    // JamDB
 //        return {
 //            preprints: this.store.findAll('preprint')
 //        };
