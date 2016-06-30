@@ -20,9 +20,6 @@ export default Ember.Route.extend({
 //        return {
 //            preprints: this.store.findAll('preprint')
 //        };
-
-        //EMBER OSF
-        //return this.store.findAll('Node');
     },
     actions: {
         goToSubject(sub, subID) {
