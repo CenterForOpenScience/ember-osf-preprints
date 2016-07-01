@@ -127,7 +127,7 @@ cd jam
 cat top3levels.json | jam create Preprints taxonomies top3levels
 cat dummy_preprint.json | jam create Preprints preprints test1
 ```
-Note that `test1` will be replaced by the preprint's guid in the future.
+Note that `test1` is arbitrary and will be replaced by the preprint's guid in the future.
 
 ## Further Reading / Useful Links
 
