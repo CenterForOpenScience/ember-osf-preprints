@@ -23,7 +23,7 @@ export default Ember.Controller.extend({
             params["filter[subject]"] = subject;
         }
         // If neither query nor subject exists, just return the default model
-        if (params === {}) {
+        if (!Object.keys(params).length) {
             return model;
         }
         // Query store with accumulated parameters
