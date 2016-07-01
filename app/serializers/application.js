@@ -13,12 +13,12 @@ export default JSONAPISerializer.extend({
         modifiedBy: {serialize: false}
     },
 
-  normalize(model, payload) {
-    payload.attributes = Object.assign({}, payload.meta, payload.attributes);
-    return this._super(model, payload);
-  },
+    normalize(model, payload) {
+        payload.attributes = Object.assign({}, payload.meta, payload.attributes);
+        return this._super(model, payload);
+    },
 
-  payloadKeyFromModelName: function(/*modelName */) {
+    payloadKeyFromModelName: function(/*modelName */) {
         // JamDB expects all collections to specify JSONAPI type 'documents'
         return 'documents';
     },
@@ -51,9 +51,9 @@ export default JSONAPISerializer.extend({
         return resourceHash.id.split('.')[resourceHash.id.split('.').length-1];
     },
 
-  serialize(snapshot, options) {
-    var data = this._super(snapshot, options);
-    data.data.attributes = data.data.attributes.attributes;
-    return data;
-  }
+    serialize(snapshot, options) {
+        var data = this._super(snapshot, options);
+        data.data.attributes = data.data.attributes.attributes;
+        return data;
+    }
 });

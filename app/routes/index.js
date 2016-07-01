@@ -13,16 +13,16 @@ export default Ember.Route.extend({
         var formattedDate = days[todaysDate.getDay()] + " " + months[todaysDate.getMonth()] + " "
         + todaysDate.getDate() + ", " + todaysDate.getFullYear();
 
-        return {
-            theDate: formattedDate
-        };
-    // JamDB
-//        return {
-//            preprints: this.store.findAll('preprint')
-//        };
+        return Ember.RSVP.hash({
+            theDate: formattedDate,
+
+            // JamDB
+//            preprints: this.store.findAll('preprint'),
+//            subjects: this.store.find('taxonomy', 'topLevel')
+        });
     },
     actions: {
-        goToSubject(sub, subID) {
+        goToSubject(sub) {
             this.transitionTo('browse', {queryParams: {subject: sub}});
         },
         togglePopularUploads() {

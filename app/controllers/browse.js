@@ -10,8 +10,10 @@ export default Ember.Controller.extend({
     filteredPreprints: Ember.computed('subject', 'query', 'model', function() {
         let subject = this.get('subject');
         let query = this.get('query');
-        let model = this.get('model');
+        let model = this.get('model').preprints;
         let store = this.get('store');
+
+//        this.highlightSubject();
 
         let params = {};
         if (query) {
@@ -26,5 +28,23 @@ export default Ember.Controller.extend({
         }
         // Query store with accumulated parameters
         return store.query('preprint', params);
-    })
+    }),
+
+//    highlightSubject: function() {
+//        let treeElem = $('#taxonomyTree')
+//        if (treeElem.length) {
+////            let selected = treeElem.treeview('getSelected');
+////            for (var i = 0; i<selected.length; i++) {
+////                treeElem.treeview('unselectNode', [selected[i].nodeId, {silent: true}])
+////            }
+//            let toHighlight = treeElem.treeview('search', [this.get('subject'), {
+//                exactMatch: true,
+//                revealResults: false
+//            }]);
+//            if (toHighlight.length){
+//                treeElem.treeview('selectNode', [toHighlight[0].nodeId, {silent: true}]);
+//            }
+//
+//        }
+//    }
 });

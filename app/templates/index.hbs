@@ -23,7 +23,7 @@
         <div id="landing-page-preprint-list-background"> <!--BACKGROUND-->
             <div id="landing-page-preprint-list"> <!--ARTICLE IN POPULAR UPLOADS-->
                 {{#each model.preprints as |preprintEntry|}}
-                    {{preprint-entry preprint=preprintEntry.attributes}}
+                    {{preprint-entry preprint=preprintEntry}}
                 {{/each}}
             </div> <!--END POPULAR UPLOADS-->
         </div> <!--END BACKGROUND-->
@@ -44,13 +44,7 @@
         <h1 class="f-w-xl">Browse preprints by subject</h1>
         <div class="subjectsList table-striped"> <!--SUBJECTS LIST-->
 
-            <table class="table">
-                {{#each model.subjects as |s|}}
-                    <tr {{action "goToSubject" s.subject s.subjectid}}>
-                        <td>{{s.subject}}</td>
-                    </tr>
-                {{/each}}
-            </table>
+            {{taxonomy-tree tree=model.subjects filter="goToSubject"}}
 
         </div> <!--END SUBJECTS LIST-->
     </div> <!--END CONTAINER-->
