@@ -113,6 +113,22 @@ Running `jam info fruits` should then confirm that `*` (all users) has READ perm
 * All ids must adhere to the following regex: `[\d\w\-]{3,64}` (namely, they must be between 3 and 64 characters).
 * Users are specified in the form `{type}-{organization}-{id}` (e.g. `user-github-terroni`).
 
+### Current JamDB Development Setup
+
+Currently the calls from `this.store` are assuming the following:
+* There exists a namespace called `Preprints` with `"* READ"` permissions.
+* Within `Preprints` there exists two collections: `preprints` and `taxonomies` (these names must be formatted exactly this way).
+* Within `Preprints.taxonomies` there exists two documents: `top3levels` and `topLevel`, both of which are provided as .json files in the `jam` directory.
+* Within `Preprints.preprints`, there exists any number of preprint documents, an example of which is provided in the `jam` directory.
+
+Here are a couple example commands for how to add these documents:
+```
+cd jam
+cat top3levels.json | jam create Preprints taxonomies top3levels
+cat dummy_preprint.json | jam create Preprints preprints test1
+```
+Note that `test1` will be replaced by the preprint's guid in the future.
+
 ## Further Reading / Useful Links
 
 * [ember.js](http://emberjs.com/)
