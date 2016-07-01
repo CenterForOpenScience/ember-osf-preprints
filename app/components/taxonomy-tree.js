@@ -6,29 +6,23 @@ export default Ember.Component.extend({
 
     // JamDB
 
+//    didInsertElement() {
+//        $('#taxonomyTree').treeview({
+//            data: this.get('tree').get('tree'),
+//            levels: 1,
+//            selectedBackColor: '#67a3bf',
+//
+//            onNodeSelected: function(event, data) {
+//                if (data.text == 'All subjects') {
+//                    this.sendAction('filter', null);
+//                } else {
+//                    this.sendAction('filter', data.text);
+//                }
+//            }.bind(this)
+//        });
+//    },
 
-    didInsertElement() {
-        this.get('store').find('taxonomy', 'top3levels')
-        .then(function(taxonomy) {
-            $('#taxonomyTree').treeview({
-                data: taxonomy.get('tree'),
-                levels: 1,
-                selectedBackColor: '#67a3bf',
 
-                onNodeSelected: function(event, data) {
-                    if (data.text == 'All subjects') {
-                        this.sendAction('filter', null);
-                    } else {
-                        this.sendAction('filter', data.text);
-                    }
-//                    // How to iterate over the child nodes of given node
-//                    for (var i=0; i<data.nodes.length; i++) {
-
-//                    }
-                }.bind(this)
-            });
-        }.bind(this));
-    }
 
 
 

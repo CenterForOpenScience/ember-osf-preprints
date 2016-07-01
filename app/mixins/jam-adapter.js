@@ -15,6 +15,7 @@ export default Ember.Mixin.create({
         search(type, id, snapshot, query) {
             return query.q ? '_search' : 'documents';
         },
+
         collectionId: (type) => Ember.Inflector.inflector.pluralize(type)
     },
     ajax: function(url, type, options={}) {
