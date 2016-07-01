@@ -16,11 +16,12 @@ export default Ember.Controller.extend({
         let params = {};
         if (query) {
             params['q'] = 'title:' + query;
-        } else if (subject) {
-            params["filter[subject]"] = subject
+        }
+        if (subject) {
+            params["filter[subject]"] = subject;
         }
         // If neither query nor subject exists, just return the default model
-        else {
+        if (params === {}) {
             return model;
         }
         // Query store with accumulated parameters
