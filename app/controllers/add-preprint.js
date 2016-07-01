@@ -48,6 +48,7 @@ export default Ember.Controller.extend({
         }
     },
     init() {
+    Dropzone.autoDiscover = true;
         // Don't show dropped content if user drags outside dropzone
         window.ondragover = function(e) { e.preventDefault(); };
         window.ondrop = function(e) { e.preventDefault(); };
@@ -58,7 +59,14 @@ export default Ember.Controller.extend({
                     alert("found it!");
                 }
             },
-            clickable: true
+                sending: function (file, xhr) {
+                //Hack to remove webkitheaders
+                var _send = xhr.send;
+                xhr.send = function () {
+                    _send.call(xhr, file);
+                };
+                },
+            clickable: '#preprintDropzone'
         };
     }
 });
