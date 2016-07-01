@@ -3,8 +3,10 @@ import Ember from 'ember';
 export default Ember.Route.extend({
     queryParams: {
         subject: {
-            replace: true,
-            refreshModel: true
+            replace: true
+        },
+        query: {
+            replace: true
         }
     },
     model() {
@@ -14,6 +16,9 @@ export default Ember.Route.extend({
     actions: {
         filter: function( subjectToFilter ) {
             this.transitionTo( { queryParams: { subject: subjectToFilter } } );
+        },
+        search: function( q ) {
+            this.transitionTo( { queryParams: { query: q } } );
         }
     }
 });

@@ -14,7 +14,7 @@ export default JSONAPISerializer.extend({
     },
 
   normalize(model, payload) {
-    payload.attributes = Object.assign({}, payload.meta, { attributes: payload.attributes });
+    payload.attributes = Object.assign({}, payload.meta, payload.attributes);
     return this._super(model, payload);
   },
 

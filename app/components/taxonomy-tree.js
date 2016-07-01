@@ -6,12 +6,12 @@ export default Ember.Component.extend({
 
     // JamDB
 
-    /*
+
     didInsertElement() {
         this.get('store').find('taxonomy', 'top3levels')
         .then(function(taxonomy) {
             $('#taxonomyTree').treeview({
-                data: taxonomy.get('attributes').tree,
+                data: taxonomy.get('tree'),
                 levels: 1,
                 selectedBackColor: '#67a3bf',
 
@@ -29,7 +29,7 @@ export default Ember.Component.extend({
             });
         }.bind(this));
     }
-    */
+
 
 
 });

@@ -1,7 +1,7 @@
 <body role="document">
 
 <div class="container space-top space-bottom">
-    {{search-preprints}}
+    {{search-preprints search="search"}}
 </div>
 
 <div class="container" id="browse">
@@ -15,7 +15,7 @@
         </div>
         <div class="col-lg-8" id="preprintList">
             {{#each filteredPreprints as |preprintEntry|}}
-                {{preprint-entry preprint=preprintEntry.attributes}}
+                {{preprint-entry preprint=preprintEntry}}
             {{/each}}
         </div>
     </div>
