@@ -12,8 +12,8 @@ export default Ember.Route.extend({
     model() {
         // JamDB
         return Ember.RSVP.hash({
-//            preprints: this.store.query('preprint', { "sort": "createdOn",  "page[size]": "10" } ),
-//            taxonomy: this.store.find('taxonomy', 'top3levels')
+            preprints: this.store.query('preprint', { "sort": "createdOn",  "page[size]": "10" } ),
+            taxonomy: this.store.find('taxonomy', 'top3levels')
         });
     },
     actions: {
