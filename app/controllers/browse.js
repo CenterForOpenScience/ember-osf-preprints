@@ -1,17 +1,30 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-    queryParams: ['subject'],
+    queryParams: ['subject', 'query'],
     subject: null,
+    query: null,
 
-    filteredPreprints: Ember.computed('subject', 'model', function() {
-        var subject = this.get('subject');
-        var preprints = this.get('model');
+    store: Ember.inject.service(),
 
-        if (subject) {
-            return preprints.filterBy('subject', subject);
-        } else {
-            return preprints;
+    filteredPreprints: Ember.computed('subject', 'query', 'model', function() {
+        let subject = this.get('subject');
+        let query = this.get('query');
+        let model = this.get('model');
+        let store = this.get('store');
+
+        let params = {};
+        if (query) {
+            params['q'] = 'title:' + query;
         }
+        if (subject) {
+            params["filter[subject]"] = subject;
+        }
+        // If neither query nor subject exists, just return the default model
+        if (params === {}) {
+            return model;
+        }
+        // Query store with accumulated parameters
+        return store.query('preprint', params);
     })
 });

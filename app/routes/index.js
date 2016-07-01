@@ -20,13 +20,10 @@ export default Ember.Route.extend({
 //        return {
 //            preprints: this.store.findAll('preprint')
 //        };
-
-        //EMBER OSF
-        //return this.store.findAll('Node');
     },
     actions: {
         goToSubject(sub, subID) {
-            this.transitionTo('browse-preprints', {queryParams: {subject: sub, subjectID: subID}});
+            this.transitionTo('browse', {queryParams: {subject: sub}});
         },
         togglePopularUploads() {
             var newHeight = ($('#landing-page-preprint-list').height() === 700) ? 2500 : 700;
