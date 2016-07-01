@@ -33,4 +33,4 @@
     <option>Chicago</option>
 </select><br>
 <!--<button class="btn btn-primary" {{!--action "makePost" title abstract authors subject journal preprint project--}}>Add Preprint</button>-->
-{{#link-to "preprints" class="btn btn-primary"}}Add preprint{{/link-to}}
+<button class="btn btn-primary" onclick={{action 'createNode' title abstract}}>Add preprint</button>
