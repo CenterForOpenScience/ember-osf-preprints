@@ -1,12 +1,18 @@
 import Ember from 'ember';
 import $ from 'jquery';
-var Dropzone = window.Dropzone;
+import config from 'ember-get-config';
 
 export default Ember.Controller.extend({
-    showMFR: false,
+    _url: null,
+    openModal: false,
+    resolve: null,
+    latestFileName: null,
+    dropzoneOptions: {
+        uploadMultiple: false,
+        method: 'PUT'
+    },
     actions: {
         makePost: function(title, abstract, authors, subject, journal, content, link, citation) {
-            console.log("made it");
 
             var data = {
                 title: title,
@@ -31,34 +37,25 @@ export default Ember.Controller.extend({
             console.log(data);
             //formData.save();
         },
-        switchToMFR(){
-            console.log("Well this happened");
-            this.toggleProperty('showMFR');
+        preUpload(comp, drop, file) {
+            this.set('openModal', true);
+            this.set('latestFileName', file.name);
+            var promise =  new Ember.RSVP.Promise(resolve => {
+                this.set('resolve', resolve);
+            });
+            return promise;
         },
-        addedFileEvent: Ember.computed(function() {
-            return function() {
-            console.log("Well this happened");
-                this.toggleProperty('showMFR');
-            };
-          }),
-
+        closeModal() {
+            this.set('_url', config.OSF.waterbutlerUrl + 'file?path=/' + this.get('latestFileName') + '&nid=' + this.get('nodeId') + '&provider=osfstorage');
+            this.set('openModal', false);
+            this.get('resolve')();
+        },
+        buildUrl() {
+            return this.get('_url');
+        },
 
         uploadPreprint: function() {
 
         }
     },
-    init() {
-        // Don't show dropped content if user drags outside dropzone
-        window.ondragover = function(e) { e.preventDefault(); };
-        window.ondrop = function(e) { e.preventDefault(); };
-
-        Dropzone.options.preprintDropzone = {
-            accept: function(file, done) {
-                if (file.name === "ir-chap01.pdf") {
-                    alert("found it!");
-                }
-            },
-            clickable: true
-        };
-    }
 });

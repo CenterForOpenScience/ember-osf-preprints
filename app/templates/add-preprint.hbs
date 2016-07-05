@@ -33,11 +33,20 @@
 
     <div class="row"> <!--ROW DIV-->
         <div class="col-lg-7"> <!--COL 7 DIV-->
-             {{#if showMFR}}
-                 <h4>Preview:</h4>
-                 <!--TODO: Actually put a call here. To grab specific MFR data-->
-                <iframe src={{"https://test-mfr.osf.io/render?url=https://test.osf.io/yr6ch/?action=download%26mode=render"}} display="block" width=650 height=700></iframe>
-             {{else}}
+            {{!--dropzone-widget preUpload=true options=dropzoneOptions--}}
+
+            <br>
+{{dropzone-widget preUpload=(action 'preUpload') buildUrl=(action 'buildUrl') listeners=dropzoneOptions options=dropzoneOptions}}
+
+{{#bs-modal open=openModal title="Add file to which node?" footer=false}}
+    {{#bs-modal-body}}
+        {{input type="text" value=nodeId placeholder="Node's guid" required=true}}
+    {{/bs-modal-body}}
+    {{#bs-modal-footer as |footer|}}
+        {{#bs-button action=(action 'closeModal')}} Coolbeans! {{/bs-button}}
+    {{/bs-modal-footer}}
+{{/bs-modal}}
+<br>
 
                  <!--This one is supposed to be a dropzone-->
              <h4>Upload a preprint:</h4>
@@ -47,7 +56,6 @@
 <!--What class do I make this...AND WHERE DOES THE BUTTON COME FROM-->
 
 
-             {{/if}}
         </div> <!--END COL 7 DIV-->
         <div class="col-lg-5"> <!--COL 5 DIV-->
             {{preprint-form makePost=(action "makePost")}}
