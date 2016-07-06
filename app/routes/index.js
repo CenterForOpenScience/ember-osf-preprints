@@ -17,8 +17,8 @@ export default Ember.Route.extend({
             theDate: formattedDate,
 
             // JamDB
-//            preprints: this.store.findAll('preprint'),
-//            subjects: this.store.find('taxonomy', 'topLevel')
+            preprints: this.store.findAll('preprint'),
+            subjects: this.store.find('taxonomy', 'topLevel')
         });
     },
     actions: {

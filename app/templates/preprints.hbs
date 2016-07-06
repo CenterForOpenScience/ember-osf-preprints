@@ -43,8 +43,9 @@ hr {
             <hr color="#C7FFC7">
             <div class="row">
                 <div id="mfr" class="col-md-7">
-                    <iframe src={{model.link}} display="block" width=600 height=700></iframe>
-
+                    <div>
+                <iframe src={{concat 'https://test-mfr.osf.io/render?url=https://test.osf.io/' model.id '/?action=download%26mode=render'}} display="block" width=650 height=700></iframe>
+                    </div>
                     <!--TODO: EMBER OSF MFR -->
 
                 </div>
@@ -64,7 +65,7 @@ hr {
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Absract:
+                                    Abstract:
                                 </div>
                                 <div class="panel-body">
                                     {{model.abstract}}
