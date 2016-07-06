@@ -13,17 +13,6 @@ export default Ember.Controller.extend({
     },
     actions: {
         makePost: function(title, abstract, authors, subject, journal, content, link, citation) {
-
-            var data = {
-                title: title,
-                abstract: abstract,
-                authors: authors,
-                subject: subject,
-                journal: journal,
-                content: content,
-                link: link,
-                citation: citation,
-            };
 //            var formData = this.store.createRecord('preprint', {
 //                title: title,
 //                abstract: abstract,
@@ -34,28 +23,25 @@ export default Ember.Controller.extend({
 //                link: link,
 //                citation: citation,
 //            });
-            console.log(data);
+
             //formData.save();
         },
+
         preUpload(comp, drop, file) {
-            this.set('openModal', true);
+            //this.set('openModal', true);
             this.set('latestFileName', file.name);
             var promise =  new Ember.RSVP.Promise(resolve => {
                 this.set('resolve', resolve);
             });
             return promise;
         },
-        closeModal() {
-            this.set('_url', config.OSF.waterbutlerUrl + 'file?path=/' + this.get('latestFileName') + '&nid=' + this.get('nodeId') + '&provider=osfstorage');
+        uploadPreprintFile(nid) {
+            this.set('_url', config.OSF.waterbutlerUrl + 'file?path=/' + this.get('latestFileName') + '&nid=' + nid + '&provider=osfstorage');
             this.set('openModal', false);
             this.get('resolve')();
         },
         buildUrl() {
             return this.get('_url');
         },
-
-        uploadPreprint: function() {
-
-        }
     },
 });

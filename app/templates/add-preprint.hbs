@@ -3,19 +3,10 @@
     margin-top:10%;
 
 }
-#dropzone{
-    width:700px;
-    height:400px;
-    background:lightgrey;
-}
 
     .container{
         padding-right:10px;
         padding-left:10px;
-    }
-
-    .dropzone{
-        max-width:650px; /*THIS HELPS ON LARGE MONITORS */
     }
 
     .osf-box{
@@ -33,32 +24,14 @@
 
     <div class="row"> <!--ROW DIV-->
         <div class="col-lg-7"> <!--COL 7 DIV-->
-            {{!--dropzone-widget preUpload=true options=dropzoneOptions--}}
-
-            <br>
-{{dropzone-widget preUpload=(action 'preUpload') buildUrl=(action 'buildUrl') listeners=dropzoneOptions options=dropzoneOptions}}
-
-{{#bs-modal open=openModal title="Add file to which node?" footer=false}}
-    {{#bs-modal-body}}
-        {{input type="text" value=nodeId placeholder="Node's guid" required=true}}
-    {{/bs-modal-body}}
-    {{#bs-modal-footer as |footer|}}
-        {{#bs-button action=(action 'closeModal')}} Coolbeans! {{/bs-button}}
-    {{/bs-modal-footer}}
-{{/bs-modal}}
-<br>
-
-                 <!--This one is supposed to be a dropzone-->
-             <h4>Upload a preprint:</h4>
-               {{#drop-zone url='http://example.com/example' clickable=false addRemoveLinks=true id="dropzone" addfile=addedFileEvent uploadMultiple=false createImageThumbnails=false}} <div class="dz-message" data-dz-message><span></span></div>  <div class="space-top space-bottom text-center">
-        <p>Drop file here to upload</p> {{fa-icon icon="cloud-upload" size=5}} <p>or</p> {{bs-button text="Select from computer" action="switchToMFR"}}
-    </div> {{/drop-zone}}
-<!--What class do I make this...AND WHERE DOES THE BUTTON COME FROM-->
+            
+            {{dropzone-widget preUpload=(action 'preUpload') buildUrl=(action 'buildUrl') listeners=dropzoneOptions options=dropzoneOptions}}
 
 
         </div> <!--END COL 7 DIV-->
         <div class="col-lg-5"> <!--COL 5 DIV-->
-            {{preprint-form makePost=(action "makePost")}}
+            {{preprint-form uploadFile=(action 'uploadPreprintFile')}}
+            <!--<button class="btn btn-primary" onclick={{action 'closeModal'}}>Add File</button>-->
         </div> <!--END COL 5 DIV-->
     </div> <!--ROW DIV-->
     <div class="row"> <!--2ND ROW DIV-->
