@@ -47,12 +47,13 @@ Make use of the many generators for code, try `ember help generate` for more det
 The [jamDB documentation](https://jamdb.readthedocs.io/en/latest/install.html) provides the general steps needed for running JamDB locally and other background information on how the database is organized.
 
 **Things to note for JamDB installation**:
+
 1. Make sure your jam virtual environment is running python3 `mkvirtualenv --python=python3.5 jam`
 2. Make sure you are running vanilla Mongo and not Toku.
   - If you are coming from an OSF installation you may not have Mongo. The easiest way to rectify this is `brew install mongo`.
   - If you are creating a Mongo database for the first time you may have to create some new folders.
      
-      ```bash
+      ```
        sudo mkdir /data
        sudo mkdir /data/db
        sudo chmod -x /data/db
