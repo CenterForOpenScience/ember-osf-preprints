@@ -7,14 +7,14 @@ import {
 } from 'ember-osf/utils/auth';
 
 export default Ember.Controller.extend(OsfLoginControllerMixin, {
-    //toast: Ember.inject.service(),
+    toast: Ember.inject.service(),
     authUrl: getAuthUrl(),
     actions: {
         loginSuccess() {
             this.refresh();
         },
         loginFail(/* err */) {
-            //this.get('toast').error('Login failed');
+            this.get('toast').error('Login failed');
         }
     }
 });
