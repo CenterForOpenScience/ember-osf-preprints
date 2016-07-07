@@ -14,9 +14,7 @@ You will need the following things properly installed on your computer.
 * [PhantomJS](http://phantomjs.org/)
 
 ## Installation
-
 * `git clone https://github.com/CenterForOpenScience/ember-osf.git` the application off which this is built
-
 * `git clone <repository-url>` this repository
 * `cd preprint_service` change into the new directory
 *  follow [ember-osf](https://github.com/CenterForOpenScience/ember-osf) instructions for using code in a consuming app and configuration
@@ -47,8 +45,10 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 [JamDB](https://github.com/CenterForOpenScience/jamdb) is a database that runs on MongoDB and ElasticSearch. The adapters/serializers/models in this ember app are currently set up for making calls to a locally run JamDB server.
 The [jamDB documentation](https://jamdb.readthedocs.io/en/latest/install.html) provides the general steps needed for running JamDB locally and other background information on how the database is organized.
+
 **Things to note**:
 1. Make sure your jam virtual environment is running python3 `mkvirtualenv --python=python3.5 jam`
+
 2. Make sure you are running vanilla Mongo and not Toku.
 ..* If you are coming from an OSF installation you may not have Mongo. The easiest way to rectify this is `brew install mongo`.
 ..* If you are creating a Mongo database for the first time you may have to create some new folders.
@@ -57,7 +57,10 @@ The [jamDB documentation](https://jamdb.readthedocs.io/en/latest/install.html) p
    sudo chmod -x /data/db
 ```
 ..* To run your new mongo server change to the directory with the executable. If you brew installed as above it's probably `cd /usr/local/Cellar/mongodb/3.2.7/bin` then run it `./mongod`
+
 3. Don't forget to run elasicsearch! (If you have the OSF installed you can `invoke` it as you normally would to run it)
+
+### Using JamDB
 
 Below is a simple example of how to use the `jam` command line once you have your server up and running.
 
