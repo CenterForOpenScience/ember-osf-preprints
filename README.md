@@ -1,7 +1,7 @@
 # Preprint-service
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This is the prototype of the upcoming OSF preprints.
+This guide will help you get started if you're interested.
 
 ## Prerequisites
 
@@ -14,15 +14,16 @@ You will need the following things properly installed on your computer.
 * [PhantomJS](http://phantomjs.org/)
 
 ## Installation
-
+* `git clone https://github.com/CenterForOpenScience/ember-osf.git` the application off which this is built
 * `git clone <repository-url>` this repository
-* change into the new directory
+* `cd preprint_service` change into the new directory
+*  follow [ember-osf](https://github.com/CenterForOpenScience/ember-osf) instructions for using code in a consuming app and configuration
 * `npm install`
 * `bower install`
 
 ## Running / Development
-
-* `ember server`
+Currently we are running our application using test.osf.io as the backend:
+* `BACKEND=test ember server`
 * Visit your app at [http://localhost:4200](http://localhost:4200).
 
 ### Code Generators
@@ -39,13 +40,31 @@ Make use of the many generators for code, try `ember help generate` for more det
 * `ember build` (development)
 * `ember build --environment production` (production)
 
-### Deploying
 
-Specify what it takes to deploy your app.
+## Using JamDB
 
-### Using JamDB
+[JamDB](https://github.com/CenterForOpenScience/jamdb) is a database that runs on MongoDB and ElasticSearch. The adapters/serializers/models in this ember app are currently set up for making calls to a locally run JamDB server.
+The [jamDB documentation](https://jamdb.readthedocs.io/en/latest/install.html) provides the general steps needed for running JamDB locally and other background information on how the database is organized.
 
-[JamDB](https://jamdb.readthedocs.io/en/latest/) is a database that runs on MongoDB and ElasticSearch. The adapters/serializers/models in this ember app are currently set up for making calls to a locally run JamDB server. The documentation provides the steps needed for running JamDB locally and other background information on how the database is organized. Below is a simple example of how to use the `jam` command line once you have your server up and running.
+**Things to note for JamDB installation**:
+
+1. Make sure your jam virtual environment is running python3 `mkvirtualenv --python=python3.5 jam`
+2. Make sure you are running vanilla Mongo and not Toku.
+  - If you are coming from an OSF installation you may not have Mongo. The easiest way to rectify this is `brew install mongo`.
+  - If you are creating a Mongo database for the first time you may have to create some new folders.
+     
+      ```
+       sudo mkdir /data
+       sudo mkdir /data/db
+       sudo chmod -x /data/db
+      ```
+   - To run your new Mongo server change to the directory with the executable. If you brew installed as above it's probably `cd /usr/local/Cellar/mongodb/3.2.7/bin` then run it `./mongod`
+3. Don't forget to run elasicsearch! (If you have the OSF installed you can `invoke` it as you normally would to run it)
+
+
+### How to Jam
+
+Below is a simple example of how to use the `jam` command line once you have your server up and running.
 
 The `-h` (or `--help`) argument is applicable to all commands and is very useful for understanding how to use the jam cli. `jam -h` will give you an overview of what commands are available, but perhaps the most useful for getting setup are `jam create` and `jam update`. Let's start by creating a namespace.
 
@@ -109,7 +128,6 @@ Running `jam info fruits` should then confirm that `*` (all users) has READ perm
 ```
 
 **A few things to keep in mind in regard to JamDB:**
-* You should be running Mongo, not Toku.
 * All ids must adhere to the following regex: `[\d\w\-]{3,64}` (namely, they must be between 3 and 64 characters).
 * Users are specified in the form `{type}-{organization}-{id}` (e.g. `user-github-terroni`).
 
