@@ -4,7 +4,6 @@ import config from 'ember-get-config';
 
 export default Ember.Controller.extend({
     _url: null,
-    openModal: false,
     resolve: null,
     latestFileName: null,
     dropzoneOptions: {
