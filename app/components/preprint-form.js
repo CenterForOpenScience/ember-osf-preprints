@@ -25,7 +25,6 @@ export default Ember.Component.extend({
         // TODO: Change serializers so that this request is formed correctly
 
         let preprintMetadata = this.get('store').createRecord('preprint', {
-            "type": "documents",
             "id": "h43fd",
             "attributes": {
                 "title": title,
@@ -35,7 +34,7 @@ export default Ember.Component.extend({
 
         preprintMetadata.save();
 
-        this.transitionTo('/');
+//        this.transitionTo('/');
     }
         //TODO: eventually make a call to set an OSF file as a preprint (will probably need a flag for such)
     }

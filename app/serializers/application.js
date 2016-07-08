@@ -1,4 +1,5 @@
 import JSONAPISerializer from 'ember-data/serializers/json-api';
+import Ember from 'ember';
 
 var dasherize = Ember.String.dasherize;
 
@@ -53,7 +54,7 @@ export default JSONAPISerializer.extend({
 
     serialize(snapshot, options) {
         var data = this._super(snapshot, options);
-//        data.data.attributes = data.data.attributes.attributes;
+        data.data.attributes = data.data.attributes.attributes;
         return data;
     }
 });
