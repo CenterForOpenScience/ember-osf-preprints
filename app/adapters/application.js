@@ -10,6 +10,7 @@ export default JSONAPIAdapter.extend(JamAdapter, UrlTemplates, {
     namespace: 'v1/id',
 
     urlSegments: {  // Make available to all adapters, not just documents. This appears to be extended rather than overwritten by children.
-        namespaceId: () => config.JamDB.namespace
+        namespaceId: () => config.JamDB.namespace,
+        namespaceCreate: 'v1'
     }
 });

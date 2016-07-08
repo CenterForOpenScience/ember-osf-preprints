@@ -53,7 +53,7 @@ export default JSONAPISerializer.extend({
 
     serialize(snapshot, options) {
         var data = this._super(snapshot, options);
-        data.data.attributes = data.data.attributes.attributes;
+//        data.data.attributes = data.data.attributes.attributes;
         return data;
     }
 });
