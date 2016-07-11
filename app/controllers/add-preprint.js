@@ -4,6 +4,7 @@ import config from 'ember-get-config';
 
 export default Ember.Controller.extend({
     _url: null,
+    openModal: false,
     resolve: null,
     latestFileName: null,
     dropzoneOptions: {
@@ -35,7 +36,7 @@ export default Ember.Controller.extend({
             return promise;
         },
         uploadPreprintFile(nid) {
-            this.set('_url', config.OSF.waterbutlerUrl + 'file?path=/' + this.get('latestFileName') + '&nid=' + nid + '&provider=osfstorage');
+            this.set('_url', 'https://test-files.osf.io/' + 'file?path=/' + this.get('latestFileName') + '&nid=' + nid + '&provider=osfstorage');
             this.set('openModal', false);
             this.get('resolve')();
         },
