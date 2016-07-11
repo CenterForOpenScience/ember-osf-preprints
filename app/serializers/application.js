@@ -1,4 +1,5 @@
 import JSONAPISerializer from 'ember-data/serializers/json-api';
+import Ember from 'ember';
 
 var dasherize = Ember.String.dasherize;
 
