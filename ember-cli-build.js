@@ -5,12 +5,21 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 //TODO: Add an actual sass file to this application. I don't think this does anything
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
-        sassOptions: {
-            includePaths: [
-                '../ember-osf/tests/dummy/app/components',
-                '../ember-osf/addon/styles'
-            ]
-        },
+    'ember-bootstrap': {
+        'importBootstrapCSS': false
+    },
+    sassOptions: {
+      includePaths: [
+        '../ember-osf/tests/dummy/app/components',
+        '../ember-osf/addon/styles',
+        'bower_components/bootstrap-sass/assets/stylesheets',
+        'bower_components/osf-style/sass'
+      ]
+    },
+    autoprefixer: {
+      browsers: ['last 4 versions'],
+      cascade: false
+    }
   });
 
   // Use `app.import` to add additional libraries to the generated
@@ -28,22 +37,26 @@ module.exports = function(defaults) {
 
   // osf-style
   app.import("bower_components/osf-style/vendor/prism/prism.css");
-  app.import("bower_components/osf-style/css/base.css");
   app.import("bower_components/osf-style/page.css");
 
   app.import("bower_components/osf-style/img/cos-white2.png", {
     destDir: 'vendor'
   });
-  // Bootstrap
-  app.import("bower_components/bootstrap/dist/js/bootstrap.js");
-  app.import("bower_components/bootstrap/dist/css/bootstrap.css");
-  app.import("bower_components/bootstrap/js/modal.js");
 
 //  app.import("bower_components/dropzone/dist/dropzone.js");
-  app.import("bower_components/dropzone/dist/min/dropzone.min.css");
+  app.import({
+    development: "bower_components/dropzone/dist/dropzone.css",
+    production: "bower_components/dropzone/dist/min/dropzone.min.css"
+  });
 
-  app.import("bower_components/bootstrap-treeview/public/css/bootstrap-treeview.css");
-  app.import("bower_components/bootstrap-treeview/public/js/bootstrap-treeview.js");
+  app.import({
+      development: "bower_components/bootstrap-treeview/src/css/bootstrap-treeview.css",
+      production: "bower_components/bootstrap-treeview/dist//bootstrap-treeview.min.css"
+  });
+  app.import({
+      development: "bower_components/bootstrap-treeview/src/js/bootstrap-treeview.js",
+      production: "bower_components/bootstrap-treeview/dist/js/bootstrap-treeview.min.js"
+  });
 
   return app.toTree();
 };
