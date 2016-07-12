@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 //TODO: Store all dates the same and use a helper or addon to format
-var getTagDate = function(){
+let getTagDate = function(){
     var date = new Date();
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var month = months[date.getMonth()];
@@ -9,7 +9,6 @@ var getTagDate = function(){
 
     return `${month} ${year}`;
 }
-
 
 export default Ember.Controller.extend({
     toast: Ember.inject.service(),
@@ -43,6 +42,7 @@ export default Ember.Controller.extend({
                     title: preprint.title,
                     abstract: preprint.abstract,
                     authors: preprint.authors,
+                    date: getTagDate(),
                     subject: preprint.subject,
                     tags: preprint.tags,
                     journal: preprint.journal,
