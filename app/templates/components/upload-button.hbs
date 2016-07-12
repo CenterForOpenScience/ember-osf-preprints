@@ -7,9 +7,11 @@
         <div class="col-sm-12">
             <!--TODO: Don't create the same button twice-->
             {{#if session.isAuthenticated}}
-                    <button {{action 'modalShow'}}type="button" class="btn btn-info btn-lg">
-                        Add a preprint
-                    </button>
+                    <!--<button {{action 'modalShow'}}type="button" class="btn btn-info btn-lg">-->
+                        <!--Add a preprint-->
+                    <!--</button>-->
+            <!--TODO: Add modal later-->
+                {{#link-to "add-preprint" type="button" class="btn btn-info btn-lg"}}Add a preprint{{/link-to}}
             {{else}}
                     <button class="btn btn-info btn-lg" onclick={{action 'login' target=popup}} >
                         Add a preprint
@@ -21,7 +23,7 @@
 </div> <!--END COL-->
 
 
-
+<!--TODO:Replace/delete these modals-->
 <!-- Modals -->
 
 <!--User not logged in modal-->

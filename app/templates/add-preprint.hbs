@@ -30,28 +30,20 @@
             </div> <!--END COL-->
         </div> <!--END ROW-->
 
-    <div class="row"> <!--ROW DIV-->
+    <div class="row"> <!--FORM ROW DIV-->
         <div class="col-md-7"> <!--COL 7 DIV-->
-            <!--WORKFLOW: SELECT FROM OSF-->
             <!--TODO: ADD EMBER OSF CONPONENT AND LOGIC FOR ROUTES-->
-            <!--PICK PROJECT AND UPLOAD-->
             {{file-widget preUpload=(action 'preUpload') buildUrl=(action 'buildUrl') listeners=dropzoneOptions options=dropzoneOptions}}
+                <br>
+            {{dropzone-widget preUpload=(action 'preUpload') buildUrl=(action 'buildUrl') listeners=dropzoneOptions options=dropzoneOptions}}
+        </div> <!--END COL 7 DIV-->
 
-
-
-            <!--WORKFLOW: UPLOAD NEW FILE-->
-            <!--TODO: ADD EMBER OSF CONPONENT AND LOGIC FOR ROUTES-->
-            <!--NAME PROJECT AND DORPZONE WIDGET-->
-            <br>
-        <br>
-        </div>
-
-        <div class="col-md-5"> <!--COL 5 DIV-->
-            {{preprint-form uploadFile=(action 'uploadPreprintFile')}}
+        <div class="col-md-5"> <!--COL 5 DIV: FORM-->
+            {{preprint-form buttonAction=(action 'uploadNewPreprintToNewProject')}}
             <!--<button class="btn btn-primary" onclick={{action 'closeModal'}}>Add File</button>-->
-        </div> <!--END COL 5 DIV-->
+        </div> <!--END COL 5 DIV: FORM-->
 
-    </div> <!--ROW DIV-->
+    </div> <!--END FORM ROW-->
 
 
 </div> <!--END MAIN DIV-->
