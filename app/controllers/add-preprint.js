@@ -2,7 +2,19 @@ import Ember from 'ember';
 import $ from 'jquery';
 import config from 'ember-get-config';
 
+//TODO: Store all dates the same and use a helper or addon to format
+var getTagDate = function(){
+    var date = new Date();
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var month = months[date.getMonth()];
+    var year = date.getFullYear();
+
+    return `${month} ${year}`;
+}
+
+
 export default Ember.Controller.extend({
+    toast: Ember.inject.service(),
     _url: null,
     openModal: false,
     resolve: null,
@@ -13,7 +25,6 @@ export default Ember.Controller.extend({
     },
     actions: {
         preUpload(comp, drop, file) {
-            //this.set('openModal', true);
             this.set('latestFileName', file.name);
             var promise =  new Ember.RSVP.Promise(resolve => {
                 this.set('resolve', resolve);
@@ -55,9 +66,8 @@ export default Ember.Controller.extend({
             });
 
             preprintMetadata.save();
-//            this.goToView("12312423");
-              //this.goToView('12312');
-            this.transitionToRoute('/');
+            //this.get('toast').error("Toast is trying man");
+            //this.transitionToRoute('/');
 
     //TODO: eventually make a call to set an OSF file as a preprint (will probably need a flag for such)
     }
