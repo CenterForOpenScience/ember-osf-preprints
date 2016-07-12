@@ -44,7 +44,7 @@ export default Ember.Controller.extend({
                     authors: preprint.authors,
                     date: getTagDate(),
                     subject: preprint.subject,
-                    tags: preprint.tags,
+                    // tags: preprint.tags,
                     journal: preprint.journal,
                     path: path
                 }
