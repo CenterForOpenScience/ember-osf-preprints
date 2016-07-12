@@ -25,32 +25,34 @@
 <div class="m-b-md p-md osf-box" id="main"> <!--MAIN DIV-->
 
         <div class="row" id="addPreprint"> <!--ROW-->
-            <div class="col-lg-12"> <!--COL-->
+            <div class="col-md-12"> <!--COL-->
                 <h1>Add Preprint</h1>
             </div> <!--END COL-->
         </div> <!--END ROW-->
 
     <div class="row"> <!--ROW DIV-->
-        <div class="col-lg-7"> <!--COL 7 DIV-->
+        <div class="col-md-7"> <!--COL 7 DIV-->
             <!--WORKFLOW: SELECT FROM OSF-->
             <!--TODO: ADD EMBER OSF CONPONENT AND LOGIC FOR ROUTES-->
             <!--PICK PROJECT AND UPLOAD-->
             {{file-widget preUpload=(action 'preUpload') buildUrl=(action 'buildUrl') listeners=dropzoneOptions options=dropzoneOptions}}
 
+
+
             <!--WORKFLOW: UPLOAD NEW FILE-->
             <!--TODO: ADD EMBER OSF CONPONENT AND LOGIC FOR ROUTES-->
             <!--NAME PROJECT AND DORPZONE WIDGET-->
             <br>
-        <div class="col-lg-7"> <!--COL 7 DIV--><br>
+        <br>
+        </div>
 
-            {{dropzone-widget preUpload=(action 'preUpload') buildUrl=(action 'buildUrl') listeners=dropzoneOptions options=dropzoneOptions}}
-
-        </div> <!--END COL 7 DIV-->
-        <div class="col-lg-5"> <!--COL 5 DIV-->
+        <div class="col-md-5"> <!--COL 5 DIV-->
             {{preprint-form uploadFile=(action 'uploadPreprintFile')}}
             <!--<button class="btn btn-primary" onclick={{action 'closeModal'}}>Add File</button>-->
         </div> <!--END COL 5 DIV-->
+
     </div> <!--ROW DIV-->
+
 
 </div> <!--END MAIN DIV-->
 
