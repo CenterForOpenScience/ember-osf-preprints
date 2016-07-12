@@ -5,7 +5,7 @@
 <strong>Authors:</strong> <br>
 {{input class="form-control" value=authors}}<br>
 <strong>Subject:</strong> <br>
-<select class="form-control">
+<select value=subject class="form-control">
     <option>Biology and life sciences</option>
     <option>Computer and information sciences</option>
     <option>Earth sciences</option>
@@ -19,7 +19,7 @@
     <option>Social sciences</option>
 </select><br>
 <strong>Tags:</strong> <span class="text-muted">(optional)</span><br>
-{{input class="form-control" value=subject}}<br>
+{{input class="form-control" value=tags}}<br>
 <strong>Accepted in:</strong> <span class="text-muted">(optional)</span> <br>
 {{input class="form-control" value=journal}}<br>
 <strong>Content type:</strong> <span class="text-muted">(optional)</span> <br>
@@ -33,4 +33,4 @@
     <option>Chicago</option>
 </select><br>
 <!--<button class="btn btn-primary" {{!--action "makePost" title abstract authors subject journal preprint project--}}>Add Preprint</button>-->
-<button class="btn btn-primary" onclick={{action 'createNode' title abstract}}>Add preprint</button>
+<button class="btn btn-primary" onclick={{action 'createPreprint' title abstract authors subject tags journal}}>Add preprint</button>

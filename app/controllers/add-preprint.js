@@ -12,21 +12,6 @@ export default Ember.Controller.extend({
         method: 'PUT'
     },
     actions: {
-        makePost: function(title, abstract, authors, subject, journal, content, link, citation) {
-//            var formData = this.store.createRecord('preprint', {
-//                title: title,
-//                abstract: abstract,
-//                authors: authors,
-//                subject: subject,
-//                journal: journal,
-//                content: content,
-//                link: link,
-//                citation: citation,
-//            });
-
-            //formData.save();
-        },
-
         preUpload(comp, drop, file) {
             //this.set('openModal', true);
             this.set('latestFileName', file.name);
@@ -35,13 +20,47 @@ export default Ember.Controller.extend({
             });
             return promise;
         },
-        uploadPreprintFile(nid) {
-            this.set('_url', 'https://test-files.osf.io/' + 'file?path=/' + this.get('latestFileName') + '&nid=' + nid + '&provider=osfstorage');
-            this.set('openModal', false);
-            this.get('resolve')();
-        },
         buildUrl() {
             return this.get('_url');
         },
+        //TODO: Break up this logic into three functions (project, file, save metadata)
+        uploadNewPreprintToNewProject(title, abstract, authors, subject, tags, journal) {
+        //Create new public project
+            var node = this.get('store').createRecord('node', {
+                title: title,
+                category: 'project',
+                description: abstract || null,
+                public: true
+            });
+
+            //TODO: Add logic for if you're not uploading a file
+            //Upload a new file to the new project
+            node.save().then(() => {
+                this.set('_url', 'https://test-files.osf.io/' + 'file?path=/' + this.get('latestFileName') + '&nid=' + node.id + '&provider=osfstorage');
+                this.set('openModal', false);
+                this.get('resolve')();
+                });
+
+            //Save metadata in Jam
+            //TODO:Link all of these calls together so that you can have a GUID before creating metadata
+            // TODO check if this works with proper permissions (will get 401 if not set properly)
+            // TODO: Change serializers so that this request is formed correctly
+
+            let preprintMetadata = this.get('store').createRecord('preprint', {
+                "id": "rmvnx",
+                "attributes": {
+                    "title": title,
+                    "abstract": abstract
+                }
+            });
+
+            preprintMetadata.save();
+//            this.goToView("12312423");
+              //this.goToView('12312');
+            this.transitionToRoute('/');
+
+    //TODO: eventually make a call to set an OSF file as a preprint (will probably need a flag for such)
+    }
+
     },
 });
