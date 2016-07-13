@@ -11,7 +11,7 @@
     <div class="row"> <!--FORM ROW DIV-->
         <div class="col-md-7"> <!--COL 7 DIV-->
             <!--TODO: ADD EMBER OSF COMPONENT AND LOGIC FOR ROUTES-->
-            {{dropzone-widget preUpload=(action 'preUpload') postUpload=(action 'postUpload') onError=(action 'onError') buildUrl=(action 'buildUrl') listeners=dropzoneOptions options=dropzoneOptions}}
+            {{dropzone-widget preUpload=(action 'preUpload') success=(action 'success') error=(action 'error') buildUrl=(action 'buildUrl') options=dropzoneOptions}}
         </div> <!--END COL 7 DIV-->
 
         <div class="col-md-5"> <!--COL 5 DIV: FORM-->

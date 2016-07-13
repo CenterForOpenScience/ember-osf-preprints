@@ -33,7 +33,7 @@ export default Ember.Controller.extend({
         // TODO: Link all of these calls together so that you can have a GUID before creating metadata
         // TODO: Check if this works with proper permissions (will get 401 if not set properly)
         // TODO: Change serializers so that this request is formed correctly
-        postUpload(_, __, ___, response) {
+        success(ignore, dropzone, file, response) {
             let path = response.path.slice(1),
                 preprint = this.get('preprint');
             let preprintMetadata = this.get('store').createRecord('preprint', {
@@ -57,7 +57,7 @@ export default Ember.Controller.extend({
                 this.get('toast').error('Could not save preprint metadata!');
             });
         },
-        onError(_, __, ___, errorMessage) {
+        error(ignore, dropzone, file, errorMessage) {
             console.error(errorMessage);
             this.get('toast').error(`Error uploading file:${errorMessage}`);
         },
