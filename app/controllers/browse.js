@@ -17,7 +17,9 @@ export default Ember.Controller.extend({
 
         let params = {};
         if (query) {
-            params['q'] = 'title:' + query;
+            let fuzzyDelim = '~AUTO ';
+            let q = query.split(/ +/).filter(s => s !== "").map(s => s + fuzzyDelim).join(' ');
+            params['q'] = q;
         }
         if (subject) {
             params["filter[subject]"] = subject;
