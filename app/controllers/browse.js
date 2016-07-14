@@ -13,7 +13,7 @@ export default Ember.Controller.extend({
         let model = this.get('model').preprints;
         let store = this.get('store');
 
-//        this.highlightSubject();
+        // TODO: highlight the subject in the tree if reaching this page from a "browse by subject" link, like on front page
 
         let params = {};
         if (query) {
@@ -23,6 +23,8 @@ export default Ember.Controller.extend({
             params['q'] = query;
         }
         if (subjects) {
+            // Set subjects to be just the subject clicked (guaranteed to be the first listed), not all that are searched
+            this.set('subjects', subjects.split(',')[0]);
             // Array of subjects sent from taxonomy-tree is given as comma-separate string
             let subjectQuery = 'data.subject:(' + subjects.split(',').map(s => '"' + s + '"').join(' OR ') + ')';
             subjectQuery = query ? query + ' AND ' + subjectQuery : subjectQuery; // add AND if necessary
@@ -36,21 +38,4 @@ export default Ember.Controller.extend({
         return store.query('preprint', params);
     }),
 
-//    highlightSubject: function() {
-//        let treeElem = $('#taxonomyTree')
-//        if (treeElem.length) {
-////            let selected = treeElem.treeview('getSelected');
-////            for (var i = 0; i<selected.length; i++) {
-////                treeElem.treeview('unselectNode', [selected[i].nodeId, {silent: true}])
-////            }
-//            let toHighlight = treeElem.treeview('search', [this.get('subject'), {
-//                exactMatch: true,
-//                revealResults: false
-//            }]);
-//            if (toHighlight.length){
-//                treeElem.treeview('selectNode', [toHighlight[0].nodeId, {silent: true}]);
-//            }
-//
-//        }
-//    }
 });

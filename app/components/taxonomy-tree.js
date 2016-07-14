@@ -11,10 +11,25 @@ export default Ember.Component.extend({
             selectedBackColor: '#67a3bf',
 
             onNodeSelected: function(event, data) {
+                // Recurse down from this subject to filter by all subcategories as well
+                let getSubjects = (d, subjects) => {
+                    subjects.push(d.text[0]);
+                    // Base case: leaf node
+                    if (!d.nodes) {
+                        return subjects;
+                    }
+                    // Recursive case, add on results from recursing onto child nodes
+                    for (let i=0; i<d.nodes.length; i++) {
+                        subjects.concat(getSubjects(d.nodes[i], subjects));
+                    }
+                    return subjects;
+                };
+
                 if (data.text == 'All subjects') {
                     this.sendAction('filter', null);
                 } else {
-                    this.sendAction('filter', ['Biology and life sciences', 'Agriculture', 'Agricultural economics']);
+                    // Make call to recursive function with initially empty list
+                    this.sendAction('filter', getSubjects(data, []));
                 }
             }.bind(this)
         });
