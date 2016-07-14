@@ -1,1 +1,41 @@
-{{outlet}}
+<style>
+    #main {
+        margin-top: 10%;
+
+    }
+
+    .container {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .osf-box {
+        border: 0px;
+    }
+
+
+</style>
+<div class="container"> <!--CONTAINER DIV-->
+
+    <div class="m-b-md p-md osf-box" id="main"> <!--MAIN DIV-->
+
+        <h1>Edit preprint</h1>
+
+        <div class="row"> <!--ROW DIV-->
+            <div class="col-lg-7"> <!--COL 7 DIV--><br>
+
+                {{dropzone-widget}}
+
+            </div> <!--END COL 7 DIV-->
+            <div class="col-lg-5"> <!--COL 5 DIV-->
+                {{preprint-form title=model.preprint.title authors=model.preprint.authors
+                abstract=model.preprint.abstract buttonText="Save changes" actionName="updatePreprint"
+                buttonAction=(action "updatePreprint") id=model.id}}
+            </div> <!--END COL 5 DIV-->
+        </div> <!--ROW DIV-->
+        <div class="row"> <!--2ND ROW DIV-->
+
+        </div> <!--END OF 2ND ROW-->
+    </div> <!--END MAIN DIV-->
+</div> <!--END CONTAINER DIV-->
+<!--makePost=(action "makePost")-->

@@ -6,12 +6,10 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  //TODO: Add nesting for viewing, editing, adding, and possibly adding a preprint
-  //TODO: HBS code needs to be refactored here to make the "edit" page work
-  this.route('preprints', { path: '/preprints/:file_id'}, function(){
-        this.route('edit', { path: '/edit'});
+  this.route('preprints', {path: '/preprints/:file_id'}, function() {
+    this.route('view', { path: '/'});
+    this.route('edit', { path: '/edit'});
   });
-
 
   this.route('add-preprint', { path: '/preprints/add'});
 
