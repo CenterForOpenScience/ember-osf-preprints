@@ -14,5 +14,5 @@ export default Model.extend(JamModel, {
     supplementalMaterials: attr(),
     figures: attr(),
     license: attr(),
-    link: attr(), //Change to just a FID later
+    path: attr()
 });

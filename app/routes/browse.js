@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
     queryParams: {
-        subject: {
+        subjects: {
             replace: true
         },
         query: {
@@ -17,8 +17,8 @@ export default Ember.Route.extend({
         });
     },
     actions: {
-        filter: function( subjectToFilter ) {
-            this.transitionTo( { queryParams: { subject: subjectToFilter } } );
+        filter: function( subjectsToFilter ) {
+            this.transitionTo( { queryParams: { subjects: subjectsToFilter } } );
         },
         search: function( q ) {
             this.transitionTo( { queryParams: { query: q } } );
