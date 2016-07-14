@@ -4,8 +4,6 @@ import $ from 'jquery';
 export default Ember.Component.extend({
     store: Ember.inject.service(),
 
-    // JamDB
-
     didInsertElement() {
         $('#taxonomyTree').treeview({
             data: this.get('tree').get('tree'),
@@ -21,9 +19,5 @@ export default Ember.Component.extend({
             }.bind(this)
         });
     },
-
-
-
-
 
 });
