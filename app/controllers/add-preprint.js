@@ -66,6 +66,7 @@ export default Ember.Controller.extend({
             });
 
             preprintMetadata.save();
+
             //this.get('toast').error("Toast is trying man");
             //this.transitionToRoute('/');
 
