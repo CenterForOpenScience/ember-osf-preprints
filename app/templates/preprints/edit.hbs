@@ -24,7 +24,13 @@
         <div class="row"> <!--ROW DIV-->
             <div class="col-lg-7"> <!--COL 7 DIV--><br>
 
-                {{dropzone-widget}}
+                <div id="mfr" class="col-md-7">
+                    <div>
+                        <iframe src={{concat model.renderUrl '?url=' model.baseUrl model.id '/?action=download%26mode=render'}} display="block"
+                                width=650 height=700></iframe>
+                    </div>
+                    <!--TODO: EMBER OSF MFR -->
+                </div>
 
             </div> <!--END COL 7 DIV-->
             <div class="col-lg-5"> <!--COL 5 DIV-->
