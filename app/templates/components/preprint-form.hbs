@@ -5,7 +5,7 @@
 <strong>Authors:</strong> <br>
 {{input class="form-control" value=authors}}<br>
 <strong>Subject:</strong> <br>
-<select value=subject class="form-control">
+<select name="subject" class="form-control">
     <option>Biology and life sciences</option>
     <option>Computer and information sciences</option>
     <option>Earth sciences</option>
@@ -33,4 +33,4 @@
     <option>Chicago</option>
 </select><br>
 <!--<button class="btn btn-primary" {{!--action "makePost" title abstract authors subject journal preprint project--}}>Add Preprint</button>-->
-<button class="btn btn-primary" onclick={{action 'createPreprint' title abstract authors subject tags journal}}>Add preprint</button>
+<button class="btn btn-primary" onclick={{action 'createPreprint' title abstract authors tags journal}}>Add preprint</button>
