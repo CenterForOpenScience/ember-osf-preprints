@@ -24,10 +24,9 @@ export default Ember.Controller.extend({
     actions: {
         preUpload(comp, drop, file) {
             this.set('latestFileName', file.name);
-            let promise = new Ember.RSVP.Promise(resolve => {
+            return new Ember.RSVP.Promise(resolve => {
                 this.set('resolve', resolve);
             });
-            return promise;
         },
         // Save metadata in Jam
         // TODO: Link all of these calls together so that you can have a GUID before creating metadata
@@ -35,8 +34,8 @@ export default Ember.Controller.extend({
         // TODO: Change serializers so that this request is formed correctly
         success(ignore, dropzone, file, response) {
             let path = response.path.slice(1),
-                preprint = this.get('preprint');
-            let preprintMetadata = this.get('store').createRecord('preprint', {
+                preprint = this.get('preprint'),
+                preprintMetadata = this.get('store').createRecord('preprint', {
                 id: path, // TODO: change to guid
                 attributes: {
                     title: preprint.title,
@@ -64,7 +63,6 @@ export default Ember.Controller.extend({
         buildUrl() {
             return this.get('_url');
         },
-        //TODO: Break up this logic into three functions (project, file, save metadata)
         uploadNewPreprintToNewProject(title, abstract, authors, subject, tags, journal) {
             //Create new public project
             let node = this.get('store').createRecord('node', {
