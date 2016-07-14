@@ -14,7 +14,7 @@ export default Ember.Component.extend({
                 if (data.text == 'All subjects') {
                     this.sendAction('filter', null);
                 } else {
-                    this.sendAction('filter', data.text);
+                    this.sendAction('filter', ['Biology and life sciences', 'Agriculture', 'Agricultural economics']);
                 }
             }.bind(this)
         });

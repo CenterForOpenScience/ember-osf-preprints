@@ -57,15 +57,23 @@ export default Ember.Controller.extend({
             // TODO check if this works with proper permissions (will get 401 if not set properly)
             // TODO: Change serializers so that this request is formed correctly
 
-            let preprintMetadata = this.get('store').createRecord('preprint', {
-                "id": "rmvnx",
-                "attributes": {
-                    "title": title,
-                    "abstract": abstract
-                }
+//            let preprintMetadata = this.get('store').createRecord('preprint', {
+//                "id": "rmvnx",
+//                "attributes": {
+//                    "title": title,
+//                    "abstract": abstract
+//                }
+//            });
+
+//            preprintMetadata.save();
+
+            this.get('store').findRecord('preprint', 'rmvnx').then(function(preprint) {
+//                alert(preprint.get('title'));
+                preprint.set('title', 'holy shit it worked');
+                preprint.save();
             });
 
-            preprintMetadata.save();
+
             //this.get('toast').error("Toast is trying man");
             //this.transitionToRoute('/');
 
