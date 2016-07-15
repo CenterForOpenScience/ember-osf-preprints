@@ -29,9 +29,7 @@ export default Ember.Controller.extend({
             });
         },
         // Save metadata in Jam
-        // TODO: Link all of these calls together so that you can have a GUID before creating metadata
         // TODO: Check if this works with proper permissions (will get 401 if not set properly)
-        // TODO: Change serializers so that this request is formed correctly
         success(ignore, dropzone, file, response) {
             let path = response.path.slice(1),
                 preprint = this.get('preprint'),
@@ -43,8 +41,9 @@ export default Ember.Controller.extend({
                     authors: preprint.authors,
                     date: getTagDate(),
                     subject: preprint.subject,
-                    // tags: preprint.tags,
+                    tags: preprint.tags,
                     journal: preprint.journal,
+                    doi: preprint.doi,
                     path: path
                 }
             });
@@ -63,7 +62,7 @@ export default Ember.Controller.extend({
         buildUrl() {
             return this.get('_url');
         },
-        uploadNewPreprintToNewProject(title, abstract, authors, subject, tags, journal) {
+        uploadNewPreprintToNewProject(title, abstract, authors, subject, tags, journal, doi) {
             //Create new public project
             let node = this.get('store').createRecord('node', {
                 title: title,
@@ -78,7 +77,8 @@ export default Ember.Controller.extend({
                 authors: authors,
                 subject: subject,
                 tags: tags,
-                journal: journal
+                journal: journal,
+                doi: doi
             });
 
             // TODO: Add logic for if you're not uploading a file
