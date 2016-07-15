@@ -14,5 +14,7 @@ export default Model.extend(JamModel, {
     supplementalMaterials: attr(),
     figures: attr(),
     license: attr(),
-    path: attr()
+    path: attr(),
+    tags: attr(),
+    doi: attr(),
 });

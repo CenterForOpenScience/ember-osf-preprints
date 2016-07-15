@@ -22,15 +22,7 @@
 {{input class="form-control" value=tags}}<br>
 <strong>Accepted in:</strong> <span class="text-muted">(optional)</span> <br>
 {{input class="form-control" value=journal}}<br>
-<strong>Content type:</strong> <span class="text-muted">(optional)</span> <br>
-{{input class="form-control" value=preprint}}<br>
-<strong>Link to an existing OSF file:</strong> <span class="text-muted">(optional)</span> <br>
-{{input class="form-control" value=project}}<br>
-<strong>Citation:</strong> <span class="text-muted">(optional)</span> <br>
-<select class="form-control">
-    <option>APA</option>
-    <option>MLA</option>
-    <option>Chicago</option>
-</select><br>
+<strong>DOI:</strong> <span class="text-muted">(optional)</span> <br>
+{{input class="form-control" value=doi}}<br>
 <!--<button class="btn btn-primary" {{!--action "makePost" title abstract authors subject journal preprint project--}}>Add Preprint</button>-->
-<button class="btn btn-primary" onclick={{action actionName title abstract authors tags journal}}>{{buttonText}}</button>
+<button class="btn btn-primary" onclick={{action actionName title abstract authors tags journal doi}}>{{buttonText}}</button>

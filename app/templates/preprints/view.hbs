@@ -42,7 +42,7 @@ hr {
             <div class="row" id="header"> <!--HEADER ROW-->
                 <h1>{{model.preprint.title}}</h1>
                 <h5>{{model.preprint.authors}}</h5>
-                <h5>Added on {{model.preprint.date}}</h5>
+                <h5>Added on {{moment-format model.preprint.date}}</h5>
             </div> <!--END HEADER ROW-->
             <hr color="#C7FFC7">
             <div class="row"> <!--CONTENT ROW-->
@@ -77,11 +77,26 @@ hr {
                     <br>
 
                     <!--CONTENT-->
+                    <!--TODO: Make the creation of these fields dynamic and generally better-->
                         <div class="col-md-12"> <!--COL 12-->
                                 <h3> Abstract: </h3>
                                 <p> {{model.preprint.abstract}} </p>
                         </div> <!--END COL 12-->
 
+                        <div class="col-md-12"> <!--COL 12-->
+                                <h3> Subject: </h3>
+                                <p> {{model.preprint.subject}} </p>
+                        </div> <!--END COL 12-->
+
+                        <div class="col-md-12"> <!--COL 12-->
+                                <h3> Tags: </h3>
+                                <p> {{model.preprint.tags}} </p>
+                        </div> <!--END COL 12-->
+
+                    <div class="col-md-12"> <!--COL 12-->
+                                <h3> DOI: </h3>
+                                <p> {{model.preprint.doi}} </p>
+                        </div> <!--END COL 12-->
 
                         <div class="col-md-12"> <!--COL-->
                                 <h3> Citation: </h3>

@@ -1,15 +1,5 @@
 import Ember from 'ember';
 
-//TODO: Store all dates the same and use a helper or addon to format
-let getTagDate = function(){
-    var date = new Date();
-    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var month = months[date.getMonth()];
-    var year = date.getFullYear();
-
-    return `${month} ${year}`;
-}
-
 export default Ember.Controller.extend({
     toast: Ember.inject.service(),
     _url: null,
@@ -29,9 +19,7 @@ export default Ember.Controller.extend({
             });
         },
         // Save metadata in Jam
-        // TODO: Link all of these calls together so that you can have a GUID before creating metadata
         // TODO: Check if this works with proper permissions (will get 401 if not set properly)
-        // TODO: Change serializers so that this request is formed correctly
         success(ignore, dropzone, file, response) {
             let path = response.path.slice(1),
                 preprint = this.get('preprint'),
@@ -41,10 +29,11 @@ export default Ember.Controller.extend({
                     title: preprint.title,
                     abstract: preprint.abstract,
                     authors: preprint.authors,
-                    date: getTagDate(),
+                    date: new Date(),
                     subject: preprint.subject,
-                    // tags: preprint.tags,
+                    tags: preprint.tags,
                     journal: preprint.journal,
+                    doi: preprint.doi,
                     path: path
                 }
             });
@@ -63,7 +52,7 @@ export default Ember.Controller.extend({
         buildUrl() {
             return this.get('_url');
         },
-        uploadNewPreprintToNewProject(title, abstract, authors, subject, tags, journal) {
+        uploadNewPreprintToNewProject(title, abstract, authors, subject, tags, journal, doi) {
             //Create new public project
             let node = this.get('store').createRecord('node', {
                 title: title,
@@ -78,7 +67,8 @@ export default Ember.Controller.extend({
                 authors: authors,
                 subject: subject,
                 tags: tags,
-                journal: journal
+                journal: journal,
+                doi: doi
             });
 
             // TODO: Add logic for if you're not uploading a file
