@@ -42,7 +42,7 @@ hr {
             <div class="row" id="header"> <!--HEADER ROW-->
                 <h1>{{model.preprint.title}}</h1>
                 <h5>{{model.preprint.authors}}</h5>
-                <h5>Added on {{model.preprint.date}}</h5>
+                <h5>Added on {{moment-format model.preprint.date}}</h5>
             </div> <!--END HEADER ROW-->
             <hr color="#C7FFC7">
             <div class="row"> <!--CONTENT ROW-->
