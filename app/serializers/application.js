@@ -51,10 +51,4 @@ export default JSONAPISerializer.extend({
     extractId(modelClass, resourceHash) {
         return resourceHash.id.split('.')[resourceHash.id.split('.').length-1];
     },
-
-    serialize(snapshot, options) {
-        var data = this._super(snapshot, options);
-        data.data.attributes = data.data.attributes.attributes;
-        return data;
-    }
 });

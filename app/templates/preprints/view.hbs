@@ -1,0 +1,101 @@
+<br>
+<br>
+<style>
+#mfr {
+    padding: 40px;
+    padding-top: 30px;
+
+}
+#header {
+    padding: 0px;
+    margin-left: 12px;
+}
+hr {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    border-style: inset;
+    border-width: 1px;
+}
+#view_project {
+    margin-right: 20px;
+    height:100px;
+    padding:15px;
+}
+
+#right_panel {
+    margin-right: 20px;
+}
+
+    .osf-box{
+        border:0px;
+    }
+
+
+</style>
+
+<body>
+
+<div class="container"><!--CONATINER DIV-->
+    <div class="row"> <!--ROW DIV-->
+        <div class="m-b-md p-md osf-box"> <!--OSF BOX DIV-->
+            <div class="row" id="header"> <!--HEADER ROW-->
+                <h1>{{model.preprint.title}}</h1>
+                <h5>{{model.preprint.authors}}</h5>
+                <h5>Added on {{model.preprint.date}}</h5>
+            </div> <!--END HEADER ROW-->
+            <hr color="#C7FFC7">
+            <div class="row"> <!--CONTENT ROW-->
+                <div id="mfr" class="col-md-7"> <!--MFR COL DIV-->
+                    <div> <!--IFRAME DIV-->
+                <iframe src={{concat model.renderUrl '?url=' model.baseUrl model.id '/?action=download%26mode=render'}} display="block" width=650 height=700></iframe>
+                    </div> <!--END IFRAME DIV-->
+                    <!--TODO: EMBER OSF MFR -->
+
+                </div> <!--END MFR COL DIV-->
+                <div class="col-md-5"> <!--RIGHT SIDE COL-->
+                    <!--DOWNLOAD BUTTON-->
+                    <br>
+                    <div class="m-b-md p-md osf-box-lt" id="download_project">
+                        <a href={{model.downloadLink}}>
+                            <button type="button" class="btn btn-default" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+                            </button>
+                            Download preprint
+                        </a>
+                    </div>
+                    <br>
+                    <!--PROJECT BUTTON-->
+                    <div class="m-b-md p-md osf-box-lt" id="view_project">
+                        <div class="col-md-8"> <!--TEXT COL 8-->
+                            <p>The project for this paper is available on the Open Science Framework</p>
+                        </div> <!--END TEXT COL 8-->
+                        <div class="col-md-4"> <!--BUTTON COL 4-->
+                            <a type="button" class="btn btn-primary" href={{concat model.baseUrl model.project}}>View project</a>
+                        </div> <!--END BUTTON COL 4-->
+                    </div>
+                    <br>
+
+                    <!--CONTENT-->
+                        <div class="col-md-12"> <!--COL 12-->
+                                <h3> Abstract: </h3>
+                                <p> {{model.preprint.abstract}} </p>
+                        </div> <!--END COL 12-->
+
+
+                        <div class="col-md-12"> <!--COL-->
+                                <h3> Citation: </h3>
+                                <p>
+                                    <strong>APA</strong>
+                                    <br>
+                                    Cummings, J. N., Butler, B., & Kraut, R. (2002). The quality of online social
+                                    relationships. Communications of the ACM, 45(7), 103-108.
+                                </p>
+                        </div> <!--END COL-->
+
+                </div> <!--END RIGHT SIDE COL-->
+            </div> <!--END CONTENT ROW-->
+        </div> <!--END OSF BOX DIV-->
+    </div> <!--END ROW-->
+    </div><!--END DIV CONTAINER-->
+</body>

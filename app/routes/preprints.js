@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
+import $ from 'jquery';
 
 export default Ember.Route.extend({
     model(params) {
@@ -14,6 +15,6 @@ export default Ember.Route.extend({
             downloadLink: this.store.findRecord('preprint', params.file_id).then(preprint =>
                 this.store.findRecord('file', preprint.get('path')).then(file => file.get('links').download))
         });
-    },
+    }
 });
 

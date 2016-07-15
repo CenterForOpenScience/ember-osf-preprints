@@ -8,9 +8,13 @@ export default Ember.Component.extend({
         createPreprint(title, abstract, authors, tags, journal) {
             let buttonAction = this.get('buttonAction'),
                 subject = this.$('select[name=subject]').val();
-            //Create some form of preprint
             buttonAction(title, abstract, authors, subject, tags, journal);
-
+        },
+        updatePreprint(title, abstract, authors, tags, journal) {
+            let buttonAction = this.get('buttonAction'),
+                preprintId = this.get('id'),
+                subject = this.$('select[name=subject]').val();
+            buttonAction(preprintId, title, abstract, authors, subject, tags, journal);
+            }
         }
-    }
 });
