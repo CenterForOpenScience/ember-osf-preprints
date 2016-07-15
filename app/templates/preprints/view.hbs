@@ -48,7 +48,8 @@ hr {
             <div class="row"> <!--CONTENT ROW-->
                 <div id="mfr" class="col-md-7"> <!--MFR COL DIV-->
                     <div> <!--IFRAME DIV-->
-                <iframe src={{concat model.renderUrl '?url=' model.baseUrl model.id '/?action=download%26mode=render'}} display="block" width=650 height=700></iframe>
+	                    <iframe src={{concat model.renderUrl '?url=' model.downloadLink}} display="block"
+	                            width=650 height=700></iframe>
                     </div> <!--END IFRAME DIV-->
                     <!--TODO: EMBER OSF MFR -->
 
