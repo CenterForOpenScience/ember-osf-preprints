@@ -14,8 +14,8 @@
         <!--SEARCH-->
         <div id="search" class="space-top space-bottom">
             {{search-preprints search="search"}}
-            <p><span class="highlight">{{model.preprints.length}}</span> preprints, <span class="highlight">8,265</span> contributors as of
-                <span>{{moment-format model.theDate}}</span></p>
+            <p><span class="highlight">{{model.preprints.length}}</span> preprints as of
+                <span>{{moment-format model.theDate "MMMM DD, YYYY"}}</span></p>
         </div>
 
         <!--PREPRINT LIST-->
