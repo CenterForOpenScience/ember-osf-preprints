@@ -7,14 +7,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {});
 export default Ember.Route.extend({
     fileManager: Ember.inject.service(),
     model() {
-        var todaysDate = new Date();
-        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        var formattedDate = days[todaysDate.getDay()] + " " + months[todaysDate.getMonth()] + " "
-        + todaysDate.getDate() + ", " + todaysDate.getFullYear();
-
         return Ember.RSVP.hash({
-            theDate: formattedDate,
+            theDate: new Date(),
 
             // JamDB
             preprints: this.store.findAll('preprint'),
