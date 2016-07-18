@@ -10,9 +10,10 @@
 
     <div class="row"> <!--FORM ROW DIV-->
         <div class="col-md-7"> <!--COL 7 DIV-->
-            <span class="text-danger">*Accepted file types: .pdf, .doc, .docx</span>
+            
             <!--TODO: ADD EMBER OSF COMPONENT AND LOGIC FOR ROUTES-->
             {{dropzone-widget preUpload=(action 'preUpload') success=(action 'success') error=(action 'error') buildUrl=(action 'buildUrl') options=dropzoneOptions}}
+            <span class="text-danger">*Accepted file types: .pdf, .doc, .docx</span>
         </div> <!--END COL 7 DIV-->
 
         <div class="col-md-5"> <!--COL 5 DIV: FORM-->
