@@ -17,10 +17,10 @@ export default Ember.Route.extend({
         });
     },
     actions: {
-        filter: function(subjectsToFilter) {
+        filter(subjectsToFilter) {
             this.transitionTo({ queryParams: { subjects: subjectsToFilter } });
         },
-        search: function(q) {
+        search(q) {
             this.transitionTo({ queryParams: { query: q } });
         }
     }

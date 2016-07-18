@@ -9,7 +9,7 @@ export default Ember.Component.extend({
             levels: 1,
             selectedBackColor: '#67a3bf',
 
-            onNodeSelected: function(event, data) {
+            onNodeSelected: (event, data) => {
                 // Recurse down from this subject to filter by all subcategories as well
                 let getSubjects = (d, subjects) => {
                     subjects.push(d.text[0]);
@@ -18,8 +18,8 @@ export default Ember.Component.extend({
                         return subjects;
                     }
                     // Recursive case, add on results from recursing onto child nodes
-                    for (let i = 0; i < d.nodes.length; i++) {
-                        subjects.concat(getSubjects(d.nodes[i], subjects));
+                    for (let node of d.nodes) {
+                        subjects.concat(getSubjects(node, subjects));
                     }
                     return subjects;
                 };
@@ -30,7 +30,7 @@ export default Ember.Component.extend({
                     // Make call to recursive function with initially empty list
                     this.sendAction('filter', getSubjects(data, []));
                 }
-            }.bind(this)
+            }
         });
     },
 

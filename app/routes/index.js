@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
 export default Ember.Route.extend({
     fileManager: Ember.inject.service(),
@@ -17,11 +16,11 @@ export default Ember.Route.extend({
             this.transitionTo('browse', { queryParams: { subject: sub } });
         },
         togglePopularUploads() {
-            let newHeight = (this.$('#landing-page-preprint-list').height() === 700) ? 2500 : 700;
-            this.$('#landing-page-preprint-list').css('max-height', newHeight);
-            this.$('#show-more-icon').toggleClass('fa fa-caret-down fa fa-caret-up');
+            let newHeight = (Ember.$('#landing-page-preprint-list').height() === 700) ? 2500 : 700;
+            Ember.$('#landing-page-preprint-list').css('max-height', newHeight);
+            Ember.$('#show-more-icon').toggleClass('fa fa-caret-down fa fa-caret-up');
         },
-        search: function(q) {
+        search(q) {
             this.transitionTo('browse', { queryParams: { query: q } });
         }
     }

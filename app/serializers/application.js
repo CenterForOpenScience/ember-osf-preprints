@@ -19,22 +19,22 @@ export default JSONAPISerializer.extend({
         return this._super(model, payload);
     },
 
-    payloadKeyFromModelName: function(/*modelName */) {
+    payloadKeyFromModelName(/*modelName */) {
         // JamDB expects all collections to specify JSONAPI type 'documents'
         return 'documents';
     },
 
-    modelNameFromPayloadKey: function(key) {
+    modelNameFromPayloadKey(key) {
         // Replace the generic JamDB response type of 'documents' with the name of the model to deserialize as
         return this.modelName || this._super(key);
     },
 
-    keyForAttribute: function(attr /* method */) {
+    keyForAttribute(attr /* method */) {
         // Override the default ember data behavior, so that Jam can use exactly the same keys as in the model (no dasherizing)
         return attr;
     },
 
-    extractAttributes: function(modelClass, resourceHash) {
+    extractAttributes(modelClass, resourceHash) {
         // Merge meta attributes into the attributes available on model
         let attributes = this._super(...arguments);
         if (resourceHash.meta) {
