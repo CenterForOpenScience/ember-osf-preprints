@@ -1,8 +1,5 @@
 import Ember from 'ember';
-
-import {
-    getAuthUrl
-} from 'ember-osf/utils/auth';
+import { getAuthUrl } from 'ember-osf/utils/auth';
 
 export default Ember.Component.extend({
     loggedIn: false, //This ia a fake helper variable so that we can check slash pretend we're logged in
@@ -18,39 +15,39 @@ export default Ember.Component.extend({
     authUrl: getAuthUrl(),
     user: null,
     _loadCurrentUser() {
-        this.get('currentUser').load().then((user) => this.set('user', user));
+        this.get('currentUser').load().then(user => this.set('user', user));
     },
-    actions:{
-        submit(){
+    actions: {
+        submit() {
             this.open('search');
         },
-        modalShow(){
-//            if(this.loggedIn===true){
+        modalShow() {
+            // if (this.loggedIn === true) {
                 this.set('showProjectChooser', true);
-//            }
-//            else {
-                //this.set('showModal', true);
-//            }
+            // }
+            // else {
+            //     this.set('showModal', true);
+            // }
         },
-        loginShow(){
+        loginShow() {
             this.set('showLogin', true);
             this.set('showModal', false); //Once again... sigh should be able to move this switching to the HBS too...to the button click could just set all false--seems rough
             this.set('loggedIn', true); //REMOVE LATER
         },
-        signupShow(){
+        signupShow() {
             this.set('showSignup', true);
             this.set('showModal', false);
         },
-        signupSuccessShow(){
+        signupSuccessShow() {
             this.set('showSignupSuccess', true);
             this.set('showSignup', false);
             this.set('loggedIn', true); //REMOVE LATER
         },
-        projectChooserShow(){
+        projectChooserShow() {
             this.set('showProjectChooser', true);
             this.set('showLogin', false);
         },
-        fileChooserShow(){
+        fileChooserShow() {
             this.set('showFileChooser', true);
             this.set('showProjectChooser', false);
         },

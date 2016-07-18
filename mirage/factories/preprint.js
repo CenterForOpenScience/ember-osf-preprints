@@ -4,8 +4,8 @@ export default Factory.extend({
     preprintid(i) {
         return `preprint${i}`
     },
-    title: "",
-    date: "",
+    title: '',
+    date: '',
     authors: '',
     subject: '',
     abstract: ''

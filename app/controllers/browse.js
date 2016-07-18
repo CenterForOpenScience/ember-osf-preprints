@@ -8,10 +8,10 @@ export default Ember.Controller.extend({
     store: Ember.inject.service(),
 
     filteredPreprints: Ember.computed('subjects', 'query', 'model', function() {
-        let subjects = this.get('subjects');
-        let query = this.get('query');
-        let model = this.get('model').preprints;
-        let store = this.get('store');
+        const subjects = this.get('subjects');
+        const query = this.get('query');
+        const model = this.get('model.preprints');
+        const store = this.get('store');
 
         // TODO: highlight the subject in the tree if reaching this page from a "browse by subject" link, like on front page
 
@@ -26,8 +26,8 @@ export default Ember.Controller.extend({
             // Set subjects to be just the subject clicked (guaranteed to be the first listed), not all that are searched
             this.set('subjects', subjects.split(',')[0]);
             // Array of subjects sent from taxonomy-tree is given as comma-separate string
-            let subjectQuery = 'data.subject:(' + subjects.split(',').map(s => '"' + s + '"').join(' OR ') + ')';
-            subjectQuery = query ? query + ' AND ' + subjectQuery : subjectQuery; // add AND if necessary
+            let subjectQuery = `data.subject:(${subjects.split(',').map(s => `"${s}"`).join(' OR ')})`;
+            subjectQuery = query ? `${query} AND ${subjectQuery}` : subjectQuery; // add AND if necessary
             params['q'] = subjectQuery;
         }
         // If neither query nor subject exists, just return the default model

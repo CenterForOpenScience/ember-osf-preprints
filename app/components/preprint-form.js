@@ -12,7 +12,7 @@ export default Ember.Component.extend({
             let buttonAction = this.get('buttonAction'),
                 preprintId = this.get('id'),
                 subject = this.$('select[name=subject]').val();
-            buttonAction(preprintId, title, abstract, authors, subject, tags, journal, doi);
-            }
+            buttonAction(preprintId, title, abstract, authors, subject, tags, journal);
         }
+    }
 });

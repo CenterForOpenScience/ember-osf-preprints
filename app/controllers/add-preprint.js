@@ -24,19 +24,19 @@ export default Ember.Controller.extend({
             let path = response.path.slice(1),
                 preprint = this.get('preprint'),
                 preprintMetadata = this.get('store').createRecord('preprint', {
-                id: path, // TODO: change to guid
-                attributes: {
-                    title: preprint.title,
-                    abstract: preprint.abstract,
-                    authors: preprint.authors,
-                    date: new Date(),
-                    subject: preprint.subject,
-                    tags: preprint.tags,
-                    journal: preprint.journal,
-                    doi: preprint.doi,
-                    path: path
-                }
-            });
+                    id: path, // TODO: change to guid
+                    attributes: {
+                        title: preprint.title,
+                        abstract: preprint.abstract,
+                        authors: preprint.authors,
+                        date: new Date(),
+                        subject: preprint.subject,
+                        tags: preprint.tags,
+                        journal: preprint.journal,
+                        doi: preprint.doi,
+                        path: path
+                    }
+                });
 
             preprintMetadata.save().then(() =>
                 this.transitionToRoute('preprints', path)
@@ -81,7 +81,7 @@ export default Ember.Controller.extend({
                 console.error(error);
                 this.get('toast').error('Could not create preprint project!');
             });
-        //TODO: eventually make a call to set an OSF file as a preprint (will probably need a flag for such)
+            //TODO: eventually make a call to set an OSF file as a preprint (will probably need a flag for such)
         }
     }
 });

@@ -1,23 +1,17 @@
 import Ember from 'ember';
-import $ from 'jquery';
 
 export default Ember.Component.extend({
     actions: {
-        search(self) {
-            self = self ? self : this; // Handle context switch for 'this' keyword
-            let query = $('#searchBox').val();
-            if (query && query != ""){
-                self.sendAction("search", query);
-            } else {
-                self.sendAction("search", null);
-            }
+        search() {
+            let query = Ember.$.trim(this.$('#searchBox').val());
+            this.sendAction('search', query);
         }
     },
 
-    keyDown: function(event) {
+    keyDown(event) {
         // Search also activated when enter key is clicked
-        if (event.keyCode == 13) {
-            this.actions.search(this);
+        if (event.keyCode === 13) {
+            this.send('search');
         }
     }
 });

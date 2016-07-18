@@ -12,16 +12,16 @@ export default Ember.Route.extend({
     model() {
         // JamDB
         return Ember.RSVP.hash({
-            preprints: this.store.query('preprint', { "sort": "createdOn",  "page[size]": "10" } ),
+            preprints: this.store.query('preprint', { "sort": "createdOn", "page[size]": "10" }),
             taxonomy: this.store.find('taxonomy', 'top3levels')
         });
     },
     actions: {
-        filter: function( subjectsToFilter ) {
-            this.transitionTo( { queryParams: { subjects: subjectsToFilter } } );
+        filter(subjectsToFilter) {
+            this.transitionTo({ queryParams: { subjects: subjectsToFilter } });
         },
-        search: function( q ) {
-            this.transitionTo( { queryParams: { query: q } } );
+        search(q) {
+            this.transitionTo({ queryParams: { query: q } });
         }
     }
 });

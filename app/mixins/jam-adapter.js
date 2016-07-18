@@ -18,7 +18,7 @@ export default Ember.Mixin.create({
 
         collectionId: (type) => Ember.Inflector.inflector.pluralize(type)
     },
-    ajax: function(url, type, options={}) {
+    ajax(url, type, options = {}) {
         options.traditional = true;
         return this._super(...arguments);
     }

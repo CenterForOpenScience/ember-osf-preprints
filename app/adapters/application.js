@@ -1,7 +1,5 @@
 import JSONAPIAdapter from 'ember-data/adapters/json-api';
-
 import JamAdapter from '../mixins/jam-adapter';
-
 import UrlTemplates from 'ember-data-url-templates';
 import config from 'ember-get-config';
 
