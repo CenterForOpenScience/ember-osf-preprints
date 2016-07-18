@@ -1,11 +1,10 @@
 import Ember from 'ember';
-import $ from 'jquery';
 
 export default Ember.Component.extend({
     actions: {
         search(self) {
             self = self ? self : this; // Handle context switch for 'this' keyword
-            let query = $('#searchBox').val();
+            let query = this.$('#searchBox').val();
             if (query && query != ""){
                 self.sendAction("search", query);
             } else {

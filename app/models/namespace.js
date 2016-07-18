@@ -8,5 +8,5 @@ export default DS.Model.extend(JamModel, {
     // logger: DS.attr('string'),
     // storage: DS.attr('string'),
     createdOn: DS.attr('date'),
-    collections: DS.hasMany('collection', {async: true}),
+    collections: DS.hasMany('collection', { async: true }),
 });
