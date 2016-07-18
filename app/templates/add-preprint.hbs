@@ -4,12 +4,13 @@
 
         <div class="row" id="addPreprint"> <!--ROW-->
             <div class="col-md-12"> <!--COL-->
-                <h1>Add Preprint</h1>
+                <h1>Add preprint</h1>
             </div> <!--END COL-->
         </div> <!--END ROW-->
 
     <div class="row"> <!--FORM ROW DIV-->
         <div class="col-md-7"> <!--COL 7 DIV-->
+            <span class="text-danger">*Accepted file types: .pdf, .doc, .docx</span>
             <!--TODO: ADD EMBER OSF COMPONENT AND LOGIC FOR ROUTES-->
             {{dropzone-widget preUpload=(action 'preUpload') success=(action 'success') error=(action 'error') buildUrl=(action 'buildUrl') options=dropzoneOptions}}
         </div> <!--END COL 7 DIV-->
