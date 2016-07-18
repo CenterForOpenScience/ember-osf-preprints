@@ -52,8 +52,8 @@ The [jamDB documentation](https://jamdb.readthedocs.io/en/latest/install.html) p
 2. Make sure you are running vanilla Mongo and not Toku.
   - If you are coming from an OSF installation you may not have Mongo. The easiest way to rectify this is `brew install mongo`.
   - If you are creating a Mongo database for the first time you may have to create some new folders.
-     
-      ```
+
+      ```sh
        sudo mkdir /data
        sudo mkdir /data/db
        sudo chmod -x /data/db
@@ -68,18 +68,18 @@ Below is a simple example of how to use the `jam` command line once you have you
 
 The `-h` (or `--help`) argument is applicable to all commands and is very useful for understanding how to use the jam cli. `jam -h` will give you an overview of what commands are available, but perhaps the most useful for getting setup are `jam create` and `jam update`. Let's start by creating a namespace.
 
-```
+```sh
 jam create fruits
 ```
 
 We now have a namespace called `fruits`. Namespaces at the broadest level of the hierarchy JamDB uses. We can subsequently create a collection within this namespace:
 
-```
+```sh
 jam create fruits berries
 ```
 
 We now have a collection called `berries` within the `fruits` namespace. The final level of the hierachy, below collections, are documents. Documents are essentially JSON objects that live inside collections. If we define an object in a file called `myFruit.json`, such as
-```
+```json
 {
     "color": "blue",
     "size": "small"
@@ -87,19 +87,19 @@ We now have a collection called `berries` within the `fruits` namespace. The fin
 ```
 we can then create a document for this object by piping it into the `jam create` command:
 
-```
+```sh
 cat myFruit.json | jam create fruits berries blueberry
 ```
 
 That's it! Well, almost. We have data in JamDB, but we have to make sure we can access that data. For development purposes, it is perhaps easiest to allow anyone to READ your data. (We would definitely make sure to fine-tune permissions in the future, but this suffices for a quick start.) This is where `jam update` comes in:
 
-```
+```sh
 jam update fruits -p "* READ"
 ```
 
 Running `jam info fruits` should then confirm that `*` (all users) has READ permissions (in addition to the default `system-system-system` having ADMIN permissions). A GET to `http://localhost:1212/v1/id/documents/fruits.berries.blueberry` should then indeed return a payload like the following:
 
-```
+```json
 {
   "data": {
     "type": "documents",
@@ -140,7 +140,7 @@ Currently the calls from `this.store` are assuming the following:
 * Within `Preprints.preprints`, there exists any number of preprint documents, an example of which is provided in the `jam` directory.
 
 Here are a couple example commands for how to add these documents:
-```
+```sh
 cd jam
 cat top3levels.json | jam create Preprints taxonomies top3levels
 cat dummy_preprint.json | jam create Preprints preprints test1
