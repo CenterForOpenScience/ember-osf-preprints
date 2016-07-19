@@ -2,11 +2,10 @@
 /* global require, module */
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
-//TODO: Add an actual sass file to this application. I don't think this does anything
 module.exports = function(defaults) {
     let app = new EmberApp(defaults, {
         'ember-bootstrap': {
-            'importBootstrapCSS': false
+            importBootstrapCSS: false
         },
         sassOptions: {
             includePaths: [
@@ -16,9 +15,30 @@ module.exports = function(defaults) {
                 'bower_components/osf-style/sass'
             ]
         },
-        autoprefixer: {
-            browsers: ['last 4 versions'],
-            cascade: false
+        postcssOptions: {
+            compile: {
+                enabled: false
+            },
+            filter: {
+                enabled: true,
+                plugins: [{
+                    module: require('autoprefixer'),
+                    options: {
+                        browsers: ['last 4 versions'],
+                        cascade: false
+                    }
+                }, {
+                    // Wrap progid declarations with double-quotes
+                    module: require('postcss').plugin('progid-wrapper', () => {
+                        return css =>
+                            css.walkDecls(declaration => {
+                                if (declaration.value.startsWith('progid')) {
+                                    return declaration.value = `"${declaration.value}"`;
+                                }
+                            });
+                    })
+                }]
+            }
         }
     });
 
@@ -40,7 +60,7 @@ module.exports = function(defaults) {
     app.import("bower_components/osf-style/page.css");
 
     app.import("bower_components/osf-style/img/cos-white2.png", {
-        destDir: 'vendor'
+        destDir: 'img'
     });
 
 //  app.import("bower_components/dropzone/dist/dropzone.js");
