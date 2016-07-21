@@ -18,4 +18,9 @@ export default function() {
     this.get('/taxonomies', (schema, request) => {
         return schema.taxonomies.all();
     });
+
+    this.get('/taxonomies/:id', (schema, request) => {
+        let id = request.params.id;
+        return schema.taxonomies.find(id);
+    })
 }
