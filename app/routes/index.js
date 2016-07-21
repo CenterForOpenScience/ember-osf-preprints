@@ -6,9 +6,8 @@ export default Ember.Route.extend({
         return Ember.RSVP.hash({
             theDate: new Date(),
 
-            // JamDB
             preprints: this.store.findAll('preprint'),
-            subjects: this.store.find('taxonomy', 'topLevel')
+            subjects: this.store.find('taxonomy', 1)
         });
     },
     actions: {
