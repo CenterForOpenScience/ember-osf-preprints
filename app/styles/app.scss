@@ -521,6 +521,7 @@ hr {
             content: "";
             display: block;
             width: 100%;
+            clear: both;
             border-bottom: 1px lightgray solid;
         }
         &.cp-is-open {
@@ -557,7 +558,32 @@ hr {
     }
 }
 
-#preprint-form-upload {}
+#preprint-form-upload {
+    &:after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+    .start {
+        &:before, &:after {
+            @extend .col-md-2;
+            content: "";
+        }
+        button {
+            height: 20rem;
+            background: none;
+            border-radius: 1rem;
+            border: gray 1px solid;
+            transition: background-color 0.1s linear;
+            &:hover {
+                background-color: lightgray;
+            }
+            &:active {
+                background-color: gray;
+            }
+        }
+    }
+}
 
 #preprint-form-basics {
     span.required:after {
@@ -580,11 +606,15 @@ hr {
         li {
             padding: 0.5rem 1rem;
             cursor: pointer;
-            transition: background-color 0.1s linear;
+            transition: {
+                property: background-color, color, font-weight;
+                duration: 0.1s;
+                timing-function: linear;
+            }
             &:hover {
                 background-color: $theme-color-light;
             }
-            &.selected {
+            &:active, &.selected {
                 background-color: #337AB7;
                 color: white;
                 font-weight: bold;

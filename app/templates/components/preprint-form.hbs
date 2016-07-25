@@ -1,32 +1,32 @@
-{{#with _names.[0] as |name|}}
+{{#with (unbound _names.[0]) as |name|}}
     {{#preprint-form-section id='preprint-form-upload'open=true}}
         {{preprint-form-header name=name valid=(get valid name)}}
         {{preprint-form-upload verify=(action 'verify' name)}}
     {{/preprint-form-section}}
 {{/with}}
 
-{{#with _names.[1] as |name|}}
+{{#with (unbound _names.[1]) as |name|}}
     {{#preprint-form-section id='preprint-form-basics'}}
         {{preprint-form-header name=name valid=(get valid name)}}
         {{preprint-form-basics verify=(action 'verify' name)}}
     {{/preprint-form-section}}
 {{/with}}
 
-{{#with _names.[2] as |name|}}
+{{#with (unbound _names.[2]) as |name|}}
     {{#preprint-form-section id='preprint-form-subjects'}}
         {{preprint-form-header name=name valid=(get valid name)}}
         {{preprint-form-subjects verify=(action 'verify' name)}}
     {{/preprint-form-section}}
 {{/with}}
 
-{{#with _names.[3] as |name|}}
+{{#with (unbound _names.[3]) as |name|}}
     {{#preprint-form-section id='preprint-form-authors'}}
         {{preprint-form-header name=name valid=(get valid name)}}
         {{preprint-form-authors verify=(action 'verify' name)}}
     {{/preprint-form-section}}
 {{/with}}
 
-{{#with _names.[4] as |name|}}
+{{#with (unbound _names.[4]) as |name|}}
     {{#preprint-form-section id='preprint-form-submit'}}
         {{preprint-form-header name=name valid=(get valid name)}}
         {{#cp-panel-body}}
