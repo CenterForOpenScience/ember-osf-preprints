@@ -1,28 +1,37 @@
-<strong>Title:</strong> <br>
-{{input class="form-control" value=title}}<br>
-<strong>Abstract:</strong> <br>
-{{textarea class="form-control noresize" value=abstract rows="5"}}<br>
-<strong>Authors:</strong> <br>
-{{input class="form-control" value=authors}}<br>
-<strong>Subject:</strong> <br>
-<select name="subject" class="form-control">
-    <option>Biology and life sciences</option>
-    <option>Computer and information sciences</option>
-    <option>Earth sciences</option>
-    <option>Ecology and environmental sciences</option>
-    <option>Engineering and technology</option>
-    <option>Medicine and health sciences</option>
-    <option>People and places</option>
-    <option>Physical sciences</option>
-    <option>Research and analysis methods</option>
-    <option>Science policy</option>
-    <option>Social sciences</option>
-</select><br>
-<strong>Tags:</strong> <span class="text-muted">(optional)</span><br>
-{{input class="form-control" value=tags}}<br>
-<strong>Accepted in:</strong> <span class="text-muted">(optional)</span> <br>
-{{input class="form-control" value=journal}}<br>
-<strong>DOI:</strong> <span class="text-muted">(optional)</span> <br>
-{{input class="form-control" value=doi}}<br>
-<!--<button class="btn btn-primary" {{!--action "makePost" title abstract authors subject journal preprint project--}}>Add Preprint</button>-->
-<button class="btn btn-primary" onclick={{action actionName title abstract authors tags journal doi}}>{{buttonText}}</button>
+{{#with _names.[0] as |name|}}
+    {{#preprint-form-section id='preprint-form-upload' select=(action 'select' name) open=true}}
+        {{preprint-form-header name=name}}
+        {{preprint-form-upload verify=(action 'verify' name)}}
+    {{/preprint-form-section}}
+{{/with}}
+
+{{#with _names.[1] as |name|}}
+    {{#preprint-form-section id='preprint-form-basics' select=(action 'select' name)}}
+        {{preprint-form-header name=name enabled=enabled.[0]}}
+        {{preprint-form-basics verify=(action 'verify' name)}}
+    {{/preprint-form-section}}
+{{/with}}
+
+{{#with _names.[2] as |name|}}
+    {{#preprint-form-section id='preprint-form-subjects' select=(action 'select' name)}}
+        {{preprint-form-header name=name enabled=enabled.[1]}}
+        {{preprint-form-subjects verify=(action 'verify' name)}}
+    {{/preprint-form-section}}
+{{/with}}
+
+{{#with _names.[3] as |name|}}
+    {{#preprint-form-section id='preprint-form-authors' select=(action 'select' name)}}
+        {{preprint-form-header name=name enabled=enabled.[2]}}
+        {{preprint-form-authors verify=(action 'verify' name)}}
+    {{/preprint-form-section}}
+{{/with}}
+
+{{#with _names.[4] as |name|}}
+    {{#preprint-form-section id='preprint-form-submit' select=(action 'select' name)}}
+        {{preprint-form-header name=name enabled=enabled.[3]}}
+        {{#cp-panel-body}}
+            <p>Sharing this project will make both the manuscript and the project associted with it public.</p>
+            <button type="submit">Share</button>
+        {{/cp-panel-body}}
+    {{/preprint-form-section}}
+{{/with}}

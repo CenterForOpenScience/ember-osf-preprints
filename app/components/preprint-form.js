@@ -1,18 +1,29 @@
 import Ember from 'ember';
+import CpPanelsComponent from 'ember-collapsible-panel/components/cp-panels';
 
-export default Ember.Component.extend({
+export default CpPanelsComponent.extend({
     store: Ember.inject.service(),
+    elementId: 'preprint-form',
+    accordion: true,
+    _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
+    verified: [false, false, false, false],
+    enabled: [false, false, false, false],
+    _checkEnabled: function() {
+        const self = this.get('enabled');
+        this.set('enabled', this.get('verified').map((el, index) => el || self[index]));
+    }.observes('verified', 'verified.[]'),
     actions: {
-        createPreprint(title, abstract, authors, tags, journal, doi) {
-            let buttonAction = this.get('buttonAction'),
-                subject = this.$('select[name=subject]').val();
-            buttonAction(title, abstract, authors, subject, tags, journal, doi);
+        verify(name, state) {
+            // Update verified array
+            const index = this.get('_names').indexOf(name);
+            // Force array update
+            this.get('verified').removeAt(index);
+            this.get('verified').insertAt(index, state);
         },
-        updatePreprint(title, abstract, authors, tags, journal) {
-            let buttonAction = this.get('buttonAction'),
-                preprintId = this.get('id'),
-                subject = this.$('select[name=subject]').val();
-            buttonAction(preprintId, title, abstract, authors, subject, tags, journal);
+        select(name, resolve) {
+            if (this.get('enabled').slice(0, this.get('_names').indexOf(name)).every(field => field)) {
+                resolve();
+            }
         }
     }
 });

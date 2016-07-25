@@ -402,8 +402,8 @@ td:hover {
 }
 
 // FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE
-#main {
-    margin-top:4%;
+main {
+    padding-top: 5rem;
 }
 
 #addPreprint {
@@ -497,3 +497,94 @@ hr {
     background-color: #166595;
     color: white;
 }
+
+.cp-Panel.cp-is-closed .cp-Panel-body {
+    height: 0;
+    overflow: hidden;
+}
+
+#preprint-form {
+    header {
+        @extend a;
+        cursor: pointer;
+        font: {
+            size: 2rem;
+            weight: bold;
+        }
+        display: block;
+        transition: color 0.1s linear;
+        margin: 1rem 0;
+        &:hover, &:focus {
+            text-decoration: none;
+        }
+        &:after {
+            content: "";
+            display: block;
+            width: 100%;
+            border-bottom: 1px lightgray solid;
+        }
+        &.cp-is-open {
+            cursor: default;
+            color: black;
+        }
+        &.disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    }
+    .row {
+        margin: 0;
+    }
+    label, input, textarea {
+        display: block;
+    }
+    label > input, label > textarea {
+        font-weight: normal;
+    }
+    textarea {
+        resize: none;
+    }
+}
+
+#preprint-form-upload {}
+
+#preprint-form-basics {
+    span.required:after {
+        content: "(required)";
+        color: lighten(red, 30%);
+        font-weight: normal;
+        float: right;
+    }
+}
+
+#preprint-form-subjects {
+    .col-md-4 {
+        padding: 1rem;
+    }
+    ul {
+        height: 50vh;
+        list-style: none;
+        padding: 0;
+        border: 1px lightgray solid;
+        li {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.1s linear;
+            &:hover {
+                background-color: $theme-color-light;
+            }
+            &.selected {
+                background-color: #337AB7;
+                color: white;
+                font-weight: bold;
+            }
+            & + li {
+                border-top: 1px lightgray solid;
+            }
+        }
+    }
+}
+
+#preprint-form-authors {}
+
+#preprint-form-submit {}
