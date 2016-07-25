@@ -6,7 +6,7 @@
     "ember-cli-test-loader": "0.2.2",
     "ember-qunit-notifications": "0.1.0",
     "osf-style": "https://github.com/CenterForOpenScience/osf-style.git#5dcf5997ad2808ffc7c8564f94cde102bf7a4a96",
-    "font-awesome": "~4.5.0",
+    "font-awesome": "~4.6.3",
     "jquery": "^2.2.4",
     "pretender": "~1.1.0",
     "Faker": "~3.1.0",

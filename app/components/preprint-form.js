@@ -6,24 +6,10 @@ export default CpPanelsComponent.extend({
     elementId: 'preprint-form',
     accordion: true,
     _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
-    verified: [false, false, false, false],
-    enabled: [false, false, false, false],
-    _checkEnabled: function() {
-        const self = this.get('enabled');
-        this.set('enabled', this.get('verified').map((el, index) => el || self[index]));
-    }.observes('verified', 'verified.[]'),
+    valid: new Ember.Object(),
     actions: {
         verify(name, state) {
-            // Update verified array
-            const index = this.get('_names').indexOf(name);
-            // Force array update
-            this.get('verified').removeAt(index);
-            this.get('verified').insertAt(index, state);
-        },
-        select(name, resolve) {
-            if (this.get('enabled').slice(0, this.get('_names').indexOf(name)).every(field => field)) {
-                resolve();
-            }
+            this.get('valid').set(name, state);
         }
     }
 });

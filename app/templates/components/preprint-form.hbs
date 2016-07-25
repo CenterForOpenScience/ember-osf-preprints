@@ -1,34 +1,34 @@
 {{#with _names.[0] as |name|}}
-    {{#preprint-form-section id='preprint-form-upload' select=(action 'select' name) open=true}}
-        {{preprint-form-header name=name}}
+    {{#preprint-form-section id='preprint-form-upload'open=true}}
+        {{preprint-form-header name=name valid=(get valid name)}}
         {{preprint-form-upload verify=(action 'verify' name)}}
     {{/preprint-form-section}}
 {{/with}}
 
 {{#with _names.[1] as |name|}}
-    {{#preprint-form-section id='preprint-form-basics' select=(action 'select' name)}}
-        {{preprint-form-header name=name enabled=enabled.[0]}}
+    {{#preprint-form-section id='preprint-form-basics'}}
+        {{preprint-form-header name=name valid=(get valid name)}}
         {{preprint-form-basics verify=(action 'verify' name)}}
     {{/preprint-form-section}}
 {{/with}}
 
 {{#with _names.[2] as |name|}}
-    {{#preprint-form-section id='preprint-form-subjects' select=(action 'select' name)}}
-        {{preprint-form-header name=name enabled=enabled.[1]}}
+    {{#preprint-form-section id='preprint-form-subjects'}}
+        {{preprint-form-header name=name valid=(get valid name)}}
         {{preprint-form-subjects verify=(action 'verify' name)}}
     {{/preprint-form-section}}
 {{/with}}
 
 {{#with _names.[3] as |name|}}
-    {{#preprint-form-section id='preprint-form-authors' select=(action 'select' name)}}
-        {{preprint-form-header name=name enabled=enabled.[2]}}
+    {{#preprint-form-section id='preprint-form-authors'}}
+        {{preprint-form-header name=name valid=(get valid name)}}
         {{preprint-form-authors verify=(action 'verify' name)}}
     {{/preprint-form-section}}
 {{/with}}
 
 {{#with _names.[4] as |name|}}
-    {{#preprint-form-section id='preprint-form-submit' select=(action 'select' name)}}
-        {{preprint-form-header name=name enabled=enabled.[3]}}
+    {{#preprint-form-section id='preprint-form-submit'}}
+        {{preprint-form-header name=name valid=(get valid name)}}
         {{#cp-panel-body}}
             <p>Sharing this project will make both the manuscript and the project associted with it public.</p>
             <button type="submit">Share</button>

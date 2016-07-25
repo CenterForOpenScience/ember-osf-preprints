@@ -527,9 +527,20 @@ hr {
             cursor: default;
             color: black;
         }
-        &.disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
+        &.valid {
+            .fa {
+                color: $brand-primary;
+            }
+        }
+        &.invalid {
+            .fa {
+                color: red;
+            }
+        }
+        .fa {
+            float: right;
+            color: gray;
+            transition: color 0.1s linear;
         }
     }
     .row {
