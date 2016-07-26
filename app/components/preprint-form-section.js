@@ -3,9 +3,13 @@ import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
 
 export default CpPanelComponent.extend({
     tagName: 'section',
-    // animate: false,
+    classNames: ['preprint-form-section'],
+    animate: false,
     slideAnimation: function() {
-        if (this.get('elementId') === 'preprint-form-submit') return;
+        if (this.get('animate')) {
+            // Allow liquid-fire to animate
+            return;
+        }
         const $body = this.$('.cp-Panel-body');
         if (this.get('isOpen')) {
             $body.height('auto');

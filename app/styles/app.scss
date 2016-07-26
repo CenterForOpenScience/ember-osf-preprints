@@ -11,10 +11,6 @@
     font-weight: 500;
 }
 
-body {
-    padding-top: $nav-bar-height;
-}
-
 .navbar-header {
     height: $nav-bar-height;
 }
@@ -503,7 +499,7 @@ hr {
     overflow: hidden;
 }
 
-#preprint-form {
+.preprint-form-section {
     header {
         @extend a;
         cursor: pointer;

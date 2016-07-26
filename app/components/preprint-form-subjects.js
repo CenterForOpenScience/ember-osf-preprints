@@ -27,11 +27,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                     this.set(type, value);
                     break;
                 case 'subject':
-                    if (this.get(`subjects.${value}`)) {
-                        this.set(`subjects.${value}`, false);
-                    } else {
-                        this.set(`subjects.${value}`, true);
-                    }
+                    this.toggleProperty(`subjects.${value}`);
             }
         }
     }

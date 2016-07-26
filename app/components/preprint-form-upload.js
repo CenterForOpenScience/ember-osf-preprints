@@ -13,7 +13,6 @@ const component = CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     state: State.START,
     valid: Ember.computed('state', function() {
         const state = this.get('state');
-        console.log(state);
         return [State.NEW, State.EXISTING].find(valid => state === valid);
     }),
     actions: {
