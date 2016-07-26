@@ -1,4 +1,4 @@
-{{#liquid-bind state as |currentState|}}
+{{#liquid-bind state class='translate' as |currentState|}}
     <div class={{currentState}}>
         {{#if (eq currentState _State.START)}}
             <button class="col-md-4"{{action 'changeState' _State.NEW}}>Upload a New File</button>

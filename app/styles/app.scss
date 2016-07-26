@@ -544,6 +544,10 @@ hr {
             transition: color 0.1s linear;
         }
     }
+    .cp-Panel-body {
+        overflow: hidden;
+        transition: height 0.2s linear;
+    }
     .row {
         margin: 0;
     }
@@ -599,7 +603,7 @@ hr {
         padding: 1rem;
     }
     ul {
-        height: 50vh;
+        height: 30rem;
         list-style: none;
         padding: 0;
         border: 1px lightgray solid;
@@ -628,4 +632,6 @@ hr {
 
 #preprint-form-authors {}
 
-#preprint-form-submit {}
+#preprint-form-submit {
+
+}
