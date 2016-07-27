@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
 
 export default CpPanelComponent.extend({
@@ -14,7 +13,17 @@ export default CpPanelComponent.extend({
         if (this.get('isOpen')) {
             $body.height('auto');
             $body.height($body.height());
+            $body.one('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', () => {
+                $body.addClass('no-transition');
+                $body.height('');
+                $body[0].offsetHeight; // jshint ignore: line
+                $body.removeClass('no-transition');
+            });
         } else {
+            $body.addClass('no-transition');
+            $body.height($body.height());
+            $body[0].offsetHeight; // jshint ignore: line
+            $body.removeClass('no-transition');
             $body.height('');
         }
     }.observes('isOpen'),

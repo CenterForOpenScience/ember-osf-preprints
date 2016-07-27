@@ -3,7 +3,6 @@ import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-bo
 import PreprintFormFieldMixin from '../mixins/preprint-form-field';
 
 export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
-    classNames: ['row'],
     taxonomies: {
         'a': {
             'b': ['c', 'd', 'e'],
@@ -15,20 +14,37 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         'l': {}
     },
     taxonomy: null,
-    subjects: {},
+    selected: new Ember.Object(),
     valid: Ember.computed.oneWay('taxonomy'),
     actions: {
         select(type, value) {
             switch (type) {
                 case 'taxonomy':
+                    if (!this.get(`selected.${value}`)) {
+                        this.set(`selected.${value}`, new Ember.Object());
+                    }
                     this.set('category', null);
-                    /* falls through */
+                    this.set(type, value);
+                    break;
                 case 'category':
+                    if (!this.get(`selected.${value}`)) {
+                        this.set(`selected.${value}`, new Ember.Object());
+                    }
+                    if (!this.get(`selected.${this.get('taxonomy')}.${value}`)) {
+                        this.set(`selected.${this.get('taxonomy')}.${value}`, new Ember.Object());
+                    }
                     this.set(type, value);
                     break;
                 case 'subject':
-                    this.toggleProperty(`subjects.${value}`);
+                    const prop = `selected.${this.get('taxonomy')}.${this.get('category')}.${value}`;
+                    if (this.get(prop)) {
+                        this.set(prop, null);
+                        delete this.selected[this.get('taxonomy')][this.get('category')][value];
+                    } else {
+                        this.set(prop, true);
+                    }
             }
+            this.rerender();
         }
     }
 });

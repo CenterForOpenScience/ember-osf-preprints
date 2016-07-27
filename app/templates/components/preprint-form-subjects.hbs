@@ -1,21 +1,34 @@
-<div class="col-md-4">
-    <ul>
-        {{#each-in taxonomies as |element|}}
-            <li {{action 'select' 'taxonomy' element}} class={{if (eq taxonomy element) 'selected'}}>{{element}}</li>
+{{#each-in selected as |taxonomy categories|}}
+    {{#each-in categories as |category subjects|}}
+        {{#each-in subjects as |subject|}}
+            <span class="subject"><b>{{taxonomy}}</b><b>{{category}}</b><b>{{subject}}</b></span>
+        {{else}}
+            <span class="subject"><b>{{taxonomy}}</b><b>{{category}}</b></span>
         {{/each-in}}
-    </ul>
-</div>
-<div class="col-md-4">
-    <ul>
-        {{#each-in (get taxonomies taxonomy) as |element|}}
-            <li {{action 'select' 'category' element}} class={{if (eq category element) 'selected'}}>{{element}}</li>
-        {{/each-in}}
-    </ul>
-</div>
-<div class="col-md-4">
-    <ul>
-        {{#each (get (get taxonomies taxonomy) category) as |subject|}}
-            <li {{action 'select' 'subject' subject}} class={{if (get subjects subject) 'selected'}}>{{subject}}</li>
-        {{/each}}
-    </ul>
+    {{else}}
+        <span class="subject"><b>{{taxonomy}}</b></span>
+    {{/each-in}}
+{{/each-in}}
+<div class="row">
+    <div class="col-md-4">
+        <ul>
+            {{#each-in taxonomies as |element|}}
+                <li {{action 'select' 'taxonomy' element}} class={{if (eq taxonomy element) 'selected'}}>{{element}}</li>
+            {{/each-in}}
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <ul>
+            {{#each-in (get taxonomies taxonomy) as |element|}}
+                <li {{action 'select' 'category' element}} class={{if (eq category element) 'selected'}}>{{element}}</li>
+            {{/each-in}}
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <ul>
+            {{#each (get (get taxonomies taxonomy) category) as |element|}}
+                <li {{action 'select' 'subject' element}} class={{if (get (get (get selected taxonomy) category) element) 'selected'}}>{{element}}</li>
+            {{/each}}
+        </ul>
+    </div>
 </div>

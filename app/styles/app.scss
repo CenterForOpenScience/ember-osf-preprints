@@ -15,6 +15,10 @@
     height: $nav-bar-height;
 }
 
+.no-transition {
+    transition: none !important;
+}
+
 // OSF Preprints langing pages
 .osf-preprint-header-img {
     $gradient: 35deg, $theme-color-light 0%, $theme-color-dark $gradient-percentage, #000 100%;
@@ -595,8 +599,62 @@ hr {
 }
 
 #preprint-form-subjects {
+    .subject {
+        background-color: $brand-primary;
+        display: inline-block;
+        color: white;
+        overflow: hidden;
+        margin-right: 2rem;
+        margin-bottom: 1rem;
+        border-radius: 2px;
+        & > b {
+            display: inline-block;
+            padding: 1rem 0 1rem 3rem;
+            position: relative;
+            &%pseudo {
+                content: '';
+                display: block;
+                position: absolute;
+                width: 0;
+                height: 0;
+                left: 100%;
+                top: 50%;
+                margin-top: -50px;
+                border: {
+                    style: solid;
+                    width: 5rem 0 5rem 3rem;
+                    color: transparent transparent transparent $brand-primary;
+                }
+            }
+            &:before {
+                @extend %pseudo;
+                margin-left: 1px;
+                border-left-color: white;
+                z-index: 1;
+            }
+            &:after {
+                @extend %pseudo;
+                z-index: 2;
+            }
+            &:first-child {
+                padding-left: 2rem;
+            }
+            &:last-child {
+                padding-right: 2rem;
+                &:before, &:after {
+                    display: none;
+                }
+            }
+            & + b {
+                margin-left: 2rem;
+            }
+        }
+    }
     .col-md-4 {
-        padding: 1rem;
+        padding: 0 1rem 1rem 0;
+        &:last-child {
+            padding-right: 0;
+        }
     }
     ul {
         height: 30rem;

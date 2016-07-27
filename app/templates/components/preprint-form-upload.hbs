@@ -9,7 +9,7 @@
             <button {{action 'changeState' _State.START}}>Back</button>
 
         {{else if (eq currentState _State.EXISTING)}}
-            {{file-widget}}
+            {{input class="form-control"}}
             <button {{action 'changeState' _State.START}}>Back</button>
 
         {{else}}
