@@ -6,11 +6,50 @@
 
         {{else if (eq currentState _State.NEW)}}
             {{dropzone-widget buildUrl="/"}}
-            <button {{action 'changeState' _State.START}}>Back</button>
+            {{#liquid-bind uploadState use='crossFade' as |currentUploadState|}}
+                {{#if (eq currentUploadState _State.START)}}
+                    <button class="btn btn-primary" {{action 'changeUploadState' _State.NEW}}>Create new project</button>
+                    <button class="btn btn-primary" {{action 'changeUploadState' _State.EXISTING}}>Save to existing OSF project</button>
+                    <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
+                {{else if (eq currentUploadState _State.NEW)}}
+                    <h1>Goto next</h1>
+                    <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
+                {{else if (eq currentUploadState _State.EXISTING)}}
+                    Project Name:
+                    {{input value=projectName class='form-control'}}
+                    {{#if projectName}}
+                        <p class="alert alert-info" role="alert">
+                            Using this project means the list of contributors will be considered
+                            authors of this preprint.
+                        </p>
+                    {{/if}}
+                    <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
+                {{else}}
+                    {{log 'preprint-form-upload: bad uploadState'}}
+                {{/if}}
+            {{/liquid-bind}}
 
         {{else if (eq currentState _State.EXISTING)}}
-            {{input class="form-control"}}
-            <button {{action 'changeState' _State.START}}>Back</button>
+            Find Project:
+            {{input value=projectName class='form-control'}}
+            {{#if projectName}}
+                <h1>List of projects goes here</h1>
+                <p class="alert alert-warning" role="alert">
+                    This preprint is in a project/component with the following contributors. If you
+                    use this version of the preprint, any changes to these contributors will also
+                    change the contributors of the project/component.
+
+                    If you do not want to change the project/component contributors within the OSF
+                    project, then you can create a new component.
+                </p>
+                <p class="alert alert-danger" role="alert">
+                    You must be the admin of this component to share it.
+
+                    Please ask the admin of this project to make you an admin
+                    so you may share this component.
+                </p>
+            {{/if}}
+            <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
 
         {{else}}
             {{log 'preprint-form-upload: bad state'}}

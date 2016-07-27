@@ -1,14 +1,16 @@
-{{#each-in selected as |taxonomy categories|}}
-    {{#each-in categories as |category subjects|}}
-        {{#each-in subjects as |subject|}}
-            <span class="subject"><b>{{taxonomy}}</b><b>{{category}}</b><b>{{subject}}</b></span>
+{{#liquid-spacer growDuration=100}}
+    {{#each-in selected as |taxonomy categories|}}
+        {{#each-in categories as |category subjects|}}
+            {{#each-in subjects as |subject|}}
+                <span class="subject"><b>{{taxonomy}}</b><b>{{category}}</b><b>{{subject}}</b></span>
+            {{else}}
+                <span class="subject"><b>{{taxonomy}}</b><b>{{category}}</b></span>
+            {{/each-in}}
         {{else}}
-            <span class="subject"><b>{{taxonomy}}</b><b>{{category}}</b></span>
+            <span class="subject"><b>{{taxonomy}}</b></span>
         {{/each-in}}
-    {{else}}
-        <span class="subject"><b>{{taxonomy}}</b></span>
     {{/each-in}}
-{{/each-in}}
+{{/liquid-spacer}}
 <div class="row">
     <div class="col-md-4">
         <ul>

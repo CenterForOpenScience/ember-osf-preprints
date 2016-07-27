@@ -27,8 +27,8 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                     this.set(type, value);
                     break;
                 case 'category':
-                    if (!this.get(`selected.${value}`)) {
-                        this.set(`selected.${value}`, new Ember.Object());
+                    if (!this.get(`selected.${this.get('taxonomy')}`)) {
+                        this.set(`selected.${this.get('taxonomy')}`, new Ember.Object());
                     }
                     if (!this.get(`selected.${this.get('taxonomy')}.${value}`)) {
                         this.set(`selected.${this.get('taxonomy')}.${value}`, new Ember.Object());

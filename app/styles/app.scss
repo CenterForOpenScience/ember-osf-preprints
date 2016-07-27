@@ -573,7 +573,7 @@ hr {
             @extend .col-md-2;
             content: "";
         }
-        button {
+        & > button {
             height: 20rem;
             background: none;
             border-radius: 1rem;

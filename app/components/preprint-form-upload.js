@@ -11,6 +11,7 @@ export const State = Ember.Object.extend(Ember.Freezable, {
 
 const component = CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     state: State.START,
+    uploadState: State.START,
     valid: Ember.computed('state', function() {
         const state = this.get('state');
         return [State.NEW, State.EXISTING].find(valid => state === valid);
@@ -18,6 +19,9 @@ const component = CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     actions: {
         changeState(newState) {
             this.set('state', newState);
+        },
+        changeUploadState(newState) {
+            this.set('uploadState', newState);
         }
     }
 });
