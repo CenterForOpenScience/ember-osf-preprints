@@ -11,19 +11,22 @@
                     <button class="btn btn-primary" {{action 'changeUploadState' _State.NEW}}>Create new project</button>
                     <button class="btn btn-primary" {{action 'changeUploadState' _State.EXISTING}}>Save to existing OSF project</button>
                     <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
+
                 {{else if (eq currentUploadState _State.NEW)}}
                     <h1>Goto next</h1>
                     <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
+
                 {{else if (eq currentUploadState _State.EXISTING)}}
                     Project Name:
                     {{input value=projectName class='form-control'}}
-                    {{#if projectName}}
+                    {{#liquid-if projectName use='crossFade'}}
                         <p class="alert alert-info" role="alert">
                             Using this project means the list of contributors will be considered
                             authors of this preprint.
                         </p>
-                    {{/if}}
+                    {{/liquid-if}}
                     <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
+
                 {{else}}
                     {{log 'preprint-form-upload: bad uploadState'}}
                 {{/if}}
@@ -32,8 +35,8 @@
         {{else if (eq currentState _State.EXISTING)}}
             Find Project:
             {{input value=projectName class='form-control'}}
-            {{#if projectName}}
-                <h1>List of projects goes here</h1>
+            {{#liquid-if projectName use='crossFade'}}
+                <h1>List of project files goes here</h1>
                 <p class="alert alert-warning" role="alert">
                     This preprint is in a project/component with the following contributors. If you
                     use this version of the preprint, any changes to these contributors will also
@@ -48,7 +51,7 @@
                     Please ask the admin of this project to make you an admin
                     so you may share this component.
                 </p>
-            {{/if}}
+            {{/liquid-if}}
             <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
 
         {{else}}

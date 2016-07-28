@@ -545,8 +545,16 @@ hr {
         }
     }
     .cp-Panel-body {
+        opacity: 0;
         overflow: hidden;
-        transition: height 0.2s linear;
+        transition: {
+            property: height, opacity;
+            duration: 0.2s;
+            timing-function: linear;
+        }
+        &.cp-is-open {
+            opacity: 1;
+        }
     }
     .row {
         margin: 0;
