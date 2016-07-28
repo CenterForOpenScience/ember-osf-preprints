@@ -612,9 +612,17 @@ hr {
         display: inline-block;
         color: white;
         overflow: hidden;
+        padding: 0 2rem;
         margin-right: 2rem;
         margin-bottom: 1rem;
         border-radius: 2px;
+        transition: background-color 0.1s linear;
+        &:hover {
+            background-color: lighten($brand-primary, 10%);
+            & > b:after {
+                border-left-color: lighten($brand-primary, 10%);
+            }
+        }
         & > b {
             display: inline-block;
             padding: 1rem 0 1rem 3rem;
@@ -627,7 +635,7 @@ hr {
                 height: 0;
                 left: 100%;
                 top: 50%;
-                margin-top: -50px;
+                margin-top: -5rem;
                 border: {
                     style: solid;
                     width: 5rem 0 5rem 3rem;
@@ -642,12 +650,13 @@ hr {
             }
             &:after {
                 @extend %pseudo;
+                transition: border-color 0.1s linear;
                 z-index: 2;
             }
             &:first-child {
-                padding-left: 2rem;
+                padding-left: 0;
             }
-            &:last-child {
+            &:last-of-type {
                 padding-right: 2rem;
                 &:before, &:after {
                     display: none;
@@ -655,6 +664,17 @@ hr {
             }
             & + b {
                 margin-left: 2rem;
+            }
+        }
+        & > .fa {
+            color: white;
+            cursor: pointer;
+            transition: color 0.1s linear;
+            &:hover {
+                color: lighten(red, 40%);
+            }
+            &:active {
+                color: lighten(red, 20%);
             }
         }
     }

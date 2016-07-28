@@ -14,36 +14,32 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         'l': {}
     },
     taxonomy: null,
+    path: [],
     selected: new Ember.Object(),
     valid: Ember.computed.oneWay('taxonomy'),
     actions: {
-        select(type, value) {
-            switch (type) {
-                case 'taxonomy':
-                    if (!this.get(`selected.${value}`)) {
-                        this.set(`selected.${value}`, new Ember.Object());
-                    }
-                    this.set('category', null);
-                    this.set(type, value);
-                    break;
-                case 'category':
-                    if (!this.get(`selected.${this.get('taxonomy')}`)) {
-                        this.set(`selected.${this.get('taxonomy')}`, new Ember.Object());
-                    }
-                    if (!this.get(`selected.${this.get('taxonomy')}.${value}`)) {
-                        this.set(`selected.${this.get('taxonomy')}.${value}`, new Ember.Object());
-                    }
-                    this.set(type, value);
-                    break;
-                case 'subject':
-                    const prop = `selected.${this.get('taxonomy')}.${this.get('category')}.${value}`;
-                    if (this.get(prop)) {
-                        this.set(prop, null);
-                        delete this.selected[this.get('taxonomy')][this.get('category')][value];
-                    } else {
-                        this.set(prop, true);
-                    }
-            }
+        delete(key) {
+            this.set(key, null);
+            eval(`delete this.${key}`);
+        },
+        deselect(...args) {
+            this.send('delete', `selected.${args.slice(0, args.length - 1).join('.')}`);
+            this.rerender();
+        },
+        select(...args) {
+            const process = (prev, cur, i) => {
+                if (!this.get(`selected.${prev}`)) {
+                    // Create necessary parent objects and newly selected object
+                    this.set(`selected.${prev}`, new Ember.Object());
+                } else if (i === 3) {
+                    // Deselecting a subject
+                    this.send('delete', `selected.${prev}`);
+                }
+                return `${prev}.${cur}`;
+            };
+            // Process past length of array
+            process(args.reduce(process), '', args.length);
+            this.set('path', args);
             this.rerender();
         }
     }

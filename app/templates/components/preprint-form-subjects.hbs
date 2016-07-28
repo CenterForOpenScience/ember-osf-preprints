@@ -2,12 +2,12 @@
     {{#each-in selected as |taxonomy categories|}}
         {{#each-in categories as |category subjects|}}
             {{#each-in subjects as |subject|}}
-                <span class="subject"><b>{{taxonomy}}</b><b>{{category}}</b><b>{{subject}}</b></span>
+                <span class="subject"><b>{{taxonomy}}</b><b>{{category}}</b><b>{{subject}}</b>{{fa-icon 'times' click=(action 'deselect' taxonomy category subject)}}</span>
             {{else}}
-                <span class="subject"><b>{{taxonomy}}</b><b>{{category}}</b></span>
+                <span class="subject"><b>{{taxonomy}}</b><b>{{category}}</b>{{fa-icon 'times' click=(action 'deselect' taxonomy category)}}</span>
             {{/each-in}}
         {{else}}
-            <span class="subject"><b>{{taxonomy}}</b></span>
+            <span class="subject"><b>{{taxonomy}}</b>{{fa-icon 'times' click=(action 'deselect' taxonomy)}}</span>
         {{/each-in}}
     {{/each-in}}
 {{/liquid-spacer}}
@@ -15,22 +15,28 @@
     <div class="col-md-4">
         <ul>
             {{#each-in taxonomies as |element|}}
-                <li {{action 'select' 'taxonomy' element}} class={{if (eq taxonomy element) 'selected'}}>{{element}}</li>
+                <li {{action 'select' element}} class={{if (eq path.[0] element) 'selected'}}>{{element}}</li>
             {{/each-in}}
         </ul>
     </div>
     <div class="col-md-4">
         <ul>
-            {{#each-in (get taxonomies taxonomy) as |element|}}
-                <li {{action 'select' 'category' element}} class={{if (eq category element) 'selected'}}>{{element}}</li>
-            {{/each-in}}
+            {{#with path.[0] as |taxonomy|}}
+                {{#each-in (get taxonomies taxonomy) as |element|}}
+                    <li {{action 'select' taxonomy element}} class={{if (eq path.[1] element) 'selected'}}>{{element}}</li>
+                {{/each-in}}
+            {{/with}}
         </ul>
     </div>
     <div class="col-md-4">
         <ul>
-            {{#each (get (get taxonomies taxonomy) category) as |element|}}
-                <li {{action 'select' 'subject' element}} class={{if (get (get (get selected taxonomy) category) element) 'selected'}}>{{element}}</li>
-            {{/each}}
+            {{#with path.[0] as |taxonomy|}}
+                {{#with path.[1] as |category|}}
+                    {{#each (get (get taxonomies taxonomy) category) as |element|}}
+                        <li {{action 'select' taxonomy category element}} class={{if (get (get (get selected taxonomy) category) element) 'selected'}}>{{element}}</li>
+                    {{/each}}
+                {{/with}}
+            {{/with}}
         </ul>
     </div>
 </div>
