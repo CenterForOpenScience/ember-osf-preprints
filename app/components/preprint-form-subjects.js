@@ -74,7 +74,8 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     actions: {
         delete(key) {
             this.set(key, null);
-            eval(`delete this.${key}`);
+            // Handle keys with spaces
+            eval(`delete this['${key.replace(/\./g, "']['")}']`);
         },
         deselect([...args]) {
             this.send('delete', `selected.${args.filter(arg => Ember.typeOf(arg) === 'string').join('.')}`);
