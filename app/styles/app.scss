@@ -689,9 +689,12 @@ hr {
         list-style: none;
         padding: 0;
         border: 1px lightgray solid;
+        border-radius: 1rem;
         li {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.5rem;
             cursor: pointer;
+            border-radius: 1em;
+            margin: 0.5rem;
             transition: {
                 property: background-color, color, font-weight;
                 duration: 0.1s;
@@ -706,7 +709,7 @@ hr {
                 font-weight: bold;
             }
             & + li {
-                border-top: 1px lightgray solid;
+                margin-top: 0;
             }
         }
     }
