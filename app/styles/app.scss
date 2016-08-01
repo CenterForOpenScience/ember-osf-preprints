@@ -695,6 +695,10 @@ hr {
             cursor: pointer;
             border-radius: 1em;
             margin: 0.5rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            position: relative;
             transition: {
                 property: background-color, color, font-weight;
                 duration: 0.1s;
@@ -707,6 +711,7 @@ hr {
                 background-color: #337AB7;
                 color: white;
                 font-weight: bold;
+                white-space: normal;
             }
             & + li {
                 margin-top: 0;
