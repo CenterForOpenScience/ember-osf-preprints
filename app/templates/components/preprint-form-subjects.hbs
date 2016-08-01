@@ -18,6 +18,7 @@
 <div class="row">
     <div class="col-md-4">
         <ul>
+            {{input value=filter.[0].value class="form-control" placeholder="Search"}}
             {{#each sortedTaxonomies as |element|}}
                 <li {{action 'select' element}}
                     class={{if (eq path.[0].name element.name) 'selected'}}>{{element.name}}</li>
@@ -27,8 +28,9 @@
 
     <div class="col-md-4">
         <ul>
+            {{input value=filter.[1].value class="form-control" placeholder="Search"}}
             {{#with path.[0] as |taxonomy|}}
-                {{#each taxonomy.children as |element|}}
+                {{#each filteredPath.[0].children as |element|}}
                     <li {{action 'select' taxonomy element}}
                         class={{if (eq path.[1].name element.name) 'selected'}}>{{element.name}}</li>
                 {{/each}}
@@ -38,9 +40,10 @@
 
     <div class="col-md-4">
         <ul>
+            {{input value=filter.[2].value class="form-control" placeholder="Search"}}
             {{#with path.[0] as |taxonomy|}}
                 {{#with path.[1] as |category|}}
-                    {{#each category.children as |element|}}
+                    {{#each filteredPath.[1].children as |element|}}
                         <li {{action 'select' taxonomy category element}}
                             class={{if (get (get (get selected taxonomy.name) category.name) element) 'selected'}}>{{element}}</li>
                     {{/each}}

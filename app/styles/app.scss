@@ -690,6 +690,11 @@ hr {
         padding: 0;
         border: 1px lightgray solid;
         border-radius: 1rem;
+        overflow: hidden;
+        input {
+            border-style: none none solid none;
+            box-shadow: none;
+        }
         li {
             padding: 0.5rem 1.5rem;
             cursor: pointer;

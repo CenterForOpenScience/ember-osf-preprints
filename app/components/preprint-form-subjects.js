@@ -3,17 +3,20 @@ import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-bo
 import PreprintFormFieldMixin from '../mixins/preprint-form-field';
 
 export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
-    taxonomies: {
-        'a': {
-            'b': ['c', 'd', 'e'],
-            'f': ['g']
-        },
-        'h': {
-            'i': ['j','k']
-        },
-        'l': {}
-    },
-    sortedTaxonomies: Ember.computed('taxonomies', function() {
+    filter: [{}, {}, {}],
+    filteredPath: Ember.computed('path', 'filter', 'filter.@each.value', function() {
+        return this.get('path').slice(0, 2).map((path, i) => {
+            if (path.children && this.get(`filter.${i + 1}.value`)) {
+                return {
+                    name: path.name,
+                    children: path.children.filter(child =>
+                        this.get(`filter.${i + 1}.value`).indexOf(child.name || child) !== -1)
+                };
+            }
+            return path;
+        });
+    }),
+    sortedTaxonomies: Ember.computed('taxonomies', 'filter', 'filter.0.value', function() {
         return [{
             name: 'a',
             children: [{
@@ -31,7 +34,9 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
             }]
         }, {
             name: 'l'
-        }];
+        }].filter(taxonomy =>
+            !this.get('filter.0.value') || taxonomy.name.indexOf(this.get('filter.0.value')) !== -1
+        );
     }),
     path: [],
     selected: new Ember.Object(),
