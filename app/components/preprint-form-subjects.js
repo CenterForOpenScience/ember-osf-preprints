@@ -87,9 +87,12 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                 if (!this.get(`selected.${prev}`)) {
                     // Create necessary parent objects and newly selected object
                     this.set(`selected.${prev}`, new Ember.Object());
-                } else if (i === 3) {
-                    // Deselecting a subject
+                } else if (i === args.length && this.get('path').every((e, i) => e === args[i])
+                    && Object.keys(this.get(`selected.${prev}`)).length === 0) {
+                    // Deselecting a subject: if subject is last item in args,
+                    // its children are showing, and no children are selected
                     this.send('delete', `selected.${prev}`);
+                    args.popObject();
                 }
                 return `${prev}.${cur}`;
             };
