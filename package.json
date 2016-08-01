@@ -41,6 +41,7 @@
     "ember-cli-sri": "^2.1.0",
     "ember-cli-template-lint": "0.4.11",
     "ember-cli-uglify": "^1.2.0",
+    "ember-collapsible-panel": "1.0.0",
     "ember-data": "^2.5.0",
     "ember-data-url-templates": "0.1.1",
     "ember-export-application-global": "^1.0.5",
@@ -53,6 +54,7 @@
     "ember-resolver": "^2.0.3",
     "ember-toastr": "1.4.1",
     "ember-truth-helpers": "1.2.0",
+    "liquid-fire": "0.24.1",
     "loader.js": "^4.0.1",
     "postcss": "^5.1.0"
   },

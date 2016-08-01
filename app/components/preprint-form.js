@@ -1,18 +1,15 @@
 import Ember from 'ember';
+import CpPanelsComponent from 'ember-collapsible-panel/components/cp-panels';
 
-export default Ember.Component.extend({
+export default CpPanelsComponent.extend({
     store: Ember.inject.service(),
+    elementId: 'preprint-form',
+    accordion: true,
+    _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
+    valid: new Ember.Object(),
     actions: {
-        createPreprint(title, abstract, authors, tags, journal, doi) {
-            let buttonAction = this.get('buttonAction'),
-                subject = this.$('select[name=subject]').val();
-            buttonAction(title, abstract, authors, subject, tags, journal, doi);
-        },
-        updatePreprint(title, abstract, authors, tags, journal) {
-            let buttonAction = this.get('buttonAction'),
-                preprintId = this.get('id'),
-                subject = this.$('select[name=subject]').val();
-            buttonAction(preprintId, title, abstract, authors, subject, tags, journal);
+        verify(name, state) {
+            this.get('valid').set(name, state);
         }
     }
 });

@@ -1,30 +1,4 @@
-<div class="container"> <!--CONTAINER DIV-->
-
-<div class="m-b-md p-md osf-box" id="main"> <!--MAIN DIV-->
-
-        <div class="row" id="addPreprint"> <!--ROW-->
-            <div class="col-md-12"> <!--COL-->
-                <h1>Add preprint</h1>
-            </div> <!--END COL-->
-        </div> <!--END ROW-->
-
-    <div class="row"> <!--FORM ROW DIV-->
-        <div class="col-md-7"> <!--COL 7 DIV-->
-            
-            <!--TODO: ADD EMBER OSF COMPONENT AND LOGIC FOR ROUTES-->
-            {{dropzone-widget preUpload=(action 'preUpload') success=(action 'success') error=(action 'error') buildUrl=(action 'buildUrl') options=dropzoneOptions}}
-            <span class="text-danger">*Accepted file types: .pdf, .doc, .docx</span>
-        </div> <!--END COL 7 DIV-->
-
-        <div class="col-md-5"> <!--COL 5 DIV: FORM-->
-            {{preprint-form buttonAction=(action 'uploadNewPreprintToNewProject') actionName="createPreprint" buttonText="Add preprint"}}
-            <!--<button class="btn btn-primary" onclick={{action 'closeModal'}}>Add File</button>-->
-        </div> <!--END COL 5 DIV: FORM-->
-
-    </div> <!--END FORM ROW-->
-
-
-</div> <!--END MAIN DIV-->
-
-</div> <!--END CONTAINER DIV-->
-<!--makePost=(action "makePost")-->
+<main class="container">
+    <h1>Add Preprint</h1>
+    {{preprint-form}}
+</main>

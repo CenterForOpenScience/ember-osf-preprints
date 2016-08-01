@@ -1,0 +1,56 @@
+<div class="form">
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"> User ID </span>
+            {{input class="form-control" value=newContributorId}}
+        </div>
+    </div>
+    <div class="form-group">
+        <h3> Permissions: </h3>
+        <label>{{radio-button name="permission" value=READ checked=newContributorPermissions}} Read</label>
+        <label>{{radio-button name="permission" value=WRITE checked=newContributorPermissions}} Read + Write</label>
+        <label>{{radio-button name="permission" value=ADMIN checked=newContributorPermissions}} Administrator</label>
+    </div>
+    <div class="form-group">
+        <h3> Bibliographic: </h3>
+        <label>{{radio-button name="bibliographic" value=true checked=newContributorIsBibliographic}} Bibliographic </label>
+        <label>{{radio-button name="bibliographic" value=false checked=newContributorIsBibliographic}} Non-Bibliographic </label>
+    </div>
+    <div class="form-group">
+        <button {{action 'addContributor' newContributorId newContributorPermissions newContributorIsBibliographic}} class="btn btn-primary">Add</button>
+    </div>
+</div>
+
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th> Name </th>
+        <th> Permissions </th>
+        <th> Bibliographic </th>
+        <th> </th>
+    </tr>
+    {{#each contributors as |contrib|}}
+        <tr>
+            <td>
+                {{contrib.id}}
+            </td>
+            <td>
+                {{if contrib.unregisteredContributor contrib.unregisteredContributor contrib.users.fullName}}
+            </td>
+            <td>
+                <select onchange={{action (action 'permissionChange' contrib) value='target.value'}} >
+                    <option value=READ selected={{if (eq contrib.permission READ) true false}}> Read </option>
+                    <option value=WRITE selected={{if (eq contrib.permission WRITE) true false}}> Read + Write </option>
+                    <option value=ADMIN selected={{if (eq contrib.permission ADMIN) true false}}> Administrator </option>
+                </select>
+            </td>
+            <td>
+                <input onchange={{action (action 'bibliographicChange' contrib) value='target.checked'}} checked={{if contrib.bibliographic true false}} type="checkbox" name="bibliographic">
+            </td>
+            <td>
+                <button {{action 'removeContributor' contrib}} class="btn btn-danger"> Remove </button>
+            </td>
+        </tr>
+    {{/each}}
+</table>
+<button {{action 'updateContributors'}} class="btn btn-primary"> Save changes </button>
