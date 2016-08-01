@@ -7,10 +7,6 @@
         <div class="col-sm-12">
             <!--TODO: Don't create the same button twice-->
             {{#if session.isAuthenticated}}
-                    <!--<button {{action 'modalShow'}}type="button" class="btn btn-info btn-lg">-->
-                        <!--Add a preprint-->
-                    <!--</button>-->
-            <!--TODO: Add modal later-->
                 {{#link-to "add-preprint" type="button" class="btn btn-info btn-lg"}}Add a preprint{{/link-to}}
             {{else}}
                     <button class="btn btn-info btn-lg" onclick={{action 'login' target=popup}} >
@@ -21,63 +17,3 @@
 {{/oauth-popup}}
 
 </div> <!--END COL-->
-
-
-<!--TODO:Replace/delete these modals-->
-<!-- Modals -->
-
-<!--User not logged in modal-->
- {{#bs-modal open=false body=false footer=false title="Attention" id="myModal" submitAction=(action "submit")}}
-   {{#bs-modal-body}}An OSF account is required to upload a preprint.{{/bs-modal-body}} <!--add the OSF logo here-->
-        {{#bs-modal-footer as |footer|}}
-          {{#bs-button  action='signupShow' class="btn btn-success"}}Sign up{{/bs-button}}
-          {{#bs-button action='loginShow' class="btn btn-primary"}}Sign in{{/bs-button}}
-   {{/bs-modal-footer}}
- {{/bs-modal}}
-
-<!--Login Modal-->
-{{#bs-modal open=showLogin body=false footer=false title="Login"}}
-    {{my-login}}<!--TODO: Add login-form component back in from ember-osf-->
-    {{#bs-modal-footer as |footer|}}
-        {{#bs-button  action='projectChooserShow' class="btn btn-primary"}}Sign in{{/bs-button}}
-    {{/bs-modal-footer}}
-{{/bs-modal}}
-
-<!--Signup Modal-->
-{{#bs-modal open=showSignup body=false footer=false title="Create a free account"}}
-   {{my-signup}}  <!--TODO: Add sign-up component back in from ember-osf-->
-    {{#bs-modal-footer as |footer|}}
-        {{#bs-button  action='signupSuccessShow' class="btn btn-success"}}Create account{{/bs-button}}
-    {{/bs-modal-footer}}
-{{/bs-modal}}
-
-    <!--Signup Success Modal-->
-     {{#bs-modal open=showSignupSuccess title="Success!"}}
-       Registration successful. Please check ${email} to confirm your email address.
-     {{/bs-modal}}
-
-<!--Project Chooser Modal-->
- {{#bs-modal open=showProjectChooser body=false footer=false title="Add preprint"}}
-   {{#bs-modal-body}}{{project-chooser}}{{/bs-modal-body}}
-        {{#bs-modal-footer as |footer|}}
-             <!--still need to deal with picking a file-->
-            {{!--#bs-button  action='signupSuccessShow' class="btn btn-primary pull-right m-t-md"}}Continue{{/bs-button--}} <!--how do i know which form data im submitting? and which modal to go to next-->
-            <!--<button type="submit" id="newProject" class="btn btn-primary pull-right m-t-md">Continue <i class="fa fa-angle-right"></i></button>-->
-   {{/bs-modal-footer}}
- {{/bs-modal}}
-
-
-<!--File Chooser Modal PROBABLY WONT USE THIS INSTEAD GO TO FILE DETAIL PAGE-->
-{{#bs-modal open=showFileChooser body=false footer=false}}
-   {{file-chooser}}
-    {{#bs-modal-footer as |footer|}}
-        {{#link-to "add-preprint" class="btn btn-success"}}Add preprint draft{{/link-to}}
-    {{/bs-modal-footer}}
-{{/bs-modal}}
-
-
-<!--upload to existing-->
-<!--Choose from existing file-->
-<!--create a new project-->
-<!--choose from an existing project-->
-    <!--just have an autopopulating thing like prereg-->
