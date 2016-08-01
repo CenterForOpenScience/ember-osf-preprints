@@ -33,7 +33,6 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
             name: 'l'
         }];
     }),
-    taxonomy: null,
     path: [],
     selected: new Ember.Object(),
     // sortedSelection: Ember.computed('selected', function() {
@@ -70,7 +69,9 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         flatten([selected]);
         return sorted;
     }),
-    valid: Ember.computed.oneWay('taxonomy'),
+    valid: Ember.computed('selected', function() {
+        return Object.keys((this.get('selected'))).length !== 0;
+    }),
     actions: {
         delete(key) {
             this.set(key, null);
