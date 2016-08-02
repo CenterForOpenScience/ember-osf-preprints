@@ -1,39 +1,51 @@
 {{#liquid-spacer growDuration=100}}
-    {{#each-in selected as |taxonomy categories|}}
-        {{#each-in categories as |category subjects|}}
-            {{#each-in subjects as |subject|}}
-                <span class="subject"><b>{{taxonomy}}</b><b>{{category}}</b><b>{{subject}}</b>{{fa-icon 'times' click=(action 'deselect' taxonomy category subject)}}</span>
-            {{else}}
-                <span class="subject"><b>{{taxonomy}}</b><b>{{category}}</b>{{fa-icon 'times' click=(action 'deselect' taxonomy category)}}</span>
-            {{/each-in}}
-        {{else}}
-            <span class="subject"><b>{{taxonomy}}</b>{{fa-icon 'times' click=(action 'deselect' taxonomy)}}</span>
-        {{/each-in}}
-    {{/each-in}}
+    {{#each sortedSelection as |selectedPath|}}
+        <span class="subject">
+            {{#with selectedPath.[0] as |taxonomy|}}
+                <b>{{taxonomy}}</b>
+            {{/with}}
+            {{#with selectedPath.[1] as |category|}}
+                <b>{{category}}</b>
+            {{/with}}
+            {{#with selectedPath.[2] as |subject|}}
+                <b>{{subject}}</b>
+            {{/with}}
+            {{fa-icon 'times' click=(action 'deselect' selectedPath)}}
+        </span>
+    {{/each}}
 {{/liquid-spacer}}
+
 <div class="row">
     <div class="col-md-4">
         <ul>
-            {{#each-in taxonomies as |element|}}
-                <li {{action 'select' element}} class={{if (eq path.[0] element) 'selected'}}>{{element}}</li>
-            {{/each-in}}
+            {{input value=filter.[0].value class="form-control" placeholder="Search"}}
+            {{#each sortedTaxonomies as |element|}}
+                <li {{action 'select' element}}
+                    class={{if (eq path.[0].name element.name) 'selected'}}>{{element.name}}</li>
+            {{/each}}
         </ul>
     </div>
+
     <div class="col-md-4">
         <ul>
+            {{input value=filter.[1].value class="form-control" placeholder="Search"}}
             {{#with path.[0] as |taxonomy|}}
-                {{#each-in (get taxonomies taxonomy) as |element|}}
-                    <li {{action 'select' taxonomy element}} class={{if (eq path.[1] element) 'selected'}}>{{element}}</li>
-                {{/each-in}}
+                {{#each filteredPath.[0].children as |element|}}
+                    <li {{action 'select' taxonomy element}}
+                        class={{if (eq path.[1].name element.name) 'selected'}}>{{element.name}}</li>
+                {{/each}}
             {{/with}}
         </ul>
     </div>
+
     <div class="col-md-4">
         <ul>
+            {{input value=filter.[2].value class="form-control" placeholder="Search"}}
             {{#with path.[0] as |taxonomy|}}
                 {{#with path.[1] as |category|}}
-                    {{#each (get (get taxonomies taxonomy) category) as |element|}}
-                        <li {{action 'select' taxonomy category element}} class={{if (get (get (get selected taxonomy) category) element) 'selected'}}>{{element}}</li>
+                    {{#each filteredPath.[1].children as |element|}}
+                        <li {{action 'select' taxonomy category element}}
+                            class={{if (get (get (get selected taxonomy.name) category.name) element) 'selected'}}>{{element}}</li>
                     {{/each}}
                 {{/with}}
             {{/with}}
