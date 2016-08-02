@@ -1,18 +1,17 @@
-import Model from 'ember-data/model';
-import attr from 'ember-data/attr';
+import DS from 'ember-data';
 
-export default Model.extend({
-    title: attr(),
-    authors: attr(),
-    date: attr(),
-    subject: attr(),
-    abstract: attr(),
-    publisher: attr(),
-    project: attr(),
-    supplementalMaterials: attr(),
-    figures: attr(),
-    license: attr(),
-    path: attr(),
-    tags: attr(),
-    doi: attr(),
+export default DS.Model.extend({
+    title: DS.attr('string'),
+    authors: DS.attr(),
+    date: DS.attr(),
+    subject: DS.attr(),
+    abstract: DS.attr(),
+    publisher: DS.attr(),
+    project: DS.attr(),
+    supplementalMaterials: DS.attr(),
+    figures: DS.attr(),
+    license: DS.attr(),
+    path: DS.attr(),
+    tags: DS.attr(),
+    doi: DS.attr(),
 });
