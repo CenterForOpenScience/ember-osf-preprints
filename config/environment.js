@@ -4,8 +4,8 @@ module.exports = function(environment) {
     var ENV = {
         modulePrefix: 'preprint-service',
         environment: environment,
-        baseURL: '/',
-        locationType: 'auto',
+        rootURL: '/preprints/',
+        locationType: 'none',
         authorizationType: 'token',
         EmberENV: {
             FEATURES: {
@@ -45,7 +45,7 @@ module.exports = function(environment) {
 
     if (environment === 'test') {
         // Testem prefers this...
-        ENV.baseURL = '/';
+        // ENV.baseURL = '/';
         ENV.locationType = 'none';
 
         // keep test console output quieter
