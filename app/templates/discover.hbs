@@ -1,0 +1,24 @@
+<body role="document">
+
+<div class="container space-top space-bottom">
+    {{search-preprints search="search"}}
+</div>
+
+<div class="container" id="browse">
+    <div class="row">
+        <div class="col-lg-4">
+
+            {{taxonomy-tree tree=model.taxonomy}}
+
+        </div>
+
+        <!-- TODO: remove route model and replace with elasticsearch query -->
+        <div class="col-lg-8" id="preprintList">
+            {{#each model.preprints as |preprintEntry|}}
+                {{preprint-entry preprint=preprintEntry}}
+            {{/each}}
+        </div>
+    </div>
+</div>
+
+</body>

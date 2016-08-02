@@ -7,12 +7,16 @@ export default Ember.Component.extend({
         this.$('#taxonomyTree').treeview({
             data: this.get('tree').get('tree'),
             levels: 1,
-            selectedBackColor: '#67a3bf',
+//            selectedBackColor: '#67a3bf',
+            showCheckbox: true,
+            collapseIcon: 'glyphicon glyphicon-menu-down',
+            expandIcon: 'glyphicon glyphicon-menu-right',
 
             onNodeSelected: (event, data) => {
-                // Recurse down from this subject to filter by all subcategories as well
+
+                /*
                 let getSubjects = (d, subjects) => {
-                    subjects.push(d.text[0]);
+                    subjects.push(d.text);
                     // Base case: leaf node
                     if (!d.nodes) {
                         return subjects;
@@ -23,13 +27,16 @@ export default Ember.Component.extend({
                     }
                     return subjects;
                 };
-
+                
                 if (data.text === 'All subjects') {
                     this.sendAction('filter', null);
                 } else {
                     // Make call to recursive function with initially empty list
                     this.sendAction('filter', getSubjects(data, []));
                 }
+                */
+
+                this.$('#taxonomyTree').treeview('toggleNodeChecked', [ data.nodeId, { silent: true } ] );
             }
         });
     },
