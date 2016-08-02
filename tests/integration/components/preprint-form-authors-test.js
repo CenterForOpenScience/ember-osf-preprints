@@ -8,17 +8,9 @@ moduleForComponent('preprint-form-authors', 'Integration | Component | preprint 
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
+  this.on('verify', function() {});
 
-  this.render(hbs`{{preprint-form-authors}}`);
+  this.render(hbs`{{preprint-form-authors verify=(action 'verify')}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#preprint-form-authors}}
-      template block text
-    {{/preprint-form-authors}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.ok(this.$('.form').length);
 });

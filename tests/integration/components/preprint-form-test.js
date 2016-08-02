@@ -11,14 +11,9 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{preprint-form}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#preprint-form}}
-      template block text
-    {{/preprint-form}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.ok(this.$('#preprint-form-upload').length);
+  assert.ok(this.$('#preprint-form-basics').length);
+  assert.ok(this.$('#preprint-form-subjects').length);
+  assert.ok(this.$('#preprint-form-authors').length);
+  assert.ok(this.$('#preprint-form-submit').length);
 });

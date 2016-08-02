@@ -6,7 +6,9 @@ module('Unit | Mixin | preprint form field');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  let PreprintFormFieldObject = Ember.Object.extend(PreprintFormFieldMixin);
+  let PreprintFormFieldObject = Ember.Object.extend(PreprintFormFieldMixin, {
+      verify() {}
+  });
   let subject = PreprintFormFieldObject.create();
   assert.ok(subject);
 });

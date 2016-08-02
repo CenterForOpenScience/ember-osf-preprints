@@ -8,17 +8,9 @@ moduleForComponent('preprint-form-basics', 'Integration | Component | preprint f
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
+  this.on('verify', function() {});
 
-  this.render(hbs`{{preprint-form-basics}}`);
+  this.render(hbs`{{preprint-form-basics verify=(action 'verify')}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#preprint-form-basics}}
-      template block text
-    {{/preprint-form-basics}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.ok(this.$('span.required').length);
 });

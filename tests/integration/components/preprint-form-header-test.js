@@ -8,17 +8,10 @@ moduleForComponent('preprint-form-header', 'Integration | Component | preprint f
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
+  const name = 'test';
+  this.set('name', name);
 
-  this.render(hbs`{{preprint-form-header}}`);
+  this.render(hbs`{{preprint-form-header name=name}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#preprint-form-header}}
-      template block text
-    {{/preprint-form-header}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$().text().trim(), name);
 });
