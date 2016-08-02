@@ -11,14 +11,7 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{project-chooser}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#project-chooser}}
-      template block text
-    {{/project-chooser}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$('#newFileButton').text().trim(), 'Upload a file and create an OSF project');
+  assert.equal(this.$('#existingProjectButton').text().trim(), 'Upload a file to an existing OSF project');
+  assert.equal(this.$('#existingFileButton').text().trim(), 'Choose a file from an existing OSF project');
 });

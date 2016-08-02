@@ -1,23 +1,24 @@
 
-<div class="tags"> <!--TAGS DIV-->
-    <div class="smallTag date"> <!--DATE-->
+<div class="tags"> {{!TAGS DIV}}
+    <div class="smallTag date"> {{!DATE}}
         {{moment-format preprint.date "MMMM YYYY"}}
-    </div> <!--END DATE-->
+    </div> {{!END DATE}}
 
-    <div class="smallTag subjectTag"> <!--SUBJECT-->
+    <div class="smallTag subjectTag"> {{!SUBJECT}}
         {{preprint.subject}}
-    </div>  <!--END SUBJECT-->
-</div> <!--END TAGS DIV-->
+    </div>  {{!END SUBJECT}}
+</div> {{!END TAGS DIV}}
 
 
-<!--ARTICLE-->
+{{!ARTICLE}}
 <br>
 
 <div class="article">
-    <div class="preprintTitle"> <!--TITLE DIV-->
-        <a class="preprintTitle">{{#link-to "preprints.view" preprintId}}{{preprint.title}}{{/link-to}}
+    <div class="preprintTitle"> {{!TITLE DIV}}
+        <a class="preprintTitle">
+            {{#link-to "preprints.view" preprintId}}{{preprint.title}}{{/link-to}}
         </a>
-    </div> <!--END TITLE DIV-->
+    </div> {{!END TITLE DIV}}
     <p><strong>Authors: </strong>{{preprint.authors}}</p>
     <p id={{preprint.id}}>
         <strong>Abstract:</strong>
