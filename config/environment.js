@@ -5,7 +5,7 @@ module.exports = function(environment) {
         modulePrefix: 'preprint-service',
         environment: environment,
         rootURL: '/preprints/',
-        locationType: 'none',
+        locationType: 'auto',
         authorizationType: 'token',
         EmberENV: {
             FEATURES: {
