@@ -7,8 +7,18 @@
 <div class="container" id="browse">
     <div class="row">
         <div class="col-lg-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>Refine your search {{fa-icon "info-circle"}}</h4>
+                </div>
 
-            {{taxonomy-tree tree=model.taxonomy}}
+                <div class="panel-body">
+                    <div>
+                        <h4>Subject</h4>
+                        {{taxonomy-tree tree=model.taxonomy}}
+                    </div>
+                </div>
+            </div>
 
         </div>
 

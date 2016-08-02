@@ -7,10 +7,11 @@ export default Ember.Component.extend({
         this.$('#taxonomyTree').treeview({
             data: this.get('tree').get('tree'),
             levels: 1,
-//            selectedBackColor: '#67a3bf',
+            highlightSelected: false,
+            showBorder: false,
             showCheckbox: true,
-            collapseIcon: 'glyphicon glyphicon-menu-down',
-            expandIcon: 'glyphicon glyphicon-menu-right',
+            collapseIcon: 'glyphicon glyphicon-triangle-bottom',
+            expandIcon: 'glyphicon glyphicon-triangle-right',
 
             onNodeSelected: (event, data) => {
 
@@ -27,7 +28,7 @@ export default Ember.Component.extend({
                     }
                     return subjects;
                 };
-                
+
                 if (data.text === 'All subjects') {
                     this.sendAction('filter', null);
                 } else {
