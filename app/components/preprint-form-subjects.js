@@ -40,26 +40,6 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     }),
     path: [],
     selected: new Ember.Object(),
-    // sortedSelection: Ember.computed('selected', function() {
-    //     const selected = this.get('selected');
-    //     const taxonomies = Object.keys(selected);
-    //     const temp = taxonomies
-    //         .map(taxonomy => selected.get(taxonomy))
-    //         .filter(categories => categories);
-    //     const categories = temp
-    //         .reduce((prev, cur) => prev.concat(Object.keys(cur)), []);
-    //     const subjects = temp
-    //         .map(categories => Object.keys(categories)
-    //             .map(category => categories.get(category))
-    //             .filter(subjects => subjects)
-    //             .reduce((prev, cur) => prev.concat(Object.keys(cur)), []))
-    //         .reduce((prev, cur) => prev.concat(cur));
-    //     return {
-    //         taxonomies: taxonomies,
-    //         categories: categories,
-    //         subjects: subjects
-    //     };
-    // }),
     sortedSelection: Ember.computed('selected', function() {
         const sorted = [];
         const selected = this.get('selected');
@@ -93,8 +73,9 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                 if (!this.get(`selected.${prev}`)) {
                     // Create necessary parent objects and newly selected object
                     this.set(`selected.${prev}`, new Ember.Object());
-                } else if (i === args.length && this.get('path').every((e, i) => e === args[i])
-                    && Object.keys(this.get(`selected.${prev}`)).length === 0) {
+                } else if (i === args.length && args.length === this.get('path').length &&
+                    this.get('path').every((e, i) => e.name === args[i].name) &&
+                    Object.keys(this.get(`selected.${prev}`)).length === 0) {
                     // Deselecting a subject: if subject is last item in args,
                     // its children are showing, and no children are selected
                     this.send('delete', `selected.${prev}`);
