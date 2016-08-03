@@ -10,7 +10,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                 return {
                     name: path.name,
                     children: path.children.filter(child =>
-                        this.get(`filter.${i + 1}.value`).indexOf(child.name || child) !== -1)
+                        ~this.get(`filter.${i + 1}.value`).indexOf(child.name || child))
                 };
             }
             return path;
@@ -35,7 +35,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         }, {
             name: 'l'
         }].filter(taxonomy =>
-            !this.get('filter.0.value') || taxonomy.name.indexOf(this.get('filter.0.value')) !== -1
+            !this.get('filter.0.value') || ~taxonomy.name.indexOf(this.get('filter.0.value'))
         );
     }),
     path: [],
@@ -48,7 +48,9 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
             if (keys.length === 0) {
                 return name.length !== 0 && sorted.pushObject(name);
             } else {
-                return keys.sort().map(key => [obj.get(key), [...name, key]]).forEach(flatten);
+                return keys.sort()
+                    .map(key => [obj.get(key), [...name, key]])
+                    .forEach(flatten);
             }
         };
         flatten([selected]);
@@ -58,33 +60,47 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         return Object.keys((this.get('selected'))).length !== 0;
     }),
     actions: {
-        delete(key) {
+        delete(key, array = key.split('.')) {
             this.set(key, null);
-            // Handle keys with spaces
-            eval(`delete this['${key.replace(/\./g, "']['")}']`);
+            // Delete key manually
+            switch (array.length) {
+                case 2:
+                    delete this[array[0]][array[1]];
+                    break;
+                case 3:
+                    delete this[array[0]][array[1]][array[2]];
+                    break;
+                case 4:
+                    delete this[array[0]][array[1]][array[2]][array[3]];
+                    break;
+                default:
+                    console.error('deletion not implemented');
+            }
         },
         deselect([...args]) {
-            this.send('delete', `selected.${args.filter(arg => Ember.typeOf(arg) === 'string').join('.')}`);
+            args = args.filter(arg => Ember.typeOf(arg) === 'string');
+            this.send('delete', `selected.${args.join('.')}`, ['selected', ...args]);
             this.notifyPropertyChange('selected');
             this.rerender();
         },
         select(...args) {
-            const process = (prev, cur, i) => {
-                if (!this.get(`selected.${prev}`)) {
+            const process = (prev, cur, i, arr) => {
+                const selected = this.get(`selected.${prev}`);
+                if (!selected) {
                     // Create necessary parent objects and newly selected object
                     this.set(`selected.${prev}`, new Ember.Object());
-                } else if (i === args.length && args.length === this.get('path').length &&
+                } else if (i === 3 || i === args.length && args.length === this.get('path').length &&
                     this.get('path').every((e, i) => e.name === args[i].name) &&
-                    Object.keys(this.get(`selected.${prev}`)).length === 0) {
+                    Object.keys(selected).length === 0) {
                     // Deselecting a subject: if subject is last item in args,
                     // its children are showing, and no children are selected
-                    this.send('delete', `selected.${prev}`);
+                    this.send('delete', `selected.${prev}`, ['selected', ...arr.splice(0, i)]);
                     args.popObject();
                 }
                 return `${prev}.${cur}`;
             };
             // Process past length of array
-            process(args.map(arg => arg.name || arg).reduce(process), '', args.length);
+            [...args.map(arg => arg.name || arg), ''].reduce(process);
             this.set('path', args);
             this.notifyPropertyChange('selected');
             this.rerender();
