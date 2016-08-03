@@ -31,7 +31,6 @@
 
 <hr>
 
-
 <div class="container" id="browse">
     <div class="row">
         <div class="col-lg-4">
@@ -66,11 +65,30 @@
 
         </div>
 
-        <!-- TODO: remove route model and replace with elasticsearch query -->
         <div class="col-lg-8" id="preprintList">
             {{#each model.preprints as |preprintEntry|}}
                 {{preprint-entry preprint=preprintEntry}}
             {{/each}}
+
+            <nav class="text-center" aria-label="Page navigation">
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a>1</a></li>
+                    <li><a>2</a></li>
+                    <li><a>3</a></li>
+                    <li><a>4</a></li>
+                    <li><a>5</a></li>
+                    <li>
+                        <a aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
