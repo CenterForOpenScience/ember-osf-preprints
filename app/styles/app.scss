@@ -20,35 +20,47 @@
 }
 
 // OSF Preprints langing pages
-.osf-preprint-header-img {
-    $gradient: 35deg, $theme-color-light 0%, $theme-color-dark $gradient-percentage, #000 100%;
-    background: $brand-primary;
-    /* Old browsers */
-    background: -moz-linear-gradient($gradient);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, $theme-color-light),
-        color-stop($gradient-percentage, $theme-color-dark), color-stop(100%, #000));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient($gradient);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient($gradient);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient($gradient);
-    /* IE10+ */
-    background: linear-gradient($gradient);
-    /* W3C */
-    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$theme-color-light, endColorstr='#000000', GradientType=1);
-    /* IE6-9 fallback on horizontal gradient */
-    /*background: linear-gradient(#0e405f, #d9edf7);*/
-    background-color: #145A85;
-    color: #FFF;
-    padding-top: 80px;
+
+
+.title-search{
+    color:black;
+    background-color: #d2ddd9;
+    background-image: url("img/index/texture.png");
+    background-position: left top -300;
+    background-repeat: no repeat;
+    padding-top: 100px;
+    padding-bottom: 50px;
     position: relative;
+    opacit:1.0;
 }
+
+.title-searchimg{
+    opacity:0.5;
+}
+
+
+
+
+
+
 
 .osf-preprint-lead {
     font-weight: 100;
     font-size: 8em;
+}
+
+.preprint-list{
+    background-color:#fff;
+    padding-top:30px;
+}
+
+#landing-page-preprint-list a{
+color:black;
+}
+
+#search{
+width:50%;
+margin:auto;
 }
 
 // FOR SPACE
@@ -174,116 +186,24 @@ h5 {
 }
 
 #logo {
-    width: 200px;
+    width:auto;
     height: 200px;
     margin: 30px auto;
     position: relative;
     transition: all 1s ease-in-out;
-    &.off {
-        transform: rotate(180deg);
-        .circle:before {
-            top: -200px;
-            opacity: 0;
-        }
-        .circle:after {
-            bottom: 200px;
-            opacity: 0;
-        }
-    }
-    .circle {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        &:before {
-            content: "";
-            width: 50px;
-            height: 50px;
-            background: #FFF;
-            border-radius: 50%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            transition: all 0.4s ease-in-out;
-            opacity: 1;
-        }
-        &:after {
-            content: "";
-            width: 30px;
-            height: 30px;
-            background: #38B9EB;
-            border-radius: 50%;
-            position: absolute;
-            bottom: -10px;
-            left: 10px;
-            transition: all 0.6s ease-in-out;
-            opacity: 1;
-        }
-        &:hover:before {
-            top: -15px;
-        }
-        &:hover:after {
-            bottom: -5px;
-        }
-    }
 
-    #circle-1 {
-        transform: rotate(0deg);
-        left: 75px;
-        top: 0;
-    }
-    #circle-2 {
-        transform: rotate(45deg);
-        left: 128px;
-        top: 22px;
-        &:after {
-            z-index: -1;
-        }
-    }
-    #circle-3 {
-        transform: rotate(90deg);
-        left: 150px;
-        top: 75px;
-    }
-    #circle-4 {
-        transform: rotate(135deg);
-        left: 128px;
-        top: 128px;
-        &:after {
-            z-index: -1;
-        }
-    }
-    #circle-5 {
-        transform: rotate(180deg);
-        left: 75px;
-        top: 150px;
-    }
-    #circle-6 {
-        transform: rotate(225deg);
-        left: 22px;
-        top: 128px;
-        &:after {
-            z-index: -1;
-        }
-    }
-    #circle-7 {
-        transform: rotate(270deg);
-        left: 0;
-        top: 75px;
-    }
-    #circle-8 {
-        transform: rotate(315deg);
-        left: 22px;
-        top: 22px;
-        &:after {
-            z-index: -1;
-        }
-    }
 }
 
+h4{
+    text-align:center;
+}
+
+
+
 .moving-logo-section {
-    background-color: #474747;
-    color: #FFF;
-    padding: 50px 0;
+    background-color: #dbe5e7;
+    color: black;
+    padding: 100px 0;
     margin-bottom: 20px;
     #logo {
         transform: scale(2);
@@ -291,6 +211,7 @@ h5 {
 
     h4 {
         margin-bottom: 40px;
+        text-align:center;
     }
 
     h2 {
@@ -327,7 +248,7 @@ td:hover {
 
 
 .subjects {
-    background-color: #D9EDF7;
+    background-color: #f3f5f5;
     font-weight: 300;
     tr {
         font-size: 2em;
@@ -347,14 +268,16 @@ td:hover {
 }
 
 .branded-servers {
-    color: white;
-    background-color: #166595;
+    color: #000;
+    background-color: #d2dbd7;
     margin: auto;
+    padding-top:50px;
+    padding-bottom:50px;
     &.container-fluid {
         background-position: center top;
         background-size: cover;
-        padding-top: 50px;
-        padding-bottom: 50px;
+        padding-top: 100px;
+        padding-bottom: 100px;
     }
     .col-sm-2 {
         display: inline-block;
@@ -375,10 +298,7 @@ td:hover {
     }
 }
 
-.logo {
-    width: 150px;
-    height: 150px;
-}
+
 
 .row-fluid {
     overflow: auto;
@@ -400,6 +320,26 @@ td:hover {
         }
     }
 }
+
+.index-titles h1, h3{
+    margin-top:30px;
+    text-align: left;
+    display: inline;
+}
+
+.header-color{
+    background-image: url("img/index/logo_outline_gray.png");
+    background-position: 0;
+    background-repeat: repeat-x;
+    image-width:50px;
+
+}
+
+.paper-texture{
+    opacity:0.5;
+}
+
+
 
 // FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE
 main {
