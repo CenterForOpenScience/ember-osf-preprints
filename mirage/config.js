@@ -14,7 +14,7 @@ export default function() {
 
     // All routes defined below will be namespaced under /api , to avoid mirage "Cannot GET" errors when accessing
     // top level preprints route
-    this.namespace = '/api';
+    this.namespace = '/preprints';
 
     this.post('/preprints');
 
@@ -38,5 +38,5 @@ export default function() {
     this.get('/taxonomies/:id', (schema, request) => {
         let id = request.params.id;
         return schema.taxonomies.find(id);
-    })
+    });
 }
