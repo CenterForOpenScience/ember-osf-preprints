@@ -24,10 +24,12 @@ You will need the following things properly installed on your computer.
 ## Running / Development
 For local development, this is designed to run alongside (and from within) the flask application for osf.io.
 
-1. Define the same route in the flask application (`routes.py`) and the ember application (`router.js`). 
-2. Build the assets from a location that the flask application can serve, using the following command (adjusted for your own local directory structure):
- `ember build --output-path ../osf.io/website/static/public/ember-preprints/ --watch`
+1. Check out this OSF feature branch: https://github.com/CenterForOpenScience/osf.io/tree/feature/ember-preprints 
+2. Start your Ember server: `ember serve`
 3. Visit your app at http://localhost:5000/preprints/
+
+If you encounter problems, make sure that your version of ember-osf is up to date. If login fails, try logging in from 
+any other OSF page, then returning to the preprints app.
 
 ### Code Generators
 

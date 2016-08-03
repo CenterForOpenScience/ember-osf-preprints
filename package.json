@@ -9,7 +9,8 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember test"
+    "test": "ember test",
+    "check-style": "./node_modules/jscs/bin/jscs ."
   },
   "repository": {
     "type": "git",
@@ -57,6 +58,7 @@
     "ember-toastr": "1.4.1",
     "ember-truth-helpers": "1.2.0",
     "ember-welcome-page": "^1.0.1",
+    "jscs": "^3.0.7",
     "liquid-fire": "0.24.1",
     "loader.js": "^4.0.1",
     "postcss": "^5.1.0"
@@ -65,5 +67,34 @@
   "bugs": {
     "url": "https://github.com/CenterForOpenScience/ember-preprints/issues"
   },
-  "homepage": "https://github.com/CenterForOpenScience/ember-preprints#readme"
+  "homepage": "https://github.com/CenterForOpenScience/ember-preprints#readme",
+  "jscsConfig": {
+    "preset": "airbnb",
+    "excludeFiles": [
+      "package.json",
+      "bower.json",
+      "testem.js",
+      "bower_components",
+      "node_modules",
+      "dist",
+      "docs",
+      "tmp",
+      "vendor",
+      "app/locales",
+      "mirage/fixtures",
+      "tests/unit",
+      "tests/integration",
+      "tests/helpers",
+      "tests/dummy/app/mirage",
+      "jam"
+    ],
+    "requireSpacesInAnonymousFunctionExpression": false,
+    "requireTrailingComma": false,
+    "disallowTrailingComma": false,
+    "requirePaddingNewLinesAfterBlocks": false,
+    "validateIndentation": 4,
+    "requirePaddingNewLinesBeforeLineComments": false,
+    "maximumLineLength": false,
+    "disallowSpaceBeforeComma": false
+  }
 }

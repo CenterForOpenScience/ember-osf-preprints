@@ -1,7 +1,5 @@
 import config from 'ember-get-config';
 
-console.log(config.OSF.url);
-
 export default function() {
 
     // Allow certain live hosts to be reached without mirage errors.
@@ -23,17 +21,13 @@ export default function() {
         return schema.preprints.find(id);
     });
 
-    this.get('/preprints', (schema, request) => {
-        return schema.preprints.where(request.queryParams);
-    });
+    this.get('/preprints', (schema, request) => schema.preprints.where(request.queryParams));
 
     this.get('/subjects', (schema, request) => {
         return schema.subjects.where(request.queryParams);
     });
 
-    this.get('/taxonomies', (schema, request) => {
-        return schema.taxonomies.all();
-    });
+    this.get('/taxonomies', (schema, request) => schema.taxonomies.all());
 
     this.get('/taxonomies/:id', (schema, request) => {
         let id = request.params.id;
