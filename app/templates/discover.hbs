@@ -1,5 +1,3 @@
-<body role="document">
-
 <div class="container space-top space-bottom">
     {{search-header}}
     {{search-preprints search="search"}}
@@ -7,24 +5,24 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-6">
             <button type="button" class="btn btn-default">Add your preprint</button>
         </div>
         <div class="col-md-6">
-        </div>
-        <div class="col-md-3">
-            <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="true">
-                    Sort by: <span id="sortByChoice">Relevance</span>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="sortBy">
-                    <li><a>Relevance</a></li>
-                    <li><a>Upload date (oldest to newest)</a></li>
-                    <li><a>Upload date (newest to oldest)</a></li>
-                </ul>
-            </div>
+            <span class="pull-right">
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="true">
+                        Sort by: <span id="sortByChoice">Relevance</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="sortBy">
+                        <li><a>Relevance</a></li>
+                        <li><a>Upload date (oldest to newest)</a></li>
+                        <li><a>Upload date (newest to oldest)</a></li>
+                    </ul>
+                </div>
+            </span>
         </div>
     </div>
 </div>
@@ -36,11 +34,13 @@
         <div class="col-lg-4">
             <div id="activeFilters">
                 <div class="row">
-                    <div class="col-sm-8">
+                    <div class="col-sm-6">
                         <h4>Active Filters:</h4>
                     </div>
-                    <div class="col-sm-4">
-                        <button type="button" class="btn btn-default">Clear filters {{fa-icon "remove"}}</button>
+                    <div class="col-sm-6">
+                        <span class="pull-right">
+                            <button type="button" class="btn btn-default">Clear filters {{fa-icon "remove"}}</button>
+                        </span>
                     </div>
                 </div>
                 <hr>
@@ -65,9 +65,9 @@
 
         </div>
 
-        <div class="col-lg-8" id="preprintList">
-            {{#each model.preprints as |preprintEntry|}}
-                {{preprint-entry preprint=preprintEntry}}
+        <div class="col-lg-8" id="searchResults">
+            {{#each results as |result|}}
+                {{search-result result=result}}
             {{/each}}
 
             <nav class="text-center" aria-label="Page navigation">
@@ -92,5 +92,3 @@
         </div>
     </div>
 </div>
-
-</body>

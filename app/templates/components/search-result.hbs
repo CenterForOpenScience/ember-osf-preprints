@@ -1,0 +1,21 @@
+<div>
+    <h4><a>{{result.title}}</a></h4>
+    {{#each result.contributors as |contributor|}}
+        <a>{{contributor.familyName}}, {{contributor.givenName}}</a>
+    {{/each}}
+    <p {{action "toggleShowDescription"}} style="cursor: pointer; cursor: hand;">{{displayDescription}}</p>
+
+    <div class="row">
+        <div class="col-sm-6 text-muted">
+            <p>Released on: {{moment-format result.date "YYYY-MM-DD hh:mm a"}}</p>
+        </div>
+        <div class="col-sm-6">
+            {{#each result.tags as |tag|}}
+                <span class="label label-default">
+                    {{tag}}
+                </span>
+            {{/each}}
+        </div>
+    </div>
+    <hr>
+</div>
