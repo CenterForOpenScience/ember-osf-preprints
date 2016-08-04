@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-    // https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
+    // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
     queryParams: ['page', 'searchString'],
 
     page: 1,
@@ -24,7 +24,7 @@ export default Ember.Controller.extend({
 
     loadPage() {
         let queryBody = JSON.stringify(this.getQueryBody());
-        this.set('loading', true);
+//        this.set('loading', true);
         return Ember.$.ajax({
             'url': this.get('searchUrl'),
             'crossDomain': true,
@@ -53,16 +53,7 @@ export default Ember.Controller.extend({
                 this.set('loading', false);
                 this.set('results', results);
 
-                if (this.get('page') > 1) {
-                    this.set('showPrev', true);
-                } else {
-                    this.set('showPrev', false);
-                }
-                if (this.get('page') * this.get('size') <= this.get('numberOfResults')) {
-                    this.set('showNext', true);
-                } else {
-                    this.set('showNext', false);
-                }
+                this.togglePagination();
             });
         });
     },
@@ -103,6 +94,21 @@ export default Ember.Controller.extend({
         return this.set('queryBody', queryBody);
     },
 
+    togglePagination() {
+        // prev
+        if (this.get('page') > 1) {
+            this.set('showPrev', true);
+        } else {
+            this.set('showPrev', false);
+        }
+        // next
+        if (this.get('page') * this.get('size') <= this.get('numberOfResults')) {
+            this.set('showNext', true);
+        } else {
+            this.set('showNext', false);
+        }
+    },
+
     termsFilter(field, terms, raw = true) {
         if (terms && terms.length) {
             if (raw) {
@@ -117,8 +123,9 @@ export default Ember.Controller.extend({
     },
 
     actions: {
-        loadNewPage(pageNum) {
-            this.set('page', pageNum);
+        search(query) {
+            this.set('searchString', query);
+            this.set('page', 1);
             this.loadPage();
         },
 
