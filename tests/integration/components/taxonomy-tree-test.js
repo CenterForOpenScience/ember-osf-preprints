@@ -8,17 +8,11 @@ moduleForComponent('taxonomy-tree', 'Integration | Component | taxonomy tree', {
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
+  this.set('tree', {
+      get() {}
+  });
 
-  this.render(hbs`{{taxonomy-tree}}`);
+  this.render(hbs`{{taxonomy-tree tree=tree}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#taxonomy-tree}}
-      template block text
-    {{/taxonomy-tree}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.ok(this.$('#taxonomyTree').length);
 });

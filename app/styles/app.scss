@@ -629,9 +629,21 @@ hr {
         list-style: none;
         padding: 0;
         border: 1px lightgray solid;
+        border-radius: 1rem;
+        overflow: hidden;
+        input {
+            border-style: none none solid none;
+            box-shadow: none;
+        }
         li {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.5rem;
             cursor: pointer;
+            border-radius: 1em;
+            margin: 0.5rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            position: relative;
             transition: {
                 property: background-color, color, font-weight;
                 duration: 0.1s;
@@ -644,9 +656,10 @@ hr {
                 background-color: #337AB7;
                 color: white;
                 font-weight: bold;
+                white-space: normal;
             }
             & + li {
-                border-top: 1px lightgray solid;
+                margin-top: 0;
             }
         }
     }
@@ -656,4 +669,22 @@ hr {
 
 #preprint-form-submit {
 
+}
+
+.branded-servers-background {
+    background: url("img/bg-web.png") no-repeat;
+}
+
+.img-circle {
+    background-color: #fff;
+}
+
+.uva-logo {
+    background-size: cover;
+    background-image: url("img/logo_uva.png");
+}
+
+.ua-logo {
+    background-size: cover;
+    background-image: url("img/logo_ua.png");
 }

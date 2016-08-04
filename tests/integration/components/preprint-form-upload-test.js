@@ -8,17 +8,9 @@ moduleForComponent('preprint-form-upload', 'Integration | Component | preprint f
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
+  this.on('verify', function() {});
 
-  this.render(hbs`{{preprint-form-upload}}`);
+  this.render(hbs`{{preprint-form-upload verify=(action 'verify')}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#preprint-form-upload}}
-      template block text
-    {{/preprint-form-upload}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$('button').text().trim(), 'Upload a New FileSelect a file from OSF');
 });

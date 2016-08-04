@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('preprints-list', 'Integration | Component | preprints list', {
+moduleForComponent('preprints-entry', 'Integration | Component | preprints list', {
   integration: true
 });
 
@@ -12,13 +12,4 @@ test('it renders', function(assert) {
   this.render(hbs`{{preprints-list}}`);
 
   assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#preprints-list}}
-      template block text
-    {{/preprints-list}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });

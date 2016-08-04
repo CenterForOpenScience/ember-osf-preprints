@@ -11,14 +11,7 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{upload-button}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#upload-button}}
-      template block text
-    {{/upload-button}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$('h1').text().trim(), 'Contribute your research');
+  assert.equal(this.$('h3').text().trim(), 'You can upload a preprint or choose a file from an ' +
+      'existing OSF file to tag as a preprint if you are already have an OSF account.');
 });

@@ -1,6 +1,6 @@
-<body role="document">
-<div class="index"> <!--INDEX-->
+<div class="index"> {{!INDEX}}
 
+<<<<<<< HEAD
  <!--HEADER-->
 
         <!--<div class="paper-texture" style='background-image: url("assets/img/index/texture.png");'><!--PAPER TEXTURE-->
@@ -71,14 +71,65 @@
             </div> <!--END INDEX TITLES-->
         <br>
         <div class="subjectsList table-striped"> <!--SUBJECTS LIST-->
+=======
+    {{!HEADER}}
+    <div class="row">{{!HEADER ROW}}
+        <div class="osf-preprint-header-img"> {{!HEADER}}
+            <div class="container"> {{!CONTAINER}}
+                {{!TITLE}}
+                <div class="text-center m-b-lg">
+                    <h1 class="osf-preprint-lead">OSF Preprints</h1>
+                    <h2>
+                        The <span class="highlight-bold">open</span> preprint server for
+                        <span class="highlight-bold">all</span> academic disciplines
+                    </h2>
+                </div>
 
-            {{taxonomy-tree tree=model.subjects filter="goToSubject"}}
+                {{!SEARCH}}
+                <div id="search" class="space-top space-bottom">
+                    {{search-preprints search="search"}}
+                    <p>
+                        <span class="highlight">{{model.preprints.length}}</span> preprints as of
+                        <span>{{moment-format model.theDate "MMMM DD, YYYY"}}</span>
+                    </p>
+                </div>
 
-        </div> <!--END SUBJECTS LIST-->
-    </div> <!--END CONTAINER-->
-</div> <!--END SUBJECTS LIST-->
-</div><!--END ROW-->
+                {{!PREPRINT LIST}}
+                <h2>Uploads</h2>
+                <div id="landing-page-preprint-list-background"> {{!BACKGROUND}}
+                    <div id="landing-page-preprint-list"> {{!ARTICLE IN POPULAR UPLOADS}}
+                        {{#each model.preprints as |preprintEntry|}}
+                            {{preprint-entry preprint=preprintEntry}}
+                        {{/each}}
+                    </div> {{!END POPULAR UPLOADS}}
+                </div> {{!END BACKGROUND}}
+                <button class="show-more-button col-sm-12 text-muted" {{action "togglePopularUploads"}}>
+                    <i id="show-more-icon" class="fa fa-caret-down m-b-lg"></i>
+                </button>
+                <div class="text-center"
+                     style="padding-top: 20px; padding-bottom: 40px;"> {{! READ MORE BUTTON}}
+                    {{#link-to "browse" class="btn btn-success btn-lg"}}Browse more preprints{{/link-to}}
+                </div> {{!END READ MORE BUTTON}}
+            </div> {{!END CONTAINER}}
+        </div> {{!END HEADER}}
+    </div> {{!END ROW}}
 
+    {{!SUBJECTS}}
+    <div class="row">{{!SUBJECTS ROW}}
+        <div class="subjects text-center"> {{!SUBJECTS LIST}}
+            <div class="container"> {{!CONTAINER DIV}}
+                <h1 class="f-w-xl">Browse preprints by subject</h1>
+                <div class="subjectsList table-striped"> {{!SUBJECTS LIST}}
+>>>>>>> 8f0b6e785f8798468aeed253598fd3ff78d05f9e
+
+                    {{taxonomy-tree tree=model.subjects filter="goToSubject"}}
+
+                </div> {{!END SUBJECTS LIST}}
+            </div> {{!END CONTAINER}}
+        </div> {{!END SUBJECTS LIST}}
+    </div>{{!END ROW}}
+
+<<<<<<< HEAD
 <!--BRANDED PREPRINT SERVERS-->
  <div class="row space"><!--BRANDED ROW-->
 <div class="branded-servers text-center"> <!--center text-->
@@ -138,13 +189,62 @@
                     <div class="circle" id="circle-6"><span></span></div>
                     <div class="circle" id="circle-7"><span></span></div>
                     <div class="circle" id="circle-8"><span></span></div>
+=======
+    {{!BRANDED PREPRINT SERVERS}}
+    <div class="row">{{!BRANDED ROW}}
+        <div class="branded-servers text-center"> {{!center text}}
+            <div class="container-fluid p-b-md branded-servers-background"> {{!CONTAINER}}
+                <h1 class="f-w-xl">Branded preprint servers powered by OSF Preprints</h1>
+                <div class="row-fluid"> {{!FLUID ROW}}
+                    <div class="col-sm-2 col-lg-2"> {{!UVA LOGO}}
+                        <a href="http://www.virginia.edu/" alt="University of Virginia">
+                            <img class="img-circle img-responsive logo uva-logo">
+                        </a>
+                    </div> {{!END UVA LOGO}}
+                    <div class="col-sm-2 col-lg-2"> {{!ARIZONA LOGO}}
+                        <a href="http://www.arizona.edu/" alt="University of Arizona">
+                            <img class="img-circle img-responsive logo ua-logo">
+                        </a>
+                    </div> {{!END ARIZONA LOGO}}
+                </div> {{!END FLUID ROW}}
+            </div> {{!END CONTAINER}}
+        </div> {{!END CENTER TEXT}}
+    </div> {{!END ROW}}
+
+    {{!CONTRIBUTE YOUR RESEARCH}}
+    <div class="row">{{!ROW}}
+        <div class="container"> {{!CONTAINER}}
+            <div class="space-top space-bottom text-center"> {{!STYLING}}
+                {{upload-button}}
+            </div> {{!END STYLING}}
+        </div> {{!END CONTAINER}}
+    </div> {{!END ROW}}
+
+    {{!FOOTER}}
+    <div class="row"> {{!ROW}}
+        <div class="space-top space-bottom moving-logo-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h2><strong>Tools for communities</strong></h2>
+                        <h4> Create your own branded preprint servers backed by the OSF.</h4>
+                        <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">Contact us</a>
+                    </div>
+                    <div class="col-md-4 hidden-xs hidden-sm">
+                        <div id="logo">
+                            <div class="circle" id="circle-1"><span></span></div>
+                            <div class="circle" id="circle-2"><span></span></div>
+                            <div class="circle" id="circle-3"><span></span></div>
+                            <div class="circle" id="circle-4"><span></span></div>
+                            <div class="circle" id="circle-5"><span></span></div>
+                            <div class="circle" id="circle-6"><span></span></div>
+                            <div class="circle" id="circle-7"><span></span></div>
+                            <div class="circle" id="circle-8"><span></span></div>
+                        </div>
+                    </div>
+>>>>>>> 8f0b6e785f8798468aeed253598fd3ff78d05f9e
                 </div>
             </div>
         </div>
-    </div>
-</div>
- </div> <!--END ROW-->
-
-
-    </div> <!--END INDEX-->
-</body>
+    </div> {{!END ROW}}
+</div> {{!END INDEX}}
