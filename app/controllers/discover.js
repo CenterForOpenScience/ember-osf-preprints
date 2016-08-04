@@ -1,10 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+    // https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
+    queryParams: ['page', 'searchString'],
 
     page: 1,
     size: 10,
+    numberOfResults: 0,
     searchString: '',
+
+    showPrev: false,
+    showNext: true,
 
     results: Ember.ArrayProxy.create({content: []}),
 
@@ -27,7 +33,7 @@ export default Ember.Controller.extend({
             'data': queryBody
         }).then((json) => {
             this.set('numberOfResults', json.hits.total);
-            this.set('took', moment.duration(json.took).asSeconds());
+//            this.set('took', moment.duration(json.took).asSeconds());
             let results = json.hits.hits.map((hit) => {
                 // HACK
                 let source = hit._source;
@@ -45,8 +51,18 @@ export default Ember.Controller.extend({
             });
             Ember.run(() => {
                 this.set('loading', false);
-                this.get('results').addObjects(results);
-                debugger;
+                this.set('results', results);
+
+                if (this.get('page') > 1) {
+                    this.set('showPrev', true);
+                } else {
+                    this.set('showPrev', false);
+                }
+                if (this.get('page') * this.get('size') <= this.get('numberOfResults')) {
+                    this.set('showNext', true);
+                } else {
+                    this.set('showNext', false);
+                }
             });
         });
     },
@@ -97,6 +113,27 @@ export default Ember.Controller.extend({
             return filter;
         } else {
             return null;
+        }
+    },
+
+    actions: {
+        loadNewPage(pageNum) {
+            this.set('page', pageNum);
+            this.loadPage();
+        },
+
+        previous() {
+            if (this.get('page') > 1) {
+                this.decrementProperty('page');
+                this.loadPage();
+            }
+        },
+
+        next() {
+            if (this.get('page') * this.get('size') <= this.get('numberOfResults')) {
+                this.incrementProperty('page');
+                this.loadPage();
+            }
         }
     },
 
