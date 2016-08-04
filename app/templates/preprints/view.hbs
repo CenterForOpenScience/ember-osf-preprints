@@ -3,65 +3,44 @@
         <div class="m-b-md p-md osf-box m-t-lg"> {{!OSF BOX DIV}}
             <div class="row" id="header"> {{!HEADER ROW}}
                 <h1>{{model.preprint.title}}</h1>
-                <h5>{{model.preprint.authors}}</h5>
-                <h5>Added on {{moment-format model.preprint.date}}</h5>
             </div> {{!END HEADER ROW}}
-            <hr color="#C7FFC7">
-            <div class="row"> {{!CONTENT ROW}}
-                <div id="mfr" class="col-md-7"> {{!MFR COL DIV}}
-                    <div> {{!IFRAME DIV}}
-                        <iframe src={{concat model.renderUrl '?url=' model.downloadLink}} display="block"
-                                width=650 height=700></iframe>
-                    </div> {{!END IFRAME DIV}}
-                    {{!TODO: EMBER OSF MFR }}
-
-                </div> {{!END MFR COL DIV}}
+            <div class="row p-l-md"> {{!PREPRINT INFO ROW}}
+                <div class="col-md-10">
+                    <h5>{{model.preprint.authors}}</h5>
+                    <h6>Added on {{moment-format model.preprint.date}}</h6>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="m-t-lg"><span>Provider: {{#link-to "index"}}SocArXiv{{/link-to}} </span><img src="assets/img/logo_socarxiv.jpg" width="30"></h6>
+                </div>
+            </div> {{!END PREPRINT INFO ROW}}
+            <div class="row">
+                <hr color="#C7FFC7">
+            </div>
+            <div class="row p-md"> {{!CONTENT ROW}}
+                <div class="col-md-7"> {{!LEFT COL DIV}}
+                    {{#file-renderer download=model.links.download
+                        width="100%" height="700"}}
+                    {{/file-renderer}}
+                    {{#if model.supplement}}
+                        {{supplementary-file-browser files=model.supplement}}
+                    {{/if}}
+                </div> {{!END LEFT COL DIV}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
-                    {{!DOWNLOAD BUTTON}}
-                    <br>
-                    <div class="m-b-md p-md osf-box-lt" id="download_project">
-                        <a class="btn btn-default" href={{model.downloadLink}}>
-                            <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-                            Download preprint
-                        </a>
-                    </div>
-                    <br>
-                    {{!PROJECT BUTTON}}
-                    <div class="m-b-md p-md osf-box-lt" id="view_project">
-                        <div class="col-md-8"> {{!TEXT COL 8}}
-                            <p>The project for this paper is available on the Open Science Framework</p>
-                        </div> {{!END TEXT COL 8}}
-                        <div class="col-md-4"> {{!BUTTON COL 4}}
-                            <a type="button" class="btn btn-primary" href={{concat model.baseUrl model.project}}>
-                                View project
-                            </a>
-                        </div> {{!END BUTTON COL 4}}
-                    </div>
-                    <br>
+                    <div class="col-md-12"> {{!BUFFER COL}}
+                        <div class="row p-md osf-box-lt" id="download_project">{{!SHARE ROW}}
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                            <a href={{model.downloadLink}}>Download</a>
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                            {{#link-to "preprints.edit" model.preprint.id}}Edit{{/link-to}}
+                            <span class="pull-right">
+                                <i class="fa fa-share-square-o" aria-hidden="true"></i>
+                                {{#link-to "preprints.edit" model.preprint.id}}Share{{/link-to}}
+                            </span>
+                        </div>{{!END SHARE ROW}}
 
-                    {{!CONTENT}}
-                    {{!TODO: Make the creation of these fields dynamic and generally better}}
-                    <div class="col-md-12"> {{!COL 12}}
                         <h3> Abstract: </h3>
                         <p> {{model.preprint.abstract}} </p>
-                    </div> {{!END COL 12}}
 
-                    <div class="col-md-12"> {{!COL 12}}
-                        <h3> Subject: </h3>
-                        <p> {{model.preprint.subject}} </p>
-                    </div> {{!END COL 12}}
-
-                    <div class="col-md-12"> {{!COL 12}}
-                        <h3> Tags: </h3>
-                        <p> {{model.preprint.tags}} </p>
-                    </div> {{!END COL 12}}
-
-                    <div class="col-md-12"> {{!COL 12}}
-                        <h3> DOI: </h3>
-                        <p> {{model.preprint.doi}} </p>
-                    </div> {{!END COL 12}}
-
-                    <div class="col-md-12"> {{!COL}}
                         <h3> Citation: </h3>
                         <p>
                             <strong>APA</strong>
@@ -69,8 +48,19 @@
                             Cummings, J. N., Butler, B., & Kraut, R. (2002). The quality of online social
                             relationships. Communications of the ACM, 45(7), 103-108.
                         </p>
-                    </div> {{!END COL}}
+                        <br>
 
+                        {{!PROJECT BUTTON}}
+                        <div class="row p-md osf-box-lt" id="view_project">
+                            <div class="col-md-8">{{!TEXT COL}}
+                                <p>The project for this paper is available on the Open Science Framework</p>
+                            </div>{{!END TEXT COL}}
+
+                            <div class="col-md-4">{{!BUTTON COL}}
+                                <a type="button" class="btn btn-primary" href={{concat model.baseUrl model.project}}>View project</a>
+                            </div>{{!END BUTTON COL}}
+                        </div>
+                    </div> {{!END BUFFER COL}}
                 </div> {{!END RIGHT SIDE COL}}
             </div> {{!END CONTENT ROW}}
         </div> {{!END OSF BOX DIV}}
