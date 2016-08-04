@@ -1,0 +1,12 @@
+ <div class="col-md-11 well well-sm">
+     {{#liquid-bind supplementList use="toLeft" as |list|}}
+         {{#each list as |supplement|}}
+             <i class="fa fa-file-text fa-5x p-sm" aria-hidden="true"><p>{{supplement}}</p></i>
+         {{/each}}
+     {{/liquid-bind}}
+ </div>
+ <div class="col-md-1">
+    <button class="show-more-button text-muted" {{action 'moveLeft'}}>
+         <i id = "show-more-icon" class="fa fa-caret-right"></i>
+     </button>
+</div>
