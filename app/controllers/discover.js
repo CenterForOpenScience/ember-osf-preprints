@@ -158,6 +158,7 @@ export default Ember.Controller.extend({
 
         sortBy(option) {
             this.set('sortBy', option);
+            this.set('page', 1);
             this.loadPage();
         },
     },
