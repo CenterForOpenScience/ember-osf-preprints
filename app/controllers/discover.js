@@ -86,9 +86,22 @@ export default Ember.Controller.extend({
             };
         }
 
+        let sort = [];
+        let sortBy = this.get('sortBy') || 'Relevance';
+        if ( sortBy === 'Upload date (oldest to newest)' ) {
+            sort.push({
+                "date_updated": {"order": "asc"}
+            });
+        } else if ( sortBy === 'Upload date (newest to oldest)' ) {
+            sort.push({
+                "date_updated": {"order": "desc"}
+            });
+        }
+
         let queryBody = {
             query,
             from: (this.get('page') - 1) * this.get('size'),
+            sort
         };
 
         return this.set('queryBody', queryBody);
@@ -141,7 +154,12 @@ export default Ember.Controller.extend({
                 this.incrementProperty('page');
                 this.loadPage();
             }
-        }
+        },
+
+        sortBy(option) {
+            this.set('sortBy', option);
+            this.loadPage();
+        },
     },
 
 });

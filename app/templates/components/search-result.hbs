@@ -7,7 +7,7 @@
 
     <div class="row">
         <div class="col-sm-6 text-muted">
-            <p>Released on: {{moment-format result.date "YYYY-MM-DD hh:mm a"}}</p>
+            <p>Released on: {{moment-format result.date_updated "YYYY-MM-DD hh:mm a"}}</p>
         </div>
         <div class="col-sm-6">
             {{#each result.tags as |tag|}}
