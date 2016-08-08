@@ -21,8 +21,8 @@
                     This project is private and will be made public
                 </p>
             {{/unless}}
-            {{#if fileSelect}}
-                {{file-browser rootNode=selectedNode}}
+            {{#if (and osfFiles fileSelect)}}
+                {{file-browser rootItem=osfFiles}}
             {{/if}}
         {{else}}
             <p class="alert alert-danger" role="alert">
@@ -32,7 +32,5 @@
                 so you may share this component.
             </p>
         {{/if}}
-
-        {{log selectedNode}}
     {{/liquid-bind}}
 {{/liquid-if}}
