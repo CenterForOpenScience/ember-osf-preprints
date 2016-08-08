@@ -1,4 +1,4 @@
-<h3>Choose existing OSF project:</h3>
+<h1>Choose existing OSF project:</h1>
 {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action (mut selectedNode)) as |node|}}
     <strong>{{node.title}}</strong>
 {{/power-select}}
@@ -22,7 +22,7 @@
                 </p>
             {{/unless}}
             {{#if fileSelect}}
-                {{file-browser}}
+                {{file-browser rootNode=selectedNode}}
             {{/if}}
         {{else}}
             <p class="alert alert-danger" role="alert">

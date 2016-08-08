@@ -10,7 +10,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                 return {
                     name: path.name,
                     children: path.children.filter(child =>
-                        ~this.get(`filter.${i + 1}.value`).indexOf(child.name || child))
+                        this.get(`filter.${i + 1}.value`).indexOf(child.name || child)) !== -1
                 };
             }
             return path;
@@ -35,7 +35,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         }, {
             name: 'l'
         }].filter(taxonomy =>
-            !this.get('filter.0.value') || ~taxonomy.name.indexOf(this.get('filter.0.value'))
+            !this.get('filter.0.value') || taxonomy.name.indexOf(this.get('filter.0.value')) !== -1
         );
     }),
     path: [],
