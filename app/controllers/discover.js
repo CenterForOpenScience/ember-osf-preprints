@@ -161,6 +161,10 @@ export default Ember.Controller.extend({
             this.set('page', 1);
             this.loadPage();
         },
+
+        linkToAddPreprint() {
+            this.transitionToRoute('/preprints/add');
+        }
     },
 
 });

@@ -8,9 +8,9 @@ export default Ember.Component.extend({
         let result = this.get('result');
         if (result.description){
             if (this.truncateDescription) {
-                return result.description.substring(0, this.numMaxChars) + "..."
+                return result.description.substring(0, this.numMaxChars) + "...";
             }
-            return result.description
+            return result.description;
         }
         return "";
     }),
