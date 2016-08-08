@@ -1,7 +1,7 @@
 ---
 language: node_js
 node_js:
-  - "4"
+  - "4.3.2"
 
 sudo: false
 
@@ -12,11 +12,12 @@ cache:
 before_install:
   - npm config set spin false
   - npm install -g bower
-  - npm install phantomjs-prebuilt
 
 install:
   - npm install
+  - npm install phantomjs-prebuilt
   - bower install
 
 script:
+  - npm run check-style
   - npm test
