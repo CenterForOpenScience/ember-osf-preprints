@@ -56,26 +56,26 @@ module.exports = function(defaults) {
     // along with the exports of each module as its value.
 
     // osf-style
-    app.import("bower_components/osf-style/vendor/prism/prism.css");
-    app.import("bower_components/osf-style/page.css");
+    app.import('bower_components/osf-style/vendor/prism/prism.css');
+    app.import('bower_components/osf-style/page.css');
 
-    app.import("bower_components/osf-style/img/cos-white2.png", {
+    app.import('bower_components/osf-style/img/cos-white2.png', {
         destDir: 'img'
     });
 
-//  app.import("bower_components/dropzone/dist/dropzone.js");
+//  app.import('bower_components/dropzone/dist/dropzone.js');
     app.import({
-        development: "bower_components/dropzone/dist/dropzone.css",
-        production: "bower_components/dropzone/dist/min/dropzone.min.css"
+        development: 'bower_components/dropzone/dist/dropzone.css',
+        production: 'bower_components/dropzone/dist/min/dropzone.min.css'
     });
 
     app.import({
-        development: "bower_components/bootstrap-treeview/src/css/bootstrap-treeview.css",
-        production: "bower_components/bootstrap-treeview/dist//bootstrap-treeview.min.css"
+        development: 'bower_components/bootstrap-treeview/src/css/bootstrap-treeview.css',
+        production: 'bower_components/bootstrap-treeview/dist//bootstrap-treeview.min.css'
     });
     app.import({
-        development: "bower_components/bootstrap-treeview/src/js/bootstrap-treeview.js",
-        production: "bower_components/bootstrap-treeview/dist/js/bootstrap-treeview.min.js"
+        development: 'bower_components/bootstrap-treeview/src/js/bootstrap-treeview.js',
+        production: 'bower_components/bootstrap-treeview/dist/js/bootstrap-treeview.min.js'
     });
 
     return app.toTree();
