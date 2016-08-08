@@ -77,6 +77,8 @@ module.exports = function(defaults) {
         development: 'bower_components/bootstrap-treeview/src/js/bootstrap-treeview.js',
         production: 'bower_components/bootstrap-treeview/dist/js/bootstrap-treeview.min.js'
     });
+    app.import('bower_components/jquery.tagsinput/src/jquery.tagsinput.js');
+    app.import('bower_components/jquery.tagsinput/src/jquery.tagsinput.css');
 
     return app.toTree();
 };
