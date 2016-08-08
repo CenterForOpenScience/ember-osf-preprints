@@ -22,9 +22,14 @@ You will need the following things properly installed on your computer.
 * `bower install`
 
 ## Running / Development
-Currently we are running our application using test.osf.io as the backend:
-* `BACKEND=test ember server`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+For local development, this is designed to run alongside (and from within) the flask application for osf.io.
+
+1. Check out this OSF feature branch: https://github.com/CenterForOpenScience/osf.io/tree/feature/ember-preprints 
+2. Start your Ember server: `ember serve`
+3. Visit your app at http://localhost:5000/preprints/
+
+If you encounter problems, make sure that your version of ember-osf is up to date. If login fails, try logging in from 
+any other OSF page, then returning to the preprints app.
 
 ### Code Generators
 
@@ -44,7 +49,6 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 * [ember.js](http://emberjs.com/)
 * [ember-cli](http://ember-cli.com/)
-* [jamdb](https://github.com/CenterForOpenScience/jamdb)
 * Development Browser Extensions
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)

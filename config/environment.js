@@ -6,32 +6,24 @@ module.exports = function(environment) {
         environment: environment,
         rootURL: '/preprints/',
         locationType: 'auto',
-        authorizationType: 'token',
+        authorizationType: 'cookie',
+        'ember-simple-auth': {
+            authorizer: 'authorizer:osf-cookie',
+            authenticator: 'authenticator:osf-cookie'
+        },
+        //Change here to switch back to mirage calls. Examples of calls in index.js
+        'ember-cli-mirage': {
+            enabled: true
+        },
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
                 // e.g. 'with-controller': true
             }
         },
-
-        JamDB: {
-            url: 'http://localhost:1212',
-            namespace: 'Preprints',
-            authorizer: 'jam-jwt'
-        },
-
         APP: {
             // Here you can pass flags/options to your application instance
             // when it is created
-        },
-
-        'ember-simple-auth': {
-            authenticationRoute: 'login',
-            routeAfterAuthentication: 'index'
-        },
-        //Change here to switch back to mirage calls. Examples fo calls in index.js
-        'ember-cli-mirage': {
-            enabled: true
         }
     };
 

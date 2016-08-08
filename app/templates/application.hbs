@@ -1,4 +1,10 @@
-{{osf-navbar}}
+{{#osf-navbar as |loginButton|}}
+    <li class="dropdown sign-in">
+        <div class="col-sm-12">
+            <a href="{{this.authUrl}}" class="btn btn-success btn-top-signup m-r-xs">Login</a>
+        </div>
+    </li>
+{{/osf-navbar}}
 
 {{outlet}}
 
