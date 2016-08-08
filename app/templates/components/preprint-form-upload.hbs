@@ -13,19 +13,14 @@
                     <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
 
                 {{else if (eq currentUploadState _State.NEW)}}
-                    <h1>Goto next</h1>
+                    <h1>Creating new project</h1>
                     <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
+                    <button class="btn btn-default" {{action next}}>Next</button>
 
                 {{else if (eq currentUploadState _State.EXISTING)}}
-                    Project Name:
-                    {{input value=projectName class='form-control'}}
-                    {{#liquid-if projectName use='crossFade'}}
-                        <p class="alert alert-info" role="alert">
-                            Using this project means the list of contributors will be considered
-                            authors of this preprint.
-                        </p>
-                    {{/liquid-if}}
+                    {{preprint-form-project-select userNodes=userNodes}}
                     <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
+                    <button class="btn btn-primary" {{action next}}>Next</button>
 
                 {{else}}
                     {{log 'preprint-form-upload: bad uploadState'}}
@@ -33,26 +28,9 @@
             {{/liquid-bind}}
 
         {{else if (eq currentState _State.EXISTING)}}
-            Find Project:
-            {{input value=projectName class='form-control'}}
-            {{#liquid-if projectName use='crossFade'}}
-                <h1>List of project files goes here</h1>
-                <p class="alert alert-warning" role="alert">
-                    This preprint is in a project/component with the following contributors. If you
-                    use this version of the preprint, any changes to these contributors will also
-                    change the contributors of the project/component.
-
-                    If you do not want to change the project/component contributors within the OSF
-                    project, then you can create a new component.
-                </p>
-                <p class="alert alert-danger" role="alert">
-                    You must be the admin of this component to share it.
-
-                    Please ask the admin of this project to make you an admin
-                    so you may share this component.
-                </p>
-            {{/liquid-if}}
+            {{preprint-form-project-select userNodes=userNodes fileSelect=true}}
             <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
+            <button class="btn btn-primary" {{action next}}>Next</button>
 
         {{else}}
             {{log 'preprint-form-upload: bad state'}}
