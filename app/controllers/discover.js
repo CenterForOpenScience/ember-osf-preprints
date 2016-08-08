@@ -24,7 +24,7 @@ export default Ember.Controller.extend({
 
     loadPage() {
         let queryBody = JSON.stringify(this.getQueryBody());
-//        this.set('loading', true);
+        this.set('loading', true);
         return Ember.$.ajax({
             'url': this.get('searchUrl'),
             'crossDomain': true,

@@ -55,29 +55,34 @@
         </div>
 
         <div class="col-lg-8" id="searchResults">
-            {{#if numberOfResults}}
-                {{#each results as |result|}}
-                    {{search-result result=result}}
-                {{/each}}
-
-                <div class="row">
-                    <div class="col-md-6">
-                        {{#if showPrev}}
-                            <button type="button" class="btn btn-default" {{action "previous"}}>Prev</button>
-                        {{/if}}
-                    </div>
-                    <div class="col-md-6">
-                        <span class="pull-right">
-                            {{#if showNext}}
-                                <button type="button" class="btn btn-default" {{action "next"}}>Next</button>
-                            {{/if}}
-                        </span>
-                    </div>
+            {{#if loading}}
+                <div class="text-center">
+                    {{fa-icon 'spinner' pulse=true size=3}}
                 </div>
             {{else}}
-                <h2 class="text-muted text-center">No results found.</h2>
-            {{/if}}
+                {{#if numberOfResults}}
+                    {{#each results as |result|}}
+                        {{search-result result=result}}
+                    {{/each}}
 
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{#if showPrev}}
+                                <button type="button" class="btn btn-default" {{action "previous"}}>Prev</button>
+                            {{/if}}
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">
+                                {{#if showNext}}
+                                    <button type="button" class="btn btn-default" {{action "next"}}>Next</button>
+                                {{/if}}
+                            </span>
+                        </div>
+                    </div>
+                {{else}}
+                    <h2 class="text-muted text-center">No results found.</h2>
+                {{/if}}
+            {{/if}}
         </div>
     </div>
 </div>
