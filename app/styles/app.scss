@@ -737,3 +737,41 @@ hr {
     background-size: cover;
     background-image: url("img/logo_ua.png");
 }
+#preprint-file-view {
+    section {
+        position: relative;
+        button {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            &.left {
+                left: 0;
+            }
+            &.right {
+                right: 0;
+            }
+        }
+    }
+    .small-files{
+        background-color: white;
+        display: inline-block;
+        height:100px;
+        text-align: center;
+        &.selected{
+            background-color: lightgrey;
+        }
+        h6{
+            font-family: Arial;
+            font-size: x-small;
+        }
+    }
+    ul {
+        width: 100%;
+        li {
+            cursor: pointer;
+            &:hover {
+                background-color: lighten(lightgrey, 10%);
+            }
+        }
+    }
+}

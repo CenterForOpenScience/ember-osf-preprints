@@ -19,7 +19,7 @@
             <div class="row p-md"> {{!CONTENT ROW}}
                 <div class="col-md-7"> {{!LEFT COL DIV}}
                     {{#if model.supplement}}
-                        {{supplementary-file-browser primaryFile=model.preprint.primaryFile files=model.supplement}}
+                        {{supplementary-file-browser primaryFile=model.primary files=model.supplement}}
                     {{/if}}
                 </div> {{!END LEFT COL DIV}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
@@ -29,8 +29,7 @@
                         <i class="fa fa-edit" aria-hidden="true"></i>
                         {{#link-to "preprints.edit" model.preprint.id}}Edit{{/link-to}}
                         <span class="pull-right">
-                            <i class="fa fa-share-square-o" aria-hidden="true"></i>
-                            {{#link-to "preprints.edit" model.preprint.id}}Share{{/link-to}}
+                            {{share-popup}}
                         </span>
                     </div>{{!END SHARE ROW}}
 
