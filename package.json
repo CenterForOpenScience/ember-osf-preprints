@@ -4,15 +4,18 @@
   "description": "Small description for preprint-service goes here",
   "private": true,
   "directories": {
-    "doc": "doc",
     "test": "tests"
   },
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember test"
+    "test": "ember test",
+    "check-style": "./node_modules/jscs/bin/jscs ."
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CenterForOpenScience/ember-preprints.git"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
@@ -21,7 +24,7 @@
   "devDependencies": {
     "autoprefixer": "^6.3.7",
     "broccoli-asset-rev": "^2.4.2",
-    "ember-ajax": "0.7.1",
+    "ember-ajax": "^2.0.1",
     "ember-bootstrap": "0.7.2",
     "ember-cli": "^2.7.0",
     "ember-cli-app-version": "^1.0.0",
@@ -35,15 +38,15 @@
     "ember-cli-jshint": "^1.0.0",
     "ember-cli-mirage": "0.2.0-beta.9",
     "ember-cli-postcss": "^3.0.1",
-    "ember-cli-qunit": "^1.4.0",
-    "ember-cli-release": "0.2.8",
+    "ember-cli-qunit": "^2.0.0",
+    "ember-cli-release": "^0.2.9",
     "ember-cli-sass": "5.3.1",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-template-lint": "0.4.11",
+    "ember-cli-test-loader": "^1.1.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-collapsible-panel": "1.0.0",
-    "ember-data": "^2.5.0",
-    "ember-data-url-templates": "0.1.1",
+    "ember-data": "^2.7.0",
     "ember-export-application-global": "^1.0.5",
     "ember-font-awesome": "2.1.1",
     "ember-get-config": "0.0.4",
@@ -54,9 +57,44 @@
     "ember-resolver": "^2.0.3",
     "ember-toastr": "1.4.1",
     "ember-truth-helpers": "1.2.0",
+    "ember-welcome-page": "^1.0.1",
+    "jscs": "^3.0.7",
     "liquid-fire": "0.24.1",
     "loader.js": "^4.0.1",
     "postcss": "^5.1.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "bugs": {
+    "url": "https://github.com/CenterForOpenScience/ember-preprints/issues"
+  },
+  "homepage": "https://github.com/CenterForOpenScience/ember-preprints#readme",
+  "jscsConfig": {
+    "preset": "airbnb",
+    "excludeFiles": [
+      "package.json",
+      "bower.json",
+      "testem.js",
+      "bower_components",
+      "node_modules",
+      "dist",
+      "docs",
+      "tmp",
+      "vendor",
+      "app/locales",
+      "mirage/fixtures",
+      "tests/unit",
+      "tests/integration",
+      "tests/helpers",
+      "tests/dummy/app/mirage",
+      "jam"
+    ],
+    "requireSpacesInAnonymousFunctionExpression": false,
+    "requireTrailingComma": false,
+    "disallowTrailingComma": false,
+    "requirePaddingNewLinesAfterBlocks": false,
+    "validateIndentation": 4,
+    "requirePaddingNewLinesBeforeLineComments": false,
+    "maximumLineLength": false,
+    "disallowSpaceBeforeComma": false
+  }
 }
