@@ -13,7 +13,7 @@ module.exports = function(environment) {
         },
         //Change here to switch back to mirage calls. Examples of calls in index.js
         'ember-cli-mirage': {
-            enabled: true
+            enabled: false
         },
         EmberENV: {
             FEATURES: {
