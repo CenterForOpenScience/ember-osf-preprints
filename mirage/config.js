@@ -10,6 +10,8 @@ export default function() {
     this.passthrough(config.OSF.waterbutlerUrl + '**');
     this.passthrough(config.OSF.helpUrl + '/**');
 
+    this.passthrough(config.SHARE.searchUrl);
+
     // All routes defined below will be namespaced under /api , to avoid mirage "Cannot GET" errors when accessing
     // top level preprints route
     this.namespace = '/preprints';

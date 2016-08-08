@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from 'ember-get-config';
 
 export default Ember.Controller.extend({
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
@@ -14,7 +15,7 @@ export default Ember.Controller.extend({
 
     results: Ember.ArrayProxy.create({content: []}),
 
-    searchUrl: 'https://staging-share.osf.io/api/search/abstractcreativework/_search',
+    searchUrl: config.SHARE.searchUrl,
 
     init() {
         this._super(...arguments);

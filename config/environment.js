@@ -13,7 +13,7 @@ module.exports = function(environment) {
         },
         //Change here to switch back to mirage calls. Examples of calls in index.js
         'ember-cli-mirage': {
-            enabled: false
+            enabled: true
         },
         EmberENV: {
             FEATURES: {
@@ -24,6 +24,9 @@ module.exports = function(environment) {
         APP: {
             // Here you can pass flags/options to your application instance
             // when it is created
+        },
+        SHARE: {
+            searchUrl: 'https://staging-share.osf.io/api/search/abstractcreativework/_search'
         }
     };
 
