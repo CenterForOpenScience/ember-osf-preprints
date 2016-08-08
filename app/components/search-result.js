@@ -4,6 +4,10 @@ export default Ember.Component.extend({
 
     numMaxChars: 400,
     truncateDescription: true,
+    result: {
+        description: ''
+    },
+
     displayDescription: Ember.computed('result', 'truncateDescription', function() {
         let result = this.get('result');
         if (result.description){
