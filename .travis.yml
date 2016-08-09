@@ -18,5 +18,4 @@ install:
   - bower install
 
 script:
-  - npm run check-style
-  - npm test
+  - npm run check-style && npm test
