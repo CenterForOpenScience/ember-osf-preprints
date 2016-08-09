@@ -22,7 +22,19 @@
 {{#with _names.[3] as |name|}}
     {{#preprint-form-section id='preprint-form-authors'}}
         {{preprint-form-header name=name valid=(get valid name)}}
-        {{preprint-form-authors verify=(action 'verify' name)}}
+        {{preprint-form-authors
+            verify=(action 'verify' name)
+            contributors=contributors
+            node=node
+            isAdmin=isAdmin
+            canEdit=canEdit
+            currentUser=currentUser
+            addContributor=(action 'addContributor')
+            findContributors=(action 'findContributors')
+            searchResults=searchResults
+            removeContributor=(action 'removeContributor')
+            addUnregisteredContributor=(action 'addUnregisteredContributor')
+            editContributors=(action 'editContributors') }}
     {{/preprint-form-section}}
 {{/with}}
 
