@@ -23,9 +23,7 @@ export default function() {
 
     this.get('/preprints', (schema, request) => schema.preprints.where(request.queryParams));
 
-    this.get('/subjects', (schema, request) => {
-        return schema.subjects.where(request.queryParams);
-    });
+    this.get('/subjects', (schema, request) => schema.subjects.where(request.queryParams));
 
     this.get('/taxonomies', (schema, request) => schema.taxonomies.all());
 
