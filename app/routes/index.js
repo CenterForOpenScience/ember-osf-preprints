@@ -7,7 +7,7 @@ export default Ember.Route.extend({
             theDate: new Date(),
 
             preprints: this.store.findAll('preprint'),
-            subjects: this.store.find('taxonomy', 'plos')
+            subjects: this.store.findAll('taxonomy')
         });
     },
     actions: {
