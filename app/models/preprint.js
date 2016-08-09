@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import DS from 'ember-data';
 import OsfModel from 'ember-osf/models/osf-model';
 
@@ -27,10 +26,9 @@ export default OsfModel.extend({
     tags: DS.attr(),
 
     // Relationships
-    primaryFile: DS.belongsTo('file'),
-    files: DS.hasMany('file-provider'),
+    primaryFile: DS.belongsTo('file', { inverse: null }),
+    files: DS.hasMany('file-providers', { inverse: null }),
 
-    // REALLY BIG TODO: All preprints must re-implement all contributors behavior from the node model (authors are contributors by another name)
     contributors: DS.hasMany('contributors', {
         allowBulkUpdate: true,
         allowBulkRemove: true,

@@ -2,7 +2,10 @@ import { moduleForModel, test } from 'ember-qunit';
 
 moduleForModel('preprint', 'Unit | Serializer | preprint', {
   // Specify the other units that are required for this test.
-  needs: ['serializer:preprint']
+  needs: [
+      'serializer:file', 'serializer:file-provider', 'serializer:preprint',
+      'model:contributor', 'model:file-provider'
+  ]
 });
 
 // Replace this with your real tests.
