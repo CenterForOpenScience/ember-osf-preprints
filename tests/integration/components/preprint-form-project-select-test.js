@@ -11,5 +11,5 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{preprint-form-project-select}}`);
 
-  assert.equal(this.$('h3').text().trim(), 'Choose existing OSF project:');
+  assert.equal(this.$('h1').text().trim(), 'Choose existing OSF project:');
 });
