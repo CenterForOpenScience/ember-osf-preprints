@@ -5,7 +5,7 @@ export default Ember.Component.extend({
     numMaxChars: 400,
     showBody: false,
     footerIcon: Ember.computed('showBody', function() {
-        return this.get('showBody') ? "caret-up" : "caret-down";
+        return this.get('showBody') ? 'caret-up' : 'caret-down';
     }),
     truncateDescription: true,
     result: {

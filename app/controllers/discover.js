@@ -19,7 +19,7 @@ export default Ember.Controller.extend({
         return this.get('page') * this.get('size') <= this.get('numberOfResults');
     }),
 
-    results: Ember.ArrayProxy.create( {content: []} ),
+    results: Ember.ArrayProxy.create({ content: [] }),
 
     searchUrl: config.SHARE.searchUrl,
 
@@ -46,7 +46,7 @@ export default Ember.Controller.extend({
                 source.id = hit._id;
                 source.type = 'elastic-search-result';
                 source.workType = source['@type'];
-                source.contributors = source.contributors.map((contributor) => {
+                source.contributors = source.contributors.map(function(contributor) {
                     return {
                         familyName: contributor.family_name,
                         givenName: contributor.given_name,
@@ -157,5 +157,4 @@ export default Ember.Controller.extend({
             this.set('activeFilters', []);
         }
     },
-
 });
