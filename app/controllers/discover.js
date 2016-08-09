@@ -10,8 +10,10 @@ export default Ember.Controller.extend({
     numberOfResults: 0,
     searchString: '',
 
-    showPrev: false,
-    showNext: true,
+    showPrev: Ember.computed.gt('page', 1),
+    showNext: Ember.computed('page', 'size', 'numberOfResults', function() {
+        return this.get('page') * this.get('size') <= this.get('numberOfResults');
+    }),
 
     results: Ember.ArrayProxy.create({content: []}),
 
@@ -50,12 +52,8 @@ export default Ember.Controller.extend({
                 });
                 return source;
             });
-            Ember.run(() => {
-                this.set('loading', false);
-                this.set('results', results);
-
-                this.togglePagination();
-            });
+            this.set('loading', false);
+            this.set('results', results);
         });
     },
 
@@ -108,21 +106,6 @@ export default Ember.Controller.extend({
         return this.set('queryBody', queryBody);
     },
 
-    togglePagination() {
-        // prev
-        if (this.get('page') > 1) {
-            this.set('showPrev', true);
-        } else {
-            this.set('showPrev', false);
-        }
-        // next
-        if (this.get('page') * this.get('size') <= this.get('numberOfResults')) {
-            this.set('showNext', true);
-        } else {
-            this.set('showNext', false);
-        }
-    },
-
     termsFilter(field, terms, raw = true) {
         if (terms && terms.length) {
             if (raw) {
@@ -164,7 +147,7 @@ export default Ember.Controller.extend({
         },
 
         linkToAddPreprint() {
-            this.transitionToRoute('/preprints/add');
+            this.transitionToRoute('add-preprint');
         }
     },
 

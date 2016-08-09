@@ -15,10 +15,9 @@ Router.map(function() {
   this.route('add-preprint', { path: '/preprints/add' });
 
   this.route('browse');
-
+  this.route('discover');
 
   this.route('page-not-found', { path: '/*wildcard' });
-  this.route('discover');
 });
 
 export default Router;
