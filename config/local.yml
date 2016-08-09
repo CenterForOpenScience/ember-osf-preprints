@@ -1,0 +1,8 @@
+
+######## ember-osf settings ########
+local:
+    CLIENT_ID: null
+    PERSONAL_ACCESS_TOKEN: null
+    OAUTH_SCOPES: osf.full_read osf.full_write
+    REDIRECT_URI: http://localhost:4200/login/
+######### end ember-osf ##########
