@@ -22,21 +22,24 @@
     <div class="row">
         <div class="col-lg-4">
             <div id="activeFilters">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h4>Active Filters:</h4>
+                {{#if showActiveFilters}}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h4>Active Filters:</h4>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="pull-right">
+                                <button type="button" class="btn btn-default" {{action "clearFilters"}}>Clear filters {{fa-icon "remove"}}</button>
+                            </span>
+                        </div>
                     </div>
-                    <div class="col-sm-6">
-                        <span class="pull-right">
-                            <button type="button" class="btn btn-default">Clear filters {{fa-icon "remove"}}</button>
-                        </span>
-                    </div>
-                </div>
-                <hr>
-                <ul>
-                    <li>provider:SocArXiv</li>
-                    <li>subject:Biology and life sciences</li>
-                </ul>
+                    <hr>
+                    <ul id="activeFiltersList">
+                        {{#each activeFilters as |filter|}}
+                            <li>{{filter}}</li>
+                        {{/each}}
+                    </ul>
+                {{/if}}
             </div>
 
             <div class="panel panel-info">
@@ -51,7 +54,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="col-lg-8" id="searchResults">

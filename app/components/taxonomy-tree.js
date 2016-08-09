@@ -37,7 +37,7 @@ export default Ember.Component.extend({
                 }
                 */
 
-                this.$('#taxonomyTree').treeview('toggleNodeChecked', [ data.nodeId, { silent: true } ] );
+                this.$('#taxonomyTree').treeview('toggleNodeChecked', [data.nodeId, { silent: true }]);
             }
         });
     },

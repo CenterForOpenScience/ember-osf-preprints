@@ -10,13 +10,13 @@ export default Ember.Component.extend({
 
     displayDescription: Ember.computed('result', 'truncateDescription', function() {
         let result = this.get('result');
-        if (result.description){
+        if (result.description) {
             if (this.truncateDescription) {
-                return result.description.substring(0, this.numMaxChars) + "...";
+                return result.description.substring(0, this.numMaxChars) + '...';
             }
             return result.description;
         }
-        return "";
+        return '';
     }),
 
     actions: {
