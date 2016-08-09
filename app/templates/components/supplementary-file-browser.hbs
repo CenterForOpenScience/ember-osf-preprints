@@ -14,7 +14,7 @@
                     {{#if (eq supplement.kind "folder")}}
                         <i class="fa fa-folder fa-3x p-b-xs" aria-hidden="true" href={{concat model.baseUrl model.project}}></i> <p>{{supplement.name}}</p>{{!Actually make a link here}}
                     {{else}}
-                        <i class="fa fa-file-text fa-3x p-b-xs" aria-hidden="true" ><br></i><p>{{supplement.name}}</p>
+                        <i class="fa fa-file-text fa-3x p-b-xs" aria-hidden="true"></i><p>{{supplement.name}}</p>
                     {{/if}}
                 </li>
             {{/each}}
