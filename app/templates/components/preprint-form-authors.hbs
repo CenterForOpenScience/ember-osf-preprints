@@ -1,56 +1,140 @@
-<div class="form">
-    <div class="form-group">
-        <div class="input-group">
-            <span class="input-group-addon"> User ID </span>
-            {{input class="form-control" value=newContributorId}}
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-division-right">
+        <div class="row">
+            <div class="col-xs-11">
+                <form {{action 'findContributors' 1 on='submit'}}>
+                    <div class="input-group search-box">
+                        <input type="text" class="form-control input-lg" onchange={{action "updateQuery" value="target.value"}} placeholder="Search by name">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-lg" type="button" {{action 'findContributors' 1}} >
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-11">
+                {{#if (not (eq addState 'emptyView'))}}
+                    {{#if (eq addState 'searchView')}}
+                        <div class="unregisteredUsers">
+                            <p> Can't find the user you're looking for? </p>
+                            <button class="btn btn-primary btn-small" {{action "unregisteredView"}}> Add an unregistered user </button>
+                        </div>
+                        <h3> Results </h3>
+                        {{#if newSearchResults}}
+                            <table class="table author-table">
+                                {{#each newSearchResults as |result|}}
+                                    <tr>
+                                        <td>
+                                            <img class="m-l-xs" src={{result.links.profile_image}} height=40 width=40>
+                                            <a href={{result.links.html}}> {{result.fullName}} </a>
+
+                                        </td>
+                                        <td> <button class="btn btn-success btn-small" {{action "addContributor" result}}> Add </button> </td>
+                                    </tr>
+                                {{/each}}
+                            </table>
+                        {{else}}
+                            No results found.
+                        {{/if}}
+                        {{#if (gt pages 1)}}
+                            {{osf-paginator totalSearchResults=totalSearchResults maxPages=5 fetchResults=findContributors query=query}}
+                        {{/if}}
+                    {{/if}}
+                    {{#if (eq addState 'unregisteredView')}}
+                        <h3> Add Unregistered User </h3>
+                        <div class="user-validation">
+                            {{user-validation searchView=(action 'searchView') addUnregisteredContributor=(action 'addUnregisteredContributor')}}
+                        </div>
+                    {{/if}}
+                {{/if}}
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <h3> Permissions: </h3>
-        <label>{{radio-button name="permission" value=READ checked=newContributorPermissions}} Read</label>
-        <label>{{radio-button name="permission" value=WRITE checked=newContributorPermissions}} Read + Write</label>
-        <label>{{radio-button name="permission" value=ADMIN checked=newContributorPermissions}} Administrator</label>
-    </div>
-    <div class="form-group">
-        <h3> Bibliographic: </h3>
-        <label>{{radio-button name="bibliographic" value=true checked=newContributorIsBibliographic}} Bibliographic </label>
-        <label>{{radio-button name="bibliographic" value=false checked=newContributorIsBibliographic}} Non-Bibliographic </label>
-    </div>
-    <div class="form-group">
-        <button {{action 'addContributor' newContributorId newContributorPermissions newContributorIsBibliographic}} class="btn btn-primary">Add</button>
+    <div class="col-xs-12 col-sm-6">
+        <div class="author-header">
+            <h2 class="header-inline"> Authors </h2>
+            <span>
+                <i class="fa fa-question-circle permission-info"
+                    data-toggle="popover"
+                    data-title="Author Information"
+                    data-trigger="hover"
+                    data-html="true"
+                    id="author-popover">
+                </i>
+            </span>
+        </div>
+        <p class="drag-drop"> Drag and drop authors to change listing order. </p>
+        <div class="panel-body">
+            <table class="table author-table">
+                <tr>
+                    <th> </th>
+                    <th> Name </th>
+                    <th>
+                        Permissions
+                        <span>
+                            <i class="fa fa-question-circle permission-info"
+                                data-toggle="popover"
+                                data-title="Permission Information"
+                                data-trigger="hover"
+                                data-html="true"
+                                id="permissions-popover">
+                            </i>
+                        </span>
+                    </th>
+                    <th class="bib-padding">
+                        In Citation
+                        <span>
+                            <i class="fa fa-question-circle permission-info"
+                                data-toggle="popover"
+                                data-title="Citation Information"
+                                data-trigger="hover"
+                                data-html="true"
+                                id="bibliographic-popover">
+                            </i>
+                        </span>
+                    </th>
+                    <th> </th>
+                </tr>
+                {{#each contributors as |contrib|}}
+                    <tr class="contributor-row">
+                        <td> <span class="fa fa-bars sortable-bars"></span> </td>
+                        <td>
+                            <img class="m-l-xs" src={{contrib.users.links.profile_image}} height=40 width=40>
+                            {{#if contrib.unregisteredContributor}}
+                                {{contrib.unregisteredContributor}}
+                            {{else}}
+                                <a href={{contrib.users.links.html}}> {{contrib.users.fullName}} </a>
+                            {{/if}}
+                        </td>
+                        <td class="vert-align">
+                            <div class="form-group">
+                                {{#if (and stillAdmin (and canEdit (minAdmins contrib contributors permissionToggle)))}}
+                                    <select class="form-control" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
+                                        <option value=READ selected={{eq contrib.permission 'read'}}> Read </option>
+                                        <option value=WRITE selected={{eq contrib.permission 'write'}}> Read + Write </option>
+                                        <option value=ADMIN selected={{eq contrib.permission 'admin'}}> Administrator </option>
+                                    </select>
+                                {{else}}
+                                    <span> {{permissionMap contrib.permission}} </span>
+                                {{/if}}
+                            </div>
+                        </td>
+                        <td class="bib-padding">
+                            <input disabled={{if (and stillAdmin (and canEdit (minBibliographic contrib contributors bibliographicToggle))) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
+                        </td>
+                        <td>
+                            {{#if (and (permissionToRemoveContributor contrib currentUser stillAdmin node) (conditionsForContribRemoval contrib contributors removalToggle))}}
+                                <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm"> Remove </button>
+                            {{else}}
+                                <button class="btn btn-danger btn-sm disabled"> Remove </button>
+                            {{/if}}
+                        </td>
+                    </tr>
+                {{/each}}
+            </table>
+        </div>
     </div>
 </div>
-
-<table class="table">
-    <tr>
-        <th>ID</th>
-        <th> Name </th>
-        <th> Permissions </th>
-        <th> Bibliographic </th>
-        <th> </th>
-    </tr>
-    {{#each contributors as |contrib|}}
-        <tr>
-            <td>
-                {{contrib.id}}
-            </td>
-            <td>
-                {{if contrib.unregisteredContributor contrib.unregisteredContributor contrib.users.fullName}}
-            </td>
-            <td>
-                <select onchange={{action (action 'permissionChange' contrib) value='target.value'}} >
-                    <option value=READ selected={{if (eq contrib.permission READ) true false}}> Read </option>
-                    <option value=WRITE selected={{if (eq contrib.permission WRITE) true false}}> Read + Write </option>
-                    <option value=ADMIN selected={{if (eq contrib.permission ADMIN) true false}}> Administrator </option>
-                </select>
-            </td>
-            <td>
-                <input onchange={{action (action 'bibliographicChange' contrib) value='target.checked'}} checked={{if contrib.bibliographic true false}} type="checkbox" name="bibliographic">
-            </td>
-            <td>
-                <button {{action 'removeContributor' contrib}} class="btn btn-danger"> Remove </button>
-            </td>
-        </tr>
-    {{/each}}
-</table>
-<button {{action 'updateContributors'}} class="btn btn-primary"> Save changes </button>
