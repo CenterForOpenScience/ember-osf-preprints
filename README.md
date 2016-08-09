@@ -18,10 +18,6 @@ You will need the following things properly installed on your computer.
 * [PhantomJS](http://phantomjs.org/)
 
 ## Installation
-* `git clone https://github.com/CenterForOpenScience/ember-osf.git` the application off which this is built
-* `git clone <repository-url>` this repository
-* `cd preprint_service` change into the new directory
-*  follow [ember-osf](https://github.com/CenterForOpenScience/ember-osf) instructions for using code in a consuming app and configuration
 * `npm install`
 * `bower install`
 
