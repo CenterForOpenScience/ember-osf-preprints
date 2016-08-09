@@ -18,6 +18,7 @@ import OsfModel from 'ember-osf/models/osf-model';
  */
 export default OsfModel.extend({
     title: DS.attr('string'),
+    // TODO: May be a relationship in the future pending APIv2 changes
     subjects: DS.attr(),
     provider: DS.attr('string'),
     date_created: DS.attr('date'),
@@ -25,36 +26,14 @@ export default OsfModel.extend({
     abstract: DS.attr('string'),
     tags: DS.attr(),
 
-
-    // Relationships:
-    // 1. Primary file
-    // 2. files
-    // 3. Authors (basically contributors)
-
+    // Relationships
     primaryFile: DS.belongsTo('file'),
     files: DS.hasMany('file-provider'),
 
     // REALLY BIG TODO: All preprints must re-implement all contributors behavior from the node model (authors are contributors by another name)
-    authors: DS.hasMany('authors', {
+    contributors: DS.hasMany('contributors', {
         allowBulkUpdate: true,
         allowBulkRemove: true,
         inverse: null
-    }),
-
-    // TODO: Will this be enough to let NodeActionsMixin methods that track contributors work?
-    //  (tagging @pattisdr)
-    contributors: Ember.computed.alias('authors')
-
-    // TODO: Verify that each of these fields is unnecessary, then remove
-    // authors: DS.attr(),
-    // date: DS.attr(),
-    // abstract: DS.attr(),
-    // publisher: DS.attr(),
-    // project: DS.attr(),
-    // supplementalMaterials: DS.attr(),
-    // figures: DS.attr(),
-    // license: DS.attr(),
-    // path: DS.attr(),
-    // tags: DS.attr(),
-    // doi: DS.attr(),
+    })
 });
