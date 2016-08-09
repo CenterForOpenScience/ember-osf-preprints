@@ -1,21 +1,62 @@
-<div>
-    <h4><a>{{result.title}}</a></h4>
-    {{#each result.contributors as |contributor|}}
-        <a>{{contributor.familyName}}, {{contributor.givenName}}</a>
-    {{/each}}
-    <p {{action "toggleShowDescription"}} style="cursor: pointer; cursor: hand;">{{displayDescription}}</p>
-
-    <div class="row">
-        <div class="col-sm-6 text-muted">
-            <p>Released on: {{moment-format result.date_updated "YYYY-MM-DD hh:mm a"}}</p>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="pull-right">{{moment-format result.date_updated "MMMM YYYY"}}</span>
+            </div>
         </div>
-        <div class="col-sm-6">
-            {{#each result.tags as |tag|}}
-                <span class="label label-default">
-                    {{tag}}
-                </span>
-            {{/each}}
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>
+                    {{#link-to "index"}}
+                        {{result.title}}
+                    {{/link-to}}
+                </h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                {{#each result.contributors as |contributor index|}}
+                    {{#if index}}
+                        |
+                    {{/if}}
+                    {{#link-to "index"}}
+                        {{contributor.familyName}}, {{contributor.givenName}}
+                    {{/link-to}}
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-10">
+                {{! subjects }}
+            </div>
+            <div class="col-sm-2">
+                {{result.sources}}
+            </div>
         </div>
     </div>
-    <hr>
+
+    {{#if showBody}}
+        <div class="panel-body">
+            {{result.description}}
+
+            <div class="row">
+                <div class="col-sm-12">
+                    {{tags-widget tags=result.tags}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-muted">
+                    Released on: {{moment-format result.date_updated}}
+                </div>
+            </div>
+        </div>
+    {{/if}}
+
+    <div class="panel-footer text-center" {{action "toggleShowBody"}}>
+        {{fa-icon footerIcon size=2}}
+    </div>
 </div>

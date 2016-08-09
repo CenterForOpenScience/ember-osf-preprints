@@ -3,6 +3,10 @@ import Ember from 'ember';
 export default Ember.Component.extend({
 
     numMaxChars: 400,
+    showBody: false,
+    footerIcon: Ember.computed('showBody', function() {
+        return this.get('showBody') ? "caret-up" : "caret-down";
+    }),
     truncateDescription: true,
     result: {
         description: ''
@@ -22,6 +26,9 @@ export default Ember.Component.extend({
     actions: {
         toggleShowDescription() {
             this.set('truncateDescription', !this.truncateDescription);
+        },
+        toggleShowBody() {
+            this.set('showBody', !this.showBody);
         }
     }
 
