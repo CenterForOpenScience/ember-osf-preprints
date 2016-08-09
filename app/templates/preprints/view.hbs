@@ -1,16 +1,11 @@
 <div class="container">{{!CONATINER DIV}}
         <div class="m-b-md p-md osf-box m-t-lg"> {{!OSF BOX DIV}}
-            <div class="row m-t-lg" id="header"> {{!HEADER ROW}}
+            <div class="row p-l-md m-t-lg"> {{!HEADER ROW}}
                 <h1>{{model.preprint.title}}</h1>
             </div> {{!END HEADER ROW}}
             <div class="row p-l-md"> {{!PREPRINT INFO ROW}}
-                <div class="col-md-10">
                     <h5>{{model.preprint.authors}}</h5>
                     <h6>Added on {{moment-format model.preprint.date}}</h6>
-                </div>
-                <div class="col-md-2">
-                    <h6 class="m-t-lg p-r-md pull-right"><span>Provider: {{#link-to "index"}}SocArXiv{{/link-to}} </span><img class="img socarxiv-logo"><img class="logo-sm socarxiv-logo"></h6>
-                </div>
             </div> {{!END PREPRINT INFO ROW}}
             <div class="row">
                 <hr color="#C7FFC7">
