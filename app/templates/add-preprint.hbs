@@ -1,4 +1,15 @@
 <main class="container">
     <h1>Add Preprint</h1>
-    {{preprint-form}}
+    {{preprint-form
+        contributors=contributors
+        node=model
+        isAdmin=isAdmin
+        canEdit=canEdit
+        currentUser=user
+        addContributor=(action 'addContributor')
+        findContributors=(action 'findContributors')
+        searchResults=searchResults
+        removeContributor=(action 'removeContributor')
+        addUnregisteredContributor=(action 'addUnregisteredContributor')
+        editContributors=(action 'updateContributors')}}
 </main>
