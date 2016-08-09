@@ -63,7 +63,9 @@
     "loader.js": "^4.0.1",
     "postcss": "^5.1.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "rsvp": "^3.2.1"
+  },
   "bugs": {
     "url": "https://github.com/CenterForOpenScience/ember-preprints/issues"
   },

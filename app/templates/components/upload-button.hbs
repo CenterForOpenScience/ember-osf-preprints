@@ -1,8 +1,14 @@
 <div class="col-sm-12" style="padding-bottom:30px;">{{!COL}}
-    {{fa-icon icon="cloud-upload" size=5}}
-    <h1 class="f-w-xl">Contribute your research</h1>
-    <h3 class="f-w-md" style="margin-left:auto; margin-right:auto;">You can upload a preprint or choose a file from an existing OSF file to tag as a preprint if you are already have an OSF account.</h3>
 
+    <div class="headers-div"> <!--headers div-->
+                    <h2>CONTRIBUTE</h2>
+                <h4>your research</h4>
+                </div> <!--END HEADERS DIV-->
+    <div class="text-center"> <!--TEXT-CENTER DIV-->
+        {{fa-icon icon="cloud-upload" size=5}}
+            <div class="contribute-text"> <!--CONTRIBUTE TEXT DIV-->
+                <p class="f-w-md" style="margin-left:auto; margin-right:auto;">You can upload a preprint or choose a file from an existing OSF file to tag as a preprint if you are already have an OSF account.</p>
+            </div> <!--END CONTRIBUTE TEXT-->
     {{#oauth-popup authUrl=authUrl loginSuccess=(action 'loginSuccess') loginFail=(action 'loginFail') as |popup|}}
         <div class="col-sm-12">
             {{!TODO: Don't create the same button twice}}
@@ -15,5 +21,6 @@
             {{/if}}
         </div>
     {{/oauth-popup}}
+    </div> <!--END TEXT CENTER-->
 
 </div> {{!END COL}}
