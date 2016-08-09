@@ -9,8 +9,7 @@ module.exports = function(defaults) {
         },
         sassOptions: {
             includePaths: [
-                '../ember-osf/tests/dummy/app/components',
-                '../ember-osf/addon/styles',
+                'node_modules/ember-osf/addon/styles',
                 'bower_components/bootstrap-sass/assets/stylesheets',
                 'bower_components/osf-style/sass'
             ]
@@ -63,7 +62,7 @@ module.exports = function(defaults) {
         destDir: 'img'
     });
 
-//  app.import('bower_components/dropzone/dist/dropzone.js');
+    // app.import('bower_components/dropzone/dist/dropzone.js');
     app.import({
         development: 'bower_components/dropzone/dist/dropzone.css',
         production: 'bower_components/dropzone/dist/min/dropzone.min.css'

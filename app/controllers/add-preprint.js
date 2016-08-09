@@ -21,9 +21,9 @@ export default Ember.Controller.extend({
         // Save metadata in Jam
         // TODO: Check if this works with proper permissions (will get 401 if not set properly)
         success(ignore, dropzone, file, response) {
-            let path = response.path.slice(1),
-                preprint = this.get('preprint'),
-                preprintMetadata = this.get('store').createRecord('preprint', {
+            let path = response.path.slice(1);
+            let preprint = this.get('preprint');
+            let preprintMetadata = this.get('store').createRecord('preprint', {
                     id: path, // TODO: change to guid
                     attributes: {
                         title: preprint.title,
