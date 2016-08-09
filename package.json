@@ -75,6 +75,8 @@
       "package.json",
       "bower.json",
       "testem.js",
+      "ember-cli-build.js",
+      "config/environment.js",
       "bower_components",
       "node_modules",
       "dist",
