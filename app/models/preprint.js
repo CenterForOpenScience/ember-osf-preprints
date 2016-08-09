@@ -1,6 +1,6 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 import OsfModel from 'ember-osf/models/osf-model';
-
 
 /**
  * @module ember-preprints
@@ -41,6 +41,11 @@ export default OsfModel.extend({
         inverse: null
     }),
 
+    // TODO: Will this be enough to let NodeActionsMixin methods that track contributors work?
+    //  (tagging @pattisdr)
+    contributors: Ember.computed.alias('authors')
+
+    // TODO: Verify that each of these fields is unnecessary, then remove
     // authors: DS.attr(),
     // date: DS.attr(),
     // abstract: DS.attr(),
