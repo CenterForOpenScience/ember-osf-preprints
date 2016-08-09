@@ -27,6 +27,9 @@ module.exports = function(environment) {
         },
         SHARE: {
             searchUrl: 'https://staging-share.osf.io/api/search/abstractcreativework/_search'
+        },
+        moment: {
+            outputFormat: 'YYYY-MM-DD hh:mm a'
         }
     };
 
