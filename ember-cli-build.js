@@ -9,8 +9,7 @@ module.exports = function(defaults) {
         },
         sassOptions: {
             includePaths: [
-                '../ember-osf/tests/dummy/app/components',
-                '../ember-osf/addon/styles',
+                'node_modules/ember-osf/addon/styles',
                 'bower_components/bootstrap-sass/assets/stylesheets',
                 'bower_components/osf-style/sass'
             ]
