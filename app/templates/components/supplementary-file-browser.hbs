@@ -10,11 +10,11 @@
         </button>
         {{#liquid-bind supplementList elementId="file-list" tagName="ul" class="p-l-md p-r-md" use=scrollAnim as |list|}}
             {{#each list as |supplement|}}
-                <li class="small-files col-xs-2 p-md box {{if (eq selectedFile supplement) 'selected'}}">
+                <li class="small-files col-xs-2 p-md box {{if (eq selectedFile supplement) 'selected'}}" {{action 'changeFile' supplement}}>
                     {{#if (eq supplement.kind "folder")}}
-                        <i class="fa fa-folder fa-3x" aria-hidden="true" href={{concat model.baseUrl model.project}}><h6>{{supplement.name}}</h6></i> {{!Actually make a link here}}
+                        <i class="fa fa-folder fa-3x p-b-xs" aria-hidden="true" href={{concat model.baseUrl model.project}}></i> <p>{{supplement.name}}</p>{{!Actually make a link here}}
                     {{else}}
-                        <i class="fa fa-file-text fa-3x" aria-hidden="true" {{action 'changeFile' supplement}}><h6>{{supplement.name}}</h6></i>
+                        <i class="fa fa-file-text fa-3x p-b-xs" aria-hidden="true" ><br></i><p>{{supplement.name}}</p>
                     {{/if}}
                 </li>
             {{/each}}

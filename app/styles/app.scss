@@ -380,6 +380,11 @@ td:hover {
     height: 150px;
 }
 
+.logo-sm {
+    width: 30px;
+    height: 30px;
+}
+
 .row-fluid {
     overflow: auto;
     white-space: nowrap;
@@ -737,6 +742,11 @@ hr {
     background-size: cover;
     background-image: url("img/logo_ua.png");
 }
+.socarxiv-logo {
+    background-size: cover;
+    background-image: url("img/logo_socarxiv.jpg");
+}
+
 #preprint-file-view {
     section {
         position: relative;
@@ -760,7 +770,7 @@ hr {
         &.selected{
             background-color: lightgrey;
         }
-        h6{
+        p{
             font-family: Arial;
             font-size: x-small;
         }

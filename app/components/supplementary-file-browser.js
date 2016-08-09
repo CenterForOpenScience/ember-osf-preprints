@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import $ from 'jquery';
 
 export default Ember.Component.extend({
     elementId: 'preprint-file-view',
@@ -26,9 +25,6 @@ export default Ember.Component.extend({
     init: function(){
         this._super(...arguments);
         this.set('selectedFile', this.get('primaryFile'));
-    },
-    didInsertElement: function () {
-        $('[data-toggle="tooltip"]').tooltip({});
     },
     actions: {
         moveLeft() {

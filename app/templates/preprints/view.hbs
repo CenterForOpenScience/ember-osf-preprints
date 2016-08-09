@@ -1,7 +1,6 @@
 <div class="container">{{!CONATINER DIV}}
-    <div class="row"> {{!ROW DIV}}
         <div class="m-b-md p-md osf-box m-t-lg"> {{!OSF BOX DIV}}
-            <div class="row" id="header"> {{!HEADER ROW}}
+            <div class="row m-t-lg" id="header"> {{!HEADER ROW}}
                 <h1>{{model.preprint.title}}</h1>
             </div> {{!END HEADER ROW}}
             <div class="row p-l-md"> {{!PREPRINT INFO ROW}}
@@ -10,7 +9,7 @@
                     <h6>Added on {{moment-format model.preprint.date}}</h6>
                 </div>
                 <div class="col-md-2">
-                    <h6 class="m-t-lg"><span>Provider: {{#link-to "index"}}SocArXiv{{/link-to}} </span><img src="preprints/assets/img/logo_socarxiv.jpg" width="30"></h6>
+                    <h6 class="m-t-lg p-r-md pull-right"><span>Provider: {{#link-to "index"}}SocArXiv{{/link-to}} </span><img class="img socarxiv-logo"><img class="logo-sm socarxiv-logo"></h6>
                 </div>
             </div> {{!END PREPRINT INFO ROW}}
             <div class="row">
@@ -27,7 +26,7 @@
                         <i class="fa fa-download" aria-hidden="true"></i>
                         <a href={{model.downloadLink}}>Download</a>
                         <i class="fa fa-edit" aria-hidden="true"></i>
-                        {{#link-to "preprints.edit" model.preprint.id}}Edit{{/link-to}}
+                        {{#link-to "preprints.edit"}}Edit{{/link-to}}
                         <span class="pull-right">
                             {{share-popup}}
                         </span>
@@ -51,5 +50,4 @@
                 </div> {{!END RIGHT SIDE COL}}
             </div> {{!END CONTENT ROW}}
         </div> {{!END OSF BOX DIV}}
-    </div> {{!END ROW}}
 </div>{{!END DIV CONTAINER}}
