@@ -55,15 +55,17 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
             let res = this.attrs.addUnregisteredContributor(fullName, email, 'write', true);
-            var _this = this;
-            res.then(function() {
-                _this.toggleProperty('bibliographicToggle');
-                _this.toggleProperty('permissionToggle');
-                _this.toggleProperty('removalToggle');
+            res.then(() => {
+                this.toggleProperty('bibliographicToggle');
+                this.toggleProperty('permissionToggle');
+                this.toggleProperty('removalToggle');
+                this.set('addState', 'searchView');
+                this.set('fullName', '');
+                this.set('email', '');
+            }, function(reason){
+                console.log(reason.errors[0].detail)
             });
-            this.set('addState', 'searchView');
-            this.set('fullName', '');
-            this.set('email', '');
+
         },
         updateQuery(value) {
             this.set('query', value);
