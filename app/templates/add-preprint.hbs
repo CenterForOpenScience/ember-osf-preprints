@@ -8,26 +8,27 @@
                     {{#liquid-bind state class='translate' as |currentState|}}
                         <div class={{currentState}}>
                             {{#if (eq currentState _State.START)}}
-                                <button class="col-md-4"{{action 'changeState' _State.NEW}}>Upload a New File</button>
-                                <button class="col-md-4"{{action 'changeState' _State.EXISTING}}>Select a file from OSF</button>
+                                <button class="col-md-4" {{action 'changeState' _State.NEW}}>Upload a New File</button>
+                                <button class="col-md-4" {{action 'changeState' _State.EXISTING}}>Select a file from OSF</button>
 
                             {{else if (eq currentState _State.NEW)}}
-                                {{dropzone-widget buildUrl="/"}}
+                                {{dropzone-widget preUpload=(action 'preUpload') buildUrl=(action 'buildUrl') success=(action 'success')}}
                                 {{#liquid-bind uploadState use='crossFade' as |currentUploadState|}}
                                     {{#if (eq currentUploadState _State.START)}}
+                                        <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
                                         <button class="btn btn-primary" {{action 'changeUploadState' _State.NEW}}>Create new project</button>
                                         <button class="btn btn-primary" {{action 'changeUploadState' _State.EXISTING}}>Save to existing OSF project</button>
-                                        <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
 
                                     {{else if (eq currentUploadState _State.NEW)}}
                                         <h1>Creating new project</h1>
-                                        <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
-                                        <button class="btn btn-default" {{action 'next' name}}>Next</button>
+                                        {{input class='form-control' value=nodeTitle}}
+                                        <button class="btn btn-default" {{action 'deleteProject' (action 'changeUploadState' _State.START)}}>Back</button>
+                                        <button class="btn btn-primary" {{action 'createProject' (action 'next' name)}}>Create</button>
 
                                     {{else if (eq currentUploadState _State.EXISTING)}}
-                                        {{preprint-form-project-select userNodes=userNodes}}
+                                        {{preprint-form-project-select userNodes=userNodes selectedNode=preprintNode}}
                                         <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
-                                        <button class="btn btn-primary" {{action 'next' name}}>Next</button>
+                                        <button class="btn btn-primary" disabled={{unless preprintNode true}} {{action 'startUpload' (action 'next' name)}}>Next</button>
 
                                     {{else}}
                                         {{log 'preprint-form-upload: bad uploadState'}}
@@ -35,9 +36,9 @@
                                 {{/liquid-bind}}
 
                             {{else if (eq currentState _State.EXISTING)}}
-                                {{preprint-form-project-select userNodes=userNodes fileSelect=true}}
+                                {{preprint-form-project-select userNodes=userNodes fileSelect=true selectedNode=preprintNode}}
                                 <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
-                                <button class="btn btn-primary" {{action 'next' name}}>Next</button>
+                                <button class="btn btn-primary" disabled={{unless preprintNode true}} {{action 'next' name}}>Next</button>
 
                             {{else}}
                                 {{log 'preprint-form-upload: bad state'}}
@@ -55,21 +56,21 @@
                     <div class="col-md-6">
                         <label>
                             <span class="required">Title:</span>
-                            {{input class="form-control" value=title required=true}}
+                            {{input class='form-control' value=title required=true}}
                         </label>
                         <label>
                             DOI:
-                            {{input class="form-control" value=doi}}
+                            {{input class='form-control' value=doi}}
                         </label>
                         <label>
                             Tags:
-                            {{input class="form-control" value=tags}}
+                            {{input class='form-control' value=tags}}
                         </label>
                     </div>
                     <div class="col-md-6">
                         <label>
                             <span class="required">Abstract:</span>
-                            {{textarea class="form-control" value=abstract required=true}}
+                            {{textarea class='form-control' value=abstract required=true}}
                         </label>
                     </div>
                 {{/preprint-form-body}}

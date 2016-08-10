@@ -9,7 +9,7 @@ export default Ember.Component.extend({
     }),
     getFiles: Ember.observer('selectedNode', function() {
         this.get('selectedNode').get('files').then(files =>
-            this.set('osfFiles', files.find(fileProvider => fileProvider.get('name') === 'osfstorage'))
+            this.set('osfFiles', files.findBy('name', 'osfstorage'))
         );
     }),
     osfFiles: null
