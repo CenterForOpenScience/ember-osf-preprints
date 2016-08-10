@@ -103,9 +103,8 @@ export default Ember.Controller.extend(NodeActionsMixin, {
          * @return {Record} Returns specified page of user records matching full_name query
          */
         findContributors(query, page) {
-            var _this = this;
-            return _this.store.query('user', { filter: { full_name: query }, page: page }).then(function(contributors) {
-                _this.set('searchResults', contributors);
+            return this.store.query('user', { filter: { full_name: query }, page: page }).then((contributors) => {
+                this.set('searchResults', contributors);
                 return contributors;
             });
         },
