@@ -7,26 +7,25 @@ export default Ember.Component.extend({
     numShowing: 6,
     selectedFile: {},
 
-    fullList: Ember.computed('files', 'files.[]', 'primaryFile', function() {
+    files: Ember.computed('fileList', 'fileList.[]', 'primaryFile', function() {
         //Returns the list with primaryFile moved to the front
-        let files = this.get('files');
+        let files = this.get('fileList');
 
-        if (files) {
+        if (files.length > 1) {
             const primaryFile = this.get('primaryFile');
             files = files.without(primaryFile).toArray();
             files.unshift(primaryFile);
+            return files;
         }
-        return files;
     }),
-    supplementList: Ember.computed('fullList', 'fullList.[]', 'startValue', 'numShowing', function() {
-        if (this.get('fullList')) {
-            return this.get('fullList').slice(this.get('startValue'), this.get('startValue') + this.get('numShowing'));
+    supplementList: Ember.computed('files', 'files.[]', 'startValue', 'numShowing', function() {
+        if (this.get('files')) {
+            return this.get('fileList').slice(this.get('startValue'), this.get('startValue') + this.get('numShowing'));
         }
     }),
     init: function() {
         this._super(...arguments);
         this.set('selectedFile', this.get('primaryFile'));
-        //alert(this.get('files'));
     },
     actions: {
         moveLeft() {
