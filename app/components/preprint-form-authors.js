@@ -1,7 +1,9 @@
 import Ember from 'ember';
 import permissions from 'ember-osf/const/permissions';
+import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
+import PreprintFormFieldMixin from '../mixins/preprint-form-field';
 
-export default Ember.Component.extend({
+export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     READ: permissions.READ,
     WRITE: permissions.WRITE,
     ADMIN: permissions.ADMIN,
