@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import permissions from 'ember-osf/const/permissions';
 
-
 /**
  * conditionsForContribRemoval helper - used to determine if the removing a particular
  * contributor will still satisfy two conditions 1) @ least one registered admin 2) @ least one
