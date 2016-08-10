@@ -92,27 +92,18 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         // permissions may change which additional update/remove requests are permitted.
         updatePermissions(contributor, permission) {
             let permissionChanges = { [contributor.id]: permission.toLowerCase() };
-            this.sendAction(
-                'editContributors',
-                this.get('contributors'),
-                permissionChanges,
-                {}
-            );
-            this.redrawTemplate();
-            this.removedSelfAsAdmin(contributor, permission);
-
+            this.attrs.editContributors(this.get('contributors'), permissionChanges, {}).then(() => {
+                this.redrawTemplate();
+                this.removedSelfAsAdmin(contributor, permission);
+            });
         },
         // Updates contributor then redraws contributor list view - updating contributor
         // bibliographic info may change which additional update/remove requests are permitted.
         updateBibliographic(contributor, isBibliographic) {
             let bibliographicChanges = { [contributor.id]: isBibliographic };
-            this.sendAction(
-                'editContributors',
-                this.get('contributors'),
-                {},
-                bibliographicChanges
-            );
-            this.redrawTemplate();
+            this.attrs.editContributors(this.get('contributors'), {}, bibliographicChanges).then(() => {
+                this.redrawTemplate();
+            });
         },
         // There are 3 view states on left side of Authors panel.  This switches to add unregistered contrib view.
         unregisteredView() {
