@@ -34,8 +34,8 @@ export default Ember.Component.extend(Validations, {
     username: null,
     isFormValid: Ember.computed.alias('validations.isValid'),
     actions: {
-        searchView() {
-            this.sendAction('searchView');
+        emptyView() {
+            this.sendAction('emptyView');
         },
         addUnregisteredContributor(fullName, email) {
             this.sendAction('addUnregisteredContributor', fullName, email);

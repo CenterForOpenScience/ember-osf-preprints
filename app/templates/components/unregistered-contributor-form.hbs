@@ -9,7 +9,7 @@
     </div>
     <p class="text-muted"> We will notify the user that they have been added to your preprint. </p>
     <div class="pull-right unregistered-submit">
-        <button {{action "searchView"}} class="btn btn-default btn-small"> Cancel </button>
+        <button {{action "emptyView"}} class="btn btn-default btn-small"> Cancel </button>
         {{#if isFormValid}}
             <button {{action 'addUnregisteredContributor' fullName email}} class="btn btn-success btn-small"> Add </button>
         {{else}}

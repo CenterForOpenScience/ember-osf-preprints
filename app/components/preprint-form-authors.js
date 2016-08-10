@@ -122,6 +122,11 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
             this.set('addState', 'searchView');
             this.set('fullName', '');
             this.set('email', '');
+        },
+        emptyView() {
+            this.set('addState', 'emptyView');
+            this.set('searchQuery', '');
+            Ember.$('.searchQuery')[0].value = '';
         }
     },
     // Temporary popover content for authors page. Will need to find alternative to jquery selectors.
