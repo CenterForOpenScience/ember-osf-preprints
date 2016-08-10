@@ -67,10 +67,12 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         // Requests a particular page of user results
         findContributors(page) {
             var query = this.get('query');
-            var _this = this;
             if (query) {
-                _this.sendAction('findContributors', query, page);
-                this.set('addState', 'searchView');
+                this.attrs.findContributors(query, page).then(() => {
+                    this.set('addState', 'searchView');
+                }, function(reason){
+                    console.log(reason.errors[0].detail)
+                })
             }
         },
         // Removes contributor then redraws contributor list view - removal of contributor may change
