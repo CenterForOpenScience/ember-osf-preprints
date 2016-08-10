@@ -1,6 +1,7 @@
 import DS from 'ember-data';
+import Validations from '../validators/preprint-form-validator';
 
-export default DS.Model.extend({
+export default DS.Model.extend(Validations, {
     title: DS.attr('string'),
     authors: DS.attr(),
     date: DS.attr(),

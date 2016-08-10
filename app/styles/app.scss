@@ -748,3 +748,18 @@ hr {
     background-size: cover;
     background-image: url("img/logo_ua.png");
 }
+
+.validated-input .input-error {
+    font-size:12px;
+}
+.validated-input .input-error .error {
+    color: #ff411f;
+}
+
+.validated-input .valid-input {
+    position: absolute;
+    right: 15px;
+    top: 11px;
+    font-size: 12px;
+    color: #646262;
+}

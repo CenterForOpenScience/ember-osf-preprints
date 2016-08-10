@@ -1,11 +1,11 @@
 <div class="col-md-6">
     <label>
         <span class="required">Title:</span>
-        {{input class="form-control" value=title required=true}}
+        {{validated-input model=this valuePath='title' placeholder="Title" value=title}}
     </label>
     <label>
         DOI:
-        {{input class="form-control" value=doi}}
+        {{validated-input model=this valuePath='doi' placeholder="DOI" value=doi}}
     </label>
     <label>
         Tags:
@@ -15,6 +15,6 @@
 <div class="col-md-6">
     <label>
         <span class="required">Abstract:</span>
-        {{textarea class="form-control" value=abstract required=true}}
+        {{validated-input model=this valuePath='abstract' placeholder="" value=abstract large=true}}
     </label>
 </div>
