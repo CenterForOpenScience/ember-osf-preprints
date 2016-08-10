@@ -1,4 +1,6 @@
 import Ember from 'ember';
+import permissions from 'ember-osf/const/permissions';
+
 
 /**
  * conditionsForContribRemoval helper - used to determine if the removing a particular
@@ -14,7 +16,7 @@ export function conditionsForContribRemoval(params/*, hash*/) {
         var minBibliographic = false;
         contributors.forEach(function(contributor) {
             if (contributor.id !== contributorToRemove.id) {
-                if (contributor.get('permission') === 'admin' && contributor.get('unregisteredContributor') === null) {
+                if (contributor.get('permission') === permissions.ADMIN && contributor.get('unregisteredContributor') === null) {
                     minRegisteredAdmins = true;
                 }
                 if (contributor.get('bibliographic')) {
