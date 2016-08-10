@@ -11,7 +11,7 @@ export default Ember.Component.extend({
         //Returns the list with primaryFile moved to the front
         let files = this.get('fileList');
 
-        if (files.length > 1) {
+        if (files && files.length > 1) {
             const primaryFile = this.get('primaryFile');
             files = files.without(primaryFile).toArray();
             files.unshift(primaryFile);

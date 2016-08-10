@@ -13,6 +13,6 @@ test('it renders', function(assert) {
 
   assert.equal(this.$().text().trim(), '');
 
-  this.on('changeFile', function() {});
+//  this.on('changeFile', function() {});
 
 });
