@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import NodeActionsMixin from 'ember-osf/mixins/node-actions';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(NodeActionsMixin, {
     toast: Ember.inject.service(),
     _url: null,
     openModal: false,
@@ -11,6 +12,13 @@ export default Ember.Controller.extend({
         uploadMultiple: false,
         method: 'PUT'
     },
+    canEdit: Ember.computed('isAdmin', 'isRegistration', function() {
+        return this.get('isAdmin') && !(this.get('model').get('registration'));
+    }),
+    isAdmin: Ember.computed(function() {
+        return this.get('model').get('currentUserPermissions').indexOf('admin') >= 0;
+    }),
+    searchResults: [],
     actions: {
         preUpload(comp, drop, file) {
             this.set('latestFileName', file.name);
@@ -82,6 +90,45 @@ export default Ember.Controller.extend({
                 this.get('toast').error('Could not create preprint project!');
             });
             //TODO: eventually make a call to set an OSF file as a preprint (will probably need a flag for such)
+        },
+        /**
+         * findContributors method.  Queries APIv2 users endpoint on full_name.  Fetches specified page of results.
+         * TODO will eventually need to be changed to multifield query.
+         *
+         * @method findContributors
+         * @param {String} query ID of user that will be a contributor on the node
+         * @param {Integer} page Page number of results requested
+         * @return {Record} Returns specified page of user records matching full_name query
+         */
+        findContributors(query, page) {
+            var _this = this;
+            _this.store.query('user', { filter: { full_name: query }, page: page }).then(function(contributors) {
+                _this.set('searchResults', contributors);
+                return contributors;
+            });
+        },
+        /**
+         * Overrides addContributor method on NodeActionsMixin for manual management of contributors list.
+         *
+         * @method addContributor
+         * @param {String} userId ID of user that will be a contributor on the node
+         * @param {String} permission User permission level. One of "read", "write", or "admin". Default: "write".
+         * @param {Boolean} isBibliographic Whether user will be included in citations for the node. "default: true"
+         * @return {Promise} Returns a promise that resolves to the updated node
+         * with the new contributor relationship.
+         */
+        addContributor(userId, permission, isBibliographic) {
+            var node = this.get('_node');
+            var contributor = this.store.createRecord('contributor', {
+                id: `${node.get('id')}-${userId}`,
+                permission: permission,
+                bibliographic: isBibliographic
+            });
+            // For now, fetching contributors with loadAll method.  This requires some manual management of the contributors list.
+            node.get('contributors').pushObject(contributor);
+            this.get('contributors').pushObject(contributor);
+            return node.save();
+
         }
     }
 });
