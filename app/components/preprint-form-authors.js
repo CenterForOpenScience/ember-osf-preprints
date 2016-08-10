@@ -44,8 +44,12 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
-            this.sendAction('addContributor', user.id, 'write', true);
+            // this.sendAction('addContributor', user.id, 'write', true);
+            this.attrs.addContributor(user.id, 'write', true).then(res => {
                 this.redrawTemplate();
+            }, function(reason) {
+                console.log(reason);
+            });
         },
         // Adds unregistered contributor, then clears form and switches back to search view.
         // Should wait to transition until request has completed.
