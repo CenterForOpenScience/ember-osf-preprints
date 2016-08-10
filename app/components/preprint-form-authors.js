@@ -40,8 +40,8 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     newSearchResults: Ember.computed('searchResults.[]', 'contributors.[]', 'addState', function() {
         let searchResults = this.get('searchResults');
         let contributors = this.get('contributors');
-        let userIds = contributors.map((contrib) => contrib.id.split('-')[1]);
-        return searchResults.filter((result) => !Ember.A(userIds).contains(result.id));
+        let userIds = contributors.map((contrib) => contrib.get('userId'));
+        return searchResults.filter((result) => !userIds.contains(result.id));
     }),
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
@@ -171,7 +171,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     * on the page.
     */
     removedSelfAsAdmin(contributor, permission) {
-        if (this.get('currentUser').id === contributor.id.split('-')[1] && permission !== 'ADMIN') {
+        if (this.get('currentUser').id === contributor.get('userId') && permission !== 'ADMIN') {
             this.set('stillAdmin', false);
         }
     }

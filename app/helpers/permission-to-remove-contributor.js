@@ -12,7 +12,7 @@ export function permissionToRemoveContributor(params/*, hash*/) {
     var node = params[3];
     if (currentUser) {
         var currentUserId = currentUser.get('currentUserId') || currentUser.get('id');
-        var removeSelf = contributor.id.split('-')[1] === currentUserId;
+        var removeSelf = contributor.get('userId') === currentUserId;
         var isRegistration = node.get('registration');
         return ((removeSelf || stillAdmin) && !isRegistration);
     } else {
