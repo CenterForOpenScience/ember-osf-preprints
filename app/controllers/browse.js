@@ -18,9 +18,9 @@ export default Ember.Controller.extend({
         let params = {};
         if (query) {
             // TODO: determine if fuzziness is necessary and how it should be applied if so
-//            let fuzzyDelim = '~AUTO ';
-//            let q = query.split(/ +/).filter(s => s !== "").map(s => s + fuzzyDelim).join(' ');
-            params['q'] = query;
+            // let fuzzyDelim = '~AUTO ';
+            //  let q = query.split(/ +/).filter(s => s !== "").map(s => s + fuzzyDelim).join(' ');
+            params.q = query;
         }
         if (subjects) {
             // Set subjects to be just the subject clicked (guaranteed to be the first listed), not all that are searched
@@ -28,7 +28,7 @@ export default Ember.Controller.extend({
             // Array of subjects sent from taxonomy-tree is given as comma-separate string
             let subjectQuery = `data.subject:(${subjects.split(',').map(s => `"${s}"`).join(' OR ')})`;
             subjectQuery = query ? `${query} AND ${subjectQuery}` : subjectQuery; // add AND if necessary
-            params['q'] = subjectQuery;
+            params.q = subjectQuery;
         }
         // If neither query nor subject exists, just return the default model
         if (!Object.keys(params).length) {

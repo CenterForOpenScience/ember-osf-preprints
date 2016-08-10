@@ -2,7 +2,7 @@ import { Factory } from 'ember-cli-mirage';
 
 export default Factory.extend({
     preprintid(i) {
-        return `preprint${i}`
+        return `preprint${i}`;
     },
     title: '',
     date: '',

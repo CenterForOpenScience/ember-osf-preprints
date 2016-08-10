@@ -1,5 +1,4 @@
-import DS from 'ember-data';
+import OsfAdapter from 'ember-osf/adapters/osf-adapter';
 
-export default DS.JSONAPIAdapter.extend({
-    namespace: 'preprints'
+export default OsfAdapter.extend({
 });
