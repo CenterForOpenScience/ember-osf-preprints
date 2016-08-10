@@ -2,13 +2,16 @@
     <div class="panel-heading">
         <div class="row">
             <div class="col-sm-12">
-                <span class="pull-right">{{moment-format result.date_updated "MMMM YYYY"}}</span>
+                {{#if result.date_updated}} {{! moment-format will use current time if null}}
+                    <span class="pull-right">{{moment-format result.date_updated "MMMM YYYY"}}</span>
+                {{/if}}
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
                 <h4>
+                    {{! TODO: link to view page for preprint }}
                     {{#link-to "index"}}
                         {{result.title}}
                     {{/link-to}}
@@ -22,6 +25,7 @@
                     {{#if index}}
                         |
                     {{/if}}
+                    {{! TODO: link to contributor's page }}
                     {{#link-to "index"}}
                         {{contributor.familyName}}, {{contributor.givenName}}
                     {{/link-to}}
@@ -30,10 +34,10 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-10">
-                {{! subjects }}
+            <div class="col-sm-8">
+                {{! TODO: add subjects }}
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-4">
                 {{result.sources}}
             </div>
         </div>
@@ -45,7 +49,9 @@
 
             <div class="row">
                 <div class="col-sm-12">
-                    {{tags-widget tags=result.tags}}
+                    {{#each result.tags as |tag|}}
+                        <span class="badge">{{tag}}</span>
+                    {{/each}}
                 </div>
             </div>
             <div class="row">
