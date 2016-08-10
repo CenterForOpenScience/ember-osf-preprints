@@ -47,6 +47,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
             // this.sendAction('addContributor', user.id, 'write', true);
             this.attrs.addContributor(user.id, 'write', true).then(res => {
                 this.redrawTemplate();
+                this.get('contributors').pushObject(res);
             }, function(reason) {
                 console.log(reason);
             });
@@ -126,7 +127,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
             this.set('contributors', itemModels);
         }
     },
-    // TODO find alternative to jquery selectors. Temporary popover content for authors page. 
+    // TODO find alternative to jquery selectors. Temporary popover content for authors page.
     didInsertElement: function() {
         this.$('#permissions-popover').popover({
             content: '<dl>' +

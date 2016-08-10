@@ -2,7 +2,6 @@ import Ember from 'ember';
 import NodeActionsMixin from 'ember-osf/mixins/node-actions';
 import permissions from 'ember-osf/const/permissions';
 
-
 export default Ember.Controller.extend(NodeActionsMixin, {
     toast: Ember.inject.service(),
     _url: null,
@@ -127,8 +126,9 @@ export default Ember.Controller.extend(NodeActionsMixin, {
             });
             // For now, fetching contributors with loadAll method.  This requires some manual management of the contributors list.
             node.get('contributors').pushObject(contributor);
-            this.get('contributors').pushObject(contributor);
-            return node.save();
+            return node.save().then(() => {
+                return contributor;
+            });
 
         }
     }
