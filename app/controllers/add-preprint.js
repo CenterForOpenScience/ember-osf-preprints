@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import NodeActionsMixin from 'ember-osf/mixins/node-actions';
+import permissions from 'ember-osf/const/permissions';
+
 
 export default Ember.Controller.extend(NodeActionsMixin, {
     toast: Ember.inject.service(),
@@ -16,7 +18,7 @@ export default Ember.Controller.extend(NodeActionsMixin, {
         return this.get('isAdmin') && !(this.get('model').get('registration'));
     }),
     isAdmin: Ember.computed(function() {
-        return this.get('model').get('currentUserPermissions').indexOf('admin') >= 0;
+        return this.get('model.currentUserPermissions').indexOf(permissions.ADMIN) >= 0;
     }),
     searchResults: [],
     actions: {
