@@ -9,16 +9,10 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{validated-input}}`);
+  this.set('model', this);
+  this.set('valuePath', 'fullName');
+  this.set('placeholder', 'Full Name');
+  this.render(hbs`{{validated-input placeholder=placeholder}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#validated-input}}
-      template block text
-    {{/validated-input}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.ok(this.$('div').length);
 });

@@ -6,8 +6,6 @@ moduleForComponent('preprint-form-authors', 'Integration | Component | preprint 
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
   this.on('verify', function() {});
 
   this.render(hbs`{{preprint-form-authors verify=(action 'verify')}}`);

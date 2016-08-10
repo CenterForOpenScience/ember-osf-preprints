@@ -15,7 +15,7 @@ export default CpPanelsComponent.extend({
             this.sendAction('addContributor', userId, 'write', true);
         },
         addUnregisteredContributor(fullName, email) {
-            let res = this.attrs.addUnregisteredContributor(fullName, email, 'write', true);
+            this.attrs.addUnregisteredContributor(fullName, email, 'write', true);
         },
         findContributors(query, page) {
             this.sendAction('findContributors', query, page);
@@ -24,7 +24,7 @@ export default CpPanelsComponent.extend({
         removeContributor(contrib) {
             this.sendAction('removeContributor', contrib);
         },
-        updatePermissions(contributor, permission) {
+        updatePermissions() {
             this.sendAction(
                 'editContributors',
                 this.get('contributors'),
@@ -32,7 +32,7 @@ export default CpPanelsComponent.extend({
                 {}
             );
         },
-        updateBibliographic(contributor, isBibliographic) {
+        updateBibliographic() {
             this.sendAction(
                 'editContributors',
                 this.get('contributors'),
