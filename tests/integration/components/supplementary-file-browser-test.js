@@ -13,12 +13,6 @@ test('it renders', function(assert) {
 
   assert.equal(this.$().text().trim(), '');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#supplementary-file-browser}}
-      template block text
-    {{/supplementary-file-browser}}
-  `);
+  this.on('changeFile', function() {});
 
-  assert.equal(this.$().text().trim(), 'template block text');
 });
