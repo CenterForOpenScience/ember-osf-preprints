@@ -22,15 +22,19 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     totalSearchResults: Ember.computed('searchResults.[]', function() {
         let searchResults = this.get('searchResults');
         if (searchResults && searchResults.links) {
-            return Math.ceil(searchResults.links.meta.total);
+            return searchResults.meta.pagination.total;
         } else {
             return;
         }
     }),
     // Total pages of contributor search results
-    pages: Ember.computed('totalSearchResults', function() {
-        let totalSearchResults = this.get('totalSearchResults');
-        return Math.ceil(totalSearchResults / 10);
+    pages: Ember.computed('searchResults.[]', function() {
+        let searchResults = this.get('searchResults');
+        if (searchResults && searchResults.links) {
+            return searchResults.meta.total;
+        } else {
+            return;
+        }
     }),
     // Search results excluding users that are already contributors
     newSearchResults: Ember.computed('searchResults.[]', 'contributors.[]', 'addState', function() {
