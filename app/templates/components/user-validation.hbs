@@ -1,0 +1,19 @@
+<form>
+    <div>
+        <label>Full Name</label>
+        {{validated-input model=this valuePath='fullName' placeholder='Full Name' value=fullName}}
+    </div>
+    <div>
+        <label>Email</label>
+        {{validated-input model=this valuePath='username' placeholder='Email' value=email}}
+    </div>
+    <p class="text-muted"> We will notifiy the user that they have been added to your preprint. </p>
+    <div class="pull-right unregistered-submit">
+        <button {{action "searchView"}} class="btn btn-default btn-small"> Cancel </button>
+        {{#if isFormValid}}
+            <button {{action 'addUnregisteredContributor' fullName email}} class="btn btn-success btn-small"> Add </button>
+        {{else}}
+            <button class="btn btn-success btn-small disabled"> Add </button>
+        {{/if}}
+    </div>
+</form>
