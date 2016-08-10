@@ -47,18 +47,14 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
             this.sendAction('addContributor', user.id, 'write', true);
-            this.toggleProperty('permissionToggle');
-            this.toggleProperty('bibliographicToggle');
-            this.toggleProperty('removalToggle');
+                this.redrawTemplate()
         },
         // Adds unregistered contributor, then clears form and switches back to search view.
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
             let res = this.attrs.addUnregisteredContributor(fullName, email, 'write', true);
             res.then(() => {
-                this.toggleProperty('bibliographicToggle');
-                this.toggleProperty('permissionToggle');
-                this.toggleProperty('removalToggle');
+                this.redrawTemplate()
                 this.set('addState', 'searchView');
                 this.set('fullName', '');
                 this.set('email', '');
@@ -85,9 +81,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         // which additional update/remove requests are permitted.
         removeContributor(contrib) {
             this.sendAction('removeContributor', contrib);
-            this.toggleProperty('removalToggle');
-            this.toggleProperty('permissionToggle');
-            this.toggleProperty('bibliographicToggle');
+            this.redrawTemplate()
             this.removedSelfAsAdmin(contrib, contrib.get('permission'));
             this.get('contributors').removeObject(contrib);
         },
@@ -102,8 +96,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                 {}
             );
             this.set('permissionChanges', {});
-            this.toggleProperty('permissionToggle');
-            this.toggleProperty('removalToggle');
+            this.redrawTemplate()
             this.removedSelfAsAdmin(contributor, permission);
 
         },
@@ -118,8 +111,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                 this.get('bibliographicChanges')
             );
             this.set('bibliographicChanges', {});
-            this.toggleProperty('bibliographicToggle');
-            this.toggleProperty('removalToggle');
+            this.redrawTemplate()
         },
         // There are 3 view states on left side of Authors panel.  This switches to add unregistered contrib view.
         unregisteredView() {
@@ -176,5 +168,10 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         if (this.get('currentUser').id === contributor.get('userId') && permission !== 'ADMIN') {
             this.set('stillAdmin', false);
         }
+    },
+    redrawTemplate() {
+        this.toggleProperty('removalToggle');
+        this.toggleProperty('permissionToggle');
+        this.toggleProperty('bibliographicToggle');
     }
 });
