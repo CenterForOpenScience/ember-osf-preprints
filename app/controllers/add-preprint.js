@@ -102,7 +102,7 @@ export default Ember.Controller.extend(NodeActionsMixin, {
          */
         findContributors(query, page) {
             var _this = this;
-            _this.store.query('user', { filter: { full_name: query }, page: page }).then(function(contributors) {
+            return _this.store.query('user', { filter: { full_name: query }, page: page }).then(function(contributors) {
                 _this.set('searchResults', contributors);
                 return contributors;
             });

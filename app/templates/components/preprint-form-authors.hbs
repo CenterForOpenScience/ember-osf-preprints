@@ -40,7 +40,7 @@
                             No results found.
                         {{/if}}
                         {{#if (gt pages 1)}}
-                            {{osf-paginator totalSearchResults=totalSearchResults maxPages=5 fetchResults=findContributors query=query}}
+                            {{osf-paginator totalSearchResults=totalSearchResults fetchResults=(action findContributors) query=query}}
                         {{/if}}
                     {{/if}}
                     {{#if (eq addState 'unregisteredView')}}
