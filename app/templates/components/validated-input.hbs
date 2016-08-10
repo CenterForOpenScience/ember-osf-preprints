@@ -1,0 +1,19 @@
+<div class="form-group">
+    {{#if large}}
+        {{textarea type=type value=value placeholder=placeholder class="form-control" name=valuePath}}
+    {{else}}
+    {{input type=type value=value placeholder=placeholder class="form-control" name=valuePath}}
+    {{/if}}
+
+    {{#if isValid}}
+        <span class="valid-input fa fa-check"></span>
+    {{/if}}
+
+    <div class="input-error">
+        {{#if isInvalid}}
+            <div class="error">
+                {{v-get model valuePath 'message'}}
+            </div>
+        {{/if}}
+    </div>
+</div>
