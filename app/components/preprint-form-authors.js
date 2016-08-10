@@ -47,14 +47,14 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
             this.sendAction('addContributor', user.id, 'write', true);
-                this.redrawTemplate()
+                this.redrawTemplate();
         },
         // Adds unregistered contributor, then clears form and switches back to search view.
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
             let res = this.attrs.addUnregisteredContributor(fullName, email, 'write', true);
             res.then(() => {
-                this.redrawTemplate()
+                this.redrawTemplate();
                 this.set('addState', 'searchView');
                 this.set('fullName', '');
                 this.set('email', '');
@@ -80,10 +80,11 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         // Removes contributor then redraws contributor list view - removal of contributor may change
         // which additional update/remove requests are permitted.
         removeContributor(contrib) {
-            this.sendAction('removeContributor', contrib);
-            this.redrawTemplate()
-            this.removedSelfAsAdmin(contrib, contrib.get('permission'));
-            this.get('contributors').removeObject(contrib);
+            this.attrs.removeContributor(contrib).then(() => {
+                this.redrawTemplate();
+                this.removedSelfAsAdmin(contrib, contrib.get('permission'));
+                this.get('contributors').removeObject(contrib);
+            })
         },
         // Updates contributor then redraws contributor list view - updating contributor
         // permissions may change which additional update/remove requests are permitted.
@@ -96,7 +97,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                 {}
             );
             this.set('permissionChanges', {});
-            this.redrawTemplate()
+            this.redrawTemplate();
             this.removedSelfAsAdmin(contributor, permission);
 
         },
@@ -111,7 +112,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                 this.get('bibliographicChanges')
             );
             this.set('bibliographicChanges', {});
-            this.redrawTemplate()
+            this.redrawTemplate();
         },
         // There are 3 view states on left side of Authors panel.  This switches to add unregistered contrib view.
         unregisteredView() {
