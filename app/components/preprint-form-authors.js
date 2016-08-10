@@ -123,10 +123,15 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
             this.set('fullName', '');
             this.set('email', '');
         },
+        // There are 3 view states on left side of Authors panel.  This switches to empty view and clears search results.
         emptyView() {
             this.set('addState', 'emptyView');
             this.set('searchQuery', '');
             Ember.$('.searchQuery')[0].value = '';
+        },
+        // TODO Add server request when API functionality in place.
+        reorderItems(itemModels, draggedModel) {
+            this.set('contributors', itemModels);
         }
     },
     // Temporary popover content for authors page. Will need to find alternative to jquery selectors.

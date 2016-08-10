@@ -100,42 +100,52 @@
                     </th>
                     <th> </th>
                 </tr>
-                {{#each contributors as |contrib|}}
-                    <tr class="contributor-row">
-                        <td> <span class="fa fa-bars sortable-bars"></span> </td>
-                        <td>
-                            <img class="m-l-xs" src={{contrib.users.links.profile_image}} height=40 width=40>
-                            {{#if contrib.unregisteredContributor}}
-                                {{contrib.unregisteredContributor}}
-                            {{else}}
-                                <a href={{contrib.users.links.html}}> {{contrib.users.fullName}} </a>
-                            {{/if}}
-                        </td>
-                        <td class="vert-align">
-                            <div class="form-group">
-                                {{#if (and stillAdmin (and canEdit (minAdmins contrib contributors permissionToggle)))}}
-                                    <select class="form-control" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
-                                        <option value=READ selected={{eq contrib.permission 'read'}}> Read </option>
-                                        <option value=WRITE selected={{eq contrib.permission 'write'}}> Read + Write </option>
-                                        <option value=ADMIN selected={{eq contrib.permission 'admin'}}> Administrator </option>
-                                    </select>
+                {{#sortable-group tagName="tbody" onChange="reorderItems" as |group|}}
+                    {{#each contributors as |contrib|}}
+                        {{#sortable-item tagName="tr" model=contrib class="contributor-row" group=group spacing=1 handle=".handle"}}
+                            <td class="vert-align">
+                                <div class="form-group">
+                                    <span class="fa fa-bars sortable-bars handle"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <img class="m-l-xs" src={{contrib.users.links.profile_image}} height=40 width=40>
+                                {{#if contrib.unregisteredContributor}}
+                                    {{contrib.unregisteredContributor}}
                                 {{else}}
-                                    <span> {{permissionMap contrib.permission}} </span>
+                                    <a href={{contrib.users.links.html}}> {{contrib.users.fullName}} </a>
                                 {{/if}}
-                            </div>
-                        </td>
-                        <td class="bib-padding">
-                            <input disabled={{if (and stillAdmin (and canEdit (minBibliographic contrib contributors bibliographicToggle))) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
-                        </td>
-                        <td>
-                            {{#if (and (permissionToRemoveContributor contrib currentUser stillAdmin node) (conditionsForContribRemoval contrib contributors removalToggle))}}
-                                <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm"> Remove </button>
-                            {{else}}
-                                <button class="btn btn-danger btn-sm disabled"> Remove </button>
-                            {{/if}}
-                        </td>
-                    </tr>
-                {{/each}}
+                            </td>
+                            <td class="vert-align">
+                                <div class="form-group">
+                                    {{#if (and stillAdmin (and canEdit (minAdmins contrib contributors permissionToggle)))}}
+                                        <select class="form-control" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
+                                            <option value=READ selected={{eq contrib.permission 'read'}}> Read </option>
+                                            <option value=WRITE selected={{eq contrib.permission 'write'}}> Read + Write </option>
+                                            <option value=ADMIN selected={{eq contrib.permission 'admin'}}> Administrator </option>
+                                        </select>
+                                    {{else}}
+                                        <span> {{permissionMap contrib.permission}} </span>
+                                    {{/if}}
+                                </div>
+                            </td>
+                            <td class="bib-padding vert-align">
+                                <div class="form-group">
+                                    <input disabled={{if (and stillAdmin (and canEdit (minBibliographic contrib contributors bibliographicToggle))) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
+                                </div>
+                            </td>
+                            <td class="vert-align">
+                                <div class="form-group">
+                                    {{#if (and (permissionToRemoveContributor contrib currentUser stillAdmin node) (conditionsForContribRemoval contrib contributors removalToggle))}}
+                                        <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm"> Remove </button>
+                                    {{else}}
+                                        <button class="btn btn-danger btn-sm disabled"> Remove </button>
+                                    {{/if}}
+                                </div>
+                            </td>
+                        {{/sortable-item}}
+                    {{/each}}
+                {{/sortable-group}}
             </table>
         </div>
     </div>
