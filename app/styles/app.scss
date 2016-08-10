@@ -48,13 +48,24 @@ background-image: url("img/paper.png");
 .background-logo{
     background-image: url("img/cos_center.png");
     background-repeat: repeat;
-    background-size:500px;
+    background-size:450px;
     background-position: -150px -100px;
-
+    padding-top:30px;
+    padding-bottom:30px;
 }
 
 .list{
 background-color:#fff;
+}
+
+.topic{
+    background-color:#9ad6e8;
+    color:black;
+    width:100%;
+    line-height: 40px;
+    hieght:40px;
+    margin-top:10px;
+    text-align:vertical;
 }
 
 .list-group-item{
@@ -333,6 +344,7 @@ h5 {
 
 .subjects-box{
     background-color:#f3f5f5;
+    padding-bottom:30px;
 }
 
 td:hover {
