@@ -7,8 +7,6 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     READ: permissions.READ,
     WRITE: permissions.WRITE,
     ADMIN: permissions.ADMIN,
-    permissionChanges: {},
-    bibliographicChanges: {},
     valid: Ember.computed.alias('newContributorId'),
     permissionToggle: false,
     bibliographicToggle: false,
@@ -58,8 +56,8 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                 this.set('addState', 'searchView');
                 this.set('fullName', '');
                 this.set('email', '');
-            }, function(reason){
-                console.log(reason.errors[0].detail)
+            }, function(reason) {
+                console.log(reason.errors[0].detail);
             });
 
         },
@@ -72,9 +70,9 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
             if (query) {
                 this.attrs.findContributors(query, page).then(() => {
                     this.set('addState', 'searchView');
-                }, function(reason){
-                    console.log(reason.errors[0].detail)
-                })
+                }, function(reason) {
+                    console.log(reason.errors[0].detail);
+                });
             }
         },
         // Removes contributor then redraws contributor list view - removal of contributor may change
@@ -84,19 +82,18 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                 this.redrawTemplate();
                 this.removedSelfAsAdmin(contrib, contrib.get('permission'));
                 this.get('contributors').removeObject(contrib);
-            })
+            });
         },
         // Updates contributor then redraws contributor list view - updating contributor
         // permissions may change which additional update/remove requests are permitted.
         updatePermissions(contributor, permission) {
-            this.set(`permissionChanges.${contributor.id}`, permission.toLowerCase());
+            let permissionChanges = { [contributor.id]: permission.toLowerCase() };
             this.sendAction(
                 'editContributors',
                 this.get('contributors'),
-                this.get('permissionChanges'),
+                permissionChanges,
                 {}
             );
-            this.set('permissionChanges', {});
             this.redrawTemplate();
             this.removedSelfAsAdmin(contributor, permission);
 
@@ -104,14 +101,13 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         // Updates contributor then redraws contributor list view - updating contributor
         // bibliographic info may change which additional update/remove requests are permitted.
         updateBibliographic(contributor, isBibliographic) {
-            this.set(`bibliographicChanges.${contributor.id}`, isBibliographic);
+            let bibliographicChanges = { [contributor.id]: isBibliographic };
             this.sendAction(
                 'editContributors',
                 this.get('contributors'),
                 {},
-                this.get('bibliographicChanges')
+                bibliographicChanges
             );
-            this.set('bibliographicChanges', {});
             this.redrawTemplate();
         },
         // There are 3 view states on left side of Authors panel.  This switches to add unregistered contrib view.
