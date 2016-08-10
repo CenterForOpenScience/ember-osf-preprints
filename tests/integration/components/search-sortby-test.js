@@ -9,9 +9,13 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{search-sortby}}`);
+  this.set('options', ['Relevance']);
 
-  assert.equal(this.$().text().trim(), '');
+  this.render(hbs`{{search-sortby options=options}}`);
+
+  let toTest = this.$().text().trim();
+
+  assert.equal(toTest.substring(0, toTest.indexOf('\n')), 'Sort by: Relevance');
 
   // No need to test for template block usage
 });

@@ -9,16 +9,9 @@ test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{search-header}}`);
+  this.set('title', 'Preprints');
 
-  assert.equal(this.$().text().trim(), '');
+  this.render(hbs`{{search-header title='Preprints' subtitle=''}}`);
 
-  // Template block usage:
-  this.render(hbs`
-    {{#search-header}}
-      template block text
-    {{/search-header}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$().text().trim(), 'Preprints');
 });

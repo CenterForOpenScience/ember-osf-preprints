@@ -12,6 +12,7 @@ export default Ember.Controller.extend({
     size: 10,
     numberOfResults: 0,
     searchString: '',
+    queryBody: {},
 
     showActiveFilters: Ember.computed.notEmpty('activeFilters'),
     showPrev: Ember.computed.gt('page', 1),
@@ -26,7 +27,7 @@ export default Ember.Controller.extend({
     init() {
         this._super(...arguments);
         this.set('facetFilters', Ember.Object.create());
-        this.loadPage();
+        this.loadPage.call(this);
     },
 
     loadPage() {
@@ -39,6 +40,9 @@ export default Ember.Controller.extend({
             contentType: 'application/json',
             data: queryBody
         }).then((json) => {
+            if (this.isDestroyed || this.isDestroying) {
+                return;
+            }
             this.set('numberOfResults', json.hits.total);
             let results = json.hits.hits.map((hit) => {
                 // HACK
