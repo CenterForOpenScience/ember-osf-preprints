@@ -9,10 +9,11 @@ export default Ember.Component.extend({
 
     fullList: Ember.computed('files', 'files.[]', 'primaryFile', function() {
         //Returns the list with primaryFile moved to the front
-        const files = this.get('files');
+        let files = this.get('files');
+
         if (files) {
             const primaryFile = this.get('primaryFile');
-            files.splice(files.indexOf(primaryFile, 1));
+            files = files.without(primaryFile).toArray();
             files.unshift(primaryFile);
         }
         return files;
@@ -25,6 +26,7 @@ export default Ember.Component.extend({
     init: function() {
         this._super(...arguments);
         this.set('selectedFile', this.get('primaryFile'));
+        //alert(this.get('files'));
     },
     actions: {
         moveLeft() {
