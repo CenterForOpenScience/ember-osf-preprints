@@ -10,38 +10,6 @@ export default CpPanelsComponent.extend({
     actions: {
         verify(name, state) {
             this.get('valid').set(name, state);
-        },
-        addContributor(userId) {
-            this.sendAction('addContributor', userId, 'write', true);
-        },
-        addUnregisteredContributor(fullName, email) {
-            this.attrs.addUnregisteredContributor(fullName, email, 'write', true);
-        },
-        findContributors(query, page) {
-            this.sendAction('findContributors', query, page);
-
-        },
-        removeContributor(contrib) {
-            this.sendAction('removeContributor', contrib);
-        },
-        updatePermissions() {
-            this.sendAction(
-                'editContributors',
-                this.get('contributors'),
-                this.get('permissionChanges'),
-                {}
-            );
-        },
-        updateBibliographic() {
-            this.sendAction(
-                'editContributors',
-                this.get('contributors'),
-                {},
-                this.get('bibliographicChanges')
-            );
-        },
-        editContributors(contributors, permissions, bibliographic) {
-            this.sendAction('editContributors', contributors, permissions, bibliographic);
         }
     }
 });
