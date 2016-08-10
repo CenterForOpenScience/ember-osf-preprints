@@ -119,16 +119,16 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         emptyView() {
             this.set('addState', 'emptyView');
             this.set('searchQuery', '');
-            Ember.$('.searchQuery')[0].value = '';
+            this.$('.searchQuery')[0].value = '';
         },
         // TODO Add server request when API functionality in place.
         reorderItems(itemModels, draggedModel) {
             this.set('contributors', itemModels);
         }
     },
-    // Temporary popover content for authors page. Will need to find alternative to jquery selectors.
+    // TODO find alternative to jquery selectors. Temporary popover content for authors page. 
     didInsertElement: function() {
-        Ember.$('#permissions-popover').popover({
+        this.$('#permissions-popover').popover({
             content: '<dl>' +
                 '<dt>Read</dt>' +
                     '<dd><ul><li>View preprint</li></ul></dd>' +
@@ -142,11 +142,11 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
                     '<li>Public-private settings</li></ul></dd>' +
                 '</dl>'
         });
-        Ember.$('#bibliographic-popover').popover({
+        this.$('#bibliographic-popover').popover({
             content: 'Only checked authors will be included in preprint citations. ' +
             'Authors not in the citation can read and modify the preprint as normal.'
         });
-        Ember.$('#author-popover').popover({
+        this.$('#author-popover').popover({
             content: 'Preprints must have at least one registered administrator and one author showing in the citation at all times.  ' +
             'A registered administrator is a user who has both confirmed their account and has administrator privileges.'
         });
