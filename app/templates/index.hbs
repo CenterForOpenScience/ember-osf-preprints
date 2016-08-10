@@ -1,7 +1,9 @@
 <div class="index"> {{!INDEX}}
 
     {{!HEADER}}
-    <div class="row header-background space-top space-bottom">{{!HEADER ROW}}
+    <div class="row header-background space-top">{{!HEADER ROW}}
+        <div class="background-logo"> {{!LOGO}}
+
         <div class="osf-preprint-header-img"> {{!HEADER}}
             <div class="container"> {{!CONTAINER}}
                 {{!TITLE}}
@@ -20,24 +22,24 @@
                         <span>{{moment-format model.theDate "MMMM DD, YYYY"}}</span>
                     </p>
                 </div>
-
             </div> {{!END CONTAINER}}
             </div> {{!END HEADER}}
-        </div> <!--END ROW-->
+            </div> {{!END LOGO}}
+        </div> {{!END ROW}}
 
 
     {{!PREPRINT LIST}}
         <div class="row list">
-        <div class="container"> <!--CONTAINER-->
-                <div class="headers-div"> <!--headers div-->
+        <div class="container"> {{!CONTAINER}}
+                <div class="headers-div"> {{!HEADER DIV}}
                     <h2>EXPLORE</h2>
                 <h4>recent additions</h4>
-                </div> <!--END HEADERS DIV-->
-            </div> <!--END CONTAINER-->
+                </div> {{!END HEADER DIV}}
+            </div> {{!END CONTAINER}}
     </div> {{!END ROW}}
     <hr>
     <div class="row list">
-        <div class="container"> <!--CONTAINER-->
+        <div class="container"> {{!CONTAINER}}
                 <div id="landing-page-preprint-list-background"> {{!BACKGROUND}}
                     <div id="landing-page-preprint-list"> {{!ARTICLE IN POPULAR UPLOADS}}
                         {{#each model.preprints as |preprintEntry|}}
@@ -53,17 +55,17 @@
                      style="padding-top: 20px; padding-bottom: 40px;"> {{! READ MORE BUTTON}}
                     {{#link-to "browse" class="btn btn-success btn-lg"}}Browse more preprints{{/link-to}}
                 </div> {{!END READ MORE BUTTON}}
-            </div> <!--END CONTAINER-->
+            </div> {{!END CONTAINER}}
     </div> {{!END ROW}}
 
     {{!SUBJECTS}}
     <div class="row subjects-box">{{!SUBJECTS ROW}}
         <div class="container"> {{!CONTAINER DIV}}
 
-            <div class="headers-div"> <!--headers div-->
+            <div class="headers-div"> {{!HEADER DIV}}
                     <h2>BROWSE</h2>
-                <h4>by subject</h4>
-                </div> <!--END HEADERS DIV-->
+                <h4>by topic</h4>
+                </div> {{!END HEADER DIV}}
 
             <div class="subjects text-center"> {{!SUBJECTS LIST}}
                 <div class="subjectsList table-striped"> {{!SUBJECTS LIST}}
@@ -78,7 +80,7 @@
     {{!BRANDED PREPRINT SERVERS}}
     <div class="row branded-servers-background">{{!BRANDED ROW}}
         <div class="container">
-           <div class="headers-div"> <!--headers div-->
+           <div class="headers-div"> {{!HEADER DIV}}
                     <h2>PREPRINTS</h2>
                 <h4>powered by the OSF</h4>
                 </div> <!--END HEADERS DIV-->
@@ -114,14 +116,14 @@
     <div class="row"> {{!ROW}}
         <div class="space-bottom tools-section">
             <div class="container">
-                        <div class="headers-div"> <!--headers div-->
+                        <div class="headers-div"> {{!HEADER DIV}}
                     <h2>TOOLS</h2>
                 <h4>for community</h4>
-                </div> <!--END HEADERS DIV-->
-                    <div class="text-center"> <!--TEXT CENTER-->
+                </div> {{!END HEADER DIV}}
+                    <div class="text-center"> {{!TEXT CENTER}}
                         <h4> Create your own <b>branded preprint server</b> backed by the OSF.</h4>
                             <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">Contact us</a>
-                    </div> <!--END TEXT CENTER-->
+                    </div> {{!END TEXT CENTER}}
             </div>
         </div>
     </div> {{!END ROW}}

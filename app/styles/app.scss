@@ -39,14 +39,34 @@ background-image: url("img/paper.png");
 
 .headers-div{
     h1,h2,h3,h4,h5,h6{
-    display:inline;
-    }
+        display:inline;
+        }
     padding-top:4%;
     padding-bottom:2%;
 }
 
+.background-logo{
+    background-image: url("img/cos_center.png");
+    background-repeat: repeat;
+    background-size:500px;
+    background-position: -150px -100px;
+
+}
+
 .list{
 background-color:#fff;
+}
+
+.list-group-item{
+background-color:#9ad6e8;
+margin:10px;
+border-color:#9ad6e8;
+}
+
+.list-group-item:hover{
+    background-color:#b3b3b3;
+    margin:10px;
+    border-color:#b3b3b3;
 }
 
 // FOR SPACE
@@ -333,6 +353,10 @@ td:hover {
         color: white;
         cursor: pointer;
     }
+}
+
+.glyphicon{
+        display:none;
 }
 
 .f-w-xl {
