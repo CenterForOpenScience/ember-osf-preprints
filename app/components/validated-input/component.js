@@ -31,15 +31,15 @@ export default Ember.Component.extend(Validations, {
         return (this.get('validation.isDirty') || this.get('didValidate')) && this.get('isInvalid');
     }),
 
-    notValidating: computed.not('validations.isValidating'),
+    notValidating: computed.not('validation.isValidating'),
     didValidate: computed.oneWay('targetObject.didValidate'),
     hasContent: computed.notEmpty('value'),
 
-    // I am not sure why, but I had to use validations here and not validation.
-    isValid: computed.and('hasContent', 'validations.isValid', 'notValidating'),
-    isInvalid: computed.oneWay('validations.isInvalid'),
+    isValid: computed.and('hasContent', 'validation.isValid', 'notValidating'),
+    isInvalid: computed.oneWay('validation.isInvalid'),
 
     showWarningMessage: computed('validation.isDirty', 'validation.warnings.[]', 'isValid', 'didValidate', function() {
         return (this.get('validation.isDirty') || this.get('didValidate')) && this.get('isValid') && !isEmpty(this.get('validation.warnings'));
     }),
+
 });

@@ -6,11 +6,11 @@
     {{/if}}
 
     {{#if isValid}}
-        <span class="valid-input fa fa-check"></span>
+        <span class="valid-input"></span>
     {{/if}}
 
     <div class="input-error">
-        {{#if isInvalid}}
+        {{#if showErrorMessage}}
             <div class="error">
                 {{v-get model valuePath 'message'}}
             </div>
