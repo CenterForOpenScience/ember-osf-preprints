@@ -69,23 +69,31 @@ background-color:#fff;
     text-decoration:none;
 }
 
+.topic:link{
+    background-color:#8c8c8c;
+    color:white;
+    text-decoration: none;
+}
+
+.topic:visited{
+    background-color:#8c8c8c;
+    color:white;
+    text-decoration: none;
+}
+
 .topic:hover{
     background-color:#8c8c8c;
     color:white;
-    text-decoration:none;
+    text-decoration: none;
 }
 
-.list-group-item{
-background-color:#9ad6e8;
-margin:10px;
-border-color:#9ad6e8;
+.topic:active{
+    background-color:#595959;
+    color:white;
+    text-decoration: none;
 }
 
-.list-group-item:hover{
-    background-color:#b3b3b3;
-    margin:10px;
-    border-color:#b3b3b3;
-}
+
 
 // FOR SPACE
 .index {
@@ -374,9 +382,7 @@ td:hover {
     }
 }
 
-.glyphicon{
-        display:none;
-}
+
 
 .f-w-xl {
     font-weight: 300;
