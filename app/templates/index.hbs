@@ -2,8 +2,6 @@
 
     {{!HEADER}}
     <div class="row header-background space-top">{{!HEADER ROW}}
-        <div class="background-logo"> {{!LOGO}}
-
         <div class="osf-preprint-header-img"> {{!HEADER}}
             <div class="container"> {{!CONTAINER}}
                 {{!TITLE}}
@@ -24,7 +22,7 @@
                 </div>
             </div> {{!END CONTAINER}}
             </div> {{!END HEADER}}
-            </div> {{!END LOGO}}
+
         </div> {{!END ROW}}
 
 
@@ -70,8 +68,8 @@
             <div class="subjects text-center"> {{!SUBJECTS LIST}}
                 <div class="subjectsList"> {{!SUBJECTS LIST}}
 
-                    {{#link-to "browse"}} <div class="col-md-6"> {{!SUBJECTS TABLE LEFT}}
-                        <div class="topic">{{!INDIVIDUAL TOPIC}}
+                <div class="col-md-6"> {{!SUBJECTS TABLE LEFT}}
+                        {{#link-to "browse"}} <div class="topic">{{!INDIVIDUAL TOPIC}}
                             <p>All subjects</p>
                         </div> {{/link-to}} {{!END INDIVIDUAL TOPIC}}
                     {{#link-to "browse"}}<div class="topic">{{!INDIVIDUAL TOPIC}}
