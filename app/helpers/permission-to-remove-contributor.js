@@ -6,10 +6,7 @@ import Ember from 'ember';
 * The project cannot be a registration.
 */
 export function permissionToRemoveContributor(params/*, hash*/) {
-    var contributor = params[0];
-    var currentUser = params[1];
-    var stillAdmin = params[2];
-    var node = params[3];
+    var [contributor, currentUser, stillAdmin, node] = params;
     if (currentUser) {
         var currentUserId = currentUser.get('currentUserId') || currentUser.get('id');
         var removeSelf = contributor.get('userId') === currentUserId;

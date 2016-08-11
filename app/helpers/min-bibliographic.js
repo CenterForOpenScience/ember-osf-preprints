@@ -7,8 +7,7 @@ import Ember from 'ember';
  *
  */
 export function minBibliographic(params/*, hash*/) {
-    var contrib = params[0];
-    var contributors = params[1];
+    var [contrib, contributors] = params;
     if (contributors) {
         var numBib = 0;
         contributors.forEach(function(contributor) {

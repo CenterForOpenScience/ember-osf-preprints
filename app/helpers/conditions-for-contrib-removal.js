@@ -8,8 +8,7 @@ import permissions from 'ember-osf/const/permissions';
  *
  */
 export function conditionsForContribRemoval(params/*, hash*/) {
-    var contributorToRemove = params[0];
-    var contributors = params[1];
+    var [contributorToRemove, contributors] = params;
     if (contributors) {
         var minRegisteredAdmins = false;
         var minBibliographic = false;

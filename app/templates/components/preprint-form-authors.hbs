@@ -104,12 +104,12 @@
                 {{#sortable-group tagName="tbody" onChange="reorderItems" as |group|}}
                     {{#each contributors as |contrib|}}
                         {{#sortable-item tagName="tr" model=contrib class="contributor-row" group=group spacing=1 handle=".handle"}}
-                            <td class="vert-align">
-                                <div class="form-group">
+                            <td>
+                                <div class="form-group drag-drop-contrib">
                                     <span class="fa fa-bars sortable-bars handle"></span>
                                 </div>
                             </td>
-                            <td>
+                            <td class="vert-align">
                                 <img class="m-l-xs" src={{contrib.users.profileImage}} height=40 width=40>
                                 {{#if contrib.unregisteredContributor}}
                                     {{contrib.unregisteredContributor}}
@@ -117,8 +117,8 @@
                                     <a href={{contrib.users.profileUrl}}> {{contrib.users.fullName}} </a>
                                 {{/if}}
                             </td>
-                            <td class="vert-align">
-                                <div class="form-group">
+                            <td>
+                                <div class="form-group vert-align-enabled-permissions">
                                     {{#if (and stillAdmin (and canEdit (minAdmins contrib contributors permissionToggle)))}}
                                         <select class="form-control" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
                                             {{#each permissionOptions as |option|}}
@@ -128,17 +128,19 @@
                                             {{/each}}
                                         </select>
                                     {{else}}
-                                        <span> {{permissionMap contrib.permission}} </span>
+                                        <div class="vert-align-disabled-permissions">
+                                            <span> {{permissionMap contrib.permission}} </span>
+                                        </div>
                                     {{/if}}
                                 </div>
                             </td>
-                            <td class="bib-padding vert-align">
-                                <div class="form-group">
+                            <td class="bib-padding">
+                                <div class="form-group vert-align">
                                     <input disabled={{if (and stillAdmin (and canEdit (minBibliographic contrib contributors bibliographicToggle))) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
                                 </div>
                             </td>
-                            <td class="vert-align">
-                                <div class="form-group">
+                            <td>
+                                <div class="form-group vert-align">
                                     {{#if (and (permissionToRemoveContributor contrib currentUser stillAdmin node) (conditionsForContribRemoval contrib contributors removalToggle))}}
                                         <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm"> Remove </button>
                                     {{else}}
