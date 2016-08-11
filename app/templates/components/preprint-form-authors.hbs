@@ -121,9 +121,11 @@
                                 <div class="form-group">
                                     {{#if (and stillAdmin (and canEdit (minAdmins contrib contributors permissionToggle)))}}
                                         <select class="form-control" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
-                                            <option value=READ selected={{eq contrib.permission 'read'}}> Read </option>
-                                            <option value=WRITE selected={{eq contrib.permission 'write'}}> Read + Write </option>
-                                            <option value=ADMIN selected={{eq contrib.permission 'admin'}}> Administrator </option>
+                                            {{#each permissionOptions as |option|}}
+                                                <option selected={{eq contrib.permission option.value}} value={{option.value}}>
+                                                    {{option.text}}
+                                                </option>
+                                            {{/each}}
                                         </select>
                                     {{else}}
                                         <span> {{permissionMap contrib.permission}} </span>

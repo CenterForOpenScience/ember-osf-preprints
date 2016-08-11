@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import permissions from 'ember-osf/const/permissions';
 import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
 import PreprintFormFieldMixin from '../mixins/preprint-form-field';
+import permissions, { permissionSelector } from 'ember-osf/const/permissions';
 
 export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     READ: permissions.READ,
@@ -14,6 +14,8 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     stillAdmin: Ember.computed('isAdmin', function() {
         return this.get('isAdmin');
     }),
+    // Permissions labels for dropdown 
+    permissionOptions: permissionSelector,
     addState: 'emptyView', // There are 3 view states on left side of Authors panel. Default state just shows search bar.
     query: null,
     // Total contributor search results
