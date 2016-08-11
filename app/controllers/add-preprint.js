@@ -59,7 +59,7 @@ export default Ember.Controller.extend(NodeActionsMixin, {
                 return {
                     name: path.name,
                     children: path.children.filter(child =>
-                        this.get(`filter.${i + 1}.value`).indexOf(child.name || child)) !== -1
+                        this.get(`filter.${i + 1}.value`).indexOf(child.name || child) !== -1)
                 };
             }
             return path;
