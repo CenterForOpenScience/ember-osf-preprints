@@ -1,23 +1,23 @@
 <div class="container">{{!CONATINER DIV}}
     <div class="m-b-md p-md osf-box m-t-lg"> {{!OSF BOX DIV}}
         <div class="row p-l-md m-t-lg"> {{!HEADER ROW}}
-            <h1>{{model.preprint.title}}</h1>
+            <h1>{{model.title}}</h1>
         </div> {{!END HEADER ROW}}
         <div class="row p-l-md"> {{!PREPRINT INFO ROW}}
-            <h5>{{model.preprint.authors}}</h5>
-            <h6>Added on {{moment-format model.preprint.date}}</h6>
+            <h5>{{model.authors}}</h5>
+            <h6>Added on {{moment-format model.date}}</h6>
         </div> {{!END PREPRINT INFO ROW}}
         <div class="row">
             <hr color="#C7FFC7">
         </div>
         <div class="row p-md"> {{!CONTENT ROW}}
             <div class="col-md-7"> {{!LEFT COL DIV}}
-                {{supplementary-file-browser primaryFile=model.primary fileList=model.fileList}}
+                {{supplementary-file-browser primaryFile=primaryFile fileList=fileList}}
             </div> {{!END LEFT COL DIV}}
             <div class="col-md-5"> {{!RIGHT SIDE COL}}
                 <div class="p-md osf-box-lt" id="download_project">{{!SHARE ROW}}
                     <i class="fa fa-download" aria-hidden="true"></i>
-                    <a href={{model.primary.links.download}}>Download</a>
+                    <a href={{model.links.download}}>Download</a>
                     <i class="fa fa-edit" aria-hidden="true"></i>
                     {{#link-to "preprints.edit"}}Edit{{/link-to}}
                     <span class="pull-right">
@@ -25,7 +25,7 @@
                     </span>
                 </div>{{!END SHARE ROW}}
                 <h3> Abstract: </h3>
-                <p> {{model.preprint.abstract}} </p>
+                <p> {{model.abstract}} </p>
                 <h3> Citation: </h3>
                 <p class="m-b-md">
                     <p><strong>APA</strong></p>
@@ -34,7 +34,7 @@
                 </p>
                 {{!PROJECT BUTTON}}
                 <div class="p-lg osf-box-lt" id="view_project">
-                    <span> <a type="button" class="btn btn-primary pull-right" href={{concat config.OSF.url model.preprint.id}}>View project</a> The project for this paper is available on the Open Science Framework</span>
+                    <span> <a type="button" class="btn btn-primary pull-right" href={{concat config.OSF.url model.id}}>View project</a> The project for this paper is available on the Open Science Framework</span>
                 </div>
             </div> {{!END RIGHT SIDE COL}}
         </div> {{!END CONTENT ROW}}

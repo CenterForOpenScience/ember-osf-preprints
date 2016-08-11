@@ -12,6 +12,15 @@ export default Ember.Component.extend({
     files: Ember.computed('fileList', 'fileList.[]', 'primaryFile', function() {
         //Returns the list with primaryFile moved to the front
         let files = this.get('fileList');
+
+//      TODO: Grab get primary file from preprint object
+        if (files) {
+            const fakePrimary = files.get('firstObject');
+            this.set('primaryFile', fakePrimary);
+            this.set('selectedFile', fakePrimary);
+        }
+//      TODO: Remove above lines. They are temporary. Pass real primary to component
+
         if (files && files.length > 1) {
             const primaryFile = this.get('primaryFile');
             files = files.without(primaryFile).toArray();
@@ -26,7 +35,8 @@ export default Ember.Component.extend({
     }),
     init: function() {
         this._super(...arguments);
-        this.set('selectedFile', this.get('primaryFile'));
+//        TODO: Add this line, or similar line back in after getting real primary
+//        this.set('selectedFile', this.get('primaryFile'));
     },
     actions: {
         moveLeft() {
