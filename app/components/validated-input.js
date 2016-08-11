@@ -1,4 +1,4 @@
-// Copied from ember-cpi-validations/tests/dummy/app - should eventually be part of ember-osf but getting errors with dependencies
+// Copied from ember-cpi-validations/tests/dummy/app
 
 // BEGIN-SNIPPET validated-input
 import Ember from 'ember';

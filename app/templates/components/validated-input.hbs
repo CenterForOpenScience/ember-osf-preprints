@@ -9,9 +9,7 @@
     <div class="input-error">
         {{#if showErrorMessage}}
             <div class="error">
-                {{!-- {{v-get model valuePath 'message'}} --}}
-                {{!-- Assertion Failed: A helper named "v-get" could not be found --}}
-                {{model.validations.attrs.username.message}}
+                {{v-get model valuePath 'message'}}
             </div>
         {{/if}}
         {{#if showWarningMessage}}
