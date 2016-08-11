@@ -15,23 +15,20 @@ import permissions from 'ember-osf/const/permissions';
 
 export function conditionsForContribRemoval(params/*, hash*/) {
     var [contributorToRemove, contributors] = params;
-    if (contributors) {
-        var minRegisteredAdmins = false;
-        var minBibliographic = false;
-        contributors.forEach(function(contributor) {
-            if (contributor.id !== contributorToRemove.id) {
-                if (contributor.get('permission') === permissions.ADMIN && contributor.get('unregisteredContributor') === null) {
-                    minRegisteredAdmins = true;
-                }
-                if (contributor.get('bibliographic')) {
-                    minBibliographic = true;
-                }
+    var minRegisteredAdmins = false;
+    var minBibliographic = false;
+    contributors.forEach(function(contributor) {
+        if (contributor.id !== contributorToRemove.id) {
+            if (contributor.get('permission') === permissions.ADMIN && contributor.get('unregisteredContributor') === null) {
+                minRegisteredAdmins = true;
             }
-        });
-        return minRegisteredAdmins && minBibliographic;
-    } else {
-        return params;
-    }
+            if (contributor.get('bibliographic')) {
+                minBibliographic = true;
+            }
+        }
+    });
+    return minRegisteredAdmins && minBibliographic;
+
 }
 
 export default Ember.Helper.helper(conditionsForContribRemoval);

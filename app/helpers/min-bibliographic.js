@@ -12,21 +12,18 @@ import Ember from 'ember';
 */
 export function minBibliographic(params/*, hash*/) {
     var [contrib, contributors] = params;
-    if (contributors) {
-        var numBib = 0;
-        contributors.forEach(function(contributor) {
-            if (contributor.get('bibliographic')) {
-                numBib++;
-            }
-        });
-        if (numBib === 1 && contrib.get('bibliographic')) {
-            return false;
-        } else {
-            return true;
+    var numBib = 0;
+    contributors.forEach(function(contributor) {
+        if (contributor.get('bibliographic')) {
+            numBib++;
         }
+    });
+    if (numBib === 1 && contrib.get('bibliographic')) {
+        return false;
     } else {
-        return params;
+        return true;
     }
+
 }
 
 export default Ember.Helper.helper(minBibliographic);

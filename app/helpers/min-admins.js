@@ -12,21 +12,18 @@ import Ember from 'ember';
   */
 export function minAdmins(params/*, hash*/) {
     var [contrib, contributors] = params;
-    if (contributors) {
-        var registeredAdmins = 0;
-        contributors.forEach(function(contributor) {
-            if (contributor.get('permission') === 'admin' && contributor.get('unregisteredContributor') === null) {
-                registeredAdmins++;
-            }
-        });
-        if (registeredAdmins === 1 && contrib.get('permission') === 'admin' && contrib.get('unregisteredContributor') === null) {
-            return false;
-        } else {
-            return true;
+    var registeredAdmins = 0;
+    contributors.forEach(function(contributor) {
+        if (contributor.get('permission') === 'admin' && contributor.get('unregisteredContributor') === null) {
+            registeredAdmins++;
         }
+    });
+    if (registeredAdmins === 1 && contrib.get('permission') === 'admin' && contrib.get('unregisteredContributor') === null) {
+        return false;
     } else {
-        return params;
+        return true;
     }
+
 }
 
 export default Ember.Helper.helper(minAdmins);

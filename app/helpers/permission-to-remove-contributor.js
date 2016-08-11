@@ -14,14 +14,11 @@ import Ember from 'ember';
 */
 export function permissionToRemoveContributor(params/*, hash*/) {
     var [contributor, currentUser, stillAdmin, node] = params;
-    if (currentUser) {
-        var currentUserId = currentUser.get('currentUserId') || currentUser.get('id');
-        var removeSelf = contributor.get('userId') === currentUserId;
-        var isRegistration = node.get('registration');
-        return ((removeSelf || stillAdmin) && !isRegistration);
-    } else {
-        return params;
-    }
+    var currentUserId = currentUser.get('currentUserId') || currentUser.get('id');
+    var removeSelf = contributor.get('userId') === currentUserId;
+    var isRegistration = node.get('registration');
+    return ((removeSelf || stillAdmin) && !isRegistration);
+
 }
 
 export default Ember.Helper.helper(permissionToRemoveContributor);
