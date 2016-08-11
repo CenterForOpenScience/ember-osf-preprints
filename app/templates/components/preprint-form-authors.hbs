@@ -16,7 +16,7 @@
         </div>
         <div class="row">
             <div class="col-xs-11">
-                {{#if (not (eq addState 'emptyView'))}}
+                {{#if (not-eq addState 'emptyView')}}
                     {{#if (eq addState 'searchView')}}
                         <div class="unregisteredUsers">
                             <p> Can't find the user you're looking for? </p>
