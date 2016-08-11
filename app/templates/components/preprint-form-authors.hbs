@@ -46,7 +46,7 @@
                     {{#if (eq addState 'unregisteredView')}}
                         <h3> Add Unregistered User </h3>
                         <div class="user-validation">
-                            {{unregistered-contributor-form emptyView=(action 'emptyView') addUnregisteredContributor=(action 'addUnregisteredContributor')}}
+                            {{unregistered-contributor-form resetfindContributorsView=(action 'resetfindContributorsView') addUnregisteredContributor=(action 'addUnregisteredContributor')}}
                         </div>
                     {{/if}}
                 {{/if}}

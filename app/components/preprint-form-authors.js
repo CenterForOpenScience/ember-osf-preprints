@@ -14,7 +14,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     stillAdmin: Ember.computed('isAdmin', function() {
         return this.get('isAdmin');
     }),
-    // Permissions labels for dropdown 
+    // Permissions labels for dropdown
     permissionOptions: permissionSelector,
     addState: 'emptyView', // There are 3 view states on left side of Authors panel. Default state just shows search bar.
     query: null,
@@ -119,7 +119,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
             this.set('email', '');
         },
         // There are 3 view states on left side of Authors panel.  This switches to empty view and clears search results.
-        emptyView() {
+        resetfindContributorsView() {
             this.set('addState', 'emptyView');
             this.set('searchQuery', '');
             this.$('.searchQuery')[0].value = '';
