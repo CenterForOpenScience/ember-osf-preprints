@@ -6,8 +6,11 @@ export default Ember.Component.extend({
     scrollAnim: '',
     numShowing: 6,
     selectedFile: {},
-    showArrows: Ember.computed('numShowing', 'supplementList.[]', function() {
-        return (this.get('numShowing') < this.get('files').length);
+    showRightArrow: Ember.computed('numShowing', 'startValue', function() {
+        return (this.get('startValue') + this.get('numShowing') < this.get('fileList').length);
+    }),
+    showLeftArrow: Ember.computed('numShowing', 'startValue', function() {
+        return (this.get('startValue') !== 0);
     }),
     files: Ember.computed('fileList', 'fileList.[]', 'primaryFile', function() {
         //Returns the list with primaryFile moved to the front
@@ -16,8 +19,7 @@ export default Ember.Component.extend({
         //TODO: Grab get primary file from preprint object
         if (files) {
             const fakePrimary = files.get('firstObject');
-            this.set('primaryFile', fakePrimary);
-            this.set('selectedFile', fakePrimary);
+            this.setProperties({'primaryFile': fakePrimary, 'selectedFile' : fakePrimary});
         }
         //TODO: Remove above lines. They are temporary. Pass real primary to component
 
@@ -46,8 +48,6 @@ export default Ember.Component.extend({
             this.set('scrollAnim', 'toRight');
             if (start - numShowing >= 0) {
                 this.set('startValue', start - numShowing);
-            }else {
-                this.set('startValue', fileListLength - (fileListLength % numShowing));
             }
         },
         moveRight() {
@@ -56,9 +56,7 @@ export default Ember.Component.extend({
             const fileListLength = this.get('files').length;
             this.set('scrollAnim', 'toLeft');
             if (start + numShowing <= fileListLength) {
-                this.set('startValue', start + numShowing);
-            }else {
-                this.set('startValue', 0);
+                this.set('startValue', start + numShowing);;
             }
         },
         changeFile(file) {
