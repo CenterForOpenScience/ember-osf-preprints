@@ -1,10 +1,15 @@
+import Ember from 'ember';
 import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
 
 export default CpPanelComponent.extend({
     tagName: 'section',
     classNames: ['preprint-form-section'],
     animate: false,
-    slideAnimation: function() {
+    // Fix depreciation warning
+    _setup: Ember.on('init', Ember.observer('open', function() {
+        this.set('panelState.boundOpenState', this.get('open'));
+    })),
+    slideAnimation: Ember.observer('isOpen', function() {
         if (this.get('animate')) {
             // Allow liquid-fire to animate
             return;
@@ -26,7 +31,7 @@ export default CpPanelComponent.extend({
             $body.removeClass('no-transition');
             $body.height('');
         }
-    }.observes('isOpen'),
+    }),
     handleToggle() {
         // Prevent closing all views
         if (!this.get('isOpen')) {
