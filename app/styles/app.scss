@@ -1,4 +1,5 @@
 @import 'bootstrap';
+@import 'ember-power-select';
 @import 'base';
 @import 'variables';
 
@@ -583,6 +584,9 @@ hr {
                 background-color: gray;
             }
         }
+    }
+    button {
+        margin-top: 1rem;
     }
 }
 

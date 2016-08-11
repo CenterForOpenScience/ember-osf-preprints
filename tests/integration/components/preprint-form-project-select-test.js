@@ -1,16 +1,15 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('preprint-form-basics', 'Integration | Component | preprint form basics', {
+moduleForComponent('preprint-form-project-select', 'Integration | Component | preprint form project select', {
   integration: true
 });
 
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
-  this.on('verify', function() {});
 
-  this.render(hbs`{{preprint-form-basics verify=(action 'verify')}}`);
+  this.render(hbs`{{preprint-form-project-select}}`);
 
-  assert.ok(this.$('span.required').length);
+  assert.equal(this.$('h1').text().trim(), 'Choose existing OSF project:');
 });
