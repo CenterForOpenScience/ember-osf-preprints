@@ -5,9 +5,11 @@
 {{#if supplementList}}
     <h5>{{selectedFile.name}}</h5>
     <section>
-        <button class="show-more-button text-muted left" {{action 'moveLeft'}}>
-            <i class="fa fa-caret-left"></i>
-        </button>
+        {{#if showArrows}}
+            <button class="show-more-button text-muted left" {{action 'moveLeft'}}>
+                <i class="fa fa-caret-left"></i>
+            </button>
+        {{/if}}
         {{#liquid-bind supplementList elementId="file-list" tagName="ul" class="p-l-md p-r-md" use=scrollAnim as |list|}}
             {{#each list as |supplement|}}
                 <li class="small-files col-xs-2 p-md box {{if (eq selectedFile supplement) 'selected'}}" {{action 'changeFile' supplement}}>
@@ -19,8 +21,10 @@
                 </li>
             {{/each}}
         {{/liquid-bind}}
-        <button class="show-more-button text-muted right" {{action 'moveRight'}}>
-            <i class="fa fa-caret-right"></i>
-        </button>
+        {{#if showArrows}}
+            <button class="show-more-button text-muted right" {{action 'moveRight'}}>
+                <i class="fa fa-caret-right"></i>
+            </button>
+        {{/if}}
     </section>
 {{/if}}

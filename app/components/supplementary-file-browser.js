@@ -6,7 +6,9 @@ export default Ember.Component.extend({
     scrollAnim: '',
     numShowing: 6,
     selectedFile: {},
-
+    showArrows: Ember.computed('numShowing', 'supplementList.[]', function() {
+        return (this.get('numShowing') < this.get('files').length);
+    }),
     files: Ember.computed('fileList', 'fileList.[]', 'primaryFile', function() {
         //Returns the list with primaryFile moved to the front
         let files = this.get('fileList');
@@ -17,6 +19,7 @@ export default Ember.Component.extend({
             files.unshift(primaryFile);
             return files;
         }
+        return [];
     }),
     supplementList: Ember.computed('files', 'files.[]', 'startValue', 'numShowing', function() {
         if (this.get('files')) {
