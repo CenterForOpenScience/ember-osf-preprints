@@ -2,7 +2,7 @@ import { validator, buildValidations } from 'ember-cp-validations';
 
 const Validations = buildValidations({
     title: {
-      description: "Title",
+        description: 'Title',
         validators: [
             validator('presence', true),
             validator('length', {
@@ -12,7 +12,7 @@ const Validations = buildValidations({
         ]
     },
     abstract: {
-        description: "Abstract",
+        description: 'Abstract',
         validators: [
             validator('presence', true),
             validator('length', {
@@ -22,7 +22,7 @@ const Validations = buildValidations({
         ]
     },
     doi: {
-        description: "DOI",
+        description: 'DOI',
         validators: [
             validator('format', {
                 // Regex taken from http://stackoverflow.com/questions/27910/finding-a-doi-in-a-document-or-page
