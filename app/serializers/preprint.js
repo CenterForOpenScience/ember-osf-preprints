@@ -5,11 +5,10 @@ export default OsfSerializer.extend({
         // Normal OSF serializer strips out relationships. We need to add back primaryFile for this endpoint
         let res = this._super(...arguments);
         res.data.relationships = {
-            // Not sure what the name of this key comes from, but it's required.
-            preprint_file: {
+            primary_file: {
                 data: {
                     id: snapshot.belongsTo('primaryFile', { id: true }),
-                    type: 'primary_file'
+                    type: 'file'
                 }
             }
         };
