@@ -16,7 +16,8 @@ const Validations = buildValidations({
         validators: [
             validator('presence', true),
             validator('length', {
-                // minimum length for abstract?
+                // currently min of 20 characters -- this is what arXiv has as the minimum length of an abstract
+                min: 20,
                 max: 5000
             })
         ]

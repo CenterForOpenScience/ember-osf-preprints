@@ -7,8 +7,6 @@ const {
 
 import Validations from '../../validators/preprint-form-validator';
 
-// Template largely taken from the ember-cp-validations example. Except the isValid and isInvalid are changed from validation.isValid
-// to validations.isValid (with an extra s on the end) -- otherwise it doesn't work
 export default Ember.Component.extend(Validations, {
     classNames: ['validated-input'],
     classNameBindings: ['showErrorClass:has-error', 'isValid:has-success'],
