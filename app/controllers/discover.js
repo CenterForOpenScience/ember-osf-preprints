@@ -6,7 +6,7 @@ export default Ember.Controller.extend({
 
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
     queryParams: ['page', 'searchString'],
-    activeFilters: ['Biology and life sciences'],
+    activeFilters: ['subject:Biology and life sciences'],
 
     page: 1,
     size: 10,
