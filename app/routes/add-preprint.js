@@ -4,7 +4,7 @@ import loadAll from 'ember-osf/utils/load-relationship';
 export default Ember.Route.extend({
     currentUser: Ember.inject.service(),
     model() {
-        // Temporary.  This needs to be the preprint created in this step.
+        // Temporary.  This needs to be the node created earlier in the process.
         return this.store.findRecord('node', 'bgz3m');
     },
 

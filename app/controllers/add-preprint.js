@@ -106,30 +106,6 @@ export default Ember.Controller.extend(NodeActionsMixin, {
                 this.set('searchResults', contributors);
                 return contributors;
             });
-        },
-        /**
-         * Overrides addContributor method on NodeActionsMixin for manual management of contributors list.
-         *
-         * @method addContributor
-         * @param {String} userId ID of user that will be a contributor on the node
-         * @param {String} permission User permission level. One of "read", "write", or "admin". Default: "write".
-         * @param {Boolean} isBibliographic Whether user will be included in citations for the node. "default: true"
-         * @return {Promise} Returns a promise that resolves to the updated node
-         * with the new contributor relationship.
-         */
-        addContributor(userId, permission, isBibliographic) {
-            var node = this.get('_node');
-            var contributor = this.store.createRecord('contributor', {
-                id: `${node.get('id')}-${userId}`,
-                permission: permission,
-                bibliographic: isBibliographic
-            });
-            // For now, fetching contributors with loadAll method.  This requires some manual management of the contributors list.
-            node.get('contributors').pushObject(contributor);
-            return node.save().then(() => {
-                return contributor;
-            });
-
         }
     }
 });
