@@ -12,14 +12,12 @@ export default Ember.Component.extend({
     files: Ember.computed('fileList', 'fileList.[]', 'primaryFile', function() {
         //Returns the list with primaryFile moved to the front
         let files = this.get('fileList');
-
         if (files && files.length > 1) {
             const primaryFile = this.get('primaryFile');
             files = files.without(primaryFile).toArray();
             files.unshift(primaryFile);
             return files;
         }
-        return [];
     }),
     supplementList: Ember.computed('files', 'files.[]', 'startValue', 'numShowing', function() {
         if (this.get('files')) {
