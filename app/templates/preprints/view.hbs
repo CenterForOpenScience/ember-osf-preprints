@@ -4,7 +4,11 @@
             <h1>{{model.title}}</h1>
         </div> {{!END HEADER ROW}}
         <div class="row p-l-md"> {{!PREPRINT INFO ROW}}
-            <h5>{{model.authors}}</h5>
+            <h5>
+                {{#each authors as |author|}}
+                    <a href={{author.users.profileURL}}>{{author.users.fullName}}</a>, 
+                {{/each}}
+            </h5>
             <h6>Added on {{moment-format model.date}}</h6>
         </div> {{!END PREPRINT INFO ROW}}
         <div class="row">
