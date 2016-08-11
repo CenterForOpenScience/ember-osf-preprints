@@ -38,6 +38,12 @@ module.exports = function(defaults) {
                     })
                 }]
             }
+        },
+        // bable options included to fix issue with testing discover controller
+        // http://stackoverflow.com/questions/32231773/ember-tests-passing-in-chrome-not-in-phantomjs
+        babel: {
+            optional: ['es6.spec.symbols'],
+            includePolyfill: true
         }
     });
 
