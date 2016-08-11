@@ -7,9 +7,6 @@ export default Ember.Route.extend({
         let node = this.store.findRecord('preprint', params.file_id);
         let fileList = this.getFiles(node);
         return Ember.RSVP.hash({
-            id: params.file_id,
-            baseUrl: config.OSF.url,
-            renderUrl: config.OSF.renderUrl,
             preprint: node,
             fileList: this.getFiles(node),
             primary: fileList.then(files => files.get('firstObject')), //This should come directly from the preprint object in the future

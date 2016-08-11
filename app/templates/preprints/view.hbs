@@ -17,7 +17,7 @@
             <div class="col-md-5"> {{!RIGHT SIDE COL}}
                 <div class="p-md osf-box-lt" id="download_project">{{!SHARE ROW}}
                     <i class="fa fa-download" aria-hidden="true"></i>
-                    <a href={{model.downloadLink}}>Download</a>
+                    <a href={{model.primary.links.download}}>Download</a>
                     <i class="fa fa-edit" aria-hidden="true"></i>
                     {{#link-to "preprints.edit"}}Edit{{/link-to}}
                     <span class="pull-right">
@@ -34,7 +34,7 @@
                 </p>
                 {{!PROJECT BUTTON}}
                 <div class="p-lg osf-box-lt" id="view_project">
-                    <span> <a type="button" class="btn btn-primary pull-right" href={{concat model.baseUrl model.project}}>View project</a> The project for this paper is available on the Open Science Framework</span>
+                    <span> <a type="button" class="btn btn-primary pull-right" href={{concat config.OSF.url model.preprint.id}}>View project</a> The project for this paper is available on the Open Science Framework</span>
                 </div>
             </div> {{!END RIGHT SIDE COL}}
         </div> {{!END CONTENT ROW}}
