@@ -8,7 +8,7 @@ export default Ember.Component.extend({
         return this.get('selectedNode.currentUserPermissions').indexOf(Permissions.ADMIN) !== -1;
     }),
     getFiles: Ember.observer('selectedNode', function() {
-        this.get('selectedNode').get('files').then(files =>
+        this.get('selectedNode.files').then(files =>
             this.set('osfFiles', files.findBy('name', 'osfstorage'))
         );
     }),

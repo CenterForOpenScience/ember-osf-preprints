@@ -12,7 +12,7 @@
                                 <button class="col-md-4" {{action 'changeState' _State.EXISTING}}>Select a file from OSF</button>
 
                             {{else if (eq currentState _State.NEW)}}
-                                {{dropzone-widget preUpload=(action 'preUpload') buildUrl=(action 'buildUrl') success=(action 'success')}}
+                                {{dropzone-widget preUpload=(action 'preUpload') buildUrl=(action 'buildUrl') success=(action 'success') options=dropzoneOptions}}
                                 {{#liquid-bind uploadState use='crossFade' as |currentUploadState|}}
                                     {{#if (eq currentUploadState _State.START)}}
                                         <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>

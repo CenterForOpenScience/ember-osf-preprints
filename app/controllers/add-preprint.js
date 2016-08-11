@@ -24,6 +24,10 @@ export default Ember.Controller.extend(NodeActionsMixin, {
     preprintNode: null,
     user: null,
     userNodes: Ember.A([]),
+    dropzoneOptions: {
+        uploadMultiple: false,
+        method: 'PUT'
+    },
 
     _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
     valid: new Ember.Object(),
@@ -143,8 +147,9 @@ export default Ember.Controller.extend(NodeActionsMixin, {
             return new Ember.RSVP.Promise(resolve => this.set('resolve', resolve));
         },
         startUpload(resolve) {
-            this.set('_url', `http://localhost:5000/v2/nodes/${this.get('preprintNode.id')}/provider/osfstorage/?name=${this.get('uploadFile.name')}`);
+            this.set('_url', `${this.get('preprintNode.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
             this.get('resolve')();
+            this.get('toast').info('File will upload in the background.');
             resolve();
         },
         buildUrl() {
