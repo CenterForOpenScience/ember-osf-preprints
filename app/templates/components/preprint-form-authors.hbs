@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-xs-11">
                 <form {{action 'findContributors' 1 on='submit'}}>
-                    <div class="input-group search-box">
+                    <div class="input-group author-search-box">
                         <input type="text" class="form-control input-lg searchQuery" onchange={{action "updateQuery" value="target.value"}} placeholder="Search by name">
                         <span class="input-group-btn">
                             <button class="btn btn-default btn-lg" type="button" {{action 'findContributors' 1}} >
