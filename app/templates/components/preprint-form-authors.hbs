@@ -110,11 +110,11 @@
                                 </div>
                             </td>
                             <td>
-                                <img class="m-l-xs" src={{contrib.users.links.profile_image}} height=40 width=40>
+                                <img class="m-l-xs" src={{contrib.users.profileImage}} height=40 width=40>
                                 {{#if contrib.unregisteredContributor}}
                                     {{contrib.unregisteredContributor}}
                                 {{else}}
-                                    <a href={{contrib.users.links.html}}> {{contrib.users.fullName}} </a>
+                                    <a href={{contrib.users.profileUrl}}> {{contrib.users.fullName}} </a>
                                 {{/if}}
                             </td>
                             <td class="vert-align">
