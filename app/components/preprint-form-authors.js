@@ -42,7 +42,6 @@ export default CpPanelBodyComponent.extend({
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
-            // this.sendAction('addContributor', user.id, 'write', true);
             this.attrs.addContributor(user.id, 'write', true).then(res => {
                 this.redrawTemplate();
                 this.get('contributors').pushObject(res);
@@ -74,8 +73,8 @@ export default CpPanelBodyComponent.extend({
             if (query) {
                 this.attrs.findContributors(query, page).then(() => {
                     this.set('addState', 'searchView');
-                }, function(reason) {
-                    console.log(reason.errors[0].detail);
+                }, () => {
+                    this.get('toast').error('Could not perform search query.');
                 });
             }
         },
@@ -86,6 +85,8 @@ export default CpPanelBodyComponent.extend({
                 this.redrawTemplate();
                 this.removedSelfAsAdmin(contrib, contrib.get('permission'));
                 this.get('contributors').removeObject(contrib);
+            }, () => {
+                this.get('toast').error('Could not remove author');
             });
         },
         // Updates contributor then redraws contributor list view - updating contributor
@@ -95,6 +96,8 @@ export default CpPanelBodyComponent.extend({
             this.attrs.editContributors(this.get('contributors'), permissionChanges, {}).then(() => {
                 this.redrawTemplate();
                 this.removedSelfAsAdmin(contributor, permission);
+            }, () => {
+                this.get('toast').error('Could not modify author permissions');
             });
         },
         // Updates contributor then redraws contributor list view - updating contributor
@@ -103,6 +106,8 @@ export default CpPanelBodyComponent.extend({
             let bibliographicChanges = { [contributor.id]: isBibliographic };
             this.attrs.editContributors(this.get('contributors'), {}, bibliographicChanges).then(() => {
                 this.redrawTemplate();
+            }, () => {
+                this.get('toast').info('Could not modify citation');
             });
         },
         // There are 3 view states on left side of Authors panel.  This switches to add unregistered contrib view.
