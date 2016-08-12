@@ -45,8 +45,8 @@ export default CpPanelBodyComponent.extend({
             this.attrs.addContributor(user.id, 'write', true).then(res => {
                 this.redrawTemplate();
                 this.get('contributors').pushObject(res);
-            }, function(reason) {
-                console.log(reason);
+            }, () => {
+                this.get('toast').error('Could not add contributor.');
             });
         },
         // Adds unregistered contributor, then clears form and switches back to search view.
@@ -59,8 +59,8 @@ export default CpPanelBodyComponent.extend({
                 this.set('addState', 'searchView');
                 this.set('fullName', '');
                 this.set('email', '');
-            }, function(reason) {
-                console.log(reason.errors[0].detail);
+            }, () => {
+                this.get('toast').error('Could not add unregistered contributor.');
             });
 
         },
@@ -107,7 +107,7 @@ export default CpPanelBodyComponent.extend({
             this.attrs.editContributors(this.get('contributors'), {}, bibliographicChanges).then(() => {
                 this.redrawTemplate();
             }, () => {
-                this.get('toast').info('Could not modify citation');
+                this.get('toast').error('Could not modify citation');
             });
         },
         // There are 3 view states on left side of Authors panel.  This switches to add unregistered contrib view.
