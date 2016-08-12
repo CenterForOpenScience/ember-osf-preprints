@@ -47,8 +47,8 @@
                 {{#with path.[1] as |category|}}
                     {{#each filteredPath.[1].children as |element|}}
                         <li {{action 'select' taxonomy category element}}
-                            class={{if (get (get (get selected taxonomy.name) category.name) element) 'selected'}}>
-                            {{element}}
+                            class={{if (get (get (get selected taxonomy.name) category.name) element.name) 'selected'}}>
+                            {{element.name}}
                         </li>
                     {{/each}}
                 {{/with}}

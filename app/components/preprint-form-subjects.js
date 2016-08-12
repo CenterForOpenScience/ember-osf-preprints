@@ -3,40 +3,36 @@ import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-bo
 import PreprintFormFieldMixin from '../mixins/preprint-form-field';
 
 export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
+    store: Ember.inject.service(),
     filter: [{}, {}, {}],
-    filteredPath: Ember.computed('path', 'filter', 'filter.@each.value', function() {
-        return this.get('path').slice(0, 2).map((path, i) => {
-            if (path.children && this.get(`filter.${i + 1}.value`)) {
-                return {
-                    name: path.name,
-                    children: path.children.filter(child =>
-                        ~this.get(`filter.${i + 1}.value`).indexOf(child.name || child))
-                };
+    updateFilteredPath() {
+        var _this = this;
+        var overallPath = []
+        this.get('path').slice(0, 2).map((path, i) => {
+            if (!path.children) {
+                _this.get('store').query('taxonomy', { filter: { parent_ids: path.id}, page: {size: 100} }).then(
+                    results => {path.children = results.map(
+                        result => {return {name: result.get('text'), id: result.id}}
+                    )
+                    overallPath.push(path);
+                    _this.set('filteredPath', overallPath);
+                    }
+                );
+            } else {
+                overallPath.push(path);
             }
-            return path;
         });
+    },
+    filteredPath: Ember.computed('path', 'changeFlag', 'filter', 'filter.@each.value', function() {
+        this.updateFilteredPath();
     }),
     sortedTaxonomies: Ember.computed('taxonomies', 'filter', 'filter.0.value', function() {
-        return [{
-            name: 'a',
-            children: [{
-                name: 'b',
-                children: ['c', 'd', 'e']
-            }, {
-                name: 'f',
-                children: ['g']
-            }],
-        }, {
-            name: 'h',
-            children: [{
-                name: 'i',
-                children: ['j', 'k']
-            }]
-        }, {
-            name: 'l'
-        }].filter(taxonomy =>
-            !this.get('filter.0.value') || ~taxonomy.name.indexOf(this.get('filter.0.value'))
-        );
+        var self = this;
+        this.get('store').query('taxonomy', { filter: { parent_ids: 'null'}, page: {size: 100} }).then(results => {
+            self.set('sortedTaxonomies', results.map( result => {
+                return {name: result.get('text'), id: result.get('id')};
+            }));
+        });
     }),
     path: [],
     selected: new Ember.Object(),
@@ -102,6 +98,7 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
             // Process past length of array
             [...args.map(arg => arg.name || arg), ''].reduce(process);
             this.set('path', args);
+            this.updateFilteredPath();
             this.notifyPropertyChange('selected');
             this.rerender();
         }
