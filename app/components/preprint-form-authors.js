@@ -127,8 +127,13 @@ export default CpPanelBodyComponent.extend({
             this.$('.searchQuery')[0].value = '';
         },
         // TODO Add server request when API functionality in place.
-        reorderItems(itemModels) {
-            this.set('contributors', itemModels);
+        reorderItems(itemModels, draggedContrib) {
+            var newIndex = itemModels.indexOf(draggedContrib);
+            this.attrs.reorderContributors(draggedContrib, newIndex).then(() => {
+                this.set('contributors', itemModels);
+            }, () => {
+                this.get('toast').error('Could not reorder contributors');
+            });
         }
     },
     // TODO find alternative to jquery selectors. Temporary popover content for authors page.
