@@ -23,22 +23,26 @@
                                         <h1>Creating new project</h1>
                                         {{input class='form-control' value=nodeTitle}}
                                         <button class="btn btn-default" {{action 'deleteProject' (action 'changeUploadState' _State.START)}}>Back</button>
-                                        <button class="btn btn-primary" {{action 'createProject' (action 'next' name)}}>Create</button>
+                                        {{! TODO: check if dropzone has file before allowing user to continue }}
+                                        <button class="btn btn-primary" {{action 'createProject'}}>Create</button>
 
                                     {{else if (eq currentUploadState _State.EXISTING)}}
-                                        {{preprint-form-project-select userNodes=userNodes selectedNode=preprintNode}}
+                                        {{preprint-form-project-select userNodes=userNodes selectedNode=model shouldCreateChild=shouldCreateChild}}
+                                        {{! TODO: cleanup created component if needed }}
                                         <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
-                                        <button class="btn btn-primary" disabled={{unless preprintNode true}} {{action 'startUpload' (action 'next' name)}}>Next</button>
-
+                                        {{! TODO: check if dropzone has file and model exists before allowing user to continue }}
+                                        <button class="btn btn-primary" disabled={{unless model true}} {{action (if shouldCreateChild 'addChild' 'startUpload')}}>Next</button>
                                     {{else}}
                                         {{log 'preprint-form-upload: bad uploadState'}}
                                     {{/if}}
                                 {{/liquid-bind}}
 
                             {{else if (eq currentState _State.EXISTING)}}
-                                {{preprint-form-project-select userNodes=userNodes fileSelect=true selectedNode=preprintNode}}
+                                {{preprint-form-project-select userNodes=userNodes fileSelect=true selectedNode=model shouldCreateChild=shouldCreateChild}}
+                                {{! TODO: cleanup created component if needed }}
                                 <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
-                                <button class="btn btn-primary" disabled={{unless preprintNode true}} {{action 'next' name}}>Next</button>
+                                {{! TODO: check if project and file are selected before allowing user to continue }}
+                                <button class="btn btn-primary" disabled={{unless model true}} {{action (if shouldCreateChild 'addChild' 'next') name}}>Next</button>
 
                             {{else}}
                                 {{log 'preprint-form-upload: bad state'}}
@@ -56,21 +60,21 @@
                     <div class="col-md-6">
                         <label>
                             <span class="required">Title:</span>
-                            {{input class='form-control' value=title required=true}}
+                            {{validated-input model=this valuePath='title' placeholder="Title" value=title}}
                         </label>
                         <label>
                             DOI:
-                            {{input class='form-control' value=doi}}
+                            {{validated-input model=this valuePath='doi' placeholder="DOI" value=doi}}
                         </label>
                         <label>
                             Tags:
-                            {{input class='form-control' value=tags}}
+                            {{input class="form-control" value=tags}}
                         </label>
                     </div>
                     <div class="col-md-6">
                         <label>
                             <span class="required">Abstract:</span>
-                            {{textarea class='form-control' value=abstract required=true}}
+                            {{validated-input model=this valuePath='abstract' placeholder="" value=abstract large=true}}
                         </label>
                     </div>
                 {{/preprint-form-body}}

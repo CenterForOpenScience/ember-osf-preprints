@@ -2,6 +2,7 @@
 @import 'ember-power-select';
 @import 'base';
 @import 'variables';
+@import 'validated-input';
 
 .highlight {
     color: $highlight-color;
@@ -741,6 +742,9 @@ hr {
     background-size: cover;
     background-image: url("img/logo_ua.png");
 }
+
+
+
 .socarxiv-logo {
     background-size: cover;
     background-image: url("img/logo_socarxiv.jpg");
