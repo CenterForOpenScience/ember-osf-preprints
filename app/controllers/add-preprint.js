@@ -3,7 +3,7 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import NodeActionsMixin from 'ember-osf/mixins/node-actions';
 import { validator, buildValidations } from 'ember-cp-validations';
 
-// Enum of available states
+// Enum of available upload states
 export const State = Object.freeze(new Ember.Object({
     START: 'start',
     NEW: 'new',
@@ -53,12 +53,14 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
     currentUser: Ember.inject.service(),
     fileManager: Ember.inject.service(),
 
+    // Upload variables
     _State: State,
     state: State.START,
     uploadState: State.START,
     uploadFile: null,
     resolve: null,
-    preprintNode: null,
+    model: null,         // Node to transform into preprint
+    shouldCreateChild: false,
     user: null,
     userNodes: Ember.A([]),
     dropzoneOptions: {
@@ -67,13 +69,16 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
     },
 
     _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
-    valid: new Ember.Object(),
     init() {
         this._super(...arguments);
         if (this.get('session.isAuthenticated')) {
             this._setCurrentUser();
         }
     },
+
+    /*
+     * Retrieving userNodes
+     */
     _setCurrentUser() {
         this.get('currentUser').load().then(user => this.set('user', user));
     },
@@ -89,7 +94,10 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         this._refreshNodes();
     }),
 
-    filter: [{}, {}, {}],
+    /*
+     * Subjects section
+     */
+    filter: [{/* value: 'filterQuery' */}, {}, {}],
     filteredPath: Ember.computed('path', 'filter', 'filter.@each.value', function() {
         return this.get('path').slice(0, 2).map((path, i) => {
             if (path.children && this.get(`filter.${i + 1}.value`)) {
@@ -103,6 +111,7 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         });
     }),
     sortedTaxonomies: Ember.computed('taxonomies', 'filter', 'filter.0.value', function() {
+        // Format of data that is expected in the hbs
         return [{
             name: 'a',
             children: [{
@@ -125,7 +134,16 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         );
     }),
     path: [],
+    /*
+     * selected takes the format of: { taxonomy: { category: { subject: {}, subject2: {}}, category2: {}}}
+     * in other words, each key is the name of one of the taxonomies, and each value is an object
+     * containing child values.
+     */
     selected: new Ember.Object(),
+    /*
+     * sortedSelection takes the format of: [['taxonomy', 'category', 'subject'], ['taxonomy'...]]
+     * in other words, a 2D array
+     */
     sortedSelection: Ember.computed('selected', function() {
         const sorted = [];
         const selected = this.get('selected');
@@ -144,50 +162,61 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
     }),
 
     actions: {
-        verify(name, state) {
-            this.get('valid').set(name, state);
-        },
+        // Open next panel
         next(name) {
-            // Open next panel
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(name) + 1}`));
         },
+        /*
+         * Upload section
+         */
         changeState(newState) {
             this.set('state', newState);
         },
         changeUploadState(newState) {
             this.set('uploadState', newState);
         },
-        createProject(resolve) {
-            const node = this.get('store').createRecord('node', {
+        createProject() {
+            this.get('store').createRecord('node', {
                 title: this.get('nodeTitle'),
                 category: 'project',
-                public: true
-            });
-            node.save().then(() => {
-                this.set('preprintNode', node);
+                public: true // TODO: should this be public now or later, when it is turned into a preprint?
+            }).save().then(node => {
+                this.set('model', node);
                 this._refreshNodes();
-                this.send('startUpload', resolve);
+                this.send('startUpload');
             });
         },
-        deleteProject(resolve) {
-            if (this.get('preprintNode')) {
-                this.get('preprintNode').destroyRecord().then(() => {
+        // Override NodeActionsMixin.addChild
+        addChild() {
+            this._super(`${this.get('model.title')} Preprint`, this.get('model.description')).then(child => {
+                this.set('model', child);
+                this._refreshNodes();
+                this.send('startUpload');
+            });
+        },
+        // nextAction: {action} callback for the next action to perform.
+        deleteProject(nextAction) {
+            // TODO: delete the previously created model, not the currently selected model
+            if (this.get('model')) {
+                this.get('model').destroyRecord().then(() => {
                     this.get('toast').info('Project deleted');
                 });
-                this.set('preprintNode', null);
+                this.set('model', null);
                 // TODO: reset dropzone, since uploaded file has no project
             }
-            resolve();
+            nextAction();
         },
+        startUpload() {
+            // TODO: retrieve and save fileid from uploaded file
+            this.set('_url', `${this.get('model.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
+            this.get('resolve')();
+            this.get('toast').info('File will upload in the background.');
+            this.send('next', this.get('_names.0'));
+        },
+        // Dropzone hooks
         preUpload(ignore, dropzone, file) {
             this.set('uploadFile', file);
             return new Ember.RSVP.Promise(resolve => this.set('resolve', resolve));
-        },
-        startUpload(resolve) {
-            this.set('_url', `${this.get('preprintNode.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
-            this.get('resolve')();
-            this.get('toast').info('File will upload in the background.');
-            resolve();
         },
         buildUrl() {
             return this.get('_url');
@@ -195,6 +224,9 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         success() {
             this.get('toast').info('File uploaded!');
         },
+        /*
+         * Subject section
+         */
         deleteSubject(key, array = key.split('.')) {
             this.set(key, null);
             // Delete key manually
@@ -212,7 +244,7 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
                     console.error('deletion not implemented');
             }
         },
-        deselectSubject([...args]) {
+        deselectSubject(args) {
             args = args.filter(arg => Ember.typeOf(arg) === 'string');
             this.send('deleteSubject', `selected.${args.join('.')}`, ['selected', ...args]);
             this.notifyPropertyChange('selected');
@@ -227,7 +259,7 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
                 } else if (i === 3 || i === args.length && args.length === this.get('path').length &&
                     this.get('path').every((e, i) => e.name === args[i].name) &&
                     Object.keys(selected).length === 0) {
-                    // Deselecting a subject: if subject is last item in args,
+                    // Deselecting a subject: if subject is last item in args, path matches previous path,
                     // its children are showing, and no children are selected
                     this.send('deleteSubject', `selected.${prev}`, ['selected', ...arr.splice(0, i)]);
                     args.popObject();
