@@ -5,7 +5,7 @@
         </div> {{!END HEADER ROW}}
         <div class="row p-l-md"> {{!PREPRINT INFO ROW}}
             <h5>
-                {{#each authors as |author index|}}
+                {{#each model.contributors as |author index|}}
                     {{#if index}} | {{/if}}<a href={{author.users.profileURL}}>{{author.users.fullName}}</a>
                 {{/each}}
             </h5>
