@@ -1,4 +1,5 @@
 @import 'bootstrap';
+@import 'ember-power-select';
 @import 'base';
 @import 'variables';
 @import 'authors';
@@ -382,6 +383,11 @@ h5 {
     height: 150px;
 }
 
+.logo-sm {
+    width: 30px;
+    height: 30px;
+}
+
 .row-fluid {
     overflow: auto;
     white-space: nowrap;
@@ -463,28 +469,12 @@ main {
 .article{
     padding-top:1.1em;
 }
-
-
-#mfr {
-    padding-left: 25px;
-    padding-top: 25px;
-}
-
-#header {
-    padding: 0px;
-    margin-left: 12px;
-}
 hr {
     display: block;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     border-style: inset;
     border-width: 1px;
-}
-#view_project {
-    margin-right: 20px;
-    height:100px;
-    padding:15px;
 }
 
 #right_panel {
@@ -597,6 +587,9 @@ hr {
                 background-color: gray;
             }
         }
+    }
+    button {
+        margin-top: 1rem;
     }
 }
 
@@ -750,4 +743,47 @@ hr {
 .ua-logo {
     background-size: cover;
     background-image: url("img/logo_ua.png");
+}
+.socarxiv-logo {
+    background-size: cover;
+    background-image: url("img/logo_socarxiv.jpg");
+}
+
+#preprint-file-view {
+    section {
+        position: relative;
+        button {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            &.left {
+                left: 0;
+            }
+            &.right {
+                right: 0;
+            }
+        }
+    }
+    .small-files{
+        background-color: white;
+        display: inline-block;
+        height:100px;
+        text-align: center;
+        &.selected{
+            background-color: lightgrey;
+        }
+        p{
+            font-family: Arial;
+            font-size: x-small;
+        }
+    }
+    ul {
+        width: 100%;
+        li {
+            cursor: pointer;
+            &:hover {
+                background-color: lighten(lightgrey, 10%);
+            }
+        }
+    }
 }
