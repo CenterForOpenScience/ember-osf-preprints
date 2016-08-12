@@ -23,27 +23,7 @@
 
 // OSF Preprints langing pages
 .osf-preprint-header-img {
-    $gradient: 35deg, $theme-color-light 0%, $theme-color-dark $gradient-percentage, #000 100%;
-    background: $brand-primary;
-    /* Old browsers */
-    background: -moz-linear-gradient($gradient);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, $theme-color-light),
-        color-stop($gradient-percentage, $theme-color-dark), color-stop(100%, #000));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient($gradient);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient($gradient);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient($gradient);
-    /* IE10+ */
-    background: linear-gradient($gradient);
-    /* W3C */
-    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$theme-color-light, endColorstr='#000000', GradientType=1);
-    /* IE6-9 fallback on horizontal gradient */
-    /*background: linear-gradient(#0e405f, #d9edf7);*/
-    background-color: #145A85;
-    color: #FFF;
+    color: black;
     padding-top: 80px;
     position: relative;
 }
@@ -52,6 +32,70 @@
     font-weight: 100;
     font-size: 8em;
 }
+
+.header-background{
+background-color: #9cbeb5;
+color:black;
+background-image: url("img/paper-logo.png");
+}
+
+.headers-div{
+    h1,h2,h3,h4,h5,h6{
+        display:inline;
+        }
+    padding-top:4%;
+    padding-bottom:2%;
+}
+
+.background-logo{
+    background-image: url("img/cos_center.png");
+    background-repeat: repeat;
+    background-size:450px;
+    background-position: -150px -100px;
+    padding-top:30px;
+    padding-bottom:30px;
+}
+
+.list{
+background-color:#fff;
+}
+
+.topic{
+    background-color:#9ad6e8;
+    color:black;
+    width:100%;
+    line-height: 40px;
+    hieght:40px;
+    margin-top:10px;
+    text-align:vertical;
+    text-decoration:none;
+}
+
+.topic:link{
+    background-color:#8c8c8c;
+    color:white;
+    text-decoration: none;
+}
+
+.topic:visited{
+    background-color:#8c8c8c;
+    color:white;
+    text-decoration: none;
+}
+
+.topic:hover{
+    background-color:#8c8c8c;
+    color:white;
+    text-decoration: none;
+}
+
+.topic:active{
+    background-color:#595959;
+    color:white;
+    text-decoration: none;
+}
+
+
 
 // FOR SPACE
 .index {
@@ -282,22 +326,14 @@ h5 {
     }
 }
 
-.moving-logo-section {
-    background-color: #474747;
-    color: #FFF;
-    padding: 50px 0;
+.tools-section {
+    background-color: #dce6e7;
+    color: black;
+
     margin-bottom: 20px;
-    #logo {
-        transform: scale(2);
-    }
 
     h4 {
         margin-bottom: 40px;
-    }
-
-    h2 {
-        font-size: 48px;
-        margin-top: 50px;
     }
 
     .btn {
@@ -307,7 +343,7 @@ h5 {
 
 // Landing page sections
 .subjects {
-    padding: 50px 50px;
+    padding-bottom:30px;
     h1 {
         padding-bottom: 20px;
     }
@@ -323,13 +359,17 @@ h5 {
     }
 }
 
+.subjects-box{
+    background-color:#f3f5f5;
+    padding-bottom:30px;
+}
+
 td:hover {
     background-color: #3D3D3D;
 }
 
 
 .subjects {
-    background-color: #D9EDF7;
     font-weight: 300;
     tr {
         font-size: 2em;
@@ -344,13 +384,15 @@ td:hover {
     }
 }
 
+
+
 .f-w-xl {
     font-weight: 300;
 }
 
 .branded-servers {
-    color: white;
-    background-color: #166595;
+    color: black;
+
     margin: auto;
     &.container-fluid {
         background-position: center top;
@@ -363,6 +405,28 @@ td:hover {
         float: none;
     }
 }
+
+.branded-servers-background {
+    background: url("img/branded.png");
+    background-color:#d3deda;
+
+    padding-bottom:5%;
+
+}
+
+.contribute-text{
+    padding:1%;
+    font-size:15px;
+}
+
+.contribute-section{
+    padding-bottom:4%;
+    background-color:#fbfbfb;
+    background: url("img/contribute.png");
+    background-size: 224px 168px;
+    background-repeat: repeat;
+}
+
 
 
 
@@ -725,9 +789,7 @@ hr {
 
 }
 
-.branded-servers-background {
-    background: url("img/bg-web.png") no-repeat;
-}
+
 
 .img-circle {
     background-color: #fff;

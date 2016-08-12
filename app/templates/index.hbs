@@ -1,15 +1,14 @@
 <div class="index"> {{!INDEX}}
 
     {{!HEADER}}
-    <div class="row">{{!HEADER ROW}}
+    <div class="row header-background space-top space-bottom">{{!HEADER ROW}}
         <div class="osf-preprint-header-img"> {{!HEADER}}
             <div class="container"> {{!CONTAINER}}
                 {{!TITLE}}
                 <div class="text-center m-b-lg">
                     <h1 class="osf-preprint-lead">OSF Preprints</h1>
                     <h2>
-                        The <span class="highlight-bold">open</span> preprint server for
-                        <span class="highlight-bold">all</span> academic disciplines
+                        The open preprint server for all academic disciplines
                     </h2>
                 </div>
 
@@ -17,13 +16,28 @@
                 <div id="search" class="space-top space-bottom">
                     {{search-preprints search="search"}}
                     <p>
-                        <span class="highlight">{{model.preprints.length}}</span> preprints as of
+                        {{model.preprints.length}} preprints as of
                         <span>{{moment-format model.theDate "MMMM DD, YYYY"}}</span>
                     </p>
                 </div>
+            </div> {{!END CONTAINER}}
+            </div> {{!END HEADER}}
 
-                {{!PREPRINT LIST}}
-                <h2>Uploads</h2>
+        </div> {{!END ROW}}
+
+
+    {{!PREPRINT LIST}}
+        <div class="row list">
+        <div class="container"> {{!CONTAINER}}
+                <div class="headers-div"> {{!HEADER DIV}}
+                    <h2>EXPLORE</h2>
+                <h3>recent additions</h3>
+                </div> {{!END HEADER DIV}}
+            </div> {{!END CONTAINER}}
+    </div> {{!END ROW}}
+    <hr>
+    <div class="row list">
+        <div class="container"> {{!CONTAINER}}
                 <div id="landing-page-preprint-list-background"> {{!BACKGROUND}}
                     <div id="landing-page-preprint-list"> {{!ARTICLE IN POPULAR UPLOADS}}
                         {{#each model.preprints as |preprintEntry|}}
@@ -34,33 +48,84 @@
                 <button class="show-more-button col-sm-12 text-muted" {{action "togglePopularUploads"}}>
                     <i id="show-more-icon" class="fa fa-caret-down m-b-lg"></i>
                 </button>
+            <hr>
                 <div class="text-center"
                      style="padding-top: 20px; padding-bottom: 40px;"> {{! READ MORE BUTTON}}
                     {{#link-to "browse" class="btn btn-success btn-lg"}}Browse more preprints{{/link-to}}
                 </div> {{!END READ MORE BUTTON}}
             </div> {{!END CONTAINER}}
-        </div> {{!END HEADER}}
     </div> {{!END ROW}}
 
     {{!SUBJECTS}}
-    <div class="row">{{!SUBJECTS ROW}}
-        <div class="subjects text-center"> {{!SUBJECTS LIST}}
-            <div class="container"> {{!CONTAINER DIV}}
-                <h1 class="f-w-xl">Browse preprints by subject</h1>
-                <div class="subjectsList table-striped"> {{!SUBJECTS LIST}}
+    <div class="row subjects-box">{{!SUBJECTS ROW}}
+        <div class="container"> {{!CONTAINER DIV}}
 
-                    {{taxonomy-tree tree=model.subjects filter="goToSubject"}}
+            <div class="headers-div"> {{!HEADER DIV}}
+                    <h2>BROWSE</h2>
+                <h3>by topic</h3>
+                </div> {{!END HEADER DIV}}
+
+            <div class="subjects text-center"> {{!SUBJECTS LIST}}
+                <div class="subjectsList"> {{!SUBJECTS LIST}}
+
+                <div class="col-md-6"> {{!SUBJECTS TABLE LEFT}}
+                        {{#link-to "browse"}} <div class="topic">{{!INDIVIDUAL TOPIC}}
+                            <p>All subjects</p>
+                        </div> {{/link-to}} {{!END INDIVIDUAL TOPIC}}
+                    {{#link-to "browse"}}<div class="topic">{{!INDIVIDUAL TOPIC}}
+                            <p>Biology and Life Sciences</p>
+                        </div> {{/link-to}}{{!END INDIVIDUAL TOPIC}}
+                        {{#link-to "browse"}}<div class="topic">{{!INDIVIDUAL TOPIC}}
+                            <p>Computer and Information sciences</p>
+                        </div> {{/link-to}}{{!END INDIVIDUAL TOPIC}}
+                        {{#link-to "browse"}} <div class="topic">{{!INDIVIDUAL TOPIC}}
+                            <p>Earth Sciences</p>
+                        </div> {{/link-to}}{{!END INDIVIDUAL TOPIC}}
+                        {{#link-to "browse"}} <div class="topic">{{!INDIVIDUAL TOPIC}}
+                            <p>Ecology and enviromental sciences</p>
+                        </div> {{/link-to}}{{!END INDIVIDUAL TOPIC}}
+                        {{#link-to "browse"}} <div class="topic">{{!INDIVIDUAL TOPIC}}
+                            <p>Engineering and technology</p>
+                        </div> {{/link-to}}{{!END INDIVIDUAL TOPIC}}
+                    </div> {{!END SUBJECTS TABLE LEFT}}
+
+                    <div class="col-md-6"> {{!SUBJECTS TABLE RIGHT}}
+                        {{#link-to "browse"}} <div class="topic">{{!INDIVIDUAL TOPIC}}
+                            <p>Medicine and health sciences</p>
+                        </div> {{/link-to}}{{!END INDIVIDUAL TOPIC}}
+                        {{#link-to "browse"}} <div class="topic">{{!INDIVIDUAL TOPIC}}
+                            <p>People and places</p>
+                        </div> {{/link-to}}{{!END INDIVIDUAL TOPIC}}
+                        {{#link-to "browse"}} <div class="topic">{{!INDIVIDUAL TOPIC}}
+                            <p>Physical Sciences</p>
+                        </div> {{/link-to}}{{!END INDIVIDUAL TOPIC}}
+                        {{#link-to "browse"}} <div class="topic">{{!INDIVIDUAL TOPIC}}
+                            <p>Research and analysis methods</p>
+                        </div> {{/link-to}}{{!END INDIVIDUAL TOPIC}}
+                        {{#link-to "browse"}} <div class="topic">{{!INDIVIDUAL TOPIC}}
+                            <p>Science policy</p>
+                        </div> {{/link-to}}{{!END INDIVIDUAL TOPIC}}
+                        {{#link-to "browse"}} <div class="topic">{{!INDIVIDUAL TOPIC}}
+                            <p>Social sciences</p>
+                        </div> {{/link-to}}{{!END INDIVIDUAL TOPIC}}
+                    </div> {{!END SUBJECTS TABLE LEFT}}
+
 
                 </div> {{!END SUBJECTS LIST}}
-            </div> {{!END CONTAINER}}
-        </div> {{!END SUBJECTS LIST}}
+            </div> {{!END SUBJECTS LIST}}
+        </div> {{!END CONTAINER}}
     </div>{{!END ROW}}
 
     {{!BRANDED PREPRINT SERVERS}}
-    <div class="row">{{!BRANDED ROW}}
+    <div class="row branded-servers-background">{{!BRANDED ROW}}
+        <div class="container">
+           <div class="headers-div"> {{!HEADER DIV}}
+                    <h2>PREPRINTS</h2>
+                <h3>powered by the OSF</h3>
+                </div> {{!END HEADER DIV}}
+        </div>
         <div class="branded-servers text-center"> {{!center text}}
-            <div class="container-fluid p-b-md branded-servers-background"> {{!CONTAINER}}
-                <h1 class="f-w-xl">Branded preprint servers powered by OSF Preprints</h1>
+            <div class="container-fluid p-b-md"> {{!CONTAINER}}
                 <div class="row-fluid"> {{!FLUID ROW}}
                     <div class="col-sm-2 col-lg-2"> {{!UVA LOGO}}
                         <a href="http://www.virginia.edu/" alt="University of Virginia">
@@ -78,37 +143,26 @@
     </div> {{!END ROW}}
 
     {{!CONTRIBUTE YOUR RESEARCH}}
-    <div class="row">{{!ROW}}
+    <div class="row contribute-section">{{!ROW}}
         <div class="container"> {{!CONTAINER}}
-            <div class="space-top space-bottom text-center"> {{!STYLING}}
+            <div class="space-bottom"> {{!STYLING}}
                 {{upload-button}}
             </div> {{!END STYLING}}
         </div> {{!END CONTAINER}}
     </div> {{!END ROW}}
 
-    {{!FOOTER}}
+    {{!TOOLS}}
     <div class="row"> {{!ROW}}
-        <div class="space-top space-bottom moving-logo-section">
+        <div class="space-bottom tools-section">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-8">
-                        <h2><strong>Tools for communities</strong></h2>
-                        <h4> Create your own branded preprint servers backed by the OSF.</h4>
-                        <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">Contact us</a>
-                    </div>
-                    <div class="col-md-4 hidden-xs hidden-sm">
-                        <div id="logo">
-                            <div class="circle" id="circle-1"><span></span></div>
-                            <div class="circle" id="circle-2"><span></span></div>
-                            <div class="circle" id="circle-3"><span></span></div>
-                            <div class="circle" id="circle-4"><span></span></div>
-                            <div class="circle" id="circle-5"><span></span></div>
-                            <div class="circle" id="circle-6"><span></span></div>
-                            <div class="circle" id="circle-7"><span></span></div>
-                            <div class="circle" id="circle-8"><span></span></div>
-                        </div>
-                    </div>
-                </div>
+                        <div class="headers-div"> {{!HEADER DIV}}
+                    <h2>TOOLS</h2>
+                <h3>for community</h3>
+                </div> {{!END HEADER DIV}}
+                    <div class="text-center"> {{!TEXT CENTER}}
+                        <h4> Create your own <b>branded preprint server</b> backed by the OSF.</h4>
+                            <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">Contact us</a>
+                    </div> {{!END TEXT CENTER}}
             </div>
         </div>
     </div> {{!END ROW}}
