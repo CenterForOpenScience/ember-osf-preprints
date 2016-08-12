@@ -11,6 +11,7 @@ export const State = Object.freeze(new Ember.Object({
 export default Ember.Controller.extend({
     toast: Ember.inject.service(),
     session: Ember.inject.service(),
+    store: Ember.inject.service(),
     panelActions: Ember.inject.service(),
     currentUser: Ember.inject.service(),
     fileManager: Ember.inject.service(),
@@ -44,38 +45,55 @@ export default Ember.Controller.extend({
 
     filter: [{}, {}, {}],
     filteredPath: Ember.computed('path', 'filter', 'filter.@each.value', function() {
-        return this.get('path').slice(0, 2).map((path, i) => {
-            if (path.children && this.get(`filter.${i + 1}.value`)) {
-                return {
-                    name: path.name,
-                    children: path.children.filter(child =>
-                        this.get(`filter.${i + 1}.value`).indexOf(child.name || child)) !== -1
-                };
+        console.log('PPASDoAODAOODskdOKdsoakoASDOAKSODkOAKSOdkoako');
+        var _this = this;
+        this.get('path').slice(0, 2).map((path, i) => {
+            if (!path.children) {
+                _this.store.query('taxonomy', { filter: { parent_ids: path.id}, page: {size: 100} }).then(
+                    results => {path.children = results.map(
+                        result => {return {name: result.get('text'), id: result.id}}
+                    )
+                    _this.set('filteredPath', [path]);
+                    }
+                );
             }
-            return path;
         });
+        // return this.get('path').slice(0, 2).map((path, i) => {
+        //     if (path.children && this.get(`filter.${i + 1}.value`)) {
+        //         return {
+        //             name: path.name,
+        //             children: path.children.filter(child =>
+        //                 this.get(`filter.${i + 1}.value`).indexOf(child.name || child)) !== -1
+        //         };
+        //     }
+        //     return path;
+        // });
     }),
     sortedTaxonomies: Ember.computed('taxonomies', 'filter', 'filter.0.value', function() {
-        return [{
-            name: 'a',
-            children: [{
-                name: 'b',
-                children: ['c', 'd', 'e']
-            }, {
-                name: 'f',
-                children: ['g']
-            }],
-        }, {
-            name: 'h',
-            children: [{
-                name: 'i',
-                children: ['j', 'k']
-            }]
-        }, {
-            name: 'l'
-        }].filter(taxonomy =>
-            !this.get('filter.0.value') || taxonomy.name.indexOf(this.get('filter.0.value')) !== -1
-        );
+        // return [{
+        //     name: 'a',
+        //     children: [{
+        //         name: 'b',
+        //         children: ['c', 'd', 'e']
+        //     }, {
+        //         name: 'f',
+        //         children: ['g']
+        //     }],
+        // }, {
+        //     name: 'h',
+        //     children: [{
+        //         name: 'i',
+        //         children: ['j', 'k']
+        //     }]
+        // }, {
+        //     name: 'l'
+        // }].filter(taxonomy =>
+        //     !this.get('filter.0.value') || taxonomy.name.indexOf(this.get('filter.0.value')) !== -1
+        // );
+        var self = this;
+        this.store.query('taxonomy', { filter: { parent_ids: 'null'}, page: {size: 100} }).then(results => {
+            self.set('sortedTaxonomies', results.map( result => {return {name: result.get('text'), id: result.get('id')}}));
+        });
     }),
     path: [],
     selected: new Ember.Object(),
@@ -133,7 +151,7 @@ export default Ember.Controller.extend({
             args = args.filter(arg => Ember.typeOf(arg) === 'string');
             this.send('deleteSubject', `selected.${args.join('.')}`, ['selected', ...args]);
             this.notifyPropertyChange('selected');
-            this.rerender();
+            //this.rerender();
         },
         selectSubject(...args) {
             const process = (prev, cur, i, arr) => {
@@ -155,7 +173,20 @@ export default Ember.Controller.extend({
             [...args.map(arg => arg.name || arg), ''].reduce(process);
             this.set('path', args);
             this.notifyPropertyChange('selected');
-            this.rerender();
+            this.notifyPropertyChange('filter');
+            var _this = this;
+            this.get('path').slice(0, 2).map((path, i) => {
+                if (!path.children) {
+                    _this.store.query('taxonomy', { filter: { parent_ids: path.id}, page: {size: 100} }).then(
+                        results => {path.children = results.map(
+                            result => {return {name: result.get('text'), id: result.id}}
+                        )
+                        _this.set('filteredPath', [path]);
+                        }
+                    );
+                }
+            });
+            //this.rerender();
         }
     }
 });
