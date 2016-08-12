@@ -5,4 +5,3 @@ export default Ember.Route.extend({
         return this.store.findRecord('preprint', params.file_id);
     },
 });
-
