@@ -20,7 +20,7 @@ export default Ember.Component.extend({
                 files = files.without(primaryFile);
                 files.insertAt(0, primaryFile);
             });
-           return files;
+            return files;
         }
     }),
     supplementList: Ember.computed('files', 'files.[]', 'startValue', 'numShowing', function() {
@@ -29,7 +29,7 @@ export default Ember.Component.extend({
             return this.get('files').slice(this.get('startValue'), this.get('startValue') + this.get('numShowing'));
         }
     }),
-    init: function() {
+    init() {
         this.get('primaryFile').then(primaryFile => this.set('selectedFile', primaryFile));
         this._super(...arguments);
     },

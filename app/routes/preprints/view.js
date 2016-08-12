@@ -7,6 +7,7 @@ export default Ember.Route.extend({
     setupController(controller, model) {
         this.getFiles(model).then(files => controller.set('fileList', files));
         this._super(...arguments);
+
     },
     getFiles(node) {
         return node.query(
