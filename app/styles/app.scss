@@ -3,6 +3,7 @@
 @import 'base';
 @import 'variables';
 @import 'authors';
+@import 'validated-input';
 
 .highlight {
     color: $highlight-color;
@@ -548,7 +549,7 @@ hr {
             opacity: 1;
         }
     }
-    // THESE STYLES ARE INTERFERING WITH MY STYLES. 
+    // THESE STYLES ARE INTERFERING WITH MY STYLES.
     // .row {
     //     margin: 0;
     // }
@@ -744,6 +745,9 @@ hr {
     background-size: cover;
     background-image: url("img/logo_ua.png");
 }
+
+
+
 .socarxiv-logo {
     background-size: cover;
     background-image: url("img/logo_socarxiv.jpg");
