@@ -19,7 +19,7 @@ export default Ember.Component.extend({
         //TODO: Grab get primary file from preprint object
         if (files) {
             const fakePrimary = files.get('firstObject');
-            this.setProperties({'primaryFile': fakePrimary, 'selectedFile' : fakePrimary});
+            this.setProperties({ primaryFile: fakePrimary, selectedFile: fakePrimary });
         }
         //TODO: Remove above lines. They are temporary. Pass real primary to component
 
@@ -44,7 +44,6 @@ export default Ember.Component.extend({
         moveLeft() {
             const start = this.get('startValue');
             const numShowing = this.get('numShowing');
-            const fileListLength = this.get('files').length;
             this.set('scrollAnim', 'toRight');
             if (start - numShowing >= 0) {
                 this.set('startValue', start - numShowing);
@@ -56,7 +55,7 @@ export default Ember.Component.extend({
             const fileListLength = this.get('files').length;
             this.set('scrollAnim', 'toLeft');
             if (start + numShowing <= fileListLength) {
-                this.set('startValue', start + numShowing);;
+                this.set('startValue', start + numShowing);
             }
         },
         changeFile(file) {
