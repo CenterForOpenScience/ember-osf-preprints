@@ -1,16 +1,18 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('preprint-form-basics', 'Integration | Component | preprint form basics', {
+moduleForComponent('supplementary-file-browser', 'Integration | Component | supplementary file browser', {
   integration: true
 });
 
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
-  this.on('verify', function() {});
 
-  this.render(hbs`{{preprint-form-basics verify=(action 'verify')}}`);
+  this.render(hbs`{{supplementary-file-browser}}`);
 
-  assert.ok(this.$('span.required').length);
+  assert.equal(this.$().text().trim(), '');
+
+//  this.on('changeFile', function() {});
+
 });
