@@ -16,10 +16,11 @@ export default Ember.Component.extend({
         //Return list of files with primaryFile moved to the front
         let files = this.get('fileList');
         if (files && files.length > 1) {
-            const primaryFile = this.get('primaryFile');
-            files = files.without(primaryFile).toArray();
-            files.unshift(primaryFile);
-            return files;
+            this.get('primaryFile').then(primaryFile => {
+                files = files.without(primaryFile);
+                files.insertAt(0, primaryFile);
+            });
+           return files;
         }
     }),
     supplementList: Ember.computed('files', 'files.[]', 'startValue', 'numShowing', function() {
@@ -29,7 +30,7 @@ export default Ember.Component.extend({
         }
     }),
     init: function() {
-        this.set('selectedFile', this.get('primaryFile'));
+        this.get('primaryFile').then(primaryFile => this.set('selectedFile', primaryFile));
         this._super(...arguments);
     },
     actions: {
