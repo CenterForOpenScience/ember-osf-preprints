@@ -3,8 +3,16 @@ import { module, test } from 'qunit';
 
 module('Unit | Helper | conditions for contrib removal');
 
-// Replace this with your real tests.
-test('it works', function(assert) {
-  let result = conditionsForContribRemoval([42]);
-  assert.ok(result);
+test('cannot remove last admin contributor', function(assert) {
+    var contributorToRemove = {
+        'id': '12345'
+
+    };
+    var contributors = [{
+        'id': '12345',
+        'permission': 'admin',
+        'bibliographic': false
+    }];
+    let result = conditionsForContribRemoval([contributorToRemove, contributors]);
+    assert.equal(result, false);
 });
