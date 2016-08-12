@@ -1,10 +1,39 @@
 import { minBibliographic } from 'preprint-service/helpers/min-bibliographic';
 import { module, test } from 'qunit';
+import Ember from 'ember';
 
 module('Unit | Helper | min bibliographic');
 
-// Replace this with your real tests.
-test('it works', function(assert) {
-  let result = minBibliographic([42]);
-  assert.ok(result);
+test('cannot update bibliographic field of last bib contributor', function(assert) {
+   var contrib = Ember.Object.create({
+        'id': '12345',
+        'permission': 'admin',
+        'unregisteredContributor': null,
+        'bibliographic': true
+
+    });
+    var contributors = [contrib];
+
+  let result = minBibliographic([contrib, contributors]);
+   assert.equal(result, false);
+});
+
+test('can update bibliographic field on contributor if there is another bib contrib', function(assert) {
+   var contrib = Ember.Object.create({
+        'id': '12345',
+        'permission': 'admin',
+        'unregisteredContributor': null,
+        'bibliographic': true
+
+    });
+
+    var otherContrib = Ember.Object.create({
+        'id': 'abcde',
+        'permission': 'read',
+        'bibliographic': true
+    });
+    var contributors = [contrib, otherContrib];
+
+  let result = minBibliographic([contrib, contributors]);
+   assert.equal(result, true);
 });

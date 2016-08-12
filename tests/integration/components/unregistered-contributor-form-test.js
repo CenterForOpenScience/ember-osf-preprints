@@ -6,13 +6,16 @@ moduleForComponent('unregistered-contributor-form', 'Integration | Component | u
 });
 
 test('form renders', function(assert) {
+    const noop = () => {};
+    this.set('resetfindContributorsView', noop);
+    this.set('addUnregisteredContributor', noop);
+    this.render(hbs`{{unregistered-contributor-form 
+                       resetfindContributorsView=resetfindContributorsView
+                       addUnregisteredContributor=addUnregisteredContributor}}`);
 
-    this.set('resetFindContributorsView', console.log('reset'));
-    this.set('addUnregisteredContributor', console.log('add'));
-
-    this.render(hbs`{{unregistered-contributor-form resetFindContributorsView=resetFindContributorsView addUnregisteredContributor=addUnregisteredContributor}}`);
 
     assert.equal(this.$('label')[0].textContent.trim(), 'Full Name');
     assert.equal(this.$('label')[1].textContent.trim(), 'Email');
 
 });
+
