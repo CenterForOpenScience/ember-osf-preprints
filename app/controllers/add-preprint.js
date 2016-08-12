@@ -66,7 +66,6 @@ export default Ember.Controller.extend({
         this.updateFilteredPath();
     }),
     sortedTaxonomies: Ember.computed('taxonomies', 'filter', 'filter.0.value', function() {
-
         var self = this;
         this.store.query('taxonomy', { filter: { parent_ids: 'null'}, page: {size: 100} }).then(results => {
             self.set('sortedTaxonomies', results.map( result => {
@@ -156,3 +155,10 @@ export default Ember.Controller.extend({
         }
     }
 });
+
+// Ember.Handlebars.helper('ifCond', function(v1, v2, options) {
+//   if(v1 === v2) {
+//     return options.fn(this);
+//   }
+//   return options.inverse(this);
+// });
