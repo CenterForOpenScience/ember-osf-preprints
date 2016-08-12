@@ -321,6 +321,17 @@ h5 {
 			1px 1px 0 black; */
         font-weight: 300;
     }
+    .subject.row {
+        list-style: none;
+        li {
+            padding: 1rem;
+            button {
+                padding: 1rem;
+                font-size: 125%;
+                width: 100%;
+            }
+        }
+    }
 }
 
 td:hover {

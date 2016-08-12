@@ -1,0 +1,11 @@
+<ul>
+    {{#each sortedList as |pair|}}
+        <ul class="subject row">
+            {{#each pair as |subject|}}
+                <li class="col-md-6">
+                    <button class="btn btn-primary">{{subject.text}}</button>
+                </li>
+            {{/each}}
+        </ul>
+    {{/each}}
+</ul>
