@@ -7,33 +7,30 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
     filter: [{}, {}, {}],
     updateFilteredPath() {
         var _this = this;
-        var overallPath = []
+        var overallPath = [];
         var paths = this.get('path').slice(0, 2);
         if (paths.length === 1) {
-            _this.get('store').query('taxonomy', { filter: { parent_ids: paths[0].id}, page: {size: 100} }).then(
-                results => {Ember.set(paths[0], 'children', results.map(
-                    result => {return {name: result.get('text'), id: result.id}}
-                ))
+            _this.get('store').query('taxonomy', { filter: { parent_ids: paths[0].id}, page: {size: 100} }).then(results => {
+                Ember.set(paths[0], 'children', results.map(
+                    result => {return {name: result.get('text'), id: result.id};}
+                ));
                 overallPath.push(paths[0]);
                 _this.set('filteredPath', overallPath);
-                }
-            );
+            });
         } else if (paths.length === 2) {
-            _this.get('store').query('taxonomy', { filter: { parent_ids: paths[0].id}, page: {size: 100} }).then(
-                results => {Ember.set(paths[0], 'children', results.map(
-                    result => {return {name: result.get('text'), id: result.id}}
-                ))
+            _this.get('store').query('taxonomy', { filter: { parent_ids: paths[0].id}, page: {size: 100} }).then(results => {
+                Ember.set(paths[0], 'children', results.map(
+                    result => {return {name: result.get('text'), id: result.id};}
+                ));
                 overallPath.push(paths[0]);
-                _this.get('store').query('taxonomy', { filter: { parent_ids: paths[1].id}, page: {size: 100} }).then(
-                    results => {Ember.set(paths[1], 'children', results.map(
-                        result => {return {name: result.get('text'), id: result.id}}
-                    ))
+                _this.get('store').query('taxonomy', { filter: { parent_ids: paths[1].id}, page: {size: 100} }).then(results => {
+                    Ember.set(paths[1], 'children', results.map(
+                        result => {return {name: result.get('text'), id: result.id};}
+                    ));
                     overallPath.push(paths[1]);
                     _this.set('filteredPath', overallPath);
-                    }
-                );
-                }
-            );
+                });
+            });
         }
     },
     filteredPath: Ember.computed('path', 'changeFlag', 'filter', 'filter.@each.value', function() {
