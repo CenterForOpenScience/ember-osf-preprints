@@ -7,22 +7,14 @@ export default Ember.Component.extend({
     numShowing: 6,
     selectedFile: {},
     showRightArrow: Ember.computed('numShowing', 'startValue', function() {
-        return (this.get('startValue') + this.get('numShowing') < this.get('fileList').length);
+        return (this.get('startValue') + this.get('numShowing') < this.get('files').length);
     }),
     showLeftArrow: Ember.computed('numShowing', 'startValue', function() {
         return (this.get('startValue') !== 0);
     }),
     files: Ember.computed('fileList', 'fileList.[]', 'primaryFile', function() {
-        //Returns the list with primaryFile moved to the front
+        //Return list of files with primaryFile moved to the front
         let files = this.get('fileList');
-
-        //TODO: Grab get primary file from preprint object
-        if (files) {
-            const fakePrimary = files.get('firstObject');
-            this.setProperties({ primaryFile: fakePrimary, selectedFile: fakePrimary });
-        }
-        //TODO: Remove above lines. They are temporary. Pass real primary to component
-
         if (files && files.length > 1) {
             const primaryFile = this.get('primaryFile');
             files = files.without(primaryFile).toArray();
@@ -31,14 +23,14 @@ export default Ember.Component.extend({
         }
     }),
     supplementList: Ember.computed('files', 'files.[]', 'startValue', 'numShowing', function() {
+        //Return the list of length `numShowing` that is displayed
         if (this.get('files')) {
-            return this.get('fileList').slice(this.get('startValue'), this.get('startValue') + this.get('numShowing'));
+            return this.get('files').slice(this.get('startValue'), this.get('startValue') + this.get('numShowing'));
         }
     }),
     init: function() {
+        this.set('selectedFile', this.get('primaryFile'));
         this._super(...arguments);
-        //TODO: Add this line, or similar line back in after getting real primary
-        //this.set('selectedFile', this.get('primaryFile'));
     },
     actions: {
         moveLeft() {
@@ -52,9 +44,8 @@ export default Ember.Component.extend({
         moveRight() {
             const start = this.get('startValue');
             const numShowing = this.get('numShowing');
-            const fileListLength = this.get('files').length;
             this.set('scrollAnim', 'toLeft');
-            if (start + numShowing <= fileListLength) {
+            if (start + numShowing <= this.get('files').length) {
                 this.set('startValue', start + numShowing);
             }
         },

@@ -14,7 +14,7 @@
             {{#each list as |supplement|}}
                 {{#if (eq supplement.kind "folder")}}
                     <a href={{projectURL}} style="color:inherit;">
-                        <li class="small-files col-xs-2 p-md box {{if (eq selectedFile supplement) 'selected'}}">
+                        <li class="small-files col-xs-2 p-md box">
                             <i class="fa fa-folder fa-3x p-b-xs" aria-hidden="true"></i>
                             <p>{{supplement.name}}</p>
                         </li>
