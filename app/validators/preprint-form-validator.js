@@ -7,7 +7,7 @@ const Validations = buildValidations({
             validator('presence', true),
             validator('length', {
                 // minimum length for title?
-                max: 300,
+                max: 200,
             })
         ]
     },

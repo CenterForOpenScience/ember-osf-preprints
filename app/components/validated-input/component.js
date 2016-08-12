@@ -1,3 +1,4 @@
+// This component is derived from ember-cp-validations. See https://github.com/offirgolan/ember-cp-validations for more information
 import Ember from 'ember';
 const {
     isEmpty,
@@ -5,9 +6,7 @@ const {
     defineProperty,
 } = Ember;
 
-import Validations from '../../validators/preprint-form-validator';
-
-export default Ember.Component.extend(Validations, {
+export default Ember.Component.extend({
     classNames: ['validated-input'],
     classNameBindings: ['showErrorClass:has-error', 'isValid:has-success'],
     model: null,
