@@ -81,17 +81,16 @@
     padding-top: 15px;
 }
 
-.sortable-item {
-  transition: all .125s;
-}
-
-.sortable-item.is-dragging {
-  transition-duration: 0s;
-  background: white;
-  z-index: 10;
-}
-
 tr.contributor-row:hover {
     cursor: move;
     background: #EEE;
+}
+
+.sortable-item {
+    transition: background-color 125ms;
+    &.is-dragging {
+        transition-duration: 0;
+        background: white;
+        z-index: 10;
+    }
 }

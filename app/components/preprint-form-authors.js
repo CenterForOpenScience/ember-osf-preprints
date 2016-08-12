@@ -128,10 +128,12 @@ export default CpPanelBodyComponent.extend({
         },
         // TODO Add server request when API functionality in place.
         reorderItems(itemModels, draggedContrib) {
+            var originalOrder = this.get('contributors');
+            this.set('contributors', itemModels);
             var newIndex = itemModels.indexOf(draggedContrib);
-            this.attrs.reorderContributors(draggedContrib, newIndex).then(() => {
-                this.set('contributors', itemModels);
-            }, () => {
+            this.attrs.reorderContributors(draggedContrib, newIndex).then(() => {},
+            () => {
+                this.set('contributors', originalOrder);
                 this.get('toast').error('Could not reorder contributors');
             });
         }
