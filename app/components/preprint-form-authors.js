@@ -1,11 +1,8 @@
 import Ember from 'ember';
 import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
-import permissions, { permissionSelector } from 'ember-osf/const/permissions';
+import { permissionSelector } from 'ember-osf/const/permissions';
 
 export default CpPanelBodyComponent.extend({
-    READ: permissions.READ,
-    WRITE: permissions.WRITE,
-    ADMIN: permissions.ADMIN,
     valid: Ember.computed.alias('newContributorId'),
     permissionToggle: false,
     bibliographicToggle: false,
@@ -125,7 +122,7 @@ export default CpPanelBodyComponent.extend({
             this.$('.searchQuery')[0].value = '';
         },
         // TODO Add server request when API functionality in place.
-        reorderItems(itemModels, draggedModel) {
+        reorderItems(itemModels) {
             this.set('contributors', itemModels);
         }
     },

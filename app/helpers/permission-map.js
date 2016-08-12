@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import permissions, { permissionSelector } from 'ember-osf/const/permissions';
+import { permissionSelector } from 'ember-osf/const/permissions';
 
 /**
  * permissionMap helper.  Maps short form of the contributor's permissions
