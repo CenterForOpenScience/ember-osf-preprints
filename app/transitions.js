@@ -6,4 +6,9 @@ export default function() {
         this.use('toRight'),
         this.reverse('toLeft')
     );
+    this.transition(
+        this.toRoute(['browse', 'add-preprint', 'preprints']),
+        this.use('fade', {duration: 500}),
+        this.reverse('fade')
+    );
 }
