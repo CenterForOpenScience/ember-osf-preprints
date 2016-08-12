@@ -1,9 +1,8 @@
 import Ember from 'ember';
 import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
-import PreprintFormFieldMixin from '../mixins/preprint-form-field';
 import permissions, { permissionSelector } from 'ember-osf/const/permissions';
 
-export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
+export default CpPanelBodyComponent.extend({
     READ: permissions.READ,
     WRITE: permissions.WRITE,
     ADMIN: permissions.ADMIN,
@@ -58,7 +57,8 @@ export default CpPanelBodyComponent.extend(PreprintFormFieldMixin, {
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
             let res = this.attrs.addUnregisteredContributor(fullName, email, 'write', true);
-            res.then(() => {
+            res.then((contributor) => {
+                this.get('contributors').pushObject(contributor);
                 this.redrawTemplate();
                 this.set('addState', 'searchView');
                 this.set('fullName', '');
