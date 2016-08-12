@@ -138,23 +138,28 @@ export default Ember.Controller.extend(NodeActionsMixin, {
         changeUploadState(newState) {
             this.set('uploadState', newState);
         },
-        createProject(nextAction) {
+        createProject() {
             this.get('store').createRecord('node', {
                 title: this.get('nodeTitle'),
                 category: 'project',
-                public: true
+                public: true // TODO: should this be public now or later, when it is turned into a preprint?
             }).save().then(node => {
                 this.set('model', node);
                 this._refreshNodes();
-                this.send('startUpload', nextAction);
+                this.send('startUpload');
             });
         },
-        createChild(nextAction) {
-            // TODO: create child and set to model
-            this.get('toast').warning('Not implemented!');
-            this.send('startUpload', nextAction);
+        // Override NodeActionsMixin.addChild
+        addChild() {
+            this._super(`${this.get('model.title')} Preprint`, this.get('model.description')).then(child => {
+                this.set('model', child);
+                this._refreshNodes();
+                this.send('startUpload');
+            });
         },
+        // nextAction: {action} callback for the next action to perform.
         deleteProject(nextAction) {
+            // TODO: delete the previously created model, not the currently selected model
             if (this.get('model')) {
                 this.get('model').destroyRecord().then(() => {
                     this.get('toast').info('Project deleted');
@@ -164,12 +169,12 @@ export default Ember.Controller.extend(NodeActionsMixin, {
             }
             nextAction();
         },
-        startUpload(nextAction) {
+        startUpload() {
             // TODO: retrieve and save fileid from uploaded file
             this.set('_url', `${this.get('model.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
             this.get('resolve')();
             this.get('toast').info('File will upload in the background.');
-            nextAction();
+            this.send('next', this.get('_names.0'));
         },
         // Dropzone hooks
         preUpload(ignore, dropzone, file) {
@@ -202,7 +207,7 @@ export default Ember.Controller.extend(NodeActionsMixin, {
                     console.error('deletion not implemented');
             }
         },
-        deselectSubject([...args]) {
+        deselectSubject(args) {
             args = args.filter(arg => Ember.typeOf(arg) === 'string');
             this.send('deleteSubject', `selected.${args.join('.')}`, ['selected', ...args]);
             this.notifyPropertyChange('selected');
