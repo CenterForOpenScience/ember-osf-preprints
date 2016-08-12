@@ -14,6 +14,13 @@ export default Ember.Controller.extend({
     searchString: '',
     queryBody: {},
 
+    sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
+
+    // chosenOption is always the first element in the list
+    chosenSortByOption: Ember.computed('sortByOptions', function() {
+        return this.get('sortByOptions')[0];
+    }),
+
     showActiveFilters: Ember.computed.notEmpty('activeFilters'),
     showPrev: Ember.computed.gt('page', 1),
     showNext: Ember.computed('page', 'size', 'numberOfResults', function() {
@@ -93,12 +100,12 @@ export default Ember.Controller.extend({
         }
 
         let sort = [];
-        let sortBy = this.get('sortBy') || 'Relevance';
-        if (sortBy === 'Upload date (oldest to newest)') {
+        let sortByOption = this.get('chosenSortByOption');
+        if (sortByOption === 'Upload date (oldest to newest)') {
             sort.push({
                 date_updated: { order: 'asc' }
             });
-        } else if (sortBy === 'Upload date (newest to oldest)') {
+        } else if (sortByOption === 'Upload date (newest to oldest)') {
             sort.push({
                 date_updated: { order: 'desc' }
             });
@@ -147,18 +154,23 @@ export default Ember.Controller.extend({
             }
         },
 
-        sortBy(option) {
-            this.set('sortBy', option);
-            this.set('page', 1);
-            this.loadPage();
-        },
-
         linkToAddPreprint() {
             this.transitionToRoute('add-preprint');
         },
 
         clearFilters() {
             this.set('activeFilters', []);
+        },
+
+        sortBySelect(index) {
+            // Selecting an option just swaps it with whichever option is first
+            let copy = this.get('sortByOptions').slice(0);
+            let temp = copy[0];
+            copy[0] = copy[index];
+            copy[index] = temp;
+            this.set('sortByOptions', copy);
+            this.set('page', 1);
+            this.loadPage();
         }
     },
 });

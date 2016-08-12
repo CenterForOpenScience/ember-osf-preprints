@@ -1,5 +1,9 @@
 <div class="container space-top space-bottom">
-    {{search-header title="Preprint Archive" subtitle="We got lots of preprints."}}
+    <div class="text-center space-top">
+        <h1>Preprint Archive</h1>
+        <h4>We got lots of preprints.</h4>
+    </div>
+
     {{search-preprints search="search"}}
 </div>
 
@@ -10,7 +14,18 @@
         </div>
         <div class="col-md-6">
             <span class="pull-right">
-                {{search-sortby select="sortBy"}}
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="true">
+                        Sort by: {{chosenSortByOption}}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="sortBy">
+                        {{#each sortByOptions as |option index|}}
+                            <li style="cursor: pointer; cursor: hand"><a {{action "sortBySelect" index}}>{{option}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
             </span>
         </div>
     </div>

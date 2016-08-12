@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     store: Ember.inject.service(),
 
+    // https://github.com/jonmiles/bootstrap-treeview
     didInsertElement() {
         // this.get('store').query('taxonomy', { 'field[\'parent_ids\']': null, 'page[size]': 200 }).then(topLevel => {
         // TODO: populate tree lazily with filterable taxonomy endpoint
@@ -37,6 +38,9 @@ export default Ember.Component.extend({
                     this.sendAction('filter', getSubjects(data, []));
                 }
                 */
+
+                // getChecked() is a valid method, but it's not in the README for bootstrap-treeview
+
                 this.$('#taxonomyTree').treeview('toggleNodeChecked', [data.nodeId, { silent: true }]);
             }
         });
