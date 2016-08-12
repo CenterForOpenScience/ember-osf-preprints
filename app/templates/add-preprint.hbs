@@ -99,7 +99,7 @@
 
                     <div class="row">
                         <div class="col-md-4">
-                            <ul>
+                            <ul style="overflow: scroll">
                                 {{input value=filter.[0].value class="form-control" placeholder="Search"}}
                                 {{#each sortedTaxonomies as |element|}}
                                     <li {{action 'selectSubject' element}} class={{if (eq path.[0].name element.name) 'selected'}}>
@@ -110,7 +110,7 @@
                         </div>
 
                         <div class="col-md-4">
-                            <ul>
+                            <ul style="overflow: scroll">
                                 {{input value=filter.[1].value class="form-control" placeholder="Search"}}
                                 {{#with path.[0] as |taxonomy|}}
                                     {{#each filteredPath.[0].children as |element|}}
@@ -123,7 +123,7 @@
                         </div>
 
                         <div class="col-md-4">
-                            <ul>
+                            <ul style="overflow: scroll">
                                 {{input value=filter.[2].value class="form-control" placeholder="Search"}}
                                 {{#with path.[0] as |taxonomy|}}
                                     {{#with path.[1] as |category|}}
