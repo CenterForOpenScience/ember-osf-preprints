@@ -1,4 +1,4 @@
-<div class="container">{{!CONATINER DIV}}
+<div id="view-page" class="container">{{!CONATINER DIV}}
     <div class="m-b-md p-md osf-box m-t-lg"> {{!OSF BOX DIV}}
         <div class="row p-l-md m-t-lg"> {{!HEADER ROW}}
             <h1>{{model.title}}</h1>
@@ -19,20 +19,23 @@
                 {{supplementary-file-browser primaryFile=model.primaryFile fileList=fileList projectURL=model.links.html}}
             </div> {{!END LEFT COL DIV}}
             <div class="col-md-5"> {{!RIGHT SIDE COL}}
-                <div class="p-md osf-box-lt" id="download_project">{{!SHARE ROW}}
-                    <i class="fa fa-download" aria-hidden="true"></i>
-                    <a href={{model.links.download}}>Download</a>
-                    <i class="fa fa-edit" aria-hidden="true"></i>
-                    {{#link-to "preprints.edit"}}Edit{{/link-to}}
-                    <span class="pull-right">
-                        {{share-popup}}
+                <div class="p-sm osf-box-lt" id="download_project">{{!SHARE ROW}}
+                    <a type="button" class="btn btn-primary" href={{model.primaryFile.links.download}}>Download</a>
+                    <span class="p-sm pull-right">
+                        <p class="f-w-lg">
+                            {{#link-to "preprints.edit" class="link-solid m-r-xs"}}Edit{{/link-to}}
+                            {{#link-to "preprints.edit" class="link-solid"}}Share{{/link-to}}
+                        </p>
                     </span>
                 </div>{{!END SHARE ROW}}
-                <h3> Abstract: </h3>
-                <p> {{model.abstract}} </p>
+                <div class="f-w-xs text-muted m-b-xl p-t-xs">
+                    <h3 class="page-header p-l-md">Abstract</h3>
+                    <p class="p-l-md">{{model.abstract}}</p>
+                </div>
                 {{!PROJECT BUTTON}}
-                <div class="p-lg osf-box-lt" id="view_project">
-                    <span> <a type="button" class="btn btn-primary pull-right" href={{model.links.html}}>View project</a> The project for this paper is available on the Open Science Framework</span>
+                <div class="p-lg osf-box-lt text-center">
+                    <p class="f-w-xs text-muted">The project for this paper is available on the Open Science Framework.</p>
+                    <a type="button" class="btn btn-info" href={{model.links.html}}>Visit project</a>
                 </div>
             </div> {{!END RIGHT SIDE COL}}
         </div> {{!END CONTENT ROW}}
