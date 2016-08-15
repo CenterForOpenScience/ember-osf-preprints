@@ -9,7 +9,7 @@ export default Ember.Route.extend({
         this._super(...arguments);
     },
     getFiles(node) {
-    //TODO: Make supplement scrolling based on pagination
+        //TODO: Make supplement scrolling based on pagination
         return node.query(
         'files', { 'filter[name]': 'osfstorage' }
         ).then(
