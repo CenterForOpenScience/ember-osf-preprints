@@ -1,8 +1,10 @@
 import Ember from 'ember';
 import { validator, buildValidations } from 'ember-cp-validations';
 
-import NodeActionsMixin from 'ember-osf/mixins/node-actions';
 import permissions from 'ember-osf/const/permissions';
+import NodeActionsMixin from 'ember-osf/mixins/node-actions';
+import loadAll from 'ember-osf/utils/load-relationship';
+
 
 // Enum of available upload states
 export const State = Object.freeze(Ember.Object.create({
@@ -51,6 +53,19 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
 
+    // Data tracked internally
+    user: null,
+    node: null,
+    userNodes: Ember.A(),
+    contributors: Ember.A(),
+
+    getContributors: Ember.observer('node', function() {
+        let node = this.get('node');
+        let contributors = Ember.A();
+        loadAll(node, 'contributors', contributors).then(()=>
+             this.set('contributors', contributors));
+    }),
+
     // Upload variables
     _State: State,
     filePickerState: State.START,
@@ -58,8 +73,6 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
     uploadFile: null,
     resolve: null,
     shouldCreateChild: false,
-    user: null,
-    userNodes: Ember.A([]),
     dropzoneOptions: {
         uploadMultiple: false,
         method: 'PUT'

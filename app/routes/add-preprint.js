@@ -22,13 +22,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
                 return user;
             }).then((user) => loadAll(user, 'nodes', userNodes));
 
-        let contributors = Ember.A();
-        controller.set('contributors', contributors);
-        // FIXME: This shouldn't be in setupController- we don't know the node yet until it is selected
-        // var aNode;
-        // loadAll(aNode, 'contributors', contributors).then(()=>
-        //     controller.set('contributors', contributors));
-
         return this._super(...arguments);
     }
 });
