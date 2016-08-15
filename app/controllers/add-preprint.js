@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 import NodeActionsMixin from 'ember-osf/mixins/node-actions';
+import permissions from 'ember-osf/const/permissions';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 // Enum of available upload states
@@ -67,6 +68,13 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         uploadMultiple: false,
         method: 'PUT'
     },
+    canEdit: Ember.computed('isAdmin', 'isRegistration', function() {
+        return this.get('isAdmin') && !(this.get('model').get('registration'));
+    }),
+    isAdmin: Ember.computed(function() {
+        return this.get('model.currentUserPermissions').indexOf(permissions.ADMIN) >= 0;
+    }),
+    searchResults: [],
 
     _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
     init() {
@@ -271,6 +279,21 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
             this.set('path', args);
             this.notifyPropertyChange('selected');
             this.rerender();
+        },
+        /**
+         * findContributors method.  Queries APIv2 users endpoint on full_name.  Fetches specified page of results.
+         * TODO will eventually need to be changed to multifield query.
+         *
+         * @method findContributors
+         * @param {String} query ID of user that will be a contributor on the node
+         * @param {Integer} page Page number of results requested
+         * @return {Record} Returns specified page of user records matching full_name query
+         */
+        findContributors(query, page) {
+            return this.store.query('user', { filter: { full_name: query }, page: page }).then((contributors) => {
+                this.set('searchResults', contributors);
+                return contributors;
+            });
         }
     }
 });

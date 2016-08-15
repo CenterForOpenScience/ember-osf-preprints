@@ -2,6 +2,7 @@
 @import 'ember-power-select';
 @import 'base';
 @import 'variables';
+@import 'authors';
 @import 'validated-input';
 
 .highlight {
@@ -334,9 +335,10 @@ h5 {
     }
 }
 
-td:hover {
-    background-color: #3D3D3D;
-}
+// Interfering with other styles
+// td:hover {
+//     background-color: #3D3D3D;
+// }
 
 
 .subjects {
@@ -558,12 +560,13 @@ hr {
             opacity: 1;
         }
     }
-    .row {
-        margin: 0;
-    }
-    label, input, textarea {
-        display: block;
-    }
+    // THESE STYLES ARE INTERFERING WITH MY STYLES.
+    // .row {
+    //     margin: 0;
+    // }
+    // label, input, textarea {
+    //     display: block;
+    // }
     label > input, label > textarea {
         font-weight: normal;
     }

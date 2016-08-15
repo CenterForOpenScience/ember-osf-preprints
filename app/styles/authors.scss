@@ -1,0 +1,100 @@
+.vert-align-disabled-permissions {
+    padding-top: 5px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.vert-align-enabled-permissions {
+    padding-top: 3px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.drag-drop-contrib {
+    padding-top: 9px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: gray;
+
+}
+.vert-align {
+    padding-top: 6px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.bib-padding {
+    text-align: center;
+}
+
+// Author table divisions
+.author-table {
+    td {
+        border-top: 1px solid #ddd;
+    }
+}
+
+.col-division-left {
+    padding-left: 20px;
+    border-left: 1px solid #ccc;
+}
+
+.col-division-right {
+    border-right: 1px solid #ccc;
+}
+
+.author-search-box {
+    padding-top: 20px;
+}
+
+.unregisteredUsers {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom:20px;
+    background-color: #EEEEEE;
+}
+
+.unregistered-name {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.unregistered-email {
+    padding-bottom: 20px;
+    padding-top: 5px;
+}
+
+.unregistered-submit {
+    padding-top: 10px;
+}
+
+.header-inline {
+    display: inline;
+}
+
+.drag-drop {
+    padding-top: 10px;
+}
+
+.author-header {
+    padding-top: 15px;
+}
+
+tr.contributor-row:hover {
+    cursor: move;
+    background: #EEE;
+}
+
+.sortable-item {
+    transition: background-color 125ms;
+    &.is-dragging {
+        transition-duration: 0;
+        background: white;
+        z-index: 10;
+    }
+}
+
+.contrib-column-header {
+    padding-left: 12px;
+}
