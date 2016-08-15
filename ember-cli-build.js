@@ -77,5 +77,10 @@ module.exports = function(defaults) {
         production: 'bower_components/bootstrap-treeview/dist/js/bootstrap-treeview.min.js'
     });
 
+     app.import({
+        development: 'bower_components/hint.css/hint.css',
+        production: 'bower_components/hint.css/hint.css'
+    });
+
     return app.toTree();
 };

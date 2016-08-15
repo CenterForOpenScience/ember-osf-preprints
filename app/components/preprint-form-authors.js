@@ -29,13 +29,6 @@ export default CpPanelBodyComponent.extend({
             return;
         }
     }),
-    // Search results excluding users that are already contributors
-    newSearchResults: Ember.computed('searchResults.[]', 'contributors.[]', 'addState', function() {
-        let searchResults = this.get('searchResults');
-        let contributors = this.get('contributors');
-        let userIds = contributors.map((contrib) => contrib.get('userId'));
-        return searchResults.filter((result) => !userIds.contains(result.id));
-    }),
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {

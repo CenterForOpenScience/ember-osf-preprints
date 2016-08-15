@@ -23,16 +23,23 @@
                             <button class="btn btn-primary btn-small" {{action "unregisteredView"}}> Add an unregistered user </button>
                         </div>
                         <h3> Results </h3>
-                        {{#if newSearchResults}}
+                        {{#if searchResults}}
                             <table class="table author-table">
-                                {{#each newSearchResults as |result|}}
+                                {{#each searchResults as |result|}}
                                     <tr>
                                         <td>
                                             <img class="m-l-xs" src={{result.links.profile_image}} height=40 width=40>
                                             <a href={{result.links.html}}> {{result.fullName}} </a>
+                                            {{#if (eq currentUser result)}}
+                                                <span class="small"> Yourself </span>
+                                            {{/if}}
 
                                         </td>
-                                        <td> <button class="btn btn-success btn-small" {{action "addContributor" result}}> Add </button> </td>
+                                        {{#if (userIsContributor result contributors removalToggle)}}
+                                            <td><span class="hint hint--left" aria-label="Already added"> <button class="btn btn-default btn-small disabled disabled-checkmark"><i class="fa fa-check" aria-hidden="true"></i> </button> </span> </td>
+                                        {{else}}
+                                            <td> <button class="btn btn-success btn-small" {{action "addContributor" result}}> Add </button> </td>
+                                        {{/if}}
                                     </tr>
                                 {{/each}}
                             </table>
