@@ -53,7 +53,7 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
 
     // Upload variables
     _State: State,
-    state: State.START,
+    filePickerState: State.START,
     uploadState: State.START,
     uploadFile: null,
     resolve: null,
@@ -164,7 +164,7 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         * Upload section
         */
         changeState(newState) {
-            this.set('state', newState);
+            this.set('filePickerState', newState);
         },
         changeUploadState(newState) {
             this.set('uploadState', newState);
@@ -175,8 +175,8 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
                 category: 'project',
                 public: false // TODO: should this be public now or later, when it is turned into a preprint?  Default to the least upsetting option.
             }).save().then(node => {
+                this.get('userNodes').pushObject(node);
                 this.set('node', node);
-                this._refreshNodes();
                 this.send('startUpload');
             });
         },

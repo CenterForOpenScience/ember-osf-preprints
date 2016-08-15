@@ -5,7 +5,7 @@
             {{#preprint-form-section id='preprint-form-upload' open=true name=name}}
                 {{preprint-form-header name=name valid=(get valid name)}}
                 {{#preprint-form-body}}
-                    {{#liquid-bind state class='translate' as |currentState|}}
+                    {{#liquid-bind filePickerState class='translate' as |currentState|}}
                         <div class={{currentState}}>
                             {{#if (eq currentState _State.START)}}
                                 <button class="col-md-4" {{action 'changeState' _State.NEW}}>Upload a New File</button>
@@ -38,7 +38,11 @@
                                 {{/liquid-bind}}
 
                             {{else if (eq currentState _State.EXISTING)}}
-                                {{preprint-form-project-select userNodes=userNodes fileSelect=true selectedNode=node shouldCreateChild=shouldCreateChild}}
+                                {{preprint-form-project-select
+                                  userNodes=userNodes
+                                  fileSelect=true
+                                  selectedNode=node
+                                  shouldCreateChild=shouldCreateChild}}
                                 {{! TODO: cleanup created component if needed }}
                                 <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
                                 {{! TODO: check if project and file are selected before allowing user to continue }}

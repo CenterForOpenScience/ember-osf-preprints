@@ -20,9 +20,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
             .then((user) => {
                 controller.set('user', user);
                 return user;
-            }).then((user) => {
-                return loadAll(user, 'nodes', userNodes);
-            });
+            }).then((user) => loadAll(user, 'nodes', userNodes));
 
         let contributors = Ember.A();
         controller.set('contributors', contributors);
