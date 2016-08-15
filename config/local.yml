@@ -9,5 +9,5 @@ stage2:
     CLIENT_ID: null
     PERSONAL_ACCESS_TOKEN: null
     OAUTH_SCOPES: null
-    REDIRECT_URI: null
+    REDIRECT_URI: https://staging2.osf.io/login/
 ######### end ember-osf ##########
