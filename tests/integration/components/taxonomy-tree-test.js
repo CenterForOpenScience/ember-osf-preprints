@@ -8,11 +8,6 @@ moduleForComponent('taxonomy-tree', 'Integration | Component | taxonomy tree', {
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
-  this.set('tree', {
-      get() {}
-  });
 
-  this.render(hbs`{{taxonomy-tree tree=tree}}`);
-
-  assert.ok(this.$('#taxonomyTree').length);
+  assert.ok(this.render(hbs`{{taxonomy-tree subject=''}}`));
 });

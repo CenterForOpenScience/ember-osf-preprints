@@ -176,7 +176,7 @@ export default Ember.Controller.extend({
         selectSubjectFilter(subject) {
             let match = this.get('activeFilters').filter(function(item) {
                 return item.indexOf(subject.text) !== -1;
-            })
+            });
             if (!match.length) {
                 this.get('activeFilters').pushObject('subject:' + subject.text);
             }
