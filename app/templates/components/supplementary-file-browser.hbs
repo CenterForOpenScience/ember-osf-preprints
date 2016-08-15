@@ -5,22 +5,32 @@
 {{#if supplementList}}
     <h5>{{selectedFile.name}}</h5>
     <section>
-        <button class="show-more-button text-muted left" {{action 'moveLeft'}}>
-            <i class="fa fa-caret-left"></i>
-        </button>
+        {{#if showLeftArrow}}
+            <button id="leftArrow" class="show-more-button left" {{action 'moveLeft'}}>
+                <i class="fa fa-caret-left"></i>
+            </button>
+        {{/if}}
         {{#liquid-bind supplementList elementId="file-list" tagName="ul" class="p-l-md p-r-md" use=scrollAnim as |list|}}
             {{#each list as |supplement|}}
-                <li class="small-files col-xs-2 p-md box {{if (eq selectedFile supplement) 'selected'}}" {{action 'changeFile' supplement}}>
-                    {{#if (eq supplement.kind "folder")}}
-                        <i class="fa fa-folder fa-3x p-b-xs" aria-hidden="true" href={{concat model.baseUrl model.project}}></i> <p>{{supplement.name}}</p>{{!Actually make a link here}}
-                    {{else}}
-                        <i class="fa fa-file-text fa-3x p-b-xs" aria-hidden="true"></i><p>{{supplement.name}}</p>
-                    {{/if}}
-                </li>
+                {{#if (eq supplement.kind "folder")}}
+                    <a href={{projectURL}} style="color:inherit;">
+                        <li class="small-files col-xs-2 p-md box">
+                            <i class="fa fa-folder fa-3x p-b-xs" aria-hidden="true"></i>
+                            <p>{{supplement.name}}</p>
+                        </li>
+                    </a>
+                {{else}}
+                    <li class="small-files col-xs-2 p-md box {{if (eq selectedFile supplement) 'selected'}}" {{action 'changeFile' supplement}}>
+                        <i class="fa fa-file-text fa-3x p-b-xs" aria-hidden="true"></i>
+                        <p>{{supplement.name}}</p>
+                    </li>
+                {{/if}}
             {{/each}}
         {{/liquid-bind}}
-        <button class="show-more-button text-muted right" {{action 'moveRight'}}>
-            <i class="fa fa-caret-right"></i>
-        </button>
+        {{#if showRightArrow}}
+            <button id="rightArrow" class="show-more-button right" {{action 'moveRight'}}>
+                <i class="fa fa-caret-right"></i>
+            </button>
+        {{/if}}
     </section>
 {{/if}}
