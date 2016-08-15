@@ -64,9 +64,6 @@ export default CpPanelBodyComponent.extend({
             });
 
         },
-        updateQuery(value) {
-            this.set('query', value);
-        },
         // Requests a particular page of user results
         findContributors(page) {
             var query = this.get('query');
