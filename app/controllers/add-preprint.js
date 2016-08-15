@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import loadAll from 'ember-osf/utils/load-relationship';
-import NodeActionsMixin from 'ember-osf/mixins/node-actions';
-import permissions from 'ember-osf/const/permissions';
 import { validator, buildValidations } from 'ember-cp-validations';
 
+import NodeActionsMixin from 'ember-osf/mixins/node-actions';
+import permissions from 'ember-osf/const/permissions';
+
 // Enum of available upload states
-export const State = Object.freeze(new Ember.Object({
+export const State = Object.freeze(Ember.Object.create({
     START: 'start',
     NEW: 'new',
     EXISTING: 'existing'
@@ -48,11 +48,8 @@ const Validations = buildValidations({
 });
 
 export default Ember.Controller.extend(Validations, NodeActionsMixin, {
-    toast: Ember.inject.service(),
-    session: Ember.inject.service(),
-    panelActions: Ember.inject.service(),
-    currentUser: Ember.inject.service(),
-    fileManager: Ember.inject.service(),
+    toast: Ember.inject.service('toast'),
+    panelActions: Ember.inject.service('panelActions'),
 
     // Upload variables
     _State: State,
@@ -60,7 +57,6 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
     uploadState: State.START,
     uploadFile: null,
     resolve: null,
-    model: null,         // Node to transform into preprint
     shouldCreateChild: false,
     user: null,
     userNodes: Ember.A([]),
@@ -68,42 +64,23 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         uploadMultiple: false,
         method: 'PUT'
     },
-    canEdit: Ember.computed('isAdmin', 'isRegistration', function() {
-        return this.get('isAdmin') && !(this.get('model').get('registration'));
+
+    isAdmin: Ember.computed('node', function() {
+        // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
+        let userPermissions = this.get('node.currentUserPermissions') || [];
+        return userPermissions.indexOf(permissions.ADMIN) >= 0;
     }),
-    isAdmin: Ember.computed(function() {
-        return this.get('model.currentUserPermissions').indexOf(permissions.ADMIN) >= 0;
+
+    canEdit: Ember.computed('isAdmin', 'node', function() {
+        return this.get('isAdmin') && !(this.get('node.registration'));
     }),
+
     searchResults: [],
 
     _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
-    init() {
-        this._super(...arguments);
-        if (this.get('session.isAuthenticated')) {
-            this._setCurrentUser();
-        }
-    },
 
     /*
-    * Retrieving userNodes
-    */
-    _setCurrentUser() {
-        this.get('currentUser').load().then(user => this.set('user', user));
-    },
-    _refreshNodes() {
-        const user = this.get('user');
-        if (user) {
-            loadAll(user, 'nodes', this.get('userNodes'));
-        } else {
-            this.set('userNodes', Ember.A());
-        }
-    },
-    onGetCurrentUser: Ember.observer('user', function() {
-        this._refreshNodes();
-    }),
-
-    /*
-    * Subjects section
+    * Subjects section: display taxonomy
     */
     topFilter: '',
     midFilter: '',
@@ -142,9 +119,12 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
     sortedTaxonomies: Ember.computed('taxonomies', function() {
         var _this = this;
         this.get('store').query('taxonomy', { filter: { parent_ids: 'null' }, page: { size: 100 } }).then(results => {
-            _this.set('sortedTaxonomies', results.map(
-                function(result) { return { name: result.get('text'), id: result.get('id') }; }
-            ));
+            _this.set('sortedTaxonomies', results.map((result) => {
+                return {
+                    name: result.get('text'),
+                    id: result.get('id')
+                };
+            }));
         });
     }),
     path: [],
@@ -193,36 +173,40 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
             this.get('store').createRecord('node', {
                 title: this.get('nodeTitle'),
                 category: 'project',
-                public: true // TODO: should this be public now or later, when it is turned into a preprint?
+                public: false // TODO: should this be public now or later, when it is turned into a preprint?  Default to the least upsetting option.
             }).save().then(node => {
-                this.set('model', node);
+                this.set('node', node);
                 this._refreshNodes();
                 this.send('startUpload');
             });
         },
         // Override NodeActionsMixin.addChild
         addChild() {
-            this._super(`${this.get('model.title')} Preprint`, this.get('model.description')).then(child => {
-                this.set('model', child);
-                this._refreshNodes();
+            this._super(`${this.get('node.title')} Preprint`, this.get('node.description')).then(child => {
+                this.get('userNodes').pushObject(child);
+                this.set('node', child);
                 this.send('startUpload');
             });
         },
         // nextAction: {action} callback for the next action to perform.
         deleteProject(nextAction) {
+            // TODO: Do we really want the upload page to have a deletion button at all??
             // TODO: delete the previously created model, not the currently selected model
-            if (this.get('model')) {
-                this.get('model').destroyRecord().then(() => {
+            if (this.get('node')) {
+                this.get('node').destroyRecord().then(() => {
                     this.get('toast').info('Project deleted');
                 });
-                this.set('model', null);
+                this.set('node', null);
                 // TODO: reset dropzone, since uploaded file has no project
             }
             nextAction();
         },
         startUpload() {
             // TODO: retrieve and save fileid from uploaded file
-            this.set('_url', `${this.get('model.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
+            // TODO: deal with more than 10 files?
+            this.set('_url', `${this.get('node.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
+
+            // TODO: Do not rely on cached resolve handlers, or toast for uploading. No file, no preprint- enforce workflow.
             this.get('resolve')();
             this.get('toast').info('File will upload in the background.');
             this.send('next', this.get('_names.0'));
@@ -230,9 +214,11 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         // Dropzone hooks
         preUpload(ignore, dropzone, file) {
             this.set('uploadFile', file);
+            // FIXME: Do not cache a resolve handler this way. (controllers are singletons, etc etc etc)
+            // FIXME: If not using as closure actions, this causes action to bubble up farther
             return new Ember.RSVP.Promise(resolve => this.set('resolve', resolve));
         },
-        buildUrl() {
+        getUploadUrl() {
             return this.get('_url');
         },
         success() {
@@ -242,6 +228,7 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         * Subject section
         */
         deleteSubject(key, array = key.split('.')) {
+            // TODO: Taxonomies may go many levels deeper
             this.set(key, null);
             // Delete key manually
             switch (array.length) {
