@@ -97,7 +97,9 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
     /*
     * Subjects section
     */
-    filter: [{/* value: 'filterQuery' */}, {}, {}],
+    topFilter: '',
+    midFilter: '',
+    botFilter: '',
     updateFilteredPath() {
         var _this = this;
         var overallPath = [];
@@ -126,10 +128,10 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
             });
         }
     },
-    filteredPath: Ember.computed('path', 'changeFlag', 'filter', 'filter.@each.value', function() {
+    filteredPath: Ember.computed('path', function() {
         this.updateFilteredPath();
     }),
-    sortedTaxonomies: Ember.computed('taxonomies', 'filter', 'filter.0.value', function() {
+    sortedTaxonomies: Ember.computed('taxonomies', function() {
         var _this = this;
         this.get('store').query('taxonomy', { filter: { parent_ids: 'null' }, page: { size: 100 } }).then(results => {
             _this.set('sortedTaxonomies', results.map(
