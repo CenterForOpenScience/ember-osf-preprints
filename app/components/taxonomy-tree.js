@@ -3,16 +3,23 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     store: Ember.inject.service(),
 
+    // https://github.com/jonmiles/bootstrap-treeview
     didInsertElement() {
+        // this.get('store').query('taxonomy', { 'field[\'parent_ids\']': null, 'page[size]': 200 }).then(topLevel => {
+        // TODO: populate tree lazily with filterable taxonomy endpoint
         this.$('#taxonomyTree').treeview({
-            data: this.get('tree').get('tree'),
+            data: [],
             levels: 1,
-            selectedBackColor: '#67a3bf',
+            highlightSelected: false,
+            showBorder: false,
+            showCheckbox: true,
+            collapseIcon: 'glyphicon glyphicon-triangle-bottom',
+            expandIcon: 'glyphicon glyphicon-triangle-right',
 
             onNodeSelected: (event, data) => {
-                // Recurse down from this subject to filter by all subcategories as well
+                /*
                 let getSubjects = (d, subjects) => {
-                    subjects.push(d.text[0]);
+                    subjects.push(d.text);
                     // Base case: leaf node
                     if (!d.nodes) {
                         return subjects;
@@ -30,8 +37,13 @@ export default Ember.Component.extend({
                     // Make call to recursive function with initially empty list
                     this.sendAction('filter', getSubjects(data, []));
                 }
+                */
+
+                // getChecked() is a valid method, but it's not in the README for bootstrap-treeview
+
+                this.$('#taxonomyTree').treeview('toggleNodeChecked', [data.nodeId, { silent: true }]);
             }
         });
+        // });
     },
-
 });
