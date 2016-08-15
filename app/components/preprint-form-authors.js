@@ -7,9 +7,6 @@ export default CpPanelBodyComponent.extend({
     permissionToggle: false,
     bibliographicToggle: false,
     removalToggle: false,
-    stillAdmin: Ember.computed('isAdmin', function() {
-        return this.get('isAdmin');
-    }),
     // Permissions labels for dropdown
     permissionOptions: permissionSelector,
     addState: 'emptyView', // There are 3 view states on left side of Authors panel. Default state just shows search bar.
@@ -163,12 +160,12 @@ export default CpPanelBodyComponent.extend({
     },
     /**
     * If user removes their own admin permissions, many things on the page must become
-    * disabled.  Changing the stillAdmin flag to false will remove many of the options
+    * disabled.  Changing the isAdmin flag to false will remove many of the options
     * on the page.
     */
     removedSelfAsAdmin(contributor, permission) {
         if (this.get('currentUser').id === contributor.get('userId') && permission !== 'ADMIN') {
-            this.set('stillAdmin', false);
+            this.set('isAdmin', false);
         }
     },
     redrawTemplate() {

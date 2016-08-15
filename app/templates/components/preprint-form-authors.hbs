@@ -119,7 +119,7 @@
                             </td>
                             <td>
                                 <div class="form-group vert-align-enabled-permissions">
-                                    {{#if (and stillAdmin (and canEdit (minAdmins contrib contributors permissionToggle)))}}
+                                    {{#if (and isAdmin (and canEdit (minAdmins contrib contributors permissionToggle)))}}
                                         <select class="form-control" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
                                             {{#each permissionOptions as |option|}}
                                                 <option selected={{eq contrib.permission option.value}} value={{option.value}}>
@@ -136,12 +136,12 @@
                             </td>
                             <td class="bib-padding">
                                 <div class="form-group vert-align">
-                                    <input disabled={{if (and stillAdmin (and canEdit (minBibliographic contrib contributors bibliographicToggle))) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
+                                    <input disabled={{if (and isAdmin (and canEdit (minBibliographic contrib contributors bibliographicToggle))) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group vert-align">
-                                    {{#if (and (permissionToRemoveContributor contrib currentUser stillAdmin node) (conditionsForContribRemoval contrib contributors removalToggle))}}
+                                    {{#if (and (permissionToRemoveContributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors removalToggle))}}
                                         <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm"> Remove </button>
                                     {{else}}
                                         <button class="btn btn-danger btn-sm disabled"> Remove </button>
