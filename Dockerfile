@@ -17,6 +17,8 @@ ENV GIT_COMMIT ${GIT_COMMIT}
 
 ARG APP_ENV=production
 ENV APP_ENV ${APP_ENV}
+ARG BACKEND=local
+ENV BACKEND ${BACKEND}
 RUN ./node_modules/ember-cli/bin/ember build --env ${APP_ENV}
 
 CMD ["node"]
