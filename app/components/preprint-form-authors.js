@@ -119,9 +119,7 @@ export default CpPanelBodyComponent.extend({
         },
         // There are 3 view states on left side of Authors panel.  This switches to empty view and clears search results.
         resetfindContributorsView() {
-            this.set('addState', 'emptyView');
-            this.set('searchQuery', '');
-            this.$('.searchQuery')[0].value = '';
+            this.set('addState', 'searchView');
         },
         // TODO Add server request when API functionality in place.
         reorderItems(itemModels, draggedContrib) {
