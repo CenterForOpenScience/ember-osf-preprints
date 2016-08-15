@@ -1,0 +1,40 @@
+<h1>Choose existing OSF project:</h1>
+{{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action (mut selectedNode)) as |node|}}
+    <strong>{{node.title}}</strong>
+{{/power-select}}
+<p class="alert alert-info" role="alert">
+    Using this project means the list of contributors will be considered authors of this preprint.
+    <br>
+    {{#if fileSelect}}
+        If you use this version of the preprint, any changes to these contributors will also
+        change the contributors of the project/component.
+
+        If you do not want to change the project/component contributors within the OSF
+        project, then you can create a new component.
+    {{/if}}
+</p>
+{{#liquid-if selectedNode use='crossFade'}}
+    {{#liquid-bind selectedNode use='crossFade'}}
+        {{#if isAdmin}}
+            {{#unless selectedNode.public}}
+                <p class="alert alert-warning" role="alert">
+                    This project is private and will be made public
+                </p>
+            {{/unless}}
+            {{#if (and osfFiles fileSelect)}}
+                {{file-browser rootItem=osfFiles}}
+            {{/if}}
+        {{else}}
+            <p class="alert alert-danger" role="alert">
+                You must be the admin of this component to share it.
+
+                Please ask the admin of this project to make you an admin
+                so you may share this component.
+            </p>
+        {{/if}}
+    {{/liquid-bind}}
+    <label>
+        {{input type='checkbox' checked=shouldCreateChild}}
+        Create new component for preprint
+    </label>
+{{/liquid-if}}
