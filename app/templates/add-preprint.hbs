@@ -85,70 +85,70 @@
             {{#preprint-form-section id='preprint-form-subjects' name=name}}
                 {{preprint-form-header name=name valid=(get valid name)}}
                 {{#preprint-form-body}}
-                {{#liquid-spacer growDuration=100}}
-                    {{#each sortedSelection as |selectedPath|}}
-                        <span class="subject">
-                            {{#with selectedPath.[0] as |taxonomy|}}
-                                <b>{{taxonomy}}</b>
-                            {{/with}}
-                            {{#with selectedPath.[1] as |category|}}
-                                <b>{{category}}</b>
-                            {{/with}}
-                            {{#with selectedPath.[2] as |subject|}}
-                                <b>{{subject}}</b>
-                            {{/with}}
-                            {{fa-icon 'times' click=(action 'deselectSubject' selectedPath)}}
-                        </span>
-                    {{/each}}
-                {{/liquid-spacer}}
+                    {{#liquid-spacer growDuration=100}}
+                        {{#each sortedSelection as |selectedPath|}}
+                            <span class="subject">
+                                {{#with selectedPath.[0] as |taxonomy|}}
+                                    <b>{{taxonomy}}</b>
+                                {{/with}}
+                                {{#with selectedPath.[1] as |category|}}
+                                    <b>{{category}}</b>
+                                {{/with}}
+                                {{#with selectedPath.[2] as |subject|}}
+                                    <b>{{subject}}</b>
+                                {{/with}}
+                                {{fa-icon 'times' click=(action 'deselectSubject' selectedPath)}}
+                            </span>
+                        {{/each}}
+                    {{/liquid-spacer}}
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <ul style="overflow: scroll">
-                            {{input value=filter.[0].value class="form-control" placeholder="Search"}}
-                            {{#each sortedTaxonomies as |element|}}
-                                {{#if (if-filter element.name filter.[0].value)}}
-                                    <li {{action 'selectSubject' element}} class={{if (eq path.[0].name element.name) 'selected'}}>
-                                        {{element.name}}
-                                    </li>
-                                {{/if}}
-                            {{/each}}
-                        </ul>
-                    </div>
-
-                    <div class="col-md-4">
-                        <ul style="overflow: scroll">
-                            {{input value=filter.[1].value class="form-control" placeholder="Search"}}
-                            {{#with path.[0] as |taxonomy|}}
-                                {{#each filteredPath.[0].children as |element|}}
-                                    {{#if (if-filter element.name filter.[1].value)}}
-                                        <li {{action 'selectSubject' taxonomy element}} class={{if (eq path.[1].name element.name) 'selected'}}>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <ul style="overflow: scroll">
+                                {{input value=filter.[0].value class="form-control" placeholder="Search"}}
+                                {{#each sortedTaxonomies as |element|}}
+                                    {{#if (if-filter element.name filter.[0].value)}}
+                                        <li {{action 'selectSubject' element}} class={{if (eq path.[0].name element.name) 'selected'}}>
                                             {{element.name}}
                                         </li>
                                     {{/if}}
                                 {{/each}}
-                            {{/with}}
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
 
-                    <div class="col-md-4">
-                        <ul style="overflow: scroll">
-                            {{input value=filter.[2].value class="form-control" placeholder="Search"}}
-                            {{#with path.[0] as |taxonomy|}}
-                                {{#with path.[1] as |category|}}
-                                    {{#each filteredPath.[1].children as |element|}}
-                                        {{#if (if-filter element.name filter.[2].value)}}
-                                            <li {{action 'selectSubject' taxonomy category element}}
-                                                class={{if (get (get (get selected taxonomy.name) category.name) element.name) 'selected'}}>
+                        <div class="col-md-4">
+                            <ul style="overflow: scroll">
+                                {{input value=filter.[1].value class="form-control" placeholder="Search"}}
+                                {{#with path.[0] as |taxonomy|}}
+                                    {{#each filteredPath.[0].children as |element|}}
+                                        {{#if (if-filter element.name filter.[1].value)}}
+                                            <li {{action 'selectSubject' taxonomy element}} class={{if (eq path.[1].name element.name) 'selected'}}>
                                                 {{element.name}}
                                             </li>
                                         {{/if}}
                                     {{/each}}
                                 {{/with}}
-                            {{/with}}
-                        </ul>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-4">
+                            <ul style="overflow: scroll">
+                                {{input value=filter.[2].value class="form-control" placeholder="Search"}}
+                                {{#with path.[0] as |taxonomy|}}
+                                    {{#with path.[1] as |category|}}
+                                        {{#each filteredPath.[1].children as |element|}}
+                                            {{#if (if-filter element.name filter.[2].value)}}
+                                                <li {{action 'selectSubject' taxonomy category element}}
+                                                    class={{if (get (get (get selected taxonomy.name) category.name) element.name) 'selected'}}>
+                                                    {{element.name}}
+                                                </li>
+                                            {{/if}}
+                                        {{/each}}
+                                    {{/with}}
+                                {{/with}}
+                            </ul>
+                        </div>
                     </div>
-                </div>
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
         {{/with}}
