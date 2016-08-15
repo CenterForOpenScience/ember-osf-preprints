@@ -4,9 +4,7 @@ import { permissionSelector } from 'ember-osf/const/permissions';
 
 export default CpPanelBodyComponent.extend({
     valid: Ember.computed.alias('newContributorId'),
-    permissionToggle: false,
-    bibliographicToggle: false,
-    removalToggle: false,
+    authorModification: false,
     // Permissions labels for dropdown
     permissionOptions: permissionSelector,
     addState: 'emptyView', // There are 3 view states on left side of Authors panel. Default state just shows search bar.
@@ -33,7 +31,7 @@ export default CpPanelBodyComponent.extend({
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
             this.attrs.addContributor(user.id, 'write', true).then(res => {
-                this.redrawTemplate();
+                this.toggleAuthorModification();
                 this.get('contributors').pushObject(res);
             }, () => {
                 this.get('toast').error('Could not add contributor.');
@@ -45,7 +43,7 @@ export default CpPanelBodyComponent.extend({
             let res = this.attrs.addUnregisteredContributor(fullName, email, 'write', true);
             res.then((contributor) => {
                 this.get('contributors').pushObject(contributor);
-                this.redrawTemplate();
+                this.toggleAuthorModification();
                 this.set('addState', 'searchView');
                 this.set('fullName', '');
                 this.set('email', '');
@@ -69,7 +67,7 @@ export default CpPanelBodyComponent.extend({
         // which additional update/remove requests are permitted.
         removeContributor(contrib) {
             this.attrs.removeContributor(contrib).then(() => {
-                this.redrawTemplate();
+                this.toggleAuthorModification();
                 this.removedSelfAsAdmin(contrib, contrib.get('permission'));
                 this.get('contributors').removeObject(contrib);
             }, () => {
@@ -81,7 +79,7 @@ export default CpPanelBodyComponent.extend({
         updatePermissions(contributor, permission) {
             let permissionChanges = { [contributor.id]: permission.toLowerCase() };
             this.attrs.editContributors(this.get('contributors'), permissionChanges, {}).then(() => {
-                this.redrawTemplate();
+                this.toggleAuthorModification();
                 this.removedSelfAsAdmin(contributor, permission);
             }, () => {
                 this.get('toast').error('Could not modify author permissions');
@@ -92,7 +90,7 @@ export default CpPanelBodyComponent.extend({
         updateBibliographic(contributor, isBibliographic) {
             let bibliographicChanges = { [contributor.id]: isBibliographic };
             this.attrs.editContributors(this.get('contributors'), {}, bibliographicChanges).then(() => {
-                this.redrawTemplate();
+                this.toggleAuthorModification();
             }, () => {
                 this.get('toast').error('Could not modify citation');
             });
@@ -161,9 +159,7 @@ export default CpPanelBodyComponent.extend({
             this.set('isAdmin', false);
         }
     },
-    redrawTemplate() {
-        this.toggleProperty('removalToggle');
-        this.toggleProperty('permissionToggle');
-        this.toggleProperty('bibliographicToggle');
+    toggleAuthorModification() {
+        this.toggleProperty('authorModification');
     }
 });
