@@ -20,7 +20,7 @@ export const State = Object.freeze(Ember.Object.create({
  *****************************/
 
 /*
- "Basics" page
+ "Basics" page: validation rules are complex and have several parts
  */
 const BasicsValidations = buildValidations({
     title: {
@@ -63,9 +63,8 @@ const BasicsFields = Ember.Object.extend(BasicsValidations, {
     abstract: null,
 });
 
-
 /**
- * Add preprint page definitions
+ * "Add preprint" page definitions
  */
 export default Ember.Controller.extend(NodeActionsMixin, {
     toast: Ember.inject.service('toast'),
@@ -80,8 +79,14 @@ export default Ember.Controller.extend(NodeActionsMixin, {
     selectedFile: null,
     contributors: Ember.A(),
 
-    // Form sections (placeholder; overridden in init)
+    // Validation rules for form sections
+    uploadValid: true, //Ember.computed.and('selectedNode', 'selectedFile'),
     basicsFields: null,
+    basicsValid: Ember.computed.alias('basicsField.validations.isValid'),
+    // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
+    authorsValid: Ember.computed.bool('contributors.length'),
+    // Must select at least one subject. TODO: Verify this is the appropriate way to track
+    subjectsValid: Ember.computed.bool('sortedSelection.length'),
 
     init() {
         // Workaround for ember-cp-validations issue: we want each section of the page to be validated
@@ -112,9 +117,6 @@ export default Ember.Controller.extend(NodeActionsMixin, {
         uploadMultiple: false,
         method: 'PUT'
     },
-
-    //TODO: Track whether a node has been selected, and a file uploaded for that node
-    isFileUploaded: true,//Ember.computed.and('selectedNode', 'selectedFile'),
 
     isAdmin: Ember.computed('selectedNode', function() {
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded

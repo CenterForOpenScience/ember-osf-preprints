@@ -3,7 +3,7 @@
     {{#cp-panels accordion=true}}
         {{#with _names.[0] as |name|}}
             {{#preprint-form-section id='preprint-form-upload' open=true name=name allowOpen=true errorAction=(action 'error')}}
-                {{preprint-form-header name=name valid=(get valid name)}}
+                {{preprint-form-header name=name valid=uploadValid}}
                 {{#preprint-form-body}}
                     {{#liquid-bind filePickerState class='translate' as |currentState|}}
                         <div class={{currentState}}>
@@ -58,7 +58,7 @@
         {{/with}}
 
         {{#with _names.[1] as |name|}}
-            {{#preprint-form-section id='preprint-form-basics' name=name allowOpen=isFileUploaded errorAction=(action 'error')}}
+            {{#preprint-form-section id='preprint-form-basics' name=name allowOpen=uploadValid errorAction=(action 'error')}}
                 {{preprint-form-header name=name valid=basicsFields.validations.isValid}}
                 {{#preprint-form-body class='row'}}
                     <div class="col-md-6">
@@ -86,8 +86,8 @@
         {{/with}}
 
         {{#with _names.[2] as |name|}}
-            {{#preprint-form-section id='preprint-form-subjects' name=name allowOpen=isFileUploaded errorAction=(action 'error')}}
-                {{preprint-form-header name=name valid=(get valid name)}}
+            {{#preprint-form-section id='preprint-form-subjects' name=name allowOpen=uploadValid errorAction=(action 'error')}}
+                {{preprint-form-header name=name valid=subjectsValid}}
                 {{#preprint-form-body}}
                     {{#liquid-spacer growDuration=100}}
                         {{#each sortedSelection as |selectedPath|}}
@@ -158,8 +158,8 @@
         {{/with}}
 
         {{#with _names.[3] as |name|}}
-            {{#preprint-form-section id='preprint-form-authors' name=name allowOpen=isFileUploaded errorAction=(action 'error')}}
-                {{preprint-form-header name=name valid=(get valid name)}}
+            {{#preprint-form-section id='preprint-form-authors' name=name allowOpen=uploadValid errorAction=(action 'error')}}
+                {{preprint-form-header name=name valid=authorsValid}}
                 {{#preprint-form-body}}
                     {{preprint-form-authors
                         contributors=contributors
@@ -181,7 +181,7 @@
         {{/with}}
 
         {{#with _names.[4] as |name|}}
-            {{#preprint-form-section id='preprint-form-submit' animate=true name=name allowOpen=isFileUploaded errorAction=(action 'error')}}
+            {{#preprint-form-section id='preprint-form-submit' animate=true name=name allowOpen=uploadValid errorAction=(action 'error')}}
                 {{preprint-form-header name=name valid=(get valid name)}}
                 {{#cp-panel-body}}
                     <p>Sharing this project will make both the manuscript and the project associated with it public.</p>
