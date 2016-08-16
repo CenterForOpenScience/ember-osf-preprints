@@ -55,12 +55,15 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
 
     // Data tracked internally
     user: null,
-    node: null,
     userNodes: Ember.A(),
+
+    // Information about the thing to be turned into a preprint
+    selectedNode: null,
+    selectedFile: null,
     contributors: Ember.A(),
 
-    getContributors: Ember.observer('node', function() {
-        let node = this.get('node');
+    getContributors: Ember.observer('selectedNode', function() {
+        let node = this.get('selectedNode');
         let contributors = Ember.A();
         loadAll(node, 'contributors', contributors).then(()=>
              this.set('contributors', contributors));
@@ -79,16 +82,16 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
     },
 
     //TODO: Track whether a node has been selected, and a file uploaded for that node
-    isFileUploaded: false,
+    isFileUploaded: Ember.computed.and('selectedNode', 'selectedFile'),
 
-    isAdmin: Ember.computed('node', function() {
+    isAdmin: Ember.computed('selectedNode', function() {
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
-        let userPermissions = this.get('node.currentUserPermissions') || [];
+        let userPermissions = this.get('selectedNode.currentUserPermissions') || [];
         return userPermissions.indexOf(permissions.ADMIN) >= 0;
     }),
 
-    canEdit: Ember.computed('isAdmin', 'node', function() {
-        return this.get('isAdmin') && !(this.get('node.registration'));
+    canEdit: Ember.computed('isAdmin', 'selectedNode', function() {
+        return this.get('isAdmin') && !(this.get('selectedNode.registration'));
     }),
 
     searchResults: [],
@@ -178,7 +181,6 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         },
 
         error(error /*, transition */) {
-            // TODO: Provide a default error action for possible use?
             this.get('toast').error(error);
             return true;
         },
@@ -198,15 +200,15 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
                 public: false // TODO: should this be public now or later, when it is turned into a preprint?  Default to the least upsetting option.
             }).save().then(node => {
                 this.get('userNodes').pushObject(node);
-                this.set('node', node);
+                this.set('selectedNode', node);
                 this.send('startUpload');
             });
         },
         // Override NodeActionsMixin.addChild
         addChild() {
-            this._super(`${this.get('node.title')} Preprint`, this.get('node.description')).then(child => {
+            this._super(`${this.get('selectedNode.title')} Preprint`, this.get('selectedNode.description')).then(child => {
                 this.get('userNodes').pushObject(child);
-                this.set('node', child);
+                this.set('selectedNode', child);
                 this.send('startUpload');
             });
         },
@@ -214,11 +216,11 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         deleteProject(nextAction) {
             // TODO: Do we really want the upload page to have a deletion button at all??
             // TODO: delete the previously created model, not the currently selected model
-            if (this.get('node')) {
-                this.get('node').destroyRecord().then(() => {
+            if (this.get('selectedNode')) {
+                this.get('selectedNode').destroyRecord().then(() => {
                     this.get('toast').info('Project deleted');
                 });
-                this.set('node', null);
+                this.set('selectedNode', null);
                 // TODO: reset dropzone, since uploaded file has no project
             }
             nextAction();
@@ -226,7 +228,7 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         startUpload() {
             // TODO: retrieve and save fileid from uploaded file
             // TODO: deal with more than 10 files?
-            this.set('_url', `${this.get('node.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
+            this.set('_url', `${this.get('selectedNode.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
 
             // TODO: Do not rely on cached resolve handlers, or toast for uploading. No file, no preprint- enforce workflow.
             this.get('resolve')();
@@ -243,7 +245,8 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         getUploadUrl() {
             return this.get('_url');
         },
-        success() {
+        uploadSuccess() {
+            this.set('selectedFile', 'dummy value'); // FIXME: Placeholder to test expansion validation
             this.get('toast').info('File uploaded!');
         },
         /*
