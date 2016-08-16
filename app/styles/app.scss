@@ -436,9 +436,9 @@ main {
         padding-left:10px;
     }
 
-    .osf-box{
-        border:0px;
-    }
+    //.osf-box{
+    //    border:0px;
+    //}
 
 .text-muted {
     color: #777;
@@ -802,26 +802,34 @@ hr {
             }
         }
     }
-    .small-files{
+    .osf-box{
+        height: 100px;
+        width: 100%;
+        background-color: white;
+    }
+    .box{
         background-color: white;
         display: inline-block;
-        height:100px;
+        //height: 70px;
+        //width: 90%;
         text-align: center;
         &.selected{
-            background-color: lightgrey;
+            background-color: #F3F5F5;
         }
         p{
             font-family: Arial;
             font-size: x-small;
         }
     }
-    ul {
-        width: 100%;
-        li {
-            cursor: pointer;
-            &:hover {
-                background-color: lighten(lightgrey, 10%);
-            }
+    li {
+        cursor: pointer;
+        &:hover {
+            border-color: #337AB7;
         }
+    }
+    .show-more-button {
+        color: #F3F5F5;
+        background: #D8D8D8;
+        font-size: 2em;
     }
 }
