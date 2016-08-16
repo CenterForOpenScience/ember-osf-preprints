@@ -357,6 +357,7 @@ h5 {
     }
 }
 
+//TODO: Remove this and switch the uses on index page to sm
 .f-w-xl {
     font-weight: 300;
 }
@@ -743,6 +744,10 @@ hr {
     background: url("img/bg-web.png") no-repeat;
 }
 
+.dark-overlay-header-background {
+    background: url("img/dark_overlay.png") no-repeat;
+}
+
 .img-circle {
     background-color: #fff;
 }
@@ -757,21 +762,28 @@ hr {
     background-image: url("img/logo_ua.png");
 }
 
-
-
 .socarxiv-logo {
     background-size: cover;
     background-image: url("img/logo_socarxiv.jpg");
 }
 
 //For View Page
+.bg-color-view-page{
+    background-color: #FCFCFC;
+}
+
 #view-page{
     background-color: #FCFCFC;
     font-family : 'Open Sans', Helvetica, sans-serif;
     .osf-box-lt{
-        background-color: #FCFCFC;
+        background-color: #F3F5F5;
     }
-
+    .header-row{
+        color: white;
+    }
+    .preprint-authors{
+        color: #337ab7;
+    }
 }
 
 //For Supplementary File Widget

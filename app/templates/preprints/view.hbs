@@ -1,19 +1,19 @@
 <div id="view-page" class="container">{{!CONATINER DIV}}
-    <div class="m-b-md p-md osf-box m-t-lg"> {{!OSF BOX DIV}}
+    <div class="m-b-md m-md osf-box m-t-lg bg-color-view-page"> {{!OSF BOX DIV}}
+        <div class="container-fluid p-t-xl p-b-md m-b-xl dark-overlay-header-background header-row">
         <div class="row p-l-md m-t-lg"> {{!HEADER ROW}}
-            <h1>{{model.title}}</h1>
-        </div> {{!END HEADER ROW}}
-        <div class="row p-l-md"> {{!PREPRINT INFO ROW}}
-            <h5>
+            <h1 class="p-b-lg">{{model.title}}</h1>
+        <!--</div> {{!END HEADER ROW}}-->
+        <!--<div class="row p-l-md"> {{!PREPRINT INFO ROW}}-->
+            <h5 class="preprint-authors">
                 {{#each model.contributors as |author index|}}
-                    {{#if index}} | {{/if}}<a href={{author.users.profileURL}}>{{author.users.fullName}}</a>
+                    <a href={{author.users.profileURL}}>{{author.users.fullName}},</a>
                 {{/each}}
             </h5>
-            <h6>Added on {{moment-format model.date}}</h6>
-        </div> {{!END PREPRINT INFO ROW}}
-        <div class="row">
-            <hr color="#C7FFC7">
-        </div>
+            <h6>Added on: {{moment-format model.date_created "MMMM DD, YYYY"}} | Last edited: {{moment-format model.date_modified "MMMM DD, YYYY"}} </h6>
+        <!--</div> {{!END PREPRINT INFO ROW}}-->
+            </div>
+            </div>
         <div class="row p-md"> {{!CONTENT ROW}}
             <div class="col-md-7"> {{!LEFT COL DIV}}
                 {{supplementary-file-browser primaryFile=model.primaryFile fileList=fileList projectURL=model.links.html}}
@@ -28,13 +28,13 @@
                         </p>
                     </span>
                 </div>{{!END SHARE ROW}}
-                <div class="f-w-xs text-muted m-b-xl p-t-xs">
+                <div class="f-w-xs m-b-xl p-t-xs">
                     <h3 class="page-header p-l-md">Abstract</h3>
                     <p class="p-l-md">{{model.abstract}}</p>
                 </div>
                 {{!PROJECT BUTTON}}
                 <div class="p-lg osf-box-lt text-center">
-                    <p class="f-w-xs text-muted">The project for this paper is available on the Open Science Framework.</p>
+                    <p class="f-w-xs">The project for this paper is available on the Open Science Framework.</p>
                     <a type="button" class="btn btn-info" href={{model.links.html}}>Visit project</a>
                 </div>
             </div> {{!END RIGHT SIDE COL}}
