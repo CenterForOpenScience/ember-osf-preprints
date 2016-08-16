@@ -30,9 +30,10 @@ export default CpPanelBodyComponent.extend({
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
-            this.attrs.addContributor(user.id, 'write', true).then(res => {
+            this.attrs.addContributor(user.id, 'write', true).then((res) => {
                 this.toggleAuthorModification();
                 this.get('contributors').pushObject(res);
+                this.highlightSuccessOrFailure(res.id, this, 'success');
             }, () => {
                 this.get('toast').error('Could not add contributor.');
             });
@@ -47,6 +48,7 @@ export default CpPanelBodyComponent.extend({
                 this.set('addState', 'searchView');
                 this.set('fullName', '');
                 this.set('email', '');
+                this.highlightSuccessOrFailure(contributor.id, this, 'success');
             }, () => {
                 this.get('toast').error('Could not add unregistered contributor.');
             });
@@ -60,6 +62,7 @@ export default CpPanelBodyComponent.extend({
                     this.set('addState', 'searchView');
                 }, () => {
                     this.get('toast').error('Could not perform search query.');
+                    this.highlightSuccessOrFailure('author-search-box', this, 'failure');
                 });
             }
         },
@@ -80,6 +83,7 @@ export default CpPanelBodyComponent.extend({
             let permissionChanges = { [contributor.id]: permission.toLowerCase() };
             this.attrs.editContributors(this.get('contributors'), permissionChanges, {}).then(() => {
                 this.toggleAuthorModification();
+                this.highlightSuccessOrFailure(contributor.id, this, 'success');
                 this.removedSelfAsAdmin(contributor, permission);
             }, () => {
                 this.get('toast').error('Could not modify author permissions');
@@ -91,6 +95,7 @@ export default CpPanelBodyComponent.extend({
             let bibliographicChanges = { [contributor.id]: isBibliographic };
             this.attrs.editContributors(this.get('contributors'), {}, bibliographicChanges).then(() => {
                 this.toggleAuthorModification();
+                this.highlightSuccessOrFailure(contributor.id, this, 'success');
             }, () => {
                 this.get('toast').error('Could not modify citation');
             });
@@ -160,6 +165,10 @@ export default CpPanelBodyComponent.extend({
             this.set('isAdmin', false);
         }
     },
+    /**
+    * Toggling this property, authorModification, updates several items on the page - disabling elements, enabling
+    * others, depending on what requests are permitted
+    */
     toggleAuthorModification() {
         this.toggleProperty('authorModification');
     }
