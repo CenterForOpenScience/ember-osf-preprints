@@ -109,7 +109,8 @@ export default CpPanelBodyComponent.extend({
         resetfindContributorsView() {
             this.set('addState', 'searchView');
         },
-        // TODO Add server request when API functionality in place.
+        // Reorders contributors in UI then sends server request to reorder contributors. If request fails, reverts
+        // contributor list in UI back to original.
         reorderItems(itemModels, draggedContrib) {
             var originalOrder = this.get('contributors');
             this.set('contributors', itemModels);
