@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
 
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
     queryParams: ['page', 'searchString'],
-    activeFilters: Ember.A(),
+    activeFilters: Ember.A(['provider:OSF Providers']),
 
     page: 1,
     size: 10,
@@ -149,7 +149,23 @@ export default Ember.Controller.extend({
     },
 
     expandedOSFProviders: false,
-    osfProvider: true,
+    osfProvider: Ember.computed('activeFilters', function() {
+        var _this = this;
+        var subjectFilters = []
+        let osfProviders = ['OSF Providers', 'Open Science Framework', 'SocArxiv', 'Engrxiv'];
+        let match = this.get('activeFilters').filter(function(each) {
+            if (each.indexOf('subject') !== -1) {
+                subjectFilters.push(each);
+                return false;
+            }
+            return each.indexOf('provider') !== -1;
+        });
+        let ret = osfProviders.indexOf(match[0].replace('provider:', '')) !== -1;
+        if (!ret) {
+            subjectFilters.map(each => _this.get('activeFilters').removeObject(each));
+        }
+        return ret;
+    }),
     otherProviders: [],
 
     actions: {
@@ -197,6 +213,7 @@ export default Ember.Controller.extend({
                 return item.indexOf(subject.text) !== -1;
             });
             if (!match.length) {
+                this.notifyPropertyChange('activeFilters');
                 this.get('activeFilters').pushObject('subject:' + subject.text);
             }
         },
@@ -208,6 +225,7 @@ export default Ember.Controller.extend({
             if (match.length) {
                 this.get('activeFilters').removeObject(match[0]);
             }
+            this.notifyPropertyChange('activeFilters');
             this.get('activeFilters').pushObject('provider:' + provider);
         },
         expandOSFProviders() {
