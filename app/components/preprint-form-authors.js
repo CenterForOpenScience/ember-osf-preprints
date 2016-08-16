@@ -36,6 +36,8 @@ export default CpPanelBodyComponent.extend({
                 this.highlightSuccessOrFailure(res.id, this, 'success');
             }, () => {
                 this.get('toast').error('Could not add contributor.');
+                this.highlightSuccessOrFailure(user.id, this, 'error');
+                user.rollbackAttributes();
             });
         },
         // Adds unregistered contributor, then clears form and switches back to search view.
@@ -51,6 +53,7 @@ export default CpPanelBodyComponent.extend({
                 this.highlightSuccessOrFailure(contributor.id, this, 'success');
             }, () => {
                 this.get('toast').error('Could not add unregistered contributor.');
+                this.highlightSuccessOrFailure('add-unregistered-contributor-form', this, 'error');
             });
 
         },
@@ -62,7 +65,7 @@ export default CpPanelBodyComponent.extend({
                     this.set('addState', 'searchView');
                 }, () => {
                     this.get('toast').error('Could not perform search query.');
-                    this.highlightSuccessOrFailure('author-search-box', this, 'failure');
+                    this.highlightSuccessOrFailure('author-search-box', this, 'error');
                 });
             }
         },
@@ -75,6 +78,8 @@ export default CpPanelBodyComponent.extend({
                 this.get('contributors').removeObject(contrib);
             }, () => {
                 this.get('toast').error('Could not remove author');
+                this.highlightSuccessOrFailure(contrib.id, this, 'error');
+                contrib.rollbackAttributes();
             });
         },
         // Updates contributor then redraws contributor list view - updating contributor
@@ -87,6 +92,8 @@ export default CpPanelBodyComponent.extend({
                 this.removedSelfAsAdmin(contributor, permission);
             }, () => {
                 this.get('toast').error('Could not modify author permissions');
+                this.highlightSuccessOrFailure(contributor.id, this, 'error');
+                contributor.rollbackAttributes();
             });
         },
         // Updates contributor then redraws contributor list view - updating contributor
@@ -98,6 +105,8 @@ export default CpPanelBodyComponent.extend({
                 this.highlightSuccessOrFailure(contributor.id, this, 'success');
             }, () => {
                 this.get('toast').error('Could not modify citation');
+                this.highlightSuccessOrFailure(contributor.id, this, 'error');
+                contributor.rollbackAttributes();
             });
         },
         // There are 3 view states on left side of Authors panel.  This switches to add unregistered contrib view.
@@ -120,10 +129,13 @@ export default CpPanelBodyComponent.extend({
             var originalOrder = this.get('contributors');
             this.set('contributors', itemModels);
             var newIndex = itemModels.indexOf(draggedContrib);
-            this.attrs.reorderContributors(draggedContrib, newIndex).then(() => {},
-            () => {
+            this.attrs.reorderContributors(draggedContrib, newIndex).then(() => {
+                this.highlightSuccessOrFailure(draggedContrib.id, this, 'success');
+            }, () => {
+                this.highlightSuccessOrFailure(draggedContrib.id, this, 'error');
                 this.set('contributors', originalOrder);
                 this.get('toast').error('Could not reorder contributors');
+                draggedContrib.rollbackAttributes();
             });
         }
     },

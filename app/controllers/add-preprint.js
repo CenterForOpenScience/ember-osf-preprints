@@ -302,14 +302,14 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
                 return contributors;
             });
         },
-         /**
-         * highlightSuccessOrFailure method. Element with specified ID flashes green or red depending on response success.
-         *
-         * @method highlightSuccessOrFailure
-         * @param {string} elementId Element ID to change color
-         * @param {Object} context "this" scope
-         * @param {string} status "success" or "error"
-         */
+        /**
+        * highlightSuccessOrFailure method. Element with specified ID flashes green or red depending on response success.
+        *
+        * @method highlightSuccessOrFailure
+        * @param {string} elementId Element ID to change color
+        * @param {Object} context "this" scope
+        * @param {string} status "success" or "error"
+        */
         highlightSuccessOrFailure(elementId, context, status) {
             Ember.run.next(Ember.Object.create({ elementId: elementId, context: context }), function() {
                 var elementId = this.elementId;
@@ -320,7 +320,7 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
                 _this.$('#' + elementId).addClass(highlightClass);
                 setTimeout(() => {
                     _this.$('#' + elementId).removeClass(highlightClass);
-                }, 3500);
+                }, 4000);
             });
         }
     }

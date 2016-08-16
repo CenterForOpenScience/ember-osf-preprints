@@ -26,7 +26,7 @@
                         {{#if searchResults}}
                             <table class="table author-table">
                                 {{#each searchResults as |result|}}
-                                    <tr>
+                                    <tr id={{result.id}}>
                                         <td>
                                             <img class="m-l-xs" src={{result.links.profile_image}} height=40 width=40>
                                             <a href={{result.links.html}}> {{result.fullName}} </a>
@@ -52,7 +52,7 @@
                     {{/if}}
                     {{#if (eq addState 'unregisteredView')}}
                         <h3> Add Unregistered User </h3>
-                        <div class="user-validation">
+                        <div class="user-validation" id="add-unregistered-contributor-form">
                             {{unregistered-contributor-form resetfindContributorsView=(action 'resetfindContributorsView') addUnregisteredContributor=(action 'addUnregisteredContributor')}}
                         </div>
                     {{/if}}
