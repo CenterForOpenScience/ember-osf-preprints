@@ -3,6 +3,11 @@ import config from 'ember-get-config';
 
 var getProvidersPayload = '{"size": 0,"query": {"term": {"@type": "preprint"}},"aggregations": {"sources": {"terms": {"field": "sources","size": 200}}}}';
 
+var filterMap = {
+    'provider': 'sources',
+    'subject': 'tags.raw'
+}
+
 export default Ember.Controller.extend({
     // TODO: either remove or add functionality to info icon on "Refine your search panel"
 
@@ -87,33 +92,47 @@ export default Ember.Controller.extend({
     },
 
     getQueryBody() {
-        let facetFilters = this.get('facetFilters');
-        let filters = [];
-        for (let k of Object.keys(facetFilters)) {
-            let filter = facetFilters[k];
-            if (filter) {
-                if (Ember.$.isArray(filter)) {
-                    filters = filters.concat(filter);
-                } else {
-                    filters.push(filter);
-                }
+        let facetFilters = this.get('activeFilters').slice();
+        facetFilters.filter(function(each) {
+            if (each === 'provider:OSF Providers') {
+                facetFilters.push('provider:Open Science Framework', 'provider:SocArxiv', 'provider:Engrxiv');
+                return false;
+            }
+            return true;
+        });
+        let filters = {};
+        for (let k of facetFilters) {
+            let filter = k.split(':')[0];
+            if (filterMap[filter]) {
+                filters[filterMap[filter]] ? filters[filterMap[filter]].push(k.split(':')[1]) : filters[filterMap[filter]] = [k.split(':')[1]];
             }
         }
-
         let query = {
             query_string: {
                 query: this.get('searchString') || '*'
             }
         };
-        if (filters.length) {
+        //to be removed when we are actually filtering preprints
+        if (Object.keys(filters).length !== 0) {
+            let filters_ = [];
+            for (let k of Object.keys(filters)) {
+                let terms = {};
+                terms[k] = filters[k];
+                filters_.push({
+                    terms: terms
+                })
+            }
+            //to be added when there are actual preprints
+            // filters_.push({
+            //     terms: {'@type.raw': ['preprint']}
+            // });
             query = {
                 bool: {
                     must: query,
-                    filter: filters
+                    filter: filters_
                 }
             };
         }
-
         let sort = [];
         let sortByOption = this.get('chosenSortByOption');
         if (sortByOption === 'Upload date (oldest to newest)') {
@@ -150,6 +169,7 @@ export default Ember.Controller.extend({
 
     expandedOSFProviders: false,
     osfProvider: Ember.computed('activeFilters', function() {
+        this.loadPage.call(this);
         var _this = this;
         var subjectFilters = []
         let osfProviders = ['OSF Providers', 'Open Science Framework', 'SocArxiv', 'Engrxiv'];
