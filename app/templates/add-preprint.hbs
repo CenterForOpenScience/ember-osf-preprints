@@ -59,26 +59,26 @@
 
         {{#with _names.[1] as |name|}}
             {{#preprint-form-section id='preprint-form-basics' name=name allowOpen=isFileUploaded errorAction=(action 'error')}}
-                {{preprint-form-header name=name valid=(get valid name)}}
+                {{preprint-form-header name=name valid=basicsFields.validations.isValid}}
                 {{#preprint-form-body class='row'}}
                     <div class="col-md-6">
                         <label>
                             <span class="required">Title:</span>
-                            {{validated-input model=this valuePath='title' placeholder="Title" value=title}}
+                            {{validated-input model=basicsFields valuePath='title' placeholder="Title" value=basicsFields.title}}
                         </label>
                         <label>
                             DOI:
-                            {{validated-input model=this valuePath='doi' placeholder="DOI" value=doi}}
+                            {{validated-input model=basicsFields valuePath='doi' placeholder="DOI" value=basicsFields.doi}}
                         </label>
                         <label>
                             Tags:
-                            {{input class="form-control" value=tags}}
+                            {{input class="form-control" value=basicsFields.tags}}
                         </label>
                     </div>
                     <div class="col-md-6">
                         <label>
                             <span class="required">Abstract:</span>
-                            {{validated-input model=this valuePath='abstract' placeholder="" value=abstract large=true}}
+                            {{validated-input model=basicsFields valuePath='abstract' placeholder="" value=basicsFields.abstract large=true}}
                         </label>
                     </div>
                 {{/preprint-form-body}}

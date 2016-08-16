@@ -13,8 +13,16 @@ export const State = Object.freeze(Ember.Object.create({
     EXISTING: 'existing'
 }));
 
-// preprint form basic validations
-const Validations = buildValidations({
+
+
+/*****************************
+  Form data and validations
+ *****************************/
+
+/*
+ "Basics" page
+ */
+const BasicsValidations = buildValidations({
     title: {
         description: 'Title',
         validators: [
@@ -49,11 +57,21 @@ const Validations = buildValidations({
     }
 });
 
-export default Ember.Controller.extend(Validations, NodeActionsMixin, {
+const BasicsFields = Ember.Object.extend(BasicsValidations, {
+    title: null,
+    doi: null,
+    abstract: null,
+});
+
+
+/**
+ * Add preprint page definitions
+ */
+export default Ember.Controller.extend(NodeActionsMixin, {
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
 
-    // Data tracked internally
+    // Data for project picker; tracked internally on load
     user: null,
     userNodes: Ember.A(),
 
@@ -62,7 +80,21 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
     selectedFile: null,
     contributors: Ember.A(),
 
+    // Form sections (placeholder; overridden in init)
+    basicsFields: null,
+
+    init() {
+        // Workaround for ember-cp-validations issue: we want each section of the page to be validated
+        //   separately, but ember-cp-validations needs workaround for container access that doesn't seem to exist when component is defined
+        //   See http://offirgolan.github.io/ember-cp-validations/docs/modules/Basic.html
+        const basicsFields = BasicsFields.create(Ember.getOwner(this).ownerInjection());
+        this.set('basicsFields', basicsFields);
+
+        return this._super(...arguments);
+    },
+
     getContributors: Ember.observer('selectedNode', function() {
+        // Cannot be called until a project has been selected!
         let node = this.get('selectedNode');
         let contributors = Ember.A();
         loadAll(node, 'contributors', contributors).then(()=>
@@ -82,7 +114,7 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
     },
 
     //TODO: Track whether a node has been selected, and a file uploaded for that node
-    isFileUploaded: Ember.computed.and('selectedNode', 'selectedFile'),
+    isFileUploaded: true,//Ember.computed.and('selectedNode', 'selectedFile'),
 
     isAdmin: Ember.computed('selectedNode', function() {
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
