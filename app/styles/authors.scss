@@ -82,8 +82,11 @@
 }
 
 tr.contributor-row:hover {
-    cursor: move;
     background: #EEE;
+}
+
+span.sortable-bars:hover {
+    cursor: move;
 }
 
 .sortable-item {
