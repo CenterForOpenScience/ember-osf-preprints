@@ -32,6 +32,13 @@ export default Ember.Component.extend({
     init() {
         this.get('primaryFile').then(primaryFile => this.set('selectedFile', primaryFile));
         this._super(...arguments);
+
+    },
+    didRender: function () {
+        $('[data-toggle="tooltip"]').tooltip({
+            animated: 'fade',
+            placement: 'bottom',
+        });
     },
     actions: {
         moveLeft() {

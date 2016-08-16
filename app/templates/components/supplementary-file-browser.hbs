@@ -9,12 +9,12 @@
             {{#each list as |supplement|}}
                 {{#if (eq supplement.kind "folder")}}
                     <a href={{projectURL}} style="color:inherit;">
-                        <li class="small-files col-xs-2 p-md box">
+                        <li class="small-files col-xs-2 p-md box" data-toggle="tooltip" title={{supplement.name}}>
                             <i class="fa fa-folder fa-2x p-b-xs" aria-hidden="true"></i>
                         </li>
                     </a>
                 {{else}}
-                    <li class="small-files col-xs-2 p-md box {{if (eq selectedFile supplement) 'selected'}}" {{action 'changeFile' supplement}}>
+                    <li class="small-files col-xs-2 p-md box {{if (eq selectedFile supplement) 'selected'}}" data-toggle="tooltip" title={{supplement.name}} {{action 'changeFile' supplement}}>
                         <i class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
                     </li>
                 {{/if}}
