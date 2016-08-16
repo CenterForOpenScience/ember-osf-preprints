@@ -8,7 +8,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     model() {
         // Store the empty preprint to be created on the model hook for page. Node will be fetched
         //  internally during submission process.
-        return this.store.createRecord('preprint');
+        // TODO: For demo purposes, explicitly don't specify a provider and rely on backend defaults
+        return this.store.createRecord('preprint', {doi: 'Something!'});
     },
 
     setupController(controller) {

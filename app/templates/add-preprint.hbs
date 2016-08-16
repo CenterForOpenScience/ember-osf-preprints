@@ -31,7 +31,7 @@
                                         {{! TODO: cleanup created component if needed }}
                                         <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
                                         {{! TODO: check if dropzone has file and model exists before allowing user to continue }}
-                                        <button class="btn btn-primary" disabled={{unless selectedNode true}} {{action (if shouldCreateChild 'addChild' 'startUpload')}}>Next</button>
+                                        <button class="btn btn-primary" disabled={{unless uploadValid true}} {{action (if shouldCreateChild 'addChild' 'startUpload')}}>Next</button>
                                     {{else}}
                                         {{log 'preprint-form-upload: bad uploadState'}}
                                     {{/if}}
@@ -46,8 +46,7 @@
                                 {{! TODO: cleanup created component if needed }}
                                 <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
                                 {{! TODO: check if project and file are selected before allowing user to continue }}
-                                <button class="btn btn-primary" disabled={{unless selectedNode true}} {{action (if shouldCreateChild 'addChild' 'next') name}}>Next</button>
-
+                                <button class="btn btn-primary" disabled={{unless uploadValid true}} {{action (if shouldCreateChild 'addChild' 'next') name}}>Next</button>
                             {{else}}
                                 {{log 'preprint-form-upload: bad state'}}
                             {{/if}}
