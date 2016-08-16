@@ -106,3 +106,23 @@ span.sortable-bars:hover {
     padding-left: 18px;
     padding-right: 18px;
 }
+
+.successHighlight{
+    background-color: #DFF0D8 !important;
+    -webkit-transition: background-color 1000ms linear;
+    -moz-transition: background-color 1000ms linear;
+    -o-transition: background-color 1000ms linear;
+    transition: background-color 1000ms linear;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate;
+}
+
+.errorHighlight{
+    background-color: #F2DEDE !important;
+    -webkit-transition: background-color 1000ms linear;
+    -moz-transition: background-color 1000ms linear;
+    -o-transition: background-color 1000ms linear;
+    transition: background-color 1000ms linear;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate;
+}
