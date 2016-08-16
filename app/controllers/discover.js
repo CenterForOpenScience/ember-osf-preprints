@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
 
+var getProvidersPayload = '{"size": 0,"query": {"term": {"@type": "preprint"}},"aggregations": {"sources": {"terms": {"field": "sources","size": 200}}}}';
+
 export default Ember.Controller.extend({
     // TODO: either remove or add functionality to info icon on "Refine your search panel"
 
@@ -32,8 +34,21 @@ export default Ember.Controller.extend({
     searchUrl: config.SHARE.searchUrl,
 
     init() {
+        var _this = this;
         this._super(...arguments);
         this.set('facetFilters', Ember.Object.create());
+        Ember.$.ajax({
+            type: "POST",
+            url: this.get('searchUrl'),
+            data: getProvidersPayload,
+            contentType: 'application/json',
+            crossDomain: true,
+        }).then( function(results) {
+            var hits = results.aggregations.sources.buckets;
+            hits.map(function(each) {
+                _this.get('otherProviders').pushObject(each.key);
+            })
+        });
         this.loadPage.call(this);
     },
 
@@ -133,6 +148,10 @@ export default Ember.Controller.extend({
         }
     },
 
+    expandedOSFProviders: false,
+    osfProvider: true,
+    otherProviders: [],
+
     actions: {
         search(query) {
             this.set('searchString', query);
@@ -180,6 +199,19 @@ export default Ember.Controller.extend({
             if (!match.length) {
                 this.get('activeFilters').pushObject('subject:' + subject.text);
             }
+        },
+
+        selectProvider(provider) {
+            let match = this.get('activeFilters').filter(function(item) {
+                return item.indexOf('provider') !== -1;
+            });
+            if (match.length) {
+                this.get('activeFilters').removeObject(match[0]);
+            }
+            this.get('activeFilters').pushObject('provider:' + provider);
+        },
+        expandOSFProviders() {
+            this.set('expandedOSFProviders', !this.get('expandedOSFProviders'));
         }
     },
 });

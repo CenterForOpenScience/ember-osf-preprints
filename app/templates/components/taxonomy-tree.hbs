@@ -12,11 +12,11 @@
             <ul>
                 {{#each item.children as |child|}}
                     <p>
-                        {{#if child.showChildren}}
-                            <a href='' {{action 'expand' child}}>{{fa-icon 'times'}}</a>
-                        {{else}}
-                            <a href='' {{action 'expand' child}}>{{fa-icon 'plus'}}</a>
-                        {{/if}}
+                    {{#if child.showChildren}}
+                        <a href='' {{action 'expand' child}}>{{fa-icon 'times'}}</a>
+                    {{else}}
+                        <a href='' {{action 'expand' child}}>{{fa-icon 'plus'}}</a>
+                    {{/if}}
                         <a href='' {{action 'select' child}}>{{child.text}}</a>
                     </p>
                     {{#if child.showChildren}}

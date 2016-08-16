@@ -56,7 +56,32 @@
                     </ul>
                 {{/if}}
             </div>
+            <div class='panel panel-info'>
+                <div class='panel-heading'>
+                    Providers
+                </div>
+                <div class='panel-body'>
+                    <ul>
+                        <p>
+                            <a href='' {{action 'expandOSFProviders'}}>{{#if expandedOSFProviders}}{{fa-icon 'times'}}{{else}}{{fa-icon 'plus'}}{{/if}}</a>
 
+                            <a href='' {{action 'selectProvider' 'OSF Providers'}}>OSF Providers</a>
+                        </p>
+                        {{#if expandedOSFProviders}}
+                            <ul>
+                                <p> <a href='' {{action 'selectProvider' 'Open Science Framework'}}>Open Science Framework</a></p>
+                                <p> <a href='' {{action 'selectProvider' 'SocArxiv'}}>SocArxiv</a></p>
+                                <p> <a href='' {{action 'selectProvider' 'Engrxiv'}}>Engrxiv</a></p>
+                            </ul>
+                        {{/if}}
+
+                        {{#each otherProviders as |provider|}}
+                            <p><a href='' {{action 'selectProvider' provider}}>{{provider}}</a></p>
+                        {{/each}}
+
+                    </ul>
+                </div>
+            </div>
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <h4>Refine your search {{fa-icon "info-circle"}}</h4>
@@ -65,7 +90,11 @@
                 <div class="panel-body">
                     <div>
                         <h4>Subject</h4>
+                        {{#if osfProvider}}
                         {{taxonomy-tree select=(action 'selectSubjectFilter')}}
+                        {{else}}
+                        <i>Taxonomy not available for non-OSF providers.</i>
+                        {{/if}}
                     </div>
                 </div>
             </div>
