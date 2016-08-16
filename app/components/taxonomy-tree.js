@@ -6,9 +6,9 @@ export default Ember.Component.extend({
     init() {
         this._super(...arguments);
         var _this = this;
-        this.get('store').query('taxonomy', {filter: {parent_ids: 'null'}, page: {size: 100}}).then(function(results){
+        this.get('store').query('taxonomy', { filter: { parent_ids: 'null' }, page: { size: 100 } }).then(function(results) {
                 var topLevel = [];
-                results.map(function(result){
+                results.map(function(result) {
                     topLevel.push({
                         id: result.id,
                         text: result.get('text'),
@@ -25,7 +25,7 @@ export default Ember.Component.extend({
             this.attrs.select(item);
         },
         expand(item) {
-            if (item.showChildren){
+            if (item.showChildren) {
                 Ember.set(item, 'showChildren', false);
                 return;
             }
@@ -34,9 +34,9 @@ export default Ember.Component.extend({
                 Ember.set(item, 'showChildren', true);
                 return;
             }
-            this.get('store').query('taxonomy', {filter: {parent_ids: item.id}, page: {size: 100}}).then(function(results){
+            this.get('store').query('taxonomy', { filter: { parent_ids: item.id }, page: { size: 100 } }).then(function(results) {
                     var topLevel = [];
-                    results.map(function(result){
+                    results.map(function(result) {
                         topLevel.push({
                             id: result.id,
                             text: result.get('text'),
