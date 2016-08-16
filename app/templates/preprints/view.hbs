@@ -1,19 +1,16 @@
-<div id="view-page" class="container">{{!CONATINER DIV}}
-    <div class="m-b-md m-md osf-box m-t-lg bg-color-view-page"> {{!OSF BOX DIV}}
-        <div class="container-fluid p-t-xl p-b-md m-b-xl dark-overlay-header-background header-row">
-        <div class="row p-l-md m-t-lg"> {{!HEADER ROW}}
+<body id="view-page">
+    <div class="p-t-xl m-t-xl p-b-lg m-b-xl dark-overlay-header-background header-row">{{!HEADER ROW}}
+        <div class="container">{{!CONATINER DIV}}
             <h1 class="p-b-lg">{{model.title}}</h1>
-        <!--</div> {{!END HEADER ROW}}-->
-        <!--<div class="row p-l-md"> {{!PREPRINT INFO ROW}}-->
             <h5 class="preprint-authors">
                 {{#each model.contributors as |author index|}}
-                    <a href={{author.users.profileURL}}>{{author.users.fullName}},</a>
+                    <a href={{author.users.profileURL}}>{{author.users.fullName}}</a>,
                 {{/each}}
             </h5>
             <h6>Added on: {{moment-format model.date_created "MMMM DD, YYYY"}} | Last edited: {{moment-format model.date_modified "MMMM DD, YYYY"}} </h6>
-        <!--</div> {{!END PREPRINT INFO ROW}}-->
-            </div>
-            </div>
+        </div> {{!END CONATINER DIV}}
+    </div> {{!END HEADER ROW}}
+    <div id="view-page" class="container">{{!CONATINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
             <div class="col-md-7"> {{!LEFT COL DIV}}
                 {{supplementary-file-browser primaryFile=model.primaryFile fileList=fileList projectURL=model.links.html}}
@@ -39,5 +36,5 @@
                 </div>
             </div> {{!END RIGHT SIDE COL}}
         </div> {{!END CONTENT ROW}}
-    </div> {{!END OSF BOX DIV}}
-</div>{{!END DIV CONTAINER}}
+    </div>{{!END DIV CONTAINER}}
+</body>
