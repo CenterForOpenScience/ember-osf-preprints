@@ -1,10 +1,11 @@
 import Ember from 'ember';
+
+import autosave from 'ember-autosave';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 import permissions from 'ember-osf/const/permissions';
 import NodeActionsMixin from 'ember-osf/mixins/node-actions';
 import loadAll from 'ember-osf/utils/load-relationship';
-
 
 // Enum of available upload states
 export const State = Object.freeze(Ember.Object.create({
@@ -13,15 +14,9 @@ export const State = Object.freeze(Ember.Object.create({
     EXISTING: 'existing'
 }));
 
-
-
 /*****************************
   Form data and validations
  *****************************/
-
-/*
- "Basics" page: validation rules are complex and have several parts
- */
 const BasicsValidations = buildValidations({
     basicsTitle: {
         description: 'Title',
@@ -73,6 +68,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
     selectedFile: null,
     contributors: Ember.A(),
 
+    ///////////////////////////////////////
     // Validation rules for form sections
     uploadValid: true, //Ember.computed.and('selectedNode', 'selectedFile'),
     // Basics fields are currently the only ones with validation. Make this more specific in the future if we add more form fields.
@@ -82,11 +78,33 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
     // Must select at least one subject. TODO: Verify this is the appropriate way to track
     subjectsValid: Ember.computed.bool('sortedSelection.length'),
 
-    // Fields used in the "basics" section of the form. TODO: Can we alias this way?
-    basicsTitle: Ember.computed.alias('selectedNode.title'),
+    ////////////////////////////////////////////////////
+    // Fields used in the "basics" section of the form.
+    // Proxy for "basics" section, to support autosave when fields change (created when model selected)
+    basicsModel: Ember.computed.alias('selectedNode'),
+
+    basicsTitle: Ember.computed.alias('basicsModel.title'),
+    basicsAbstract: Ember.computed.alias('basicsModel.description'),
+    basicsTags: Ember.computed.alias('basicsModel.tags'), // TODO: This may need to provide a default value (list)? Via default or field transform?
     basicsDOI: Ember.computed.alias('model.doi'),
-    basicsAbstract: Ember.computed.alias('selectedNode.description'),
-    basicsTags: Ember.computed.alias('selectedNode.tags'), // TODO: This may need to provide a default value (list)? Via default or field transform?
+
+    //// TODO: Turn off autosave functionality for now. Direct 2-way binding was causing a fight between autosave and revalidation, so autosave never fired. Fixme.
+    // createAutosave: Ember.observer('selectedNode', function() {
+    //     // Create autosave proxy only when a node has been loaded.
+    //     // TODO: This could go badly if a request is in flight when trying to destroy the proxy
+    //
+    //     var controller = this;
+    //     this.set('basicsModel', autosave('selectedNode', {
+    //         save(model) {
+    //             // Do not save fields if validation fails.
+    //             console.log('trying autosave');
+    //             if (controller.get('basicsValid')) {
+    //                 console.log('decided to autosave');
+    //                 model.save();
+    //             }
+    //         }
+    //     }));
+    // }),
 
     getContributors: Ember.observer('selectedNode', function() {
         // Cannot be called until a project has been selected!
