@@ -320,7 +320,7 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
                 _this.$('#' + elementId).addClass(highlightClass);
                 setTimeout(() => {
                     _this.$('#' + elementId).removeClass(highlightClass);
-                }, 2500);
+                }, 3500);
             });
         }
     }
