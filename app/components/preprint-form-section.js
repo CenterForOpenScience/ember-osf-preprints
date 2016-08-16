@@ -51,7 +51,7 @@ export default CpPanelComponent.extend({
 
         // Prevent closing all views
         if (!this.get('isOpen')) {
-            if (this.get('node')) { // TODO: Also check for a file?
+            if (this.get('isFileUploaded')) {
                 this._super(...arguments);
             } else {
                 this.sendAction('errorAction', 'Please select a project and file before continuing');
