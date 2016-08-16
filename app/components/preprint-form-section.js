@@ -5,7 +5,14 @@ export default CpPanelComponent.extend({
     tagName: 'section',
     classNames: ['preprint-form-section'],
     animate: false,
-    // Fix depreciation warning
+
+    /**
+     * Prevent toggling into form section if file has not been uploaded
+     * @property {boolean} isFileUploaded
+     */
+    isFileUploaded: false,
+
+    // Fix deprecation warning
     _setup: Ember.on('init', Ember.observer('open', function() {
         this.set('panelState.boundOpenState', this.get('open'));
     })),
@@ -40,9 +47,15 @@ export default CpPanelComponent.extend({
     }),
     // Called when panel is toggled
     handleToggle() {
+        // TODO: If this panel is not open, don't allow toggling in if the node is empty.
+
         // Prevent closing all views
         if (!this.get('isOpen')) {
-            this._super(...arguments);
+            if (this.get('node')) { // TODO: Also check for a file?
+                this._super(...arguments);
+            } else {
+                this.sendAction('errorAction', 'Please select a project and file before continuing');
+            }
         }
-    }
+    },
 });

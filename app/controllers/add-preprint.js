@@ -78,6 +78,9 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         method: 'PUT'
     },
 
+    //TODO: Track whether a node has been selected, and a file uploaded for that node
+    isFileUploaded: false,
+
     isAdmin: Ember.computed('node', function() {
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
         let userPermissions = this.get('node.currentUserPermissions') || [];
@@ -170,8 +173,14 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
 
     actions: {
         // Open next panel
-        next(name) {
-            this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(name) + 1}`));
+        next(currentPanelName) {
+            this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
+        },
+
+        error(error /*, transition */) {
+            // TODO: Provide a default error action for possible use?
+            this.get('toast').error(error);
+            return true;
         },
         /*
         * Upload section
