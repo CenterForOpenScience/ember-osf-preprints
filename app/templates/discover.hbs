@@ -63,7 +63,13 @@
                 <div class='panel-body'>
                     <ul>
                         <p>
-                            <a href='' {{action 'expandOSFProviders'}}>{{#if expandedOSFProviders}}{{fa-icon 'times'}}{{else}}{{fa-icon 'plus'}}{{/if}}</a>
+                            <a href='' {{action 'expandOSFProviders'}}>
+                                {{#if expandedOSFProviders}}
+                                    {{fa-icon 'times'}}
+                                {{else}}
+                                    {{fa-icon 'plus'}}
+                                {{/if}}
+                            </a>
 
                             <a href='' {{action 'selectProvider' 'OSF Providers'}}>OSF Providers</a>
                         </p>
@@ -74,7 +80,6 @@
                                 <p> <a href='' {{action 'selectProvider' 'Engrxiv'}}>Engrxiv</a></p>
                             </ul>
                         {{/if}}
-
                         {{#each otherProviders as |provider|}}
                             <p><a href='' {{action 'selectProvider' provider}}>{{provider}}</a></p>
                         {{/each}}
@@ -91,9 +96,9 @@
                     <div>
                         <h4>Subject</h4>
                         {{#if osfProvider}}
-                        {{taxonomy-tree select=(action 'selectSubjectFilter')}}
+                            {{taxonomy-tree select=(action 'selectSubjectFilter')}}
                         {{else}}
-                        <i>Taxonomy not available for non-OSF providers.</i>
+                            <i>Taxonomy not available for non-OSF providers.</i>
                         {{/if}}
                     </div>
                 </div>

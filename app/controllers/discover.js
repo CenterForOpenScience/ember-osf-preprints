@@ -4,9 +4,9 @@ import config from 'ember-get-config';
 var getProvidersPayload = '{"size": 0,"query": {"term": {"@type": "preprint"}},"aggregations": {"sources": {"terms": {"field": "sources","size": 200}}}}';
 
 var filterMap = {
-    'provider': 'sources',
-    'subject': 'tags.raw'
-}
+    provider: 'sources',
+    subject: 'tags.raw'
+};
 
 export default Ember.Controller.extend({
     // TODO: either remove or add functionality to info icon on "Refine your search panel"
@@ -43,16 +43,16 @@ export default Ember.Controller.extend({
         this._super(...arguments);
         this.set('facetFilters', Ember.Object.create());
         Ember.$.ajax({
-            type: "POST",
+            type: 'POST',
             url: this.get('searchUrl'),
             data: getProvidersPayload,
             contentType: 'application/json',
             crossDomain: true,
-        }).then( function(results) {
+        }).then(function(results) {
             var hits = results.aggregations.sources.buckets;
             hits.map(function(each) {
                 _this.get('otherProviders').pushObject(each.key);
-            })
+            });
         });
         this.loadPage.call(this);
     },
@@ -104,7 +104,11 @@ export default Ember.Controller.extend({
         for (let k of facetFilters) {
             let filter = k.split(':')[0];
             if (filterMap[filter]) {
-                filters[filterMap[filter]] ? filters[filterMap[filter]].push(k.split(':')[1]) : filters[filterMap[filter]] = [k.split(':')[1]];
+                if (filters[filterMap[filter]]) {
+                    filters[filterMap[filter]].push(k.split(':')[1]);
+                } else {
+                    filters[filterMap[filter]] = [k.split(':')[1]];
+                }
             }
         }
         let query = {
@@ -120,7 +124,7 @@ export default Ember.Controller.extend({
                 terms[k] = filters[k];
                 filters_.push({
                     terms: terms
-                })
+                });
             }
             //to be added when there are actual preprints
             // filters_.push({
@@ -171,7 +175,7 @@ export default Ember.Controller.extend({
     osfProvider: Ember.computed('activeFilters', function() {
         this.loadPage.call(this);
         var _this = this;
-        var subjectFilters = []
+        var subjectFilters = [];
         let osfProviders = ['OSF Providers', 'Open Science Framework', 'SocArxiv', 'Engrxiv'];
         let match = this.get('activeFilters').filter(function(each) {
             if (each.indexOf('subject') !== -1) {
