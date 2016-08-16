@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading">
+    <div class="panel-body">
         <div class="row">
             <div class="col-sm-12">
                 {{#if result.date_updated}} {{! moment-format will use current time if null}}
@@ -41,12 +41,9 @@
                 {{result.sources}}
             </div>
         </div>
-    </div>
-
-    {{#if showBody}}
-        <div class="panel-body">
+        <br>
+        {{#if showBody}}
             {{result.description}}
-
             <div class="row">
                 <div class="col-sm-12">
                     {{#each result.tags as |tag|}}
@@ -59,10 +56,9 @@
                     Released on: {{moment-format result.date_updated}}
                 </div>
             </div>
+        {{/if}}
+        <div class="text-center" {{action "toggleShowBody"}}>
+            <a href=''>{{fa-icon footerIcon size=1}}</a>
         </div>
-    {{/if}}
-
-    <div class="panel-footer text-center" {{action "toggleShowBody"}}>
-        {{fa-icon footerIcon size=2}}
     </div>
 </div>

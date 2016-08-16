@@ -1,1 +1,33 @@
-<div id="taxonomyTree"></div>
+<ul>
+    {{#each topLevelItem as |item|}}
+        <p>
+            {{#if item.showChildren}}
+                <a href='' {{action 'expand' item}}>{{fa-icon 'times'}}</a>
+            {{else}}
+                <a href='' {{action 'expand' item}}>{{fa-icon 'plus'}}</a>
+            {{/if}}
+            <a href='' {{action 'select' item}}>{{item.text}}</a>
+        </p>
+        {{#if item.showChildren}}
+            <ul>
+                {{#each item.children as |child|}}
+                    <p>
+                        {{#if child.showChildren}}
+                            <a href='' {{action 'expand' child}}>{{fa-icon 'times'}}</a>
+                        {{else}}
+                            <a href='' {{action 'expand' child}}>{{fa-icon 'plus'}}</a>
+                        {{/if}}
+                        <a href='' {{action 'select' child}}>{{child.text}}</a>
+                    </p>
+                    {{#if child.showChildren}}
+                        <ul>
+                            {{#each child.children as |grandkid|}}
+                                <p><a href='' {{action 'select' grandkid}}>{{grandkid.text}}</a></p>
+                            {{/each}}
+                        </ul>
+                    {{/if}}
+                {{/each}}
+            </ul>
+        {{/if}}
+    {{/each}}
+</ul>
