@@ -8,9 +8,9 @@ export default CpPanelComponent.extend({
 
     /**
      * Prevent toggling into form section if file has not been uploaded
-     * @property {boolean} isFileUploaded
+     * @property {boolean} allowOpen
      */
-    isFileUploaded: false,
+    allowOpen: false,
 
     // Fix deprecation warning
     _setup: Ember.on('init', Ember.observer('open', function() {
@@ -47,11 +47,10 @@ export default CpPanelComponent.extend({
     }),
     // Called when panel is toggled
     handleToggle() {
-        // TODO: If this panel is not open, don't allow toggling in if the node is empty.
-
         // Prevent closing all views
         if (!this.get('isOpen')) {
-            if (this.get('isFileUploaded')) {
+            if (this.get('allowOpen')) {
+                // Crude mechanism to prevent opening a panel if conditions are not met
                 this._super(...arguments);
             } else {
                 this.sendAction('errorAction', 'Please select a project and file before continuing');
