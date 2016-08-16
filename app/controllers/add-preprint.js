@@ -23,7 +23,7 @@ export const State = Object.freeze(Ember.Object.create({
  "Basics" page: validation rules are complex and have several parts
  */
 const BasicsValidations = buildValidations({
-    title: {
+    basicsTitle: {
         description: 'Title',
         validators: [
             validator('presence', true),
@@ -33,7 +33,7 @@ const BasicsValidations = buildValidations({
             })
         ]
     },
-    abstract: {
+    basicsAbstract: {
         description: 'Abstract',
         validators: [
             validator('presence', true),
@@ -44,7 +44,7 @@ const BasicsValidations = buildValidations({
             })
         ]
     },
-    doi: {
+    basicsDOI: {
         description: 'DOI',
         validators: [
             validator('format', {
@@ -57,16 +57,10 @@ const BasicsValidations = buildValidations({
     }
 });
 
-const BasicsFields = Ember.Object.extend(BasicsValidations, {
-    title: null,
-    doi: null,
-    abstract: null,
-});
-
 /**
  * "Add preprint" page definitions
  */
-export default Ember.Controller.extend(NodeActionsMixin, {
+export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
 
@@ -81,22 +75,18 @@ export default Ember.Controller.extend(NodeActionsMixin, {
 
     // Validation rules for form sections
     uploadValid: true, //Ember.computed.and('selectedNode', 'selectedFile'),
-    basicsFields: null,
-    basicsValid: Ember.computed.alias('basicsField.validations.isValid'),
+    // Basics fields are currently the only ones with validation. Make this more specific in the future if we add more form fields.
+    basicsValid: Ember.computed.alias('validations.isValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject. TODO: Verify this is the appropriate way to track
     subjectsValid: Ember.computed.bool('sortedSelection.length'),
 
-    init() {
-        // Workaround for ember-cp-validations issue: we want each section of the page to be validated
-        //   separately, but ember-cp-validations needs workaround for container access that doesn't seem to exist when component is defined
-        //   See http://offirgolan.github.io/ember-cp-validations/docs/modules/Basic.html
-        const basicsFields = BasicsFields.create(Ember.getOwner(this).ownerInjection());
-        this.set('basicsFields', basicsFields);
-
-        return this._super(...arguments);
-    },
+    // Fields used in the "basics" section of the form. TODO: Can we alias this way?
+    basicsTitle: Ember.computed.alias('selectedNode.title'),
+    basicsDOI: Ember.computed.alias('model.doi'),
+    basicsAbstract: Ember.computed.alias('selectedNode.description'),
+    basicsTags: Ember.computed.alias('selectedNode.tags'), // TODO: This may need to provide a default value (list)? Via default or field transform?
 
     getContributors: Ember.observer('selectedNode', function() {
         // Cannot be called until a project has been selected!
