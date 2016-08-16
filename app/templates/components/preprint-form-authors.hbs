@@ -1,5 +1,5 @@
 <div class="row form">
-    <div class="col-xs-12 col-md-6 col-division-right">
+    <div class="col-xs-12 col-md-5 col-division-right">
         <div class="row">
             <div class="col-xs-11">
                 <form {{action 'findContributors' 1 on='submit'}}>
@@ -36,9 +36,9 @@
 
                                         </td>
                                         {{#if (userIsContributor result contributors authorModification)}}
-                                            <td><span class="hint hint--left" aria-label="Already added"> <button class="btn btn-default btn-small disabled disabled-checkmark"><i class="fa fa-check" aria-hidden="true"></i> </button> </span> </td>
+                                            <td><span class="hint hint--left pull-right" aria-label="Already added"> <button class="btn btn-default btn-small disabled disabled-checkmark"><i class="fa fa-check" aria-hidden="true"></i> </button> </span> </td>
                                         {{else}}
-                                            <td> <button class="btn btn-success btn-small" {{action "addContributor" result}}> Add </button> </td>
+                                            <td> <button class="btn btn-success btn-small pull-right" {{action "addContributor" result}}> Add </button> </td>
                                         {{/if}}
                                     </tr>
                                 {{/each}}
@@ -60,7 +60,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-12 col-md-6">
+    <div class="col-xs-12 col-md-7">
         <div class="author-header">
             <h2 class="header-inline"> Authors </h2>
             <span>

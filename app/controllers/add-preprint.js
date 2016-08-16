@@ -300,6 +300,9 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
             return this.store.query('user', { filter: { full_name: query }, page: page }).then((contributors) => {
                 this.set('searchResults', contributors);
                 return contributors;
+            }, () => {
+                this.get('toast').error('Could not perform search query.');
+                this.highlightSuccessOrFailure('author-search-box', this, 'error');
             });
         },
         /**
