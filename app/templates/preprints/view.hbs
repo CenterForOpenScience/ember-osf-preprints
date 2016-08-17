@@ -12,29 +12,34 @@
     </div> {{!END HEADER ROW}}
     <div id="view-page" class="container">{{!CONATINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
-            <div class="col-md-7"> {{!LEFT COL DIV}}
+            <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}
                 {{supplementary-file-browser primaryFile=model.primaryFile fileList=fileList projectURL=model.links.html}}
+                <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
+                    <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
+                </button>
             </div> {{!END LEFT COL DIV}}
-            <div class="col-md-5"> {{!RIGHT SIDE COL}}
-                <div class="p-sm osf-box-lt" id="download_project">{{!SHARE ROW}}
-                    <a type="button" class="btn btn-primary" href={{model.primaryFile.links.download}}>Download</a>
-                    <span class="p-sm pull-right">
-                        <p class="f-w-lg">
-                            {{#link-to "preprints.edit" class="link-solid m-r-xs"}}Edit{{/link-to}}
-                            {{#link-to "preprints.edit" class="link-solid"}}Share{{/link-to}}
-                        </p>
-                    </span>
-                </div>{{!END SHARE ROW}}
-                <div class="f-w-xs m-b-xl p-t-xs">
-                    <h3 class="page-header p-l-md">Abstract</h3>
-                    <p class="p-l-md">{{model.abstract}}</p>
-                </div>
-                {{!PROJECT BUTTON}}
-                <div class="p-lg osf-box-lt text-center">
-                    <p class="f-w-xs">The project for this paper is available on the Open Science Framework.</p>
-                    <a type="button" class="btn btn-info" href={{model.links.html}}>Visit project</a>
-                </div>
-            </div> {{!END RIGHT SIDE COL}}
+            {{#unless fullScreenMFR}}
+                <div class="col-md-5"> {{!RIGHT SIDE COL}}
+                    <div class="p-sm osf-box-lt" id="download_project">{{!SHARE ROW}}
+                        <a type="button" class="btn btn-primary" href={{model.primaryFile.links.download}}>Download</a>
+                        <span class="p-sm pull-right">
+                            <p class="f-w-lg">
+                                {{#link-to "preprints.edit" class="link-solid m-r-xs"}}Edit{{/link-to}}
+                                {{#link-to "preprints.edit" class="link-solid"}}Share{{/link-to}}
+                            </p>
+                        </span>
+                    </div>{{!END SHARE ROW}}
+                    <div class="f-w-xs m-b-xl p-t-xs">
+                        <h3 class="page-header p-l-md">Abstract</h3>
+                        <p class="p-l-md">{{model.abstract}}</p>
+                    </div>
+                    {{!PROJECT BUTTON}}
+                    <div class="p-lg osf-box-lt text-center">
+                        <p class="f-w-xs">The project for this paper is available on the Open Science Framework.</p>
+                        <a type="button" class="btn btn-info" href={{model.links.html}}>Visit project</a>
+                    </div>
+                </div> {{!END RIGHT SIDE COL}}
+            {{/unless}}
         </div> {{!END CONTENT ROW}}
     </div>{{!END DIV CONTAINER}}
 </body>

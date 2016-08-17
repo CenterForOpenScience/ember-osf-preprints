@@ -780,6 +780,20 @@ hr {
     .preprint-authors{
         color: #337ab7;
     }
+    #mfr-col{
+        position: relative;
+    .expand-mfr-carrot {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: #888888;
+        background: 0;
+        border: 0;
+        outline: none;
+    }
+    }
+
+
 }
 
 //For Supplementary File Widget
