@@ -6,7 +6,12 @@
             {{else}}
                 <a href='' {{action 'expand' item}}>{{fa-icon 'plus'}}</a>
             {{/if}}
-            <a href='' {{action 'select' item}}>{{item.text}}</a>
+            {{#if (if-filter item.text subjects)}}
+                <input type="checkbox" checked {{action 'select' item}}>
+            {{else}}
+                <input type="checkbox" {{action 'select' item}}>
+            {{/if}}
+            {{item.text}}
         </p>
         {{#if item.showChildren}}
             <ul>
@@ -17,12 +22,24 @@
                         {{else}}
                             <a href='' {{action 'expand' child}}>{{fa-icon 'plus'}}</a>
                         {{/if}}
-                        <a href='' {{action 'select' child}}>{{child.text}}</a>
+                        {{#if (if-filter child.text subjects)}}
+                            <input type="checkbox" checked {{action 'select' child}}>
+                        {{else}}
+                            <input type="checkbox" {{action 'select' child}}>
+                        {{/if}}
+                        {{child.text}}
                     </p>
                     {{#if child.showChildren}}
                         <ul>
                             {{#each child.children as |grandkid|}}
-                                <p><a href='' {{action 'select' grandkid}}>{{grandkid.text}}</a></p>
+                                <p>
+                                    {{#if (if-filter grandkid.text subjects)}}
+                                        <input type="checkbox" checked {{action 'select' grandkid}}>
+                                    {{else}}
+                                        <input type="checkbox" {{action 'select' grandkid}}>
+                                    {{/if}}
+                                    {{grandkid.text}}
+                                </p>
                             {{/each}}
                         </ul>
                     {{/if}}

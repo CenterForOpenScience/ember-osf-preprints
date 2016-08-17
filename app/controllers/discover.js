@@ -172,6 +172,22 @@ export default Ember.Controller.extend({
     },
 
     expandedOSFProviders: false,
+    treeSubjects: Ember.computed('activeFilters', function() {
+        let filters = this.get('activeFilters').filter(
+            each => each.indexOf('subject') !== -1
+        ).map(
+            each => each.split(':')[1]
+        );
+        return filters;
+    }),
+    selectedProviders: Ember.computed('activeFilters', function() {
+        let filters = this.get('activeFilters').filter(
+            each => each.indexOf('provider') !== -1
+        ).map(
+            each => each.split(':')[1]
+        );
+        return filters;
+    }),
     osfProvider: Ember.computed('activeFilters', function() {
         this.loadPage.call(this);
         var _this = this;
@@ -191,7 +207,7 @@ export default Ember.Controller.extend({
         return ret;
     }),
     otherProviders: [],
-
+    osfProviders: ['Open Science Framework', 'SocArxiv', 'Engrxiv'],
     actions: {
         search(query) {
             this.set('searchString', query);
@@ -236,9 +252,11 @@ export default Ember.Controller.extend({
             let match = this.get('activeFilters').filter(function(item) {
                 return item.indexOf(subject.text) !== -1;
             });
+            this.notifyPropertyChange('activeFilters');
             if (!match.length) {
-                this.notifyPropertyChange('activeFilters');
                 this.get('activeFilters').pushObject('subject:' + subject.text);
+            } else {
+                this.get('activeFilters').removeObject('subject:' + subject.text);
             }
         },
 
