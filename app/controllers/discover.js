@@ -24,7 +24,7 @@ export default Ember.Controller.extend({
     sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
 
     treeSubjects: Ember.computed('activeFilters', function() {
-        return this.get('activeFilters.subjects');
+        return this.get('activeFilters.subjects').slice();
     }),
     // chosenOption is always the first element in the list
     chosenSortByOption: Ember.computed('sortByOptions', function() {
