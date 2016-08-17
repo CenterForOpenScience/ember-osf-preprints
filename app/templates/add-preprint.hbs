@@ -80,6 +80,14 @@
                             {{validated-input model=this valuePath='basicsAbstract' placeholder="" value=basicsAbstract large=true}}
                         </label>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                <button {{action 'saveBasics'}} class="btn btn-primary" disabled={{unless basicsValid true}} >Save and continue</button>
+                            </div>
+                        </div>
+                    </div>
+
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
         {{/with}}
