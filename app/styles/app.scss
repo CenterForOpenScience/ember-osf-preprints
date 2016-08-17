@@ -24,33 +24,13 @@
 }
 
 // OSF Preprints langing pages
-.osf-preprint-header-img {
-    $gradient: 35deg, $theme-color-light 0%, $theme-color-dark $gradient-percentage, #000 100%;
-    background: $brand-primary;
-    /* Old browsers */
-    background: -moz-linear-gradient($gradient);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, $theme-color-light),
-        color-stop($gradient-percentage, $theme-color-dark), color-stop(100%, #000));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient($gradient);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient($gradient);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient($gradient);
-    /* IE10+ */
-    background: linear-gradient($gradient);
-    /* W3C */
-    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$theme-color-light, endColorstr='#000000', GradientType=1);
-    /* IE6-9 fallback on horizontal gradient */
-    /*background: linear-gradient(#0e405f, #d9edf7);*/
-    background-color: #145A85;
-    color: #FFF;
+.preprint-header{
+    background:#ebf0f1 url('img/preprints-bg.jpg') top center ;
     padding-top: 80px;
     position: relative;
 }
 
-.osf-preprint-lead {
+.preprint-lead {
     font-weight: 100;
     font-size: 8em;
 }
