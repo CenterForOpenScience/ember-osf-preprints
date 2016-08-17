@@ -8,16 +8,16 @@ import Ember from 'ember';
  * @method permissionToRemoveContributor
  * @param {Object} contributor Contributor you wish to remove.
  * @param {Object} currentUser Current logged in user.
- * @param {Boolean} stillAdmin Whether current user is still a preprint admin
+ * @param {Boolean} isAdmin Whether current user is a preprint admin
  * @param {Object} node The preprint itself.
  * @return {Boolean} Does current user have permission to remove this particular contributor?
  */
 export function permissionToRemoveContributor(params/*, hash*/) {
-    var [contributor, currentUser, stillAdmin, node] = params;
+    var [contributor, currentUser, isAdmin, node] = params;
     var currentUserId = currentUser.get('currentUserId') || currentUser.get('id');
     var removeSelf = contributor.get('userId') === currentUserId;
     var isRegistration = node.get('registration');
-    return ((removeSelf || stillAdmin) && !isRegistration);
+    return ((removeSelf || isAdmin) && !isRegistration);
 
 }
 
