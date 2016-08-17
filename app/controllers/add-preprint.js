@@ -1,6 +1,5 @@
 import Ember from 'ember';
 
-import autosave from 'ember-autosave';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 import permissions from 'ember-osf/const/permissions';
@@ -70,7 +69,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
 
     ///////////////////////////////////////
     // Validation rules for form sections
-    uploadValid: true, //Ember.computed.and('selectedNode', 'selectedFile'),
+    uploadValid: Ember.computed.and('selectedNode', 'selectedFile'),
     // Basics fields are currently the only ones with validation. Make this more specific in the future if we add more form fields.
     basicsValid: Ember.computed.alias('validations.isValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
@@ -287,6 +286,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
             return this.get('_url');
         },
         uploadSuccess() {
+            // Dropzone provides an event that can be checked for the file data
+            let fileData = JSON.parse(arguments[4].target.response);
+            let fileID = fileData.data.id;  // The WB response is prefixed with provider name- best way to clean this up?
+            let osfFileID = fileID.split('/')[1];
+
+            // Fetch an OSF file record matching the WB record. This is a very hacky upload process!
+            this.get('store').findRecord('file', osfFileID)
+                .then((file) => this.set('selectedFile', file));
+
             this.set('selectedFile', 'dummy value'); // FIXME: Placeholder to test expansion validation
             this.get('toast').info('File uploaded!');
         },
@@ -410,7 +418,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
             let model = this.get('model');
             model.setProperties({
                 id: this.get('selectedNode.id'),
-                file: this.get('selectedFile')
+                primaryFile: this.get('selectedFile')
             });
             model.save()
                 .then(() => console.log('Save succeeded. Should we transition somewhere?'))
