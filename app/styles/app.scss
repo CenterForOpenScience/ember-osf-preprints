@@ -31,6 +31,7 @@
 
 .preprint-subjects {
     background-color: #f1f3f2;
+    border-bottom: 1px solid #ccc;
     .subject .col-md-6 a {
         width: 100%;
         font-size: 17px;
@@ -39,12 +40,18 @@
 
 .preprint-providers {
     background: #cbd9d5 url('img/index-server-bg.jpg');
-    .socarxiv-logo {
-        background: url('img/provider_logos/socarxiv.png') no-repeat top left;
-        width: 250px;
-        height: 200px;
+    .provider-logo {
+        height: 120px;
         background-size: contain;
+        background-repeat: no-repeat;
     }
+    .provider-socarxiv {
+        background-image: url('img/provider_logos/socarxiv.png');
+    }
+    .provider-engrxiv {
+        background-image: url('img/provider_logos/engrxiv.png');
+    }
+
 }
 
 
@@ -285,22 +292,6 @@
     }
 }
 
-
-.branded-servers {
-    color: white;
-    background-color: #166595;
-    margin: auto;
-    &.container-fluid {
-        background-position: center top;
-        background-size: cover;
-        padding-top: 50px;
-        padding-bottom: 50px;
-    }
-    .col-sm-2 {
-        display: inline-block;
-        float: none;
-    }
-}
 
 
 .logo {
