@@ -52,8 +52,8 @@
     <div class="preprint-subjects"> {{!SUBJECTS LIST}}
         <div class="container"> {{!CONTAINER DIV}}
             <div class="row">{{!SUBJECTS ROW}}
-                <h1 class="f-w-xl">Browse preprints by subject</h1>
-                <div class="subjectsList table-striped"> {{!SUBJECTS LIST}}
+                <h2>Browse <small>by subject</small></h2>
+                <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
                     {{taxonomy-top-list list=model.subjects}}
                 </div> {{!END SUBJECTS LIST}}
             </div>{{!END ROW}}
@@ -63,9 +63,9 @@
     {{!BRANDED PREPRINT SERVERS}}
     <div class="preprint-providers"> {{!center text}}
         <div class="container-fluid p-b-md branded-servers-background"> {{!CONTAINER}}
-            <h1 class="f-w-xl">Branded preprint servers powered by OSF Preprints</h1>
+            <h2>Services <small>powered by OSF Preprints</small> </h2>
             <div class="row">{{!BRANDED ROW}}
-                Branded servers
+                <div class="col-sm-4 socarxiv-logo"></div>
 
             </div> {{!END ROW}}
         </div> {{!END CONTAINER}}

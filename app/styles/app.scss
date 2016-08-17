@@ -8,6 +8,9 @@
 
 
 /* INDEX page */
+/* Global to index */
+
+
 
 /* Main header with search bar */
 .preprint-header{
@@ -23,9 +26,26 @@
 /* List of latest uploaded preprints */
 .preprint-list {
     background: #fbfbfb;
+    border-bottom: 1px solid #eee;
 }
 
+.preprint-subjects {
+    background-color: #f1f3f2;
+    .subject .col-md-6 a {
+        width: 100%;
+        font-size: 17px;
+    }
+}
 
+.preprint-providers {
+    background: #cbd9d5 url('img/index-server-bg.jpg');
+    .socarxiv-logo {
+        background: url('img/provider_logos/socarxiv.png') no-repeat top left;
+        width: 250px;
+        height: 200px;
+        background-size: contain;
+    }
+}
 
 
 
