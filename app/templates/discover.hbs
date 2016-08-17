@@ -75,11 +75,11 @@
                             {{else}}
                                 <input type="checkbox" {{action 'selectProvider' 'OSF Providers'}}>
                             {{/if}}
-                             OSF Providers
+                            OSF Providers
                         </p>
                         {{#if expandedOSFProviders}}
                             <ul>
-                                {{#each osfProvider as |item|}}
+                                {{#each osfProviders as |item|}}
                                     <p>
                                         {{#if (if-filter item selectedProviders)}}
                                             <input type="checkbox" checked {{action 'selectProvider' item}}>
@@ -88,7 +88,7 @@
                                         {{else}}
                                             <input type="checkbox" {{action 'selectProvider' item}}>
                                         {{/if}}
-                                         {{item}}
+                                        {{item}}
                                     </p>
                                 {{/each}}
                             </ul>
@@ -100,7 +100,7 @@
                                 {{else}}
                                     <input type="checkbox" {{action 'selectProvider' item}}>
                                 {{/if}}
-                                 {{item}}
+                                {{item}}
                             </p>
                         {{/each}}
 
