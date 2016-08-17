@@ -224,7 +224,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
 
         error(error /*, transition */) {
             this.get('toast').error(error);
-            return true;
         },
         /*
         * Upload section
