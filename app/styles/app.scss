@@ -358,6 +358,7 @@ h5 {
     }
 }
 
+//TODO: Remove this and switch the uses on index page to sm
 .f-w-xl {
     font-weight: 300;
 }
@@ -436,9 +437,9 @@ main {
         padding-left:10px;
     }
 
-    .osf-box{
-        border:0px;
-    }
+    //.osf-box{
+    //    border:0px;
+    //}
 
 .text-muted {
     color: #777;
@@ -744,6 +745,10 @@ hr {
     background: url("img/bg-web.png") no-repeat;
 }
 
+.dark-overlay-header-background {
+    background: url("img/dark_overlay.png") no-repeat;
+}
+
 .img-circle {
     background-color: #fff;
 }
@@ -758,13 +763,26 @@ hr {
     background-image: url("img/logo_ua.png");
 }
 
-
-
 .socarxiv-logo {
     background-size: cover;
     background-image: url("img/logo_socarxiv.jpg");
 }
 
+#view-page{
+    background-color: #FCFCFC;
+    font-family : 'Open Sans', Helvetica, sans-serif;
+    .osf-box-lt{
+        background-color: #F3F5F5;
+    }
+    .header-row{
+        color: white;
+    }
+    .preprint-authors{
+        color: #337ab7;
+    }
+}
+
+//For Supplementary File Widget
 #preprint-file-view {
     section {
         position: relative;
@@ -780,26 +798,36 @@ hr {
             }
         }
     }
+    .file-selected-arrow {
+        color: #888888;
+        position: fixed;
+        top: -38px;
+    }
+    .osf-box{
+        height: 100px;
+        width: 100%;
+        background-color: white;
+    }
     .small-files{
         background-color: white;
         display: inline-block;
-        height:100px;
         text-align: center;
         &.selected{
-            background-color: lightgrey;
-        }
-        p{
-            font-family: Arial;
-            font-size: x-small;
+            background-color: #F3F5F5;
         }
     }
-    ul {
-        width: 100%;
-        li {
-            cursor: pointer;
-            &:hover {
-                background-color: lighten(lightgrey, 10%);
-            }
+    li {
+        cursor: pointer;
+        &:hover {
+            border-color: #337AB7;
         }
     }
+    .show-more-button {
+        color: #F3F5F5;
+        background: #D8D8D8;
+        font-size: 2em;
+    }
+}
+.tooltip {
+    position: fixed;
 }
