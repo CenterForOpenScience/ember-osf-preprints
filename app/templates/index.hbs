@@ -5,24 +5,21 @@
         <div class="container"> {{!CONTAINER}}
             <div class="row">{{!HEADER ROW}}
                 {{!TITLE}}
-                <div class="text-center m-b-lg">
+                <div class="text-center m-b-lg col-xs-12">
                     <h1 class="preprint-lead">OSF Preprints</h1>
-                    <h2>
+                    <p class="lead">
                         The <span class="highlight-bold">open</span> preprint server for
                         <span class="highlight-bold">all</span> academic disciplines
-                    </h2>
+                    </p>
                 </div>
-
                 {{!SEARCH}}
-                <div id="search" class="space-top space-bottom">
+                <div class="preprint-search col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 m-v-lg" >
                     {{search-preprints search="search"}}
-                    <p>
-                        <span class="highlight">{{model.preprints.length}}</span> preprints as of
+                    <p class="p-l-md">
+                        <span class="f-w-lg">{{model.preprints.length}}</span> preprints as of
                         <span>{{moment-format model.theDate "MMMM DD, YYYY"}}</span>
                     </p>
                 </div>
-
-
             </div> {{!END ROW}}
         </div> {{!END CONTAINER}}
     </div> {{!END HEADER}}
@@ -31,7 +28,7 @@
     <div class="preprint-list"> {{!LIST}}
         <div class="container"> {{!CONTAINER}}
             <div class="row">{{!LIST ROW}}
-                <h2>Uploads</h2>
+                <h2>Explore <small>recent additions</small></h2>
                 <div id="landing-page-preprint-list-background"> {{!BACKGROUND}}
                     <div id="landing-page-preprint-list"> {{!ARTICLE IN POPULAR UPLOADS}}
                         {{#each model.preprints as |preprintEntry|}}
@@ -64,26 +61,26 @@
     </div> {{!END SUBJECTS LIST}}
 
     {{!BRANDED PREPRINT SERVERS}}
-        <div class="preprint-providers"> {{!center text}}
-            <div class="container-fluid p-b-md branded-servers-background"> {{!CONTAINER}}
-                <h1 class="f-w-xl">Branded preprint servers powered by OSF Preprints</h1>
-                <div class="row">{{!BRANDED ROW}}
-                    Branded servers
+    <div class="preprint-providers"> {{!center text}}
+        <div class="container-fluid p-b-md branded-servers-background"> {{!CONTAINER}}
+            <h1 class="f-w-xl">Branded preprint servers powered by OSF Preprints</h1>
+            <div class="row">{{!BRANDED ROW}}
+                Branded servers
 
-                </div> {{!END ROW}}
-            </div> {{!END CONTAINER}}
-        </div> {{!END PROVIDERS}}
+            </div> {{!END ROW}}
+        </div> {{!END CONTAINER}}
+    </div> {{!END PROVIDERS}}
 
 
 
     {{!CONTRIBUTE YOUR RESEARCH}}
-        <div class="container"> {{!CONTAINER}}
-            <div class="space-top space-bottom text-center"> {{!STYLING}}
-                <div class="row">{{!ROW}}
-                    {{upload-button}}
-                </div> {{!END ROW}}
-            </div> {{!END STYLING}}
-        </div> {{!END CONTAINER}}
+    <div class="container"> {{!CONTAINER}}
+        <div class="m-t-lg m-b-lg text-center"> {{!STYLING}}
+            <div class="row">{{!ROW}}
+                {{upload-button}}
+            </div> {{!END ROW}}
+        </div> {{!END STYLING}}
+    </div> {{!END CONTAINER}}
 
     {{!FOOTER}}
     <div class="space-top space-bottom moving-logo-section">

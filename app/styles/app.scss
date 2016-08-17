@@ -6,14 +6,32 @@
 @import 'validated-input';
 @import 'hint.css';
 
-.highlight {
-    color: $highlight-color;
+
+/* INDEX page */
+
+/* Main header with search bar */
+.preprint-header{
+    background:#ebf0f1 url('img/preprints-bg.jpg') top center ;
+    padding-top: 150px;
+    border-bottom: 1px solid #dddddd;
+    h1 {
+        font-size: 41px;
+        font-weight: 300;
+    }
+
+}
+/* List of latest uploaded preprints */
+.preprint-list {
+    background: #fbfbfb;
 }
 
-.highlight-bold {
-    color: $highlight-color;
-    font-weight: 500;
-}
+
+
+
+
+
+
+
 
 .navbar-header {
     height: $nav-bar-height;
@@ -23,26 +41,7 @@
     transition: none !important;
 }
 
-// OSF Preprints langing pages
-.preprint-header{
-    background:#ebf0f1 url('img/preprints-bg.jpg') top center ;
-    padding-top: 80px;
-    position: relative;
-}
 
-.preprint-lead {
-    font-weight: 100;
-    font-size: 8em;
-}
-
-// UNIVERSAL
-h1, h2, h3, h4, h5, H6 {
-    font-weight: 300;
-}
-
-h5 {
-    font-size: 18px;
-}
 
 .icon-circle {
     display: inline-block;
@@ -127,7 +126,6 @@ h5 {
         font-size: 18px;
     }
     a {
-        color: $highlight-color;
         font-weight: bold;
         &:hover {
             color: $preprint-title-hover;
@@ -142,14 +140,6 @@ h5 {
     box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, .2);
 }
 
-// Moving logo
-.space-top {
-    padding-top: 50px;
-}
-
-.space-bottom {
-    padding-bottom: 60px;
-}
 
 #logo {
     width: 200px;
@@ -270,21 +260,11 @@ h5 {
         margin-bottom: 40px;
     }
 
-    h2 {
-        font-size: 48px;
-        margin-top: 50px;
-    }
-
     .btn {
         padding: 10px 50px;
     }
 }
 
-
-//TODO: Remove this and switch the uses on index page to sm
-.f-w-xl {
-    font-weight: 300;
-}
 
 .branded-servers {
     color: white;
@@ -302,18 +282,6 @@ h5 {
     }
 }
 
-
-
-
-.read-more-toggle-custom {
-    color: $highlight-color;
-    &:hover {
-        color: $highlight-color;
-    }
-    &:visited {
-        color: $highlight-color;
-    }
-}
 
 .logo {
     width: 150px;
