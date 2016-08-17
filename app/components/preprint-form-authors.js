@@ -85,8 +85,7 @@ export default CpPanelBodyComponent.extend({
         // Updates contributor then redraws contributor list view - updating contributor
         // permissions may change which additional update/remove requests are permitted.
         updatePermissions(contributor, permission) {
-            let permissionChanges = { [contributor.id]: permission.toLowerCase() };
-            this.attrs.editContributors(this.get('contributors'), permissionChanges, {}).then(() => {
+            this.attrs.editContributor(contributor, permission, '').then(() => {
                 this.toggleAuthorModification();
                 this.highlightSuccessOrFailure(contributor.id, this, 'success');
                 this.removedSelfAsAdmin(contributor, permission);
@@ -99,8 +98,7 @@ export default CpPanelBodyComponent.extend({
         // Updates contributor then redraws contributor list view - updating contributor
         // bibliographic info may change which additional update/remove requests are permitted.
         updateBibliographic(contributor, isBibliographic) {
-            let bibliographicChanges = { [contributor.id]: isBibliographic };
-            this.attrs.editContributors(this.get('contributors'), {}, bibliographicChanges).then(() => {
+            this.attrs.editContributor(contributor, '', isBibliographic).then(() => {
                 this.toggleAuthorModification();
                 this.highlightSuccessOrFailure(contributor.id, this, 'success');
             }, () => {
