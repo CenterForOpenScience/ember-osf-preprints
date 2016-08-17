@@ -23,7 +23,7 @@ export default Ember.Component.extend({
         this._super(...arguments);
         var _this = this;
         this.get('store').query('taxonomy', { filter: { parent_ids: 'null' }, page: { size: pageSize } }).then(function(results) {
-                _this.set('topLevelItem', this.attrs._parseResults(results));
+                _this.set('topLevelItem', _this.get('_parseResults')(results));
             }
         );
     },
@@ -41,8 +41,9 @@ export default Ember.Component.extend({
                 Ember.set(item, 'showChildren', true);
                 return;
             }
+            var _this = this;
             this.get('store').query('taxonomy', { filter: { parent_ids: item.id }, page: { size: pageSize } }).then(function(results) {
-                    Ember.set(item, 'children', this.attrs._parseResults(results));
+                    Ember.set(item, 'children', _this.get('_parseResults')(results));
                     Ember.set(item, 'showChildren', true);
                 }
             );

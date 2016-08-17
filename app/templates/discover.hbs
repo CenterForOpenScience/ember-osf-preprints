@@ -70,18 +70,38 @@
                                     {{fa-icon 'plus'}}
                                 {{/if}}
                             </a>
-
-                            <a href='' {{action 'selectProvider' 'OSF Providers'}}>OSF Providers</a>
+                            {{#if (if-filter 'OSF Providers' selectedProviders)}}
+                                <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
+                            {{else}}
+                                <input type="checkbox" {{action 'selectProvider' 'OSF Providers'}}>
+                            {{/if}}
+                            OSF Providers
                         </p>
                         {{#if expandedOSFProviders}}
                             <ul>
-                                <p> <a href='' {{action 'selectProvider' 'Open Science Framework'}}>Open Science Framework</a></p>
-                                <p> <a href='' {{action 'selectProvider' 'SocArxiv'}}>SocArxiv</a></p>
-                                <p> <a href='' {{action 'selectProvider' 'Engrxiv'}}>Engrxiv</a></p>
+                                {{#each osfProviders as |item|}}
+                                    <p>
+                                        {{#if (if-filter item selectedProviders)}}
+                                            <input type="checkbox" checked {{action 'selectProvider' item}}>
+                                        {{else if (if-filter 'OSF Providers' selectedProviders)}}
+                                            <input type="checkbox" checked {{action 'selectProvider' item}}>
+                                        {{else}}
+                                            <input type="checkbox" {{action 'selectProvider' item}}>
+                                        {{/if}}
+                                        {{item}}
+                                    </p>
+                                {{/each}}
                             </ul>
                         {{/if}}
-                        {{#each otherProviders as |provider|}}
-                            <p><a href='' {{action 'selectProvider' provider}}>{{provider}}</a></p>
+                        {{#each otherProviders as |item|}}
+                            <p>
+                                {{#if (if-filter item selectedProviders)}}
+                                    <input type="checkbox" checked {{action 'selectProvider' item}}>
+                                {{else}}
+                                    <input type="checkbox" {{action 'selectProvider' item}}>
+                                {{/if}}
+                                {{item}}
+                            </p>
                         {{/each}}
 
                     </ul>
@@ -96,7 +116,7 @@
                     <div>
                         <h4>Subject</h4>
                         {{#if osfProvider}}
-                            {{taxonomy-tree select=(action 'selectSubjectFilter')}}
+                            {{taxonomy-tree select=(action 'selectSubjectFilter') subjects=treeSubjects}}
                         {{else}}
                             <i>Taxonomy not available for non-OSF providers.</i>
                         {{/if}}
