@@ -178,9 +178,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         this.updateFilteredPath();
     }),
     sortedTaxonomies: Ember.computed('taxonomies', function() {
-        var _this = this;
+        var _this = this; // TODO: Unnecessary
         this.get('store').query('taxonomy', { filter: { parent_ids: 'null' }, page: { size: 100 } }).then(results => {
-            _this.set('sortedTaxonomies', results.map((result) => {
+            _this.set('sortedTaxonomies', results.map(function (result) {
                 return {
                     name: result.get('text'),
                     id: result.get('id')
