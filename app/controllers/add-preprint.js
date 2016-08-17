@@ -300,7 +300,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
             // If save fails, do not transition
             let node = this.get('selectedNode');
             node.save()
-                .then(() => this.send('next', this.get('_names.0')))
+                .then(() => this.send('next', this.get('_names.1')))
                 .catch(()=> this.send('error', 'Could not save information; please try again'));
         },
 
@@ -354,6 +354,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
             this.notifyPropertyChange('selected');
             this.rerender();
         },
+
+        saveSubjects() {
+            // Update the temp preprint object with selected subjects, then advance. Nothing is actually saved here because preprint isn't created yet.
+            //TODO implement: requires a datasource for IDs, not labels, of taxonomy items
+            // If save fails, do not transition
+            this.set('model.subjects', this.get('selected'));
+            this.send('next', this.get('_names.2'));
+        },
         /**
          * findContributors method.  Queries APIv2 users endpoint on full_name.  Fetches specified page of results.
          * TODO will eventually need to be changed to multifield query.
@@ -392,6 +400,22 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
                     _this.$('#' + elementId).removeClass(highlightClass);
                 }, 4000);
             });
+        },
+        /*
+          Submit tab actions
+         */
+        savePreprint() {
+            // TODO: Check validation status of all sections before submitting
+            // TODO: Make sure subjects is working so request doesn't get rejected
+            // TODO: Test and get this code working
+            let model = this.get('model');
+            model.setProperties({
+                id: this.get('selectedNode.id'),
+                file: this.get('selectedFile')
+            });
+            model.save()
+                .then(() => console.log('Save succeeded. Should we transition somewhere?'))
+                .catch(() => this.send('error', 'Could not save preprint; please try again later'));
         }
     }
 });

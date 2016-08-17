@@ -31,6 +31,7 @@
                                         {{! TODO: cleanup created component if needed }}
                                         <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
                                         {{! TODO: check if dropzone has file and model exists before allowing user to continue }}
+                                        {{!-- TODO: Make button text dynamic; refactor internals --}}
                                         <button class="btn btn-primary" disabled={{unless uploadValid true}} {{action (if shouldCreateChild 'addChild' 'startUpload')}}>Next</button>
                                     {{else}}
                                         {{log 'preprint-form-upload: bad uploadState'}}
@@ -160,6 +161,13 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                <button {{action 'saveSubjects'}} class="btn btn-primary" disabled={{unless subjectsValid true}} >Save and continue</button>
+                            </div>
+                        </div>
+                    </div>
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
         {{/with}}
@@ -184,6 +192,14 @@
                         highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
 
                     }}
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                <button {{action 'next' name}} class="btn btn-primary" disabled={{unless authorsValid true}} >Save and continue</button>
+                            </div>
+                        </div>
+                    </div>
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
         {{/with}}
@@ -193,7 +209,7 @@
                 {{preprint-form-header name=name valid=(get valid name)}}
                 {{#cp-panel-body}}
                     <p>Sharing this project will make both the manuscript and the project associated with it public.</p>
-                    <button class="btn btn-primary" type="submit">Share</button>
+                    <button class="btn btn-primary" type="submit" {{action 'savePreprint'}}>Share</button>
                 {{/cp-panel-body}}
             {{/preprint-form-section}}
         {{/with}}
