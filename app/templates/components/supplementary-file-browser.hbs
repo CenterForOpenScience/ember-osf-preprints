@@ -7,20 +7,22 @@
     <section class="osf-box p-md m-b-lg">
         {{#liquid-bind supplementList elementId="file-list" tagName="" class="" use=scrollAnim as |list|}}
             {{#each list as |supplement|}}
-                {{#if (eq supplement.kind "folder")}}
-                    <a href={{projectURL}} style="color:inherit;">
-                        <li class="small-files col-xs-2 p-md box" data-toggle="tooltip" title={{supplement.name}}>
-                            <i class="fa fa-folder fa-2x p-b-xs" aria-hidden="true"></i>
-                        </li>
-                    </a>
-                {{else}}
-                    <li class="small-files col-xs-2 p-md box {{if (eq selectedFile supplement) 'selected'}}" data-toggle="tooltip" title={{supplement.name}} {{action 'changeFile' supplement}}>
-                        <i class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
-                        {{!--#if (eq selectedFile supplement)--}}
-                            {{!--<<h2 class="file-selected-arrow">&#9660;</h2>--}}
-                        {{!--/if--}}
-                    </li>
-                {{/if}}
+                <span class="hint--bottom col-xs-2 p-md m-b-xl small-files box {{if (eq selectedFile supplement) 'selected'}}" aria-label={{supplement.name}}>
+                    {{#if (eq supplement.kind "folder")}}
+                        <a href={{projectURL}} style="color:inherit;">
+                            <label>
+                                <i class="fa fa-folder fa-2x p-b-xs" aria-hidden="true"></i>
+                            </label>
+                        </a>
+                    {{else}}
+                        <label {{action 'changeFile' supplement}}>
+                            <i class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
+                            {{!--#if (eq selectedFile supplement)--}}
+                                {{!--<<h2 class="file-selected-arrow">&#9660;</h2>--}}
+                            {{!--/if--}}
+                        </label>
+                    {{/if}}
+                </span>
             {{/each}}
         {{/liquid-bind}}
         {{#if showLeftArrow}}

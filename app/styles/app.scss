@@ -790,10 +790,8 @@ hr {
         background: 0;
         border: 0;
         outline: none;
+        }
     }
-    }
-
-
 }
 
 //For Supplementary File Widget
@@ -824,13 +822,12 @@ hr {
     }
     .small-files{
         background-color: white;
-        display: inline-block;
         text-align: center;
         &.selected{
             background-color: #F3F5F5;
         }
     }
-    li {
+    span {
         cursor: pointer;
         &:hover {
             border-color: #337AB7;
@@ -841,7 +838,4 @@ hr {
         background: #D8D8D8;
         font-size: 2em;
     }
-}
-.tooltip {
-    position: fixed;
 }
