@@ -43,7 +43,7 @@ export default CpPanelBodyComponent.extend({
         // Adds unregistered contributor, then clears form and switches back to search view.
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
-            let res = this.attrs.addUnregisteredContributor(fullName, email, 'write', true);
+            let res = this.attrs.addContributor(null, 'write', true, fullName, email);
             res.then((contributor) => {
                 this.get('contributors').pushObject(contributor);
                 this.toggleAuthorModification();
