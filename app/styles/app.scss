@@ -40,6 +40,7 @@
 
 .preprint-providers {
     background: #cbd9d5 url('img/index-server-bg.jpg');
+    border-bottom: 1px solid #ced8d4;
     .provider-logo {
         height: 120px;
         background-size: contain;
@@ -51,6 +52,11 @@
     .provider-engrxiv {
         background-image: url('img/provider_logos/engrxiv.png');
     }
+
+}
+
+.preprint-contribute {
+    background: #cbd9d5 url('img/index-contribute-bg.jpg') top center;
 
 }
 
