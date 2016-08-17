@@ -50,7 +50,12 @@
                     </div>
                     <hr>
                     <ul id="activeFiltersList">
-                        {{#each activeFilters as |filter|}}
+                        Provider:
+                        {{#each activeFilters.providers as |filter|}}
+                            <li>{{filter}}</li>
+                        {{/each}}
+                        Subjects:
+                        {{#each activeFilters.subjects as |filter|}}
                             <li>{{filter}}</li>
                         {{/each}}
                     </ul>
@@ -70,7 +75,7 @@
                                     {{fa-icon 'plus'}}
                                 {{/if}}
                             </a>
-                            {{#if (if-filter 'OSF Providers' selectedProviders)}}
+                            {{#if (if-filter 'OSF Providers' activeFilters.providers)}}
                                 <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
                             {{else}}
                                 <input type="checkbox" {{action 'selectProvider' 'OSF Providers'}}>
@@ -81,9 +86,9 @@
                             <ul>
                                 {{#each osfProviders as |item|}}
                                     <p>
-                                        {{#if (if-filter item selectedProviders)}}
+                                        {{#if (if-filter item activeFilters.providers)}}
                                             <input type="checkbox" checked {{action 'selectProvider' item}}>
-                                        {{else if (if-filter 'OSF Providers' selectedProviders)}}
+                                        {{else if (if-filter 'OSF Providers' activeFilters.providers)}}
                                             <input type="checkbox" checked {{action 'selectProvider' item}}>
                                         {{else}}
                                             <input type="checkbox" {{action 'selectProvider' item}}>
@@ -95,7 +100,7 @@
                         {{/if}}
                         {{#each otherProviders as |item|}}
                             <p>
-                                {{#if (if-filter item selectedProviders)}}
+                                {{#if (if-filter item activeFilters.providers)}}
                                     <input type="checkbox" checked {{action 'selectProvider' item}}>
                                 {{else}}
                                     <input type="checkbox" {{action 'selectProvider' item}}>
