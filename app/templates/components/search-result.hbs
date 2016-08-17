@@ -1,0 +1,64 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12">
+                {{#if result.date_updated}} {{! moment-format will use current time if null}}
+                    <span class="pull-right">{{moment-format result.date_updated "MMMM YYYY"}}</span>
+                {{/if}}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>
+                    {{! TODO: link to view page for preprint }}
+                    {{#link-to "index"}}
+                        {{result.title}}
+                    {{/link-to}}
+                </h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                {{#each result.contributors as |contributor index|}}
+                    {{#if index}}
+                        |
+                    {{/if}}
+                    {{! TODO: link to contributor's page }}
+                    {{#link-to "index"}}
+                        {{contributor.familyName}}, {{contributor.givenName}}
+                    {{/link-to}}
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                {{! TODO: add subjects }}
+            </div>
+            <div class="col-sm-4">
+                {{result.sources}}
+            </div>
+        </div>
+        <br>
+        {{#if showBody}}
+            {{result.description}}
+            <div class="row">
+                <div class="col-sm-12">
+                    {{#each result.tags as |tag|}}
+                        <span class="badge">{{tag}}</span>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-muted">
+                    Released on: {{moment-format result.date_updated}}
+                </div>
+            </div>
+        {{/if}}
+        <div class="text-center" {{action "toggleShowBody"}}>
+            <a href=''>{{fa-icon footerIcon size=1}}</a>
+        </div>
+    </div>
+</div>

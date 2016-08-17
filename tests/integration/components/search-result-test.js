@@ -1,18 +1,16 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('taxonomy-tree', 'Integration | Component | taxonomy tree', {
+moduleForComponent('search-result', 'Integration | Component | search result', {
   integration: true
 });
 
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
-  this.set('tree', {
-      get() {}
-  });
 
-  this.render(hbs`{{taxonomy-tree tree=tree}}`);
+  this.render(hbs`{{search-result}}`);
 
-  assert.ok(this.$('#taxonomyTree').length);
+  assert.equal(this.$().text().trim(), '');
+
 });

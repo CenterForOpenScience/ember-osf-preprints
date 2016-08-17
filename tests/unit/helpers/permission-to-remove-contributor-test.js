@@ -16,12 +16,12 @@ test('can remove self as a contributor', function(assert) {
         id: '12345',
         currentUserId: '12345'
     });
-    var stillAdmin = false;
+    var isAdmin = false;
     var node = Ember.Object.create({
         'registration': false
     });
 
-    let result = permissionToRemoveContributor([contrib, currentUser, stillAdmin, node]);
+    let result = permissionToRemoveContributor([contrib, currentUser, isAdmin, node]);
     assert.equal(result, true);
 });
 
@@ -38,12 +38,12 @@ test('cannot remove contributor if you are not admin', function(assert) {
         id: '12345',
         currentUserId: '12345'
     });
-    var stillAdmin = false;
+    var isAdmin = false;
     var node = Ember.Object.create({
         'registration': false
     });
 
-    let result = permissionToRemoveContributor([contrib, currentUser, stillAdmin, node]);
+    let result = permissionToRemoveContributor([contrib, currentUser, isAdmin, node]);
     assert.equal(result, false);
 });
 
@@ -60,11 +60,11 @@ test('can remove another contributor if you are admin', function(assert) {
         id: '12345',
         currentUserId: '12345'
     });
-    var stillAdmin = true;
+    var isAdmin = true;
     var node = Ember.Object.create({
         'registration': false
     });
 
-    let result = permissionToRemoveContributor([contrib, currentUser, stillAdmin, node]);
+    let result = permissionToRemoveContributor([contrib, currentUser, isAdmin, node]);
     assert.equal(result, true);
 });

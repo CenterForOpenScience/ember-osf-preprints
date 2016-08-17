@@ -5,4 +5,9 @@ local:
     PERSONAL_ACCESS_TOKEN: null
     OAUTH_SCOPES: osf.full_read osf.full_write
     REDIRECT_URI: http://localhost:5000/login/
+stage2:
+    CLIENT_ID: null
+    PERSONAL_ACCESS_TOKEN: null
+    OAUTH_SCOPES: null
+    REDIRECT_URI: https://staging2.osf.io/login/
 ######### end ember-osf ##########

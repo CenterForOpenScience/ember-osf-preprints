@@ -1,4 +1,4 @@
-<form>
+<form {{action (action addUnregisteredContributor fullName email) on="submit"}}>
     <div>
         <label>Full Name</label>
         {{validated-input model=this valuePath='fullName' placeholder='Full Name' value=fullName}}
@@ -9,9 +9,9 @@
     </div>
     <p class="text-muted"> We will notify the user that they have been added to your preprint. </p>
     <div class="pull-right unregistered-submit">
-        <button {{action resetfindContributorsView}} class="btn btn-default btn-small"> Cancel </button>
+        <button {{action resetfindContributorsView}} type="button" class="btn btn-default btn-small"> Cancel </button>
         {{#if isFormValid}}
-            <button {{action (action addUnregisteredContributor fullName email)}} class="btn btn-success btn-small"> Add </button>
+            <button type="submit" {{action (action addUnregisteredContributor fullName email)}} class="btn btn-success btn-small"> Add </button>
         {{else}}
             <button class="btn btn-success btn-small disabled"> Add </button>
         {{/if}}

@@ -4,12 +4,7 @@ import { permissionSelector } from 'ember-osf/const/permissions';
 
 export default CpPanelBodyComponent.extend({
     valid: Ember.computed.alias('newContributorId'),
-    permissionToggle: false,
-    bibliographicToggle: false,
-    removalToggle: false,
-    stillAdmin: Ember.computed('isAdmin', function() {
-        return this.get('isAdmin');
-    }),
+    authorModification: false,
     // Permissions labels for dropdown
     permissionOptions: permissionSelector,
     addState: 'emptyView', // There are 3 view states on left side of Authors panel. Default state just shows search bar.
@@ -32,21 +27,17 @@ export default CpPanelBodyComponent.extend({
             return;
         }
     }),
-    // Search results excluding users that are already contributors
-    newSearchResults: Ember.computed('searchResults.[]', 'contributors.[]', 'addState', function() {
-        let searchResults = this.get('searchResults');
-        let contributors = this.get('contributors');
-        let userIds = contributors.map((contrib) => contrib.get('userId'));
-        return searchResults.filter((result) => !userIds.contains(result.id));
-    }),
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
-            this.attrs.addContributor(user.id, 'write', true).then(res => {
-                this.redrawTemplate();
+            this.attrs.addContributor(user.id, 'write', true).then((res) => {
+                this.toggleAuthorModification();
                 this.get('contributors').pushObject(res);
+                this.highlightSuccessOrFailure(res.id, this, 'success');
             }, () => {
                 this.get('toast').error('Could not add contributor.');
+                this.highlightSuccessOrFailure(user.id, this, 'error');
+                user.rollbackAttributes();
             });
         },
         // Adds unregistered contributor, then clears form and switches back to search view.
@@ -55,17 +46,16 @@ export default CpPanelBodyComponent.extend({
             let res = this.attrs.addUnregisteredContributor(fullName, email, 'write', true);
             res.then((contributor) => {
                 this.get('contributors').pushObject(contributor);
-                this.redrawTemplate();
+                this.toggleAuthorModification();
                 this.set('addState', 'searchView');
                 this.set('fullName', '');
                 this.set('email', '');
+                this.highlightSuccessOrFailure(contributor.id, this, 'success');
             }, () => {
                 this.get('toast').error('Could not add unregistered contributor.');
+                this.highlightSuccessOrFailure('add-unregistered-contributor-form', this, 'error');
             });
 
-        },
-        updateQuery(value) {
-            this.set('query', value);
         },
         // Requests a particular page of user results
         findContributors(page) {
@@ -75,6 +65,7 @@ export default CpPanelBodyComponent.extend({
                     this.set('addState', 'searchView');
                 }, () => {
                     this.get('toast').error('Could not perform search query.');
+                    this.highlightSuccessOrFailure('author-search-box', this, 'error');
                 });
             }
         },
@@ -82,11 +73,13 @@ export default CpPanelBodyComponent.extend({
         // which additional update/remove requests are permitted.
         removeContributor(contrib) {
             this.attrs.removeContributor(contrib).then(() => {
-                this.redrawTemplate();
+                this.toggleAuthorModification();
                 this.removedSelfAsAdmin(contrib, contrib.get('permission'));
                 this.get('contributors').removeObject(contrib);
             }, () => {
                 this.get('toast').error('Could not remove author');
+                this.highlightSuccessOrFailure(contrib.id, this, 'error');
+                contrib.rollbackAttributes();
             });
         },
         // Updates contributor then redraws contributor list view - updating contributor
@@ -94,10 +87,13 @@ export default CpPanelBodyComponent.extend({
         updatePermissions(contributor, permission) {
             let permissionChanges = { [contributor.id]: permission.toLowerCase() };
             this.attrs.editContributors(this.get('contributors'), permissionChanges, {}).then(() => {
-                this.redrawTemplate();
+                this.toggleAuthorModification();
+                this.highlightSuccessOrFailure(contributor.id, this, 'success');
                 this.removedSelfAsAdmin(contributor, permission);
             }, () => {
                 this.get('toast').error('Could not modify author permissions');
+                this.highlightSuccessOrFailure(contributor.id, this, 'error');
+                contributor.rollbackAttributes();
             });
         },
         // Updates contributor then redraws contributor list view - updating contributor
@@ -105,9 +101,12 @@ export default CpPanelBodyComponent.extend({
         updateBibliographic(contributor, isBibliographic) {
             let bibliographicChanges = { [contributor.id]: isBibliographic };
             this.attrs.editContributors(this.get('contributors'), {}, bibliographicChanges).then(() => {
-                this.redrawTemplate();
+                this.toggleAuthorModification();
+                this.highlightSuccessOrFailure(contributor.id, this, 'success');
             }, () => {
                 this.get('toast').error('Could not modify citation');
+                this.highlightSuccessOrFailure(contributor.id, this, 'error');
+                contributor.rollbackAttributes();
             });
         },
         // There are 3 view states on left side of Authors panel.  This switches to add unregistered contrib view.
@@ -122,19 +121,21 @@ export default CpPanelBodyComponent.extend({
         },
         // There are 3 view states on left side of Authors panel.  This switches to empty view and clears search results.
         resetfindContributorsView() {
-            this.set('addState', 'emptyView');
-            this.set('searchQuery', '');
-            this.$('.searchQuery')[0].value = '';
+            this.set('addState', 'searchView');
         },
-        // TODO Add server request when API functionality in place.
+        // Reorders contributors in UI then sends server request to reorder contributors. If request fails, reverts
+        // contributor list in UI back to original.
         reorderItems(itemModels, draggedContrib) {
             var originalOrder = this.get('contributors');
             this.set('contributors', itemModels);
             var newIndex = itemModels.indexOf(draggedContrib);
-            this.attrs.reorderContributors(draggedContrib, newIndex).then(() => {},
-            () => {
+            this.attrs.reorderContributors(draggedContrib, newIndex).then(() => {
+                this.highlightSuccessOrFailure(draggedContrib.id, this, 'success');
+            }, () => {
+                this.highlightSuccessOrFailure(draggedContrib.id, this, 'error');
                 this.set('contributors', originalOrder);
                 this.get('toast').error('Could not reorder contributors');
+                draggedContrib.rollbackAttributes();
             });
         }
     },
@@ -168,17 +169,19 @@ export default CpPanelBodyComponent.extend({
     },
     /**
     * If user removes their own admin permissions, many things on the page must become
-    * disabled.  Changing the stillAdmin flag to false will remove many of the options
+    * disabled.  Changing the isAdmin flag to false will remove many of the options
     * on the page.
     */
     removedSelfAsAdmin(contributor, permission) {
         if (this.get('currentUser').id === contributor.get('userId') && permission !== 'ADMIN') {
-            this.set('stillAdmin', false);
+            this.set('isAdmin', false);
         }
     },
-    redrawTemplate() {
-        this.toggleProperty('removalToggle');
-        this.toggleProperty('permissionToggle');
-        this.toggleProperty('bibliographicToggle');
+    /**
+    * Toggling this property, authorModification, updates several items on the page - disabling elements, enabling
+    * others, depending on what requests are permitted
+    */
+    toggleAuthorModification() {
+        this.toggleProperty('authorModification');
     }
 });

@@ -6,48 +6,48 @@ export default Ember.Component.extend({
     scrollAnim: '',
     numShowing: 6,
     selectedFile: {},
-
+    showRightArrow: Ember.computed('numShowing', 'startValue', function() {
+        return (this.get('startValue') + this.get('numShowing') < this.get('files').length);
+    }),
+    showLeftArrow: Ember.computed('numShowing', 'startValue', function() {
+        return (this.get('startValue') !== 0);
+    }),
     files: Ember.computed('fileList', 'fileList.[]', 'primaryFile', function() {
-        //Returns the list with primaryFile moved to the front
+        //Return list of files with primaryFile moved to the front
         let files = this.get('fileList');
-
         if (files && files.length > 1) {
-            const primaryFile = this.get('primaryFile');
-            files = files.without(primaryFile).toArray();
-            files.unshift(primaryFile);
+            this.get('primaryFile').then(primaryFile => {
+                files = files.without(primaryFile);
+                files.insertAt(0, primaryFile);
+            });
             return files;
         }
     }),
     supplementList: Ember.computed('files', 'files.[]', 'startValue', 'numShowing', function() {
+        //Return the list of length `numShowing` that is displayed
         if (this.get('files')) {
-            return this.get('fileList').slice(this.get('startValue'), this.get('startValue') + this.get('numShowing'));
+            return this.get('files').slice(this.get('startValue'), this.get('startValue') + this.get('numShowing'));
         }
     }),
-    init: function() {
+    init() {
+        this.get('primaryFile').then(primaryFile => this.set('selectedFile', primaryFile));
         this._super(...arguments);
-        this.set('selectedFile', this.get('primaryFile'));
     },
     actions: {
         moveLeft() {
             const start = this.get('startValue');
             const numShowing = this.get('numShowing');
-            const fileListLength = this.get('files').length;
             this.set('scrollAnim', 'toRight');
             if (start - numShowing >= 0) {
                 this.set('startValue', start - numShowing);
-            }else {
-                this.set('startValue', fileListLength - (fileListLength % numShowing));
             }
         },
         moveRight() {
             const start = this.get('startValue');
             const numShowing = this.get('numShowing');
-            const fileListLength = this.get('files').length;
             this.set('scrollAnim', 'toLeft');
-            if (start + numShowing <= fileListLength) {
+            if (start + numShowing <= this.get('files').length) {
                 this.set('startValue', start + numShowing);
-            }else {
-                this.set('startValue', 0);
             }
         },
         changeFile(file) {

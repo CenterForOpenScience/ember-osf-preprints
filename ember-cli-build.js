@@ -38,6 +38,12 @@ module.exports = function(defaults) {
                     })
                 }]
             }
+        },
+        // bable options included to fix issue with testing discover controller
+        // http://stackoverflow.com/questions/32231773/ember-tests-passing-in-chrome-not-in-phantomjs
+        babel: {
+            optional: ['es6.spec.symbols'],
+            includePolyfill: true
         }
     });
 
@@ -75,6 +81,11 @@ module.exports = function(defaults) {
     app.import({
         development: 'bower_components/bootstrap-treeview/src/js/bootstrap-treeview.js',
         production: 'bower_components/bootstrap-treeview/dist/js/bootstrap-treeview.min.js'
+    });
+
+     app.import({
+        development: 'bower_components/hint.css/hint.css',
+        production: 'bower_components/hint.css/hint.css'
     });
 
     return app.toTree();
