@@ -35,7 +35,7 @@ export default Ember.Component.extend({
 
     },
     didRender: function () {
-        $('[data-toggle="tooltip"]').tooltip({
+        this.$('[data-toggle="tooltip"]').tooltip({
             animated: 'fade',
             placement: 'bottom',
         });
