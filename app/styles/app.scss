@@ -35,12 +35,6 @@
     font-size: 8em;
 }
 
-// FOR SPACE
-.index {
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
 // UNIVERSAL
 h1, h2, h3, h4, h5, H6 {
     font-weight: 300;
@@ -268,7 +262,6 @@ h5 {
     background-color: #474747;
     color: #FFF;
     padding: 50px 0;
-    margin-bottom: 20px;
     #logo {
         transform: scale(2);
     }
@@ -287,56 +280,6 @@ h5 {
     }
 }
 
-// Landing page sections
-.subjects {
-    padding: 50px 50px;
-    h1 {
-        padding-bottom: 20px;
-    }
-    th, td {
-        padding: 5px;
-        border-bottom: 10px solid #D9EDF7;
-        /*text-shadow:
-			-1px -1px 0 black,
-			1px -1px 0 black,
-			-1px 1px 0 black,
-			1px 1px 0 black; */
-        font-weight: 300;
-    }
-    .subject.row {
-        list-style: none;
-        li {
-            padding: 1rem;
-            a.btn {
-                padding: 1rem;
-                font-size: 125%;
-                width: 100%;
-            }
-        }
-    }
-}
-
-// Interfering with other styles
-// td:hover {
-//     background-color: #3D3D3D;
-// }
-
-
-.subjects {
-    background-color: #D9EDF7;
-    font-weight: 300;
-    tr {
-        font-size: 2em;
-        font-weight: bold;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        background-color: #686868; // THIS GRAY IS THE LIGHTEST IT CAN BE WITHOUT FAILING WEBAIM STANDARDS
-        background-position: center top;
-        background-size: cover;
-        color: white;
-        cursor: pointer;
-    }
-}
 
 //TODO: Remove this and switch the uses on index page to sm
 .f-w-xl {
@@ -721,32 +664,10 @@ hr {
 
 }
 
-.branded-servers-background {
-    background: url("img/bg-web.png") no-repeat;
+.preprint-providers {
+
 }
 
-.dark-overlay-header-background {
-    background: url("img/dark_overlay.png") no-repeat;
-}
-
-.img-circle {
-    background-color: #fff;
-}
-
-.uva-logo {
-    background-size: cover;
-    background-image: url("img/logo_uva.png");
-}
-
-.ua-logo {
-    background-size: cover;
-    background-image: url("img/logo_ua.png");
-}
-
-.socarxiv-logo {
-    background-size: cover;
-    background-image: url("img/logo_socarxiv.jpg");
-}
 
 #view-page{
     background-color: #FCFCFC;

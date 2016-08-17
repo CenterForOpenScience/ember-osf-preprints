@@ -1,9 +1,9 @@
-<div class="index"> {{!INDEX}}
+<div class="preprints-page"> {{!INDEX}}
 
     {{!HEADER}}
-    <div class="row">{{!HEADER ROW}}
-        <div class="preprint-header"> {{!HEADER}}
-            <div class="container"> {{!CONTAINER}}
+    <div class="preprint-header"> {{!HEADER}}
+        <div class="container"> {{!CONTAINER}}
+            <div class="row">{{!HEADER ROW}}
                 {{!TITLE}}
                 <div class="text-center m-b-lg">
                     <h1 class="preprint-lead">OSF Preprints</h1>
@@ -38,78 +38,66 @@
                      style="padding-top: 20px; padding-bottom: 40px;"> {{! READ MORE BUTTON}}
                     {{#link-to "discover" class="btn btn-success btn-lg"}}Browse more preprints{{/link-to}}
                 </div> {{!END READ MORE BUTTON}}
-            </div> {{!END CONTAINER}}
-        </div> {{!END HEADER}}
-    </div> {{!END ROW}}
+            </div> {{!END ROW}}
+        </div> {{!END CONTAINER}}
+    </div> {{!END HEADER}}
 
     {{!SUBJECTS}}
-    <div class="row">{{!SUBJECTS ROW}}
-        <div class="subjects text-center"> {{!SUBJECTS LIST}}
-            <div class="container"> {{!CONTAINER DIV}}
+    <div class="preprint-subjects"> {{!SUBJECTS LIST}}
+        <div class="container"> {{!CONTAINER DIV}}
+            <div class="row">{{!SUBJECTS ROW}}
                 <h1 class="f-w-xl">Browse preprints by subject</h1>
                 <div class="subjectsList table-striped"> {{!SUBJECTS LIST}}
-
                     {{taxonomy-top-list list=model.subjects}}
-
                 </div> {{!END SUBJECTS LIST}}
-            </div> {{!END CONTAINER}}
-        </div> {{!END SUBJECTS LIST}}
-    </div>{{!END ROW}}
+            </div>{{!END ROW}}
+        </div> {{!END CONTAINER}}
+    </div> {{!END SUBJECTS LIST}}
 
     {{!BRANDED PREPRINT SERVERS}}
-    <div class="row">{{!BRANDED ROW}}
-        <div class="branded-servers text-center"> {{!center text}}
+        <div class="preprint-providers"> {{!center text}}
             <div class="container-fluid p-b-md branded-servers-background"> {{!CONTAINER}}
                 <h1 class="f-w-xl">Branded preprint servers powered by OSF Preprints</h1>
-                <div class="row-fluid"> {{!FLUID ROW}}
-                    <div class="col-sm-2 col-lg-2"> {{!UVA LOGO}}
-                        <a href="http://www.virginia.edu/" alt="University of Virginia">
-                            <img class="img-circle img-responsive logo uva-logo">
-                        </a>
-                    </div> {{!END UVA LOGO}}
-                    <div class="col-sm-2 col-lg-2"> {{!ARIZONA LOGO}}
-                        <a href="http://www.arizona.edu/" alt="University of Arizona">
-                            <img class="img-circle img-responsive logo ua-logo">
-                        </a>
-                    </div> {{!END ARIZONA LOGO}}
-                </div> {{!END FLUID ROW}}
+                <div class="row">{{!BRANDED ROW}}
+                    Branded servers
+
+                </div> {{!END ROW}}
             </div> {{!END CONTAINER}}
-        </div> {{!END CENTER TEXT}}
-    </div> {{!END ROW}}
+        </div> {{!END PROVIDERS}}
+
+
 
     {{!CONTRIBUTE YOUR RESEARCH}}
-    <div class="row">{{!ROW}}
         <div class="container"> {{!CONTAINER}}
             <div class="space-top space-bottom text-center"> {{!STYLING}}
-                {{upload-button}}
+                <div class="row">{{!ROW}}
+                    {{upload-button}}
+                </div> {{!END ROW}}
             </div> {{!END STYLING}}
         </div> {{!END CONTAINER}}
-    </div> {{!END ROW}}
 
     {{!FOOTER}}
-    <div class="row"> {{!ROW}}
-        <div class="space-top space-bottom moving-logo-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8">
-                        <h2><strong>Tools for communities</strong></h2>
-                        <h4> Create your own branded preprint servers backed by the OSF.</h4>
-                        <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">Contact us</a>
-                    </div>
-                    <div class="col-md-4 hidden-xs hidden-sm">
-                        <div id="logo">
-                            <div class="circle" id="circle-1"><span></span></div>
-                            <div class="circle" id="circle-2"><span></span></div>
-                            <div class="circle" id="circle-3"><span></span></div>
-                            <div class="circle" id="circle-4"><span></span></div>
-                            <div class="circle" id="circle-5"><span></span></div>
-                            <div class="circle" id="circle-6"><span></span></div>
-                            <div class="circle" id="circle-7"><span></span></div>
-                            <div class="circle" id="circle-8"><span></span></div>
-                        </div>
+    <div class="space-top space-bottom moving-logo-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <h2><strong>Tools for communities</strong></h2>
+                    <h4> Create your own branded preprint servers backed by the OSF.</h4>
+                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">Contact us</a>
+                </div>
+                <div class="col-md-4 hidden-xs hidden-sm">
+                    <div id="logo">
+                        <div class="circle" id="circle-1"><span></span></div>
+                        <div class="circle" id="circle-2"><span></span></div>
+                        <div class="circle" id="circle-3"><span></span></div>
+                        <div class="circle" id="circle-4"><span></span></div>
+                        <div class="circle" id="circle-5"><span></span></div>
+                        <div class="circle" id="circle-6"><span></span></div>
+                        <div class="circle" id="circle-7"><span></span></div>
+                        <div class="circle" id="circle-8"><span></span></div>
                     </div>
                 </div>
             </div>
         </div>
-    </div> {{!END ROW}}
+    </div>
 </div> {{!END INDEX}}
