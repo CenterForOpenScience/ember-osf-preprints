@@ -767,11 +767,6 @@ hr {
     background-image: url("img/logo_socarxiv.jpg");
 }
 
-//For View Page
-//.bg-color-view-page{
-//    background-color: #FCFCFC;
-//}
-
 #view-page{
     background-color: #FCFCFC;
     font-family : 'Open Sans', Helvetica, sans-serif;
@@ -807,18 +802,12 @@ hr {
         width: 100%;
         background-color: white;
     }
-    .box{
+    .small-files{
         background-color: white;
         display: inline-block;
-        //height: 70px;
-        //width: 90%;
         text-align: center;
         &.selected{
             background-color: #F3F5F5;
-        }
-        p{
-            font-family: Arial;
-            font-size: x-small;
         }
     }
     li {
@@ -832,4 +821,7 @@ hr {
         background: #D8D8D8;
         font-size: 2em;
     }
+}
+.tooltip {
+    position: fixed;
 }
