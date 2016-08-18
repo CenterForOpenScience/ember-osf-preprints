@@ -6,6 +6,10 @@
 @import 'validated-input';
 @import 'hint.css';
 
+/* Override styles from ember-osf and osf */
+.footer {
+    margin-top: 0;
+}
 
 /* INDEX page */
 /* Global to index */
@@ -23,12 +27,13 @@
     }
 
 }
-/* List of latest uploaded preprints */
+/* Recent uploads list panel */
 .preprint-list {
     background: #fbfbfb;
     border-bottom: 1px solid #eee;
 }
 
+/* Subject Panel */
 .preprint-subjects {
     background-color: #f1f3f2;
     border-bottom: 1px solid #ccc;
@@ -38,6 +43,7 @@
     }
 }
 
+/* Providers Panel */
 .preprint-providers {
     background: #cbd9d5 url('img/index-server-bg.jpg');
     border-bottom: 1px solid #ced8d4;
@@ -55,6 +61,7 @@
 
 }
 
+/* Contribute Panel */
 .preprint-contribute {
     background: #cbd9d5 url('img/index-contribute-bg.jpg') top center;
 
