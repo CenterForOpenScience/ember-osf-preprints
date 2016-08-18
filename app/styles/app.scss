@@ -826,12 +826,10 @@ hr {
     .box{
         background-color: white;
         text-align: center;
+        cursor: pointer;
         &.selected{
             background-color: #F3F5F5;
         }
-    }
-    span {
-        cursor: pointer;
         &:hover {
             border-color: #337AB7;
         }
