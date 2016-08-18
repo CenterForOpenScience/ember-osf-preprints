@@ -1,5 +1,5 @@
 <div class="input-group input-group-lg">
-    <input id="searchBox" type="search" class="form-control" placeholder="Search preprints...">
+    <input id="searchBox" type="search" class="form-control" key-up={{action 'keyUpActions'}} placeholder="Search preprints...">
     <span class="input-group-btn">
         <button class="btn btn-default" type="button" {{action "search" this}}>Search</button>
     </span>

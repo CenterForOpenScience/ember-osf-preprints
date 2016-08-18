@@ -153,19 +153,6 @@ export default Ember.Controller.extend({
         return this.set('queryBody', queryBody);
     },
 
-    termsFilter(field, terms, raw = true) {
-        if (terms && terms.length) {
-            if (raw) {
-                field = field + '.raw';
-            }
-            let filter = { terms: {} };
-            filter.terms[field] = terms;
-            return filter;
-        } else {
-            return null;
-        }
-    },
-
     expandedOSFProviders: false,
     osfProvider: Ember.computed('activeFilters', function() {
         this.loadPage.call(this);
@@ -179,8 +166,11 @@ export default Ember.Controller.extend({
     otherProviders: [],
     osfProviders: ['Open Science Framework', 'SocArxiv', 'Engrxiv'],
     actions: {
-        search(query) {
-            this.set('searchString', query);
+        search(val, event) {
+            if (event && event.keyCode < 49 && !(event.keyCode === 8 || event.keyCode === 32)) {
+                return;
+            }
+            this.set('searchString', this.get('searchValue'));
             this.set('page', 1);
             this.loadPage();
         },

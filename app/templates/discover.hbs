@@ -3,8 +3,12 @@
         <h1>Preprint Archive</h1>
         <h4>We got lots of preprints.</h4>
     </div>
-
-    {{search-preprints search="search"}}
+    <div class="input-group input-group-lg">
+        {{input id="searchBox" value=searchValue class="form-control" key-up='search' placeholder="Search preprints..."}}
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button" {{action "search" this}}>Search</button>
+        </span>
+    </div>
 </div>
 
 <div class="container">
