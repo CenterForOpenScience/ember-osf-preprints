@@ -1,7 +1,9 @@
 import Ember from 'ember';
+
+import CasAuthenticatedRouteMixin from 'ember-osf/mixins/cas-authenticated-route';
 import loadAll from 'ember-osf/utils/load-relationship';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(CasAuthenticatedRouteMixin, {
     currentUser: Ember.inject.service(),
     model() {
         // Temporary.  This needs to be the node created earlier in the process.
