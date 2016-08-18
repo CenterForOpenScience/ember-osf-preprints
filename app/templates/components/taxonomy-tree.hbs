@@ -2,9 +2,9 @@
     {{#each topLevelItem as |item|}}
         <p>
             {{#if item.showChildren}}
-                <a href='' {{action 'expand' item}}>{{fa-icon 'times'}}</a>
+                <a href='' {{action 'expand' item}}>{{fa-icon 'caret-down'}}</a>
             {{else}}
-                <a href='' {{action 'expand' item}}>{{fa-icon 'plus'}}</a>
+                <a href='' {{action 'expand' item}}>{{fa-icon 'caret-right'}}</a>
             {{/if}}
             {{#if (if-filter item.text subjects)}}
                 <input type="checkbox" checked {{action 'select' item}}>
@@ -18,9 +18,9 @@
                 {{#each item.children as |child|}}
                     <p>
                         {{#if child.showChildren}}
-                            <a href='' {{action 'expand' child}}>{{fa-icon 'times'}}</a>
+                            <a href='' {{action 'expand' child}}>{{fa-icon 'caret-down'}}</a>
                         {{else}}
-                            <a href='' {{action 'expand' child}}>{{fa-icon 'plus'}}</a>
+                            <a href='' {{action 'expand' child}}>{{fa-icon 'caret-right'}}</a>
                         {{/if}}
                         {{#if (if-filter child.text subjects)}}
                             <input type="checkbox" checked {{action 'select' child}}>
