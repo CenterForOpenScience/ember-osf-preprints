@@ -1,19 +1,23 @@
 import Ember from 'ember';
-import loadAll from 'ember-osf/utils/load-relationship';
-import NodeActionsMixin from 'ember-osf/mixins/node-actions';
-import permissions from 'ember-osf/const/permissions';
+
 import { validator, buildValidations } from 'ember-cp-validations';
 
+import permissions from 'ember-osf/const/permissions';
+import NodeActionsMixin from 'ember-osf/mixins/node-actions';
+import loadAll from 'ember-osf/utils/load-relationship';
+
 // Enum of available upload states
-export const State = Object.freeze(new Ember.Object({
+export const State = Object.freeze(Ember.Object.create({
     START: 'start',
     NEW: 'new',
     EXISTING: 'existing'
 }));
 
-// preprint form basic validations
-const Validations = buildValidations({
-    title: {
+/*****************************
+  Form data and validations
+ *****************************/
+const BasicsValidations = buildValidations({
+    basicsTitle: {
         description: 'Title',
         validators: [
             validator('presence', true),
@@ -23,7 +27,7 @@ const Validations = buildValidations({
             })
         ]
     },
-    abstract: {
+    basicsAbstract: {
         description: 'Abstract',
         validators: [
             validator('presence', true),
@@ -34,7 +38,7 @@ const Validations = buildValidations({
             })
         ]
     },
-    doi: {
+    basicsDOI: {
         description: 'DOI',
         validators: [
             validator('format', {
@@ -47,63 +51,96 @@ const Validations = buildValidations({
     }
 });
 
-export default Ember.Controller.extend(Validations, NodeActionsMixin, {
-    toast: Ember.inject.service(),
-    session: Ember.inject.service(),
-    panelActions: Ember.inject.service(),
-    currentUser: Ember.inject.service(),
-    fileManager: Ember.inject.service(),
+/**
+ * "Add preprint" page definitions
+ */
+export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
+    toast: Ember.inject.service('toast'),
+    panelActions: Ember.inject.service('panelActions'),
+
+    // Data for project picker; tracked internally on load
+    user: null,
+    userNodes: Ember.A(),
+
+    // Information about the thing to be turned into a preprint
+    selectedNode: null,
+    selectedFile: null,
+    contributors: Ember.A(),
+
+    ///////////////////////////////////////
+    // Validation rules for form sections
+    uploadValid: Ember.computed.and('selectedNode', 'selectedFile'),
+    // Basics fields are currently the only ones with validation. Make this more specific in the future if we add more form fields.
+    basicsValid: Ember.computed.alias('validations.isValid'),
+    // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
+    authorsValid: Ember.computed.bool('contributors.length'),
+    // Must select at least one subject. TODO: Verify this is the appropriate way to track
+    subjectsValid: Ember.computed.bool('sortedSelection.length'),
+
+    ////////////////////////////////////////////////////
+    // Fields used in the "basics" section of the form.
+    // Proxy for "basics" section, to support autosave when fields change (created when model selected)
+    basicsModel: Ember.computed.alias('selectedNode'),
+
+    basicsTitle: Ember.computed.alias('basicsModel.title'),
+    basicsAbstract: Ember.computed.alias('basicsModel.description'),
+    basicsTags: Ember.computed.alias('basicsModel.tags'), // TODO: This may need to provide a default value (list)? Via default or field transform?
+    basicsDOI: Ember.computed.alias('model.doi'),
+
+    //// TODO: Turn off autosave functionality for now. Direct 2-way binding was causing a fight between autosave and revalidation, so autosave never fired. Fixme.
+    // createAutosave: Ember.observer('selectedNode', function() {
+    //     // Create autosave proxy only when a node has been loaded.
+    //     // TODO: This could go badly if a request is in flight when trying to destroy the proxy
+    //
+    //     var controller = this;
+    //     this.set('basicsModel', autosave('selectedNode', {
+    //         save(model) {
+    //             // Do not save fields if validation fails.
+    //             console.log('trying autosave');
+    //             if (controller.get('basicsValid')) {
+    //                 console.log('decided to autosave');
+    //                 model.save();
+    //             }
+    //         }
+    //     }));
+    // }),
+
+    getContributors: Ember.observer('selectedNode', function() {
+        // Cannot be called until a project has been selected!
+        let node = this.get('selectedNode');
+        let contributors = Ember.A();
+        loadAll(node, 'contributors', contributors).then(()=>
+             this.set('contributors', contributors));
+    }),
 
     // Upload variables
     _State: State,
-    state: State.START,
+    filePickerState: State.START,
     uploadState: State.START,
     uploadFile: null,
     resolve: null,
-    model: null,         // Node to transform into preprint
     shouldCreateChild: false,
-    user: null,
-    userNodes: Ember.A([]),
     dropzoneOptions: {
         uploadMultiple: false,
         method: 'PUT'
     },
-    canEdit: Ember.computed('isAdmin', 'isRegistration', function() {
-        return this.get('isAdmin') && !(this.get('model').get('registration'));
+
+    isAdmin: Ember.computed('selectedNode', function() {
+        // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
+        let userPermissions = this.get('selectedNode.currentUserPermissions') || [];
+        return userPermissions.indexOf(permissions.ADMIN) >= 0;
     }),
-    isAdmin: Ember.computed(function() {
-        return this.get('model.currentUserPermissions').indexOf(permissions.ADMIN) >= 0;
+
+    canEdit: Ember.computed('isAdmin', 'selectedNode', function() {
+        return this.get('isAdmin') && !(this.get('selectedNode.registration'));
     }),
+
     searchResults: [],
 
     _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
-    init() {
-        this._super(...arguments);
-        if (this.get('session.isAuthenticated')) {
-            this._setCurrentUser();
-        }
-    },
 
     /*
-    * Retrieving userNodes
-    */
-    _setCurrentUser() {
-        this.get('currentUser').load().then(user => this.set('user', user));
-    },
-    _refreshNodes() {
-        const user = this.get('user');
-        if (user) {
-            loadAll(user, 'nodes', this.get('userNodes'));
-        } else {
-            this.set('userNodes', Ember.A());
-        }
-    },
-    onGetCurrentUser: Ember.observer('user', function() {
-        this._refreshNodes();
-    }),
-
-    /*
-    * Subjects section
+    * Subjects section: display taxonomy
     */
     topFilter: '',
     midFilter: '',
@@ -140,11 +177,14 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         this.updateFilteredPath();
     }),
     sortedTaxonomies: Ember.computed('taxonomies', function() {
-        var _this = this;
+        var _this = this; // TODO: Unnecessary
         this.get('store').query('taxonomy', { filter: { parent_ids: 'null' }, page: { size: 100 } }).then(results => {
-            _this.set('sortedTaxonomies', results.map(
-                function(result) { return { name: result.get('text'), id: result.get('id') }; }
-            ));
+            _this.set('sortedTaxonomies', results.map(function (result) {
+                return {
+                    name: result.get('text'),
+                    id: result.get('id')
+                };
+            }));
         });
     }),
     path: [],
@@ -177,14 +217,18 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
 
     actions: {
         // Open next panel
-        next(name) {
-            this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(name) + 1}`));
+        next(currentPanelName) {
+            this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
+        },
+
+        error(error /*, transition */) {
+            this.get('toast').error(error);
         },
         /*
         * Upload section
         */
         changeState(newState) {
-            this.set('state', newState);
+            this.set('filePickerState', newState);
         },
         changeUploadState(newState) {
             this.set('uploadState', newState);
@@ -193,36 +237,40 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
             this.get('store').createRecord('node', {
                 title: this.get('nodeTitle'),
                 category: 'project',
-                public: true // TODO: should this be public now or later, when it is turned into a preprint?
+                public: false // TODO: should this be public now or later, when it is turned into a preprint?  Default to the least upsetting option.
             }).save().then(node => {
-                this.set('model', node);
-                this._refreshNodes();
+                this.get('userNodes').pushObject(node);
+                this.set('selectedNode', node);
                 this.send('startUpload');
             });
         },
         // Override NodeActionsMixin.addChild
         addChild() {
-            this._super(`${this.get('model.title')} Preprint`, this.get('model.description')).then(child => {
-                this.set('model', child);
-                this._refreshNodes();
+            this._super(`${this.get('selectedNode.title')} Preprint`, this.get('selectedNode.description')).then(child => {
+                this.get('userNodes').pushObject(child);
+                this.set('selectedNode', child);
                 this.send('startUpload');
             });
         },
         // nextAction: {action} callback for the next action to perform.
         deleteProject(nextAction) {
+            // TODO: Do we really want the upload page to have a deletion button at all??
             // TODO: delete the previously created model, not the currently selected model
-            if (this.get('model')) {
-                this.get('model').destroyRecord().then(() => {
+            if (this.get('selectedNode')) {
+                this.get('selectedNode').destroyRecord().then(() => {
                     this.get('toast').info('Project deleted');
                 });
-                this.set('model', null);
+                this.set('selectedNode', null);
                 // TODO: reset dropzone, since uploaded file has no project
             }
             nextAction();
         },
         startUpload() {
             // TODO: retrieve and save fileid from uploaded file
-            this.set('_url', `${this.get('model.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
+            // TODO: deal with more than 10 files?
+            this.set('_url', `${this.get('selectedNode.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
+
+            // TODO: Do not rely on cached resolve handlers, or toast for uploading. No file, no preprint- enforce workflow.
             this.get('resolve')();
             this.get('toast').info('File will upload in the background.');
             this.send('next', this.get('_names.0'));
@@ -230,18 +278,44 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
         // Dropzone hooks
         preUpload(ignore, dropzone, file) {
             this.set('uploadFile', file);
+            // FIXME: Do not cache a resolve handler this way. (controllers are singletons, etc etc etc)
+            // FIXME: If not using as closure actions, this causes action to bubble up farther
             return new Ember.RSVP.Promise(resolve => this.set('resolve', resolve));
         },
-        buildUrl() {
+        getUploadUrl() {
             return this.get('_url');
         },
-        success() {
+        uploadSuccess() {
+            // Dropzone provides an event that can be checked for the file data
+            let fileData = JSON.parse(arguments[4].target.response);
+            let fileID = fileData.data.id;  // The WB response is prefixed with provider name- best way to clean this up?
+            let osfFileID = fileID.split('/')[1];
+
+            // Fetch an OSF file record matching the WB record. This is a very hacky upload process!
+            this.get('store').findRecord('file', osfFileID)
+                .then((file) => this.set('selectedFile', file));
+
+            this.set('selectedFile', 'dummy value'); // FIXME: Placeholder to test expansion validation
             this.get('toast').info('File uploaded!');
         },
+
+        /*
+          Basics section
+         */
+        saveBasics() {
+            // Save the model associated with basics field, then advance to next panel
+            // If save fails, do not transition
+            let node = this.get('selectedNode');
+            node.save()
+                .then(() => this.send('next', this.get('_names.1')))
+                .catch(()=> this.send('error', 'Could not save information; please try again'));
+        },
+
         /*
         * Subject section
         */
         deleteSubject(key, array = key.split('.')) {
+            // TODO: Taxonomies may go many levels deeper
             this.set(key, null);
             // Delete key manually
             switch (array.length) {
@@ -287,6 +361,14 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
             this.notifyPropertyChange('selected');
             this.rerender();
         },
+
+        saveSubjects() {
+            // Update the temp preprint object with selected subjects, then advance. Nothing is actually saved here because preprint isn't created yet.
+            //TODO implement: requires a datasource for IDs, not labels, of taxonomy items
+            // If save fails, do not transition
+            this.set('model.subjects', this.get('selected'));
+            this.send('next', this.get('_names.2'));
+        },
         /**
          * findContributors method.  Queries APIv2 users endpoint on full_name.  Fetches specified page of results.
          * TODO will eventually need to be changed to multifield query.
@@ -325,6 +407,22 @@ export default Ember.Controller.extend(Validations, NodeActionsMixin, {
                     _this.$('#' + elementId).removeClass(highlightClass);
                 }, 4000);
             });
+        },
+        /*
+          Submit tab actions
+         */
+        savePreprint() {
+            // TODO: Check validation status of all sections before submitting
+            // TODO: Make sure subjects is working so request doesn't get rejected
+            // TODO: Test and get this code working
+            let model = this.get('model');
+            model.setProperties({
+                id: this.get('selectedNode.id'),
+                primaryFile: this.get('selectedFile')
+            });
+            model.save()
+                .then(() => console.log('Save succeeded. Should we transition somewhere?'))
+                .catch(() => this.send('error', 'Could not save preprint; please try again later'));
         }
     }
 });

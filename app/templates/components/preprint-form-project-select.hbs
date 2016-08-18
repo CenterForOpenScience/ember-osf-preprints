@@ -21,8 +21,13 @@
                     This project is private and will be made public
                 </p>
             {{/unless}}
-            {{#if (and osfFiles fileSelect)}}
-                {{file-browser rootItem=osfFiles}}
+            {{#if (and osfProvider fileSelect)}}
+                {{!--file-browser rootItem=selectedNode --}}
+                <ul>
+                    {{#each osfProvider.files as |file|}}
+                        <li>{{file.name}} (TODO: Implement selection logic)</li>
+                    {{/each}}
+                </ul>
             {{/if}}
         {{else}}
             <p class="alert alert-danger" role="alert">
