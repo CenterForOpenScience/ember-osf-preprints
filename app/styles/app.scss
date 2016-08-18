@@ -15,6 +15,9 @@
 .pointer {
     cursor: pointer;
 }
+body {
+    font-family: "Open Sans", "Helvetica Neue", sans-serif;
+}
 
 /* INDEX page */
 /* Global to index */
@@ -102,6 +105,9 @@
     border-bottom: 1px solid #dedede;
     .filter-heading {
         background-color: #efefef;
+    }
+    label {
+        font-weight: normal;
     }
     ul {
         padding-left: 25px;
