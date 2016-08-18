@@ -7,15 +7,13 @@
     <section class="osf-box p-md m-b-lg">
         {{#liquid-bind supplementList elementId="file-list" tagName="" class="" use=scrollAnim as |list|}}
             {{#each list as |supplement|}}
-                <span class="hint--bottom col-xs-2 p-md m-b-xl small-files box {{if (eq selectedFile supplement) 'selected'}}" aria-label={{supplement.name}}>
+                <span class="">
                     {{#if (eq supplement.kind "folder")}}
-                        <a href={{projectURL}} style="color:inherit;">
-                            <label>
-                                <i class="fa fa-folder fa-2x p-b-xs" aria-hidden="true"></i>
-                            </label>
+                        <a href={{projectURL}} style="color:inherit;" class="hint--bottom col-xs-2 p-md m-b-xl box hint--bottom" aria-label={{supplement.name}}>
+                            <i class="fa fa-folder fa-2x p-b-xs" aria-hidden="true"></i>
                         </a>
                     {{else}}
-                        <label {{action 'changeFile' supplement}}>
+                        <label class="hint--bottom col-xs-2 m-b-xl p-md box {{if (eq selectedFile supplement) 'selected'}}"  aria-label={{supplement.name}} {{action 'changeFile' supplement}}>
                             <i class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
                             {{!--#if (eq selectedFile supplement)--}}
                                 {{!--<<h2 class="file-selected-arrow">&#9660;</h2>--}}
