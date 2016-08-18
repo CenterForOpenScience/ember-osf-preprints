@@ -809,12 +809,15 @@ hr {
                 right: 0;
             }
         }
+        .file-selected-arrow {
+            color: #888888;
+            position: absolute;
+            top: -25px;
+            font-size: xx-large;
+            left: 2px;
+        }
     }
-    .file-selected-arrow {
-        color: #888888;
-        position: fixed;
-        top: -38px;
-    }
+
     .osf-box{
         height: 100px;
         width: 100%;

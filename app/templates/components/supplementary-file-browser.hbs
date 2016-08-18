@@ -5,24 +5,24 @@
 {{#if supplementList}}
     <p class="f-w-lg p-b-md">{{selectedFile.name}}</p>
     <section class="osf-box p-md m-b-lg">
-        {{#liquid-bind supplementList elementId="file-list" tagName="" class="" use=scrollAnim as |list|}}
-            {{#each list as |supplement|}}
+        {{!--#liquid-bind supplementList elementId="file-list" use=scrollAnim as |list|--}}
+            {{#each supplementList as |supplement|}}
                 <span class="">
                     {{#if (eq supplement.kind "folder")}}
-                        <a href={{projectURL}} style="color:inherit;" class="hint--bottom col-xs-2 p-md m-b-xl box hint--bottom" aria-label={{supplement.name}}>
+                        <a href={{projectURL}} style="color:inherit;" class="hint--bottom col-xs-2 p-md box m-b-xl" aria-label={{supplement.name}}>
                             <i class="fa fa-folder fa-2x p-b-xs" aria-hidden="true"></i>
                         </a>
                     {{else}}
-                        <label class="hint--bottom col-xs-2 m-b-xl p-md box {{if (eq selectedFile supplement) 'selected'}}"  aria-label={{supplement.name}} {{action 'changeFile' supplement}}>
+                        <label class="hint--bottom col-xs-2 p-md box m-b-xl {{if (eq selectedFile supplement) 'selected'}}"  aria-label={{supplement.name}} {{action 'changeFile' supplement}}>
+                            {{#if (eq selectedFile supplement)}}
+                                <b class="file-selected-arrow">&#9660;</b>
+                            {{/if}}
                             <i class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
-                            {{!--#if (eq selectedFile supplement)--}}
-                                {{!--<<h2 class="file-selected-arrow">&#9660;</h2>--}}
-                            {{!--/if--}}
                         </label>
                     {{/if}}
                 </span>
             {{/each}}
-        {{/liquid-bind}}
+        {{!--/liquid-bind--}}
         {{#if showLeftArrow}}
             <button id="leftArrow" class="show-more-button left" {{action 'moveLeft'}}>
                 <i class="fa fa-caret-left"></i>
