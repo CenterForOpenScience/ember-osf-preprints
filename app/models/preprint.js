@@ -24,6 +24,7 @@ export default OsfModel.extend({
     date_modified: DS.attr('date'),
     abstract: DS.attr('string'),
     tags: DS.attr(),
+    doi: DS.attr('string'),
 
     // Relationships
     primaryFile: DS.belongsTo('file', { inverse: null }),

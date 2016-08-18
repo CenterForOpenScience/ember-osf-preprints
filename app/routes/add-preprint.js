@@ -1,22 +1,28 @@
 import Ember from 'ember';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+
 import loadAll from 'ember-osf/utils/load-relationship';
 
-export default Ember.Route.extend({
-    currentUser: Ember.inject.service(),
+export default Ember.Route.extend(AuthenticatedRouteMixin, {
+    currentUser: Ember.inject.service('currentUser'),
     model() {
-        // Temporary.  This needs to be the node created earlier in the process.
-        return this.store.findRecord('node', 'bgz3m');
+        // Store the empty preprint to be created on the model hook for page. Node will be fetched
+        //  internally during submission process.
+        // TODO: For demo purposes, explicitly don't specify a provider and rely on backend defaults
+        return this.store.createRecord('preprint', { doi: 'Something!' });
     },
 
-    setupController(controller, model) {
-        this.get('currentUser').load()
-            .then((user) => controller.set('user', user))
-            .catch(() => controller.set('user', null));
-        controller.set('user', this.modelFor('application'));
+    setupController(controller) {
+        // Fetch values required to operate the page: user and userNodes
+        let userNodes = Ember.A();
+        controller.set('userNodes', userNodes);
 
-        let dest = Ember.A();
-        loadAll(model, 'contributors', dest).then(()=>
-            controller.set('contributors', dest));
+        this.get('currentUser').load()
+            .then((user) => {
+                controller.set('user', user);
+                return user;
+            }).then((user) => loadAll(user, 'nodes', userNodes));
+
         return this._super(...arguments);
     }
 });

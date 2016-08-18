@@ -4,6 +4,7 @@ import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-
 export default CpPanelToggleComponent.extend({
     tagName: 'header',
     enabled: true,
+
     invalid: Ember.computed('valid', function() {
         // In other words, not true or null
         return this.get('valid') === false;

@@ -12,8 +12,9 @@ module.exports = function(environment) {
             authenticator: 'authenticator:osf-cookie'
         },
         //Change here to switch back to mirage calls. Examples of calls in index.js
+        // TODO: Remove mirage entirely in future.
         'ember-cli-mirage': {
-            enabled: true
+            enabled: false
         },
         EmberENV: {
             FEATURES: {
