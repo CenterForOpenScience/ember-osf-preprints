@@ -5,8 +5,8 @@
 {{#if supplementList}}
     <p class="f-w-lg p-b-md">{{selectedFile.name}}</p>
     <section class="osf-box p-md m-b-lg">
-        {{!--#liquid-bind supplementList elementId="file-list" use=scrollAnim as |list|--}}
-            {{#each supplementList as |supplement|}}
+        {{#liquid-bind supplementList elementId="file-list" use=scrollAnim as |list|}}
+            {{#each list as |supplement|}}
                 <span class="">
                     {{#if (eq supplement.kind "folder")}}
                         <a href={{projectURL}} style="color:inherit;" class="hint--bottom col-xs-2 p-md box m-b-xl" aria-label={{supplement.name}}>
@@ -22,7 +22,7 @@
                     {{/if}}
                 </span>
             {{/each}}
-        {{!--/liquid-bind--}}
+        {{/liquid-bind}}
         {{#if showLeftArrow}}
             <button id="leftArrow" class="show-more-button left" {{action 'moveLeft'}}>
                 <i class="fa fa-caret-left"></i>
