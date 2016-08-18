@@ -1,8 +1,4 @@
 <div class="col-sm-12" style="padding-bottom:30px;">{{!COL}}
-    {{fa-icon icon="cloud-upload" size=5}}
-    <h2>Contribute your research</h2>
-    <p class="lead">You can upload a preprint or choose a file from an existing OSF file to tag as a preprint if you are already have an OSF account.</p>
-
     {{#oauth-popup authUrl=authUrl loginSuccess=(action 'loginSuccess') loginFail=(action 'loginFail') as |popup|}}
         <div class="col-sm-12">
             {{!TODO: Don't create the same button twice}}

@@ -18,9 +18,11 @@
 
 /* Main header with search bar */
 .preprint-header{
-    background:#ebf0f1 url('img/preprints-bg.jpg') top center ;
-    padding-top: 150px;
+    background:#214661 url('img/preprints-bg.jpg') top center ;
+    padding-top: 200px;
+    padding-bottom: 50px;
     border-bottom: 1px solid #dddddd;
+    color: white;
     h1 {
         font-size: 41px;
         font-weight: 300;
@@ -63,9 +65,16 @@
 
 /* Contribute Panel */
 .preprint-contribute {
-    background: #cbd9d5 url('img/index-contribute-bg.jpg') top center;
+    background-color: #f5f5f5;
 
 }
+.preprint-tool {
+    background: #cbd9d5 url('img/index-tool-bg.jpg') top center;
+    #logo {
+        transform: scale(2);
+    }
+}
+
 
 
 
@@ -258,24 +267,6 @@
         }
     }
 }
-
-.moving-logo-section {
-    background-color: #474747;
-    color: #FFF;
-    padding: 50px 0;
-    #logo {
-        transform: scale(2);
-    }
-
-    h4 {
-        margin-bottom: 40px;
-    }
-
-    .btn {
-        padding: 10px 50px;
-    }
-}
-
 
 
 .logo {
