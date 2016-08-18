@@ -13,7 +13,7 @@ export default Ember.Controller.extend({
 
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
     queryParams: ['page', 'searchString'],
-    activeFilters: {providers: ['OSF Providers'], subjects: []},
+    activeFilters: { providers: ['OSF Providers'], subjects: [] },
 
     page: 1,
     size: 10,
@@ -99,13 +99,12 @@ export default Ember.Controller.extend({
         let filters = {};
         for (let k of Object.keys(facetFilters)) {
             let key = filterMap[k];
-            console.log(key)
-            if (key) {
+            if (key && facetFilters[k].length) {
                 filters[key] = facetFilters[k];
             }
         }
-        if (filters.sources.indexOf('OSF Providers') !== -1){
-            filters.sources = this.get('osfProviders');
+        if (filters.sources.indexOf('OSF Providers') !== -1) {
+            filters.sources = this.get('osfProviders').slice();
         }
         let query = {
             query_string: {
@@ -170,8 +169,6 @@ export default Ember.Controller.extend({
     expandedOSFProviders: false,
     osfProvider: Ember.computed('activeFilters', function() {
         this.loadPage.call(this);
-        var _this = this;
-        var subjectFilters = [];
         let osfProviders = ['OSF Providers', 'Open Science Framework', 'SocArxiv', 'Engrxiv'];
         let match = this.get('activeFilters.providers').filter(each => osfProviders.indexOf(each) !== -1).length > 0;
         if (!match) {
