@@ -777,8 +777,14 @@ hr {
     .header-row{
         color: white;
     }
-    .preprint-authors{
+    .view-authors{
         color: #337ab7;
+        //float: left;
+    }
+    .round-btn {
+        border-radius: 25px;
+        background-color: #4c4c4c;
+        color: white;
     }
     #mfr-col{
         position: relative;

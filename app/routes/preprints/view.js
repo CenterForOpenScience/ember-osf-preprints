@@ -6,6 +6,7 @@ export default Ember.Route.extend({
     },
     setupController(controller, model) {
         this.getFiles(model).then(files => controller.set('fileList', files));
+        model.query('contributors', { 'page[size]': 100 }).then(authors => controller.set('authors', authors));
         this._super(...arguments);
     },
     getFiles(node) {
