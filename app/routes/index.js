@@ -14,11 +14,6 @@ export default Ember.Route.extend({
         goToSubject(sub) {
             this.transitionTo('discover', { queryParams: { subject: sub } });
         },
-        togglePopularUploads() {
-            let newHeight = (Ember.$('#landing-page-preprint-list').height() === 700) ? 2500 : 700;
-            Ember.$('#landing-page-preprint-list').css('max-height', newHeight);
-            Ember.$('#show-more-icon').toggleClass('fa fa-caret-down fa fa-caret-up');
-        },
         search(q) {
             this.transitionTo('discover', { queryParams: { searchString: q } });
         }

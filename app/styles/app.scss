@@ -144,35 +144,6 @@
     color: #333;
 }
 
-#landing-page-preprint-list-background {
-    background-color: rgba(255, 255, 255, .1);
-    padding: 20px 20px 0px 20px;
-}
-
-/*.preprintTitle {
-    color: $preprint-title;
-    font-weight: bold;
-}
-
-.preprintTitle:hover {
-    color: $preprint-title-hover;
-} */
-
-#landing-page-preprint-list {
-    max-height: 700px;
-    overflow: hidden;
-    .preprintTitle {
-        font-weight: bold;
-        font-size: 18px;
-    }
-    a {
-        font-weight: bold;
-        &:hover {
-            color: $preprint-title-hover;
-            text-decoration: none;
-        }
-    }
-}
 
 // FOR SUBJECTS LIST ON INDEX
 .subjectList img {

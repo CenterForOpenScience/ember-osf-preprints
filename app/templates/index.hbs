@@ -30,15 +30,10 @@
             <div class="row">{{!LIST ROW}}
                 <h2>Explore <small>recent additions</small></h2>
                 <div id="landing-page-preprint-list-background"> {{!BACKGROUND}}
-                    <div id="landing-page-preprint-list"> {{!ARTICLE IN POPULAR UPLOADS}}
-                        {{#each model.preprints as |preprintEntry|}}
-                            {{preprint-entry preprint=preprintEntry}}
-                        {{/each}}
-                    </div> {{!END POPULAR UPLOADS}}
+                    {{#each model.preprints as |preprintEntry|}}
+                        {{search-result result=preprintEntry}}
+                    {{/each}}
                 </div> {{!END BACKGROUND}}
-                <button class="show-more-button col-sm-12 text-muted" {{action "togglePopularUploads"}}>
-                    <i id="show-more-icon" class="fa fa-caret-down m-b-lg"></i>
-                </button>
                 <div class="text-center"
                      style="padding-top: 20px; padding-bottom: 40px;"> {{! READ MORE BUTTON}}
                     {{#link-to "discover" class="btn btn-success btn-lg"}}Browse more preprints{{/link-to}}
