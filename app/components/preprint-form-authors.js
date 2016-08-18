@@ -30,7 +30,7 @@ export default CpPanelBodyComponent.extend({
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
-            this.attrs.addContributor(user.id, 'write', true, undefined, undefined, false).then((res) => {
+            this.attrs.addContributor(user.id, 'write', true, undefined, undefined, true).then((res) => {
                 this.toggleAuthorModification();
                 this.get('contributors').pushObject(res);
                 this.highlightSuccessOrFailure(res.id, this, 'success');
@@ -43,7 +43,7 @@ export default CpPanelBodyComponent.extend({
         // Adds unregistered contributor, then clears form and switches back to search view.
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
-            let res = this.attrs.addContributor(null, 'write', true, fullName, email, false);
+            let res = this.attrs.addContributor(null, 'write', true, fullName, email, true);
             res.then((contributor) => {
                 this.get('contributors').pushObject(contributor);
                 this.toggleAuthorModification();
