@@ -1,159 +1,165 @@
-<div class="container space-top space-bottom">
-    <div class="text-center space-top">
-        <h1>Preprint Archive</h1>
-        <h4>We got lots of preprints.</h4>
-    </div>
 
-    {{search-preprints search="search"}}
-</div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <button type="button" class="btn btn-default" {{action "linkToAddPreprint"}}>Add your preprint</button>
-        </div>
-        <div class="col-md-6">
-            <span class="pull-right">
-                <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true">
-                        Sort by: {{chosenSortByOption}}
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="sortBy">
-                        {{#each sortByOptions as |option index|}}
-                            <li style="cursor: pointer; cursor: hand"><a {{action "sortBySelect" index}}>{{option}}</a></li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </span>
-        </div>
-    </div>
-</div>
-
-<hr>
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-4">
-            <div id="activeFilters">
-                {{#if showActiveFilters}}
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <h4>Active Filters:</h4>
-                        </div>
-                        <div class="col-sm-6">
-                            <span class="pull-right">
-                                <button type="button" class="btn btn-default" {{action "clearFilters"}}>Clear filters {{fa-icon "remove"}}</button>
-                            </span>
-                        </div>
-                    </div>
-                    <hr>
-                    <ul id="activeFiltersList">
-                        {{#each activeFilters as |filter|}}
-                            <li>{{filter}}</li>
-                        {{/each}}
-                    </ul>
-                {{/if}}
+<div class="preprint-search-header">
+    <div class="container">
+        <div class="row m-v-md ">
+            <div class="col-xs-12 text-center">
+                <h1>Preprint Archive Search</h1>
+                <p class="lead">powered by SHARE</p>
             </div>
-            <div class='panel panel-info'>
-                <div class='panel-heading'>
-                    <h4>Providers</h4>
+        </div>
+        <div class="row m-t-md m-b-xl">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                {{search-preprints search="search"}}
+            </div>
+        </div>
+        <div class="row m-v-md">
+            <div class="col-xs-6">
+                <button type="button" class="btn btn-default" {{action "linkToAddPreprint"}}>Add your preprint</button>
+            </div>
+            <div class="col-xs-6">
+                <span class="pull-right">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true">
+                            Sort by: {{chosenSortByOption}}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="sortBy">
+                            {{#each sortByOptions as |option index|}}
+                                <li style="cursor: pointer; cursor: hand"><a {{action "sortBySelect" index}}>{{option}}</a></li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="preprint-search-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div id="activeFilters">
+                    {{#if showActiveFilters}}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h4>Active Filters:</h4>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="pull-right">
+                                    <button type="button" class="btn btn-default" {{action "clearFilters"}}>Clear filters {{fa-icon "remove"}}</button>
+                                </span>
+                            </div>
+                        </div>
+                        <hr>
+                        <ul id="activeFiltersList">
+                            {{#each activeFilters as |filter|}}
+                                <li>{{filter}}</li>
+                            {{/each}}
+                        </ul>
+                    {{/if}}
                 </div>
-                <div class='panel-body'>
-                    <ul>
-                        <p>
-                            <a href='' {{action 'expandOSFProviders'}}>
-                                {{#if expandedOSFProviders}}
-                                    {{fa-icon 'times'}}
-                                {{else}}
-                                    {{fa-icon 'plus'}}
-                                {{/if}}
-                            </a>
-                            {{#if (if-filter 'OSF Providers' selectedProviders)}}
-                                <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
-                            {{else}}
-                                <input type="checkbox" {{action 'selectProvider' 'OSF Providers'}}>
-                            {{/if}}
-                            OSF Providers
-                        </p>
-                        {{#if expandedOSFProviders}}
-                            <ul>
-                                {{#each osfProviders as |item|}}
-                                    <p>
-                                        {{#if (if-filter item selectedProviders)}}
-                                            <input type="checkbox" checked {{action 'selectProvider' item}}>
-                                        {{else if (if-filter 'OSF Providers' selectedProviders)}}
-                                            <input type="checkbox" checked {{action 'selectProvider' item}}>
-                                        {{else}}
-                                            <input type="checkbox" {{action 'selectProvider' item}}>
-                                        {{/if}}
-                                        {{item}}
-                                    </p>
-                                {{/each}}
-                            </ul>
-                        {{/if}}
-                        {{#each otherProviders as |item|}}
+                <div class='panel panel-info'>
+                    <div class='panel-heading'>
+                        <h4>Providers</h4>
+                    </div>
+                    <div class='panel-body'>
+                        <ul>
                             <p>
-                                {{#if (if-filter item selectedProviders)}}
-                                    <input type="checkbox" checked {{action 'selectProvider' item}}>
+                                <a href='' {{action 'expandOSFProviders'}}>
+                                    {{#if expandedOSFProviders}}
+                                        {{fa-icon 'times'}}
+                                    {{else}}
+                                        {{fa-icon 'plus'}}
+                                    {{/if}}
+                                </a>
+                                {{#if (if-filter 'OSF Providers' selectedProviders)}}
+                                    <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
                                 {{else}}
-                                    <input type="checkbox" {{action 'selectProvider' item}}>
+                                    <input type="checkbox" {{action 'selectProvider' 'OSF Providers'}}>
                                 {{/if}}
-                                {{item}}
+                                OSF Providers
                             </p>
-                        {{/each}}
+                            {{#if expandedOSFProviders}}
+                                <ul>
+                                    {{#each osfProviders as |item|}}
+                                        <p>
+                                            {{#if (if-filter item selectedProviders)}}
+                                                <input type="checkbox" checked {{action 'selectProvider' item}}>
+                                            {{else if (if-filter 'OSF Providers' selectedProviders)}}
+                                                <input type="checkbox" checked {{action 'selectProvider' item}}>
+                                            {{else}}
+                                                <input type="checkbox" {{action 'selectProvider' item}}>
+                                            {{/if}}
+                                            {{item}}
+                                        </p>
+                                    {{/each}}
+                                </ul>
+                            {{/if}}
+                            {{#each otherProviders as |item|}}
+                                <p>
+                                    {{#if (if-filter item selectedProviders)}}
+                                        <input type="checkbox" checked {{action 'selectProvider' item}}>
+                                    {{else}}
+                                        <input type="checkbox" {{action 'selectProvider' item}}>
+                                    {{/if}}
+                                    {{item}}
+                                </p>
+                            {{/each}}
 
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h4>Refine your search {{fa-icon "info-circle"}}</h4>
-                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4>Refine your search {{fa-icon "info-circle"}}</h4>
+                    </div>
 
-                <div class="panel-body">
-                    <div>
-                        <h4>Subject</h4>
-                        {{#if osfProvider}}
-                            {{taxonomy-tree select=(action 'selectSubjectFilter') subjects=treeSubjects}}
-                        {{else}}
-                            <i>Taxonomy not available for non-OSF providers.</i>
-                        {{/if}}
+                    <div class="panel-body">
+                        <div>
+                            <h4>Subject</h4>
+                            {{#if osfProvider}}
+                                {{taxonomy-tree select=(action 'selectSubjectFilter') subjects=treeSubjects}}
+                            {{else}}
+                                <i>Taxonomy not available for non-OSF providers.</i>
+                            {{/if}}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-lg-8" id="searchResults">
-            {{#if loading}}
-                <div class="text-center">
-                    {{fa-icon 'spinner' pulse=true size=3}}
-                </div>
-            {{else}}
-                {{#if numberOfResults}}
-                    {{#each results as |result|}}
-                        {{search-result result=result}}
-                    {{/each}}
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            {{#if showPrev}}
-                                <button type="button" class="btn btn-default" {{action "previous"}}>Prev</button>
-                            {{/if}}
-                        </div>
-                        <div class="col-md-6">
-                            <span class="pull-right">
-                                {{#if showNext}}
-                                    <button type="button" class="btn btn-default" {{action "next"}}>Next</button>
-                                {{/if}}
-                            </span>
-                        </div>
+            <div class="col-lg-8" id="searchResults">
+                {{#if loading}}
+                    <div class="text-center">
+                        {{fa-icon 'spinner' pulse=true size=3}}
                     </div>
                 {{else}}
-                    <h2 class="text-muted text-center">No results found.</h2>
+                    {{#if numberOfResults}}
+                        {{#each results as |result|}}
+                            {{search-result result=result}}
+                        {{/each}}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{#if showPrev}}
+                                    <button type="button" class="btn btn-default" {{action "previous"}}>Prev</button>
+                                {{/if}}
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">
+                                    {{#if showNext}}
+                                        <button type="button" class="btn btn-default" {{action "next"}}>Next</button>
+                                    {{/if}}
+                                </span>
+                            </div>
+                        </div>
+                    {{else}}
+                        <h2 class="text-muted text-center">No results found.</h2>
+                    {{/if}}
                 {{/if}}
-            {{/if}}
+            </div>
         </div>
     </div>
 </div>
