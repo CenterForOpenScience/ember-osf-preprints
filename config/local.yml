@@ -1,10 +1,12 @@
 
 ######## ember-osf settings ########
 local:
-    CLIENT_ID: null
-    PERSONAL_ACCESS_TOKEN: null
+    CLIENT_ID: 7f4b10c62b0743be92a80c96171bef0a
+    #PERSONAL_ACCESS_TOKEN: jVSnrCLbzLwvbzFqqxobUFH6TU656ylZRRPWvwvFx0vxDtKgATKmHhjtjBHfJU7ipGFyQ1
+    ### Sam Pull
+    PERSONAL_ACCESS_TOKEN: 5ejp4q4guVjnxlEQ01He1FWln4EQapvt4LJQC2DHk9nXugrH45D8cE4s8Fj3LMY8N6qhhy
     OAUTH_SCOPES: osf.full_read osf.full_write
-    REDIRECT_URI: http://localhost:5000/login/
+    REDIRECT_URI: http://localhost:5000/preprints
 stage2:
     CLIENT_ID: null
     PERSONAL_ACCESS_TOKEN: null
