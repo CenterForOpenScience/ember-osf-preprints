@@ -6,18 +6,13 @@ export default Ember.Route.extend({
         return Ember.RSVP.hash({
             theDate: new Date(),
             preprints: this.store.findAll('preprint'),
-            subjects: this.store.query('taxonomy', { filter: { parent_ids: 'null' } })
+            subjects: this.store.query('taxonomy', { filter: { parent_ids: 'null' }, page: { size: 20 } })
         });
     },
     actions: {
         // TODO: properly transfer subject to discover route
         goToSubject(sub) {
             this.transitionTo('discover', { queryParams: { subject: sub } });
-        },
-        togglePopularUploads() {
-            let newHeight = (Ember.$('#landing-page-preprint-list').height() === 700) ? 2500 : 700;
-            Ember.$('#landing-page-preprint-list').css('max-height', newHeight);
-            Ember.$('#show-more-icon').toggleClass('fa fa-caret-down fa fa-caret-up');
         },
         search(q) {
             this.transitionTo('discover', { queryParams: { searchString: q } });
