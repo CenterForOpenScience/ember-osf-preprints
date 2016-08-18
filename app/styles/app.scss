@@ -11,9 +11,16 @@
     margin-top: 0;
 }
 
+/* GLOBAL to PREPRINTS */
+.pointer {
+    cursor: pointer;
+}
+body {
+    font-family: "Open Sans", "Helvetica Neue", sans-serif;
+}
+
 /* INDEX page */
 /* Global to index */
-
 
 
 /* Main header with search bar */
@@ -77,6 +84,46 @@
 
 
 
+/* SEARCH page */
+/* Global to search */
+
+
+/* Header panel */
+.preprint-search-header {
+    padding-top: 120px;
+    background: #e0ebef url('img/search-bg.jpg') top center;
+    .share-logo {
+        width: 46px;
+        height: 22px;
+        background-image: url("img/share-logo-icon.png");
+        display: inline-block;
+        background-size: contain;
+    }
+}
+.preprint-search-main {
+    background-color: #fbfbfb;
+    border-bottom: 1px solid #dedede;
+    .filter-heading {
+        background-color: #efefef;
+    }
+    label {
+        font-weight: normal;
+    }
+    ul {
+        padding-left: 25px;
+        li {
+            list-style: none;
+        }
+    }
+}
+
+
+
+/* VIEW page */
+
+.dark-overlay-header-background {
+    background: url("img/dark_overlay.png") no-repeat;
+}
 
 
 
