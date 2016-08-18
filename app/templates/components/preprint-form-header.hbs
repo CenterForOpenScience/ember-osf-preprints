@@ -1,1 +1,6 @@
-{{name}}{{fa-icon 'check-circle'}}
+{{name}}
+{{#if valid}}
+    {{fa-icon 'check-circle'}}
+{{else}}
+    {{fa-icon 'times-circle'}}
+{{/if}}
