@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import OSFCookieLoginControllerMixin from 'ember-osf/mixins/osf-cookie-login-controller';
+import OSFAgnosticAuthControllerMixin from 'ember-osf/mixins/osf-agnostic-auth-controller';
 
-export default Ember.Controller.extend(OSFCookieLoginControllerMixin, {
+export default Ember.Controller.extend(OSFAgnosticAuthControllerMixin, {
     toast: Ember.inject.service(),
     actions: {
         loginFail(/* err */) {
