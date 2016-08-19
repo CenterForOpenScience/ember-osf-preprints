@@ -230,7 +230,7 @@ export default Ember.Controller.extend({
         },
 
         linkToAddPreprint() {
-            this.transitionToRoute('add-preprint');
+            this.transitionToRoute('submit');
         },
 
         clearFilters() {
