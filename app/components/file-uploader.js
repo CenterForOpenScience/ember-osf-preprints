@@ -78,7 +78,7 @@ export default Ember.Component.extend({
         },
 
         // Dropzone hooks
-        sending(_, dropzone, file, xhr, formData) {
+        sending(_, dropzone, file, xhr/* formData */) {
             let _send = xhr.send;
             xhr.send = function() {
                 _send.call(xhr, file);
