@@ -65,9 +65,9 @@ export default Ember.Controller.extend({
             queryParams = queryParams.slice(1).split(/[\&|\=]/g);
             queryParams.forEach(function(ele, i) {
                 if (ele === 'subjectFilter') {
-                    _this.set('activeFilters.subjects', [decodeURI(queryParams[i+1])]);
+                    _this.set('activeFilters.subjects', [decodeURI(queryParams[i + 1])]);
                 }
-            })
+            });
         }
         this.loadPage.call(this);
     },
@@ -167,12 +167,14 @@ export default Ember.Controller.extend({
 
     expandedOSFProviders: false,
     osfProvider: Ember.computed('activeFilters', function() {
-        this.loadPage.call(this);
         let osfProviders = ['OSF Providers', 'Open Science Framework', 'SocArxiv', 'Engrxiv'];
         let match = this.get('activeFilters.providers').filter(each => osfProviders.indexOf(each) !== -1).length > 0;
         if (!match) {
             this.set('activeFilters.subjects', []);
         }
+        this.set('searchString', this.get('searchValue'));
+        this.set('page', 1);
+        this.loadPage();
         return match;
     }),
     otherProviders: [],
@@ -206,7 +208,7 @@ export default Ember.Controller.extend({
         },
 
         clearFilters() {
-            this.set('activeFilters', []);
+            this.set('activeFilters',  { providers: ['OSF Providers'], subjects: [] });
         },
 
         sortBySelect(index) {
