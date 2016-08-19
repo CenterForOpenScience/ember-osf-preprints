@@ -275,6 +275,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
             this.get('toast').info('File will upload in the background.');
             this.send('next', this.get('_names.0'));
         },
+        selectExistingFile(file) {
+            this.set('selectedFile', file);
+        },
 
         /*
           Basics section
@@ -313,7 +316,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
             args = args.filter(arg => Ember.typeOf(arg) === 'string');
             this.send('deleteSubject', `selected.${args.join('.')}`, ['selected', ...args]);
             this.notifyPropertyChange('selected');
-            this.rerender();
         },
         selectSubject(...args) {
             const process = (prev, cur, i, arr) => {
@@ -336,7 +338,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
             this.set('path', args);
             this.updateFilteredPath();
             this.notifyPropertyChange('selected');
-            this.rerender();
         },
 
         saveSubjects() {
