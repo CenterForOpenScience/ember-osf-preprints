@@ -4,6 +4,8 @@ import { validator, buildValidations } from 'ember-cp-validations';
 
 import permissions from 'ember-osf/const/permissions';
 import NodeActionsMixin from 'ember-osf/mixins/node-actions';
+import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
+
 import loadAll from 'ember-osf/utils/load-relationship';
 
 // Enum of available upload states
@@ -54,7 +56,7 @@ const BasicsValidations = buildValidations({
 /**
  * "Add preprint" page definitions
  */
-export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
+export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
 

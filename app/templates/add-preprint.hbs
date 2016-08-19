@@ -72,7 +72,7 @@
                         </label>
                         <label>
                             Tags:
-                            {{input class="form-control" value=basicsTags}}
+                            {{tags-widget addATag=(action 'addATag' selectedNode) removeATag=(action 'removeATag' selectedNode) tags=selectedNode.tags}}
                         </label>
                     </div>
                     <div class="col-md-6">
