@@ -26,7 +26,9 @@ For local development, this is designed to run alongside (and from within) the f
 
 1. Check out this OSF feature branch: https://github.com/CenterForOpenScience/osf.io/tree/feature/ember-preprints 
 2. Start your Ember server: `ember serve`
-3. Visit your app at http://localhost:5000/preprints/
+3. Copy [these lines](https://github.com/centerforopenscience/osf.io/blob/a98615b68a5cf620bc76c550808dd78ea3a305ec/website/settings/local-dist.py#L18-L22) 
+to your `website/settings/local.py` file. Uncomment `'/preprints/': 'http://localhost:4200',` and restart your flask app.
+4. Visit your app at http://localhost:5000/preprints/
 
 If you encounter problems, make sure that your version of ember-osf is up to date. If login fails, try logging in from 
 any other OSF page, then returning to the preprints app.
