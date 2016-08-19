@@ -275,29 +275,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
             this.get('toast').info('File will upload in the background.');
             this.send('next', this.get('_names.0'));
         },
-        // Dropzone hooks
-        preUpload(ignore, dropzone, file) {
-            this.set('uploadFile', file);
-            // FIXME: Do not cache a resolve handler this way. (controllers are singletons, etc etc etc)
-            // FIXME: If not using as closure actions, this causes action to bubble up farther
-            return new Ember.RSVP.Promise(resolve => this.set('resolve', resolve));
-        },
-        getUploadUrl() {
-            return this.get('_url');
-        },
-        uploadSuccess() {
-            // Dropzone provides an event that can be checked for the file data
-            let fileData = JSON.parse(arguments[4].target.response);
-            let fileID = fileData.data.id;  // The WB response is prefixed with provider name- best way to clean this up?
-            let osfFileID = fileID.split('/')[1];
-
-            // Fetch an OSF file record matching the WB record. This is a very hacky upload process!
-            this.get('store').findRecord('file', osfFileID)
-                .then((file) => this.set('selectedFile', file));
-
-            this.set('selectedFile', 'dummy value'); // FIXME: Placeholder to test expansion validation
-            this.get('toast').info('File uploaded!');
-        },
 
         /*
           Basics section
