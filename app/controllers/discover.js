@@ -164,8 +164,7 @@ export default Ember.Controller.extend({
 
     expandedOSFProviders: false,
     osfProvider: Ember.computed('activeFilters', function() {
-        let osfProviders = ['OSF Providers', 'Open Science Framework', 'SocArxiv', 'Engrxiv'];
-        let match = this.get('activeFilters.providers').filter(each => osfProviders.indexOf(each) !== -1).length > 0;
+        let match = this.get('activeFilters.providers').filter(each => this.get('osfProviders').indexOf(each) !== -1).length > 0;
         if (!match) {
             this.set('activeFilters.subjects', []);
         }
@@ -232,13 +231,10 @@ export default Ember.Controller.extend({
         },
 
         selectProvider(provider) {
-            this.notifyPropertyChange('activeFilters');
             if (provider === 'OSF Providers') {
-                this.set('activeFilters.providers', this.get('osfProviders'));
-                return;
+                this.set('activeFilters.providers', this.get('osfProviders').slice());
             }
-
-            if (this.get('osfProvider') && this.get('osfProviders').indexOf(provider) !== -1) {
+            else if (this.get('osfProvider') && this.get('osfProviders').indexOf(provider) !== -1) {
                 if (this.get('activeFilters.providers').indexOf(provider) !== -1 && this.get('activeFilters.providers').length > 1) {
                     this.get('activeFilters.providers').removeObject(provider);
                 } else if (this.get('activeFilters.providers').indexOf(provider) === -1) {
@@ -247,6 +243,7 @@ export default Ember.Controller.extend({
             } else {
                 this.set('activeFilters.providers', [provider]);
             }
+            this.notifyPropertyChange('activeFilters');
         },
         expandOSFProviders() {
             this.set('expandedOSFProviders', !this.get('expandedOSFProviders'));
