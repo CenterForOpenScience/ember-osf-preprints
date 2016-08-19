@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import {State} from '../controllers/add-preprint';
+import {State} from '../controllers/submit';
 
 export default Ember.Component.extend({
     State,
