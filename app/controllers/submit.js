@@ -42,8 +42,8 @@ const BasicsValidations = buildValidations({
         description: 'DOI',
         validators: [
             validator('format', {
-                // Regex taken from http://stackoverflow.com/questions/27910/finding-a-doi-in-a-document-or-page
-                regex: /\b(10[.][0-9]{4,}(?:[.][0-9]+)*(?:(?!["&\'<>])\S)+)\b/,
+                // Simplest regex- try not to diverge too much from the backend
+                regex: /^10\.\S+\//,
                 allowBlank: true,
                 message: 'Please use a valid {description}'
             })
