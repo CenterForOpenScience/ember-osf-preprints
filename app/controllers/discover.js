@@ -12,13 +12,14 @@ export default Ember.Controller.extend({
     // TODO: either remove or add functionality to info icon on "Refine your search panel"
 
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
-    queryParams: ['page', 'searchString'],
+    queryParams: ['page', 'searchString', 'subjectFilter'],
     activeFilters: { providers: ['OSF Providers'], subjects: [] },
 
     page: 1,
     size: 10,
     numberOfResults: 0,
     searchString: '',
+    subjectFilter: null,
     queryBody: {},
 
     sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
@@ -60,6 +61,13 @@ export default Ember.Controller.extend({
         this.loadPage.call(this);
     },
 
+    subjectFilterPassed: Ember.computed('subjectFilter', function() {
+        let filter = this.get('subjectFilter');
+        if (filter !== null && filter !== '') {
+            this.set('activeFilters.subjects', [filter]);
+        }
+        this.loadPage.call(this);
+    }),
     loadPage() {
         let queryBody = JSON.stringify(this.getQueryBody());
         this.set('loading', true);

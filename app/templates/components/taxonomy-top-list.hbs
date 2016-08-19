@@ -3,7 +3,7 @@
         <ul class="subject row">
             {{#each pair as |subject|}}
                 <li class="col-md-6">
-                    {{#link-to 'discover' (query-params searchString=subject.text) class='btn btn-primary'}}
+                    {{#link-to 'discover' (query-params subjectFilter=subject.text) class='btn btn-primary'}}
                         {{subject.text}}
                     {{/link-to}}
                 </li>
