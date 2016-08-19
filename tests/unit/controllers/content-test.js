@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('controller:preprints/edit', 'Unit | Controller | preprints/edit', {
+moduleFor('controller:content', 'Unit | Controller | content', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
 });

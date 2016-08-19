@@ -1,13 +1,9 @@
 <div class="col-sm-12" style="padding-bottom:30px;">{{!COL}}
-    {{fa-icon icon="cloud-upload" size=5}}
-    <h1 class="f-w-xl">Contribute your research</h1>
-    <h3 class="f-w-md" style="margin-left:auto; margin-right:auto;">You can upload a preprint or choose a file from an existing OSF file to tag as a preprint if you are already have an OSF account.</h3>
-
     {{#oauth-popup authUrl=authUrl loginSuccess=(action 'loginSuccess') loginFail=(action 'loginFail') as |popup|}}
         <div class="col-sm-12">
             {{!TODO: Don't create the same button twice}}
             {{#if session.isAuthenticated}}
-                {{#link-to "add-preprint" type="button" class="btn btn-info btn-lg"}}Add a preprint{{/link-to}}
+                {{#link-to "submit" type="button" class="btn btn-info btn-lg"}}Add a preprint{{/link-to}}
             {{else}}
                 <button class="btn btn-info btn-lg" onclick={{action 'login' target=popup}}>
                     Add a preprint

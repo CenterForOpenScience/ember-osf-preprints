@@ -1,28 +1,45 @@
 <ul>
     {{#each topLevelItem as |item|}}
-        <p>
+        <li>
             {{#if item.showChildren}}
-                <a href='' {{action 'expand' item}}>{{fa-icon 'times'}}</a>
+                <span class="pointer m-r-xs" {{action 'expand' item}}>{{fa-icon 'caret-down'}}</span>
             {{else}}
-                <a href='' {{action 'expand' item}}>{{fa-icon 'plus'}}</a>
+                <span class="pointer m-r-xs" {{action 'expand' item}}>{{fa-icon 'caret-right'}}</span>
             {{/if}}
-            <a href='' {{action 'select' item}}>{{item.text}}</a>
-        </p>
+            {{#if (if-filter item.text subjects)}}
+                <input type="checkbox" checked {{action 'select' item}}>
+            {{else}}
+                <input type="checkbox" {{action 'select' item}}>
+            {{/if}}
+            {{item.text}}
+        </li>
         {{#if item.showChildren}}
             <ul>
                 {{#each item.children as |child|}}
-                    <p>
+                    <li>
                         {{#if child.showChildren}}
-                            <a href='' {{action 'expand' child}}>{{fa-icon 'times'}}</a>
+                            <span class="pointer  m-r-xs" {{action 'expand' child}}>{{fa-icon 'caret-down'}}</span>
                         {{else}}
-                            <a href='' {{action 'expand' child}}>{{fa-icon 'plus'}}</a>
+                            <span class="pointer  m-r-xs" {{action 'expand' child}}>{{fa-icon 'caret-right'}}</span>
                         {{/if}}
-                        <a href='' {{action 'select' child}}>{{child.text}}</a>
-                    </p>
+                        {{#if (if-filter child.text subjects)}}
+                            <input type="checkbox" checked {{action 'select' child}}>
+                        {{else}}
+                            <input type="checkbox" {{action 'select' child}}>
+                        {{/if}}
+                        {{child.text}}
+                    </li>
                     {{#if child.showChildren}}
                         <ul>
                             {{#each child.children as |grandkid|}}
-                                <p><a href='' {{action 'select' grandkid}}>{{grandkid.text}}</a></p>
+                                <li>
+                                    {{#if (if-filter grandkid.text subjects)}}
+                                        <input type="checkbox" checked {{action 'select' grandkid}}>
+                                    {{else}}
+                                        <input type="checkbox" {{action 'select' grandkid}}>
+                                    {{/if}}
+                                    {{grandkid.text}}
+                                </li>
                             {{/each}}
                         </ul>
                     {{/if}}
