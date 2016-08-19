@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import {State} from '../controllers/add-preprint';
 
-
 export default Ember.Component.extend({
     State,
     store: Ember.inject.service(),
@@ -20,12 +19,9 @@ export default Ember.Component.extend({
     }.property('file'),
 
     dropzoneOptions: {
-        method: 'PUT',
         maxFiles: 1,
+        method: 'PUT',
         uploadMultiple: false,
-        sending: function() {
-            debugger;
-        }
     },
 
     init() {
@@ -37,7 +33,6 @@ export default Ember.Component.extend({
         this.set('createChild', false);
         this.set('state', State.START);
     },
-
 
     actions: {
         getUrl() {
@@ -69,7 +64,7 @@ export default Ember.Component.extend({
                 title: this.get('nodeTitle'),
             }).save().then(node => {
                 this.set('node', node);
-                this.send('upload')
+                this.send('upload');
             });
         },
 
@@ -87,7 +82,7 @@ export default Ember.Component.extend({
             let _send = xhr.send;
             xhr.send = function() {
                 _send.call(xhr, file);
-            }
+            };
             xhr.withCredentials = true;
         },
         preUpload(_, dropzone, file) {

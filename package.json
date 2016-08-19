@@ -95,6 +95,7 @@
       "tests/dummy/app/mirage",
       "jam"
     ],
+    "requireSpacesInsideImportedObjectBraces": false,
     "requireSpacesInAnonymousFunctionExpression": false,
     "requireTrailingComma": false,
     "disallowTrailingComma": false,
