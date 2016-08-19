@@ -63,13 +63,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
     userNodes: Ember.A(),
 
     // Information about the thing to be turned into a preprint
-    selectedNode: null,
+    node: null,
     selectedFile: null,
     contributors: Ember.A(),
 
     ///////////////////////////////////////
     // Validation rules for form sections
-    uploadValid: Ember.computed.and('selectedNode', 'selectedFile'),
+    uploadValid: Ember.computed.and('node', 'selectedFile'),
     // Basics fields are currently the only ones with validation. Make this more specific in the future if we add more form fields.
     basicsValid: Ember.computed.alias('validations.isValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
@@ -80,7 +80,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
     ////////////////////////////////////////////////////
     // Fields used in the "basics" section of the form.
     // Proxy for "basics" section, to support autosave when fields change (created when model selected)
-    basicsModel: Ember.computed.alias('selectedNode'),
+    basicsModel: Ember.computed.alias('node'),
 
     basicsTitle: Ember.computed.alias('basicsModel.title'),
     basicsAbstract: Ember.computed.alias('basicsModel.description'),
@@ -88,12 +88,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
     basicsDOI: Ember.computed.alias('model.doi'),
 
     //// TODO: Turn off autosave functionality for now. Direct 2-way binding was causing a fight between autosave and revalidation, so autosave never fired. Fixme.
-    // createAutosave: Ember.observer('selectedNode', function() {
+    // createAutosave: Ember.observer('node', function() {
     //     // Create autosave proxy only when a node has been loaded.
     //     // TODO: This could go badly if a request is in flight when trying to destroy the proxy
     //
     //     var controller = this;
-    //     this.set('basicsModel', autosave('selectedNode', {
+    //     this.set('basicsModel', autosave('node', {
     //         save(model) {
     //             // Do not save fields if validation fails.
     //             console.log('trying autosave');
@@ -105,9 +105,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
     //     }));
     // }),
 
-    getContributors: Ember.observer('selectedNode', function() {
+    getContributors: Ember.observer('node', function() {
         // Cannot be called until a project has been selected!
-        let node = this.get('selectedNode');
+        let node = this.get('node');
         let contributors = Ember.A();
         loadAll(node, 'contributors', contributors).then(()=>
              this.set('contributors', contributors));
@@ -125,14 +125,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         method: 'PUT'
     },
 
-    isAdmin: Ember.computed('selectedNode', function() {
+    isAdmin: Ember.computed('node', function() {
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
-        let userPermissions = this.get('selectedNode.currentUserPermissions') || [];
+        let userPermissions = this.get('node.currentUserPermissions') || [];
         return userPermissions.indexOf(permissions.ADMIN) >= 0;
     }),
 
-    canEdit: Ember.computed('isAdmin', 'selectedNode', function() {
-        return this.get('isAdmin') && !(this.get('selectedNode.registration'));
+    canEdit: Ember.computed('isAdmin', 'node', function() {
+        return this.get('isAdmin') && !(this.get('node.registration'));
     }),
 
     searchResults: [],
@@ -240,15 +240,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
                 public: false // TODO: should this be public now or later, when it is turned into a preprint?  Default to the least upsetting option.
             }).save().then(node => {
                 this.get('userNodes').pushObject(node);
-                this.set('selectedNode', node);
+                this.set('node', node);
                 this.send('startUpload');
             });
         },
         // Override NodeActionsMixin.addChild
         addChild() {
-            this._super(`${this.get('selectedNode.title')} Preprint`, this.get('selectedNode.description')).then(child => {
+            this._super(`${this.get('node.title')} Preprint`, this.get('node.description')).then(child => {
                 this.get('userNodes').pushObject(child);
-                this.set('selectedNode', child);
+                this.set('node', child);
                 this.send('startUpload');
             });
         },
@@ -256,11 +256,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         deleteProject(nextAction) {
             // TODO: Do we really want the upload page to have a deletion button at all??
             // TODO: delete the previously created model, not the currently selected model
-            if (this.get('selectedNode')) {
-                this.get('selectedNode').destroyRecord().then(() => {
+            if (this.get('node')) {
+                this.get('node').destroyRecord().then(() => {
                     this.get('toast').info('Project deleted');
                 });
-                this.set('selectedNode', null);
+                this.set('node', null);
                 // TODO: reset dropzone, since uploaded file has no project
             }
             nextAction();
@@ -268,7 +268,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         startUpload() {
             // TODO: retrieve and save fileid from uploaded file
             // TODO: deal with more than 10 files?
-            this.set('_url', `${this.get('selectedNode.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
+            this.set('_url', `${this.get('node.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
 
             // TODO: Do not rely on cached resolve handlers, or toast for uploading. No file, no preprint- enforce workflow.
             this.get('resolve')();
@@ -305,7 +305,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         saveBasics() {
             // Save the model associated with basics field, then advance to next panel
             // If save fails, do not transition
-            let node = this.get('selectedNode');
+            let node = this.get('node');
             node.save()
                 .then(() => this.send('next', this.get('_names.1')))
                 .catch(()=> this.send('error', 'Could not save information; please try again'));
@@ -417,7 +417,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
             // TODO: Test and get this code working
             let model = this.get('model');
             model.setProperties({
-                id: this.get('selectedNode.id'),
+                id: this.get('node.id'),
                 primaryFile: this.get('selectedFile')
             });
             model.save()
