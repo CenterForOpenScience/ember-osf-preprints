@@ -92,5 +92,8 @@ module.exports = function(defaults) {
         production: path.join(app.bowerDirectory, 'hint.css/hint.css')
     });
 
+    // Import component styles from addon
+    app.import('vendor/assets/ember-osf.css');
+
     return app.toTree();
 };
