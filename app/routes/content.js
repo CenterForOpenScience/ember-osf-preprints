@@ -1,11 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-    model() {
-        return this.modelFor('preprints');
+    model(params) {
+        return this.store.findRecord('preprint', params.preprint_id);
     },
     setupController(controller, model) {
         this.getFiles(model).then(files => controller.set('fileList', files));
+        model.query('contributors', { 'page[size]': 100 }).then(authors => controller.set('authors', authors));
         this._super(...arguments);
     },
     getFiles(node) {

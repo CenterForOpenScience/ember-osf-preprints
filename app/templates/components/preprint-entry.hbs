@@ -15,9 +15,7 @@
 
 <div class="article">
     <div class="preprintTitle"> {{!TITLE DIV}}
-        <a class="preprintTitle">
-            {{#link-to "preprints.view" preprintId}}{{preprint.title}}{{/link-to}}
-        </a>
+        {{#link-to "content" preprintId class="preprintTitle"}}{{preprint.title}}{{/link-to}}
     </div> {{!END TITLE DIV}}
     <p><strong>Authors: </strong>{{preprint.authors}}</p>
     <p id={{preprint.id}}>

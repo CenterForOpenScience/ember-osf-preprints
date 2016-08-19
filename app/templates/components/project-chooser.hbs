@@ -6,7 +6,7 @@
             <p>Please provide a title for your project: </p>
             <input type="text" class="new-project-title form-control" placeholder="Title">
             {{!<button type="submit" id="newProject" class="btn btn-primary pull-right m-t-md">Continue <i class="fa fa-angle-right"></i></button>}}
-            {{#link-to "add-preprint" class="btn btn-primary pull-right m-t-md"}}Continue{{/link-to}}
+            {{#link-to "submit" class="btn btn-primary pull-right m-t-md"}}Continue{{/link-to}}
         </div>
     {{/if}}
 
@@ -18,7 +18,7 @@
             <p>Choose an existing project or component:</p>
             <input type="text" class="new-project-title form-control"> {{!This would actually be a browse projects thing not just an input... figure out best way to do this... dropdown? probs}}
             {{!<button type="submit" id="newProject" class="btn btn-primary pull-right m-t-md">Continue <i class="fa fa-angle-right"></i></button>}}
-            {{#link-to "add-preprint" class="btn btn-primary pull-right m-t-md"}}Choose project{{/link-to}}
+            {{#link-to "submit" class="btn btn-primary pull-right m-t-md"}}Choose project{{/link-to}}
         </div>
     {{/if}}
 
@@ -30,7 +30,7 @@
             <p>Choose an existing project or component:</p>
             <input type="text" class="new-project-title form-control"> {{!This would actually be a browse projects thing not just an input}}
             {{!<button type="submit" id="newProject" class="btn btn-primary pull-right m-t-md">Continue <i class="fa fa-angle-right"></i></button>}}
-            {{#link-to "add-preprint" class="btn btn-primary pull-right m-t-md"}}Choose file{{/link-to}} {{!Before linking to the metadata page, make a new popup thing to choose the file. Go to page with it elready loaded}}
+            {{#link-to "submit" class="btn btn-primary pull-right m-t-md"}}Choose file{{/link-to}} {{!Before linking to the metadata page, make a new popup thing to choose the file. Go to page with it elready loaded}}
         </div>
     {{/if}}
 </div>
