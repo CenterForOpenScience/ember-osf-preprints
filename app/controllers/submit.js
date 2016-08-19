@@ -298,6 +298,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
             this.set('selectedFile', 'dummy value'); // FIXME: Placeholder to test expansion validation
             this.get('toast').info('File uploaded!');
         },
+        selectExistingFile(file) {
+            this.set('selectedFile', file);
+        },
 
         /*
           Basics section
