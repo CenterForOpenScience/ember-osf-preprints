@@ -27,12 +27,12 @@
                                         <button class="btn btn-primary" {{action 'createProject'}}>Create</button>
 
                                     {{else if (eq currentUploadState _State.EXISTING)}}
-                                        {{preprint-form-project-select userNodes=userNodes selectedNode=selectedNode shouldCreateChild=shouldCreateChild}}
+                                        {{preprint-form-project-select userNodes=userNodes selectedNode=node shouldCreateChild=shouldCreateChild}}
                                         {{! TODO: cleanup created component if needed }}
                                         <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
                                         {{! TODO: check if dropzone has file and model exists before allowing user to continue }}
                                         {{!-- TODO: Make button text dynamic; refactor internals --}}
-                                        <button class="btn btn-primary" disabled={{unless selectedNode true}} {{action (if shouldCreateChild 'addChild' 'startUpload')}}>Next</button>
+                                        <button class="btn btn-primary" disabled={{unless node true}} {{action (if shouldCreateChild 'addChild' 'startUpload')}}>Next</button>
                                     {{else}}
                                         {{log 'preprint-form-upload: bad uploadState'}}
                                     {{/if}}
@@ -42,12 +42,12 @@
                                 {{preprint-form-project-select
                                   userNodes=userNodes
                                   fileSelect=true
-                                  selectedNode=selectedNode
+                                  selectedNode=node
                                   shouldCreateChild=shouldCreateChild}}
                                 {{! TODO: cleanup created component if needed }}
                                 <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
                                 {{! TODO: check if project and file are selected before allowing user to continue }}
-                                <button class="btn btn-primary" disabled={{unless selectedNode true}} {{action (if shouldCreateChild 'addChild' 'next') name}}>Next</button>
+                                <button class="btn btn-primary" disabled={{unless node true}} {{action (if shouldCreateChild 'addChild' 'next') name}}>Next</button>
                             {{else}}
                                 {{log 'preprint-form-upload: bad state'}}
                             {{/if}}
@@ -178,7 +178,7 @@
                 {{#preprint-form-body}}
                     {{preprint-form-authors
                         contributors=contributors
-                        node=selectedNode
+                        node=node
                         isAdmin=isAdmin
                         canEdit=canEdit
                         currentUser=user
