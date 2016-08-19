@@ -233,8 +233,7 @@ export default Ember.Controller.extend({
         selectProvider(provider) {
             if (provider === 'OSF Providers') {
                 this.set('activeFilters.providers', this.get('osfProviders').slice());
-            }
-            else if (this.get('osfProvider') && this.get('osfProviders').indexOf(provider) !== -1) {
+            } else if (this.get('osfProvider') && this.get('osfProviders').indexOf(provider) !== -1) {
                 if (this.get('activeFilters.providers').indexOf(provider) !== -1 && this.get('activeFilters.providers').length > 1) {
                     this.get('activeFilters.providers').removeObject(provider);
                 } else if (this.get('activeFilters.providers').indexOf(provider) === -1) {
