@@ -1,9 +1,8 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('controller:add-preprint', 'Unit | Controller | add preprint', {
+moduleFor('controller:content', 'Unit | Controller | content', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
-    needs: ['validator:presence', 'validator:length', 'validator:format'],
 });
 
 // Replace this with your real tests.

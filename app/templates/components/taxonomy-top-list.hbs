@@ -2,7 +2,7 @@
     <div class="subject row m-b-sm">
         {{#each pair as |subject|}}
             <div class="col-md-6">
-                {{#link-to 'discover' (query-params searchString=subject.text) class='btn btn-primary p-sm'}}
+                {{#link-to 'discover' (query-params subjectFilter=subject.text) class='btn btn-primary p-sm'}}
                     {{subject.text}}
                 {{/link-to}}
             </div>
