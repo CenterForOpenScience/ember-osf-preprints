@@ -1,0 +1,53 @@
+<div class="row">
+{{#each selected as |subject|}}
+    <span class="subject">
+        {{#each subject as |segment|}}
+            <b>{{segment.text}}</b>
+        {{/each}}
+        {{fa-icon 'times' click=(action 'deselect' subject)}}
+    </span>
+{{/each}}
+</div>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <ul style="overflow: scroll">
+            {{input value=topFilter class="form-control" placeholder="Search"}}
+            {{#each tier1 as |subject|}}
+                {{#if (if-filter subject.text topFilter)}}
+                    <li {{action 'select' subject '1'}} class={{if (eq subject selection1) 'selected'}}>
+                        {{subject.text}}
+                    </li>
+                {{/if}}
+            {{/each}}
+        </ul>
+    </div>
+
+    <div class="col-md-4">
+        <ul style="overflow: scroll">
+            {{input value=topFilter class="form-control" placeholder="Search"}}
+            {{#each tier2 as |subject|}}
+                {{#if (if-filter subject.text topFilter)}}
+                    <li {{action 'select' subject '2'}} class={{if (eq subject selection2) 'selected'}}>
+                        {{subject.text}}
+                    </li>
+                {{/if}}
+            {{/each}}
+        </ul>
+    </div>
+
+    <div class="col-md-4">
+        <ul style="overflow: scroll">
+            {{input value=topFilter class="form-control" placeholder="Search"}}
+            {{#each tier3 as |subject|}}
+                {{#if (if-filter subject.text topFilter)}}
+                    <li {{action 'select' subject '3'}} class={{if (eq subject selection3) 'selected'}}>
+                        {{subject.text}}
+                    </li>
+                {{/if}}
+            {{/each}}
+        </ul>
+    </div>
+
+</div>
