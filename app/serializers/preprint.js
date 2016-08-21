@@ -12,6 +12,9 @@ export default OsfSerializer.extend({
                 }
             }
         };
+
+        res.data.attributes.subjects = snapshot.record.get('subjects').map(subject => subject.get('id'));
+
         return res;
     }
 
