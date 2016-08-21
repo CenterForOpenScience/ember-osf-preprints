@@ -28,6 +28,10 @@ export default Ember.Component.extend({
                 this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
                 this.set('osfProviderLoaded', true);
             });
+        },
+        selectFile(file) {
+            this.attrs.selectFile(file);
+            this.highlightSuccessOrFailure('selectedFileExisting', this, 'success')
         }
     },
 

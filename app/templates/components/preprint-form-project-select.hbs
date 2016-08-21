@@ -22,8 +22,9 @@
                 </p>
             {{/unless}}
             {{#if (and fileSelect osfProviderLoaded)}}
-                {{file-browser rootItem=osfStorageProvider openFile=selectFile}}
-
+                <div>
+                    {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
+                </div>
             {{/if}}
         {{else}}
             <p class="alert alert-danger" role="alert">
@@ -38,4 +39,9 @@
         {{input type='checkbox' checked=shouldCreateChild}}
         Create new component for preprint
     </label>
+    <div>
+        <span id='selectedFileExisting'> Selected file: {{if selectedFile selectedFile.name 'None selected'}} </span>
+    </div>
+    <br>
+
 {{/liquid-if}}
