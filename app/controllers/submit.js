@@ -171,6 +171,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         },
         // Override NodeActionsMixin.addChild
         addChild() {
+            // TODO need error handling on this.  Too many promises.
             this._super(`${this.get('node.title')} Preprint`, this.get('node.description')).then(child => {
                 this.get('userNodes').pushObject(child);
                 var parentNode = this.get('node');
@@ -186,7 +187,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
                         }
                     });
                 }).then(() => {
+                    this.get('toast').info('File copied to component!');
                     this.send('next', this.get('_names.0'));
+                }, () => {
+                    this.get('toast').info('Could not create component.');
                 });
             });
         },
