@@ -6,7 +6,7 @@ export default Ember.Route.extend({
         return Ember.RSVP.hash({
             theDate: new Date(),
             preprints: this.store.findAll('preprint'),
-            subjects: this.store.query('taxonomy', { filter: { parent_ids: 'null' }, page: { size: 20 } })
+            subjects: this.store.query('taxonomy', { filter: { parents: 'null' }, page: { size: 20 } })
         });
     },
     actions: {
