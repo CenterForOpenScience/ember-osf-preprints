@@ -14,10 +14,46 @@ export default Ember.Component.extend({
     // Array of arrays containing subject lineages
     selected: [],
 
-    // The actual lists to show
-    tier1: null,
-    tier2: null,
-    tier3: null,
+    // Store the lists of subjects
+    _tier1: null,
+    _tier2: null,
+    _tier3: null,
+
+    // Filter the list of subjects if appropriate
+    tier1FilterText: '',
+    tier2FilterText: '',
+    tier3FilterText: '',
+
+    tier1Display: Ember.computed('tier1FilterText', '_tier1.[]', function() {
+        let items = this.get('_tier1') || [];
+        let filterText = this.get('tier1FilterText').toLowerCase();
+        if (filterText) {
+            return items.filter(item => item.get('text').toLowerCase().includes(filterText));
+        } else {
+            return items;
+        }
+    }),
+
+    tier2Display: Ember.computed('tier2FilterText', '_tier2.[]', function() {
+        let items = this.get('_tier2') || [];
+        let filterText = this.get('tier2FilterText').toLowerCase();
+        if (filterText) {
+            return items.filter(item => item.get('text').toLowerCase().includes(filterText));
+        } else {
+            return items;
+        }
+    }),
+
+    tier3Display: Ember.computed('tier3FilterText', '_tier3.[]', function() {
+        let items = this.get('_tier3') || [];
+        let filterText = this.get('tier3FilterText').toLowerCase();
+        if (filterText) {
+            return items.filter(item => item.get('text').toLowerCase().includes(filterText));
+        } else {
+            return items;
+        }
+    }),
+
     // Currently selected subjects
     selection1: null,
     selection2: null,
@@ -27,16 +63,14 @@ export default Ember.Component.extend({
         this._super(...arguments);
         this.set('selected', []);
 
-        this.get('store')
-            .query('taxonomy', {
-                filter: {
-                    parents: 'null'
-                },
-                page: {
-                    size: 100
-                }
-            })
-            .then(results => this.set('tier1', results));
+        this.get('store').query('taxonomy', {
+            filter: {
+                parents: 'null'
+            },
+            page: {
+                size: 100
+            }
+        }).then(results => this.set('_tier1', results));
     },
 
     emitSave() {
@@ -71,10 +105,10 @@ export default Ember.Component.extend({
             }
 
             for (let i = wipe; i < 4; i++) {
-                this.set(`tier${i}`, null);
+                this.set(`_tier${i}`, null);
                 this.set(`selection${i}`, null);
             }
-
+            // TODO: No need for autosave here- preprint isn't saved until the end
             Ember.run.debounce(this, 'emitSave', 500);
         },
         select(selected, tier) {
@@ -110,6 +144,7 @@ export default Ember.Component.extend({
                 this.get('selected').pushObject(selection);
             }
 
+            // TODO: No need for autosave here- preprint isn't saved until the end
             Ember.run.debounce(this, 'emitSave', 500);
 
             if (tier === 3) {
@@ -117,19 +152,18 @@ export default Ember.Component.extend({
             }
 
             for (let i = tier + 1; i < 4; i++) {
-                this.set(`tier${i}`, null);
+                this.set(`_tier${i}`, null);
             }
 
-            this.get('store')
-                .query('taxonomy', {
-                    filter: {
-                        parents: selected.id
-                    },
-                    page: {
-                        size: 100
-                    }
-                })
-                .then(results => this.set(`tier${tier + 1}`, results));
+            // TODO: Fires a network request every time clicking here, instead of only when needed?
+            this.get('store').query('taxonomy', {
+                filter: {
+                    parents: selected.id
+                },
+                page: {
+                    size: 100
+                }
+            }).then(results => this.set(`_tier${tier + 1}`, results));
         },
     }
 });
