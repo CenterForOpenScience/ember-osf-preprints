@@ -192,7 +192,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         startUpload() {
             // TODO: retrieve and save fileid from uploaded file
             // TODO: deal with more than 10 files?
-            this.set('_url', `${this.get('node.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
+            this.get('node.files').then((providers) => {
+                this.set('_url', `${providers.findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
+            });
 
             // TODO: Do not rely on cached resolve handlers, or toast for uploading. No file, no preprint- enforce workflow.
             this.get('resolve')();
