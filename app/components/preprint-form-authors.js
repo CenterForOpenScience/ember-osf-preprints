@@ -30,7 +30,7 @@ export default CpPanelBodyComponent.extend({
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
-            this.attrs.addContributor(user.id, 'write', true).then((res) => {
+            this.attrs.addContributor(user.id, 'write', true, undefined, undefined, true).then((res) => {
                 this.toggleAuthorModification();
                 this.get('contributors').pushObject(res);
                 this.highlightSuccessOrFailure(res.id, this, 'success');
@@ -43,7 +43,7 @@ export default CpPanelBodyComponent.extend({
         // Adds unregistered contributor, then clears form and switches back to search view.
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
-            let res = this.attrs.addUnregisteredContributor(fullName, email, 'write', true);
+            let res = this.attrs.addContributor(null, 'write', true, fullName, email, true);
             res.then((contributor) => {
                 this.get('contributors').pushObject(contributor);
                 this.toggleAuthorModification();
@@ -85,8 +85,7 @@ export default CpPanelBodyComponent.extend({
         // Updates contributor then redraws contributor list view - updating contributor
         // permissions may change which additional update/remove requests are permitted.
         updatePermissions(contributor, permission) {
-            let permissionChanges = { [contributor.id]: permission.toLowerCase() };
-            this.attrs.editContributors(this.get('contributors'), permissionChanges, {}).then(() => {
+            this.attrs.editContributor(contributor, permission, '').then(() => {
                 this.toggleAuthorModification();
                 this.highlightSuccessOrFailure(contributor.id, this, 'success');
                 this.removedSelfAsAdmin(contributor, permission);
@@ -99,8 +98,7 @@ export default CpPanelBodyComponent.extend({
         // Updates contributor then redraws contributor list view - updating contributor
         // bibliographic info may change which additional update/remove requests are permitted.
         updateBibliographic(contributor, isBibliographic) {
-            let bibliographicChanges = { [contributor.id]: isBibliographic };
-            this.attrs.editContributors(this.get('contributors'), {}, bibliographicChanges).then(() => {
+            this.attrs.editContributor(contributor, '', isBibliographic).then(() => {
                 this.toggleAuthorModification();
                 this.highlightSuccessOrFailure(contributor.id, this, 'success');
             }, () => {
