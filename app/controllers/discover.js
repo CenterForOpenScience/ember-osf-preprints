@@ -60,6 +60,7 @@ export default Ember.Controller.extend({
         });
         // queryParams are not set on init when we need them,
         // small hack to get the subject
+        //also does nothing right now :(
         let queryParams = window.location.search;
         if (queryParams) {
             queryParams = queryParams.slice(1).split(/[\&|\=]/g);
@@ -204,7 +205,7 @@ export default Ember.Controller.extend({
         },
 
         clearFilters() {
-            this.set('activeFilters',  { providers: ['OSF Providers'], subjects: [] });
+            this.set('activeFilters',  { providers: this.get('osfProviders'), subjects: [] });
         },
 
         sortBySelect(index) {
