@@ -55,6 +55,7 @@ const BasicsValidations = buildValidations({
  * "Add preprint" page definitions
  */
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
+    fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
 
@@ -172,8 +173,21 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         addChild() {
             this._super(`${this.get('node.title')} Preprint`, this.get('node.description')).then(child => {
                 this.get('userNodes').pushObject(child);
+                var parentNode = this.get('node');
                 this.set('node', child);
-                this.send('startUpload');
+                child.get('files').then((providers) => {
+                    var osfstorage = providers.findBy('name', 'osfstorage');
+                    this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}});
+                    parentNode.get('contributors').toArray().forEach((contributor) => {
+                        if (this.get('user').id !== contributor.get('userId')) {
+                            child.addContributor(contributor.get('userId'), contributor.get('permission'), contributor.get('bibliographic')).then((contrib) => {
+                                this.get('contributors').pushObject(contrib);
+                            });
+                        }
+                    });
+                }).then(() => {
+                    this.send('next', this.get('_names.0'));
+                });
             });
         },
         // nextAction: {action} callback for the next action to perform.
