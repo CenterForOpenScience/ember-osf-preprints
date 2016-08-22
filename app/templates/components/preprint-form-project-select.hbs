@@ -1,5 +1,5 @@
 <h1>Choose existing OSF project:</h1>
-{{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action (mut selectedNode)) as |node|}}
+{{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
     <strong>{{node.title}}</strong>
 {{/power-select}}
 <p class="alert alert-info" role="alert">
@@ -21,13 +21,10 @@
                     This project is private and will be made public
                 </p>
             {{/unless}}
-            {{#if (and osfProvider fileSelect)}}
-                {{!--file-browser rootItem=selectedNode --}}
-                <ul>
-                    {{#each osfProvider.files as |file|}}
-                        <li>{{file.name}} (TODO: Implement selection logic)</li>
-                    {{/each}}
-                </ul>
+            {{#if (and fileSelect osfProviderLoaded)}}
+                <div>
+                    {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
+                </div>
             {{/if}}
         {{else}}
             <p class="alert alert-danger" role="alert">
@@ -42,4 +39,9 @@
         {{input type='checkbox' checked=shouldCreateChild}}
         Create new component for preprint
     </label>
+    <div>
+        <span id='selectedFileExisting'> Selected file: {{if selectedFile selectedFile.name 'None selected'}} </span>
+    </div>
+    <br>
+
 {{/liquid-if}}

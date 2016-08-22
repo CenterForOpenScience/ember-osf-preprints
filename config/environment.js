@@ -13,11 +13,6 @@ module.exports = function(environment) {
             authorizer: `authorizer:osf-${authorizationType}`,
             authenticator: `authenticator:osf-${authorizationType}`
         },
-        //Change here to switch back to mirage calls.
-        // TODO: Remove mirage entirely in future.
-        'ember-cli-mirage': {
-            enabled: false
-        },
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build

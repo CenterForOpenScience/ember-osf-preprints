@@ -34,12 +34,6 @@ export default Ember.Component.extend({
         this._super(...arguments);
 
     },
-    didRender: function () {
-        this.$('[data-toggle="tooltip"]').tooltip({
-            animated: 'fade',
-            placement: 'bottom',
-        });
-    },
     actions: {
         moveLeft() {
             const start = this.get('startValue');

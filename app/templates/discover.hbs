@@ -1,5 +1,3 @@
-
-
 <div class="preprint-search-header">
     <div class="container">
         <div class="row m-v-md ">
@@ -10,7 +8,12 @@
         </div>
         <div class="row m-t-md m-b-xl">
             <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                {{search-preprints search="search"}}
+                <div class="input-group input-group-lg">
+                    {{input id="searchBox" value=searchValue class="form-control" key-up='search' placeholder="Search preprints..."}}
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" {{action "search" this}}>Search</button>
+                    </span>
+                </div>
             </div>
         </div>
         <div class="row m-v-md">
@@ -51,7 +54,12 @@
                             </div>
                         </div>
                         <ul id="activeFiltersList">
-                            {{#each activeFilters as |filter|}}
+                            Provider:
+                            {{#each activeFilters.providers as |filter|}}
+                                <li>{{filter}}</li>
+                            {{/each}}
+                            Subjects:
+                            {{#each activeFilters.subjects as |filter|}}
                                 <li>{{filter}}</li>
                             {{/each}}
                         </ul>
@@ -69,7 +77,7 @@
                                     {{fa-icon 'caret-right'}}
                                 {{/if}}
                             </span>
-                            {{#if (if-filter 'OSF Providers' selectedProviders)}}
+                            {{#if (if-filter 'OSF Providers' activeFilters.providers)}}
                                 <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
                             {{else}}
                                 <input type="checkbox" {{action 'selectProvider' 'OSF Providers'}}>
@@ -80,9 +88,9 @@
                             <ul>
                                 {{#each osfProviders as |item|}}
                                     <li>
-                                        {{#if (if-filter item selectedProviders)}}
+                                        {{#if (if-filter item activeFilters.providers)}}
                                             <input type="checkbox" checked {{action 'selectProvider' item}}>
-                                        {{else if (if-filter 'OSF Providers' selectedProviders)}}
+                                        {{else if (if-filter 'OSF Providers' activeFilters.providers)}}
                                             <input type="checkbox" checked {{action 'selectProvider' item}}>
                                         {{else}}
                                             <input type="checkbox" {{action 'selectProvider' item}}>
@@ -94,7 +102,7 @@
                         {{/if}}
                         {{#each otherProviders as |item|}}
                             <li>
-                                {{#if (if-filter item selectedProviders)}}
+                                {{#if (if-filter item activeFilters.providers)}}
                                     <input type="checkbox" checked {{action 'selectProvider' item}}>
                                 {{else}}
                                     <input type="checkbox" {{action 'selectProvider' item}}>

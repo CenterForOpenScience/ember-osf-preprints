@@ -1,0 +1,140 @@
+<main class="container">
+    <h1>Add Preprint</h1>
+
+    {{#cp-panels accordion=true}}
+        {{#with _names.[0] as |name|}}
+            {{#preprint-form-section id='preprint-form-upload' open=true name=name allowOpen=true errorAction=(action 'error')}}
+                {{preprint-form-header name=name valid=uploadValid}}
+                {{#preprint-form-body}}
+                    {{#liquid-bind filePickerState class='translate' as |currentState|}}
+                        <div class={{currentState}}>
+                            {{#if (eq currentState _State.START)}}
+                                <button class="col-md-4" {{action 'changeState' _State.NEW}}>Upload a New File</button>
+                                <button class="col-md-4" {{action 'changeState' _State.EXISTING}}>Select a file from OSF</button>
+
+                            {{else if (eq currentState _State.NEW)}}
+                                {{file-uploader
+                                    node=node
+                                    userNodes=userNodes
+                                    osfFile=selectedFile
+                                    changeState=(action 'changeState')}}
+
+                            {{else if (eq currentState _State.EXISTING)}}
+                                {{preprint-form-project-select
+                                  userNodes=userNodes
+                                  fileSelect=true
+                                  selectedNode=node
+                                  selectedFile=selectedFile
+                                  selectFile=(action "selectExistingFile")
+                                  highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+                                  shouldCreateChild=shouldCreateChild}}
+                                {{! TODO: cleanup created component if needed }}
+                                <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
+                                {{! TODO: check if project and file are selected before allowing user to continue }}
+                                <button class="btn btn-primary" disabled={{unless node true}} {{action (if shouldCreateChild 'addChild' 'next') name}}>Next</button>
+                            {{else}}
+                                {{log 'preprint-form-upload: bad state'}}
+                            {{/if}}
+                        </div>
+                    {{/liquid-bind}}
+                {{/preprint-form-body}}
+            {{/preprint-form-section}}
+        {{/with}}
+
+        {{#with _names.[1] as |name|}}
+            {{#preprint-form-section id='preprint-form-basics' name=name allowOpen=uploadValid errorAction=(action 'error')}}
+                {{preprint-form-header name=name valid=basicsValid}}
+                {{#preprint-form-body class='row'}}
+                    <div class="col-md-6">
+                        <label>
+                            <span class="required">Title:</span>
+                            {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=basicsTitle}}
+                        </label>
+                        <label>
+                            DOI:
+                            {{validated-input model=this valuePath='basicsDOI' placeholder="DOI" value=basicsDOI}}
+                        </label>
+                        <label>
+                            Tags:
+                            {{input class="form-control" value=basicsTags}}
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <label>
+                            <span class="required">Abstract:</span>
+                            {{validated-input model=this valuePath='basicsAbstract' placeholder="" value=basicsAbstract large=true}}
+                        </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                <button {{action 'saveBasics'}} class="btn btn-primary" disabled={{unless basicsValid true}} >Save and continue</button>
+                            </div>
+                        </div>
+                    </div>
+
+                {{/preprint-form-body}}
+            {{/preprint-form-section}}
+        {{/with}}
+
+        {{#with _names.[2] as |name|}}
+            {{#preprint-form-section id='preprint-form-subjects' name=name allowOpen=uploadValid errorAction=(action 'error')}}
+                {{preprint-form-header name=name valid=subjectsValid}}
+                {{#preprint-form-body}}
+
+                    {{subject-picker save=(action 'saveSubjects')}}
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                <button {{action 'subjectsNext'}} class="btn btn-primary" disabled={{unless subjectsValid true}} >Save and continue</button>
+                            </div>
+                        </div>
+                    </div>
+                {{/preprint-form-body}}
+            {{/preprint-form-section}}
+        {{/with}}
+
+        {{#with _names.[3] as |name|}}
+            {{#preprint-form-section id='preprint-form-authors' name=name allowOpen=uploadValid errorAction=(action 'error')}}
+                {{preprint-form-header name=name valid=authorsValid}}
+                {{#preprint-form-body}}
+                    {{preprint-form-authors
+                        contributors=contributors
+                        node=node
+                        isAdmin=isAdmin
+                        canEdit=canEdit
+                        currentUser=user
+                        addContributor=(action 'addContributor')
+                        findContributors=(action 'findContributors')
+                        searchResults=searchResults
+                        removeContributor=(action 'removeContributor')
+                        editContributor=(action 'updateContributor')
+                        reorderContributors=(action 'reorderContributors')
+                        highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+
+                    }}
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                <button {{action 'next' name}} class="btn btn-primary" disabled={{unless authorsValid true}} >Save and continue</button>
+                            </div>
+                        </div>
+                    </div>
+                {{/preprint-form-body}}
+            {{/preprint-form-section}}
+        {{/with}}
+
+        {{#with _names.[4] as |name|}}
+            {{#preprint-form-section id='preprint-form-submit' animate=true name=name allowOpen=uploadValid errorAction=(action 'error')}}
+                {{preprint-form-header name=name valid=(get valid name)}}
+                {{#cp-panel-body}}
+                    <p>Sharing this project will make both the manuscript and the project associated with it public.</p>
+                    <button class="btn btn-primary" type="submit" {{action 'savePreprint'}}>Share</button>
+                {{/cp-panel-body}}
+            {{/preprint-form-section}}
+        {{/with}}
+    {{/cp-panels}}
+
+</main>
