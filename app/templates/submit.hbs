@@ -1,5 +1,6 @@
 <main class="container">
     <h1>Add Preprint</h1>
+
     {{#cp-panels accordion=true}}
         {{#with _names.[0] as |name|}}
             {{#preprint-form-section id='preprint-form-upload' open=true name=name allowOpen=true errorAction=(action 'error')}}
@@ -12,37 +13,20 @@
                                 <button class="col-md-4" {{action 'changeState' _State.EXISTING}}>Select a file from OSF</button>
 
                             {{else if (eq currentState _State.NEW)}}
-                                {{dropzone-widget preUpload=(action 'preUpload') buildUrl=(action 'getUploadUrl') success=(action 'uploadSuccess') options=dropzoneOptions}}
-                                {{#liquid-bind uploadState use='crossFade' as |currentUploadState|}}
-                                    {{#if (eq currentUploadState _State.START)}}
-                                        <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
-                                        <button class="btn btn-primary" {{action 'changeUploadState' _State.NEW}}>Create new project</button>
-                                        <button class="btn btn-primary" {{action 'changeUploadState' _State.EXISTING}}>Save to existing OSF project</button>
-
-                                    {{else if (eq currentUploadState _State.NEW)}}
-                                        <h1>Creating new project</h1>
-                                        {{input class='form-control' value=nodeTitle}}
-                                        <button class="btn btn-default" {{action 'deleteProject' (action 'changeUploadState' _State.START)}}>Back</button>
-                                        {{! TODO: check if dropzone has file before allowing user to continue }}
-                                        <button class="btn btn-primary" {{action 'createProject'}}>Create</button>
-
-                                    {{else if (eq currentUploadState _State.EXISTING)}}
-                                        {{preprint-form-project-select userNodes=userNodes selectedNode=node shouldCreateChild=shouldCreateChild}}
-                                        {{! TODO: cleanup created component if needed }}
-                                        <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
-                                        {{! TODO: check if dropzone has file and model exists before allowing user to continue }}
-                                        {{!-- TODO: Make button text dynamic; refactor internals --}}
-                                        <button class="btn btn-primary" disabled={{unless node true}} {{action (if shouldCreateChild 'addChild' 'startUpload')}}>Next</button>
-                                    {{else}}
-                                        {{log 'preprint-form-upload: bad uploadState'}}
-                                    {{/if}}
-                                {{/liquid-bind}}
+                                {{file-uploader
+                                    node=node
+                                    userNodes=userNodes
+                                    osfFile=selectedFile
+                                    changeState=(action 'changeState')}}
 
                             {{else if (eq currentState _State.EXISTING)}}
                                 {{preprint-form-project-select
                                   userNodes=userNodes
                                   fileSelect=true
                                   selectedNode=node
+                                  selectedFile=selectedFile
+                                  selectFile=(action "selectExistingFile")
+                                  highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
                                   shouldCreateChild=shouldCreateChild}}
                                 {{! TODO: cleanup created component if needed }}
                                 <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
@@ -97,74 +81,13 @@
             {{#preprint-form-section id='preprint-form-subjects' name=name allowOpen=uploadValid errorAction=(action 'error')}}
                 {{preprint-form-header name=name valid=subjectsValid}}
                 {{#preprint-form-body}}
-                    {{#liquid-spacer growDuration=100}}
-                        {{#each sortedSelection as |selectedPath|}}
-                            <span class="subject">
-                                {{#with selectedPath.[0] as |taxonomy|}}
-                                    <b>{{taxonomy}}</b>
-                                {{/with}}
-                                {{#with selectedPath.[1] as |category|}}
-                                    <b>{{category}}</b>
-                                {{/with}}
-                                {{#with selectedPath.[2] as |subject|}}
-                                    <b>{{subject}}</b>
-                                {{/with}}
-                                {{fa-icon 'times' click=(action 'deselectSubject' selectedPath)}}
-                            </span>
-                        {{/each}}
-                    {{/liquid-spacer}}
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <ul style="overflow: scroll">
-                                {{input value=topFilter class="form-control" placeholder="Search"}}
-                                {{#each sortedTaxonomies as |element|}}
-                                    {{#if (if-filter element.name topFilter)}}
-                                        <li {{action 'selectSubject' element}} class={{if (eq path.[0].name element.name) 'selected'}}>
-                                            {{element.name}}
-                                        </li>
-                                    {{/if}}
-                                {{/each}}
-                            </ul>
-                        </div>
+                    {{subject-picker save=(action 'saveSubjects')}}
 
-                        <div class="col-md-4">
-                            <ul style="overflow: scroll">
-                                {{input value=midFilter class="form-control" placeholder="Search"}}
-                                {{#with path.[0] as |taxonomy|}}
-                                    {{#each filteredPath.[0].children as |element|}}
-                                        {{#if (if-filter element.name midFilter)}}
-                                            <li {{action 'selectSubject' taxonomy element}} class={{if (eq path.[1].name element.name) 'selected'}}>
-                                                {{element.name}}
-                                            </li>
-                                        {{/if}}
-                                    {{/each}}
-                                {{/with}}
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4">
-                            <ul style="overflow: scroll">
-                                {{input value=botFilter class="form-control" placeholder="Search"}}
-                                {{#with path.[0] as |taxonomy|}}
-                                    {{#with path.[1] as |category|}}
-                                        {{#each filteredPath.[1].children as |element|}}
-                                            {{#if (if-filter element.name botFilter)}}
-                                                <li {{action 'selectSubject' taxonomy category element}}
-                                                    class={{if (get (get (get selected taxonomy.name) category.name) element.name) 'selected'}}>
-                                                    {{element.name}}
-                                                </li>
-                                            {{/if}}
-                                        {{/each}}
-                                    {{/with}}
-                                {{/with}}
-                            </ul>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="pull-right">
-                                <button {{action 'saveSubjects'}} class="btn btn-primary" disabled={{unless subjectsValid true}} >Save and continue</button>
+                                <button {{action 'subjectsNext'}} class="btn btn-primary" disabled={{unless subjectsValid true}} >Save and continue</button>
                             </div>
                         </div>
                     </div>
