@@ -24,7 +24,9 @@
                                   userNodes=userNodes
                                   fileSelect=true
                                   selectedNode=node
+                                  selectedFile=selectedFile
                                   selectFile=(action "selectExistingFile")
+                                  highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
                                   shouldCreateChild=shouldCreateChild}}
                                 {{! TODO: cleanup created component if needed }}
                                 <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
