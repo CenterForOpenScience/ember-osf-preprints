@@ -91,7 +91,6 @@
       "tests/integration",
       "tests/helpers"
     ],
-    "requireSpacesInsideObjectBrackets": false,
     "requireSpacesInsideImportedObjectBraces": false,
     "requireSpacesInAnonymousFunctionExpression": false,
     "requireTrailingComma": false,
