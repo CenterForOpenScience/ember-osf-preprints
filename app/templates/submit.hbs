@@ -27,7 +27,7 @@
                                         <button class="btn btn-primary" {{action 'createProject'}}>Create</button>
 
                                     {{else if (eq currentUploadState _State.EXISTING)}}
-                                        {{preprint-form-project-select userNodes=userNodes selectedNode=node selectedFile=selectedFile selectFile=(action "selectExistingFile") highlightSuccessOrFailure=(action 'highlightSuccessOrFailure') shouldCreateChild=shouldCreateChild}}
+                                        {{preprint-form-project-select userNodes=userNodes selectedNode=node selectedFile=selectedFile preUpload=(action 'preUpload') selectFile=(action "selectExistingFile") highlightSuccessOrFailure=(action 'highlightSuccessOrFailure') shouldCreateChild=shouldCreateChild}}
                                         {{! TODO: cleanup created component if needed }}
                                         <button class="btn btn-default" {{action 'changeUploadState' _State.START}}>Back</button>
                                         {{! TODO: check if dropzone has file and model exists before allowing user to continue }}
@@ -46,7 +46,9 @@
                                   selectedFile=selectedFile
                                   selectFile=(action "selectExistingFile")
                                   highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+                                  preUpload=(action 'preUpload')
                                   shouldCreateChild=shouldCreateChild}}
+
                                 {{! TODO: cleanup created component if needed }}
                                 <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
                                 {{! TODO: check if project and file are selected before allowing user to continue }}

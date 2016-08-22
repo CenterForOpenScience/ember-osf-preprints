@@ -31,7 +31,8 @@ export default Ember.Component.extend({
         },
         selectFile(file) {
             this.attrs.selectFile(file);
-            this.highlightSuccessOrFailure('selectedFileExisting', this, 'success')
+            this.attrs.preUpload(null, null, file);
+            this.highlightSuccessOrFailure('selectedFileExisting', this, 'success');
         }
     },
 
