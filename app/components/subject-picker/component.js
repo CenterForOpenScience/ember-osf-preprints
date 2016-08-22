@@ -1,12 +1,11 @@
 import Ember from 'ember';
 
 function arrayEquals(arr1, arr2) {
-    return arr1.length === arr2.length
-        && arr1.reduce((acc, val, i) => acc && val === arr2[i], true);
+    return arr1.length === arr2.length && arr1.reduce((acc, val, i) => acc && val === arr2[i], true);
 }
 
 function arrayStartsWith(arr, prefix) {
-    return prefix.reduce((acc, val, i) => acc && val === arr[i], true)
+    return prefix.reduce((acc, val, i) => acc && val === arr[i], true);
 }
 
 export default Ember.Component.extend({
@@ -27,8 +26,9 @@ export default Ember.Component.extend({
     init() {
         this._super(...arguments);
         this.set('selected', []);
+
         this.get('store')
-            .query('taxonomy', {filter: {parent_ids: 'null'}, page: {size: 100}})
+            .query('taxonomy', {filter: {parents: 'null'}, page: {size: 100}})
             .then(results => this.set('tier1', results));
     },
 
@@ -53,14 +53,14 @@ export default Ember.Component.extend({
                 subject.removeAt(subject.length - 1);
             } else {
                 this.get('selected').removeAt(this.get('selected').indexOf(subject));
-                for (let i = 2; i < 4; i ++) {
+                for (let i = 2; i < 4; i++) {
                     if (this.get(`selection${i}`) !== subject[i - 1]) continue;
                     wipe = i;
-                    break
+                    break;
                 }
             }
 
-            for(let i = wipe; i < 4; i++) {
+            for (let i = wipe; i < 4; i++) {
                 this.set(`tier${i}`, null);
                 this.set(`selection${i}`, null);
             }
@@ -75,7 +75,7 @@ export default Ember.Component.extend({
 
             // Inserting the subject lol
             let index = -1;
-            let selection = [...Array(tier).keys()].map(index => this.get(`selection${index+1}`));
+            let selection = [...Array(tier).keys()].map(index => this.get(`selection${index + 1}`));
 
             // An existing tag has this prefix :+1:
             if (tier !== 3 && this.get('selected').findIndex(item => arrayStartsWith(item, selection)) !== -1) return;
@@ -83,7 +83,7 @@ export default Ember.Component.extend({
             for (let i = 0; i < selection.length; i++) {
                 let sub = selection.slice(0, i + 1);
                 // "deep" equals
-                index = this.get('selected').findIndex(item => arrayEquals(item, sub));
+                index = this.get('selected').findIndex(item => arrayEquals(item, sub));  // jshint ignore:line
 
                 if (index === -1) continue;
                 this.get('selected')[index].pushObjects(selection.slice(i + 1));
@@ -91,17 +91,17 @@ export default Ember.Component.extend({
             }
 
             if (index === -1)
-                this.get('selected').pushObject(selection)
+                this.get('selected').pushObject(selection);
 
             Ember.run.debounce(this, 'emitSave', 500);
 
             if (tier === 3) return;
 
-            for(let i = tier+1; i < 4; i++)
+            for (let i = tier + 1; i < 4; i++)
                 this.set(`tier${i}`, null);
 
             this.get('store')
-                .query('taxonomy', {filter: {parent_ids: selected.id}, page: {size: 100}})
+                .query('taxonomy', {filter: {parents: selected.id}, page: {size: 100}})
                 .then(results => this.set(`tier${tier + 1}`, results));
         },
     }

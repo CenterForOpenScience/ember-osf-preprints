@@ -1,12 +1,12 @@
 <div class="row">
-{{#each selected as |subject|}}
-    <span class="subject">
-        {{#each subject as |segment|}}
-            <b>{{segment.text}}</b>
-        {{/each}}
-        {{fa-icon 'times' click=(action 'deselect' subject)}}
-    </span>
-{{/each}}
+    {{#each selected as |subject|}}
+        <span class="subject">
+            {{#each subject as |segment|}}
+                <b>{{segment.text}}</b>
+            {{/each}}
+            {{fa-icon 'times' click=(action 'deselect' subject)}}
+        </span>
+    {{/each}}
 </div>
 
 <div class="row">
