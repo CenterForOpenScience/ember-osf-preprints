@@ -42,8 +42,8 @@ const BasicsValidations = buildValidations({
         description: 'DOI',
         validators: [
             validator('format', {
-                // Regex taken from http://stackoverflow.com/questions/27910/finding-a-doi-in-a-document-or-page
-                regex: /\b(10[.][0-9]{4,}(?:[.][0-9]+)*(?:(?!["&\'<>])\S)+)\b/,
+                // Simplest regex- try not to diverge too much from the backend
+                regex: /^10\.\S+\//,
                 allowBlank: true,
                 message: 'Please use a valid {description}'
             })
@@ -63,24 +63,24 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
     userNodes: Ember.A(),
 
     // Information about the thing to be turned into a preprint
-    selectedNode: null,
+    node: null,
     selectedFile: null,
     contributors: Ember.A(),
 
     ///////////////////////////////////////
     // Validation rules for form sections
-    uploadValid: Ember.computed.and('selectedNode', 'selectedFile'),
+    uploadValid: Ember.computed.and('node', 'selectedFile'),
     // Basics fields are currently the only ones with validation. Make this more specific in the future if we add more form fields.
     basicsValid: Ember.computed.alias('validations.isValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject. TODO: Verify this is the appropriate way to track
-    subjectsValid: Ember.computed.bool('sortedSelection.length'),
+    subjectsValid: Ember.computed.bool('model.subjects.length'),
 
     ////////////////////////////////////////////////////
     // Fields used in the "basics" section of the form.
     // Proxy for "basics" section, to support autosave when fields change (created when model selected)
-    basicsModel: Ember.computed.alias('selectedNode'),
+    basicsModel: Ember.computed.alias('node'),
 
     basicsTitle: Ember.computed.alias('basicsModel.title'),
     basicsAbstract: Ember.computed.alias('basicsModel.description'),
@@ -88,12 +88,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
     basicsDOI: Ember.computed.alias('model.doi'),
 
     //// TODO: Turn off autosave functionality for now. Direct 2-way binding was causing a fight between autosave and revalidation, so autosave never fired. Fixme.
-    // createAutosave: Ember.observer('selectedNode', function() {
+    // createAutosave: Ember.observer('node', function() {
     //     // Create autosave proxy only when a node has been loaded.
     //     // TODO: This could go badly if a request is in flight when trying to destroy the proxy
     //
     //     var controller = this;
-    //     this.set('basicsModel', autosave('selectedNode', {
+    //     this.set('basicsModel', autosave('node', {
     //         save(model) {
     //             // Do not save fields if validation fails.
     //             console.log('trying autosave');
@@ -105,9 +105,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
     //     }));
     // }),
 
-    getContributors: Ember.observer('selectedNode', function() {
+    getContributors: Ember.observer('node', function() {
         // Cannot be called until a project has been selected!
-        let node = this.get('selectedNode');
+        let node = this.get('node');
         let contributors = Ember.A();
         loadAll(node, 'contributors', contributors).then(()=>
              this.set('contributors', contributors));
@@ -125,95 +125,19 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         method: 'PUT'
     },
 
-    isAdmin: Ember.computed('selectedNode', function() {
+    isAdmin: Ember.computed('node', function() {
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
-        let userPermissions = this.get('selectedNode.currentUserPermissions') || [];
+        let userPermissions = this.get('node.currentUserPermissions') || [];
         return userPermissions.indexOf(permissions.ADMIN) >= 0;
     }),
 
-    canEdit: Ember.computed('isAdmin', 'selectedNode', function() {
-        return this.get('isAdmin') && !(this.get('selectedNode.registration'));
+    canEdit: Ember.computed('isAdmin', 'node', function() {
+        return this.get('isAdmin') && !(this.get('node.registration'));
     }),
 
     searchResults: [],
 
     _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
-
-    /*
-    * Subjects section: display taxonomy
-    */
-    topFilter: '',
-    midFilter: '',
-    botFilter: '',
-    updateFilteredPath() {
-        var _this = this;
-        var overallPath = [];
-        var paths = this.get('path').slice(0, 2);
-        if (paths.length === 1) {
-            _this.get('store').query('taxonomy', { filter: { parent_ids: paths[0].id }, page: { size: 100 } }).then(results => {
-                Ember.set(paths[0], 'children', results.map(
-                    function(result) { return { name: result.get('text'), id: result.id }; }
-                ));
-                overallPath.push(paths[0]);
-                _this.set('filteredPath', overallPath);
-            });
-        } else if (paths.length === 2) {
-            _this.get('store').query('taxonomy', { filter: { parent_ids: paths[0].id }, page: { size: 100 } }).then(results => {
-                Ember.set(paths[0], 'children', results.map(
-                    function(result) { return { name: result.get('text'), id: result.id }; }
-                ));
-                overallPath.push(paths[0]);
-                _this.get('store').query('taxonomy', { filter: { parent_ids: paths[1].id }, page: { size: 100 } }).then(results => {
-                    Ember.set(paths[1], 'children', results.map(
-                        function(result) { return { name: result.get('text'), id: result.id }; }
-                    ));
-                    overallPath.push(paths[1]);
-                    _this.set('filteredPath', overallPath);
-                });
-            });
-        }
-    },
-    filteredPath: Ember.computed('path', function() {
-        this.updateFilteredPath();
-    }),
-    sortedTaxonomies: Ember.computed('taxonomies', function() {
-        var _this = this; // TODO: Unnecessary
-        this.get('store').query('taxonomy', { filter: { parent_ids: 'null' }, page: { size: 100 } }).then(results => {
-            _this.set('sortedTaxonomies', results.map(function (result) {
-                return {
-                    name: result.get('text'),
-                    id: result.get('id')
-                };
-            }));
-        });
-    }),
-    path: [],
-    /*
-    * selected takes the format of: { taxonomy: { category: { subject: {}, subject2: {}}, category2: {}}}
-    * in other words, each key is the name of one of the taxonomies, and each value is an object
-    * containing child values.
-    */
-    selected: new Ember.Object(),
-    /*
-    * sortedSelection takes the format of: [['taxonomy', 'category', 'subject'], ['taxonomy'...]]
-    * in other words, a 2D array
-    */
-    sortedSelection: Ember.computed('selected', function() {
-        const sorted = [];
-        const selected = this.get('selected');
-        const flatten = ([obj, name = []]) => {
-            const keys = Object.keys(obj);
-            if (keys.length === 0) {
-                return name.length !== 0 && sorted.pushObject(name);
-            } else {
-                return keys.sort()
-                .map(key => [obj.get(key), [...name, key]])
-                .forEach(flatten);
-            }
-        };
-        flatten([selected]);
-        return sorted;
-    }),
 
     actions: {
         // Open next panel
@@ -240,15 +164,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
                 public: false // TODO: should this be public now or later, when it is turned into a preprint?  Default to the least upsetting option.
             }).save().then(node => {
                 this.get('userNodes').pushObject(node);
-                this.set('selectedNode', node);
+                this.set('node', node);
                 this.send('startUpload');
             });
         },
         // Override NodeActionsMixin.addChild
         addChild() {
-            this._super(`${this.get('selectedNode.title')} Preprint`, this.get('selectedNode.description')).then(child => {
+            this._super(`${this.get('node.title')} Preprint`, this.get('node.description')).then(child => {
                 this.get('userNodes').pushObject(child);
-                this.set('selectedNode', child);
+                this.set('node', child);
                 this.send('startUpload');
             });
         },
@@ -256,11 +180,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         deleteProject(nextAction) {
             // TODO: Do we really want the upload page to have a deletion button at all??
             // TODO: delete the previously created model, not the currently selected model
-            if (this.get('selectedNode')) {
-                this.get('selectedNode').destroyRecord().then(() => {
+            if (this.get('node')) {
+                this.get('node').destroyRecord().then(() => {
                     this.get('toast').info('Project deleted');
                 });
-                this.set('selectedNode', null);
+                this.set('node', null);
                 // TODO: reset dropzone, since uploaded file has no project
             }
             nextAction();
@@ -268,35 +192,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         startUpload() {
             // TODO: retrieve and save fileid from uploaded file
             // TODO: deal with more than 10 files?
-            this.set('_url', `${this.get('selectedNode.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
+            this.set('_url', `${this.get('node.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
 
             // TODO: Do not rely on cached resolve handlers, or toast for uploading. No file, no preprint- enforce workflow.
             this.get('resolve')();
             this.get('toast').info('File will upload in the background.');
             this.send('next', this.get('_names.0'));
         },
-        // Dropzone hooks
-        preUpload(ignore, dropzone, file) {
-            this.set('uploadFile', file);
-            // FIXME: Do not cache a resolve handler this way. (controllers are singletons, etc etc etc)
-            // FIXME: If not using as closure actions, this causes action to bubble up farther
-            return new Ember.RSVP.Promise(resolve => this.set('resolve', resolve));
-        },
-        getUploadUrl() {
-            return this.get('_url');
-        },
-        uploadSuccess() {
-            // Dropzone provides an event that can be checked for the file data
-            let fileData = JSON.parse(arguments[4].target.response);
-            let fileID = fileData.data.id;  // The WB response is prefixed with provider name- best way to clean this up?
-            let osfFileID = fileID.split('/')[1];
-
-            // Fetch an OSF file record matching the WB record. This is a very hacky upload process!
-            this.get('store').findRecord('file', osfFileID)
-                .then((file) => this.set('selectedFile', file));
-
-            this.set('selectedFile', 'dummy value'); // FIXME: Placeholder to test expansion validation
-            this.get('toast').info('File uploaded!');
+        selectExistingFile(file) {
+            this.set('selectedFile', file);
         },
 
         /*
@@ -305,68 +209,18 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         saveBasics() {
             // Save the model associated with basics field, then advance to next panel
             // If save fails, do not transition
-            let node = this.get('selectedNode');
+            let node = this.get('node');
             node.save()
                 .then(() => this.send('next', this.get('_names.1')))
                 .catch(()=> this.send('error', 'Could not save information; please try again'));
         },
 
-        /*
-        * Subject section
-        */
-        deleteSubject(key, array = key.split('.')) {
-            // TODO: Taxonomies may go many levels deeper
-            this.set(key, null);
-            // Delete key manually
-            switch (array.length) {
-                case 2:
-                    delete this[array[0]][array[1]];
-                    break;
-                case 3:
-                    delete this[array[0]][array[1]][array[2]];
-                    break;
-                case 4:
-                    delete this[array[0]][array[1]][array[2]][array[3]];
-                    break;
-                default:
-                    console.error('deletion not implemented');
-            }
-        },
-        deselectSubject([...args]) {
-            args = args.filter(arg => Ember.typeOf(arg) === 'string');
-            this.send('deleteSubject', `selected.${args.join('.')}`, ['selected', ...args]);
-            this.notifyPropertyChange('selected');
-            this.rerender();
-        },
-        selectSubject(...args) {
-            const process = (prev, cur, i, arr) => {
-                const selected = this.get(`selected.${prev}`);
-                if (!selected) {
-                    // Create necessary parent objects and newly selected object
-                    this.set(`selected.${prev}`, new Ember.Object());
-                } else if (i === 3 || i === args.length && args.length === this.get('path').length &&
-                this.get('path').every((e, i) => e.name === args[i].name) &&
-                Object.keys(selected).length === 0) {
-                    // Deselecting a subject: if subject is last item in args,
-                    // its children are showing, and no children are selected
-                    this.send('deleteSubject', `selected.${prev}`, ['selected', ...arr.splice(0, i)]);
-                    args.popObject();
-                }
-                return `${prev}.${cur}`;
-            };
-            // Process past length of array
-            [...args.map(arg => arg.name || arg), ''].reduce(process);
-            this.set('path', args);
-            this.updateFilteredPath();
-            this.notifyPropertyChange('selected');
-            this.rerender();
+        saveSubjects(subjects) {
+            // If save fails, do not transition
+            this.set('model.subjects', subjects);
         },
 
-        saveSubjects() {
-            // Update the temp preprint object with selected subjects, then advance. Nothing is actually saved here because preprint isn't created yet.
-            //TODO implement: requires a datasource for IDs, not labels, of taxonomy items
-            // If save fails, do not transition
-            this.set('model.subjects', this.get('selected'));
+        subjectsNext() {
             this.send('next', this.get('_names.2'));
         },
         /**
@@ -417,7 +271,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
             // TODO: Test and get this code working
             let model = this.get('model');
             model.setProperties({
-                id: this.get('selectedNode.id'),
+                id: this.get('node.id'),
                 primaryFile: this.get('selectedFile')
             });
             model.save()

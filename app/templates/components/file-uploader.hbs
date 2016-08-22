@@ -1,0 +1,34 @@
+{{dropzone-widget
+    url=url
+    options=dropzoneOptions
+    sending=(action 'sending')
+    buildUrl=(action 'getUrl')
+    complete=(action 'complete')
+    preUpload=(action 'preUpload')
+    maxfilesexceeded=(action 'maxfilesexceeded')
+}}
+
+{{#liquid-bind state use='crossFade' as |currentState|}}
+    {{#if (eq currentState State.START)}}
+        <button class="btn btn-default" {{action 'changeState' State.START}}>Back</button>
+        <button disabled={{not hasFile}} class="btn btn-primary" {{action 'setState' State.NEW}}>Create new project</button>
+        <button disabled={{not hasFile}} class="btn btn-primary" {{action 'setState' State.EXISTING}}>Save to existing OSF project</button>
+
+    {{else if (eq currentState State.NEW)}}
+        <h1>Creating new project</h1>
+        {{input class='form-control' value=nodeTitle}}
+        <button class="btn btn-default" {{action 'setState' State.START}}>Back</button>
+        {{! TODO: check if dropzone has file before allowing user to continue }}
+        <button class="btn btn-primary" {{action 'createProject'}}>Create</button>
+
+    {{else if (eq currentState State.EXISTING)}}
+        {{preprint-form-project-select userNodes=userNodes selectedNode=node shouldCreateChild=createChild}}
+        {{! TODO: cleanup created component if needed }}
+        <button class="btn btn-default" {{action 'setState' State.START}}>Back</button>
+        {{! TODO: check if dropzone has file and model exists before allowing user to continue }}
+        {{!-- TODO: Make button text dynamic; refactor internals --}}
+        <button class="btn btn-primary" disabled={{not node}} {{action (if createChild 'createChild' 'upload')}}>Next</button>
+    {{else}}
+        {{log 'preprint-form-upload: bad uploadState'}}
+    {{/if}}
+{{/liquid-bind}}
