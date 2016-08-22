@@ -32,6 +32,12 @@ export default Ember.Component.extend({
         selectFile(file) {
             this.attrs.selectFile(file);
             this.highlightSuccessOrFailure('selectedFileExisting', this, 'success');
+        },
+        createComponent() {
+            this.set('shouldCreateChild', true);
+        },
+        convertExisting() {
+            this.set('shouldCreateChild', false);
         }
     },
 
