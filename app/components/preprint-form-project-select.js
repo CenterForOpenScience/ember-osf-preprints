@@ -23,6 +23,7 @@ export default Ember.Component.extend({
         // file-browser component can be loaded.
         nodeSelected(node) {
             this.set('selectedNode', node);
+            this.set('selectedFile', null);
             this.set('osfProviderLoaded', false);
             this.get('selectedNode.files').then((files) => {
                 this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
