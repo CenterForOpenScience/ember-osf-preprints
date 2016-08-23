@@ -20,7 +20,7 @@
                             {{#preprint-form-body}}
                               {{#if fileAndNodeLocked}}
                                 <p><label> Selected File: </label> {{selectedFile.name}}</p>
-                                <p><label> Selected project: </label> {{node.id}} </p>
+                                <p><label> Selected project: </label> {{node.title}} </p>
 
                                 <button class="btn btn-danger" {{action 'resetFileUpload'}}>Reset</button>
                                 <button class="btn btn-primary" {{action 'next' name}}>Next</button>
