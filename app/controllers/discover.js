@@ -58,21 +58,16 @@ export default Ember.Controller.extend({
                 _this.get('otherProviders').pushObject(each.key);
             });
         });
-        // queryParams are not set on init when we need them,
-        // small hack to get the subject
-        //also does nothing right now :(
-        let queryParams = window.location.search;
-        if (queryParams) {
-            queryParams = queryParams.slice(1).split(/[\&|\=]/g);
-            queryParams.forEach(function(ele, i) {
-                if (ele === 'subjectFilter') {
-                    _this.set('activeFilters.subjects', [decodeURI(queryParams[i + 1])]);
-                }
-            });
-        }
         this.loadPage.call(this);
     },
-
+    subjectChanged: Ember.observer('subjectFilter', function() {
+        let filter = this.get('subjectFilter');
+        if (filter) {
+            this.set('activeFilters.subjects', [filter]);
+            this.notifyPropertyChange('activeFilters');
+        }
+        this.loadPage.call(this);
+    }),
     loadPage() {
         let queryBody = JSON.stringify(this.getQueryBody());
         this.set('loading', true);
