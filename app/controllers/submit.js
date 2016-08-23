@@ -70,7 +70,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     selectedFile: null,
     contributors: Ember.A(),
 
-
     ///////////////////////////////////////
     // Validation rules for form sections
     uploadValid: Ember.computed.and('node', 'selectedFile'),
