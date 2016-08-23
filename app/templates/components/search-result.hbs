@@ -2,8 +2,8 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-sm-12">
-                {{#if result.date_updated}} {{! moment-format will use current time if null}}
-                    <span class="pull-right">{{moment-format result.date_updated "MMMM YYYY"}}</span>
+                {{#if result.date_modified}} {{! moment-format will use current time if null}}
+                    <span class="pull-right">{{moment-format result.date_modified "MMMM YYYY"}}</span>
                 {{/if}}
             </div>
         </div>
@@ -27,7 +27,7 @@
                     {{/if}}
                     {{! TODO: link to contributor's page }}
                     {{#link-to "index"}}
-                        {{contributor.familyName}}, {{contributor.givenName}}
+                        {{contributor.users.familyName}}, {{contributor.users.givenName}}
                     {{/link-to}}
                 {{/each}}
             </div>
@@ -38,12 +38,13 @@
                 {{! TODO: add subjects }}
             </div>
             <div class="col-sm-4">
-                {{result.sources}}
+                {{! TODO: Add providers display }}
+                {{!result.providers}}
             </div>
         </div>
         <br>
         {{#if showBody}}
-            {{result.description}}
+            {{result.abstract}}
             <div class="row">
                 <div class="col-sm-12">
                     {{#each result.tags as |tag|}}
@@ -53,7 +54,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-12 text-muted">
-                    Released on: {{moment-format result.date_updated}}
+                    Released on: {{moment-format result.date_created}}
                 </div>
             </div>
         {{/if}}
