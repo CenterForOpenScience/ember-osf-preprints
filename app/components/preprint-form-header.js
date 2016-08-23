@@ -5,6 +5,8 @@ export default CpPanelToggleComponent.extend({
     tagName: 'header',
     enabled: true,
 
+    noValidation: Ember.computed.empty('valid'),
+
     invalid: Ember.computed('valid', function() {
         // In other words, not true or null
         return this.get('valid') === false;

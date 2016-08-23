@@ -1,7 +1,6 @@
-
 {{name}}
 <div class="preprint-section-status pull-right">
-    {{#if valid}}
+    {{#if (or valid noValidation)}}
         {{fa-icon 'check-circle'}}
     {{else}}
         {{fa-icon 'times-circle'}}
