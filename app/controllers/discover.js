@@ -58,15 +58,16 @@ export default Ember.Controller.extend({
                 _this.get('otherProviders').pushObject(each.key);
             });
         });
-        Ember.run.later(this, function() {
-            let filter = this.get('subjectFilter');
-            if (filter) {
-                this.set('activeFilters.subjects', [filter]);
-            }
-            this.loadPage.call(this);
-        }, 250);
+        this.loadPage.call(this);
     },
-
+    subjectChanged: Ember.observer('subjectFilter', function() {
+        let filter = this.get('subjectFilter');
+        if (filter) {
+            this.set('activeFilters.subjects', [filter]);
+            this.notifyPropertyChange('activeFilters');
+        }
+        this.loadPage.call(this);
+    }),
     loadPage() {
         let queryBody = JSON.stringify(this.getQueryBody());
         this.set('loading', true);
