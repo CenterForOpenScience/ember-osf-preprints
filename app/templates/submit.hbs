@@ -18,50 +18,50 @@
                         {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error')}}
                             {{preprint-form-header name=name valid=uploadValid}}
                             {{#preprint-form-body}}
-                              {{#if fileAndNodeLocked}}
-                                <p><label> Selected File: </label> {{selectedFile.name}}</p>
-                                <p><label> Selected project: </label> {{node.title}} </p>
+                                {{#if fileAndNodeLocked}}
+                                    <p><label> Selected File: </label> {{selectedFile.name}}</p>
+                                    <p><label> Selected project: </label> {{node.title}} </p>
 
-                                <button class="btn btn-danger" {{action 'resetFileUpload'}}>Reset</button>
-                                <button class="btn btn-primary" {{action 'next' name}}>Next</button>
-                              {{else}}
-                                {{#liquid-bind filePickerState class='translate' as |currentState|}}
-                                    <div class={{currentState}}>
-                                        {{#if (eq currentState _State.START)}}
-                                            <button class="col-md-4" {{action 'changeState' _State.NEW}}>Upload a New File</button>
-                                            <button class="col-md-4" {{action 'changeState' _State.EXISTING}}>Select a file from OSF</button>
+                                    <button class="btn btn-danger" {{action 'resetFileUpload'}}>Reset</button>
+                                    <button class="btn btn-primary" {{action 'next' name}}>Next</button>
+                                {{else}}
+                                    {{#liquid-bind filePickerState class='translate' as |currentState|}}
+                                        <div class={{currentState}}>
+                                            {{#if (eq currentState _State.START)}}
+                                                <button class="col-md-4" {{action 'changeState' _State.NEW}}>Upload a New File</button>
+                                                <button class="col-md-4" {{action 'changeState' _State.EXISTING}}>Select a file from OSF</button>
 
-                                        {{else if (eq currentState _State.NEW)}}
-                                            {{file-uploader
-                                                node=node
-                                                userNodes=userNodes
-                                                osfFile=selectedFile
-                                                next=(action 'next')
-                                                _names=_names
-                                                finishUpload=(action 'finishUpload')
-                                                changeState=(action 'changeState')}}
+                                            {{else if (eq currentState _State.NEW)}}
+                                                {{file-uploader
+                                                    node=node
+                                                    userNodes=userNodes
+                                                    osfFile=selectedFile
+                                                    next=(action 'next')
+                                                    _names=_names
+                                                    finishUpload=(action 'finishUpload')
+                                                    changeState=(action 'changeState')}}
 
-                                        {{else if (eq currentState _State.EXISTING)}}
-                                            {{preprint-form-project-select
-                                              userNodes=userNodes
-                                              fileSelect=true
-                                              selectedNode=node
-                                              selectedFile=selectedFile
-                                              selectFile=(action "selectExistingFile")
-                                               chooseExistingProjectHeader=chooseExistingProjectHeader
-                                               createComponentHeader=createComponentHeader
-                                              highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
-                                              shouldCreateChild=shouldCreateChild}}
-                                            {{! TODO: cleanup created component if needed }}
-                                            <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
-                                            {{! TODO: check if project and file are selected before allowing user to continue }}
-                                        <button class="btn btn-primary" disabled={{unless (and node selectedFile) true}} {{action (if shouldCreateChild 'addChild' 'finishUpload') name}}>Next</button>
-                                        {{else}}
-                                            {{log 'preprint-form-upload: bad state'}}
-                                        {{/if}}
-                                    </div>
-                                {{/liquid-bind}}
-                              {{/if}}
+                                            {{else if (eq currentState _State.EXISTING)}}
+                                                {{preprint-form-project-select
+                                                  userNodes=userNodes
+                                                  fileSelect=true
+                                                  selectedNode=node
+                                                  selectedFile=selectedFile
+                                                  selectFile=(action "selectExistingFile")
+                                                   chooseExistingProjectHeader=chooseExistingProjectHeader
+                                                   createComponentHeader=createComponentHeader
+                                                  highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+                                                  shouldCreateChild=shouldCreateChild}}
+                                                {{! TODO: cleanup created component if needed }}
+                                                <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
+                                                {{! TODO: check if project and file are selected before allowing user to continue }}
+                                                <button class="btn btn-primary" disabled={{unless (and node selectedFile) true}} {{action (if shouldCreateChild 'addChild' 'finishUpload') name}}>Next</button>
+                                            {{else}}
+                                                {{log 'preprint-form-upload: bad state'}}
+                                            {{/if}}
+                                        </div>
+                                    {{/liquid-bind}}
+                                {{/if}}
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
