@@ -126,8 +126,21 @@ body {
 }
 
 
+/* SUBMIT page */
+
+.preprint-submit-header {
+    padding-top: 120px;
+    background: url("img/submit_bg.jpg") no-repeat top center;
+    border-bottom: 1px solid #eee;
+    height: 240px;
+}
 
 
+
+
+
+
+/* Usefulness of the code below is doubtful. TODO: Go through and clean up unused code */
 
 .navbar-header {
     height: $nav-bar-height;
@@ -347,24 +360,9 @@ body {
     }
 }
 
+
+
 // FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE
-main {
-    padding-top: 5rem;
-}
-
-#addPreprint {
-    margin-bottom: 1em;
-}
-
-.container{
-        padding-right:10px;
-        padding-left:10px;
-    }
-
-    //.osf-box{
-    //    border:0px;
-    //}
-
 .text-muted {
     color: #777;
 }
