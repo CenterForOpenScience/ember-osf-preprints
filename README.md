@@ -33,6 +33,19 @@ to your `website/settings/local.py` file. Uncomment `'/preprints/': 'http://loca
 If you encounter problems, make sure that your version of ember-osf is up to date. If login fails, try logging in from 
 any other OSF page, then returning to the preprints app.
 
+### Generating test data on the OSF
+There are a few scripts to run to populate your local preprint providers list, and help generate some "fake" preprints locally so you can begin testing using the OSF API.
+
+* Populate the OSF's PrerpintProvider model with data:
+
+`python -m scripts.populate_preprint_providers`
+
+* Create "fake" preprints using some additional arguments to the `create_fakes` script:
+
+`python -m scripts.create_fakes -u user@email.io --nprojects 2 --preprint True --preprintprovider osf,psyarxiv`
+
+*notes*: You can enter as many providers as you like, seperated by commas. Also, this script does not currently create actual fake files, only fake file metadata; the file itself won't render in a preprint view, but you can still request its information from the API.
+
 ### Code Generators
 
 Make use of the many generators for code, try `ember help generate` for more details
