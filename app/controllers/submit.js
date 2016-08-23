@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from 'ember-get-config';
 
 import { validator, buildValidations } from 'ember-cp-validations';
 
@@ -276,8 +277,21 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 id: this.get('node.id'),
                 primaryFile: this.get('selectedFile')
             });
+
             model.save()
-                .then(() => console.log('Save succeeded. Should we transition somewhere?'))
+                .then(() => {
+                    // Ember data is not worth the time investment currently
+                    return this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
+                        data: {
+                            data: [{
+                                type: 'preprint_providers',
+                                id: config.PREPRINTS.provider,
+                            }]
+                        }
+                    })
+                })
+                .then(() => model.get('providers'))
+                .then(() => this.transitionToRoute('content', model))
                 .catch(() => this.send('error', 'Could not save preprint; please try again later'));
         }
     }
