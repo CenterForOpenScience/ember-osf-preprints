@@ -78,15 +78,6 @@ module.exports = function(defaults) {
 
     app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
 
-    app.import({
-        development: path.join(app.bowerDirectory, 'bootstrap-treeview/src/css/bootstrap-treeview.css'),
-        production: path.join(app.bowerDirectory, 'bootstrap-treeview/dist//bootstrap-treeview.min.css')
-    });
-    app.import({
-        development: path.join(app.bowerDirectory, 'bootstrap-treeview/src/js/bootstrap-treeview.js'),
-        production: path.join(app.bowerDirectory, 'bootstrap-treeview/dist/js/bootstrap-treeview.min.js')
-    });
-
      app.import({
         development: path.join(app.bowerDirectory, 'hint.css/hint.css'),
         production: path.join(app.bowerDirectory, 'hint.css/hint.css')
