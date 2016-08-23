@@ -1,4 +1,4 @@
-<h1>Choose existing OSF project:</h1>
+<label> {{chooseExistingProjectHeader}} </label>
 {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
     <strong>{{node.title}}</strong>
 {{/power-select}}

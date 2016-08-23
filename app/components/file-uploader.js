@@ -13,6 +13,7 @@ export default Ember.Component.extend({
     nodeTitle: null,
     state: State.START,
     createChild: false,
+    chooseExistingProjectHeader: '2. Select existing OSF Project',
 
     hasFile: function() {
         return this.get('file') != null;
