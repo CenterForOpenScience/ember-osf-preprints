@@ -129,6 +129,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     },
     chooseExistingProjectHeader: '1. Choose existing OSF Project',
     createComponentHeader: '3. Convert this project or copy file to new component',
+    fileAndNodeLocked: false,
 
     isAdmin: Ember.computed('node', function() {
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
@@ -192,7 +193,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     });
                 }).then(() => {
                     this.get('toast').info('File copied to component!');
-                    this.send('next', this.get('_names.0'));
+                    this.send('finishUpload');
                 }, () => {
                     this.get('toast').info('Could not create component.');
                 });
@@ -300,6 +301,17 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             model.save()
                 .then(() => console.log('Save succeeded. Should we transition somewhere?'))
                 .catch(() => this.send('error', 'Could not save preprint; please try again later'));
+        },
+        lockFileAndNode() {
+            this.set('fileAndNodeLocked', true);
+        },
+        finishUpload() {
+            this.send('lockFileAndNode');
+            this.send('next', this.get('_names.0'));
+        },
+        resetFileUpload() {
+            this.send('changeState', State.START);
+            this.set('fileAndNodeLocked', false);
         }
     }
 });

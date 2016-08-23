@@ -56,7 +56,6 @@ export default Ember.Component.extend({
                 }));
 
                 this.callback.resolve(this.get('file'));
-                this.attrs.next(this.get('_names.0'));
             });
         },
 
@@ -108,7 +107,10 @@ export default Ember.Component.extend({
                 let resp = JSON.parse(file.xhr.response);
                 this.get('store')
                     .findRecord('file', resp.data.id.split('/')[1])
-                    .then(file => this.set('osfFile', file));
+                    .then(file => {
+                        this.set('osfFile', file);
+                        this.sendAction('finishUpload');
+                    });
             } else {
                 //Failure
                 dropzone.removeAllFiles();
