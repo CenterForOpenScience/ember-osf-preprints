@@ -467,12 +467,14 @@ hr {
         }
         &.valid {
             .fa {
-                color: $brand-primary;
+                color: #009688;
+                display: block;
             }
         }
         &.invalid {
             .fa {
-                color: red;
+                color: #F44336;
+                display: block;
             }
         }
         .fa {
@@ -480,6 +482,7 @@ hr {
             color: gray;
             transition: color 0.1s linear;
             font-size: 20px;
+            display: none;
         }
     }
     .cp-Panel-body {
