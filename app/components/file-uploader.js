@@ -96,9 +96,7 @@ export default Ember.Component.extend({
         },
         complete(_, dropzone, file) {
             // Complete is called when swapping out files for some reason...
-            if (file.xhr === undefined) {
-                return;
-            }
+            if (file.xhr === undefined) return;
 
             if (Math.floor(file.xhr.status / 100) === 2) {
                 // Success
