@@ -58,6 +58,7 @@ const BasicsValidations = buildValidations({
  * "Add preprint" page definitions
  */
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
+    fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
 
@@ -127,6 +128,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         uploadMultiple: false,
         method: 'PUT'
     },
+    chooseExistingProjectHeader: '1. Choose existing OSF Project',
+    createComponentHeader: '3. Convert this project or copy file to new component',
+    fileAndNodeLocked: false,
 
     isAdmin: Ember.computed('node', function() {
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
@@ -183,10 +187,27 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         // Override NodeActionsMixin.addChild
         addChild() {
+            // TODO need error handling on this.  Too many promises.
             this._super(`${this.get('node.title')} Preprint`, this.get('node.description')).then(child => {
                 this.get('userNodes').pushObject(child);
+                var parentNode = this.get('node');
                 this.set('node', child);
-                this.send('startUpload');
+                child.get('files').then((providers) => {
+                    var osfstorage = providers.findBy('name', 'osfstorage');
+                    this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}});
+                    parentNode.get('contributors').toArray().forEach((contributor) => {
+                        if (this.get('user').id !== contributor.get('userId')) {
+                            child.addContributor(contributor.get('userId'), contributor.get('permission'), contributor.get('bibliographic')).then((contrib) => {
+                                this.get('contributors').pushObject(contrib);
+                            });
+                        }
+                    });
+                }).then(() => {
+                    this.get('toast').info('File copied to component!');
+                    this.send('finishUpload');
+                }, () => {
+                    this.get('toast').info('Could not create component.');
+                });
             });
         },
         // nextAction: {action} callback for the next action to perform.
@@ -205,8 +226,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         startUpload() {
             // TODO: retrieve and save fileid from uploaded file
             // TODO: deal with more than 10 files?
-            this.set('_url', `${this.get('node.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
-
+            this.get('node.files').then((providers) => {
+                this.set('_url', `${providers.findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
+            });
             // TODO: Do not rely on cached resolve handlers, or toast for uploading. No file, no preprint- enforce workflow.
             this.get('resolve')();
             this.get('toast').info('File will upload in the background.');
@@ -302,6 +324,17 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 .then(() => this.clearFields())
                 .then(() => this.transitionToRoute('content', model))
                 .catch(() => this.send('error', 'Could not save preprint; please try again later'));
+        },
+        lockFileAndNode() {
+            this.set('fileAndNodeLocked', true);
+        },
+        finishUpload() {
+            this.send('lockFileAndNode');
+            this.send('next', this.get('_names.0'));
+        },
+        resetFileUpload() {
+            this.send('changeState', State.START);
+            this.set('fileAndNodeLocked', false);
         }
     }
 });

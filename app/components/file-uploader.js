@@ -13,6 +13,8 @@ export default Ember.Component.extend({
     nodeTitle: null,
     state: State.START,
     createChild: false,
+    chooseExistingProjectHeader: '2. Select existing OSF Project',
+    createComponentHeader: '3. Convert this project or copy file to new component',
 
     hasFile: function() {
         return this.get('file') != null;
@@ -105,7 +107,10 @@ export default Ember.Component.extend({
                 let resp = JSON.parse(file.xhr.response);
                 this.get('store')
                     .findRecord('file', resp.data.id.split('/')[1])
-                    .then(file => this.set('osfFile', file));
+                    .then(file => {
+                        this.set('osfFile', file);
+                        this.sendAction('finishUpload');
+                    });
             } else {
                 //Failure
                 dropzone.removeAllFiles();
