@@ -1,5 +1,6 @@
 /*jshint node:true*/
 /* global require, module */
+var path = require('path');
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
@@ -61,32 +62,29 @@ module.exports = function(defaults) {
     // along with the exports of each module as its value.
 
     // osf-style
-    app.import('bower_components/osf-style/vendor/prism/prism.css');
-    app.import('bower_components/osf-style/page.css');
+    app.import(path.join(app.bowerDirectory, 'osf-style/vendor/prism/prism.css'));
+    app.import(path.join(app.bowerDirectory, 'osf-style/page.css'));
+    app.import(path.join(app.bowerDirectory, 'osf-style/css/base.css'));
 
-    app.import('bower_components/osf-style/img/cos-white2.png', {
+    app.import(path.join(app.bowerDirectory, 'osf-style/img/cos-white2.png'), {
         destDir: 'img'
     });
 
     // app.import('bower_components/dropzone/dist/dropzone.js');
     app.import({
-        development: 'bower_components/dropzone/dist/dropzone.css',
-        production: 'bower_components/dropzone/dist/min/dropzone.min.css'
+        development: path.join(app.bowerDirectory, 'dropzone/dist/dropzone.css'),
+        production: path.join(app.bowerDirectory, 'dropzone/dist/min/dropzone.min.css')
     });
 
-    app.import({
-        development: 'bower_components/bootstrap-treeview/src/css/bootstrap-treeview.css',
-        production: 'bower_components/bootstrap-treeview/dist//bootstrap-treeview.min.css'
-    });
-    app.import({
-        development: 'bower_components/bootstrap-treeview/src/js/bootstrap-treeview.js',
-        production: 'bower_components/bootstrap-treeview/dist/js/bootstrap-treeview.min.js'
-    });
+    app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
 
      app.import({
-        development: 'bower_components/hint.css/hint.css',
-        production: 'bower_components/hint.css/hint.css'
+        development: path.join(app.bowerDirectory, 'hint.css/hint.css'),
+        production: path.join(app.bowerDirectory, 'hint.css/hint.css')
     });
+
+    // Import component styles from addon
+    app.import('vendor/assets/ember-osf.css');
 
     return app.toTree();
 };

@@ -1,9 +1,12 @@
 import Ember from 'ember';
+import config from 'ember-get-config';
 
 import { validator, buildValidations } from 'ember-cp-validations';
 
 import permissions from 'ember-osf/const/permissions';
 import NodeActionsMixin from 'ember-osf/mixins/node-actions';
+import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
+
 import loadAll from 'ember-osf/utils/load-relationship';
 
 // Enum of available upload states
@@ -54,7 +57,7 @@ const BasicsValidations = buildValidations({
 /**
  * "Add preprint" page definitions
  */
-export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
+export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
 
@@ -274,8 +277,19 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
                 id: this.get('node.id'),
                 primaryFile: this.get('selectedFile')
             });
+
             model.save()
-                .then(() => console.log('Save succeeded. Should we transition somewhere?'))
+                // Ember data is not worth the time investment currently
+                .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
+                    data: {
+                        data: [{
+                            type: 'preprint_providers',
+                            id: config.PREPRINTS.provider,
+                        }]
+                    }
+                }))
+                .then(() => model.get('providers'))
+                .then(() => this.transitionToRoute('content', model))
                 .catch(() => this.send('error', 'Could not save preprint; please try again later'));
         }
     }

@@ -16,7 +16,16 @@
                         {{#if (eq selectedFile supplement)}}
                             <b class="file-selected-arrow">&#9660;</b>
                         {{/if}}
-                        <i class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
+                        {{#if (eq index 0)}}
+                            {{#unless showLeftArrow}}
+                                <i style="margin-top: -4px" class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
+                                <p style="font-size: 75%; margin-bottom: -10px">Primary</p>
+                            {{else}}
+                                <i class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
+                            {{/unless}}
+                        {{else}}
+                            <i class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
+                        {{/if}}
                     </label>
                 {{/if}}
             {{/each}}

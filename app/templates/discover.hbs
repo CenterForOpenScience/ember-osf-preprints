@@ -53,16 +53,21 @@
                                 </span>
                             </div>
                         </div>
-                        <ul id="activeFiltersList">
-                            Provider:
-                            {{#each activeFilters.providers as |filter|}}
-                                <li>{{filter}}</li>
-                            {{/each}}
-                            Subjects:
-                            {{#each activeFilters.subjects as |filter|}}
-                                <li>{{filter}}</li>
-                            {{/each}}
-                        </ul>
+                        <div id="activeFiltersList">
+                            <p>Provider:</p>
+                            <ul>
+                                {{#each activeFilters.providers as |filter|}}
+                                    <li>{{filter}}</li>
+                                {{/each}}
+                            </ul>
+                            <hr>
+                            <p>Subjects:</p>
+                            <ul>
+                                {{#each activeFilters.subjects as |filter|}}
+                                    <li>{{filter}}</li>
+                                {{/each}}
+                            </ul>
+                        </div>
                     </div>
                 {{/if}}
                 <h4> Refine your search by </h4>
@@ -77,10 +82,14 @@
                                     {{fa-icon 'caret-right'}}
                                 {{/if}}
                             </span>
-                            {{#if (if-filter 'OSF Providers' activeFilters.providers)}}
-                                <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
+                            {{#if (if-filter 'Open Science Framework' activeFilters.providers)}}
+                                <input type="radio" checked {{action 'selectProvider' 'OSF Providers'}}>
+                            {{else if (if-filter 'SocArxiv' activeFilters.providers)}}
+                                <input type="radio" checked {{action 'selectProvider' 'OSF Providers'}}>
+                            {{else if (if-filter 'Engrxiv' activeFilters.providers)}}
+                                <input type="radio" checked {{action 'selectProvider' 'OSF Providers'}}>
                             {{else}}
-                                <input type="checkbox" {{action 'selectProvider' 'OSF Providers'}}>
+                                <input type="radio" {{action 'selectProvider' 'OSF Providers'}}>
                             {{/if}}
                             OSF Providers
                         </li>
@@ -103,9 +112,9 @@
                         {{#each otherProviders as |item|}}
                             <li>
                                 {{#if (if-filter item activeFilters.providers)}}
-                                    <input type="checkbox" checked {{action 'selectProvider' item}}>
+                                    <input type="radio" checked {{action 'selectProvider' item}}>
                                 {{else}}
-                                    <input type="checkbox" {{action 'selectProvider' item}}>
+                                    <input type="radio" {{action 'selectProvider' item}}>
                                 {{/if}}
                                 {{item}}
                             </li>
