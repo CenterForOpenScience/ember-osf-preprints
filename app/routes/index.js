@@ -16,7 +16,7 @@ export default Ember.Route.extend({
             this.transitionTo('discover', { queryParams: { subject: sub } });
         },
         search(q) {
-            this.transitionTo('discover', { queryParams: { searchString: q } });
+            this.transitionTo('discover', { queryParams: { queryString: q } });
         }
     }
 });

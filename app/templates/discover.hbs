@@ -83,13 +83,13 @@
                                 {{/if}}
                             </span>
                             {{#if (if-filter 'Open Science Framework' activeFilters.providers)}}
-                                <input type="radio" checked {{action 'selectProvider' 'OSF Providers'}}>
+                                <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
                             {{else if (if-filter 'SocArxiv' activeFilters.providers)}}
-                                <input type="radio" checked {{action 'selectProvider' 'OSF Providers'}}>
+                                <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
                             {{else if (if-filter 'Engrxiv' activeFilters.providers)}}
-                                <input type="radio" checked {{action 'selectProvider' 'OSF Providers'}}>
+                                <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
                             {{else}}
-                                <input type="radio" {{action 'selectProvider' 'OSF Providers'}}>
+                                <input type="checkbox" {{action 'selectProvider' 'OSF Providers'}}>
                             {{/if}}
                             OSF Providers
                         </li>
@@ -112,9 +112,9 @@
                         {{#each otherProviders as |item|}}
                             <li>
                                 {{#if (if-filter item activeFilters.providers)}}
-                                    <input type="radio" checked {{action 'selectProvider' item}}>
+                                    <input type="checkbox" checked {{action 'selectProvider' item}}>
                                 {{else}}
-                                    <input type="radio" {{action 'selectProvider' item}}>
+                                    <input type="checkbox" {{action 'selectProvider' item}}>
                                 {{/if}}
                                 {{item}}
                             </li>
@@ -124,11 +124,7 @@
                 </div>
                 <div class="m-t-lg">
                     <h4 class="filter-heading p-sm">Subject</h4>
-                    {{#if osfProvider}}
-                        {{taxonomy-tree select=(action 'selectSubjectFilter') subjects=treeSubjects}}
-                    {{else}}
-                        <i>Taxonomy not available for non-OSF providers.</i>
-                    {{/if}}
+                    {{taxonomy-tree select=(action 'selectSubjectFilter') subjects=treeSubjects}}
                 </div>
                 <div class="osf-box p-md clearfix m-t-xl">
                     <p>Do you want to add your own research as a preprint?</p>

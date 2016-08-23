@@ -147,6 +147,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
 
     clearFields() {
+        // node should also be cleared, currently throws an error
         this.set('selectedFile', null);
         this.set('model.subjects', []);
         this.set('contributors', Ember.A());

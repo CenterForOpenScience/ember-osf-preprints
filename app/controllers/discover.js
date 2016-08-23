@@ -12,12 +12,13 @@ export default Ember.Controller.extend({
     // TODO: either remove or add functionality to info icon on "Refine your search panel"
 
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
-    queryParams: ['page', 'searchString', 'subjectFilter'],
+    queryParams: ['page', 'queryString', 'subjectFilter'],
     activeFilters: { providers: ['Open Science Framework', 'SocArxiv', 'Engrxiv'], subjects: [] },
 
     page: 1,
     size: 10,
     numberOfResults: 0,
+    queryString: '',
     searchString: '',
     subjectFilter: null,
     queryBody: {},
@@ -65,8 +66,15 @@ export default Ember.Controller.extend({
         if (filter) {
             this.set('activeFilters.subjects', [filter]);
             this.notifyPropertyChange('activeFilters');
+            this.loadPage.call(this);
         }
-        this.loadPage.call(this);
+    }),
+    queryStringPassed: Ember.observer('queryString', function() {
+        let filter = this.get('queryString');
+        if (filter) {
+            this.set('searchString', filter);
+            this.loadPage.call(this);
+        }
     }),
     loadPage() {
         let queryBody = JSON.stringify(this.getQueryBody());
@@ -162,15 +170,10 @@ export default Ember.Controller.extend({
     },
 
     expandedOSFProviders: false,
-    osfProvider: Ember.computed('activeFilters', function() {
-        let match = this.get('activeFilters.providers').filter(each => this.get('osfProviders').indexOf(each) !== -1).length > 0;
-        if (!match) {
-            this.set('activeFilters.subjects', []);
-        }
+    reloadSearch: Ember.observer('activeFilters', function() {
         this.set('searchString', this.get('searchValue'));
         this.set('page', 1);
         this.loadPage();
-        return match;
     }),
     otherProviders: [],
     osfProviders: ['Open Science Framework', 'SocArxiv', 'Engrxiv'],
@@ -230,18 +233,39 @@ export default Ember.Controller.extend({
         },
 
         selectProvider(provider) {
+            let currentProviders = this.get('activeFilters.providers').slice();
             if (provider === 'OSF Providers') {
-                this.set('activeFilters.providers', this.get('osfProviders').slice());
-            } else if (this.get('osfProvider') && this.get('osfProviders').indexOf(provider) !== -1) {
-                if (this.get('activeFilters.providers').indexOf(provider) !== -1 && this.get('activeFilters.providers').length > 1) {
-                    this.get('activeFilters.providers').removeObject(provider);
-                } else if (this.get('activeFilters.providers').indexOf(provider) === -1) {
-                    this.get('activeFilters.providers').pushObject(provider);
+                let match = currentProviders.filter(each => this.get('osfProviders').indexOf(each) !== -1);
+                if (match.length) {
+                    if (match.length < currentProviders.length) {
+                        this.get('osfProviders').forEach(each => this.get('activeFilters.providers').removeObject(each));
+                    }
+                } else {
+                    this.get('osfProviders').forEach(each => this.get('activeFilters.providers').pushObject(each));
                 }
             } else {
-                this.set('activeFilters.providers', [provider]);
+                if (currentProviders.indexOf(provider) !== -1) {
+                    if (currentProviders.length > 1) {
+                        this.get('activeFilters.providers').removeObject(provider);
+                    }
+                } else {
+                    this.get('activeFilters.providers').pushObject(provider);
+                }
             }
             this.notifyPropertyChange('activeFilters');
+            // if (provider === 'OSF Providers') {
+            //     i
+            //     this.set('activeFilters.providers', this.get('osfProviders').slice());
+            // } else if (this.get('osfProvider') && this.get('osfProviders').indexOf(provider) !== -1) {
+            //     if (this.get('activeFilters.providers').indexOf(provider) !== -1 && this.get('activeFilters.providers').length > 1) {
+            //         this.get('activeFilters.providers').removeObject(provider);
+            //     } else if (this.get('activeFilters.providers').indexOf(provider) === -1) {
+            //         this.get('activeFilters.providers').pushObject(provider);
+            //     }
+            // } else {
+            //     this.set('activeFilters.providers', [provider]);
+            // }
+            // this.notifyPropertyChange('activeFilters');
         },
         expandOSFProviders() {
             this.set('expandedOSFProviders', !this.get('expandedOSFProviders'));
