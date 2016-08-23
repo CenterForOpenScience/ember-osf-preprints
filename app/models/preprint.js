@@ -19,7 +19,6 @@ export default OsfModel.extend({
     title: DS.attr('string'),
     // TODO: May be a relationship in the future pending APIv2 changes
     subjects: DS.attr(),
-    provider: DS.attr('string'),
     date_created: DS.attr('date'),
     date_modified: DS.attr('date'),
     abstract: DS.attr('string'),
@@ -29,6 +28,7 @@ export default OsfModel.extend({
     // Relationships
     primaryFile: DS.belongsTo('file', { inverse: null }),
     files: DS.hasMany('file-providers', { inverse: null }),
+    providers: DS.hasMany('preprint-provider', { inverse: 'preprints', async: true }),
 
     contributors: DS.hasMany('contributors', {
         allowBulkUpdate: true,
