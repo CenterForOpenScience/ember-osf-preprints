@@ -13,7 +13,7 @@ export default Ember.Controller.extend({
 
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
     queryParams: ['page', 'searchString', 'subjectFilter'],
-    activeFilters: { providers: ['OSF Providers'], subjects: [] },
+    activeFilters: { providers: ['Open Science Framework', 'SocArxiv', 'Engrxiv'], subjects: [] },
 
     page: 1,
     size: 10,
@@ -58,16 +58,21 @@ export default Ember.Controller.extend({
                 _this.get('otherProviders').pushObject(each.key);
             });
         });
+        // queryParams are not set on init when we need them,
+        // small hack to get the subject
+        //also does nothing right now :(
+        let queryParams = window.location.search;
+        if (queryParams) {
+            queryParams = queryParams.slice(1).split(/[\&|\=]/g);
+            queryParams.forEach(function(ele, i) {
+                if (ele === 'subjectFilter') {
+                    _this.set('activeFilters.subjects', [decodeURI(queryParams[i + 1])]);
+                }
+            });
+        }
         this.loadPage.call(this);
     },
 
-    subjectFilterPassed: Ember.computed('subjectFilter', function() {
-        let filter = this.get('subjectFilter');
-        if (filter !== null && filter !== '') {
-            this.set('activeFilters.subjects', [filter]);
-        }
-        this.loadPage.call(this);
-    }),
     loadPage() {
         let queryBody = JSON.stringify(this.getQueryBody());
         this.set('loading', true);
@@ -140,35 +145,33 @@ export default Ember.Controller.extend({
                 }
             };
         }
-        let sort = [];
-        let sortByOption = this.get('chosenSortByOption');
-        if (sortByOption === 'Upload date (oldest to newest)') {
-            sort.push({
-                date_updated: { order: 'asc' }
-            });
-        } else if (sortByOption === 'Upload date (newest to oldest)') {
-            sort.push({
-                date_updated: { order: 'desc' }
-            });
-        }
 
         let queryBody = {
             query,
             from: (this.get('page') - 1) * this.get('size'),
-            sort
         };
+
+        let sortByOption = this.get('chosenSortByOption');
+        if (sortByOption === 'Upload date (oldest to newest)') {
+            queryBody.sort = {};
+            queryBody.sort.date_updated = 'asc';
+        } else if (sortByOption === 'Upload date (newest to oldest)') {
+            queryBody.sort = {};
+            queryBody.sort.date_updated = 'desc';
+        }
 
         return this.set('queryBody', queryBody);
     },
 
     expandedOSFProviders: false,
     osfProvider: Ember.computed('activeFilters', function() {
-        this.loadPage.call(this);
-        let osfProviders = ['OSF Providers', 'Open Science Framework', 'SocArxiv', 'Engrxiv'];
-        let match = this.get('activeFilters.providers').filter(each => osfProviders.indexOf(each) !== -1).length > 0;
+        let match = this.get('activeFilters.providers').filter(each => this.get('osfProviders').indexOf(each) !== -1).length > 0;
         if (!match) {
             this.set('activeFilters.subjects', []);
         }
+        this.set('searchString', this.get('searchValue'));
+        this.set('page', 1);
+        this.loadPage();
         return match;
     }),
     otherProviders: [],
@@ -202,7 +205,7 @@ export default Ember.Controller.extend({
         },
 
         clearFilters() {
-            this.set('activeFilters', []);
+            this.set('activeFilters',  { providers: this.get('osfProviders'), subjects: [] });
         },
 
         sortBySelect(index) {
@@ -229,7 +232,17 @@ export default Ember.Controller.extend({
         },
 
         selectProvider(provider) {
-            this.set('activeFilters.providers', [provider]);
+            if (provider === 'OSF Providers') {
+                this.set('activeFilters.providers', this.get('osfProviders').slice());
+            } else if (this.get('osfProvider') && this.get('osfProviders').indexOf(provider) !== -1) {
+                if (this.get('activeFilters.providers').indexOf(provider) !== -1 && this.get('activeFilters.providers').length > 1) {
+                    this.get('activeFilters.providers').removeObject(provider);
+                } else if (this.get('activeFilters.providers').indexOf(provider) === -1) {
+                    this.get('activeFilters.providers').pushObject(provider);
+                }
+            } else {
+                this.set('activeFilters.providers', [provider]);
+            }
             this.notifyPropertyChange('activeFilters');
         },
         expandOSFProviders() {

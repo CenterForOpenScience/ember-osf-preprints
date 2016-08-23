@@ -4,7 +4,7 @@
             <h1 class="p-b-md">{{model.title}}</h1>
             <h5 class="view-authors">
                 {{#each authors as |author index|}}
-                    <a href={{author.users.profileURL}}>{{author.users.fullName}}</a>,
+                    {{if index ', ' ''}}<a href={{author.users.profileURL}}>{{author.users.fullName}}</a>
                 {{/each}}
                 {{#unless expandedAuthors}}
                     <button class="btn btn-xs round-btn" {{action 'expandAuthors'}}>. . .</button>
