@@ -142,6 +142,16 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
 
+    clearFields() {
+        this.set('selectedFile', null);
+        this.set('model.subjects', []);
+        this.set('contributors', Ember.A());
+        this.set('filePickerState', State.START);
+        this.set('uploadState', State.START);
+        this.set('_url', '');
+        this.set('searchResults', []);
+        this.set('uploadFile', null);
+    },
     actions: {
         // Open next panel
         next(currentPanelName) {
@@ -289,6 +299,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     }
                 }))
                 .then(() => model.get('providers'))
+                .then(() => this.clearFields())
                 .then(() => this.transitionToRoute('content', model))
                 .catch(() => this.send('error', 'Could not save preprint; please try again later'));
         }

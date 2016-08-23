@@ -11,7 +11,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         //  internally during submission process.
         return this.store.createRecord('preprint');
     },
-
     setupController(controller) {
         // Fetch values required to operate the page: user and userNodes
         let userNodes = Ember.A();
