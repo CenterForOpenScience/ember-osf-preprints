@@ -4,9 +4,9 @@
             <div class="col-xs-11">
                 <form {{action 'findContributors' 1 on='submit'}}>
                     <div class="input-group author-search-box">
-                        <input id="author-search-box" type="text" class="form-control input-lg searchQuery" onchange={{action (mut query) value="target.value"}} placeholder="Search by name">
+                        <input id="author-search-box" type="text" class="form-control searchQuery" onchange={{action (mut query) value="target.value"}} placeholder="Search by name">
                         <span class="input-group-btn">
-                            <button class="btn btn-default btn-lg" type="button" {{action 'findContributors' 1}} >
+                            <button class="btn btn-default" type="button" {{action 'findContributors' 1}} >
                                 <i class="glyphicon glyphicon-search"></i>
                             </button>
                         </span>

@@ -153,8 +153,10 @@
                         {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error')}}
                             {{preprint-form-header name=name valid=(get valid name)}}
                             {{#cp-panel-body}}
-                                <p>Sharing this project will make both the manuscript and the project associated with it public.</p>
-                                <button class="btn btn-primary" type="submit" {{action 'savePreprint'}}>Share</button>
+                                <div class="text-center">
+                                    <p>Sharing this project will make both the manuscript and the project associated with it public.</p>
+                                    <button class="btn btn-primary btn-lg m-t-md" type="submit" {{action 'savePreprint'}}>Share</button>
+                                </div>
                             {{/cp-panel-body}}
                         {{/preprint-form-section}}
                     {{/with}}

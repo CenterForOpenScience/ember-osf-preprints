@@ -469,22 +469,23 @@ hr {
             color: #333;
         }
         &.valid {
-            .fa {
+            .preprint-section-status .fa {
                 color: #009688;
                 display: block;
             }
         }
         &.invalid {
-            .fa {
+            .preprint-section-status .fa {
                 color: #F44336;
                 display: block;
             }
         }
         .fa {
-            float: right;
+            font-size: 20px;
+        }
+        .preprint-section-status .fa {
             color: gray;
             transition: color 0.1s linear;
-            font-size: 20px;
             display: none;
         }
     }
