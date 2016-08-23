@@ -28,8 +28,14 @@
                                     {{#liquid-bind filePickerState class='translate' as |currentState|}}
                                         <div class={{currentState}}>
                                             {{#if (eq currentState _State.START)}}
-                                                <button class="col-md-4" {{action 'changeState' _State.NEW}}>Upload a New File</button>
-                                                <button class="col-md-4" {{action 'changeState' _State.EXISTING}}>Select a file from OSF</button>
+                                            <div class="row">
+                                                <div class="col-xs-6 p-h-xl">
+                                                    <button class="btn btn-block btn-primary btn-big" {{action 'changeState' _State.NEW}}>Upload a New File</button>
+                                                </div>
+                                                <div class="col-xs-6  p-h-xl">
+                                                    <button class="btn btn-block btn-primary btn-big" {{action 'changeState' _State.EXISTING}}>Select a file from OSF</button>
+                                                </div>
+                                            </div>
 
                                             {{else if (eq currentState _State.NEW)}}
                                                 {{file-uploader
