@@ -22,14 +22,14 @@
                 </p>
             {{/unless}}
             {{#if (and fileSelect osfProviderLoaded)}}
-                <h2>Step 2: Choose existing file:</h2>
+                <label> 2. Choose existing file </label>
 
                 <div>
                     {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
                 </div>
-                <div>
-                    <span id='selectedFileExisting'> Selected file: {{if selectedFile selectedFile.name 'None selected'}} </span>
-                </div>
+                {{#if selectedFile}}
+                    <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
+                {{/if}}
             {{/if}}
         {{else}}
             <p class="alert alert-danger" role="alert">

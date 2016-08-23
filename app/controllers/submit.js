@@ -70,6 +70,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     selectedFile: null,
     contributors: Ember.A(),
 
+
     ///////////////////////////////////////
     // Validation rules for form sections
     uploadValid: Ember.computed.and('node', 'selectedFile'),
@@ -127,6 +128,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         uploadMultiple: false,
         method: 'PUT'
     },
+    chooseExistingProjectHeader: '1. Choose existing OSF Project',
+    createComponentHeader: '3. Convert this project or copy file to new component',
 
     isAdmin: Ember.computed('node', function() {
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
