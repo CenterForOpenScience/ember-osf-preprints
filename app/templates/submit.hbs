@@ -58,26 +58,34 @@
                     {{#with _names.[1] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error')}}
                             {{preprint-form-header name=name valid=basicsValid}}
-                            {{#preprint-form-body class='row'}}
-                                <div class="col-md-6">
-                                    <label>
-                                        <span class="required">Title:</span>
-                                        {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=basicsTitle}}
-                                    </label>
-                                    <label>
-                                        DOI:
-                                        {{validated-input model=this valuePath='basicsDOI' placeholder="DOI" value=basicsDOI}}
-                                    </label>
-                                    <label>
-                                        Tags:
-                                        {{input class="form-control" value=basicsTags}}
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>
-                                        <span class="required">Abstract:</span>
-                                        {{validated-input model=this valuePath='basicsAbstract' placeholder="" value=basicsAbstract large=true}}
-                                    </label>
+                            {{#preprint-form-body}}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div>
+                                            <label>
+                                                <span class="required">Title:</span>
+                                                {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=basicsTitle}}
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label>
+                                                DOI:
+                                                {{validated-input model=this valuePath='basicsDOI' placeholder="DOI" value=basicsDOI}}
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label>
+                                                Tags:
+                                                {{input class="form-control" value=basicsTags}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>
+                                            <span class="required">Abstract:</span>
+                                            {{validated-input model=this valuePath='basicsAbstract' placeholder="" value=basicsAbstract large=true}}
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
