@@ -88,11 +88,14 @@ export default Ember.Controller.extend({
                 source.id = hit._id;
                 source.type = 'elastic-search-result';
                 source.workType = source['@type'];
+                source.abstract = source.description;
                 source.contributors = source.contributors.map(function(contributor) {
                     return {
-                        familyName: contributor.family_name,
-                        givenName: contributor.given_name,
-                        id: contributor['@id']
+                        users: {
+                            familyName: contributor.family_name,
+                            givenName: contributor.given_name,
+                            id: contributor['@id']
+                        }
                     };
                 });
                 return source;
