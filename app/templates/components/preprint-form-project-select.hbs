@@ -22,8 +22,13 @@
                 </p>
             {{/unless}}
             {{#if (and fileSelect osfProviderLoaded)}}
+                <h2>Step 2: Choose existing file:</h2>
+
                 <div>
                     {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
+                </div>
+                <div>
+                    <span id='selectedFileExisting'> Selected file: {{if selectedFile selectedFile.name 'None selected'}} </span>
                 </div>
             {{/if}}
         {{else}}
@@ -35,13 +40,21 @@
             </p>
         {{/if}}
     {{/liquid-bind}}
-    <label>
-        {{input type='checkbox' checked=shouldCreateChild}}
-        Create new component for preprint
-    </label>
-    <div>
-        <span id='selectedFileExisting'> Selected file: {{if selectedFile selectedFile.name 'None selected'}} </span>
-    </div>
-    <br>
+{{/liquid-if}}
 
+{{#liquid-if selectedFile use='crossFade'}}
+    {{#liquid-bind selectedFile use='crossFade'}}
+        <h2>Step 3: Convert this project or copy file to new component:</h2>
+        <p class="alert alert-info" role="alert">
+            If you choose to convert this project, its contributors will be considered authors of this preprint.
+            Any changes to preprint contributors will also change the contributors of the project.
+
+            If you do not want to change the original OSF project contributors, then you can copy the file to a new component.
+        </p>
+        <div id='convertExistingOrCreateComponent'>
+            <p> <input onchange={{action "convertExisting"}} type="radio" name="createComponentDecision" checked={{not shouldCreateChild}}> Convert this OSF Project </p>
+            <p> <input onchange={{action "createComponent" value="true"}} type="radio" name="createComponentDecision" checked={{shouldCreateChild}}> Copy file to new component </p>
+        </div>
+        <br>
+    {{/liquid-bind}}
 {{/liquid-if}}

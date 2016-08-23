@@ -33,7 +33,7 @@
                                 {{! TODO: cleanup created component if needed }}
                                 <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
                                 {{! TODO: check if project and file are selected before allowing user to continue }}
-                                <button class="btn btn-primary" disabled={{unless node true}} {{action (if shouldCreateChild 'addChild' 'next') name}}>Next</button>
+                                <button class="btn btn-primary" disabled={{unless (and node selectedFile) true}} {{action (if shouldCreateChild 'addChild' 'next') name}}>Next</button>
                             {{else}}
                                 {{log 'preprint-form-upload: bad state'}}
                             {{/if}}
