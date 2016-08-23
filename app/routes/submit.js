@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
+import permissions from 'ember-osf/const/permissions';
 import loadAll from 'ember-osf/utils/load-relationship';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
@@ -14,13 +15,19 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     setupController(controller) {
         // Fetch values required to operate the page: user and userNodes
         let userNodes = Ember.A();
-        controller.set('userNodes', userNodes);
 
         this.get('currentUser').load()
             .then((user) => {
                 controller.set('user', user);
                 return user;
-            }).then((user) => loadAll(user, 'nodes', userNodes));
+            }).then((user) => loadAll(user, 'nodes', userNodes, {
+                'filter[preprint]': false
+            }).then(() => {
+                // TODO Hack: API does not support filtering current_user_permissions in the way we desire, so filter
+                // on front end for now until filtering support can be added to backend
+                let onlyAdminNodes = userNodes.filter((item) => item.get('currentUserPermissions').indexOf(permissions.ADMIN) !== -1);
+                controller.set('userNodes', onlyAdminNodes);
+            }));
 
         return this._super(...arguments);
     }
