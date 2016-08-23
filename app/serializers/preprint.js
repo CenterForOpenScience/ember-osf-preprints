@@ -14,6 +14,7 @@ export default OsfSerializer.extend({
         };
 
         if (res.data.attributes)
+            // TODO: This should not be in the serializer. It is the responsibility of the person creating a record to give the correct data format.
             res.data.attributes.subjects = (snapshot.record.get('subjects') || []).map(subject => subject.get('id'));
 
         return res;
