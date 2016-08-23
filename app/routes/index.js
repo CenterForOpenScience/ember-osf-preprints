@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
 
-
 export default Ember.Route.extend({
     fileManager: Ember.inject.service(),
     model() {

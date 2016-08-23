@@ -279,17 +279,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             });
 
             model.save()
-                .then(() => {
-                    // Ember data is not worth the time investment currently
-                    return this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
-                        data: {
-                            data: [{
-                                type: 'preprint_providers',
-                                id: config.PREPRINTS.provider,
-                            }]
-                        }
-                    })
-                })
+                // Ember data is not worth the time investment currently
+                .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
+                    data: {
+                        data: [{
+                            type: 'preprint_providers',
+                            id: config.PREPRINTS.provider,
+                        }]
+                    }
+                }))
                 .then(() => model.get('providers'))
                 .then(() => this.transitionToRoute('content', model))
                 .catch(() => this.send('error', 'Could not save preprint; please try again later'));
