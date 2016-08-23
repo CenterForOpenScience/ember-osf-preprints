@@ -14,6 +14,7 @@ export default Ember.Component.extend({
     state: State.START,
     createChild: false,
     chooseExistingProjectHeader: '2. Select existing OSF Project',
+    createComponentHeader: '3. Convert this project or copy file to new component',
 
     hasFile: function() {
         return this.get('file') != null;
@@ -55,6 +56,7 @@ export default Ember.Component.extend({
                 }));
 
                 this.callback.resolve(this.get('file'));
+                this.attrs.next(this.get('_names.0'));
             });
         },
 
@@ -66,8 +68,6 @@ export default Ember.Component.extend({
             }).save().then(node => {
                 this.set('node', node);
                 this.send('upload');
-                this.attrs.next(this.get('_names.0'));
-
             });
         },
 

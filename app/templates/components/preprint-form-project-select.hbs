@@ -2,17 +2,17 @@
 {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
     <strong>{{node.title}}</strong>
 {{/power-select}}
-<p class="alert alert-info" role="alert">
-    Using this project means the list of contributors will be considered authors of this preprint.
-    <br>
-    {{#if fileSelect}}
-        If you use this version of the preprint, any changes to these contributors will also
-        change the contributors of the project/component.
 
-        If you do not want to change the project/component contributors within the OSF
-        project, then you can create a new component.
-    {{/if}}
-</p>
+{{#if fileSelect}}
+    <p class="alert alert-info" role="alert">
+    If you use this version of the preprint, any changes to these contributors will also
+    change the contributors of the project/component.
+
+    If you do not want to change the project/component contributors within the OSF
+    project, then you can create a new component.
+    </p>
+{{/if}}
+
 {{#liquid-if selectedNode use='crossFade'}}
     {{#liquid-bind selectedNode use='crossFade'}}
         {{#if isAdmin}}
@@ -42,9 +42,9 @@
     {{/liquid-bind}}
 {{/liquid-if}}
 
-{{#liquid-if selectedFile use='crossFade'}}
+{{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
     {{#liquid-bind selectedFile use='crossFade'}}
-        <h2>Step 3: Convert this project or copy file to new component:</h2>
+        <label> {{createComponentHeader}} </label>
         <p class="alert alert-info" role="alert">
             If you choose to convert this project, its contributors will be considered authors of this preprint.
             Any changes to preprint contributors will also change the contributors of the project.

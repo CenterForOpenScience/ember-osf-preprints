@@ -23,12 +23,20 @@
         <button class="btn btn-primary" disabled={{not (and hasFile nodeTitle)}} {{action 'createProject'}}>Next</button>
 
     {{else if (eq currentState State.EXISTING)}}
-        {{preprint-form-project-select userNodes=userNodes selectedNode=node chooseExistingProjectHeader=chooseExistingProjectHeader shouldCreateChild=createChild}}
+        {{preprint-form-project-select
+            userNodes=userNodes
+            selectedNode=node
+            chooseExistingProjectHeader=chooseExistingProjectHeader
+            shouldCreateChild=createChild
+            hasFile=hasFile
+            createComponentHeader=createComponentHeader
+         }}
         {{! TODO: cleanup created component if needed }}
         <button class="btn btn-default" {{action 'setState' State.START}}>Back</button>
         {{! TODO: check if dropzone has file and model exists before allowing user to continue }}
         {{!-- TODO: Make button text dynamic; refactor internals --}}
         <button class="btn btn-primary" disabled={{not node}} {{action (if createChild 'createChild' 'upload')}}>Next</button>
+
     {{else}}
         {{log 'preprint-form-upload: bad uploadState'}}
     {{/if}}
