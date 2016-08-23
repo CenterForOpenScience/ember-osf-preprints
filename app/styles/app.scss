@@ -573,8 +573,9 @@ hr {
         }
         & > b {
             display: inline-block;
-            padding: 1rem 0 1rem 3rem;
+            padding: 5px 12px ;
             position: relative;
+            border-radius: 4px;
             &%pseudo {
                 content: '';
                 display: block;
@@ -626,18 +627,11 @@ hr {
             }
         }
     }
-    .col-md-4 {
-        padding: 0 1rem 1rem 0;
-        &:last-child {
-            padding-right: 0;
-        }
-    }
     ul {
         height: 30rem;
         list-style: none;
         padding: 0;
         border: 1px lightgray solid;
-        border-radius: 1rem;
         overflow: hidden;
         input {
             border-style: none none solid none;
@@ -646,7 +640,7 @@ hr {
         li {
             padding: 0.5rem 1.5rem;
             cursor: pointer;
-            border-radius: 1em;
+            border-radius: 4px;
             margin: 0.5rem;
             overflow: hidden;
             white-space: nowrap;
@@ -659,6 +653,7 @@ hr {
             }
             &:hover {
                 background-color: $theme-color-light;
+                color: #ffffff;
             }
             &:active, &.selected {
                 background-color: #337AB7;
