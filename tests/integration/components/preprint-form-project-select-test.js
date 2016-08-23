@@ -5,8 +5,6 @@ moduleForComponent('preprint-form-project-select', 'Integration | Component | pr
   integration: true
 });
 
-// <label> {{chooseExistingProjectHeader}} </label>
-
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
