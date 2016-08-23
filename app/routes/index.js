@@ -1,12 +1,14 @@
 import Ember from 'ember';
+import config from 'ember-get-config';
+
 
 export default Ember.Route.extend({
     fileManager: Ember.inject.service(),
     model() {
         return Ember.RSVP.hash({
             theDate: new Date(),
-            preprints: this.store.findAll('preprint'),
-            subjects: this.store.query('taxonomy', { filter: { parents: 'null' }, page: { size: 20 } })
+            subjects: this.store.query('taxonomy', { filter: { parents: 'null' }, page: { size: 20 } }),
+            preprints: this.store.findRecord('preprint-provider', config.PREPRINTS.provider).then(provider => provider.get('preprints')),
         });
     },
     actions: {
