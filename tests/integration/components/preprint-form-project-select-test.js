@@ -8,8 +8,8 @@ moduleForComponent('preprint-form-project-select', 'Integration | Component | pr
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
+    this.set('chooseExistingProjectHeader', 'hello');
+    this.render(hbs`{{preprint-form-project-select chooseExistingProjectHeader=chooseExistingProjectHeader}}`);
 
-  this.render(hbs`{{preprint-form-project-select}}`);
-
-  assert.equal(this.$('h1').text().trim(), 'Choose existing OSF project:');
+  assert.equal(this.$('label').text().trim(), 'hello');
 });
