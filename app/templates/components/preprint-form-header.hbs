@@ -1,5 +1,5 @@
 {{name}}
-{{#if valid}}
+{{#if (or valid noValidation)}}
     {{fa-icon 'check-circle'}}
 {{else}}
     {{fa-icon 'times-circle'}}
