@@ -32,7 +32,6 @@ export default Ember.Component.extend({
     init() {
         this.get('primaryFile').then(primaryFile => this.set('selectedFile', primaryFile));
         this._super(...arguments);
-
     },
     actions: {
         moveLeft() {
