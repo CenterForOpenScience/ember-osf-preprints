@@ -122,12 +122,39 @@ body {
 /* VIEW page */
 
 .dark-overlay-header-background {
-    background: url("img/dark_overlay.png") no-repeat;
+    background: url("img/dark-overlay.png") no-repeat;
+}
+
+
+/* SUBMIT page */
+
+.preprint-submit-header {
+    padding-top: 120px;
+    background: url("img/submit_bg.jpg") no-repeat top center;
+    border-bottom: 1px solid #eee;
+    height: 240px;
+}
+.preprint-submit-body {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 50px;
+}
+
+.preprint-form-block {
+    margin-top: 20px;
+    background: #fff;
+    padding:10px 20px 20px 20px;
+    box-shadow: 0 0 3px #ddd;
+    label {
+        width: 100%;
+    }
 }
 
 
 
 
+
+/* Usefulness of the portions of code below is doubtful, mixed with critical and unused. TODO: Go through and clean up unused code */
 
 .navbar-header {
     height: $nav-bar-height;
@@ -347,24 +374,9 @@ body {
     }
 }
 
+
+
 // FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE
-main {
-    padding-top: 5rem;
-}
-
-#addPreprint {
-    margin-bottom: 1em;
-}
-
-.container{
-        padding-right:10px;
-        padding-left:10px;
-    }
-
-    //.osf-box{
-    //    border:0px;
-    //}
-
 .text-muted {
     color: #777;
 }
@@ -430,11 +442,10 @@ hr {
         @extend a;
         cursor: pointer;
         font: {
-            size: 2rem;
-            weight: bold;
+            size: 16px;
+            font-weight: bold;
         }
         display: block;
-        transition: color 0.1s linear;
         margin: 1rem 0;
         &:hover, &:focus {
             text-decoration: none;
@@ -444,26 +455,30 @@ hr {
             display: block;
             width: 100%;
             clear: both;
-            border-bottom: 1px lightgray solid;
         }
         &.cp-is-open {
             cursor: default;
-            color: black;
+            color: #333;
         }
         &.valid {
-            .fa {
-                color: $brand-primary;
+            .preprint-section-status .fa {
+                color: #009688;
+                display: block;
             }
         }
         &.invalid {
-            .fa {
-                color: red;
+            .preprint-section-status .fa {
+                color: #F44336;
+                display: block;
             }
         }
         .fa {
-            float: right;
+            font-size: 20px;
+        }
+        .preprint-section-status .fa {
             color: gray;
             transition: color 0.1s linear;
+            display: none;
         }
     }
     .cp-Panel-body {
@@ -551,8 +566,9 @@ hr {
         }
         & > b {
             display: inline-block;
-            padding: 1rem 0 1rem 3rem;
+            padding: 5px 12px ;
             position: relative;
+            border-radius: 4px;
             &%pseudo {
                 content: '';
                 display: block;
@@ -604,18 +620,11 @@ hr {
             }
         }
     }
-    .col-md-4 {
-        padding: 0 1rem 1rem 0;
-        &:last-child {
-            padding-right: 0;
-        }
-    }
     ul {
         height: 30rem;
         list-style: none;
         padding: 0;
         border: 1px lightgray solid;
-        border-radius: 1rem;
         overflow: hidden;
         input {
             border-style: none none solid none;
@@ -624,7 +633,7 @@ hr {
         li {
             padding: 0.5rem 1.5rem;
             cursor: pointer;
-            border-radius: 1em;
+            border-radius: 4px;
             margin: 0.5rem;
             overflow: hidden;
             white-space: nowrap;
@@ -637,6 +646,7 @@ hr {
             }
             &:hover {
                 background-color: $theme-color-light;
+                color: #ffffff;
             }
             &:active, &.selected {
                 background-color: #337AB7;
