@@ -65,6 +65,8 @@ export default Ember.Component.extend({
             }).save().then(node => {
                 this.set('node', node);
                 this.send('upload');
+                this.attrs.next(this.get('_names.0'));
+
             });
         },
 

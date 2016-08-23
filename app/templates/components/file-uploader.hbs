@@ -1,3 +1,4 @@
+<label> 1. Upload your file </label>
 {{dropzone-widget
     url=url
     options=dropzoneOptions
@@ -15,11 +16,11 @@
         <button disabled={{not hasFile}} class="btn btn-primary" {{action 'setState' State.EXISTING}}>Save to existing OSF project</button>
 
     {{else if (eq currentState State.NEW)}}
-        <h1>Creating new project</h1>
+        <label> 2. Enter new project title </label>
         {{input class='form-control' value=nodeTitle}}
         <button class="btn btn-default" {{action 'setState' State.START}}>Back</button>
         {{! TODO: check if dropzone has file before allowing user to continue }}
-        <button class="btn btn-primary" {{action 'createProject'}}>Create</button>
+        <button class="btn btn-primary" {{action 'createProject'}}>Next</button>
 
     {{else if (eq currentState State.EXISTING)}}
         {{preprint-form-project-select userNodes=userNodes selectedNode=node shouldCreateChild=createChild}}
