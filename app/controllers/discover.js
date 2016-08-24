@@ -93,14 +93,14 @@ export default Ember.Controller.extend({
             }
             this.set('numberOfResults', json.hits.total);
             let results = json.hits.hits.map((hit) => {
-                // HACK
+                // HACK: Make share data look like apiv2 preprints data
                 let source = hit._source;
                 source.id = hit._id;
                 source.type = 'elastic-search-result';
                 source.workType = source['@type'];
                 source.abstract = source.description;
                 source.subjects = source.subjects.map(function(each) {return {text: each};});
-                source.providers = source.sources.map(function(each) {return {name: each};});
+                source.providers = source.sources.map(item => ({name: item}));
                 source.contributors = source.contributors.map(function(contributor) {
                     return {
                         users: {
