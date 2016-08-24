@@ -131,27 +131,24 @@ export default Ember.Controller.extend({
                 query: this.get('searchString') || '*'
             }
         };
-        //to be removed when we are actually filtering preprints
-        if (Object.keys(filters).length !== 0) {
-            let filters_ = [];
-            for (let k of Object.keys(filters)) {
-                let terms = {};
-                terms[k] = filters[k];
-                filters_.push({
-                    terms: terms
-                });
-            }
-            //to be added when there are actual preprints
-            // filters_.push({
-            //     terms: {'@type.raw': ['preprint']}
-            // });
-            query = {
-                bool: {
-                    must: query,
-                    filter: filters_
-                }
-            };
+
+        let filters_ = [];
+        for (let k of Object.keys(filters)) {
+            let terms = {};
+            terms[k] = filters[k];
+            filters_.push({
+                terms: terms
+            });
         }
+        filters_.push({
+            terms: {'@type.raw': ['preprint']}
+        });
+        query = {
+            bool: {
+                must: query,
+                filter: filters_
+            }
+        };
 
         let queryBody = {
             query,
