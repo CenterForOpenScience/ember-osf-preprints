@@ -39,8 +39,9 @@
             </div>
             <div class="col-sm-4">
                 {{! TODO: Add providers display }}
-                {{#each result.providers as |provider|}}
-                    {{provider}}
+                {{#each result.providers as |provider index|}}
+                    {{if index ', '}}
+                    {{provider.name}}
                 {{/each}}
             </div>
         </div>
