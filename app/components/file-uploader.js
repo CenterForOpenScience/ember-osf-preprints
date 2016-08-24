@@ -67,6 +67,7 @@ export default Ember.Component.extend({
             }).save().then(node => {
                 this.set('node', node);
                 this.send('upload');
+                this.get('projectsCreatedForPreprint').pushObject(node);
             });
         },
 
@@ -76,6 +77,7 @@ export default Ember.Component.extend({
                 .then(child => {
                     this.set('node', child);
                     this.send('upload');
+                    this.get('projectsCreatedForPreprint').pushObject(child);
                 });
         },
 
@@ -109,6 +111,7 @@ export default Ember.Component.extend({
                     .findRecord('file', resp.data.id.split('/')[1])
                     .then(file => {
                         this.set('osfFile', file);
+                        this.get('filesUploadedForPreprint').push(file);
                         this.sendAction('finishUpload');
                     });
             } else {

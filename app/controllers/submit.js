@@ -131,6 +131,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     chooseExistingProjectHeader: '1. Choose existing OSF Project',
     createComponentHeader: '3. Convert this project or copy file to new component',
     fileAndNodeLocked: false,
+    projectsCreatedForPreprint:  Ember.A(),
+    filesUploadedForPreprint: Ember.A(),
 
     isAdmin: Ember.computed('node', function() {
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
@@ -190,12 +192,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         addChild() {
             // TODO need error handling on this.  Too many promises.
             this._super(`${this.get('node.title')} Preprint`, this.get('node.description')).then(child => {
+                this.get('projectsCreatedForPreprint').pushObject(child);
                 this.get('userNodes').pushObject(child);
                 var parentNode = this.get('node');
                 this.set('node', child);
                 child.get('files').then((providers) => {
                     var osfstorage = providers.findBy('name', 'osfstorage');
-                    this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}});
+                    this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}}).then((copiedFile) => {
+                        this.get('filesUploadedForPreprint').push(copiedFile);
+                    });
                     parentNode.get('contributors').toArray().forEach((contributor) => {
                         if (this.get('user').id !== contributor.get('userId')) {
                             child.addContributor(contributor.get('userId'), contributor.get('permission'), contributor.get('bibliographic')).then((contrib) => {
@@ -334,8 +339,37 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.send('next', this.get('_names.0'));
         },
         resetFileUpload() {
-            this.send('changeState', State.START);
-            this.set('fileAndNodeLocked', false);
+            var promisesArray = [];
+            var filePromises = [];
+            this.get('filesUploadedForPreprint').forEach((file) => {
+                filePromises.push(this.get('fileManager').deleteFile(file).then(() => {
+                    this.get('toast').info('File removed!');
+                }).catch(() => {
+                    this.get('toast').error('Could not remove uploaded file');
+                }));
+            });
+
+            Ember.RSVP.allSettled(filePromises).then(() => {
+                this.get('projectsCreatedForPreprint').forEach((project) => {
+                    promisesArray.push(project.destroyRecord().then(() => {
+                        this.get('toast').info('Project removed!');
+                    }).catch(() => {
+                        this.get('toast').error('Could not remove created project/component');
+                    }));
+                });
+            });
+
+            Ember.RSVP.allSettled(promisesArray).then(() => {
+                if (promisesArray.length > 0 || filePromises.length > 0) {
+                    window.setTimeout(
+                    function() {
+                        location.reload();
+                    }, 3000);
+                } else {
+                    window.location.reload();
+                }
+            });
         }
     }
 });
+
