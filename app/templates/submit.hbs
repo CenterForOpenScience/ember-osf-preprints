@@ -16,11 +16,10 @@
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error')}}
-                            {{preprint-form-header name=name valid=uploadValid}}
+                            {{preprint-form-header name=name secondary-info=(concat "Preprint title: " node.title) valid=uploadValid}}
                             {{#preprint-form-body}}
                                 {{#if fileAndNodeLocked}}
                                     <p><label> Preprint file: </label> {{selectedFile.name}}</p>
-                                    <p><label> Title: </label> {{node.title}}</p>
 
                                     <button class="btn btn-danger" {{action 'resetFileUpload'}}>Restart</button>
                                     <button class="btn btn-primary" {{action 'next' name}}>Next</button>
