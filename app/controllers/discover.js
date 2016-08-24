@@ -221,15 +221,12 @@ export default Ember.Controller.extend({
         },
 
         selectSubjectFilter(subject) {
-            let match = this.get('activeFilters.subjects').filter(function(item) {
-                return item.indexOf(subject.text) !== -1;
-            });
-            this.notifyPropertyChange('activeFilters');
-            if (!match.length) {
+            if (this.get('activeFilters.subjects').indexOf(subject.text) === -1) {
                 this.get('activeFilters.subjects').pushObject(subject.text);
             } else {
                 this.get('activeFilters.subjects').removeObject(subject.text);
             }
+            this.notifyPropertyChange('activeFilters');
         },
 
         selectProvider(provider) {

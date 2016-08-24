@@ -110,7 +110,7 @@
                             </ul>
                         {{/if}}
                         {{#each otherProviders as |item|}}
-                            <li>
+                            <li style="margin-left: 10px">
                                 {{#if (if-filter item activeFilters.providers)}}
                                     <input type="checkbox" checked {{action 'selectProvider' item}}>
                                 {{else}}
