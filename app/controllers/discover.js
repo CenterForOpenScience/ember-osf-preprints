@@ -1,11 +1,11 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
 
-var getProvidersPayload = '{"size": 0,"query": {"term": {"@type": "preprint"}},"aggregations": {"sources": {"terms": {"field": "sources","size": 200}}}}';
+var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}},"aggregations": {"sources": {"terms": {"field": "sources.raw","size": 200}}}}';
 
 var filterMap = {
-    providers: 'sources',
-    subjects: 'tags.raw'
+    providers: 'sources.raw',
+    subjects: 'subjects.raw'
 };
 
 export default Ember.Controller.extend({
@@ -56,7 +56,9 @@ export default Ember.Controller.extend({
         }).then(function(results) {
             var hits = results.aggregations.sources.buckets;
             hits.map(function(each) {
-                _this.get('otherProviders').pushObject(each.key);
+                if (_this.get('osfProviders').indexOf(each.key) === -1) {
+                    _this.get('otherProviders').pushObject(each.key);
+                }
             });
         });
         this.loadPage.call(this);
@@ -123,9 +125,6 @@ export default Ember.Controller.extend({
                 filters[key] = facetFilters[k];
             }
         }
-        if (filters.sources.indexOf('OSF Providers') !== -1) {
-            filters.sources = this.get('osfProviders').slice();
-        }
         let query = {
             query_string: {
                 query: this.get('searchString') || '*'
@@ -141,7 +140,7 @@ export default Ember.Controller.extend({
             });
         }
         filters_.push({
-            terms: {'@type.raw': ['preprint']}
+            terms: {'type.raw': ['preprint']}
         });
         query = {
             bool: {
