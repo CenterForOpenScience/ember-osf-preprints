@@ -22,7 +22,7 @@
                                     <p><label> Selected File: </label> {{selectedFile.name}}</p>
                                     <p><label> Selected project: </label> {{node.title}} </p>
 
-                                    <button class="btn btn-danger" {{action 'resetFileUpload'}}>Reset</button>
+                                    <button class="btn btn-danger" {{action 'resetFileUpload'}}>Restart</button>
                                     <button class="btn btn-primary" {{action 'next' name}}>Next</button>
                                 {{else}}
                                     {{#liquid-bind filePickerState class='translate' as |currentState|}}
