@@ -11,10 +11,7 @@ export default Ember.Component.extend({
     file: null,
     callback: null,
     nodeTitle: null,
-    state: State.START,
     createChild: false,
-    chooseExistingProjectHeader: '2. Select existing OSF Project',
-    createComponentHeader: '3. Convert this project or copy file to new component',
 
     hasFile: function() {
         return this.get('file') != null;
@@ -33,19 +30,11 @@ export default Ember.Component.extend({
         this.set('callback', null);
         this.set('nodeTitle', null);
         this.set('createChild', false);
-        this.set('state', State.START);
     },
 
     actions: {
         getUrl() {
             return this.get('url');
-        },
-        setState(state) {
-            this.set('state', state);
-        },
-        changeState() {
-            // Ember is dumb
-            this.get('changeState')(...arguments);
         },
 
         upload() {
@@ -59,26 +48,17 @@ export default Ember.Component.extend({
             });
         },
 
-        createProject() {
+        createProjectAndUploadFile() {
+            var fileName = this.get('file').name;
             this.get('store').createRecord('node', {
                 public: false, // ?
                 category: 'project',
-                title: this.get('nodeTitle'),
+                title: fileName,
             }).save().then(node => {
                 this.set('node', node);
                 this.send('upload');
                 this.get('projectsCreatedForPreprint').pushObject(node);
             });
-        },
-
-        createChild() {
-            this.get('node')
-                .addChild(`${this.get('node.title')} Preprint`, this.get('node.description'))
-                .then(child => {
-                    this.set('node', child);
-                    this.send('upload');
-                    this.get('projectsCreatedForPreprint').pushObject(child);
-                });
         },
 
         // Dropzone hooks
@@ -104,7 +84,7 @@ export default Ember.Component.extend({
 
             if (Math.floor(file.xhr.status / 100) === 2) {
                 // Success
-                this.get('toast').info('File uploaded!');
+                this.get('toast').info('Preprint uploaded!');
 
                 let resp = JSON.parse(file.xhr.response);
                 this.get('store')
