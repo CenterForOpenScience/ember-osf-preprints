@@ -7,6 +7,9 @@ export default Ember.Route.extend({
     model() {
         var getTotalPayload = '{"size": 0, "from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}}}';
 
+        function formatNumberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
         var sharePreprintsTotal = Ember.$.ajax({
                 type: 'POST',
                 url: config.SHARE.searchUrl,
@@ -14,7 +17,7 @@ export default Ember.Route.extend({
                 contentType: 'application/json',
                 crossDomain: true,
             }).then(function (results) {
-                return results.hits.total;
+                return formatNumberWithCommas(results.hits.total);
             });
 
         return Ember.RSVP.hash({
