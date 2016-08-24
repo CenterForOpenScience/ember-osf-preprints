@@ -348,7 +348,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 }));
             });
 
-            Ember.RSVP.all(filePromises).then(() => {
+            Ember.RSVP.allSettled(filePromises).then(() => {
                 this.get('projectsCreatedForPreprint').forEach((project) => {
                     promisesArray.push(project.destroyRecord().then(() => {
                         this.get('toast').info('Project removed!');
@@ -358,7 +358,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 });
             });
 
-            Ember.RSVP.all(promisesArray).then(() => {
+            Ember.RSVP.allSettled(promisesArray).then(() => {
                 if (promisesArray.length > 0 || filePromises.length > 0) {
                     window.setTimeout(
                     function() {
@@ -367,9 +367,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 } else {
                     window.location.reload();
                 }
-
             });
-
         }
     }
 });
+
