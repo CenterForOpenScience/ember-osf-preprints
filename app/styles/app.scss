@@ -27,7 +27,7 @@ body {
 .preprint-header{
     background:#214661 url('img/preprints-bg.jpg') top center ;
     padding-top: 150px;
-    padding-bottom: 50px;
+    padding-bottom: 30px;
     border-bottom: 1px solid #dddddd;
     color: white;
     h1 {
@@ -60,6 +60,7 @@ body {
 .preprint-tool {
     background: #cbd9d5 url('img/index-tool-bg.jpg') top center;
     color: #FFFFFF;
+    text-shadow: 0 0 5px #506069;
     .provider-logo {
         height: 120px;
         background-size: contain;
@@ -67,9 +68,15 @@ body {
     }
     .provider-socarxiv {
         background-image: url('img/provider_logos/socarxiv.png');
+        background-position: center;
     }
     .provider-engrxiv {
         background-image: url('img/provider_logos/engrxiv.png');
+        background-position: center;
+    }
+    .provider-psyarxiv {
+        background-image: url('img/provider_logos/psyarxiv.png');
+        background-position: center;
     }
 }
 
