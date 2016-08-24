@@ -18,6 +18,13 @@ export default CpPanelComponent.extend({
      */
     hasOpened: false,
 
+    trackOpenState: Ember.observer('isOpen', function() {
+        // Whenever panel is opened (via any means), update the hasOpened state to reflect this fact
+        let isOpen = this.get('isOpen');
+        if (isOpen) {
+            this.set('hasOpened', true);
+        }
+    }),
 
     // Fix deprecation warning
     _setup: Ember.on('init', Ember.observer('open', function() {
@@ -54,13 +61,9 @@ export default CpPanelComponent.extend({
     }),
     // Called when panel is toggled
     handleToggle() {
-        // TODO: When panel is opened, make sure a property is set to indicate that section has now been viewed
-
-
         // Prevent closing all views
         if (!this.get('isOpen')) {
             if (this.get('allowOpen')) {
-                this.set('hasOpened', true);
                 // Crude mechanism to prevent opening a panel if conditions are not met
                 this._super(...arguments);
             } else {

@@ -10,13 +10,11 @@ export default CpPanelToggleComponent.extend({
     isValidationActive: false,
 
     // Calculated properties
-    noValidation: Ember.computed.empty('valid'),
-
-    invalid: Ember.computed('valid', function() {
+    invalid: Ember.computed('valid', 'isValidationActive', function() {
         // If the user hasn't even opened the panel yet, don't run the validation check
         // In other words, not true or null
         if (this.get('isValidationActive')) {
-            return this.get('valid') === false;
+            return !this.get('valid');
         } else {
             return false;
         }

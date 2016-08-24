@@ -9,7 +9,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     model() {
         // Store the empty preprint to be created on the model hook for page. Node will be fetched
         //  internally during submission process.
-        return this.store.createRecord('preprint');
+        return this.store.createRecord('preprint', {
+            subjects: []
+        });
     },
     setupController(controller) {
         // Fetch values required to operate the page: user and userNodes

@@ -78,8 +78,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsValid: Ember.computed.alias('validations.isValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
-    // Must select at least one subject. TODO: Verify this is the appropriate way to track
-    subjectsValid: Ember.computed.bool('model.subjects.length'),
+    // Must select at least one subject.
+    subjectsValid: Ember.computed.notEmpty('model.subjects'),
 
     ////////////////////////////////////////////////////
     // Fields used in the "basics" section of the form.
