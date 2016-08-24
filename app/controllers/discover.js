@@ -206,7 +206,7 @@ export default Ember.Controller.extend({
         },
 
         clearFilters() {
-            this.set('activeFilters',  { providers: this.get('osfProviders'), subjects: [] });
+            this.set('activeFilters',  { providers: this.get('osfProviders').slice(), subjects: [] });
         },
 
         sortBySelect(index) {
