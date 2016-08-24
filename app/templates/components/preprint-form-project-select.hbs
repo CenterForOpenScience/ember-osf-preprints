@@ -1,23 +1,14 @@
 <label> {{chooseExistingProjectHeader}} </label>
-{{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
-    <strong>{{node.title}}</strong>
-{{/power-select}}
-
-{{#if fileSelect}}
-    <p class="alert alert-info" role="alert">
-        If you use this version of the preprint, any changes to these contributors will also
-        change the contributors of the project/component.
-
-        If you do not want to change the project/component contributors within the OSF
-        project, then you can create a new component.
-    </p>
-{{/if}}
-
+<div class="m-b-md">
+    {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
+        <strong>{{node.title}}</strong>
+    {{/power-select}}
+</div>
 {{#liquid-if selectedNode use='crossFade'}}
     {{#liquid-bind selectedNode use='crossFade'}}
         {{#if isAdmin}}
             {{#unless selectedNode.public}}
-                <p class="alert alert-warning" role="alert">
+                <p class="alert alert-warning m-t-md m-r-xs" role="alert">
                     This project is private and will be made public
                 </p>
             {{/unless}}
@@ -44,17 +35,24 @@
 
 {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
     {{#liquid-bind selectedFile use='crossFade'}}
-        <label> {{createComponentHeader}} </label>
-        <p class="alert alert-info" role="alert">
-            If you choose to convert this project, its contributors will be considered authors of this preprint.
-            Any changes to preprint contributors will also change the contributors of the project.
+        <div class="m-t-lg">
+            <label> {{createComponentHeader}} </label>
+            <p class="text-muted">
+                If you choose to convert this project, its contributors will be considered authors of this preprint.
+                Any changes to preprint contributors will also change the contributors of the project.
 
-            If you do not want to change the original OSF project contributors, then you can copy the file to a new component.
-        </p>
-        <div id='convertExistingOrCreateComponent'>
-            <p> <input onchange={{action "convertExisting"}} type="radio" name="createComponentDecision" checked={{not shouldCreateChild}}> Convert this OSF Project </p>
-            <p> <input onchange={{action "createComponent" value="true"}} type="radio" name="createComponentDecision" checked={{shouldCreateChild}}> Copy file to new component </p>
+                If you do not want to change the original OSF project contributors, then you can copy the file to a <b>new component</b>.
+            </p>
+            <div id='convertExistingOrCreateComponent'>
+                <div class="row text-center text-bigger">
+                    <div class="radio-option col-xs-6 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 p-md">
+                        <label><input onchange={{action "convertExisting"}} type="radio" name="createComponentDecision" checked={{not shouldCreateChild}}> Convert this OSF Project</label>
+                    </div>
+                    <div class="radio-option col-xs-6 col-sm-5 col-md-4 p-md">
+                        <label><input onchange={{action "createComponent" value="true"}} type="radio" name="createComponentDecision" checked={{shouldCreateChild}}> Copy file to new component</label>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>
     {{/liquid-bind}}
 {{/liquid-if}}
