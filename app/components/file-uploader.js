@@ -49,11 +49,10 @@ export default Ember.Component.extend({
         },
 
         createProjectAndUploadFile() {
-            var fileName = this.get('file').name;
             this.get('store').createRecord('node', {
                 public: false, // ?
                 category: 'project',
-                title: fileName,
+                title: this.get('nodeTitle'),
             }).save().then(node => {
                 this.set('node', node);
                 this.send('upload');

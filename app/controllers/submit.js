@@ -142,7 +142,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     searchResults: [],
 
-    _names: ['upload your preprint', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
+    _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
 
     clearFields() {
         // node should also be cleared, currently throws an error

@@ -19,7 +19,8 @@
                             {{preprint-form-header name=name valid=uploadValid}}
                             {{#preprint-form-body}}
                                 {{#if fileAndNodeLocked}}
-                                    <p><label> Preprint: </label> {{selectedFile.name}}</p>
+                                    <p><label> Preprint file: </label> {{selectedFile.name}}</p>
+                                    <p><label> Title: </label> {{node.title}}</p>
 
                                     <button class="btn btn-danger" {{action 'resetFileUpload'}}>Restart</button>
                                     <button class="btn btn-primary" {{action 'next' name}}>Next</button>
@@ -46,12 +47,6 @@
                             {{#preprint-form-body}}
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div>
-                                            <label>
-                                                <span class="required">Title:</span>
-                                                {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=basicsTitle}}
-                                            </label>
-                                        </div>
                                         <div>
                                             <label>
                                                 DOI:
