@@ -4,10 +4,25 @@ local:
     CLIENT_ID: null
     PERSONAL_ACCESS_TOKEN: null
     OAUTH_SCOPES: osf.full_read osf.full_write
-    REDIRECT_URI: http://localhost:5000/login/
+    REDIRECT_URI: http://localhost:5000/preprints/
+stage:
+    CLIENT_ID: null
+    PERSONAL_ACCESS_TOKEN: null
+    OAUTH_SCOPES: null
+    REDIRECT_URI: https://staging.osf.io/preprints/
 stage2:
     CLIENT_ID: null
     PERSONAL_ACCESS_TOKEN: null
     OAUTH_SCOPES: null
-    REDIRECT_URI: https://staging2.osf.io/login/
+    REDIRECT_URI: https://staging2.osf.io/preprints/
+test:
+    CLIENT_ID: null
+    PERSONAL_ACCESS_TOKEN: null
+    OAUTH_SCOPES: null
+    REDIRECT_URI: https://test.osf.io/preprints/
+prod:
+    CLIENT_ID: null
+    PERSONAL_ACCESS_TOKEN: null
+    OAUTH_SCOPES: null
+    REDIRECT_URI: https://osf.io/preprints/
 ######### end ember-osf ##########
