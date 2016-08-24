@@ -16,8 +16,10 @@
                 <div class="preprint-search col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 m-v-lg" >
                     {{search-preprints search="search"}}
                     <p class="p-l-md">
-                        <span class="f-w-lg">{{model.preprints.length}}</span> preprints as of
-                        <span>{{moment-format model.theDate "MMMM DD, YYYY"}}</span>
+                        <span class="f-w-lg">{{model.preprints.length}} hosted preprints, </span>
+                        <span>{{model.sharePreprintsTotal}} searchable preprints </span>
+                        <span>as of {{moment-format model.theDate "MMMM DD, YYYY"}}</span>
+
                     </p>
                 </div>
             </div> {{!END ROW}}

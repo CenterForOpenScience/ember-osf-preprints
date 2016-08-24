@@ -1,11 +1,11 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
 
-var getProvidersPayload = '{"size": 0,"query": {"term": {"@type": "preprint"}},"aggregations": {"sources": {"terms": {"field": "sources","size": 200}}}}';
+var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}},"aggregations": {"sources": {"terms": {"field": "sources.raw","size": 200}}}}';
 
 var filterMap = {
-    providers: 'sources',
-    subjects: 'tags.raw'
+    providers: 'sources.raw',
+    subjects: 'subjects.raw'
 };
 
 export default Ember.Controller.extend({
@@ -56,7 +56,9 @@ export default Ember.Controller.extend({
         }).then(function(results) {
             var hits = results.aggregations.sources.buckets;
             hits.map(function(each) {
-                _this.get('otherProviders').pushObject(each.key);
+                if (_this.get('osfProviders').indexOf(each.key) === -1) {
+                    _this.get('otherProviders').pushObject(each.key);
+                }
             });
         });
         this.loadPage.call(this);
@@ -91,19 +93,21 @@ export default Ember.Controller.extend({
             }
             this.set('numberOfResults', json.hits.total);
             let results = json.hits.hits.map((hit) => {
-                // HACK
+                // HACK: Make share data look like apiv2 preprints data
                 let source = hit._source;
                 source.id = hit._id;
                 source.type = 'elastic-search-result';
                 source.workType = source['@type'];
                 source.abstract = source.description;
-                source.providers = source.sources;
+                source.subjects = source.subjects.map(function(each) {return {text: each};});
+                source.providers = source.sources.map(item => ({name: item}));
                 source.contributors = source.contributors.map(function(contributor) {
                     return {
                         users: {
-                            familyName: contributor.family_name,
-                            givenName: contributor.given_name,
-                            id: contributor['@id']
+                            familyName: contributor
+                            // familyName: contributor.family_name,
+                            // givenName: contributor.given_name,
+                            // id: contributor['@id']
                         }
                     };
                 });
@@ -123,35 +127,29 @@ export default Ember.Controller.extend({
                 filters[key] = facetFilters[k];
             }
         }
-        if (filters.sources.indexOf('OSF Providers') !== -1) {
-            filters.sources = this.get('osfProviders').slice();
-        }
         let query = {
             query_string: {
                 query: this.get('searchString') || '*'
             }
         };
-        //to be removed when we are actually filtering preprints
-        if (Object.keys(filters).length !== 0) {
-            let filters_ = [];
-            for (let k of Object.keys(filters)) {
-                let terms = {};
-                terms[k] = filters[k];
-                filters_.push({
-                    terms: terms
-                });
-            }
-            //to be added when there are actual preprints
-            // filters_.push({
-            //     terms: {'@type.raw': ['preprint']}
-            // });
-            query = {
-                bool: {
-                    must: query,
-                    filter: filters_
-                }
-            };
+
+        let filters_ = [];
+        for (let k of Object.keys(filters)) {
+            let terms = {};
+            terms[k] = filters[k];
+            filters_.push({
+                terms: terms
+            });
         }
+        filters_.push({
+            terms: {'type.raw': ['preprint']}
+        });
+        query = {
+            bool: {
+                must: query,
+                filter: filters_
+            }
+        };
 
         let queryBody = {
             query,

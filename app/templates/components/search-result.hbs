@@ -35,12 +35,17 @@
 
         <div class="row">
             <div class="col-sm-8">
-                {{! TODO: add subjects }}
+                {{#each result.subjects as |subject  index|}}
+                    {{#if index}}
+                        ,
+                    {{/if}}
+                    {{subject.text}}
+                {{/each}}
             </div>
             <div class="col-sm-4">
-                {{! TODO: Add providers display }}
-                {{#each result.providers as |provider|}}
-                    {{provider}}
+                {{#each result.providers as |provider index|}}
+                    {{if index ', '}}
+                    {{provider.name}}
                 {{/each}}
             </div>
         </div>
