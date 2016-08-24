@@ -40,6 +40,10 @@ There are a few scripts to run to populate your local preprint providers list, a
 
 `python -m scripts.populate_preprint_providers`
 
+* Populate the OSF's Subject model with data:
+
+`python -m scripts.update_taxonomies`
+
 * Create "fake" preprints using some additional arguments to the `create_fakes` script:
 
 `python -m scripts.create_fakes -u user@email.io --nprojects 2 --preprint True --preprintprovider osf,psyarxiv`

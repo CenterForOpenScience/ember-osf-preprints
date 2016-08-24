@@ -118,8 +118,8 @@ export default Ember.Component.extend({
             let index = -1;
             let selection = [...Array(tier).keys()].map(index => this.get(`selection${index + 1}`));
 
-            // An existing tag has this prefix :+1:
-            if (tier !== 3 && this.get('selected').findIndex(item => arrayStartsWith(item, selection)) !== -1) return;
+            // An existing tag has this prefix, and this is the lowest level of the taxonomy, so no need to fetch child results
+            if (tier === 3 && this.get('selected').findIndex(item => arrayStartsWith(item, selection)) !== -1) return;
 
             for (let i = 0; i < selection.length; i++) {
                 let sub = selection.slice(0, i + 1);
