@@ -26,13 +26,17 @@ body {
 /* Main header with search bar */
 .preprint-header{
     background:#214661 url('img/preprints-bg.jpg') top center ;
-    padding-top: 200px;
+    padding-top: 150px;
     padding-bottom: 50px;
     border-bottom: 1px solid #dddddd;
     color: white;
     h1 {
         font-size: 41px;
         font-weight: 300;
+    }
+    a {
+        color: #80c2f7;
+        text-decoration: underline;
     }
 
 }
