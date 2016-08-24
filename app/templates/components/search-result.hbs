@@ -39,7 +39,9 @@
             </div>
             <div class="col-sm-4">
                 {{! TODO: Add providers display }}
-                {{!result.providers}}
+                {{#each result.providers as |provider|}}
+                    {{provider}}
+                {{/each}}
             </div>
         </div>
         <br>

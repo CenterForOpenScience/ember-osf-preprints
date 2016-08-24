@@ -97,6 +97,7 @@ export default Ember.Controller.extend({
                 source.type = 'elastic-search-result';
                 source.workType = source['@type'];
                 source.abstract = source.description;
+                source.providers = source.sources;
                 source.contributors = source.contributors.map(function(contributor) {
                     return {
                         users: {
@@ -254,19 +255,6 @@ export default Ember.Controller.extend({
                 }
             }
             this.notifyPropertyChange('activeFilters');
-            // if (provider === 'OSF Providers') {
-            //     i
-            //     this.set('activeFilters.providers', this.get('osfProviders').slice());
-            // } else if (this.get('osfProvider') && this.get('osfProviders').indexOf(provider) !== -1) {
-            //     if (this.get('activeFilters.providers').indexOf(provider) !== -1 && this.get('activeFilters.providers').length > 1) {
-            //         this.get('activeFilters.providers').removeObject(provider);
-            //     } else if (this.get('activeFilters.providers').indexOf(provider) === -1) {
-            //         this.get('activeFilters.providers').pushObject(provider);
-            //     }
-            // } else {
-            //     this.set('activeFilters.providers', [provider]);
-            // }
-            // this.notifyPropertyChange('activeFilters');
         },
         expandOSFProviders() {
             this.set('expandedOSFProviders', !this.get('expandedOSFProviders'));
