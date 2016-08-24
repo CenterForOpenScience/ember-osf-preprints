@@ -15,8 +15,8 @@
                 <p>Use the guide below to add your preprint to the OSF preprint service. We organize preprints into projects that provide many additional features and options. Learn more about how to work with preprints and projects in OSF. </p>
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
-                        {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error')}}
-                            {{preprint-form-header name=name valid=uploadValid}}
+                        {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header name=name showValidationIndicator=false}}
                             {{#preprint-form-body}}
                                 {{#if fileAndNodeLocked}}
                                     <p><label> Selected File: </label> {{selectedFile.name}}</p>
@@ -75,8 +75,9 @@
                     {{/with}}
 
                     {{#with _names.[1] as |name|}}
-                        {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error')}}
-                            {{preprint-form-header name=name valid=basicsValid}}
+                        {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{log 'Basics Section hasopened state' hasOpened}}
+                            {{preprint-form-header name=name valid=basicsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class="row">
                                     <div class="col-md-6">
@@ -119,8 +120,8 @@
                     {{/with}}
 
                     {{#with _names.[2] as |name|}}
-                        {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error')}}
-                            {{preprint-form-header name=name valid=subjectsValid}}
+                        {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header name=name valid=subjectsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
 
                                 {{subject-picker save=(action 'saveSubjects')}}
@@ -137,8 +138,8 @@
                     {{/with}}
 
                     {{#with _names.[3] as |name|}}
-                        {{#preprint-form-section id='preprint-form-authors' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error')}}
-                            {{preprint-form-header name=name valid=authorsValid}}
+                        {{#preprint-form-section id='preprint-form-authors' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 {{preprint-form-authors
                                     contributors=contributors
@@ -166,8 +167,8 @@
                     {{/with}}
 
                     {{#with _names.[4] as |name|}}
-                        {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error')}}
-                            {{preprint-form-header name=name valid=(get valid name)}}
+                        {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header name=name showValidationIndicator=false}}
                             {{#cp-panel-body}}
                                 <div class="text-center">
                                     <p>Sharing this project will make both the manuscript and the project associated with it public.</p>

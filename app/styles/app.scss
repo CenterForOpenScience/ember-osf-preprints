@@ -509,13 +509,17 @@ hr {
                 display: block;
             }
         }
+        &.not-validated {
+            .preprint-section-status .fa {
+                color: gray;
+                display: block;
+            }
+        }
         .fa {
             font-size: 20px;
         }
         .preprint-section-status .fa {
-            color: gray;
             transition: color 0.1s linear;
-            display: none;
         }
     }
     .cp-Panel-body {

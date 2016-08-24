@@ -3,13 +3,22 @@ import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-
 
 export default CpPanelToggleComponent.extend({
     tagName: 'header',
+    // Variables to pass in
     enabled: true,
+    showValidationIndicator: true,
+    valid: null,
+    isValidationActive: false,
 
-    noValidation: Ember.computed.empty('valid'),
-
-    invalid: Ember.computed('valid', function() {
+    // Calculated properties
+    invalid: Ember.computed('valid', 'isValidationActive', function() {
+        // If the user hasn't even opened the panel yet, don't run the validation check
         // In other words, not true or null
-        return this.get('valid') === false;
+        if (this.get('isValidationActive')) {
+            return !this.get('valid');
+        } else {
+            return false;
+        }
     }),
-    classNameBindings: ['enabled::disabled', 'valid:valid', 'invalid:invalid']
+    // CSS controls icon color and display. If neither valid nor invalid state applies, don't show icon.
+    classNameBindings: ['enabled::disabled', 'valid:valid', 'invalid:invalid', 'isValidationActive::not-validated']
 });
