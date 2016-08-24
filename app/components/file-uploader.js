@@ -13,6 +13,8 @@ export default Ember.Component.extend({
     nodeTitle: null,
     state: State.START,
     createChild: false,
+    chooseExistingProjectHeader: '2. Select existing OSF Project',
+    createComponentHeader: '3. Convert this project or copy file to new component',
 
     hasFile: function() {
         return this.get('file') != null;
@@ -65,6 +67,7 @@ export default Ember.Component.extend({
             }).save().then(node => {
                 this.set('node', node);
                 this.send('upload');
+                this.get('projectsCreatedForPreprint').pushObject(node);
             });
         },
 
@@ -74,6 +77,7 @@ export default Ember.Component.extend({
                 .then(child => {
                     this.set('node', child);
                     this.send('upload');
+                    this.get('projectsCreatedForPreprint').pushObject(child);
                 });
         },
 
@@ -105,7 +109,11 @@ export default Ember.Component.extend({
                 let resp = JSON.parse(file.xhr.response);
                 this.get('store')
                     .findRecord('file', resp.data.id.split('/')[1])
-                    .then(file => this.set('osfFile', file));
+                    .then(file => {
+                        this.set('osfFile', file);
+                        this.get('filesUploadedForPreprint').push(file);
+                        this.sendAction('finishUpload');
+                    });
             } else {
                 //Failure
                 dropzone.removeAllFiles();

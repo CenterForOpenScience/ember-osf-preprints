@@ -1,3 +1,4 @@
+<label> 1. Upload your file </label>
 {{dropzone-widget
     url=url
     options=dropzoneOptions
@@ -15,19 +16,31 @@
         <button disabled={{not hasFile}} class="btn btn-primary" {{action 'setState' State.EXISTING}}>Save to existing OSF project</button>
 
     {{else if (eq currentState State.NEW)}}
-        <h1>Creating new project</h1>
-        {{input class='form-control' value=nodeTitle}}
+        <label> 2. Enter new project title </label>
+        {{input class='form-control m-v-md' value=nodeTitle}}
         <button class="btn btn-default" {{action 'setState' State.START}}>Back</button>
         {{! TODO: check if dropzone has file before allowing user to continue }}
-        <button class="btn btn-primary" {{action 'createProject'}}>Create</button>
+        <button class="btn btn-primary" disabled={{not (and hasFile nodeTitle)}} {{action 'createProject'}}>Next</button>
 
     {{else if (eq currentState State.EXISTING)}}
-        {{preprint-form-project-select userNodes=userNodes selectedNode=node shouldCreateChild=createChild}}
+        <div class="p-r-xs m-v-sm">
+            {{preprint-form-project-select
+                userNodes=userNodes
+                selectedNode=node
+                chooseExistingProjectHeader=chooseExistingProjectHeader
+                shouldCreateChild=createChild
+                hasFile=hasFile
+                createComponentHeader=createComponentHeader
+             }}
+        </div>
+
         {{! TODO: cleanup created component if needed }}
-        <button class="btn btn-default" {{action 'setState' State.START}}>Back</button>
-        {{! TODO: check if dropzone has file and model exists before allowing user to continue }}
-        {{!-- TODO: Make button text dynamic; refactor internals --}}
-        <button class="btn btn-primary" disabled={{not node}} {{action (if createChild 'createChild' 'upload')}}>Next</button>
+        <div class="p-t-lg">
+            <button class="btn btn-default" {{action 'setState' State.START}}>Back</button>
+            {{! TODO: check if dropzone has file and model exists before allowing user to continue }}
+            {{!-- TODO: Make button text dynamic; refactor internals --}}
+            <button class="btn btn-primary" disabled={{not node}} {{action (if createChild 'createChild' 'upload')}}>Next</button>
+        </div>
     {{else}}
         {{log 'preprint-form-upload: bad uploadState'}}
     {{/if}}

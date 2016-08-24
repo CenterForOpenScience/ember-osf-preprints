@@ -1,9 +1,12 @@
 import Ember from 'ember';
+import config from 'ember-get-config';
 
 import { validator, buildValidations } from 'ember-cp-validations';
 
 import permissions from 'ember-osf/const/permissions';
 import NodeActionsMixin from 'ember-osf/mixins/node-actions';
+import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
+
 import loadAll from 'ember-osf/utils/load-relationship';
 
 // Enum of available upload states
@@ -54,7 +57,8 @@ const BasicsValidations = buildValidations({
 /**
  * "Add preprint" page definitions
  */
-export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
+export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
+    fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
 
@@ -124,6 +128,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         uploadMultiple: false,
         method: 'PUT'
     },
+    chooseExistingProjectHeader: '1. Choose existing OSF Project',
+    createComponentHeader: '3. Convert this project or copy file to new component',
+    fileAndNodeLocked: false,
+    projectsCreatedForPreprint:  Ember.A(),
+    filesUploadedForPreprint: Ember.A(),
 
     isAdmin: Ember.computed('node', function() {
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
@@ -139,6 +148,17 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
 
     _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
 
+    clearFields() {
+        // node should also be cleared, currently throws an error
+        this.set('selectedFile', null);
+        this.set('model.subjects', []);
+        this.set('contributors', Ember.A());
+        this.set('filePickerState', State.START);
+        this.set('uploadState', State.START);
+        this.set('_url', '');
+        this.set('searchResults', []);
+        this.set('uploadFile', null);
+    },
     actions: {
         // Open next panel
         next(currentPanelName) {
@@ -170,10 +190,30 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         },
         // Override NodeActionsMixin.addChild
         addChild() {
+            // TODO need error handling on this.  Too many promises.
             this._super(`${this.get('node.title')} Preprint`, this.get('node.description')).then(child => {
+                this.get('projectsCreatedForPreprint').pushObject(child);
                 this.get('userNodes').pushObject(child);
+                var parentNode = this.get('node');
                 this.set('node', child);
-                this.send('startUpload');
+                child.get('files').then((providers) => {
+                    var osfstorage = providers.findBy('name', 'osfstorage');
+                    this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}}).then((copiedFile) => {
+                        this.get('filesUploadedForPreprint').push(copiedFile);
+                    });
+                    parentNode.get('contributors').toArray().forEach((contributor) => {
+                        if (this.get('user').id !== contributor.get('userId')) {
+                            child.addContributor(contributor.get('userId'), contributor.get('permission'), contributor.get('bibliographic')).then((contrib) => {
+                                this.get('contributors').pushObject(contrib);
+                            });
+                        }
+                    });
+                }).then(() => {
+                    this.get('toast').info('File copied to component!');
+                    this.send('finishUpload');
+                }, () => {
+                    this.get('toast').info('Could not create component.');
+                });
             });
         },
         // nextAction: {action} callback for the next action to perform.
@@ -192,8 +232,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         startUpload() {
             // TODO: retrieve and save fileid from uploaded file
             // TODO: deal with more than 10 files?
-            this.set('_url', `${this.get('node.files').findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
-
+            this.get('node.files').then((providers) => {
+                this.set('_url', `${providers.findBy('name', 'osfstorage').get('links.upload')}?kind=file&name=${this.get('uploadFile.name')}`);
+            });
             // TODO: Do not rely on cached resolve handlers, or toast for uploading. No file, no preprint- enforce workflow.
             this.get('resolve')();
             this.get('toast').info('File will upload in the background.');
@@ -274,9 +315,61 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
                 id: this.get('node.id'),
                 primaryFile: this.get('selectedFile')
             });
+
             model.save()
-                .then(() => console.log('Save succeeded. Should we transition somewhere?'))
+                // Ember data is not worth the time investment currently
+                .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
+                    data: {
+                        data: [{
+                            type: 'preprint_providers',
+                            id: config.PREPRINTS.provider,
+                        }]
+                    }
+                }))
+                .then(() => model.get('providers'))
+                .then(() => this.clearFields())
+                .then(() => this.transitionToRoute('content', model))
                 .catch(() => this.send('error', 'Could not save preprint; please try again later'));
+        },
+        lockFileAndNode() {
+            this.set('fileAndNodeLocked', true);
+        },
+        finishUpload() {
+            this.send('lockFileAndNode');
+            this.send('next', this.get('_names.0'));
+        },
+        resetFileUpload() {
+            var promisesArray = [];
+            var filePromises = [];
+            this.get('filesUploadedForPreprint').forEach((file) => {
+                filePromises.push(this.get('fileManager').deleteFile(file).then(() => {
+                    this.get('toast').info('File removed!');
+                }).catch(() => {
+                    this.get('toast').error('Could not remove uploaded file');
+                }));
+            });
+
+            Ember.RSVP.allSettled(filePromises).then(() => {
+                this.get('projectsCreatedForPreprint').forEach((project) => {
+                    promisesArray.push(project.destroyRecord().then(() => {
+                        this.get('toast').info('Project removed!');
+                    }).catch(() => {
+                        this.get('toast').error('Could not remove created project/component');
+                    }));
+                });
+            });
+
+            Ember.RSVP.allSettled(promisesArray).then(() => {
+                if (promisesArray.length > 0 || filePromises.length > 0) {
+                    window.setTimeout(
+                    function() {
+                        location.reload();
+                    }, 3000);
+                } else {
+                    window.location.reload();
+                }
+            });
         }
     }
 });
+

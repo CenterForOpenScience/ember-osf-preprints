@@ -28,6 +28,9 @@ module.exports = function(environment) {
         },
         moment: {
             outputFormat: 'YYYY-MM-DD hh:mm a'
+        },
+        PREPRINTS: {
+            provider: 'osf'
         }
     };
 

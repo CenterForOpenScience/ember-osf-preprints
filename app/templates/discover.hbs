@@ -3,7 +3,7 @@
         <div class="row m-v-md ">
             <div class="col-xs-12 text-center">
                 <h1>Preprint Archive Search</h1>
-                <p class="lead">powered by <a href="https://osf.io/share/" class="share-logo" title="SHARE"></a></p>
+                <p class="lead">powered by <a href="https://share.osf.io/" class="share-logo" title="SHARE"></a></p>
             </div>
         </div>
         <div class="row m-t-md m-b-xl">
@@ -53,16 +53,21 @@
                                 </span>
                             </div>
                         </div>
-                        <ul id="activeFiltersList">
-                            Provider:
-                            {{#each activeFilters.providers as |filter|}}
-                                <li>{{filter}}</li>
-                            {{/each}}
-                            Subjects:
-                            {{#each activeFilters.subjects as |filter|}}
-                                <li>{{filter}}</li>
-                            {{/each}}
-                        </ul>
+                        <div id="activeFiltersList">
+                            <p>Provider:</p>
+                            <ul>
+                                {{#each activeFilters.providers as |filter|}}
+                                    <li>{{filter}}</li>
+                                {{/each}}
+                            </ul>
+                            <hr>
+                            <p>Subjects:</p>
+                            <ul>
+                                {{#each activeFilters.subjects as |filter|}}
+                                    <li>{{filter}}</li>
+                                {{/each}}
+                            </ul>
+                        </div>
                     </div>
                 {{/if}}
                 <h4> Refine your search by </h4>
@@ -77,37 +82,29 @@
                                     {{fa-icon 'caret-right'}}
                                 {{/if}}
                             </span>
-                            {{#if (if-filter 'OSF Providers' activeFilters.providers)}}
-                                <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
-                            {{else}}
-                                <input type="checkbox" {{action 'selectProvider' 'OSF Providers'}}>
-                            {{/if}}
-                            OSF Providers
+                            <label>
+                                <input type="checkbox" checked="{{if (if-filter osfProviders activeFilters.providers true) 'checked'}}" onclick={{action 'selectProvider' 'OSF Providers'}}>
+                                OSF Providers
+                            </label>
                         </li>
                         {{#if expandedOSFProviders}}
                             <ul>
                                 {{#each osfProviders as |item|}}
                                     <li>
-                                        {{#if (if-filter item activeFilters.providers)}}
-                                            <input type="checkbox" checked {{action 'selectProvider' item}}>
-                                        {{else if (if-filter 'OSF Providers' activeFilters.providers)}}
-                                            <input type="checkbox" checked {{action 'selectProvider' item}}>
-                                        {{else}}
-                                            <input type="checkbox" {{action 'selectProvider' item}}>
-                                        {{/if}}
-                                        {{item}}
+                                        <label>
+                                            <input type="checkbox" checked="{{if (if-filter item activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item}}>
+                                            {{item}}
+                                        </label>
                                     </li>
                                 {{/each}}
                             </ul>
                         {{/if}}
                         {{#each otherProviders as |item|}}
-                            <li>
-                                {{#if (if-filter item activeFilters.providers)}}
-                                    <input type="checkbox" checked {{action 'selectProvider' item}}>
-                                {{else}}
-                                    <input type="checkbox" {{action 'selectProvider' item}}>
-                                {{/if}}
-                                {{item}}
+                            <li style="margin-left: 10px">
+                                <label>
+                                    <input type="checkbox" checked="{{if (if-filter item activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item}}>
+                                    {{item}}
+                                </label>
                             </li>
                         {{/each}}
 
@@ -115,11 +112,7 @@
                 </div>
                 <div class="m-t-lg">
                     <h4 class="filter-heading p-sm">Subject</h4>
-                    {{#if osfProvider}}
-                        {{taxonomy-tree select=(action 'selectSubjectFilter') subjects=treeSubjects}}
-                    {{else}}
-                        <i>Taxonomy not available for non-OSF providers.</i>
-                    {{/if}}
+                    {{taxonomy-tree select=(action 'selectSubjectFilter') subjects=treeSubjects}}
                 </div>
                 <div class="osf-box p-md clearfix m-t-xl">
                     <p>Do you want to add your own research as a preprint?</p>

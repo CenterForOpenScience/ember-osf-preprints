@@ -92,6 +92,7 @@ body {
 .preprint-search-header {
     padding-top: 120px;
     background: #e0ebef url('img/search-bg.jpg') top center;
+    background-size: cover;
     .share-logo {
         width: 46px;
         height: 22px;
@@ -122,12 +123,75 @@ body {
 /* VIEW page */
 
 .dark-overlay-header-background {
-    background: url("img/dark_overlay.png") no-repeat;
+    background: url("img/dark-overlay.png") top center;
+}
+
+
+/* SUBMIT page */
+
+.preprint-submit-header {
+    padding-top: 120px;
+    background: url("img/submit_bg.jpg") no-repeat top center;
+    background-size: cover;
+    border-bottom: 1px solid #eee;
+    height: 240px;
+}
+.preprint-submit-body {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 50px;
+}
+
+.preprint-form-block {
+    margin-top: 20px;
+    background: #fff;
+    padding:10px 20px 20px 20px;
+    box-shadow: 0 0 3px #ddd;
+    label {
+        width: 100%;
+    }
+}
+#preprint-form-upload {
+    .btn-big {
+        height: 80px;
+        font-size: 16px;
+        background-color: #eef2f3;
+    }
+    .dropzone {
+        background-color: #f8f8f8;
+        border: 2px dashed #ddd;
+        margin-bottom: 20px;
+        margin-top: 10px;
+        text-align: center;
+    }
+    .form-control {
+        width: 95%; /* this is a bit of a hack, TODO: Proper fix for this */
+    }
+    .radio-option {
+        background: #f5f5f5;
+        border-radius: 2px;
+    }
+
+}
+.file-browser-header {
+    display: none;
+}
+.file-browser {
+    border: 1px solid #ddd;
+    margin: 10px;
+}
+
+/* Not found page */
+.preprint-404 {
+    padding: 120px 0 120px 0;
+    background-color: #ecf2f3;
+    border-bottom: 1px solid #d6dbdc;
 }
 
 
 
 
+/* Usefulness of the portions of code below is doubtful, mixed with critical and unused. TODO: Go through and clean up unused code */
 
 .navbar-header {
     height: $nav-bar-height;
@@ -347,24 +411,9 @@ body {
     }
 }
 
+
+
 // FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE
-main {
-    padding-top: 5rem;
-}
-
-#addPreprint {
-    margin-bottom: 1em;
-}
-
-.container{
-        padding-right:10px;
-        padding-left:10px;
-    }
-
-    //.osf-box{
-    //    border:0px;
-    //}
-
 .text-muted {
     color: #777;
 }
@@ -374,14 +423,6 @@ main {
     border: 0;
     outline: none;
     font-size: 2em;
-}
-
-// TODO: Import this from the correct place
-.osf-gravatar > img {
-    border: 1px solid #CDCDCD;
-    border-radius: 13px;
-    margin-right: 5px;
-    height: 27px;
 }
 
 .smallTag{
@@ -438,11 +479,10 @@ hr {
         @extend a;
         cursor: pointer;
         font: {
-            size: 2rem;
-            weight: bold;
+            size: 16px;
+            font-weight: bold;
         }
         display: block;
-        transition: color 0.1s linear;
         margin: 1rem 0;
         &:hover, &:focus {
             text-decoration: none;
@@ -452,26 +492,30 @@ hr {
             display: block;
             width: 100%;
             clear: both;
-            border-bottom: 1px lightgray solid;
         }
         &.cp-is-open {
             cursor: default;
-            color: black;
+            color: #333;
         }
         &.valid {
-            .fa {
-                color: $brand-primary;
+            .preprint-section-status .fa {
+                color: #009688;
+                display: block;
             }
         }
         &.invalid {
-            .fa {
-                color: red;
+            .preprint-section-status .fa {
+                color: #F44336;
+                display: block;
             }
         }
         .fa {
-            float: right;
+            font-size: 20px;
+        }
+        .preprint-section-status .fa {
             color: gray;
             transition: color 0.1s linear;
+            display: none;
         }
     }
     .cp-Panel-body {
@@ -501,35 +545,7 @@ hr {
     }
 }
 
-#preprint-form-upload {
-    &:after {
-        content: "";
-        display: block;
-        clear: both;
-    }
-    .start {
-        &:before, &:after {
-            @extend .col-md-2;
-            content: "";
-        }
-        & > button {
-            height: 20rem;
-            background: none;
-            border-radius: 1rem;
-            border: gray 1px solid;
-            transition: background-color 0.1s linear;
-            &:hover {
-                background-color: lightgray;
-            }
-            &:active {
-                background-color: gray;
-            }
-        }
-    }
-    button {
-        margin-top: 1rem;
-    }
-}
+
 
 #preprint-form-basics {
     span.required:after {
@@ -559,8 +575,9 @@ hr {
         }
         & > b {
             display: inline-block;
-            padding: 1rem 0 1rem 3rem;
+            padding: 5px 12px ;
             position: relative;
+            border-radius: 4px;
             &%pseudo {
                 content: '';
                 display: block;
@@ -612,18 +629,11 @@ hr {
             }
         }
     }
-    .col-md-4 {
-        padding: 0 1rem 1rem 0;
-        &:last-child {
-            padding-right: 0;
-        }
-    }
     ul {
         height: 30rem;
         list-style: none;
         padding: 0;
         border: 1px lightgray solid;
-        border-radius: 1rem;
         overflow: hidden;
         input {
             border-style: none none solid none;
@@ -632,7 +642,7 @@ hr {
         li {
             padding: 0.5rem 1.5rem;
             cursor: pointer;
-            border-radius: 1em;
+            border-radius: 4px;
             margin: 0.5rem;
             overflow: hidden;
             white-space: nowrap;
@@ -645,6 +655,7 @@ hr {
             }
             &:hover {
                 background-color: $theme-color-light;
+                color: #ffffff;
             }
             &:active, &.selected {
                 background-color: #337AB7;
@@ -787,4 +798,8 @@ hr {
 #selectedFileExisting {
     margin: 5px;
     padding: 5px;
+}
+
+#convertExistingOrCreateComponent {
+    padding-left: 15px;
 }

@@ -1,6 +1,8 @@
 {{name}}
-{{#if valid}}
-    {{fa-icon 'check-circle'}}
-{{else}}
-    {{fa-icon 'times-circle'}}
-{{/if}}
+<div class="preprint-section-status pull-right">
+    {{#if (or valid noValidation)}}
+        {{fa-icon 'check-circle'}}
+    {{else}}
+        {{fa-icon 'times-circle'}}
+    {{/if}}
+</div>

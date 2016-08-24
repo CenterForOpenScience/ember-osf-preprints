@@ -1,44 +1,34 @@
 <ul>
     {{#each topLevelItem as |item|}}
         <li>
-            {{#if item.showChildren}}
-                <span class="pointer m-r-xs" {{action 'expand' item}}>{{fa-icon 'caret-down'}}</span>
-            {{else}}
-                <span class="pointer m-r-xs" {{action 'expand' item}}>{{fa-icon 'caret-right'}}</span>
-            {{/if}}
-            {{#if (if-filter item.text subjects)}}
-                <input type="checkbox" checked {{action 'select' item}}>
-            {{else}}
-                <input type="checkbox" {{action 'select' item}}>
-            {{/if}}
-            {{item.text}}
+            <span class="pointer m-r-xs" {{action 'expand' item}}>
+                <i style="vertical-align: top; padding-top: 4px" class="fa {{if item.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
+            </span>
+            <label style="max-width: 85%; word-wrap: break-word;">
+                <input type="checkbox" checked="{{if (if-filter item.text subjects) 'checked'}}" onclick={{action 'select' item}}>
+                {{item.text}}
+            </label>
         </li>
         {{#if item.showChildren}}
             <ul>
                 {{#each item.children as |child|}}
                     <li>
-                        {{#if child.showChildren}}
-                            <span class="pointer  m-r-xs" {{action 'expand' child}}>{{fa-icon 'caret-down'}}</span>
-                        {{else}}
-                            <span class="pointer  m-r-xs" {{action 'expand' child}}>{{fa-icon 'caret-right'}}</span>
-                        {{/if}}
-                        {{#if (if-filter child.text subjects)}}
-                            <input type="checkbox" checked {{action 'select' child}}>
-                        {{else}}
-                            <input type="checkbox" {{action 'select' child}}>
-                        {{/if}}
-                        {{child.text}}
+                        <span class="pointer m-r-xs" {{action 'expand' child}}>
+                            <i style="vertical-align: top; padding-top: 4px" class="fa {{if child.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
+                        </span>
+                        <label>
+                            <input type="checkbox" checked="{{if (if-filter child.text subjects) 'checked'}}" onclick={{action 'select' child}}>
+                            {{child.text}}
+                        </label>
                     </li>
                     {{#if child.showChildren}}
                         <ul>
                             {{#each child.children as |grandkid|}}
                                 <li>
-                                    {{#if (if-filter grandkid.text subjects)}}
-                                        <input type="checkbox" checked {{action 'select' grandkid}}>
-                                    {{else}}
-                                        <input type="checkbox" {{action 'select' grandkid}}>
-                                    {{/if}}
-                                    {{grandkid.text}}
+                                    <label>
+                                        <input type="checkbox" checked="{{if (if-filter grandkid.text subjects) 'checked'}}" onclick={{action 'select' grandkid}}>
+                                        {{grandkid.text}}
+                                    </label>
                                 </li>
                             {{/each}}
                         </ul>
