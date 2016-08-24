@@ -22,7 +22,7 @@
                                     <p><label> Selected File: </label> {{selectedFile.name}}</p>
                                     <p><label> Selected project: </label> {{node.title}} </p>
 
-                                    <button class="btn btn-danger" {{action 'resetFileUpload'}}>Reset</button>
+                                    <button class="btn btn-danger" {{action 'resetFileUpload'}}>Restart</button>
                                     <button class="btn btn-primary" {{action 'next' name}}>Next</button>
                                 {{else}}
                                     {{#liquid-bind filePickerState class='translate' as |currentState|}}
@@ -44,6 +44,8 @@
                                                     osfFile=selectedFile
                                                     next=(action 'next')
                                                     _names=_names
+                                                    projectsCreatedForPreprint=projectsCreatedForPreprint
+                                                    filesUploadedForPreprint=filesUploadedForPreprint
                                                     finishUpload=(action 'finishUpload')
                                                     changeState=(action 'changeState')}}
 
@@ -54,8 +56,8 @@
                                                   selectedNode=node
                                                   selectedFile=selectedFile
                                                   selectFile=(action "selectExistingFile")
-                                                   chooseExistingProjectHeader=chooseExistingProjectHeader
-                                                   createComponentHeader=createComponentHeader
+                                                  chooseExistingProjectHeader=chooseExistingProjectHeader
+                                                  createComponentHeader=createComponentHeader
                                                   highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
                                                   shouldCreateChild=shouldCreateChild}}
                                                 {{! TODO: cleanup created component if needed }}
