@@ -350,7 +350,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
             Ember.RSVP.all(filePromises).then(() => {
                 this.get('projectsCreatedForPreprint').forEach((project) => {
-                    promisesArray.push(this.store.adapterFor('node').ajax(project.get('links.self'), 'DELETE').then(() => {
+                    promisesArray.push(project.destroyRecord().then(() => {
                         this.get('toast').info('Project removed!');
                     }).catch(() => {
                         this.get('toast').error('Could not remove created project/component');
