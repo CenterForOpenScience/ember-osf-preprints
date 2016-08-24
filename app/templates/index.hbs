@@ -35,25 +35,6 @@
         </div> {{!END CONTAINER}}
     </div> {{!END HEADER}}
 
-    {{!PREPRINT LIST}}
-    <div class="preprint-list p-v-md"> {{!LIST}}
-        <div class="container"> {{!CONTAINER}}
-            <div class="row p-v-md">{{!LIST ROW}}
-                <h2>Explore <small>recent additions</small></h2>
-                <div id="landing-page-preprint-list-background" class="p-v-md"> {{!BACKGROUND}}
-                    {{#each model.preprints as |preprintEntry|}}
-                        {{search-result result=preprintEntry}}
-                    {{/each}}
-                </div> {{!END BACKGROUND}}
-                <div class="text-center"
-                     style="padding-top: 20px; padding-bottom: 40px;"> {{! READ MORE BUTTON}}
-                    {{#link-to "discover" class="btn btn-success btn-lg"}}Browse more preprints{{/link-to}}
-                </div> {{!END READ MORE BUTTON}}
-            </div> {{!END LIST ROW}}
-        </div> {{!END CONTAINER}}
-    </div> {{!END LIST}}
-
-
     {{!SUBJECTS}}
     <div class="preprint-subjects p-v-md"> {{!SUBJECTS LIST}}
         <div class="container"> {{!CONTAINER DIV}}
@@ -66,18 +47,22 @@
         </div> {{!END CONTAINER}}
     </div> {{!END SUBJECTS LIST}}
 
-    {{!BRANDED PREPRINT SERVERS}}
-    <div class="preprint-providers p-v-md"> {{!center text}}
-        <div class="container"> {{!CONTAINER}}
-            <h2>Services <small>powered by OSF Preprints (coming soon!)</small> </h2>
+
+    <div class="preprint-tool p-v-md">
+        <div class="container">
             <div class="row p-v-md">{{!BRANDED ROW}}
+                <h2>Preprint Services</h2>
                 <div class="col-sm-4 col-sm-offset-2 "> <div class="provider-logo provider-socarxiv"></div></div>
                 <div class="col-sm-4"> <div class=" provider-logo provider-engrxiv"></div></div>
-
-            </div> {{!END ROW}}
-        </div> {{!END CONTAINER}}
-    </div> {{!END PROVIDERS}}
-
+            </div>
+            <div class="row p-v-md">
+                <div class="col-md-8">
+                    <p class="lead"> Create your own branded preprint servers backed by the OSF.</p>
+                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">Contact us</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     {{!CONTRIBUTE YOUR RESEARCH}}
@@ -93,28 +78,6 @@
         </div> {{!END CONTAINER}}
     </div>
 
-    {{!FOOTER}}
-    <div class="preprint-tool p-v-md">
-        <div class="container">
-            <div class="row p-v-md">
-                <div class="col-md-8">
-                    <h2>Preprint Services</h2>
-                    <p class="lead"> Create your own branded preprint servers backed by the OSF.</p>
-                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">Contact us</a>
-                </div>
-                <div class="col-md-4 hidden-xs hidden-sm">
-                    <div id="logo">
-                        <div class="circle" id="circle-1"><span></span></div>
-                        <div class="circle" id="circle-2"><span></span></div>
-                        <div class="circle" id="circle-3"><span></span></div>
-                        <div class="circle" id="circle-4"><span></span></div>
-                        <div class="circle" id="circle-5"><span></span></div>
-                        <div class="circle" id="circle-6"><span></span></div>
-                        <div class="circle" id="circle-7"><span></span></div>
-                        <div class="circle" id="circle-8"><span></span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
 </div> {{!END INDEX}}

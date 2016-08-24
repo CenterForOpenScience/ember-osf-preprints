@@ -49,17 +49,17 @@ body {
 /* Subject Panel */
 .preprint-subjects {
     background-color: #f1f3f2;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #6d8a98;;
     .subject .col-md-6 a {
         width: 100%;
         font-size: 17px;
     }
 }
 
-/* Providers Panel */
-.preprint-providers {
-    background: #cbd9d5 url('img/index-server-bg.jpg');
-    border-bottom: 1px solid #ced8d4;
+/* Preprint providers and become provider */
+.preprint-tool {
+    background: #cbd9d5 url('img/index-tool-bg.jpg') top center;
+    color: #FFFFFF;
     .provider-logo {
         height: 120px;
         background-size: contain;
@@ -71,20 +71,16 @@ body {
     .provider-engrxiv {
         background-image: url('img/provider_logos/engrxiv.png');
     }
-
 }
+
 
 /* Contribute Panel */
 .preprint-contribute {
-    background-color: #f5f5f5;
+    background: #cbd9d5 url('img/index-server-bg.jpg');
+    border-bottom: 1px solid #ced8d4;
 
 }
-.preprint-tool {
-    background: #cbd9d5 url('img/index-tool-bg.jpg') top center;
-    #logo {
-        transform: scale(2);
-    }
-}
+
 
 
 
@@ -276,112 +272,6 @@ body {
 }
 
 
-#logo {
-    width: 200px;
-    height: 200px;
-    margin: 30px auto;
-    position: relative;
-    transition: all 1s ease-in-out;
-    &.off {
-        transform: rotate(180deg);
-        .circle:before {
-            top: -200px;
-            opacity: 0;
-        }
-        .circle:after {
-            bottom: 200px;
-            opacity: 0;
-        }
-    }
-    .circle {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        &:before {
-            content: "";
-            width: 50px;
-            height: 50px;
-            background: #FFF;
-            border-radius: 50%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            transition: all 0.4s ease-in-out;
-            opacity: 1;
-        }
-        &:after {
-            content: "";
-            width: 30px;
-            height: 30px;
-            background: #38B9EB;
-            border-radius: 50%;
-            position: absolute;
-            bottom: -10px;
-            left: 10px;
-            transition: all 0.6s ease-in-out;
-            opacity: 1;
-        }
-        &:hover:before {
-            top: -15px;
-        }
-        &:hover:after {
-            bottom: -5px;
-        }
-    }
-
-    #circle-1 {
-        transform: rotate(0deg);
-        left: 75px;
-        top: 0;
-    }
-    #circle-2 {
-        transform: rotate(45deg);
-        left: 128px;
-        top: 22px;
-        &:after {
-            z-index: -1;
-        }
-    }
-    #circle-3 {
-        transform: rotate(90deg);
-        left: 150px;
-        top: 75px;
-    }
-    #circle-4 {
-        transform: rotate(135deg);
-        left: 128px;
-        top: 128px;
-        &:after {
-            z-index: -1;
-        }
-    }
-    #circle-5 {
-        transform: rotate(180deg);
-        left: 75px;
-        top: 150px;
-    }
-    #circle-6 {
-        transform: rotate(225deg);
-        left: 22px;
-        top: 128px;
-        &:after {
-            z-index: -1;
-        }
-    }
-    #circle-7 {
-        transform: rotate(270deg);
-        left: 0;
-        top: 75px;
-    }
-    #circle-8 {
-        transform: rotate(315deg);
-        left: 22px;
-        top: 22px;
-        &:after {
-            z-index: -1;
-        }
-    }
-}
 
 
 .logo {
@@ -418,9 +308,6 @@ body {
 
 
 // FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE
-.text-muted {
-    color: #777;
-}
 
 .show-more-button {
     background: 0;
