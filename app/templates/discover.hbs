@@ -82,41 +82,29 @@
                                     {{fa-icon 'caret-right'}}
                                 {{/if}}
                             </span>
-                            {{#if (if-filter 'Open Science Framework' activeFilters.providers)}}
-                                <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
-                            {{else if (if-filter 'SocArxiv' activeFilters.providers)}}
-                                <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
-                            {{else if (if-filter 'Engrxiv' activeFilters.providers)}}
-                                <input type="checkbox" checked {{action 'selectProvider' 'OSF Providers'}}>
-                            {{else}}
-                                <input type="checkbox" {{action 'selectProvider' 'OSF Providers'}}>
-                            {{/if}}
-                            OSF Providers
+                            <label>
+                                <input type="checkbox" checked="{{if (if-filter osfProviders activeFilters.providers true) 'checked'}}" onclick={{action 'selectProvider' 'OSF Providers'}}>
+                                OSF Providers
+                            </label>
                         </li>
                         {{#if expandedOSFProviders}}
                             <ul>
                                 {{#each osfProviders as |item|}}
                                     <li>
-                                        {{#if (if-filter item activeFilters.providers)}}
-                                            <input type="checkbox" checked {{action 'selectProvider' item}}>
-                                        {{else if (if-filter 'OSF Providers' activeFilters.providers)}}
-                                            <input type="checkbox" checked {{action 'selectProvider' item}}>
-                                        {{else}}
-                                            <input type="checkbox" {{action 'selectProvider' item}}>
-                                        {{/if}}
-                                        {{item}}
+                                        <label>
+                                            <input type="checkbox" checked="{{if (if-filter item activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item}}>
+                                            {{item}}
+                                        </label>
                                     </li>
                                 {{/each}}
                             </ul>
                         {{/if}}
                         {{#each otherProviders as |item|}}
                             <li style="margin-left: 10px">
-                                {{#if (if-filter item activeFilters.providers)}}
-                                    <input type="checkbox" checked {{action 'selectProvider' item}}>
-                                {{else}}
-                                    <input type="checkbox" {{action 'selectProvider' item}}>
-                                {{/if}}
-                                {{item}}
+                                <label>
+                                    <input type="checkbox" checked="{{if (if-filter item activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item}}>
+                                    {{item}}
+                                </label>
                             </li>
                         {{/each}}
 

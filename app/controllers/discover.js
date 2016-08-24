@@ -236,6 +236,8 @@ export default Ember.Controller.extend({
                 if (match.length) {
                     if (match.length < currentProviders.length) {
                         this.get('osfProviders').forEach(each => this.get('activeFilters.providers').removeObject(each));
+                    } else {
+                        return false;
                     }
                 } else {
                     this.get('osfProviders').forEach(each => this.get('activeFilters.providers').pushObject(each));
@@ -244,6 +246,8 @@ export default Ember.Controller.extend({
                 if (currentProviders.indexOf(provider) !== -1) {
                     if (currentProviders.length > 1) {
                         this.get('activeFilters.providers').removeObject(provider);
+                    } else {
+                        return false;
                     }
                 } else {
                     this.get('activeFilters.providers').pushObject(provider);
