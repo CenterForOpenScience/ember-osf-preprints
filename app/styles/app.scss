@@ -27,7 +27,8 @@ body {
     padding: 0;
     background: #578CA2;
     z-index: 99;
-    box-shadow: 0 0 4px #777;
+    box-shadow: 0 0 4px #525151;
+    border-radius: 0;
     a {
         color: #ffffff;
     }
@@ -40,8 +41,17 @@ body {
     .navbar-brand a:hover {
         text-decoration: none;
     }
+    .navbar-toggle {
+        color: #eeeeee;
+    }
 }
 
+/* This should be a temporary adjustment */
+@media (max-width: 768px) {
+    .preprint-navbar {
+        top: 50px;
+    }
+}
 /* INDEX page */
 /* Global to index */
 
@@ -236,9 +246,6 @@ body {
 
 /* Usefulness of the portions of code below is doubtful, mixed with critical and unused. TODO: Go through and clean up unused code */
 
-.navbar-header {
-    height: $nav-bar-height;
-}
 
 .no-transition {
     transition: none !important;
