@@ -50,7 +50,7 @@ body {
 .preprint-subjects {
     background-color: #f1f3f2;
     border-bottom: 1px solid #6d8a98;;
-    .subject .col-md-6 a {
+    .subject-item a {
         width: 100%;
         font-size: 17px;
     }
@@ -61,6 +61,7 @@ body {
     background: #cbd9d5 url('img/index-tool-bg.jpg') top center;
     color: #FFFFFF;
     text-shadow: 0 0 5px #506069;
+    background-size: cover;
     .provider-logo {
         height: 120px;
         background-size: contain;
@@ -86,6 +87,18 @@ body {
     background: #cbd9d5 url('img/index-server-bg.jpg');
     border-bottom: 1px solid #ced8d4;
 
+}
+
+@media (max-width: 768px) {
+    .subject-item {
+        margin-bottom: 5px;
+    }
+    .subject.row {
+        margin-bottom: 0;
+    }
+    .provider-logo {
+        margin-bottom: 15px;
+    }
 }
 
 
