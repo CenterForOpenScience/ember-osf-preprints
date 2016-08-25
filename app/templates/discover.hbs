@@ -55,10 +55,10 @@
                         </div>
                         <div id="activeFiltersList">
                             {{#each activeFilters.providers as |filter|}}
-                                <span class='provider-filter'>{{filter}} <span class='pointer' onclick="{{action 'selectProvider' filter}}">{{fa-icon 'times'}}</span></span>
+                                <span class='preprint-filter provider-filter'>{{filter}} <span class='pointer' onclick="{{action 'selectProvider' filter}}">{{fa-icon 'times-circle'}}</span></span>
                             {{/each}}
                             {{#each activeFilters.subjects as |filter|}}
-                                <span class='subject-filter'>{{filter}} <span class='pointer' onclick="{{action 'selectSubjectFilter' filter}}">{{fa-icon 'times'}}</span></span>
+                                <span class='preprint-filter subject-filter'>{{filter}} <span class='pointer' onclick="{{action 'selectSubjectFilter' filter}}">{{fa-icon 'times-circle'}}</span></span>
                             {{/each}}
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                 </div>
                 <div class="osf-box p-md m-b-lg clearfix m-t-xl">
                     <p>Do you want to add your own research as a preprint?</p>
-                    <button type="button" class="btn btn-success pull-right" {{action "linkToAddPreprint"}}>Add your preprint</button>
+                    {{#link-to "submit" type="button" class="btn btn-success btn-lg"}}Add your preprint{{/link-to}}
                 </div>
             </div>
 
