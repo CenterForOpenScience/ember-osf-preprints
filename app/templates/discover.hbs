@@ -9,7 +9,7 @@
         <div class="row m-t-md m-b-lg">
             <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                 <div class="input-group input-group-lg">
-                    {{input id="searchBox" value=searchValue class="form-control" key-up='search' placeholder="Search preprints..."}}
+                    {{input id="searchBox" value=(mut queryString) class="form-control" key-up='search' placeholder="Search preprints..."}}
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button" {{action "search" this}}>Search</button>
                     </span>
