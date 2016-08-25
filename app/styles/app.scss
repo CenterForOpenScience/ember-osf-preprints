@@ -117,14 +117,6 @@ body {
     }
 }
 
-
-/* Contribute Panel */
-.preprint-contribute {
-    background: #cbd9d5 url('img/index-server-bg.jpg');
-    border-bottom: 1px solid #ced8d4;
-
-}
-
 @media (max-width: 768px) {
     .subject-item {
         margin-bottom: 5px;
@@ -174,6 +166,23 @@ body {
     }
 }
 
+.preprint-filter {
+    margin: 2px;
+    padding: 0px 6px;
+    line-height: 30px;
+    border-radius: 2px;
+    display: inline-block;
+}
+.provider-filter {
+    background-color: #578ca2;
+    color: #eeeeee;
+}
+.subject-filter {
+    background-color: #d7e6e9;
+    .fa {
+        color: #777777;
+    }
+}
 
 
 /* VIEW page */
