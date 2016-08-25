@@ -11,14 +11,5 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{preprint-navbar}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#preprint-navbar}}
-      template block text
-    {{/preprint-navbar}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$().find('.navbar-brand').text().trim(), 'OSF Preprints');
 });
