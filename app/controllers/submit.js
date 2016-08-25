@@ -147,6 +147,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
 
     searchResults: [],
+    showModalSharePreprint: false,
 
     _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
 
@@ -283,6 +284,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         /*
           Submit tab actions
          */
+        toggleSharePreprintModal() {
+            this.toggleProperty('showModalSharePreprint');
+        },
         savePreprint() {
             // TODO: Check validation status of all sections before submitting
             // TODO: Make sure subjects is working so request doesn't get rejected

@@ -1,0 +1,15 @@
+{{#bs-modal open=isOpen body=false header=false footer=false}}
+    {{#bs-modal-header}}
+        <h3 class="modal-title">Share Preprint</h3>
+    {{/bs-modal-header}}
+    {{#bs-modal-body}}
+        Are you sure you want to share this preprint?  You will not be able to make any changes after this point.
+    {{/bs-modal-body}}
+
+    {{#bs-modal-footer}}
+        <div align="right">
+            <button {{action 'close'}} class="btn btn-default"> Cancel </button>
+            <a class="btn btn-success" {{action 'savePreprint'}}>Share </a>
+        </div>
+    {{/bs-modal-footer}}
+{{/bs-modal}}

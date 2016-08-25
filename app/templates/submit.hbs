@@ -139,7 +139,10 @@
                                         <p class="text-danger"> {{if (not authorsValid) 'Authors'}}</p>
                                     {{/unless}}
                                     <p> </p>
-                                    <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} type="submit" {{action 'savePreprint'}}>Share</button>
+                                    <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>Share</button>
+                                    <div>
+                                        {{confirm-share-preprint isOpen=showModalSharePreprint savePreprint=(action 'savePreprint')}}
+                                    </div>
                                 </div>
                             {{/cp-panel-body}}
                         {{/preprint-form-section}}
