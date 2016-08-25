@@ -5,7 +5,7 @@
             {{#if session.isAuthenticated}}
                 {{#link-to "submit" type="button" class="btn btn-info btn-lg"}}Add a preprint{{/link-to}}
             {{else}}
-                <button class="btn btn-info btn-lg" onclick={{action 'login' target=popup}}>
+                <button class="btn btn-success btn-lg" onclick={{action 'login' target=popup}}>
                     Add a preprint
                 </button>
             {{/if}}

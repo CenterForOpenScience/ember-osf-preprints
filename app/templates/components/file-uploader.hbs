@@ -1,4 +1,4 @@
-<label> 1. Upload your file </label>
+<label> 1. Upload your preprint </label>
 {{dropzone-widget
     url=url
     options=dropzoneOptions
@@ -9,39 +9,13 @@
     maxfilesexceeded=(action 'maxfilesexceeded')
 }}
 
-{{#liquid-bind state use='crossFade' as |currentState|}}
-    {{#if (eq currentState State.START)}}
-        <button class="btn btn-default" {{action 'changeState' State.START}}>Back</button>
-        <button disabled={{not hasFile}} class="btn btn-primary" {{action 'setState' State.NEW}}>Create new project</button>
-        <button disabled={{not hasFile}} class="btn btn-primary" {{action 'setState' State.EXISTING}}>Save to existing OSF project</button>
-
-    {{else if (eq currentState State.NEW)}}
-        <label> 2. Enter new project title </label>
+{{#liquid-if hasFile use='crossFade'}}
+    {{#liquid-bind hasFile use='crossFade'}}
+        <label> 2. Enter preprint title </label>
         {{input class='form-control m-v-md' value=nodeTitle}}
-        <button class="btn btn-default" {{action 'setState' State.START}}>Back</button>
-        {{! TODO: check if dropzone has file before allowing user to continue }}
-        <button class="btn btn-primary" disabled={{not (and hasFile nodeTitle)}} {{action 'createProject'}}>Next</button>
+    {{/liquid-bind}}
+{{/liquid-if}}
 
-    {{else if (eq currentState State.EXISTING)}}
-        <div class="p-r-xs m-v-sm">
-            {{preprint-form-project-select
-                userNodes=userNodes
-                selectedNode=node
-                chooseExistingProjectHeader=chooseExistingProjectHeader
-                shouldCreateChild=createChild
-                hasFile=hasFile
-                createComponentHeader=createComponentHeader
-             }}
-        </div>
-
-        {{! TODO: cleanup created component if needed }}
-        <div class="p-t-lg">
-            <button class="btn btn-default" {{action 'setState' State.START}}>Back</button>
-            {{! TODO: check if dropzone has file and model exists before allowing user to continue }}
-            {{!-- TODO: Make button text dynamic; refactor internals --}}
-            <button class="btn btn-primary" disabled={{not node}} {{action (if createChild 'createChild' 'upload')}}>Next</button>
-        </div>
-    {{else}}
-        {{log 'preprint-form-upload: bad uploadState'}}
-    {{/if}}
-{{/liquid-bind}}
+<div class="p-t-xs pull-right">
+    <button class="btn btn-primary" disabled={{not (and hasFile nodeTitle)}} {{action 'createProjectAndUploadFile'}}>Next</button>
+</div>

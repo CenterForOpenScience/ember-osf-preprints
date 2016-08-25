@@ -14,7 +14,7 @@ export default Ember.Route.extend({
                 contentType: 'application/json',
                 crossDomain: true,
             }).then(function (results) {
-                return results.hits.total;
+                return results.hits.total.toLocaleString();
             });
 
         return Ember.RSVP.hash({

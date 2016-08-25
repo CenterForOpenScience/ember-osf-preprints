@@ -16,76 +16,37 @@
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error')}}
-                            {{preprint-form-header name=name valid=uploadValid}}
+                            {{preprint-form-header showValidationIndicator=false name=name secondary-info=(if node.title (concat "Preprint title: " node.title) '') valid=uploadValid}}
                             {{#preprint-form-body}}
                                 {{#if fileAndNodeLocked}}
-                                    <p><label> Selected File: </label> {{selectedFile.name}}</p>
-                                    <p><label> Selected project: </label> {{node.title}} </p>
+                                    <p><label> Preprint file: </label> {{selectedFile.name}}</p>
 
                                     <button class="btn btn-danger" {{action 'resetFileUpload'}}>Restart</button>
                                     <button class="btn btn-primary" {{action 'next' name}}>Next</button>
                                 {{else}}
-                                    {{#liquid-bind filePickerState class='translate' as |currentState|}}
-                                        <div class={{currentState}}>
-                                            {{#if (eq currentState _State.START)}}
-                                                <div class="row">
-                                                    <div class="col-xs-6 p-h-xl">
-                                                        <button class="btn btn-block btn-big" {{action 'changeState' _State.NEW}}>Upload a New File</button>
-                                                    </div>
-                                                    <div class="col-xs-6  p-h-xl">
-                                                        <button class="btn btn-block btn-big" {{action 'changeState' _State.EXISTING}}>Select a file from OSF</button>
-                                                    </div>
-                                                </div>
-
-                                            {{else if (eq currentState _State.NEW)}}
-                                                {{file-uploader
-                                                    node=node
-                                                    userNodes=userNodes
-                                                    osfFile=selectedFile
-                                                    next=(action 'next')
-                                                    _names=_names
-                                                    projectsCreatedForPreprint=projectsCreatedForPreprint
-                                                    filesUploadedForPreprint=filesUploadedForPreprint
-                                                    finishUpload=(action 'finishUpload')
-                                                    changeState=(action 'changeState')}}
-
-                                            {{else if (eq currentState _State.EXISTING)}}
-                                                {{preprint-form-project-select
-                                                  userNodes=userNodes
-                                                  fileSelect=true
-                                                  selectedNode=node
-                                                  selectedFile=selectedFile
-                                                  selectFile=(action "selectExistingFile")
-                                                  chooseExistingProjectHeader=chooseExistingProjectHeader
-                                                  createComponentHeader=createComponentHeader
-                                                  highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
-                                                  shouldCreateChild=shouldCreateChild}}
-                                                {{! TODO: cleanup created component if needed }}
-                                                <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
-                                                {{! TODO: check if project and file are selected before allowing user to continue }}
-                                                <button class="btn btn-primary" disabled={{unless (and node selectedFile) true}} {{action (if shouldCreateChild 'addChild' 'finishUpload') name}}>Next</button>
-                                            {{else}}
-                                                {{log 'preprint-form-upload: bad state'}}
-                                            {{/if}}
-                                        </div>
-                                    {{/liquid-bind}}
+                                    <div>
+                                        {{file-uploader
+                                            node=node
+                                            userNodes=userNodes
+                                            osfFile=selectedFile
+                                            next=(action 'next')
+                                            _names=_names
+                                            projectsCreatedForPreprint=projectsCreatedForPreprint
+                                            filesUploadedForPreprint=filesUploadedForPreprint
+                                            finishUpload=(action 'finishUpload')}}
+                                    </div>
                                 {{/if}}
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
 
                     {{#with _names.[1] as |name|}}
-                        {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error')}}
-                            {{preprint-form-header name=name valid=basicsValid}}
+                        {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{log 'Basics Section hasopened state' hasOpened}}
+                            {{preprint-form-header name=name valid=basicsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div>
-                                            <label>
-                                                <span class="required">Title:</span>
-                                                {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=basicsTitle}}
-                                            </label>
-                                        </div>
                                         <div>
                                             <label>
                                                 DOI:
@@ -119,8 +80,8 @@
                     {{/with}}
 
                     {{#with _names.[2] as |name|}}
-                        {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error')}}
-                            {{preprint-form-header name=name valid=subjectsValid}}
+                        {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header name=name valid=subjectsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
 
                                 {{subject-picker save=(action 'saveSubjects')}}
@@ -137,8 +98,8 @@
                     {{/with}}
 
                     {{#with _names.[3] as |name|}}
-                        {{#preprint-form-section id='preprint-form-authors' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error')}}
-                            {{preprint-form-header name=name valid=authorsValid}}
+                        {{#preprint-form-section id='preprint-form-authors' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 {{preprint-form-authors
                                     contributors=contributors
@@ -166,8 +127,8 @@
                     {{/with}}
 
                     {{#with _names.[4] as |name|}}
-                        {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error')}}
-                            {{preprint-form-header name=name valid=(get valid name)}}
+                        {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header name=name showValidationIndicator=false}}
                             {{#cp-panel-body}}
                                 <div class="text-center">
                                     <p>Sharing this project will make both the manuscript and the project associated with it public.</p>
