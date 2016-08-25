@@ -1,19 +1,20 @@
 {{name}}
 
 {{#if (and (not isOpen) (eq name 'Upload'))}}
-    <div class="m-t-md">
-        <p><label> Preprint file: </label> {{preprintFile}} </p>
-        <p><label> Preprint title: </label> {{preprintTitle}} </p>
+    <div class="m-t-md preprint-header-preview">
+        <p><b class="m-r-md"> Preprint file: </b> {{preprintFile}} </p>
+        <p><b class="m-r-md"> Preprint title: </b> {{preprintTitle}} </p>
+        <i class="text-smaller">Click to Edit</i>
     </div>
 {{/if}}
 
 <div class="preprint-section-status pull-right">
     {{#if (and basicsSaveState (eq name 'Basics'))}}
-        <span class="text-success m-r-md"> Changes Saved! </span>
+        <span class="text-success text-smaller m-r-md"> Changes Saved! </span>
     {{else if (and authorsSaveState (eq name 'Authors'))}}
-        <span class="text-success m-r-md"> Changes Saved! </span>
+        <span class="text-success text-smaller m-r-md"> Changes Saved! </span>
     {{else if (and subjectsSaveState (eq name 'Subjects'))}}
-        <span class="text-success m-r-md"> Changes Saved! </span>
+        <span class="text-success text-smaller m-r-md"> Changes Saved! </span>
     {{/if}}
     {{#if showValidationIndicator}}
         {{#if (or valid (not isValidationActive))}}
@@ -25,38 +26,44 @@
 </div>
 
 {{#if (and isValidationActive (not isOpen))}}
-    <div class="m-t-md">
+    <div class="m-t-md preprint-header-preview">
         {{#if (eq name 'Basics')}}
-            <p><label> DOI: </label> {{if doi doi 'None'}} </p>
+            <p><b class="m-r-md"> DOI: </b> {{if doi doi 'None'}} </p>
             <p>
-                <label> Tags: </label>
+                <b class="m-r-md"> Tags: </b>
                 {{#if tags}}
                     {{#each tags as |tag|}}
-                        <span> tag </span>
+                        <span> {{tag}} </span>
                     {{/each}}
                 {{else}}
                     None
                 {{/if}}
             </p>
-            <p><label> Abstract: </label> {{if abstract abstract 'None'}} </p>
+            <p><b class="m-r-md"> Abstract: </b> {{if abstract abstract 'None'}} </p>
         {{else if (eq name 'Subjects')}}
             {{#if subjects}}
                 {{#each subjects as |subject|}}
-                    <p>{{subject.text}} </p>
+                    <span class="subject-preview">{{subject.text}} </span>
                 {{/each}}
             {{else}}
                 <p> None </p>
             {{/if}}
 
         {{else if (eq name 'Authors')}}
-            {{#each authors as |contrib|}}
-                {{#if contrib.unregisteredContributor}}
-                    <p>{{contrib.unregisteredContributor}}</p>
-                {{else}}
-                    <p>{{contrib.users.fullName}} </p>
-                {{/if}}
-            {{/each}}
+            <ul class="author-preview comma-list">
+                {{#each authors as |contrib|}}
+                    <li>
+                        {{#if contrib.unregisteredContributor}}
+                            {{contrib.unregisteredContributor}}
+                        {{else}}
+                            {{contrib.users.fullName}}
+                        {{/if}}
+                    </li>
+                {{/each}}
+            </ul>
         {{/if}}
+
+        <i class="text-smaller m-t-md">Click to Edit</i>
+
     </div>
 {{/if}}
-
