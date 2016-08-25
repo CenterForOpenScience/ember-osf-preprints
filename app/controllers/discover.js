@@ -80,6 +80,7 @@ export default Ember.Controller.extend({
     }),
     loadPage() {
         let queryBody = JSON.stringify(this.getQueryBody());
+        let this_ = this;
         this.set('loading', true);
         return Ember.$.ajax({
             url: this.get('searchUrl'),
@@ -97,17 +98,22 @@ export default Ember.Controller.extend({
                 let source = hit._source;
                 source.id = hit._id;
                 source.type = 'elastic-search-result';
+                source.osfProvider = false;
                 source.workType = source['@type'];
                 source.abstract = source.description;
                 source.subjects = source.subjects.map(function(each) {return {text: each};});
                 source.providers = source.sources.map(item => ({name: item}));
-                source.contributors = source.contributors.map(function(contributor) {
+                source.sources.forEach(function(each) {
+                    if (this_.get('osfProviders').indexOf(each) !== -1) {
+                        source.osfProvider = true;
+                    }
+                });
+                source.contributors = source.lists.contributors.map(function(contributor) {
                     return {
                         users: {
-                            familyName: contributor
-                            // familyName: contributor.family_name,
-                            // givenName: contributor.given_name,
-                            // id: contributor['@id']
+                            familyName: contributor.family_name,
+                            givenName: contributor.given_name,
+                            id: contributor.id
                         }
                     };
                 });
