@@ -7,6 +7,7 @@ module.exports = function(environment) {
         rootURL: '/preprints/',
         locationType: 'auto',
         authorizationType: 'cookie',
+        sentryDSN: 'http://test@localhost/80' || process.env.SENTRY_DSN,
         'ember-simple-auth': {
             authorizer: 'authorizer:osf-cookie',
             authenticator: 'authenticator:osf-cookie'
