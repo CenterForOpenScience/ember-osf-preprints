@@ -89,7 +89,7 @@ export default Ember.Controller.extend({
     }),
     loadPage() {
         let queryBody = JSON.stringify(this.getQueryBody());
-        let this_ = this;
+        let _this = this;
         this.set('loading', true);
         return Ember.$.ajax({
             url: this.get('searchUrl'),
@@ -113,7 +113,7 @@ export default Ember.Controller.extend({
                 source.subjects = source.subjects.map(function(each) {return {text: each};});
                 source.providers = source.sources.map(item => ({name: item}));
                 source.sources.forEach(function(each) {
-                    if (this_.get('osfProviders').indexOf(each) !== -1) {
+                    if (_this.get('osfProviders').indexOf(each) !== -1) {
                         source.osfProvider = true;
                     }
                 });
@@ -214,10 +214,6 @@ export default Ember.Controller.extend({
                 this.incrementProperty('page');
                 this.loadPage();
             }
-        },
-
-        linkToAddPreprint() {
-            this.transitionToRoute('submit');
         },
 
         clearFilters() {
