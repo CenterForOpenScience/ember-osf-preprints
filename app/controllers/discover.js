@@ -13,7 +13,8 @@ export default Ember.Controller.extend({
 
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
     queryParams: ['page', 'queryString', 'subjectFilter'],
-    activeFilters: { providers: ['Open Science Framework', 'SocArxiv', 'Engrxiv'], subjects: [] },
+    activeFilters: { providers: [], subjects: [] },
+    osfProviders: ['Open Science Framework', 'PsyArXiv', 'SocArxiv', 'Engrxiv'],
 
     page: 1,
     size: 10,
@@ -56,13 +57,21 @@ export default Ember.Controller.extend({
         }).then(function(results) {
             var hits = results.aggregations.sources.buckets;
             hits.map(function(each) {
-                if (_this.get('osfProviders').indexOf(each.key) === -1) {
-                    _this.get('otherProviders').pushObject(each.key);
+                _this.get('otherProviders').pushObject(each.key);
+            });
+            _this.get('osfProviders').slice().map(function(each) {
+                if (_this.get('otherProviders').indexOf(each) === -1) {
+                    _this.get('otherProviders').pushObject(each);
                 }
             });
+            _this.notifyPropertyChange('otherProviders');
         });
         this.loadPage.call(this);
     },
+    otherProvidersLoaded: Ember.observer('otherProviders', function() {
+        this.set('activeFilters.providers', this.get('otherProviders').slice());
+        this.notifyPropertyChange('activeFilters');
+    }),
     subjectChanged: Ember.observer('subjectFilter', function() {
         let filter = this.get('subjectFilter');
         if (filter) {
@@ -80,6 +89,7 @@ export default Ember.Controller.extend({
     }),
     loadPage() {
         let queryBody = JSON.stringify(this.getQueryBody());
+        let this_ = this;
         this.set('loading', true);
         return Ember.$.ajax({
             url: this.get('searchUrl'),
@@ -97,17 +107,22 @@ export default Ember.Controller.extend({
                 let source = hit._source;
                 source.id = hit._id;
                 source.type = 'elastic-search-result';
+                source.osfProvider = false;
                 source.workType = source['@type'];
                 source.abstract = source.description;
                 source.subjects = source.subjects.map(function(each) {return {text: each};});
                 source.providers = source.sources.map(item => ({name: item}));
-                source.contributors = source.contributors.map(function(contributor) {
+                source.sources.forEach(function(each) {
+                    if (this_.get('osfProviders').indexOf(each) !== -1) {
+                        source.osfProvider = true;
+                    }
+                });
+                source.contributors = source.lists.contributors.map(function(contributor) {
                     return {
                         users: {
-                            familyName: contributor
-                            // familyName: contributor.family_name,
-                            // givenName: contributor.given_name,
-                            // id: contributor['@id']
+                            familyName: contributor.family_name,
+                            givenName: contributor.given_name,
+                            id: contributor.id
                         }
                     };
                 });
@@ -117,7 +132,9 @@ export default Ember.Controller.extend({
             this.set('results', results);
         });
     },
-
+    maxPages: Ember.computed('numberOfResults', function() {
+        return ((this.get('numberOfResults') / this.get('size')) | 0) + 1;
+    }),
     getQueryBody() {
         let facetFilters = this.get('activeFilters');
         let filters = {};
@@ -175,7 +192,6 @@ export default Ember.Controller.extend({
         this.loadPage();
     }),
     otherProviders: [],
-    osfProviders: ['Open Science Framework', 'SocArxiv', 'Engrxiv'],
     actions: {
         search(val, event) {
             if (event && event.keyCode < 49 && !(event.keyCode === 8 || event.keyCode === 32)) {
@@ -205,7 +221,7 @@ export default Ember.Controller.extend({
         },
 
         clearFilters() {
-            this.set('activeFilters',  { providers: this.get('osfProviders').slice(), subjects: [] });
+            this.set('activeFilters',  { providers: ['Open Science Framework'], subjects: [] });
         },
 
         sortBySelect(index) {
@@ -220,37 +236,27 @@ export default Ember.Controller.extend({
         },
 
         selectSubjectFilter(subject) {
-            if (this.get('activeFilters.subjects').indexOf(subject.text) === -1) {
-                this.get('activeFilters.subjects').pushObject(subject.text);
+            if (typeof subject === 'object') {
+                subject = subject.text;
+            }
+            if (this.get('activeFilters.subjects').indexOf(subject) === -1) {
+                this.get('activeFilters.subjects').pushObject(subject);
             } else {
-                this.get('activeFilters.subjects').removeObject(subject.text);
+                this.get('activeFilters.subjects').removeObject(subject);
             }
             this.notifyPropertyChange('activeFilters');
         },
 
         selectProvider(provider) {
             let currentProviders = this.get('activeFilters.providers').slice();
-            if (provider === 'OSF Providers') {
-                let match = currentProviders.filter(each => this.get('osfProviders').indexOf(each) !== -1);
-                if (match.length) {
-                    if (match.length < currentProviders.length) {
-                        this.get('osfProviders').forEach(each => this.get('activeFilters.providers').removeObject(each));
-                    } else {
-                        return false;
-                    }
+            if (currentProviders.indexOf(provider) !== -1) {
+                if (currentProviders.length > 1) {
+                    this.get('activeFilters.providers').removeObject(provider);
                 } else {
-                    this.get('osfProviders').forEach(each => this.get('activeFilters.providers').pushObject(each));
+                    return false;
                 }
             } else {
-                if (currentProviders.indexOf(provider) !== -1) {
-                    if (currentProviders.length > 1) {
-                        this.get('activeFilters.providers').removeObject(provider);
-                    } else {
-                        return false;
-                    }
-                } else {
-                    this.get('activeFilters.providers').pushObject(provider);
-                }
+                this.get('activeFilters.providers').pushObject(provider);
             }
             this.notifyPropertyChange('activeFilters');
         },

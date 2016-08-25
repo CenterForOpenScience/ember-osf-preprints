@@ -12,9 +12,15 @@
             <div class="col-md-12">
                 <h4>
                     {{! TODO: link to view page for preprint }}
-                    {{#link-to "content" result}}
-                        {{result.title}}
-                    {{/link-to}}
+                    {{#if result.osfProvider}}
+                        {{#link-to "content" result}}
+                            {{result.title}}
+                        {{/link-to}}
+                    {{else}}
+                        <a href='{{result.canonicalUrl}}'>
+                            {{result.title}}
+                        </a>
+                    {{/if}}
                 </h4>
             </div>
         </div>
@@ -25,10 +31,13 @@
                     {{#if index}}
                         |
                     {{/if}}
-                    {{! TODO: link to contributor's page }}
-                    {{#link-to "index"}}
-                        {{contributor.users.familyName}}, {{contributor.users.givenName}}
-                    {{/link-to}}
+                    {{#if result.osfProvider}}
+                        <a href={{contributor.users.id}}>
+                            {{contributor.users.familyName}}{{if contributor.users.familyName ', '}}{{contributor.users.givenName}}
+                        </a>
+                    {{else}}
+                        {{contributor.users.familyName}}{{if contributor.users.familyName ', '}}{{contributor.users.givenName}}
+                    {{/if}}
                 {{/each}}
             </div>
         </div>
@@ -36,16 +45,12 @@
         <div class="row">
             <div class="col-sm-8">
                 {{#each result.subjects as |subject  index|}}
-                    {{#if index}}
-                        ,
-                    {{/if}}
-                    {{subject.text}}
+                    {{if index '| '}}{{subject.text}}
                 {{/each}}
             </div>
             <div class="col-sm-4">
                 {{#each result.providers as |provider index|}}
-                    {{if index ', '}}
-                    {{provider.name}}
+                    {{if index '| '}}{{provider.name}}
                 {{/each}}
             </div>
         </div>
