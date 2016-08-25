@@ -80,6 +80,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject.
     subjectsValid: Ember.computed.notEmpty('model.subjects'),
+    allSectionsValid: Ember.computed('uploadValid', 'basicsValid', 'authorsValid', 'subjectsValid', function() {
+        return this.get('uploadValid') && this.get('basicsValid') && this.get('authorsValid') && this.get('subjectsValid');
+    }),
 
     ////////////////////////////////////////////////////
     // Fields used in the "basics" section of the form.

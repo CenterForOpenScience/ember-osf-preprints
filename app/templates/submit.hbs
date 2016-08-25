@@ -132,7 +132,7 @@
                             {{#cp-panel-body}}
                                 <div class="text-center">
                                     <p>Sharing this project will make both the manuscript and the project associated with it public.</p>
-                                    <button class="btn btn-primary btn-lg m-t-md" disabled={{unless authorsValid true}} type="submit" {{action 'savePreprint'}}>Share</button>
+                                    <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} type="submit" {{action 'savePreprint'}}>Share</button>
                                 </div>
                             {{/cp-panel-body}}
                         {{/preprint-form-section}}
