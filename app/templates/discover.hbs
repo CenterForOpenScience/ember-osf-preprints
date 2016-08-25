@@ -54,19 +54,12 @@
                             </div>
                         </div>
                         <div id="activeFiltersList">
-                            <p>Provider:</p>
-                            <ul>
-                                {{#each activeFilters.providers as |filter|}}
-                                    <li>{{filter}}</li>
-                                {{/each}}
-                            </ul>
-                            <hr>
-                            <p>Subjects:</p>
-                            <ul>
-                                {{#each activeFilters.subjects as |filter|}}
-                                    <li>{{filter}}</li>
-                                {{/each}}
-                            </ul>
+                            {{#each activeFilters.providers as |filter|}}
+                                <span class='provider-filter'>{{filter}} <span class='pointer' onclick="{{action 'selectProvider' filter}}">{{fa-icon 'times'}}</span></span>
+                            {{/each}}
+                            {{#each activeFilters.subjects as |filter|}}
+                                <span class='subject-filter'>{{filter}} <span class='pointer' onclick="{{action 'selectSubjectFilter' filter}}">{{fa-icon 'times'}}</span></span>
+                            {{/each}}
                         </div>
                     </div>
                 {{/if}}
