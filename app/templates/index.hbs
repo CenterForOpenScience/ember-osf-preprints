@@ -38,10 +38,12 @@
     <div class="preprint-subjects p-v-md"> {{!SUBJECTS LIST}}
         <div class="container"> {{!CONTAINER DIV}}
             <div class="row p-v-md">{{!SUBJECTS ROW}}
-                <h2>Browse <small>by subject</small></h2>
-                <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
-                    {{taxonomy-top-list list=model.subjects}}
-                </div> {{!END SUBJECTS LIST}}
+                <div class="col-xs-12">
+                    <h2>Browse <small>by subject</small></h2>
+                    <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
+                        {{taxonomy-top-list list=model.subjects}}
+                    </div> {{!END SUBJECTS LIST}}
+                </div>
             </div>{{!END ROW}}
         </div> {{!END CONTAINER}}
     </div> {{!END SUBJECTS LIST}}
