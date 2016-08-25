@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row m-v-md ">
             <div class="col-xs-12 text-center">
-                <h1>Preprint Archive Search</h1>
+                <h1>Preprint Search</h1>
                 <p class="lead">powered by <a href="https://share.osf.io/" class="share-logo" title="SHARE"></a></p>
             </div>
         </div>
@@ -74,31 +74,6 @@
                 <div class='m-v-md'>
                     <h4 class="filter-heading p-sm">Providers</h4>
                     <ul>
-                        <li>
-                            <span class="pointer" {{action 'expandOSFProviders'}}>
-                                {{#if expandedOSFProviders}}
-                                    {{fa-icon 'caret-down'}}
-                                {{else}}
-                                    {{fa-icon 'caret-right'}}
-                                {{/if}}
-                            </span>
-                            <label>
-                                <input type="checkbox" checked="{{if (if-filter osfProviders activeFilters.providers true) 'checked'}}" onclick={{action 'selectProvider' 'OSF Providers'}}>
-                                OSF Providers
-                            </label>
-                        </li>
-                        {{#if expandedOSFProviders}}
-                            <ul>
-                                {{#each osfProviders as |item|}}
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" checked="{{if (if-filter item activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item}}>
-                                            {{item}}
-                                        </label>
-                                    </li>
-                                {{/each}}
-                            </ul>
-                        {{/if}}
                         {{#each otherProviders as |item|}}
                             <li style="margin-left: 10px">
                                 <label>

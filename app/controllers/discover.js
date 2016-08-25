@@ -13,7 +13,8 @@ export default Ember.Controller.extend({
 
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
     queryParams: ['page', 'queryString', 'subjectFilter'],
-    activeFilters: { providers: ['Open Science Framework', 'SocArxiv', 'Engrxiv'], subjects: [] },
+    activeFilters: { providers: [], subjects: [] },
+    osfProviders: ['Open Science Framework', 'PsyArXiv', 'SocArxiv', 'Engrxiv'],
 
     page: 1,
     size: 10,
@@ -56,10 +57,14 @@ export default Ember.Controller.extend({
         }).then(function(results) {
             var hits = results.aggregations.sources.buckets;
             hits.map(function(each) {
-                if (_this.get('osfProviders').indexOf(each.key) === -1) {
-                    _this.get('otherProviders').pushObject(each.key);
-                }
+                _this.get('otherProviders').pushObject(each.key);
             });
+            _this.get('osfProviders').forEach(function(each) {
+                if (_this.get('otherProviders').indexOf(each) === -1) {
+                    _this.get('otherProviders').pushObject(each);
+                }
+            })
+            _this.set('activeFilters.providers', _this.get('otherProviders').slice());
         });
         this.loadPage.call(this);
     },
@@ -181,7 +186,6 @@ export default Ember.Controller.extend({
         this.loadPage();
     }),
     otherProviders: [],
-    osfProviders: ['Open Science Framework', 'SocArxiv', 'Engrxiv'],
     actions: {
         search(val, event) {
             if (event && event.keyCode < 49 && !(event.keyCode === 8 || event.keyCode === 32)) {
@@ -211,7 +215,7 @@ export default Ember.Controller.extend({
         },
 
         clearFilters() {
-            this.set('activeFilters',  { providers: this.get('osfProviders').slice(), subjects: [] });
+            this.set('activeFilters',  { providers: ['Open Science Framework'], subjects: [] });
         },
 
         sortBySelect(index) {
@@ -236,27 +240,14 @@ export default Ember.Controller.extend({
 
         selectProvider(provider) {
             let currentProviders = this.get('activeFilters.providers').slice();
-            if (provider === 'OSF Providers') {
-                let match = currentProviders.filter(each => this.get('osfProviders').indexOf(each) !== -1);
-                if (match.length) {
-                    if (match.length < currentProviders.length) {
-                        this.get('osfProviders').forEach(each => this.get('activeFilters.providers').removeObject(each));
-                    } else {
-                        return false;
-                    }
+            if (currentProviders.indexOf(provider) !== -1) {
+                if (currentProviders.length > 1) {
+                    this.get('activeFilters.providers').removeObject(provider);
                 } else {
-                    this.get('osfProviders').forEach(each => this.get('activeFilters.providers').pushObject(each));
+                    return false;
                 }
             } else {
-                if (currentProviders.indexOf(provider) !== -1) {
-                    if (currentProviders.length > 1) {
-                        this.get('activeFilters.providers').removeObject(provider);
-                    } else {
-                        return false;
-                    }
-                } else {
-                    this.get('activeFilters.providers').pushObject(provider);
-                }
+                this.get('activeFilters.providers').pushObject(provider);
             }
             this.notifyPropertyChange('activeFilters');
         },
