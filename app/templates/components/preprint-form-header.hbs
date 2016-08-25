@@ -1,7 +1,20 @@
 {{name}}
-{{secondary-info}}
+
+{{#if (and (not isOpen) (eq name 'Upload'))}}
+    <div class="m-t-md">
+        <p><label> Preprint file: </label> {{preprintFile}} </p>
+        <p><label> Preprint title: </label> {{preprintTitle}} </p>
+    </div>
+{{/if}}
 
 <div class="preprint-section-status pull-right">
+    {{#if (and basicsSaveState (eq name 'Basics'))}}
+        <span class="text-success m-r-md"> Changes Saved! </span>
+    {{else if (and authorsSaveState (eq name 'Authors'))}}
+        <span class="text-success m-r-md"> Changes Saved! </span>
+    {{else if (and subjectsSaveState (eq name 'Subjects'))}}
+        <span class="text-success m-r-md"> Changes Saved! </span>
+    {{/if}}
     {{#if showValidationIndicator}}
         {{#if (or valid (not isValidationActive))}}
             {{fa-icon 'check-circle'}}
@@ -10,3 +23,40 @@
         {{/if}}
     {{/if}}
 </div>
+
+{{#if (and isValidationActive (not isOpen))}}
+    <div class="m-t-md">
+        {{#if (eq name 'Basics')}}
+            <p><label> DOI: </label> {{if doi doi 'None'}} </p>
+            <p>
+                <label> Tags: </label>
+                {{#if tags}}
+                    {{#each tags as |tag|}}
+                        <span> tag </span>
+                    {{/each}}
+                {{else}}
+                    None
+                {{/if}}
+            </p>
+            <p><label> Abstract: </label> {{if abstract abstract 'None'}} </p>
+        {{else if (eq name 'Subjects')}}
+            {{#if subjects}}
+                {{#each subjects as |subject|}}
+                    <p>{{subject.text}} </p>
+                {{/each}}
+            {{else}}
+                <p> None </p>
+            {{/if}}
+
+        {{else if (eq name 'Authors')}}
+            {{#each authors as |contrib|}}
+                {{#if contrib.unregisteredContributor}}
+                    <p>{{contrib.unregisteredContributor}}</p>
+                {{else}}
+                    <p>{{contrib.users.fullName}} </p>
+                {{/if}}
+            {{/each}}
+        {{/if}}
+    </div>
+{{/if}}
+
