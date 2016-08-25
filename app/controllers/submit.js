@@ -165,7 +165,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
             this.send('changesSaved', currentPanelName);
         },
-        changesSaved(currentPanelName){
+        changesSaved(currentPanelName) {
             var currentPanelSaveState = currentPanelName.toLowerCase() + 'SaveState';
             this.set(currentPanelSaveState, true);
             setTimeout(() => {
@@ -274,12 +274,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     _this.$('#' + elementId).addClass('restoreWhiteBackground');
 
                 }, 2000);
-                 setTimeout(() => {
+                setTimeout(() => {
                     _this.$('#' + elementId).removeClass(highlightClass);
                     _this.$('#' + elementId).removeClass('restoreWhiteBackground');
                 }, 4000);
-
-
             });
         },
         /*
