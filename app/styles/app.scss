@@ -19,6 +19,21 @@ body {
     font-family: "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+ul.comma-list {
+    display: inline;
+    list-style: none;
+    li {
+        display: inline;
+    }
+    li:after {
+        content: ", "
+    }
+    li:last-child:after {
+        content: "";
+    }
+}
+
+
 /* Preprint navbar */
 .preprint-navbar {
     position: fixed;
@@ -214,6 +229,22 @@ body {
     box-shadow: 0 0 3px #ddd;
     label {
         width: 100%;
+    }
+    .preprint-header-preview {
+        color: #444;
+        font-size: 15px;
+        i {
+            color: #888;
+            display: block;
+        }
+        .subject-preview {
+            display: inline-block;
+            background-color: #f8f8f8;
+            border-radius: 3px;
+            border: 1px solid #eee;
+            padding: 1px 7px;
+            margin-bottom: 4px;
+        }
     }
 }
 #preprint-form-upload {
