@@ -16,7 +16,7 @@
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error')}}
-                            {{preprint-form-header showValidationIndicator=false name=name secondary-info=(if node.title (concat "Preprint title: " node.title) '') valid=uploadValid}}
+                            {{preprint-form-header showValidationIndicator=false name=name preprintFile=selectedFile.name preprintTitle=node.title valid=uploadValid}}
                             {{#preprint-form-body}}
                                 {{#if fileAndNodeLocked}}
                                     <p><label> Preprint file: </label> {{selectedFile.name}}</p>
@@ -43,7 +43,7 @@
                     {{#with _names.[1] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{log 'Basics Section hasopened state' hasOpened}}
-                            {{preprint-form-header name=name valid=basicsValid isValidationActive=hasOpened}}
+                            {{preprint-form-header doi=basicsDOI basicsSaveState=basicsSaveState tags=node.tags abstract=basicsAbstract name=name valid=basicsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class="row">
                                     <div class="col-md-6">
@@ -81,7 +81,7 @@
 
                     {{#with _names.[2] as |name|}}
                         {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header name=name valid=subjectsValid isValidationActive=hasOpened}}
+                            {{preprint-form-header subjectsSaveState=subjectsSaveState subjects=model.subjects name=name valid=subjectsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
 
                                 {{subject-picker save=(action 'saveSubjects')}}
@@ -99,7 +99,7 @@
 
                     {{#with _names.[3] as |name|}}
                         {{#preprint-form-section id='preprint-form-authors' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header name=name valid=authorsValid isValidationActive=hasOpened}}
+                            {{preprint-form-header authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 {{preprint-form-authors
                                     contributors=contributors
@@ -132,7 +132,14 @@
                             {{#cp-panel-body}}
                                 <div class="text-center">
                                     <p>Sharing this project will make both the manuscript and the project associated with it public.</p>
-                                    <button class="btn btn-primary btn-lg m-t-md" type="submit" {{action 'savePreprint'}}>Share</button>
+                                    {{#unless allSectionsValid}}
+                                        <p class="m-t-md"> <strong> The following section(s) must be completed before sharing this preprint. </strong></p>
+                                        <p class="text-danger"> {{if (not basicsValid) 'Basics'}}</p>
+                                        <p class="text-danger"> {{if (not subjectsValid) 'Subjects'}}</p>
+                                        <p class="text-danger"> {{if (not authorsValid) 'Authors'}}</p>
+                                    {{/unless}}
+                                    <p> </p>
+                                    <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} type="submit" {{action 'savePreprint'}}>Share</button>
                                 </div>
                             {{/cp-panel-body}}
                         {{/preprint-form-section}}
