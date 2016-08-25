@@ -132,7 +132,9 @@ export default Ember.Controller.extend({
             this.set('results', results);
         });
     },
-
+    maxPages: Ember.computed('numberOfResults', function() {
+        return ((this.get('numberOfResults') / this.get('size')) | 0) + 1;
+    }),
     getQueryBody() {
         let facetFilters = this.get('activeFilters');
         let filters = {};
