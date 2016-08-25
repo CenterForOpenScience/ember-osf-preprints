@@ -67,7 +67,7 @@ export default CpPanelComponent.extend({
                 // Crude mechanism to prevent opening a panel if conditions are not met
                 this._super(...arguments);
             } else {
-                this.sendAction('errorAction', 'Please select a project and file before continuing');
+                this.sendAction('errorAction', 'Please complete upload section before continuing');
             }
         }
     },
