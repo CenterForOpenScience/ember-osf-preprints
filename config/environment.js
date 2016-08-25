@@ -1,15 +1,18 @@
 /* jshint node: true */
 
 module.exports = function(environment) {
+    var authorizationType = 'cookie';
+
     var ENV = {
         modulePrefix: 'preprint-service',
         environment: environment,
         rootURL: '/preprints/',
         locationType: 'auto',
-        authorizationType: 'cookie',
+        authorizationType: authorizationType,
+        sentryDSN: 'http://test@localhost/80' || process.env.SENTRY_DSN,
         'ember-simple-auth': {
-            authorizer: 'authorizer:osf-cookie',
-            authenticator: 'authenticator:osf-cookie'
+            authorizer: `authorizer:osf-${authorizationType}`,
+            authenticator: `authenticator:osf-${authorizationType}`
         },
         EmberENV: {
             FEATURES: {

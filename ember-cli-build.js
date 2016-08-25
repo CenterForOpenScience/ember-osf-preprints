@@ -4,6 +4,8 @@ var path = require('path');
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
+    var config = require('./config/environment')(process.env.EMBER_ENV);
+
     var app = new EmberApp(defaults, {
         'ember-bootstrap': {
             importBootstrapCSS: false
@@ -14,6 +16,15 @@ module.exports = function(defaults) {
                 'bower_components/bootstrap-sass/assets/stylesheets',
                 'bower_components/osf-style/sass'
             ]
+        },
+        inlineContent: {
+            raven: {
+                content: `<script src="https://cdn.ravenjs.com/3.5.1/ember/raven.min.js"></script>
+                <script>
+                    Raven.config("${config.sentryDSN}", {}).install();
+                    Raven.debug=${process.env.EMBER_ENV === 'development' ? 'true' : 'false'};
+                </script>`
+            }
         },
         postcssOptions: {
             compile: {
