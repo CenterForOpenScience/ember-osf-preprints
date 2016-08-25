@@ -34,7 +34,7 @@ body {
         font-size: 41px;
         font-weight: 300;
     }
-    a {
+    a:not(.btn) {
         color: #80c2f7;
         text-decoration: underline;
     }
