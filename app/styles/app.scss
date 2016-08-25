@@ -25,11 +25,20 @@ body {
     top: 57px;
     width: 100%;
     padding: 0;
-    background: rgba(255, 255, 255, 0.74);;
+    background: #578CA2;
     z-index: 99;
     box-shadow: 0 0 4px #777;
     a {
         color: #ffffff;
+    }
+    .nav > li > a:hover, .nav > li > a.active, .navbar-brand:hover {
+        background-color: #65a0b9;
+    }
+    .navbar-brand a {
+        text-decoration: none;
+    }
+    .navbar-brand a:hover {
+        text-decoration: none;
     }
 }
 
