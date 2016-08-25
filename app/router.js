@@ -7,10 +7,9 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-    this.route('content', { path: '/content/:preprint_id' });
-
     this.route('submit');
     this.route('discover');
+    this.route('content', { path: '/:preprint_id' });
     this.route('page-not-found', { path: '/*wildcard' });
 });
 
