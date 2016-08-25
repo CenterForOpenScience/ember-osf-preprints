@@ -59,15 +59,19 @@ export default Ember.Controller.extend({
             hits.map(function(each) {
                 _this.get('otherProviders').pushObject(each.key);
             });
-            _this.get('osfProviders').forEach(function(each) {
+            _this.get('osfProviders').slice().map(function(each) {
                 if (_this.get('otherProviders').indexOf(each) === -1) {
                     _this.get('otherProviders').pushObject(each);
                 }
-            })
-            _this.set('activeFilters.providers', _this.get('otherProviders').slice());
+            });
+            _this.notifyPropertyChange('otherProviders');
         });
         this.loadPage.call(this);
     },
+    otherProvidersLoaded: Ember.observer('otherProviders', function() {
+        this.set('activeFilters.providers', this.get('otherProviders').slice());
+        this.notifyPropertyChange('activeFilters');
+    }),
     subjectChanged: Ember.observer('subjectFilter', function() {
         let filter = this.get('subjectFilter');
         if (filter) {
