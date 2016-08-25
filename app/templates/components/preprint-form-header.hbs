@@ -20,14 +20,13 @@
         </p>
         <p><label> Abstract: </label> {{if abstract abstract 'None'}} </p>
     {{else if (eq name 'Subjects')}}
-        {{#if subjects}}
+        {{#if subjects.[0]}}
             {{#each subjects as |subject|}}
                 <p>{{subject.text}} </p>
             {{/each}}
         {{else}}
-            None
+            <p> None </p>
         {{/if}}
-
 
     {{else if (eq name 'Authors')}}
         {{#each authors as |contrib|}}

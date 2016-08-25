@@ -132,6 +132,13 @@
                             {{#cp-panel-body}}
                                 <div class="text-center">
                                     <p>Sharing this project will make both the manuscript and the project associated with it public.</p>
+                                    {{#unless allSectionsValid}}
+                                        <p class="m-t-md"> <strong> The following section(s) must be completed before sharing this preprint. </strong></p>
+                                        <p class="text-danger"> {{if (not basicsValid) 'Basics'}}</p>
+                                        <p class="text-danger"> {{if (not subjectsValid) 'Subjects'}}</p>
+                                        <p class="text-danger"> {{if (not authorsValid) 'Authors'}}</p>
+                                    {{/unless}}
+                                    <p> </p>
                                     <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} type="submit" {{action 'savePreprint'}}>Share</button>
                                 </div>
                             {{/cp-panel-body}}
