@@ -453,19 +453,16 @@ hr {
         &.valid {
             .preprint-section-status .fa {
                 color: #009688;
-                display: block;
             }
         }
         &.invalid {
             .preprint-section-status .fa {
                 color: #F44336;
-                display: block;
             }
         }
         &.not-validated {
             .preprint-section-status .fa {
                 color: gray;
-                display: block;
             }
         }
         .fa {
@@ -759,4 +756,8 @@ hr {
 
 #convertExistingOrCreateComponent {
     padding-left: 15px;
+}
+
+.toast {
+    opacity: 1 !important;
 }
