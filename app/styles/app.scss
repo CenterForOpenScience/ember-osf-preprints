@@ -19,6 +19,20 @@ body {
     font-family: "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+/* Preprint navbar */
+.preprint-navbar {
+    position: fixed;
+    top: 57px;
+    width: 100%;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.74);;
+    z-index: 99;
+    box-shadow: 0 0 4px #777;
+    a {
+        color: #ffffff;
+    }
+}
+
 /* INDEX page */
 /* Global to index */
 
