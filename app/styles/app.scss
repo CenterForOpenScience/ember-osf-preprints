@@ -19,6 +19,39 @@ body {
     font-family: "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+/* Preprint navbar */
+.preprint-navbar {
+    position: fixed;
+    top: 57px;
+    width: 100%;
+    padding: 0;
+    background: #578CA2;
+    z-index: 99;
+    box-shadow: 0 0 4px #525151;
+    border-radius: 0;
+    a {
+        color: #ffffff;
+    }
+    .nav > li > a:hover, .nav > li > a.active, .navbar-brand:hover {
+        background-color: #65a0b9;
+    }
+    .navbar-brand a {
+        text-decoration: none;
+    }
+    .navbar-brand a:hover {
+        text-decoration: none;
+    }
+    .navbar-toggle {
+        color: #eeeeee;
+    }
+}
+
+/* This should be a temporary adjustment */
+@media (max-width: 768px) {
+    .preprint-navbar {
+        top: 50px;
+    }
+}
 /* INDEX page */
 /* Global to index */
 
@@ -153,11 +186,11 @@ body {
 /* SUBMIT page */
 
 .preprint-submit-header {
-    padding-top: 120px;
+    padding-top: 140px;
     background: url("img/submit_bg.jpg") no-repeat top center;
     background-size: cover;
     border-bottom: 1px solid #eee;
-    height: 240px;
+    height: 250px;
 }
 .preprint-submit-body {
     background-color: #f8f8f8;
@@ -216,9 +249,6 @@ body {
 
 /* Usefulness of the portions of code below is doubtful, mixed with critical and unused. TODO: Go through and clean up unused code */
 
-.navbar-header {
-    height: $nav-bar-height;
-}
 
 .no-transition {
     transition: none !important;
