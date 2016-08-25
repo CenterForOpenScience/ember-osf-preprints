@@ -1,15 +1,9 @@
 {{name}}
 
-{{#if (and (not isOpen) (eq name 'Upload'))}}
-    <div class="m-t-md preprint-header-preview">
-        <p><b class="m-r-md"> Preprint file: </b> {{preprintFile}} </p>
-        <p><b class="m-r-md"> Preprint title: </b> {{preprintTitle}} </p>
-        <i class="text-smaller">Click to Edit</i>
-    </div>
-{{/if}}
-
 <div class="preprint-section-status pull-right">
-    {{#if (and basicsSaveState (eq name 'Basics'))}}
+    {{#if (and uploadSaveState (eq name 'Upload'))}}
+        <span class="text-success text-smaller m-r-md"> Changes Saved! </span>
+    {{else if (and basicsSaveState (eq name 'Basics'))}}
         <span class="text-success text-smaller m-r-md"> Changes Saved! </span>
     {{else if (and authorsSaveState (eq name 'Authors'))}}
         <span class="text-success text-smaller m-r-md"> Changes Saved! </span>
@@ -24,6 +18,14 @@
         {{/if}}
     {{/if}}
 </div>
+
+{{#if (and (not isOpen) (eq name 'Upload'))}}
+    <div class="m-t-md preprint-header-preview">
+        <p><b class="m-r-md"> Preprint file: </b> {{preprintFile}} </p>
+        <p><b class="m-r-md"> Preprint title: </b> {{preprintTitle}} </p>
+        <i class="text-smaller">Click to Edit</i>
+    </div>
+{{/if}}
 
 {{#if (and isValidationActive (not isOpen))}}
     <div class="m-t-md preprint-header-preview">

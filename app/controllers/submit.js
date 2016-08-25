@@ -94,6 +94,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsAbstract: Ember.computed.alias('basicsModel.description'),
     basicsTags: Ember.computed.alias('basicsModel.tags'), // TODO: This may need to provide a default value (list)? Via default or field transform?
     basicsDOI: Ember.computed.alias('model.doi'),
+    uploadSaveState: false,
     basicsSaveState: false,
     subjectsSaveState: false,
     authorsSaveState: false,
