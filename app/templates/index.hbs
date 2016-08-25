@@ -38,10 +38,12 @@
     <div class="preprint-subjects p-v-md"> {{!SUBJECTS LIST}}
         <div class="container"> {{!CONTAINER DIV}}
             <div class="row p-v-md">{{!SUBJECTS ROW}}
-                <h2>Browse <small>by subject</small></h2>
-                <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
-                    {{taxonomy-top-list list=model.subjects}}
-                </div> {{!END SUBJECTS LIST}}
+                <div class="col-xs-12">
+                    <h2>Browse <small>by subject</small></h2>
+                    <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
+                        {{taxonomy-top-list list=model.subjects}}
+                    </div> {{!END SUBJECTS LIST}}
+                </div>
             </div>{{!END ROW}}
         </div> {{!END CONTAINER}}
     </div> {{!END SUBJECTS LIST}}
@@ -74,10 +76,12 @@
     <div class="preprint-contribute p-v-md"> {{!center text}}
         <div class="container"> {{!CONTAINER}}
             <div class="row p-v-md">
-                <h2 class="m-b-lg">Contribute your research</h2>
-                <p class="lead">You can upload a preprint or choose a file from an existing OSF file to tag as a preprint if you are already have an OSF account.</p>
-                <div class="text-center">
-                    {{upload-button}}
+                <div class="col-xs-12">
+                    <h2 class="m-b-lg">Contribute your research</h2>
+                    <p class="lead">You can upload a preprint or choose a file from an existing OSF file to tag as a preprint if you are already have an OSF account.</p>
+                    <div class="text-center">
+                        {{upload-button}}
+                    </div>
                 </div>
             </div>{{!END ROW}}
         </div> {{!END CONTAINER}}
