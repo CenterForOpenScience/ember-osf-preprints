@@ -83,6 +83,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     allSectionsValid: Ember.computed('uploadValid', 'basicsValid', 'authorsValid', 'subjectsValid', function() {
         return this.get('uploadValid') && this.get('basicsValid') && this.get('authorsValid') && this.get('subjectsValid');
     }),
+    nodeTitle: null,
 
     ////////////////////////////////////////////////////
     // Fields used in the "basics" section of the form.
@@ -215,6 +216,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     window.location.reload();
                 }
             });
+        },
+        editTitleNext(section) {
+            this.set('node.title', this.get('nodeTitle'));
+            let node = this.get('node');
+            node.save();
+            this.send('next', section);
+
         },
 
         /*

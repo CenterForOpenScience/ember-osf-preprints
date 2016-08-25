@@ -1,7 +1,21 @@
 import Ember from 'ember';
 import {State} from '../controllers/submit';
+import { validator, buildValidations } from 'ember-cp-validations';
 
-export default Ember.Component.extend({
+const TitleValidation = buildValidations({
+    nodeTitle: {
+        description: 'Title',
+        validators: [
+            validator('presence', true),
+            validator('length', {
+                // minimum length for title?
+                max: 200,
+            })
+        ]
+    },
+});
+
+export default Ember.Component.extend(TitleValidation, {
     State,
     store: Ember.inject.service(),
     toast: Ember.inject.service(),
@@ -22,6 +36,7 @@ export default Ember.Component.extend({
         method: 'PUT',
         uploadMultiple: false,
     },
+    titleValid: Ember.computed.alias('validations.isValid'),
 
     init() {
         this._super(...arguments);

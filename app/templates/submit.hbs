@@ -21,8 +21,11 @@
                                 {{#if fileAndNodeLocked}}
                                     <p><label> Preprint file: </label> {{selectedFile.name}}</p>
 
+                                    <label> Preprint title </label>
+                                    {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=nodeTitle}}
+
                                     <button class="btn btn-danger" {{action 'resetFileUpload'}}>Restart</button>
-                                    <button class="btn btn-primary" {{action 'next' name}}>Next</button>
+                                    <button class="btn btn-primary" {{action 'editTitleNext' name}}>Next</button>
                                 {{else}}
                                     <div>
                                         {{file-uploader
