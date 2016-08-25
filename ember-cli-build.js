@@ -19,11 +19,10 @@ module.exports = function(defaults) {
         },
         inlineContent: {
             raven: {
-                content: `<script src="https://cdn.ravenjs.com/3.5.1/ember/raven.min.js"></script>
-                <script>
-                    Raven.config("${config.sentryDSN}", {}).install();
-                    Raven.debug=${process.env.EMBER_ENV === 'development' ? 'true' : 'false'};
-                </script>`
+                enabled: process.env.EMBER_ENV !== 'development',
+                content: `
+                    <script src="https://cdn.ravenjs.com/3.5.1/ember/raven.min.js"></script>
+                    <script>Raven.config("${config.sentryDSN}", {}).install();</script>`
             }
         },
         postcssOptions: {
