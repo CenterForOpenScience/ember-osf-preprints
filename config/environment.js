@@ -31,8 +31,10 @@ module.exports = function(environment) {
             outputFormat: 'YYYY-MM-DD hh:mm a'
         },
         PREPRINTS: {
-            provider: 'osf'
-        }
+            provider: 'osf',
+            // The name of the OSF campaign used to track signups
+            campaign: 'osf-preprints'
+        },
     };
 
     if (environment === 'development') {
