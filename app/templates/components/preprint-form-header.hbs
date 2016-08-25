@@ -8,20 +8,20 @@
 {{/if}}
 
 <div class="preprint-section-status pull-right">
-        {{#if (and basicsSaveState (eq name 'Basics'))}}
-             <span class="text-success m-r-md"> Changes Saved! </span>
-        {{else if (and authorsSaveState (eq name 'Authors'))}}
-             <span class="text-success m-r-md"> Changes Saved! </span>
-        {{else if (and subjectsSaveState (eq name 'Subjects'))}}
-             <span class="text-success m-r-md"> Changes Saved! </span>
+    {{#if (and basicsSaveState (eq name 'Basics'))}}
+        <span class="text-success m-r-md"> Changes Saved! </span>
+    {{else if (and authorsSaveState (eq name 'Authors'))}}
+        <span class="text-success m-r-md"> Changes Saved! </span>
+    {{else if (and subjectsSaveState (eq name 'Subjects'))}}
+        <span class="text-success m-r-md"> Changes Saved! </span>
+    {{/if}}
+    {{#if showValidationIndicator}}
+        {{#if (or valid (not isValidationActive))}}
+            {{fa-icon 'check-circle'}}
+        {{else}}
+            {{fa-icon 'times-circle'}}
         {{/if}}
-        {{#if showValidationIndicator}}
-            {{#if (or valid (not isValidationActive))}}
-                {{fa-icon 'check-circle'}}
-            {{else}}
-                {{fa-icon 'times-circle'}}
-            {{/if}}
-        {{/if}}
+    {{/if}}
 </div>
 
 {{#if (and isValidationActive (not isOpen))}}
