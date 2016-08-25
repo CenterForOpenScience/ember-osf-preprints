@@ -236,10 +236,13 @@ export default Ember.Controller.extend({
         },
 
         selectSubjectFilter(subject) {
-            if (this.get('activeFilters.subjects').indexOf(subject.text) === -1) {
-                this.get('activeFilters.subjects').pushObject(subject.text);
+            if (typeof subject === 'object') {
+                subject = subject.text;
+            }
+            if (this.get('activeFilters.subjects').indexOf(subject) === -1) {
+                this.get('activeFilters.subjects').pushObject(subject);
             } else {
-                this.get('activeFilters.subjects').removeObject(subject.text);
+                this.get('activeFilters.subjects').removeObject(subject);
             }
             this.notifyPropertyChange('activeFilters');
         },
