@@ -216,10 +216,6 @@ export default Ember.Controller.extend({
             }
         },
 
-        linkToAddPreprint() {
-            this.transitionToRoute('submit');
-        },
-
         clearFilters() {
             this.set('activeFilters',  { providers: ['Open Science Framework'], subjects: [] });
         },
