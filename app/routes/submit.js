@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
+import CasAuthenticatedRouteMixin from 'ember-osf/mixins/cas-authenticated-route';
 import permissions from 'ember-osf/const/permissions';
 import loadAll from 'ember-osf/utils/load-relationship';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin, {
+export default Ember.Route.extend(CasAuthenticatedRouteMixin, {
     currentUser: Ember.inject.service('currentUser'),
     model() {
         // Store the empty preprint to be created on the model hook for page. Node will be fetched
