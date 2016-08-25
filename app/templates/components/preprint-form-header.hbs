@@ -2,9 +2,11 @@
 {{secondary-info}}
 
 <div class="preprint-section-status pull-right">
-    {{#if (or valid noValidation)}}
-        {{fa-icon 'check-circle'}}
-    {{else}}
-        {{fa-icon 'times-circle'}}
+    {{#if showValidationIndicator}}
+        {{#if (or valid (not isValidationActive))}}
+            {{fa-icon 'check-circle'}}
+        {{else}}
+            {{fa-icon 'times-circle'}}
+        {{/if}}
     {{/if}}
 </div>
