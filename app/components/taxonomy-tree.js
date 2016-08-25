@@ -17,7 +17,14 @@ export default Ember.Component.extend({
                 showChildren: false
             });
         });
-        return parsed;
+        return parsed.sort((prev, next) => {
+            if (prev.text > next.text) {
+                return 1;
+            } else if (prev.text < next.text) {
+                return -1;
+            }
+            return 0;
+        });
     },
     init() {
         this._super(...arguments);
