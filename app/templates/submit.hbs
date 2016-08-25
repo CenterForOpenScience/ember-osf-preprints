@@ -16,7 +16,7 @@
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error')}}
-                            {{preprint-form-header showValidationIndicator=false name=name secondary-info=(concat "Preprint title: " node.title) valid=uploadValid}}
+                            {{preprint-form-header showValidationIndicator=false name=name secondary-info=(if node.title (concat "Preprint title: " node.title) '') valid=uploadValid}}
                             {{#preprint-form-body}}
                                 {{#if fileAndNodeLocked}}
                                     <p><label> Preprint file: </label> {{selectedFile.name}}</p>
