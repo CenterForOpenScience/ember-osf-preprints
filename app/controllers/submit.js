@@ -93,6 +93,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsAbstract: Ember.computed.alias('basicsModel.description'),
     basicsTags: Ember.computed.alias('basicsModel.tags'), // TODO: This may need to provide a default value (list)? Via default or field transform?
     basicsDOI: Ember.computed.alias('model.doi'),
+    basicsSaveState: false,
+    subjectsSaveState: false,
+    authorsSaveState: false,
 
     //// TODO: Turn off autosave functionality for now. Direct 2-way binding was causing a fight between autosave and revalidation, so autosave never fired. Fixme.
     // createAutosave: Ember.observer('node', function() {
@@ -160,6 +163,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         // Open next panel
         next(currentPanelName) {
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
+            this.send('changesSaved', currentPanelName);
+        },
+        changesSaved(currentPanelName){
+            var currentPanelSaveState = currentPanelName.toLowerCase() + 'SaveState';
+            this.set(currentPanelSaveState, true);
+            setTimeout(() => {
+                this.set(currentPanelSaveState, false);
+
+            }, 3000);
         },
 
         error(error /*, transition */) {

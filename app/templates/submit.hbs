@@ -43,7 +43,7 @@
                     {{#with _names.[1] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{log 'Basics Section hasopened state' hasOpened}}
-                            {{preprint-form-header doi=basicsDOI tags=node.tags abstract=basicsAbstract name=name valid=basicsValid isValidationActive=hasOpened}}
+                            {{preprint-form-header doi=basicsDOI basicsSaveState=basicsSaveState tags=node.tags abstract=basicsAbstract name=name valid=basicsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class="row">
                                     <div class="col-md-6">
@@ -81,7 +81,7 @@
 
                     {{#with _names.[2] as |name|}}
                         {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header subjects=model.subjects name=name valid=subjectsValid isValidationActive=hasOpened}}
+                            {{preprint-form-header subjectsSaveState=subjectsSaveState subjects=model.subjects name=name valid=subjectsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
 
                                 {{subject-picker save=(action 'saveSubjects')}}
@@ -99,7 +99,7 @@
 
                     {{#with _names.[3] as |name|}}
                         {{#preprint-form-section id='preprint-form-authors' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
+                            {{preprint-form-header authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 {{preprint-form-authors
                                     contributors=contributors
