@@ -60,14 +60,16 @@ export default Ember.Controller.extend({
             crossDomain: true,
         }).then(function(results) {
             var hits = results.aggregations.sources.buckets;
+            var providers = [];
             hits.map(function(each) {
-                _this.get('otherProviders').pushObject(each.key);
+                providers.push(each.key);
             });
             _this.get('osfProviders').slice().map(function(each) {
-                if (_this.get('otherProviders').indexOf(each) === -1) {
-                    _this.get('otherProviders').pushObject(each);
+                if (providers.indexOf(each) === -1) {
+                    providers.push(each);
                 }
             });
+            _this.set('otherProviders', providers.sort((a, b) => a < b ? 1 : -1).sort(a => a === 'Open Science Framework' ? -1 : 1));
             _this.notifyPropertyChange('otherProviders');
         });
         this.loadPage();
