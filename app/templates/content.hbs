@@ -3,12 +3,9 @@
         <div class="container">{{!CONTAINER DIV}}
             <h1 class="p-b-md">{{model.title}}</h1>
             <h5 class="view-authors">
-                {{#each authors as |author index|}}
+                {{#each model.contributors as |author index|}}
                     {{if index ', ' ''}}<a href={{author.users.profileURL}}>{{author.users.fullName}}</a>
                 {{/each}}
-                {{#unless expandedAuthors}}
-                    <button class="btn btn-xs round-btn" {{action 'expandAuthors'}}>. . .</button>
-                {{/unless}}
             </h5>
             <h6>Added on: {{moment-format model.date_created "MMMM DD, YYYY"}} | Last edited: {{moment-format model.date_modified "MMMM DD, YYYY"}} </h6>
         </div> {{!END CONTAINER DIV}}
