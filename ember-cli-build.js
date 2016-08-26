@@ -36,6 +36,12 @@ module.exports = function(defaults) {
                 content: `
                     <script src="https://cdn.ravenjs.com/3.5.1/ember/raven.min.js"></script>
                     <script>Raven.config("${config.sentryDSN}", {}).install();</script>`
+            },
+            cdn: {
+                enabled: process.env.EMBER_ENV !== 'production',
+                content: `
+                    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+                    <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.7.1/ember.prod.js"></script>`
             }
         },
         postcssOptions: {
