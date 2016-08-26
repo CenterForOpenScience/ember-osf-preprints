@@ -70,6 +70,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     node: null,
     selectedFile: null,
     contributors: Ember.A(),
+    hasFile: function() {
+        return this.get('file') != null;
+    }.property('file'),
+    file: null,
 
     ///////////////////////////////////////
     // Validation rules for form sections

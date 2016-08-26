@@ -22,14 +22,9 @@ export default Ember.Component.extend(TitleValidation, {
 
     url: null,
     node: null,
-    file: null,
     callback: null,
     nodeTitle: null,
     createChild: false,
-
-    hasFile: function() {
-        return this.get('file') != null;
-    }.property('file'),
 
     dropzoneOptions: {
         maxFiles: 1,
