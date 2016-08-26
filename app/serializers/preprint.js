@@ -2,7 +2,7 @@ import OsfSerializer from 'ember-osf/serializers/osf-serializer';
 
 export default OsfSerializer.extend({
     attrs: {
-        keenio_read_key: { serialize:false }
+        keenioReadKey: { serialize: false }
     },
 
     serialize(snapshot) {

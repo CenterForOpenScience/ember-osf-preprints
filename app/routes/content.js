@@ -10,10 +10,13 @@ export default Ember.Route.extend({
         this._super(...arguments);
 
         model.get('primaryFile').then((file) => {
-            let key = model.get('keenio_read_key');
-            let path = file.path;
+            let key = model.get('keenioReadKey');
+            let path = file.get('path');
             return getKeenFileCounts(path, key);
-        }).then((counts) => controller.set('keenCounts', counts));
+        }).then((counts) => {
+            // If no data provided, don't feed counts to template- JS treats empty object as truthy
+            controller.set('keenCounts', Ember.$.isEmptyObject(counts) ? null : counts);
+        });
     },
 
     actions: {
