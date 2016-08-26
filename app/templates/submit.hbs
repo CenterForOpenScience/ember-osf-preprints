@@ -64,7 +64,6 @@
 
                     {{#with _names.[2] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{log 'Basics Section hasopened state' hasOpened}}
                             {{preprint-form-header doi=basicsDOI basicsSaveState=basicsSaveState tags=node.tags abstract=basicsAbstract name=name valid=basicsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class="row">
