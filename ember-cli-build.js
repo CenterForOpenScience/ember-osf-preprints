@@ -11,6 +11,9 @@ module.exports = function(defaults) {
             'jquery.js': false,
             'ember.js': false
         },
+        sourcemaps: {
+            enabled: true
+        },
         'ember-bootstrap': {
             importBootstrapCSS: false
         },
