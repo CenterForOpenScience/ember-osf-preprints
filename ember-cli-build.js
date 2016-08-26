@@ -7,6 +7,10 @@ module.exports = function(defaults) {
     var config = require('./config/environment')(process.env.EMBER_ENV);
 
     var app = new EmberApp(defaults, {
+        vendorFiles: {
+            'jquery.js': false,
+            'ember.js': false
+        },
         'ember-bootstrap': {
             importBootstrapCSS: false
         },
