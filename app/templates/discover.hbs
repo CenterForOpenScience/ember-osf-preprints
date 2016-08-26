@@ -68,7 +68,7 @@
                     <h4 class="filter-heading p-sm">Providers</h4>
                     <ul>
                         {{#each otherProviders as |item|}}
-                            <li style="margin-left: 10px">
+                            <li>
                                 <label>
                                     <input type="checkbox" checked="{{if (if-filter item activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item}}>
                                     {{item}}

@@ -15,9 +15,9 @@ module.exports = function(defaults) {
         vendorFiles: {
             // next line is needed to prevent ember-cli to load
             // handlebars (it happens automatically in 0.1.x)
-            'handlebars.js': null,
-            'jquery.js': null,
-            'ember.js': null
+            'handlebars.js': {production: null},
+            [process.env.EMBER_ENV !== 'development' ? 'jquery' : '']: null,
+            [process.env.EMBER_ENV !== 'development' ? 'ember.js' : '']: null,
         },
         'ember-bootstrap': {
             importBootstrapCSS: false
@@ -38,7 +38,7 @@ module.exports = function(defaults) {
                     <script>Raven.config("${config.sentryDSN}", {}).install();</script>`
             },
             cdn: {
-                enabled: process.env.EMBER_ENV !== 'production',
+                enabled: process.env.EMBER_ENV !== 'development',
                 content: `
                     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
                     <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.7.1/ember.prod.js"></script>`
