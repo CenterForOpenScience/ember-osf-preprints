@@ -31,8 +31,8 @@ module.exports = function(environment) {
             outputFormat: 'YYYY-MM-DD hh:mm a'
         },
         ANALYTICS: {
-            // Keen Project ID, common across all nodes, as provided by Fitz
-            keenProjectId: '5797b58fbcb79c2c0fa1a705',
+            // Keen Project ID, common across all nodes. Must be filled in!
+            keenProjectId: null,
         },
         PREPRINTS: {
             provider: 'osf',
