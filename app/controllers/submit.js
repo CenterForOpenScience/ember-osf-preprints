@@ -79,9 +79,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject.
-    subjectsValid: Ember.computed.notEmpty('model.subjects'),
-    allSectionsValid: Ember.computed('uploadValid', 'basicsValid', 'authorsValid', 'subjectsValid', function() {
-        return this.get('uploadValid') && this.get('basicsValid') && this.get('authorsValid') && this.get('subjectsValid');
+    disciplineValid: Ember.computed.notEmpty('model.subjects'),
+    allSectionsValid: Ember.computed('uploadValid', 'basicsValid', 'authorsValid', 'disciplineValid', function() {
+        return this.get('uploadValid') && this.get('basicsValid') && this.get('authorsValid') && this.get('disciplineValid');
     }),
     nodeTitle: null,
 
@@ -96,7 +96,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsDOI: Ember.computed.alias('model.doi'),
     uploadSaveState: false,
     basicsSaveState: false,
-    subjectsSaveState: false,
+    disciplineSaveState: false,
     authorsSaveState: false,
 
     //// TODO: Turn off autosave functionality for now. Direct 2-way binding was causing a fight between autosave and revalidation, so autosave never fired. Fixme.
@@ -151,7 +151,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     searchResults: [],
     showModalSharePreprint: false,
 
-    _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
+    _names: ['upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()),
 
     clearFields() {
         // node should also be cleared, currently throws an error
@@ -234,7 +234,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // If save fails, do not transition
             let node = this.get('node');
             node.save()
-                .then(() => this.send('next', this.get('_names.1')))
+                .then(() => this.send('next', this.get('_names.2')))
                 .catch(()=> this.send('error', 'Could not save information; please try again'));
         },
 
@@ -244,7 +244,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
 
         subjectsNext() {
-            this.send('next', this.get('_names.2'));
+            this.send('next', this.get('_names.1'));
         },
         /**
          * findContributors method.  Queries APIv2 users endpoint on full_name.  Fetches specified page of results.

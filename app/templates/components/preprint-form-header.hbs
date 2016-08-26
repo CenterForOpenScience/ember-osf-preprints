@@ -7,7 +7,7 @@
         <span class="text-success text-smaller m-r-md"> Changes Saved! </span>
     {{else if (and authorsSaveState (eq name 'Authors'))}}
         <span class="text-success text-smaller m-r-md"> Changes Saved! </span>
-    {{else if (and subjectsSaveState (eq name 'Subjects'))}}
+    {{else if (and disciplineSaveState (eq name 'Discipline'))}}
         <span class="text-success text-smaller m-r-md"> Changes Saved! </span>
     {{/if}}
     {{#if showValidationIndicator}}
@@ -42,7 +42,7 @@
                 {{/if}}
             </p>
             <p><b class="m-r-md"> Abstract: </b> {{if abstract abstract 'None'}} </p>
-        {{else if (eq name 'Subjects')}}
+        {{else if (eq name 'Discipline')}}
             {{#if subjects}}
                 {{#each subjects as |subject|}}
                     <span class="subject-preview">{{subject.text}} </span>

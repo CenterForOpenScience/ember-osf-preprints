@@ -44,6 +44,24 @@
                     {{/with}}
 
                     {{#with _names.[1] as |name|}}
+                        {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header disciplineSaveState=disciplineSaveState subjects=model.subjects name=name valid=disciplineValid isValidationActive=hasOpened}}
+                            {{#preprint-form-body}}
+
+                                {{subject-picker save=(action 'saveSubjects')}}
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="pull-right">
+                                            <button {{action 'subjectsNext'}} class="btn btn-primary" disabled={{unless disciplineValid true}} >Save and continue</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{/preprint-form-body}}
+                        {{/preprint-form-section}}
+                    {{/with}}
+
+                    {{#with _names.[2] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{log 'Basics Section hasopened state' hasOpened}}
                             {{preprint-form-header doi=basicsDOI basicsSaveState=basicsSaveState tags=node.tags abstract=basicsAbstract name=name valid=basicsValid isValidationActive=hasOpened}}
@@ -78,24 +96,6 @@
                                     </div>
                                 </div>
 
-                            {{/preprint-form-body}}
-                        {{/preprint-form-section}}
-                    {{/with}}
-
-                    {{#with _names.[2] as |name|}}
-                        {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header subjectsSaveState=subjectsSaveState subjects=model.subjects name=name valid=subjectsValid isValidationActive=hasOpened}}
-                            {{#preprint-form-body}}
-
-                                {{subject-picker save=(action 'saveSubjects')}}
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="pull-right">
-                                            <button {{action 'subjectsNext'}} class="btn btn-primary" disabled={{unless subjectsValid true}} >Save and continue</button>
-                                        </div>
-                                    </div>
-                                </div>
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
@@ -137,8 +137,8 @@
                                     <p>Sharing this project will make both the manuscript and the project associated with it public.</p>
                                     {{#unless allSectionsValid}}
                                         <p class="m-t-md"> <strong> The following section(s) must be completed before sharing this preprint. </strong></p>
+                                        <p class="text-danger"> {{if (not disciplineValid) 'Discipline'}}</p>
                                         <p class="text-danger"> {{if (not basicsValid) 'Basics'}}</p>
-                                        <p class="text-danger"> {{if (not subjectsValid) 'Subjects'}}</p>
                                         <p class="text-danger"> {{if (not authorsValid) 'Authors'}}</p>
                                     {{/unless}}
                                     <p> </p>
