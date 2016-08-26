@@ -41,7 +41,7 @@ export default Ember.Controller.extend({
     showActiveFilters: true, //should always have a provider, don't want to mix osfProviders and non-osf
     showPrev: Ember.computed.gt('page', 1),
     showNext: Ember.computed('page', 'size', 'numberOfResults', function() {
-        return this.get('page') * this.get('size') <= this.get('numberOfResults');
+        return this.get('page') * this.get('size') < this.get('numberOfResults');
     }),
 
     results: Ember.ArrayProxy.create({ content: [] }),
@@ -130,7 +130,7 @@ export default Ember.Controller.extend({
         });
     },
     maxPages: Ember.computed('numberOfResults', function() {
-        return ((this.get('numberOfResults') / this.get('size')) | 0) + 1;
+        return ((this.get('numberOfResults') / this.get('size')) | 0) + (this.get('numberOfResults') % 10 === 0 ? 0 : 1);
     }),
     getQueryBody() {
         let facetFilters = this.get('activeFilters');
