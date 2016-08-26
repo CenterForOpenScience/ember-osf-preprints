@@ -150,6 +150,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     searchResults: [],
     showModalSharePreprint: false,
+    showModalRestartPreprint: false,
 
     _names: ['upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()),
 
@@ -189,6 +190,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         finishUpload() {
             this.send('lockFileAndNode');
             this.send('next', this.get('_names.0'));
+        },
+        toggleRestartPreprintModal() {
+            this.toggleProperty('showModalRestartPreprint');
         },
         resetFileUpload() {
             var promisesArray = [];

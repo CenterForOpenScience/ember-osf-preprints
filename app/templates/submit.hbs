@@ -24,8 +24,12 @@
                                     <label> Preprint title </label>
                                     {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=nodeTitle}}
 
-                                    <button class="btn btn-danger" {{action 'resetFileUpload'}}>Restart</button>
+                                    <button class="btn btn-danger" {{action 'toggleRestartPreprintModal'}}>Restart</button>
                                     <button class="btn btn-primary" {{action 'editTitleNext' name}}>Next</button>
+
+                                    <div>
+                                        {{confirm-restart-submit-preprint isOpen=showModalRestartPreprint resetFileUpload=(action 'resetFileUpload')}}
+                                    </div>
                                 {{else}}
                                     <div>
                                         {{file-uploader
