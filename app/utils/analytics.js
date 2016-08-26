@@ -16,6 +16,11 @@ import config from '../config/environment';
  */
 
 function _keenQuery(accessKey, extraPayload) {
+    if (!config.ANALYTICS.keenProjectId) {
+        // Don't bother the remote server if the application is not configured to fetch keen data
+        return Ember.RSVP.resolve({});
+    }
+
     let payload = Object.assign({ group_by: 'action.type' }, extraPayload);
     // TODO: Provide abstraction later when we have a better sense of possible urls
     let url = `https://api.keen.io/3.0/projects/${config.ANALYTICS.keenProjectId}/queries/count`;
