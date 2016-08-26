@@ -16,13 +16,16 @@
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error')}}
-                            {{preprint-form-header showValidationIndicator=false name=name preprintFile=selectedFile.name preprintTitle=node.title valid=uploadValid}}
+                            {{preprint-form-header uploadSaveState=uploadSaveState showValidationIndicator=false name=name preprintFile=selectedFile.name preprintTitle=node.title valid=uploadValid}}
                             {{#preprint-form-body}}
                                 {{#if fileAndNodeLocked}}
                                     <p><label> Preprint file: </label> {{selectedFile.name}}</p>
 
+                                    <label> Preprint title </label>
+                                    {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=nodeTitle}}
+
                                     <button class="btn btn-danger" {{action 'resetFileUpload'}}>Restart</button>
-                                    <button class="btn btn-primary" {{action 'next' name}}>Next</button>
+                                    <button class="btn btn-primary" {{action 'editTitleNext' name}}>Next</button>
                                 {{else}}
                                     <div>
                                         {{file-uploader
@@ -41,6 +44,25 @@
                     {{/with}}
 
                     {{#with _names.[1] as |name|}}
+                        {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header disciplineSaveState=disciplineSaveState subjects=model.subjects name=name valid=disciplineValid isValidationActive=hasOpened}}
+                            {{#preprint-form-body}}
+                                <p class="m-b-lg small"> Select a discipline and subdiscipline, if relevant. Add another discipline by clicking on a new discipline at the top level.</p>
+
+                                {{subject-picker save=(action 'saveSubjects')}}
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="pull-right">
+                                            <button {{action 'subjectsNext'}} class="btn btn-primary" disabled={{unless disciplineValid true}} >Save and continue</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{/preprint-form-body}}
+                        {{/preprint-form-section}}
+                    {{/with}}
+
+                    {{#with _names.[2] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{log 'Basics Section hasopened state' hasOpened}}
                             {{preprint-form-header doi=basicsDOI basicsSaveState=basicsSaveState tags=node.tags abstract=basicsAbstract name=name valid=basicsValid isValidationActive=hasOpened}}
@@ -49,13 +71,13 @@
                                     <div class="col-md-6">
                                         <div>
                                             <label>
-                                                DOI:
+                                                DOI (optional):
                                                 {{validated-input model=this valuePath='basicsDOI' placeholder="DOI" value=basicsDOI}}
                                             </label>
                                         </div>
                                         <div>
                                             <label>
-                                                Tags:
+                                                Keywords:
                                                 {{tags-widget addATag=(action 'addATag' node) removeATag=(action 'removeATag' node) tags=node.tags}}
                                             </label>
                                         </div>
@@ -63,7 +85,7 @@
                                     <div class="col-md-6">
                                         <label>
                                             <span class="required">Abstract:</span>
-                                            {{validated-input model=this valuePath='basicsAbstract' placeholder="" value=basicsAbstract large=true}}
+                                            {{validated-input model=this valuePath='basicsAbstract' placeholder="Add a brief summary of your preprint" value=basicsAbstract large=true}}
                                         </label>
                                     </div>
                                 </div>
@@ -79,28 +101,14 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{#with _names.[2] as |name|}}
-                        {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header subjectsSaveState=subjectsSaveState subjects=model.subjects name=name valid=subjectsValid isValidationActive=hasOpened}}
-                            {{#preprint-form-body}}
-
-                                {{subject-picker save=(action 'saveSubjects')}}
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="pull-right">
-                                            <button {{action 'subjectsNext'}} class="btn btn-primary" disabled={{unless subjectsValid true}} >Save and continue</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            {{/preprint-form-body}}
-                        {{/preprint-form-section}}
-                    {{/with}}
-
                     {{#with _names.[3] as |name|}}
                         {{#preprint-form-section id='preprint-form-authors' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
+                                <p class="small">
+                                    Add preprint authors and order them appropriately. Search looks for authors that have OSF accounts already.
+                                    Unregistered users can be added and invited to join the preprint.
+                                </p>
                                 {{preprint-form-authors
                                     contributors=contributors
                                     node=node
@@ -130,16 +138,26 @@
                         {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header name=name showValidationIndicator=false}}
                             {{#cp-panel-body}}
-                                <div class="text-center">
-                                    <p>Sharing this project will make both the manuscript and the project associated with it public.</p>
-                                    {{#unless allSectionsValid}}
-                                        <p class="m-t-md"> <strong> The following section(s) must be completed before sharing this preprint. </strong></p>
-                                        <p class="text-danger"> {{if (not basicsValid) 'Basics'}}</p>
-                                        <p class="text-danger"> {{if (not subjectsValid) 'Subjects'}}</p>
-                                        <p class="text-danger"> {{if (not authorsValid) 'Authors'}}</p>
-                                    {{/unless}}
-                                    <p> </p>
-                                    <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} type="submit" {{action 'savePreprint'}}>Share</button>
+                                <div>
+                                    <p>
+                                        When you share this preprint, it will become publicly accessible via OSF Preprints.
+                                        This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials,
+                                        appendices, data, or protocols. If posting this preprint is your first exposure to the OSF,
+                                        you will receive an email introducing OSF to you.
+                                    </p>
+                                    <div class="text-center">
+                                        {{#unless allSectionsValid}}
+                                            <p class="m-t-md"> <strong> The following section(s) must be completed before sharing this preprint. </strong></p>
+                                            <p class="text-danger"> {{if (not disciplineValid) 'Discipline'}}</p>
+                                            <p class="text-danger"> {{if (not basicsValid) 'Basics'}}</p>
+                                            <p class="text-danger"> {{if (not authorsValid) 'Authors'}}</p>
+                                        {{/unless}}
+                                        <p> </p>
+                                        <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>Share</button>
+                                        <div>
+                                            {{confirm-share-preprint isOpen=showModalSharePreprint savePreprint=(action 'savePreprint')}}
+                                        </div>
+                                    </div>
                                 </div>
                             {{/cp-panel-body}}
                         {{/preprint-form-section}}
