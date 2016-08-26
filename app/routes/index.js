@@ -20,7 +20,6 @@ export default Ember.Route.extend({
         return Ember.RSVP.hash({
             theDate: new Date(),
             subjects: this.store.query('taxonomy', { filter: { parents: 'null' }, page: { size: 20 } }),
-            preprints: this.store.findRecord('preprint-provider', config.PREPRINTS.provider).then(provider => provider.get('preprints')),
             sharePreprintsTotal: sharePreprintsTotal
         });
     },

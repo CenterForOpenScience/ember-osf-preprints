@@ -12,7 +12,12 @@ export default Ember.Controller.extend({
     // TODO: either remove or add functionality to info icon on "Refine your search panel"
 
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
-    queryParams: ['page', 'queryString', 'subjectFilter'],
+    queryParams: {
+        page: 'page',
+        queryString: 'q',
+        subjectFilter: 'subject',
+    },
+
     activeFilters: { providers: [], subjects: [] },
     osfProviders: ['Open Science Framework', 'PsyArXiv', 'SocArxiv', 'Engrxiv'],
 
@@ -20,7 +25,6 @@ export default Ember.Controller.extend({
     size: 10,
     numberOfResults: 0,
     queryString: '',
-    searchString: '',
     subjectFilter: null,
     queryBody: {},
 
@@ -66,7 +70,7 @@ export default Ember.Controller.extend({
             });
             _this.notifyPropertyChange('otherProviders');
         });
-        this.loadPage.call(this);
+        this.loadPage();
     },
     otherProvidersLoaded: Ember.observer('otherProviders', function() {
         this.set('activeFilters.providers', this.get('otherProviders').slice());
@@ -77,59 +81,52 @@ export default Ember.Controller.extend({
         if (filter) {
             this.set('activeFilters.subjects', [filter]);
             this.notifyPropertyChange('activeFilters');
-            this.loadPage.call(this);
-        }
-    }),
-    queryStringPassed: Ember.observer('queryString', function() {
-        let filter = this.get('queryString');
-        if (filter) {
-            this.set('searchString', filter);
-            this.loadPage.call(this);
+            this.loadPage();
         }
     }),
     loadPage() {
-        let queryBody = JSON.stringify(this.getQueryBody());
-        let _this = this;
         this.set('loading', true);
+        Ember.run.debounce(this, this._loadPage, 500);
+    },
+    _loadPage() {
+        let queryBody = JSON.stringify(this.getQueryBody());
+
         return Ember.$.ajax({
             url: this.get('searchUrl'),
             crossDomain: true,
             type: 'POST',
             contentType: 'application/json',
             data: queryBody
-        }).then((json) => {
-            if (this.isDestroyed || this.isDestroying) {
-                return;
-            }
+        }).then(json => {
+            if (this.isDestroyed || this.isDestroying) return;
+
             this.set('numberOfResults', json.hits.total);
-            let results = json.hits.hits.map((hit) => {
+
+            let results = json.hits.hits.map(hit => {
                 // HACK: Make share data look like apiv2 preprints data
-                let source = hit._source;
-                source.id = hit._id;
-                source.type = 'elastic-search-result';
-                source.osfProvider = false;
-                source.workType = source['@type'];
-                source.abstract = source.description;
-                source.subjects = source.subjects.map(function(each) {return {text: each};});
-                source.providers = source.sources.map(item => ({name: item}));
-                source.sources.forEach(function(each) {
-                    if (_this.get('osfProviders').indexOf(each) !== -1) {
-                        source.osfProvider = true;
+                let result = Ember.merge(hit._source, {
+                    id: hit._id,
+                    type: 'elastic-search-result',
+                    workType: hit._source['@type'],
+                    abstract: hit._source.description,
+                    subjects: hit._source.subjects.map(each => ({text: each})),
+                    providers: hit._source.sources.map(item => ({name: item})),
+                    osfProvider: hit._source.sources.reduce((acc, source) => (acc || this.get('osfProviders').indexOf(source) !== -1), false),
+                });
+
+                result.contributors = result.lists.contributors.map(contributor => ({
+                    users: {
+                        id: contributor.id,
+                        familyName: contributor.family_name,
+                        givenName: contributor.given_name,
                     }
-                });
-                source.contributors = source.lists.contributors.map(function(contributor) {
-                    return {
-                        users: {
-                            familyName: contributor.family_name,
-                            givenName: contributor.given_name,
-                            id: contributor.id
-                        }
-                    };
-                });
-                return source;
+                }));
+
+                return result;
             });
+
             this.set('loading', false);
-            this.set('results', results);
+            return this.set('results', results);
         });
     },
     maxPages: Ember.computed('numberOfResults', function() {
@@ -146,7 +143,7 @@ export default Ember.Controller.extend({
         }
         let query = {
             query_string: {
-                query: this.get('searchString') || '*'
+                query: this.get('queryString') || '*'
             }
         };
 
@@ -187,17 +184,14 @@ export default Ember.Controller.extend({
 
     expandedOSFProviders: false,
     reloadSearch: Ember.observer('activeFilters', function() {
-        this.set('searchString', this.get('searchValue'));
         this.set('page', 1);
         this.loadPage();
     }),
     otherProviders: [],
     actions: {
         search(val, event) {
-            if (event && event.keyCode < 49 && !(event.keyCode === 8 || event.keyCode === 32)) {
-                return;
-            }
-            this.set('searchString', this.get('searchValue'));
+            if (event && (event.keyCode < 49 || [91, 92, 93].indexOf(event.keyCode) !== -1) && [8, 32, 48].indexOf(event.keyCode) === -1) return;
+
             this.set('page', 1);
             this.loadPage();
         },

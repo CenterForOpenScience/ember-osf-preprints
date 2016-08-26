@@ -4,7 +4,7 @@
 @import 'variables';
 @import 'authors';
 @import 'validated-input';
-@import 'hint.css';
+@import 'hint';
 
 /* Override styles from ember-osf and osf */
 .footer {
@@ -37,7 +37,7 @@ ul.comma-list {
 /* Preprint navbar */
 .preprint-navbar {
     position: fixed;
-    top: 57px;
+    top: 51px;
     width: 100%;
     padding: 0;
     background: #578CA2;

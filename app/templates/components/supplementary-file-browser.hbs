@@ -2,13 +2,13 @@
     width="99%" height="700"}}
 {{/file-renderer}}
 
-{{#if supplementList}}
+{{#if hasAdditionalFiles}}
     <p class="f-w-lg p-b-md">{{selectedFile.name}}</p>
     <section class="osf-box p-md m-b-lg">
-        {{#liquid-bind supplementList use=scrollAnim as |list|}}
+        {{#liquid-bind files use=scrollAnim as |list|}}
             {{#each list as |supplement index|}}
                 {{#if (eq supplement.kind "folder")}}
-                    <a href={{projectURL}} style="color:inherit;" class="hint--bottom col-xs-2 p-md box m-b-xl {{if (eq index 0) m-l-xl}} {{if (eq index 5) m-r-xl}}" aria-label={{supplement.name}}>
+                    <a href={{preprint.links.html}} class="hint--bottom col-xs-2 p-md box m-b-xl" aria-label={{supplement.name}}>
                         <i class="fa fa-folder fa-2x p-b-xs" aria-hidden="true"></i>
                     </a>
                 {{else}}
@@ -16,13 +16,9 @@
                         {{#if (eq selectedFile supplement)}}
                             <b class="file-selected-arrow">&#9660;</b>
                         {{/if}}
-                        {{#if (eq index 0)}}
-                            {{#unless showLeftArrow}}
-                                <i style="margin-top: -4px" class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
-                                <p style="font-size: 75%; margin-bottom: -10px">Primary</p>
-                            {{else}}
-                                <i class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
-                            {{/unless}}
+                        {{#if (eq preprint.primaryFile.id supplement.id)}}
+                            <i style="margin-top: -4px" class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
+                            <p style="font-size: 75%; margin-bottom: -10px">Primary</p>
                         {{else}}
                             <i class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
                         {{/if}}
