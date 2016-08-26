@@ -77,9 +77,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     ///////////////////////////////////////
     // Validation rules for form sections
-    uploadValid: Ember.computed.and('node', 'selectedFile'),
+    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle'),
+    abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
+    doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
     // Basics fields are currently the only ones with validation. Make this more specific in the future if we add more form fields.
-    basicsValid: Ember.computed.alias('validations.isValid'),
+    basicsValid: Ember.computed.and('abstractValid', 'doiValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject.
