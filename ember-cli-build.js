@@ -16,8 +16,8 @@ module.exports = function(defaults) {
             // next line is needed to prevent ember-cli to load
             // handlebars (it happens automatically in 0.1.x)
             'handlebars.js': {production: null},
-            [process.env.EMBER_ENV !== 'development' ? 'jquery' : '']: null,
             [process.env.EMBER_ENV !== 'development' ? 'ember.js' : '']: null,
+            [process.env.EMBER_ENV !== 'development' ? 'jquery.js' : '']: null,
         },
         'ember-bootstrap': {
             importBootstrapCSS: false
