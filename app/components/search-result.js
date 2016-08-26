@@ -37,6 +37,9 @@ export default Ember.Component.extend({
         },
         toggleShowBody() {
             this.set('showBody', !this.showBody);
+        },
+        select(item) {
+            this.attrs.select(item);
         }
     }
 
