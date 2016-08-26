@@ -211,7 +211,7 @@ export default Ember.Controller.extend({
         },
 
         clearFilters() {
-            this.set('activeFilters',  { providers: ['Open Science Framework'], subjects: [] });
+            this.set('activeFilters',  { providers: [], subjects: [] });
         },
 
         sortBySelect(index) {
@@ -240,11 +240,7 @@ export default Ember.Controller.extend({
         selectProvider(provider) {
             let currentProviders = this.get('activeFilters.providers').slice();
             if (currentProviders.indexOf(provider) !== -1) {
-                if (currentProviders.length > 1) {
-                    this.get('activeFilters.providers').removeObject(provider);
-                } else {
-                    return false;
-                }
+                this.get('activeFilters.providers').removeObject(provider);
             } else {
                 this.get('activeFilters.providers').pushObject(provider);
             }
