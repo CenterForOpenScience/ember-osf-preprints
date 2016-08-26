@@ -25,6 +25,8 @@ export default OsfModel.extend({
     tags: DS.attr(),
     doi: DS.attr('string'),
 
+    keenioReadKey: DS.attr('string'),
+
     // Relationships
     primaryFile: DS.belongsTo('file', { inverse: null }),
     files: DS.hasMany('file-providers', { inverse: null }),

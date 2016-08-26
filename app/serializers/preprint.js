@@ -1,6 +1,10 @@
 import OsfSerializer from 'ember-osf/serializers/osf-serializer';
 
 export default OsfSerializer.extend({
+    attrs: {
+        keenio_read_key: { serialize:false }
+    },
+
     serialize(snapshot) {
         // Normal OSF serializer strips out relationships. We need to add back primaryFile for this endpoint
         let res = this._super(...arguments);

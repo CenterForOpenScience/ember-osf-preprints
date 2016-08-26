@@ -30,6 +30,10 @@ module.exports = function(environment) {
         moment: {
             outputFormat: 'YYYY-MM-DD hh:mm a'
         },
+        ANALYTICS: {
+            // Keen Project ID, common across all nodes, as provided by Fitz
+            keenProjectId: '5797b58fbcb79c2c0fa1a705',
+        },
         PREPRINTS: {
             provider: 'osf',
             // The name of the OSF campaign used to track signups
