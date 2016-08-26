@@ -38,7 +38,7 @@ module.exports = function(defaults) {
                     <script>Raven.config("${config.sentryDSN}", {}).install();</script>`
             },
             cdn: {
-                enabled: process.env.EMBER_ENV !== 'production',
+                enabled: process.env.EMBER_ENV !== 'development',
                 content: `
                     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
                     <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.7.1/ember.prod.js"></script>`
