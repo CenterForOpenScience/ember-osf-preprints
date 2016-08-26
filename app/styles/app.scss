@@ -4,7 +4,7 @@
 @import 'variables';
 @import 'authors';
 @import 'validated-input';
-@import 'hint.css';
+@import 'hint';
 
 /* Override styles from ember-osf and osf */
 .footer {
@@ -19,10 +19,25 @@ body {
     font-family: "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+ul.comma-list {
+    display: inline;
+    list-style: none;
+    li {
+        display: inline;
+    }
+    li:after {
+        content: ", "
+    }
+    li:last-child:after {
+        content: "";
+    }
+}
+
+
 /* Preprint navbar */
 .preprint-navbar {
     position: fixed;
-    top: 57px;
+    top: 51px;
     width: 100%;
     padding: 0;
     background: #578CA2;
@@ -117,14 +132,6 @@ body {
     }
 }
 
-
-/* Contribute Panel */
-.preprint-contribute {
-    background: #cbd9d5 url('img/index-server-bg.jpg');
-    border-bottom: 1px solid #ced8d4;
-
-}
-
 @media (max-width: 768px) {
     .subject-item {
         margin-bottom: 5px;
@@ -174,6 +181,23 @@ body {
     }
 }
 
+.preprint-filter {
+    margin: 2px;
+    padding: 0px 6px;
+    line-height: 30px;
+    border-radius: 2px;
+    display: inline-block;
+}
+.provider-filter {
+    background-color: #578ca2;
+    color: #eeeeee;
+}
+.subject-filter {
+    background-color: #d7e6e9;
+    .fa {
+        color: #777777;
+    }
+}
 
 
 /* VIEW page */
@@ -205,6 +229,22 @@ body {
     box-shadow: 0 0 3px #ddd;
     label {
         width: 100%;
+    }
+    .preprint-header-preview {
+        color: #444;
+        font-size: 15px;
+        i {
+            color: #888;
+            display: block;
+        }
+        .subject-preview {
+            display: inline-block;
+            background-color: #f8f8f8;
+            border-radius: 3px;
+            border: 1px solid #eee;
+            padding: 1px 7px;
+            margin-bottom: 4px;
+        }
     }
 }
 #preprint-form-upload {
@@ -444,19 +484,16 @@ hr {
         &.valid {
             .preprint-section-status .fa {
                 color: #009688;
-                display: block;
             }
         }
         &.invalid {
             .preprint-section-status .fa {
                 color: #F44336;
-                display: block;
             }
         }
         &.not-validated {
             .preprint-section-status .fa {
                 color: gray;
-                display: block;
             }
         }
         .fa {
@@ -750,4 +787,8 @@ hr {
 
 #convertExistingOrCreateComponent {
     padding-left: 15px;
+}
+
+.toast {
+    opacity: 1 !important;
 }

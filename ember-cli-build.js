@@ -6,7 +6,19 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 module.exports = function(defaults) {
     var config = require('./config/environment')(process.env.EMBER_ENV);
 
+    // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
     var app = new EmberApp(defaults, {
+        sourcemaps: {
+            enabled: true,
+            extensions: ['js']
+        },
+        vendorFiles: {
+            // next line is needed to prevent ember-cli to load
+            // handlebars (it happens automatically in 0.1.x)
+            'handlebars.js': null,
+            'jquery.js': null,
+            'ember.js': null
+        },
         'ember-bootstrap': {
             importBootstrapCSS: false
         },
@@ -14,7 +26,8 @@ module.exports = function(defaults) {
             includePaths: [
                 'node_modules/ember-osf/addon/styles',
                 'bower_components/bootstrap-sass/assets/stylesheets',
-                'bower_components/osf-style/sass'
+                'bower_components/osf-style/sass',
+                'bower_components/hint.css'
             ]
         },
         inlineContent: {
