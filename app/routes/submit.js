@@ -19,7 +19,7 @@ export default Ember.Route.extend(resetScrollMixin, CasAuthenticatedRouteMixin, 
             window.location.reload();
         }
         return this._super(...arguments);
-      },
+    },
     setupController(controller) {
         // Fetch values required to operate the page: user and userNodes
         let userNodes = Ember.A();
