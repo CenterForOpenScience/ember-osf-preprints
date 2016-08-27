@@ -19,9 +19,9 @@
                             {{preprint-form-header uploadSaveState=uploadSaveState showValidationIndicator=false name=name preprintFile=selectedFile.name preprintTitle=node.title valid=uploadValid}}
                             {{#preprint-form-body}}
                                 {{#if fileAndNodeLocked}}
-                                    <p><label> Preprint file: </label> {{selectedFile.name}}</p>
+                                    <p><em> Preprint file: </em> {{selectedFile.name}}</p>
 
-                                    <label> Preprint title </label>
+                                    <p><em> Preprint title: </em></p>
                                     {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=nodeTitle}}
 
                                     <button class="btn btn-danger" {{action 'toggleRestartPreprintModal'}}>Restart</button>
