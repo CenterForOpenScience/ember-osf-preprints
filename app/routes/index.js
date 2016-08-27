@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
-import resetScrollMixin from '../mixins/reset-scroll';
+import ResetScrollMixin from '../mixins/reset-scroll';
 
-export default Ember.Route.extend(resetScrollMixin, {
+export default Ember.Route.extend(ResetScrollMixin, {
     model() {
         var getTotalPayload = '{"size": 0, "from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}}}';
 

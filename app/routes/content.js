@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import resetScrollMixin from '../mixins/reset-scroll';
+import ResetScrollMixin from '../mixins/reset-scroll';
 
-export default Ember.Route.extend(resetScrollMixin, {
+export default Ember.Route.extend(ResetScrollMixin, {
     model(params) {
         return this.store.findRecord('preprint', params.preprint_id);
     },
