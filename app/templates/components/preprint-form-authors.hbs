@@ -126,7 +126,7 @@
                             </td>
                             <td>
                                 <div class="form-group vert-align-enabled-permissions">
-                                    {{#if (and isAdmin (and canEdit (minAdmins contrib contributors authorModification)))}}
+                                    {{#if (and (not (contributorIsCurrentUser contrib currentUser)) isAdmin (and canEdit (minAdmins contrib contributors authorModification)))}}
                                         <select class="form-control" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
                                             {{#each permissionOptions as |option|}}
                                                 <option selected={{eq contrib.permission option.value}} value={{option.value}}>

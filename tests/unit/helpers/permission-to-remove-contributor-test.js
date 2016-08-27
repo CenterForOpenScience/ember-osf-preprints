@@ -4,7 +4,7 @@ import Ember from 'ember';
 
 module('Unit | Helper | permission to remove contributor');
 
-test('can remove self as a contributor', function(assert) {
+test('cannot remove self as a contributor', function(assert) {
     var contrib = Ember.Object.create({
         'userId': '12345',
         'permission': 'admin',
@@ -22,7 +22,7 @@ test('can remove self as a contributor', function(assert) {
     });
 
     let result = permissionToRemoveContributor([contrib, currentUser, isAdmin, node]);
-    assert.equal(result, true);
+    assert.equal(result, false);
 });
 
 
