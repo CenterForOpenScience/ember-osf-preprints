@@ -42,14 +42,14 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-10">
                 {{#each result.subjects as |subject|}}
                     <span class='badge pointer' onclick={{action 'select' subject}}>{{subject.text}}</span>
                 {{/each}}
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-2">
                 {{#each result.providers as |provider index|}}
-                    {{if index '| '}}{{provider.name}}
+                    {{if index '| '}}{{filter-replace provider.name}}
                 {{/each}}
             </div>
         </div>
