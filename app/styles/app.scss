@@ -11,7 +11,7 @@
     margin-top: 0;
 }
 
-/* GLOBAL to PREPRINTS */
+/* GLOBAL to PREPRINTS, these may be used in multiple pages */
 .pointer {
     cursor: pointer;
 }
@@ -21,8 +21,8 @@ body {
 
 ul.comma-list {
     display: inline;
-    padding: 0;
     list-style: none;
+    padding-left: 0;
     li {
         display: inline;
     }
@@ -32,6 +32,14 @@ ul.comma-list {
     li:last-child:after {
         content: "";
     }
+}
+.subject-preview {
+    display: inline-block;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    border: 1px solid #eee;
+    padding: 1px 7px;
+    margin-bottom: 4px;
 }
 
 
@@ -175,11 +183,14 @@ ul.comma-list {
     label {
         font-weight: normal;
     }
-    ul {
+    .preprint-search-sidebar ul {
         padding-left: 25px;
         li {
             list-style: none;
         }
+    }
+    .search-result {
+        margin-bottom: 10px;
     }
 }
 
@@ -200,6 +211,10 @@ ul.comma-list {
         color: #777777;
     }
 }
+.search-result-providers {
+    font-weight: bold;
+}
+
 
 
 /* VIEW page */
@@ -207,7 +222,40 @@ ul.comma-list {
 .dark-overlay-header-background {
     background: url("img/dark-overlay.png") top center;
 }
-
+#view-page{
+    background-color: #FCFCFC;
+    font-family : 'Open Sans', Helvetica, sans-serif;
+    .osf-box-lt{
+        background-color: #F3F5F5;
+    }
+    .header-row{
+        color: #ffffff;
+        padding-top: 90px;
+    }
+    .view-authors{
+        color: #337ab7;
+        a {
+            color: #6dd1de;
+        }
+    }
+    .round-btn {
+        border-radius: 25px;
+        background-color: #4c4c4c;
+        color: white;
+    }
+    #mfr-col{
+        position: relative;
+    .expand-mfr-carrot {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: #888888;
+        background: 0;
+        border: 0;
+        outline: none;
+        }
+    }
+}
 
 /* SUBMIT page */
 
@@ -238,14 +286,6 @@ ul.comma-list {
         i {
             color: #888;
             display: block;
-        }
-        .subject-preview {
-            display: inline-block;
-            background-color: #f8f8f8;
-            border-radius: 3px;
-            border: 1px solid #eee;
-            padding: 1px 7px;
-            margin-bottom: 4px;
         }
     }
 }
@@ -665,37 +705,7 @@ hr {
 }
 
 
-#view-page{
-    background-color: #FCFCFC;
-    font-family : 'Open Sans', Helvetica, sans-serif;
-    .osf-box-lt{
-        background-color: #F3F5F5;
-    }
-    .header-row{
-        color: white;
-    }
-    .view-authors{
-        color: #337ab7;
-        //float: left;
-    }
-    .round-btn {
-        border-radius: 25px;
-        background-color: #4c4c4c;
-        color: white;
-    }
-    #mfr-col{
-        position: relative;
-    .expand-mfr-carrot {
-        position: absolute;
-        right: 0;
-        top: 0;
-        color: #888888;
-        background: 0;
-        border: 0;
-        outline: none;
-        }
-    }
-}
+
 
 //For Supplementary File Widget
 #preprint-file-view {
@@ -713,11 +723,11 @@ hr {
             }
         }
         .file-selected-arrow {
-            color: #888888;
+            color: #578ca2;
             position: absolute;
             top: -20px;
             font-size: xx-large;
-            left: 2px;
+            margin: 0 auto;
         }
     }
 
