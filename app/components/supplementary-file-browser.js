@@ -22,9 +22,9 @@ export default Ember.Component.extend({
         this._super(...arguments);
 
         this.set('files', []);
-        this.get('preprint').query('files', {'filter[name]': 'osfstorage'})
+        this.get('preprint').get('files')
             .then(providers => {
-                this.set('provider', providers.get('firstObject'));
+                this.set('provider', providers.findBy('name', 'osfstorage'));
                 return this.get('provider').query('files', {'page[size]': 10});
             })
             .then(files => this.set('files', files))

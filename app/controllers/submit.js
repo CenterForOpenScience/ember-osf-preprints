@@ -70,12 +70,18 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     node: null,
     selectedFile: null,
     contributors: Ember.A(),
+    hasFile: function() {
+        return this.get('file') != null;
+    }.property('file'),
+    file: null,
 
     ///////////////////////////////////////
     // Validation rules for form sections
-    uploadValid: Ember.computed.and('node', 'selectedFile'),
+    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle'),
+    abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
+    doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
     // Basics fields are currently the only ones with validation. Make this more specific in the future if we add more form fields.
-    basicsValid: Ember.computed.alias('validations.isValid'),
+    basicsValid: Ember.computed.and('abstractValid', 'doiValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject.
@@ -150,6 +156,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     searchResults: [],
     showModalSharePreprint: false,
+    showModalRestartPreprint: false,
 
     _names: ['upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()),
 
@@ -162,6 +169,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         this.set('searchResults', []);
         this.set('uploadFile', null);
     },
+    savingPreprint: false,
     actions: {
         // Open next panel
         next(currentPanelName) {
@@ -189,6 +197,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         finishUpload() {
             this.send('lockFileAndNode');
             this.send('next', this.get('_names.0'));
+        },
+        toggleRestartPreprintModal() {
+            this.toggleProperty('showModalRestartPreprint');
         },
         resetFileUpload() {
             var promisesArray = [];
@@ -305,6 +316,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 id: this.get('node.id'),
                 primaryFile: this.get('selectedFile')
             });
+            this.set('savingPreprint', true);
 
             model.save()
                 // Ember data is not worth the time investment currently

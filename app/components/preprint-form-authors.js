@@ -51,8 +51,12 @@ export default CpPanelBodyComponent.extend({
                 this.set('fullName', '');
                 this.set('email', '');
                 this.highlightSuccessOrFailure(contributor.id, this, 'success');
-            }, () => {
-                this.get('toast').error('Could not add unregistered contributor.');
+            }, (error) => {
+                if (error.errors[0] && error.errors[0].detail && error.errors[0].detail.indexOf('is already a contributor') > -1) {
+                    this.get('toast').error(error.errors[0].detail);
+                } else {
+                    this.get('toast').error('Could not add unregistered contributor.');
+                }
                 this.highlightSuccessOrFailure('add-unregistered-contributor-form', this, 'error');
             });
 

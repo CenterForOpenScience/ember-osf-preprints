@@ -24,12 +24,19 @@
                                     <label> Preprint title </label>
                                     {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=nodeTitle}}
 
-                                    <button class="btn btn-danger" {{action 'resetFileUpload'}}>Restart</button>
-                                    <button class="btn btn-primary" {{action 'editTitleNext' name}}>Next</button>
+                                    <button class="btn btn-danger" {{action 'toggleRestartPreprintModal'}}>Restart</button>
+                                    <button class="btn btn-primary" disabled={{unless nodeTitle true}} {{action 'editTitleNext' name}}>Next</button>
+
+                                    <div>
+                                        {{confirm-restart-submit-preprint isOpen=showModalRestartPreprint resetFileUpload=(action 'resetFileUpload')}}
+                                    </div>
                                 {{else}}
                                     <div>
                                         {{file-uploader
+                                            hasFile=hasFile
+                                            file=file
                                             node=node
+                                            nodeTitle=nodeTitle
                                             userNodes=userNodes
                                             osfFile=selectedFile
                                             next=(action 'next')
@@ -64,7 +71,6 @@
 
                     {{#with _names.[2] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{log 'Basics Section hasopened state' hasOpened}}
                             {{preprint-form-header doi=basicsDOI basicsSaveState=basicsSaveState tags=node.tags abstract=basicsAbstract name=name valid=basicsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class="row">
@@ -72,21 +78,22 @@
                                         <div>
                                             <label>
                                                 DOI (optional):
-                                                {{validated-input model=this valuePath='basicsDOI' placeholder="DOI" value=basicsDOI}}
                                             </label>
+                                            {{validated-input model=this valuePath='basicsDOI' placeholder="DOI" value=basicsDOI}}
                                         </div>
                                         <div>
                                             <label>
                                                 Keywords:
-                                                {{tags-widget addATag=(action 'addATag' node) removeATag=(action 'removeATag' node) tags=node.tags}}
                                             </label>
+                                            <p class="small"> Add keywords to increase discoverability of your preprint</p>
+                                            {{tags-widget addATag=(action 'addATag' node) removeATag=(action 'removeATag' node) tags=node.tags}}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label>
                                             <span class="required">Abstract:</span>
-                                            {{validated-input model=this valuePath='basicsAbstract' placeholder="Add a brief summary of your preprint" value=basicsAbstract large=true}}
                                         </label>
+                                        {{validated-input model=this valuePath='basicsAbstract' placeholder="Add a brief summary of your preprint" value=basicsAbstract large=true}}
                                     </div>
                                 </div>
                                 <div class="row">

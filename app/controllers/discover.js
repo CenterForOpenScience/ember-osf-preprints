@@ -19,7 +19,7 @@ export default Ember.Controller.extend({
     },
 
     activeFilters: { providers: [], subjects: [] },
-    osfProviders: ['Open Science Framework', 'PsyArXiv', 'SocArxiv', 'Engrxiv'],
+    osfProviders: ['OSF', 'PsyArXiv', 'SocArXiv', 'engrXiv'],
 
     page: 1,
     size: 10,
@@ -117,11 +117,7 @@ export default Ember.Controller.extend({
                 });
 
                 result.contributors = result.lists.contributors.map(contributor => ({
-                    users: {
-                        id: contributor.id,
-                        familyName: contributor.family_name,
-                        givenName: contributor.given_name,
-                    }
+                    users: Object.keys(contributor).reduce((acc, key) => Ember.merge(acc, {[key.camelize()]: contributor[key]}), {})
                 }));
 
                 return result;

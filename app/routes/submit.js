@@ -29,7 +29,16 @@ export default Ember.Route.extend(CasAuthenticatedRouteMixin, {
                 let onlyAdminNodes = userNodes.filter((item) => item.get('currentUserPermissions').indexOf(permissions.ADMIN) !== -1);
                 controller.set('userNodes', onlyAdminNodes);
             }));
-
         return this._super(...arguments);
+    },
+    actions: {
+        willTransition: function(transition) {
+            var controller = this.get('controller');
+
+            if (controller.get('hasFile') && !controller.get('savingPreprint') && !confirm('Are you sure you want to abandon this preprint?')) {
+                transition.abort();
+            }
+        },
+
     }
 });

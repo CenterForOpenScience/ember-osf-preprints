@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 /**
  * permissionToRemoveContributor helper.  Checks to see if user has proper permissions
- * to remove contributor.  The user either must be an admin or trying to remove herself.
+ * to remove contributor.  The user must be an admin and cannot remove herself.
  * The project cannot be a registration.
  *
  * @method permissionToRemoveContributor
@@ -17,7 +17,7 @@ export function permissionToRemoveContributor(params/*, hash*/) {
     var currentUserId = currentUser.get('currentUserId') || currentUser.get('id');
     var removeSelf = contributor.get('userId') === currentUserId;
     var isRegistration = node.get('registration');
-    return ((removeSelf || isAdmin) && !isRegistration);
+    return (!removeSelf && isAdmin && !isRegistration);
 
 }
 

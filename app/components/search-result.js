@@ -2,23 +2,19 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
-    numMaxChars: 400,
+    numMaxChars: 300,
     showBody: false,
     footerIcon: Ember.computed('showBody', function() {
         return this.get('showBody') ? 'caret-up' : 'caret-down';
     }),
-    truncateDescription: true,
     result: null,
 
-    displayDescription: Ember.computed('result', 'truncateDescription', function() {
+    shortDescription: Ember.computed('result', function() {
         let result = this.get('result');
-        if (result.description) {
-            if (this.truncateDescription) {
-                return result.description.substring(0, this.numMaxChars) + '...';
-            }
-            return result.description;
+        if (result.description && result.description.length > this.numMaxChars) {
+            return result.description.substring(0, this.numMaxChars) + '...';
         }
-        return '';
+        return result.description;
     }),
 
     osfID: function() {
@@ -32,9 +28,6 @@ export default Ember.Component.extend({
     }.property('result'),
 
     actions: {
-        toggleShowDescription() {
-            this.set('truncateDescription', !this.truncateDescription);
-        },
         toggleShowBody() {
             this.set('showBody', !this.showBody);
         },
