@@ -45,9 +45,11 @@
                             {{if index '| '}}{{provider.name}}
                         {{/each}}
                     </span>
-                    {{#if result.date_modified}} {{! moment-format will use current time if null}}
-                        <span>{{moment-format result.date_modified "MMMM YYYY"}}</span>
-                    {{/if}}
+                    <span class="pull-right">
+                        {{#if result.date_modified}} {{! moment-format will use current time if null}}
+                            <span>{{moment-format result.date_modified "MMMM YYYY"}}</span>
+                        {{/if}}
+                    </span>
                 </div>
 
 
