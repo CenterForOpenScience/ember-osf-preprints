@@ -1,4 +1,4 @@
-<label> 1. Upload your preprint </label>
+<label> Upload your preprint </label>
 {{dropzone-widget
     url=url
     options=dropzoneOptions
@@ -6,16 +6,17 @@
     buildUrl=(action 'getUrl')
     complete=(action 'complete')
     preUpload=(action 'preUpload')
+    defaultMessage='Drop preprint file here to upload'
     maxfilesexceeded=(action 'maxfilesexceeded')
 }}
 
 {{#liquid-if hasFile use='crossFade'}}
     {{#liquid-bind hasFile use='crossFade'}}
-        <label> 2. Enter preprint title </label>
-        {{input class='form-control m-v-md' value=nodeTitle}}
+        <label> Enter preprint title </label>
+        {{validated-input model=this valuePath='nodeTitle' placeholder="Title" value=nodeTitle}}
     {{/liquid-bind}}
 {{/liquid-if}}
 
 <div class="p-t-xs pull-right">
-    <button class="btn btn-primary" disabled={{not (and hasFile nodeTitle)}} {{action 'createProjectAndUploadFile'}}>Next</button>
+    <button class="btn btn-primary" disabled={{not (and hasFile titleValid)}} {{action 'createProjectAndUploadFile'}}>Next</button>
 </div>

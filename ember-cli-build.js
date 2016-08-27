@@ -6,7 +6,19 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 module.exports = function(defaults) {
     var config = require('./config/environment')(process.env.EMBER_ENV);
 
+    // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
     var app = new EmberApp(defaults, {
+        sourcemaps: {
+            enabled: true,
+            extensions: ['js']
+        },
+        vendorFiles: {
+            // next line is needed to prevent ember-cli to load
+            // handlebars (it happens automatically in 0.1.x)
+            'handlebars.js': {production: null},
+            [process.env.EMBER_ENV !== 'development' ? 'ember.js' : '']: null,
+            [process.env.EMBER_ENV !== 'development' ? 'jquery.js' : '']: null,
+        },
         'ember-bootstrap': {
             importBootstrapCSS: false
         },
@@ -14,7 +26,8 @@ module.exports = function(defaults) {
             includePaths: [
                 'node_modules/ember-osf/addon/styles',
                 'bower_components/bootstrap-sass/assets/stylesheets',
-                'bower_components/osf-style/sass'
+                'bower_components/osf-style/sass',
+                'bower_components/hint.css'
             ]
         },
         inlineContent: {
@@ -23,6 +36,12 @@ module.exports = function(defaults) {
                 content: `
                     <script src="https://cdn.ravenjs.com/3.5.1/ember/raven.min.js"></script>
                     <script>Raven.config("${config.sentryDSN}", {}).install();</script>`
+            },
+            cdn: {
+                enabled: process.env.EMBER_ENV !== 'development',
+                content: `
+                    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+                    <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.7.1/ember.prod.js"></script>`
             }
         },
         postcssOptions: {

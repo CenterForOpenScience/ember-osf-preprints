@@ -11,15 +11,14 @@
         <div class="row">
             <div class="col-md-12">
                 <h4>
-                    {{! TODO: link to view page for preprint }}
-                    {{#if result.osfProvider}}
-                        {{#link-to "content" result}}
-                            {{result.title}}
-                        {{/link-to}}
+                    {{#if osfID}}
+                        {{#link-to "content" osfID}}{{result.title}}{{/link-to}}
                     {{else}}
-                        <a href='{{result.canonicalUrl}}'>
-                            {{result.title}}
-                        </a>
+                        {{#if hyperlink}}
+                            <a href='{{hyperlink}}'>{{result.title}}</a>
+                        {{else}}
+                            <span>{{result.title}}</span>
+                        {{/if}}
                     {{/if}}
                 </h4>
             </div>
@@ -44,8 +43,8 @@
 
         <div class="row">
             <div class="col-sm-8">
-                {{#each result.subjects as |subject  index|}}
-                    {{if index '| '}}{{subject.text}}
+                {{#each result.subjects as |subject|}}
+                    <span class='badge pointer' onclick={{action 'select' subject}}>{{subject.text}}</span>
                 {{/each}}
             </div>
             <div class="col-sm-4">
@@ -59,8 +58,8 @@
             {{result.abstract}}
             <div class="row">
                 <div class="col-sm-12">
-                    {{#each result.tags as |tag|}}
-                        <span class="badge">{{tag}}</span>
+                    {{#each result.tags as |tag index|}}
+                        {{if index '| '}}{{tag}}
                     {{/each}}
                 </div>
             </div>

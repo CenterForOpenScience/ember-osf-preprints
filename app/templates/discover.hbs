@@ -9,7 +9,7 @@
         <div class="row m-t-md m-b-lg">
             <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                 <div class="input-group input-group-lg">
-                    {{input id="searchBox" value=searchValue class="form-control" key-up='search' placeholder="Search preprints..."}}
+                    {{input id="searchBox" value=(mut queryString) class="form-control" key-up='search' placeholder="Search preprints..."}}
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button" {{action "search" this}}>Search</button>
                     </span>
@@ -55,10 +55,10 @@
                         </div>
                         <div id="activeFiltersList">
                             {{#each activeFilters.providers as |filter|}}
-                                <span class='preprint-filter provider-filter'>{{filter}} <span class='pointer' onclick="{{action 'selectProvider' filter}}">{{fa-icon 'times-circle'}}</span></span>
+                                <span class='preprint-filter provider-filter'>{{filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'selectProvider' filter)}}</span></span>
                             {{/each}}
                             {{#each activeFilters.subjects as |filter|}}
-                                <span class='preprint-filter subject-filter'>{{filter}} <span class='pointer' onclick="{{action 'selectSubjectFilter' filter}}">{{fa-icon 'times-circle'}}</span></span>
+                                <span class='preprint-filter subject-filter'>{{filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'selectSubjectFilter' filter)}}</span></span>
                             {{/each}}
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                     <h4 class="filter-heading p-sm">Providers</h4>
                     <ul>
                         {{#each otherProviders as |item|}}
-                            <li style="margin-left: 10px">
+                            <li>
                                 <label>
                                     <input type="checkbox" checked="{{if (if-filter item activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item}}>
                                     {{item}}
@@ -84,7 +84,7 @@
                 </div>
                 <div class="osf-box p-md m-b-lg clearfix m-t-xl">
                     <p>Do you want to add your own research as a preprint?</p>
-                    <button type="button" class="btn btn-success pull-right" {{action "linkToAddPreprint"}}>Add your preprint</button>
+                    {{#link-to "submit" type="button" class="btn btn-success btn-lg"}}Add your preprint{{/link-to}}
                 </div>
             </div>
 
@@ -96,7 +96,7 @@
                 {{else}}
                     {{#if numberOfResults}}
                         {{#each results as |result|}}
-                            {{search-result result=result}}
+                            {{search-result result=result select=(action 'selectSubjectFilter')}}
                         {{/each}}
 
                         <div class="row">

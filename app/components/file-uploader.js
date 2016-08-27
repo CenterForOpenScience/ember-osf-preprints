@@ -1,27 +1,37 @@
 import Ember from 'ember';
 import {State} from '../controllers/submit';
+import { validator, buildValidations } from 'ember-cp-validations';
 
-export default Ember.Component.extend({
+const TitleValidation = buildValidations({
+    nodeTitle: {
+        description: 'Title',
+        validators: [
+            validator('presence', true),
+            validator('length', {
+                // minimum length for title?
+                max: 200,
+            })
+        ]
+    },
+});
+
+export default Ember.Component.extend(TitleValidation, {
     State,
     store: Ember.inject.service(),
     toast: Ember.inject.service(),
 
     url: null,
     node: null,
-    file: null,
     callback: null,
     nodeTitle: null,
     createChild: false,
-
-    hasFile: function() {
-        return this.get('file') != null;
-    }.property('file'),
 
     dropzoneOptions: {
         maxFiles: 1,
         method: 'PUT',
         uploadMultiple: false,
     },
+    titleValid: Ember.computed.alias('validations.isValid'),
 
     init() {
         this._super(...arguments);

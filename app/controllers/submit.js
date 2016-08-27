@@ -70,19 +70,26 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     node: null,
     selectedFile: null,
     contributors: Ember.A(),
+    hasFile: function() {
+        return this.get('file') != null;
+    }.property('file'),
+    file: null,
 
     ///////////////////////////////////////
     // Validation rules for form sections
-    uploadValid: Ember.computed.and('node', 'selectedFile'),
+    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle'),
+    abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
+    doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
     // Basics fields are currently the only ones with validation. Make this more specific in the future if we add more form fields.
-    basicsValid: Ember.computed.alias('validations.isValid'),
+    basicsValid: Ember.computed.and('abstractValid', 'doiValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject.
-    subjectsValid: Ember.computed.notEmpty('model.subjects'),
-    allSectionsValid: Ember.computed('uploadValid', 'basicsValid', 'authorsValid', 'subjectsValid', function() {
-        return this.get('uploadValid') && this.get('basicsValid') && this.get('authorsValid') && this.get('subjectsValid');
+    disciplineValid: Ember.computed.notEmpty('model.subjects'),
+    allSectionsValid: Ember.computed('uploadValid', 'basicsValid', 'authorsValid', 'disciplineValid', function() {
+        return this.get('uploadValid') && this.get('basicsValid') && this.get('authorsValid') && this.get('disciplineValid');
     }),
+    nodeTitle: null,
 
     ////////////////////////////////////////////////////
     // Fields used in the "basics" section of the form.
@@ -93,8 +100,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsAbstract: Ember.computed.alias('basicsModel.description'),
     basicsTags: Ember.computed.alias('basicsModel.tags'), // TODO: This may need to provide a default value (list)? Via default or field transform?
     basicsDOI: Ember.computed.alias('model.doi'),
+    uploadSaveState: false,
     basicsSaveState: false,
-    subjectsSaveState: false,
+    disciplineSaveState: false,
     authorsSaveState: false,
 
     //// TODO: Turn off autosave functionality for now. Direct 2-way binding was causing a fight between autosave and revalidation, so autosave never fired. Fixme.
@@ -147,8 +155,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
 
     searchResults: [],
+    showModalSharePreprint: false,
+    showModalRestartPreprint: false,
 
-    _names: ['upload', 'basics', 'subjects', 'authors', 'submit'].map(str => str.capitalize()),
+    _names: ['upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()),
 
     clearFields() {
         // node should also be cleared, currently throws an error
@@ -187,6 +197,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.send('lockFileAndNode');
             this.send('next', this.get('_names.0'));
         },
+        toggleRestartPreprintModal() {
+            this.toggleProperty('showModalRestartPreprint');
+        },
         resetFileUpload() {
             var promisesArray = [];
             var filePromises = [];
@@ -215,6 +228,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 }
             });
         },
+        editTitleNext(section) {
+            this.set('node.title', this.get('nodeTitle'));
+            let node = this.get('node');
+            node.save();
+            this.send('next', section);
+
+        },
 
         /*
           Basics section
@@ -224,7 +244,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // If save fails, do not transition
             let node = this.get('node');
             node.save()
-                .then(() => this.send('next', this.get('_names.1')))
+                .then(() => this.send('next', this.get('_names.2')))
                 .catch(()=> this.send('error', 'Could not save information; please try again'));
         },
 
@@ -234,7 +254,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
 
         subjectsNext() {
-            this.send('next', this.get('_names.2'));
+            this.send('next', this.get('_names.1'));
         },
         /**
          * findContributors method.  Queries APIv2 users endpoint on full_name.  Fetches specified page of results.
@@ -283,6 +303,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         /*
           Submit tab actions
          */
+        toggleSharePreprintModal() {
+            this.toggleProperty('showModalSharePreprint');
+        },
         savePreprint() {
             // TODO: Check validation status of all sections before submitting
             // TODO: Make sure subjects is working so request doesn't get rejected

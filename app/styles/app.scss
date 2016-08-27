@@ -4,7 +4,7 @@
 @import 'variables';
 @import 'authors';
 @import 'validated-input';
-@import 'hint.css';
+@import 'hint';
 
 /* Override styles from ember-osf and osf */
 .footer {
@@ -37,7 +37,7 @@ ul.comma-list {
 /* Preprint navbar */
 .preprint-navbar {
     position: fixed;
-    top: 57px;
+    top: 51px;
     width: 100%;
     padding: 0;
     background: #578CA2;
@@ -162,6 +162,7 @@ ul.comma-list {
         background-image: url("img/share-logo-icon.png");
         display: inline-block;
         background-size: contain;
+        vertical-align: middle;
     }
 }
 .preprint-search-main {
@@ -795,3 +796,19 @@ hr {
 .toast {
     opacity: 1 !important;
 }
+
+ul.author-preview {
+    display: inline;
+    list-style: none;
+    padding: 0;
+    li {
+        display: inline;
+    }
+    li:after {
+        content: ", "
+    }
+    li:last-child:after {
+        content: "";
+    }
+}
+
