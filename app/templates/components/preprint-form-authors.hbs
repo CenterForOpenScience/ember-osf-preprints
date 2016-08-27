@@ -20,7 +20,7 @@
                     {{#if (eq addState 'searchView')}}
                         <div class="unregisteredUsers">
                             <p> Can't find the user you're looking for? </p>
-                            <button class="btn btn-primary btn-small" {{action "unregisteredView"}}> Add an unregistered user </button>
+                            <button class="btn btn-primary btn-small" {{action "unregisteredView"}}> Add author by email address </button>
                         </div>
                         <h3> Results </h3>
                         {{#if searchResults}}
@@ -51,7 +51,7 @@
                         {{/if}}
                     {{/if}}
                     {{#if (eq addState 'unregisteredView')}}
-                        <h3> Add Unregistered User </h3>
+                        <h3> Add author by email </h3>
                         <div class="user-validation" id="add-unregistered-contributor-form">
                             {{unregistered-contributor-form resetfindContributorsView=(action 'resetfindContributorsView') addUnregisteredContributor=(action 'addUnregisteredContributor')}}
                         </div>
@@ -126,7 +126,7 @@
                             </td>
                             <td>
                                 <div class="form-group vert-align-enabled-permissions">
-                                    {{#if (and isAdmin (and canEdit (minAdmins contrib contributors authorModification)))}}
+                                    {{#if (and (not (contributorIsCurrentUser contrib currentUser)) isAdmin (and canEdit (minAdmins contrib contributors authorModification)))}}
                                         <select class="form-control" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
                                             {{#each permissionOptions as |option|}}
                                                 <option selected={{eq contrib.permission option.value}} value={{option.value}}>

@@ -36,7 +36,7 @@ export default Ember.Route.extend(CasAuthenticatedRouteMixin, {
         willTransition: function(transition) {
             var controller = this.get('controller');
 
-            if (controller.get('hasFile') && !confirm('Are you sure you want to abandon this preprint?')) {
+            if (controller.get('hasFile') && !controller.get('savingPreprint') && !confirm('Are you sure you want to abandon this preprint?')) {
                 transition.abort();
             }
         },
