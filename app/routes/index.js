@@ -2,8 +2,6 @@ import Ember from 'ember';
 import config from 'ember-get-config';
 
 export default Ember.Route.extend({
-
-    fileManager: Ember.inject.service(),
     model() {
         var getTotalPayload = '{"size": 0, "from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}}}';
 

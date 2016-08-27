@@ -19,7 +19,7 @@ export default Ember.Controller.extend({
     },
 
     activeFilters: { providers: [], subjects: [] },
-    osfProviders: ['Open Science Framework', 'PsyArXiv', 'SocArxiv', 'Engrxiv'],
+    osfProviders: ['OSF', 'PsyArXiv', 'SocArXiv', 'engrXiv'],
 
     page: 1,
     size: 10,
