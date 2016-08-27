@@ -8,11 +8,4 @@ export default Ember.Controller.extend(OSFAgnosticAuthControllerMixin, {
     toast: Ember.inject.service(),
 
     signupUrl: `${config.OSF.url}login?` + Ember.$.param({campaign: config.PREPRINTS.campaign}),
-
-    actions: {
-        login() {
-            // TODO: needs to work w/ token auth, for now redirect login through flask endpoint and include next url
-            window.location = getAuthUrl(`${config.OSF.url}login?next=${encodeURI(window.location)}`);
-        }
-    }
 });
