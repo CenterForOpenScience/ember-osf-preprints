@@ -1,7 +1,7 @@
-{{#if profileLink}}
+{{#if profileLink~}}
     <a href={{profileLink}}>
-        {{contributor.users.familyName}}{{if contributor.users.familyName ', '}}{{contributor.users.givenName}}
+        {{contributor.users.givenName}} {{contributor.users.familyName}}
     </a>
 {{else}}
-    {{contributor.users.familyName}}{{if contributor.users.familyName ', '}}{{contributor.users.givenName}}
-{{/if}}
+    {{contributor.users.givenName}} {{contributor.users.familyName}}
+{{~/if}}
