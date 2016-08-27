@@ -222,7 +222,40 @@ ul.comma-list {
 .dark-overlay-header-background {
     background: url("img/dark-overlay.png") top center;
 }
-
+#view-page{
+    background-color: #FCFCFC;
+    font-family : 'Open Sans', Helvetica, sans-serif;
+    .osf-box-lt{
+        background-color: #F3F5F5;
+    }
+    .header-row{
+        color: #ffffff;
+        padding-top: 90px;
+    }
+    .view-authors{
+        color: #337ab7;
+        a {
+            color: #6dd1de;
+        }
+    }
+    .round-btn {
+        border-radius: 25px;
+        background-color: #4c4c4c;
+        color: white;
+    }
+    #mfr-col{
+        position: relative;
+    .expand-mfr-carrot {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: #888888;
+        background: 0;
+        border: 0;
+        outline: none;
+        }
+    }
+}
 
 /* SUBMIT page */
 
@@ -675,37 +708,7 @@ hr {
 }
 
 
-#view-page{
-    background-color: #FCFCFC;
-    font-family : 'Open Sans', Helvetica, sans-serif;
-    .osf-box-lt{
-        background-color: #F3F5F5;
-    }
-    .header-row{
-        color: white;
-    }
-    .view-authors{
-        color: #337ab7;
-        //float: left;
-    }
-    .round-btn {
-        border-radius: 25px;
-        background-color: #4c4c4c;
-        color: white;
-    }
-    #mfr-col{
-        position: relative;
-    .expand-mfr-carrot {
-        position: absolute;
-        right: 0;
-        top: 0;
-        color: #888888;
-        background: 0;
-        border: 0;
-        outline: none;
-        }
-    }
-}
+
 
 //For Supplementary File Widget
 #preprint-file-view {
@@ -723,11 +726,11 @@ hr {
             }
         }
         .file-selected-arrow {
-            color: #888888;
+            color: #578ca2;
             position: absolute;
             top: -20px;
             font-size: xx-large;
-            left: 2px;
+            margin: 0 auto;
         }
     }
 
