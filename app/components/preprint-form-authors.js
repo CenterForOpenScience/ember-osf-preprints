@@ -43,23 +43,24 @@ export default CpPanelBodyComponent.extend({
         // Adds unregistered contributor, then clears form and switches back to search view.
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
-            let res = this.attrs.addContributor(null, 'write', true, false, fullName, email, true);
-            res.then((contributor) => {
-                this.get('contributors').pushObject(contributor);
-                this.toggleAuthorModification();
-                this.set('addState', 'searchView');
-                this.set('fullName', '');
-                this.set('email', '');
-                this.highlightSuccessOrFailure(contributor.id, this, 'success');
-            }, (error) => {
-                if (error.errors[0] && error.errors[0].detail && error.errors[0].detail.indexOf('is already a contributor') > -1) {
-                    this.get('toast').error(error.errors[0].detail);
-                } else {
-                    this.get('toast').error('Could not add unregistered contributor.');
-                }
-                this.highlightSuccessOrFailure('add-unregistered-contributor-form', this, 'error');
-            });
-
+            if (fullName && email) {
+                let res = this.attrs.addContributor(null, 'write', true, false, fullName, email, true);
+                res.then((contributor) => {
+                    this.get('contributors').pushObject(contributor);
+                    this.toggleAuthorModification();
+                    this.set('addState', 'searchView');
+                    this.set('fullName', '');
+                    this.set('email', '');
+                    this.highlightSuccessOrFailure(contributor.id, this, 'success');
+                }, (error) => {
+                    if (error.errors[0] && error.errors[0].detail && error.errors[0].detail.indexOf('is already a contributor') > -1) {
+                        this.get('toast').error(error.errors[0].detail);
+                    } else {
+                        this.get('toast').error('Could not add unregistered contributor.');
+                    }
+                    this.highlightSuccessOrFailure('add-unregistered-contributor-form', this, 'error');
+                });
+            }
         },
         // Requests a particular page of user results
         findContributors(page) {

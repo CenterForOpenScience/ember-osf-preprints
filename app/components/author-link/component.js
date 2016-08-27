@@ -2,8 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     tagName: 'li',
+    contributor: null,
 
-    profileLink: function() {
+    profileLink: Ember.computed('contributor', function() {
         let ids = this.get('contributor.users.identifiers');
 
         for (let i = 0; i < ids.length; i++)
@@ -11,6 +12,5 @@ export default Ember.Component.extend({
                     return ids[i].url;
 
         return false;
-    }.property('contributor')
-
+    })
 });
