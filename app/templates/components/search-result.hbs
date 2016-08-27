@@ -1,15 +1,9 @@
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="row">
-            <div class="col-sm-12">
-                {{#if result.date_modified}} {{! moment-format will use current time if null}}
-                    <span class="pull-right">{{moment-format result.date_modified "MMMM YYYY"}}</span>
-                {{/if}}
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
+            <div class="col-xs-12">
+                {{!Title}}
+                {{log result}}
                 <h4>
                     {{#if osfID}}
                         {{#link-to "content" osfID}}{{result.title}}{{/link-to}}
@@ -21,25 +15,42 @@
                         {{/if}}
                     {{/if}}
                 </h4>
+                {{!Authors}}
+                <div>
+                    {{#each result.contributors as |contributor index|}}
+                        {{#if index}}
+                            |
+                        {{/if}}
+                        {{#if result.osfProvider}}
+                            <a href={{contributor.users.id}}>
+                                {{contributor.users.familyName}}{{if contributor.users.familyName ', '}}{{contributor.users.givenName}}
+                            </a>
+                        {{else}}
+                            {{contributor.users.familyName}}{{if contributor.users.familyName ', '}}{{contributor.users.givenName}}
+                        {{/if}}
+                    {{/each}}
+                </div>
+
+
+                {{!Abstract}}
+                {{#if result.abstract}}
+                    <div class="text-muted m-t-sm">{{result.abstract}}</div>
+                {{/if}}
+
+                {{!Provider and date}}
+                <span>
+                    {{#each result.providers as |provider index|}}
+                        {{if index '| '}}{{provider.name}}
+                    {{/each}}
+                </span>
+                {{#if result.date_modified}} {{! moment-format will use current time if null}}
+                    <span>{{moment-format result.date_modified "MMMM YYYY"}}</span>
+                {{/if}}
+
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-12">
-                {{#each result.contributors as |contributor index|}}
-                    {{#if index}}
-                        |
-                    {{/if}}
-                    {{#if result.osfProvider}}
-                        <a href={{contributor.users.id}}>
-                            {{contributor.users.familyName}}{{if contributor.users.familyName ', '}}{{contributor.users.givenName}}
-                        </a>
-                    {{else}}
-                        {{contributor.users.familyName}}{{if contributor.users.familyName ', '}}{{contributor.users.givenName}}
-                    {{/if}}
-                {{/each}}
-            </div>
-        </div>
+
 
         <div class="row">
             <div class="col-sm-8">
@@ -48,14 +59,12 @@
                 {{/each}}
             </div>
             <div class="col-sm-4">
-                {{#each result.providers as |provider index|}}
-                    {{if index '| '}}{{provider.name}}
-                {{/each}}
+
             </div>
         </div>
         <br>
         {{#if showBody}}
-            {{result.abstract}}
+
             <div class="row">
                 <div class="col-sm-12">
                     {{#each result.tags as |tag index|}}
