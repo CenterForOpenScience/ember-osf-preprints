@@ -17,7 +17,7 @@ export default Ember.Route.extend(CasAuthenticatedRouteMixin, {
         // Fetch values required to operate the page: user and userNodes
         let userNodes = Ember.A();
 
-        return this.get('currentUser').load()
+        this.get('currentUser').load()
             .then((user) => {
                 controller.set('user', user);
                 return user;
@@ -28,9 +28,8 @@ export default Ember.Route.extend(CasAuthenticatedRouteMixin, {
                 // on front end for now until filtering support can be added to backend
                 let onlyAdminNodes = userNodes.filter((item) => item.get('currentUserPermissions').indexOf(permissions.ADMIN) !== -1);
                 controller.set('userNodes', onlyAdminNodes);
-            })).then(() => {
-                return this._super(...arguments);
-            });
+            }));
+        return this._super(...arguments);
     },
     actions: {
         willTransition: function(transition) {
