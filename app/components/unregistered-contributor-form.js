@@ -34,4 +34,12 @@ export default Ember.Component.extend(Validations, {
     fullName: null,
     username: null,
     isFormValid: Ember.computed.alias('validations.isValid'),
+    actions: {
+        addUnregistered(fullName, email) {
+            if (this.get('isFormValid')) {
+                this.attrs.addUnregisteredContributor(fullName, email);
+            }
+        }
+    }
+
 });
