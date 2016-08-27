@@ -5,7 +5,7 @@ export default Ember.Route.extend({
         return this.store.findRecord('preprint', params.preprint_id);
     },
     actions: {
-        error: function(reason, transition) {
+        error: function() {
             this.transitionTo('/page-not-found');
         }
     }

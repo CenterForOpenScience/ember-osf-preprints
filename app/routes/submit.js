@@ -31,5 +31,15 @@ export default Ember.Route.extend(CasAuthenticatedRouteMixin, {
             }));
 
         return this._super(...arguments);
+    },
+    actions: {
+        willTransition: function(transition) {
+            var controller = this.get('controller');
+
+            if (controller.get('hasFile') && !confirm('Are you sure you want to abandon this preprint?')) {
+                transition.abort();
+            }
+        },
+
     }
 });
