@@ -35,9 +35,9 @@
                 <b class="m-r-md"> Tags: </b>
                 {{#if tags}}
                     <ul class="comma-list">
-                        {{#each tags as |tag|}}
-                            <li> {{tag}} </li>
-                        {{/each}}
+                        {{#each tags as |tag|~}}
+                            <li> {{~tag~}} </li>
+                        {{~/each}}
                     </ul>
                 {{else}}
                     <span> None</span>
@@ -55,15 +55,15 @@
 
         {{else if (eq name 'Authors')}}
             <ul class="author-preview comma-list">
-                {{#each authors as |contrib|}}
+                {{#each authors as |contrib| ~}}
                     <li>
-                        {{#if contrib.unregisteredContributor}}
-                            {{contrib.unregisteredContributor}}
+                        {{~#if contrib.unregisteredContributor~}}
+                            {{~contrib.unregisteredContributor~}}
                         {{else}}
-                            {{contrib.users.fullName}}
-                        {{/if}}
+                            {{~contrib.users.fullName~}}
+                        {{~/if~}}
                     </li>
-                {{/each}}
+                {{~/each}}
             </ul>
         {{/if}}
 
