@@ -317,7 +317,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 primaryFile: this.get('selectedFile')
             });
             this.set('savingPreprint', true);
-
+            if (model.get('doi') === '') {
+                model.set('doi', undefined);
+            }
             model.save()
                 // Ember data is not worth the time investment currently
                 .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
