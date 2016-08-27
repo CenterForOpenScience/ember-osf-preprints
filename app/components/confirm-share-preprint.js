@@ -7,7 +7,9 @@ export default Ember.Component.extend({
             this.set('isOpen', false);
         },
         savePreprint() {
+            this.send('close');
             this.attrs.savePreprint();
         }
+
     }
 });
