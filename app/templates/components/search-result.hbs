@@ -3,7 +3,6 @@
         <div class="row">
             <div class="col-xs-12">
                 {{!Title}}
-                {{log result}}
                 <h4>
                     {{#if osfID}}
                         {{#link-to "content" osfID}}{{result.title}}{{/link-to}}
@@ -19,15 +18,7 @@
                 <div>
                     <ul class="comma-list">
                         {{#each result.contributors as |contributor index|}}
-                            <li>
-                                {{#if result.osfProvider}}
-                                    <a href={{contributor.users.id}}>
-                                        {{contributor.users.familyName}}{{if contributor.users.familyName ', '}}{{contributor.users.givenName}}
-                                    </a>
-                                {{else}}
-                                    {{contributor.users.familyName}}{{if contributor.users.familyName ', '}}{{contributor.users.givenName}}
-                                {{/if}}
-                            </li>
+                            {{author-link contributor=contributor}}
                         {{/each}}
                     </ul>
                 </div>
