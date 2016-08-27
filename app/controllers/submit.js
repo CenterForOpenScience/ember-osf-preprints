@@ -169,6 +169,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         this.set('searchResults', []);
         this.set('uploadFile', null);
     },
+    savingPreprint: false,
     actions: {
         // Open next panel
         next(currentPanelName) {
@@ -315,6 +316,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 id: this.get('node.id'),
                 primaryFile: this.get('selectedFile')
             });
+            this.set('savingPreprint', true);
 
             model.save()
                 // Ember data is not worth the time investment currently
