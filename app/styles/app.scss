@@ -11,7 +11,7 @@
     margin-top: 0;
 }
 
-/* GLOBAL to PREPRINTS */
+/* GLOBAL to PREPRINTS, these may be used in multiple pages */
 .pointer {
     cursor: pointer;
 }
@@ -22,6 +22,7 @@ body {
 ul.comma-list {
     display: inline;
     list-style: none;
+    padding-left: 0;
     li {
         display: inline;
     }
@@ -31,6 +32,14 @@ ul.comma-list {
     li:last-child:after {
         content: "";
     }
+}
+.subject-preview {
+    display: inline-block;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    border: 1px solid #eee;
+    padding: 1px 7px;
+    margin-bottom: 4px;
 }
 
 
@@ -174,7 +183,7 @@ ul.comma-list {
     label {
         font-weight: normal;
     }
-    ul {
+    .preprint-search-sidebar ul {
         padding-left: 25px;
         li {
             list-style: none;
@@ -198,6 +207,9 @@ ul.comma-list {
     .fa {
         color: #777777;
     }
+}
+.search-result-providers {
+    font-weight: bold;
 }
 
 
@@ -237,14 +249,6 @@ ul.comma-list {
         i {
             color: #888;
             display: block;
-        }
-        .subject-preview {
-            display: inline-block;
-            background-color: #f8f8f8;
-            border-radius: 3px;
-            border: 1px solid #eee;
-            padding: 1px 7px;
-            margin-bottom: 4px;
         }
     }
 }
@@ -808,4 +812,3 @@ ul.author-preview {
         content: "";
     }
 }
-
