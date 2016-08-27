@@ -58,7 +58,7 @@ module.exports = function(environment) {
     }
 
     if (environment === 'production') {
-
+        ENV.sentryDSN = 'https://2f0a61d03b99480ea11e259edec18bd9@sentry.cos.io/45';
     }
 
     return ENV;
