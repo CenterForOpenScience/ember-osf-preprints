@@ -6,7 +6,7 @@
                     <div class="input-group author-search-box">
                         <input id="author-search-box" type="text" class="form-control searchQuery" onchange={{action (mut query) value="target.value"}} placeholder="Search by name">
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" {{action 'findContributors' 1}} >
+                            <button class="btn btn-default authors-search-button" type="button" {{action 'findContributors' 1}} >
                                 <i class="glyphicon glyphicon-search"></i>
                             </button>
                         </span>
