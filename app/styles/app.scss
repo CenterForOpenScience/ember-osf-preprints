@@ -21,6 +21,7 @@ body {
 
 ul.comma-list {
     display: inline;
+    padding: 0;
     list-style: none;
     li {
         display: inline;
@@ -364,9 +365,6 @@ ul.comma-list {
     opacity: 1.0;
     box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, .2);
 }
-
-
-
 
 .logo {
     width: 150px;
@@ -793,19 +791,3 @@ hr {
 .toast {
     opacity: 1 !important;
 }
-
-ul.author-preview {
-    display: inline;
-    list-style: none;
-    padding: 0;
-    li {
-        display: inline;
-    }
-    li:after {
-        content: ", "
-    }
-    li:last-child:after {
-        content: "";
-    }
-}
-
