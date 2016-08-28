@@ -192,6 +192,7 @@ ul.comma-list {
     .search-result {
         margin-bottom: 10px;
         word-break: break-word;
+        overflow-wrap: break-word;
     }
 }
 
@@ -797,4 +798,8 @@ hr {
 
 .toast {
     opacity: 1 !important;
+}
+
+.authors-search-button {
+    height: 34px;
 }
