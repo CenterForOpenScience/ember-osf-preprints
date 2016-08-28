@@ -28,6 +28,7 @@ export default Ember.Controller.extend({
     queryString: '',
     subjectFilter: null,
     queryBody: {},
+    providersPassed: false,
 
     sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
 
@@ -76,8 +77,10 @@ export default Ember.Controller.extend({
         this.loadPage();
     },
     otherProvidersLoaded: Ember.observer('otherProviders', function() {
-        this.set('activeFilters.providers', this.get('otherProviders').slice());
-        this.notifyPropertyChange('activeFilters');
+        if (!this.get('providersPassed')) {
+            this.set('activeFilters.providers', this.get('otherProviders').slice());
+            this.notifyPropertyChange('activeFilters');
+        }
     }),
     subjectChanged: Ember.observer('subjectFilter', function() {
         var _this = this;
@@ -97,6 +100,7 @@ export default Ember.Controller.extend({
             if (filter) {
                 _this.set('activeFilters.providers', filter.split('AND'));
                 _this.notifyPropertyChange('activeFilters');
+                _this.set('providersPassed', true);
                 _this.loadPage();
             }
         });
