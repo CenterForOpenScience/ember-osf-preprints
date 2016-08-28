@@ -5,7 +5,7 @@ export default Ember.Controller.extend({
     expandedAuthors: true,
 
     // The currently selected file (defaults to primary)
-    activeFile: Ember.computed.alias('model.primaryFile'),
+    activeFile: Ember.computed.oneWay('model.primaryFile'),
 
     actions: {
         expandMFR() {
