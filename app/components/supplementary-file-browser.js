@@ -21,11 +21,9 @@ export default Ember.Component.extend({
         return this.get('endIndex') < this.get('files.length');
     }.property('files', 'endIndex', 'startIndex'),
 
-    init() {
-        this._super(...arguments);
-
-// export default function loadAll(model, relationship, dest, options = {}) {
+    __files: function() {
         this.set('files', []);
+        this.set('selectedFile', null);
         this.get('preprint').get('files')
             .then(providers => {
                 this.set('provider', providers.findBy('name', 'osfstorage'));
@@ -41,6 +39,13 @@ export default Ember.Component.extend({
                 this.set('selectedFile', this.get('primaryFile'));
                 this.set('files', [this.get('primaryFile')].concat(this.get('files')));
             });
+
+    }.observes('preprint'),
+
+    init() {
+        this._super(...arguments);
+        this.__files();
+
     },
     actions: {
         next() {
