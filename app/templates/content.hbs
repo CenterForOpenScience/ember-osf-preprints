@@ -13,7 +13,7 @@
     <div id="view-page" class="container">{{!CONTAINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
             <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}
-                {{supplementary-file-browser preprint=model projectURL=model.links.html}}
+                {{supplementary-file-browser preprint=model projectURL=model.links.html chooseFile=(action 'chooseFile')}}
                 <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
                     <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                 </button>
@@ -21,7 +21,8 @@
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
                     <div class="p-sm osf-box-lt" id="download_project">{{!SHARE ROW}}
-                        <a type="button" class="btn btn-primary" href={{model.primaryFile.links.download}}>Download</a>
+                        <a class="btn btn-primary" href={{activeFile.links.download}}>Download</a>
+                        <span class="p-sm pull-right">Downloads: {{activeFile.extra.downloads}}</span>
                         <span class="p-sm pull-right">
                             <p class="f-w-lg">
                                 {{!-- Disable until share/edit functionality is available
@@ -33,7 +34,7 @@
                     </div>{{!END SHARE ROW}}
                     <div class="f-w-xs m-b-xl p-t-xs">
                         <h3 class="p-v-md">Abstract</h3>
-                        <p class="p-l-md">{{model.abstract}}</p>
+                        <p class="abstract">{{model.abstract}}</p>
                     </div>
                     {{!PROJECT BUTTON}}
                     <div class="p-lg osf-box-lt text-center">

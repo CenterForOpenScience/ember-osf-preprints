@@ -13,8 +13,6 @@ import OsfModel from 'ember-osf/models/osf-model';
  * @class Taxonomy
  */
 export default OsfModel.extend({
-    type: DS.attr('string'),
     text: DS.attr('string'),
-    // TODO: Api implements this as a list field for now. This should be a relationship field in the future, when API supports it
-    parentIds: DS.attr(),
+    parents: DS.attr(),
 });
