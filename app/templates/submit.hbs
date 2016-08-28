@@ -54,7 +54,7 @@
                         {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header disciplineSaveState=disciplineSaveState subjects=model.subjects name=name valid=disciplineValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
-                                <p class="m-b-lg small"> Select a discipline and subdiscipline, if relevant. Add another discipline by clicking on a new discipline at the top level.</p>
+                                <p class="m-b-lg small"> Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.</p>
 
                                 {{subject-picker save=(action 'saveSubjects')}}
 
