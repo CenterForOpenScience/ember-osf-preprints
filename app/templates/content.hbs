@@ -36,6 +36,18 @@
                         <h3 class="p-v-md">Abstract</h3>
                         <p class="abstract">{{model.abstract}}</p>
                     </div>
+                    <div class="f-w-xs m-b-xl p-t-xs">
+                        <h3 class="p-v-md">Subjects</h3>
+                        {{#each model.subjects as |subject|}}
+                            <span class='subject-preview'>{{subject.text}}</span>
+                        {{/each}}
+                    </div>
+                    <div class="f-w-xs m-b-xl p-t-xs">
+                        <h3 class="p-v-md">Tags</h3>
+                        {{#each model.tags as |tag|}}
+                            <span class="badge">{{tag}}</span>
+                        {{/each}}
+                    </div>
                     {{!PROJECT BUTTON}}
                     <div class="p-lg osf-box-lt text-center">
                         <p class="f-w-xs">The project for this paper is available on the Open Science Framework.</p>

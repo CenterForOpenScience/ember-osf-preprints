@@ -91,7 +91,7 @@ export default Ember.Component.extend({
             let wipe = 4; // Tiers to clear
             if (index === -1) {
                 if (this.get(`selection${subject.length}`) === subject[subject.length - 1])
-                    wipe = subject.length;
+                    wipe = subject.length + 1;
                 subject.removeAt(subject.length - 1);
             } else {
                 this.get('selected').removeAt(this.get('selected').indexOf(subject));
@@ -120,21 +120,21 @@ export default Ember.Component.extend({
             let selection = [...Array(tier).keys()].map(index => this.get(`selection${index + 1}`));
 
             // An existing tag has this prefix, and this is the lowest level of the taxonomy, so no need to fetch child results
-            if (tier === 3 && this.get('selected').findIndex(item => arrayStartsWith(item, selection)) !== -1) return;
+            if (!(tier !== 3 && this.get('selected').findIndex(item => arrayStartsWith(item, selection)) !== -1)) {
+                for (let i = 0; i < selection.length; i++) {
+                    let sub = selection.slice(0, i + 1);
+                    // "deep" equals
+                    index = this.get('selected').findIndex(item => arrayEquals(item, sub));  // jshint ignore:line
 
-            for (let i = 0; i < selection.length; i++) {
-                let sub = selection.slice(0, i + 1);
-                // "deep" equals
-                index = this.get('selected').findIndex(item => arrayEquals(item, sub));  // jshint ignore:line
+                    if (index === -1) continue;
 
-                if (index === -1) continue;
+                    this.get('selected')[index].pushObjects(selection.slice(i + 1));
+                    break;
+                }
 
-                this.get('selected')[index].pushObjects(selection.slice(i + 1));
-                break;
+                if (index === -1)
+                    this.get('selected').pushObject(selection);
             }
-
-            if (index === -1)
-                this.get('selected').pushObject(selection);
 
             // TODO: No need for autosave here- preprint isn't saved until the end
             Ember.run.debounce(this, 'emitSave', 500);
