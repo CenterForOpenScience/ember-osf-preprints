@@ -235,17 +235,17 @@ ul.comma-list {
 .dark-overlay-header-background {
     background: url("img/dark-overlay.png") top center;
 }
-#view-page{
+#view-page {
     background-color: #FCFCFC;
     font-family : 'Open Sans', Helvetica, sans-serif;
-    .osf-box-lt{
+    .osf-box-lt {
         background-color: #F3F5F5;
     }
-    .header-row{
+    .header-row {
         color: #ffffff;
         padding-top: 90px;
     }
-    .view-authors{
+    .view-authors {
         color: #337ab7;
         a {
             color: #6dd1de;
@@ -256,17 +256,20 @@ ul.comma-list {
         background-color: #4c4c4c;
         color: white;
     }
-    #mfr-col{
+    #mfr-col {
         position: relative;
-    .expand-mfr-carrot {
-        position: absolute;
-        right: 0;
-        top: 0;
-        color: #888888;
-        background: 0;
-        border: 0;
-        outline: none;
+        .expand-mfr-carrot {
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: #888888;
+            background: 0;
+            border: 0;
+            outline: none;
         }
+    }
+    .abstract {
+        white-space: pre-line;
     }
 }
 
