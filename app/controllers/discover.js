@@ -16,6 +16,7 @@ export default Ember.Controller.extend({
         page: 'page',
         queryString: 'q',
         subjectFilter: 'subject',
+        providerFilter: 'provider',
     },
 
     activeFilters: { providers: [], subjects: [] },
@@ -79,12 +80,26 @@ export default Ember.Controller.extend({
         this.notifyPropertyChange('activeFilters');
     }),
     subjectChanged: Ember.observer('subjectFilter', function() {
-        let filter = this.get('subjectFilter');
-        if (filter) {
-            this.set('activeFilters.subjects', [filter]);
-            this.notifyPropertyChange('activeFilters');
-            this.loadPage();
-        }
+        var _this = this;
+        Ember.run.once(function() {
+            let filter = _this.get('subjectFilter');
+            if (filter) {
+                _this.set('activeFilters.subjects', filter.split('AND'));
+                _this.notifyPropertyChange('activeFilters');
+                _this.loadPage();
+            }
+        });
+    }),
+    providerChanged: Ember.observer('providerFilter', function() {
+        var _this = this;
+        Ember.run.once(function() {
+            let filter = _this.get('providerFilter');
+            if (filter) {
+                _this.set('activeFilters.providers', filter.split('AND'));
+                _this.notifyPropertyChange('activeFilters');
+                _this.loadPage();
+            }
+        });
     }),
     loadPage() {
         this.set('loading', true);
@@ -132,6 +147,8 @@ export default Ember.Controller.extend({
     }),
     getQueryBody() {
         let facetFilters = this.get('activeFilters');
+        this.set('subjectFilter', facetFilters.subjects.slice().join('AND'));
+        this.set('providerFilter', facetFilters.providers.slice().join('AND'));
         let filters = {};
         for (let k of Object.keys(facetFilters)) {
             let key = filterMap[k];
