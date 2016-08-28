@@ -9,5 +9,6 @@ export default Ember.Component.extend({
         savePreprint() {
             this.attrs.savePreprint();
         }
+
     }
 });

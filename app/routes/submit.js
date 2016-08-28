@@ -12,6 +12,12 @@ export default Ember.Route.extend(ResetScrollMixin, CasAuthenticatedRouteMixin, 
             subjects: []
         });
     },
+    beforeModel() {
+        if (this.get('controller') && this.get('controller').get('node')) {
+            window.location.reload();
+        }
+        return this._super(...arguments);
+    },
     setupController(controller) {
         // Fetch values required to operate the page: user and userNodes
         this.get('currentUser').load()
