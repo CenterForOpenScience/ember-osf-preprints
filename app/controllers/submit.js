@@ -208,7 +208,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
           Upload section
          */
         lockFileAndNode() {
-            debugger;
             this.set('fileAndNodeLocked', true);
         },
         finishUpload() {
