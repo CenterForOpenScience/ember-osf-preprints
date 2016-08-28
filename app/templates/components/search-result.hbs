@@ -42,12 +42,14 @@
                 <div class="m-t-sm">
                     <span class="search-result-providers">
                         {{#each result.providers as |provider index|}}
-                            {{if index '| '}}{{provider.name}}
+                            {{if index '| '}}{{filter-replace provider.name}}
                         {{/each}}
                     </span>
-                    {{#if result.date_modified}} {{! moment-format will use current time if null}}
-                        <span>{{moment-format result.date_modified "MMMM YYYY"}}</span>
-                    {{/if}}
+                    <span class="pull-right">
+                        {{#if result.date_modified}} {{! moment-format will use current time if null}}
+                            <span>{{moment-format result.date_modified "MMMM YYYY"}}</span>
+                        {{/if}}
+                    </span>
                 </div>
 
 
