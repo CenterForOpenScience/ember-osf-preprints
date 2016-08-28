@@ -5,7 +5,7 @@
 {{#if hasAdditionalFiles}}
     <p class="f-w-lg p-b-md">{{selectedFile.name}}</p>
     <section class="osf-box p-md m-b-lg">
-        {{#liquid-bind files use=scrollAnim as |list|}}
+        {{#liquid-bind (slice-array files startIndex endIndex) use=scrollAnim as |list|}}
             {{#each list as |supplement index|}}
                 {{#if (eq supplement.kind "folder")}}
                     <a href={{preprint.links.html}} class="hint--bottom col-xs-2 p-md box m-b-xl" aria-label={{supplement.name}}>
@@ -26,13 +26,13 @@
                 {{/if}}
             {{/each}}
         {{/liquid-bind}}
-        {{#if showLeftArrow}}
-            <button id="leftArrow" class="show-more-button left" {{action 'moveLeft'}}>
+        {{#if hasPrev}}
+            <button id="leftArrow" class="show-more-button left" {{action 'prev'}}>
                 <i class="fa fa-caret-left"></i>
             </button>
         {{/if}}
-        {{#if showRightArrow}}
-            <button id="rightArrow" class="show-more-button right" {{action 'moveRight'}}>
+        {{#if hasNext}}
+            <button id="rightArrow" class="show-more-button right" {{action 'next'}}>
                 <i class="fa fa-caret-right"></i>
             </button>
         {{/if}}

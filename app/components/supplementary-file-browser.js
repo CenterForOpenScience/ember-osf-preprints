@@ -1,64 +1,61 @@
 import Ember from 'ember';
+import loadAll from 'ember-osf/utils/load-relationship';
 
 export default Ember.Component.extend({
     elementId: 'preprint-file-view',
-    startValue: 0,
+    endIndex: 6,
+    startIndex: 0,
+
     scrollAnim: '',
-    numShowing: 6,
     selectedFile: null,
-
-    /**
-     * An action that must be passed in. Informs parent page that a file was selected.
-     * @property chooseFile
-     */
-    chooseFile: null,
-
-    // TODO Actually implement pagination
-    showRightArrow: Ember.computed('numShowing', 'startValue', function() {
-        return (this.get('startValue') + this.get('numShowing') < this.get('files').length);
-    }),
-    showLeftArrow: Ember.computed('numShowing', 'startValue', function() {
-        return (this.get('startValue') !== 0);
-    }),
 
     hasAdditionalFiles: function() {
         return this.get('files.length') > 1;
     }.property('files'),
 
+    hasPrev: function() {
+        return this.get('startIndex') > 0;
+    }.property('files', 'endIndex', 'startIndex'),
+
+    hasNext: function() {
+        return this.get('endIndex') < this.get('files.length');
+    }.property('files', 'endIndex', 'startIndex'),
+
     init() {
         this._super(...arguments);
 
+// export default function loadAll(model, relationship, dest, options = {}) {
         this.set('files', []);
         this.get('preprint').get('files')
             .then(providers => {
                 this.set('provider', providers.findBy('name', 'osfstorage'));
-                return this.get('provider').query('files', {'page[size]': 10});
+                return loadAll(this.get('provider'), 'files', this.get('files'), {'page[size]': 50});
             })
-            .then(files => this.set('files', files))
             .then(() => {
                 let pf = this.get('files').findBy('id', this.get('preprint.primaryFile.id'));
-                if (pf) return this.set('selectedFile', pf);
+                if (pf) {
+                    this.get('files').removeObject(pf);
+                    this.set('primaryFile', pf);
+                }
 
                 this.set('selectedFile', this.get('primaryFile'));
                 this.set('files', [this.get('primaryFile')].concat(this.get('files')));
             });
     },
     actions: {
-        moveLeft() {
-            const start = this.get('startValue');
-            const numShowing = this.get('numShowing');
-            this.set('scrollAnim', 'toRight');
-            if (start - numShowing >= 0) {
-                this.set('startValue', start - numShowing);
-            }
-        },
-        moveRight() {
-            const start = this.get('startValue');
-            const numShowing = this.get('numShowing');
+        next() {
+            if (this.get('endIndex') > this.get('files.length')) return;
+
             this.set('scrollAnim', 'toLeft');
-            if (start + numShowing <= this.get('files').length) {
-                this.set('startValue', start + numShowing);
-            }
+            this.set('endIndex', this.get('endIndex') + 5);
+            this.set('startIndex', this.get('startIndex') + 5);
+        },
+        prev() {
+            if (this.get('startIndex') <= 0) return;
+
+            this.set('scrollAnim', 'toRight');
+            this.set('endIndex', this.get('endIndex') - 5);
+            this.set('startIndex', this.get('startIndex') - 5);
         },
         changeFile(file) {
             this.set('selectedFile', file);
