@@ -24,35 +24,36 @@ export default Ember.Component.extend({
     tier2FilterText: '',
     tier3FilterText: '',
 
-    tier1Display: Ember.computed('tier1FilterText', '_tier1.[]', function() {
+    tierSorting: ['text:asc'],
+    tier1Filtered: Ember.computed('tier1FilterText', '_tier1.[]', function() {
         let items = this.get('_tier1') || [];
         let filterText = this.get('tier1FilterText').toLowerCase();
         if (filterText) {
             return items.filter(item => item.get('text').toLowerCase().includes(filterText));
-        } else {
-            return items;
         }
+        return items;
     }),
+    tier1Sorted: Ember.computed.sort('tier1Filtered', 'tierSorting'),
 
-    tier2Display: Ember.computed('tier2FilterText', '_tier2.[]', function() {
+    tier2Filtered: Ember.computed('tier2FilterText', '_tier2.[]', function() {
         let items = this.get('_tier2') || [];
         let filterText = this.get('tier2FilterText').toLowerCase();
         if (filterText) {
             return items.filter(item => item.get('text').toLowerCase().includes(filterText));
-        } else {
-            return items;
         }
+        return items;
     }),
+    tier2Sorted: Ember.computed.sort('tier2Filtered', 'tierSorting'),
 
-    tier3Display: Ember.computed('tier3FilterText', '_tier3.[]', function() {
+    tier3Filtered: Ember.computed('tier3FilterText', '_tier3.[]', function() {
         let items = this.get('_tier3') || [];
         let filterText = this.get('tier3FilterText').toLowerCase();
         if (filterText) {
             return items.filter(item => item.get('text').toLowerCase().includes(filterText));
-        } else {
-            return items;
         }
+        return items;
     }),
+    tier3Sorted: Ember.computed.sort('tier3Filtered', 'tierSorting'),
 
     // Currently selected subjects
     selection1: null,

@@ -14,7 +14,7 @@
     <div class="col-md-4">
         <ul style="overflow: scroll">
             {{input value=tier1FilterText class="form-control" placeholder="Search"}}
-            {{#each tier1Display as |subject|}}
+            {{#each tier1Sorted as |subject|}}
                 <li {{action 'select' subject '1'}} class={{if (eq subject selection1) 'selected'}}>
                     {{subject.text}}
                 </li>
@@ -25,7 +25,7 @@
     <div class="col-md-4">
         <ul style="overflow: scroll">
             {{input value=tier2FilterText class="form-control" placeholder="Search"}}
-            {{#each tier2Display as |subject|}}
+            {{#each tier2Sorted as |subject|}}
                 <li {{action 'select' subject '2'}} class={{if (eq subject selection2) 'selected'}}>
                     {{subject.text}}
                 </li>
@@ -36,7 +36,7 @@
     <div class="col-md-4">
         <ul style="overflow: scroll">
             {{input value=tier3FilterText class="form-control" placeholder="Search"}}
-            {{#each tier3Display as |subject|}}
+            {{#each tier3Sorted as |subject|}}
                 <li {{action 'select' subject '3'}} class={{if (eq subject selection3) 'selected'}}>
                     {{subject.text}}
                 </li>
