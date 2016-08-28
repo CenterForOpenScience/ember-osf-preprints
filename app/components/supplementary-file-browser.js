@@ -6,6 +6,13 @@ export default Ember.Component.extend({
     scrollAnim: '',
     numShowing: 6,
     selectedFile: null,
+
+    /**
+     * An action that must be passed in. Informs parent page that a file was selected.
+     * @property chooseFile
+     */
+    chooseFile: null,
+
     // TODO Actually implement pagination
     showRightArrow: Ember.computed('numShowing', 'startValue', function() {
         return (this.get('startValue') + this.get('numShowing') < this.get('files').length);
@@ -55,6 +62,10 @@ export default Ember.Component.extend({
         },
         changeFile(file) {
             this.set('selectedFile', file);
+
+            if (this.attrs.chooseFile) {
+                this.sendAction('chooseFile', file);
+            }
         },
     },
 });

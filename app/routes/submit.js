@@ -29,7 +29,6 @@ export default Ember.Route.extend(ResetScrollMixin, CasAuthenticatedRouteMixin, 
             if (controller.get('hasFile') && !controller.get('savingPreprint') && !confirm('Are you sure you want to abandon this preprint?')) {
                 transition.abort();
             }
-        },
-
+        }
     }
 });
