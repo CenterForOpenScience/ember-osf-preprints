@@ -130,6 +130,7 @@ export default Ember.Controller.extend({
                     type: 'elastic-search-result',
                     workType: hit._source['@type'],
                     abstract: hit._source.description,
+                    links: hit._source.lists.links,
                     subjects: hit._source.subjects.map(each => ({text: each})),
                     providers: hit._source.sources.map(item => ({name: item})),
                     osfProvider: hit._source.sources.reduce((acc, source) => (acc || this.get('osfProviders').indexOf(source) !== -1), false),
