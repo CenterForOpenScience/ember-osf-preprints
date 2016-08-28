@@ -13,7 +13,6 @@ import OsfModel from 'ember-osf/models/osf-model';
  * @class Taxonomy
  */
 export default OsfModel.extend({
-    type: DS.attr('string'),
     text: DS.attr('string'),
     parents: DS.attr(),
 });
