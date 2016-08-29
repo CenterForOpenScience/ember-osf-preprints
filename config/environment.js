@@ -63,8 +63,8 @@ module.exports = function(environment) {
     if (environment === 'production') {
         ENV.sentryDSN = 'https://14a8f28b817b4c21bb535ff68c7b5828@sentry.cos.io/46';
 
-        ENV.SHARE.baseUrl: 'https://share.osf.io/',
-        ENV.SHARE.searchUrl: 'https://share.osf.io/api/search/abstractcreativework/_search'
+        ENV.SHARE.baseUrl = 'https://share.osf.io/',
+        ENV.SHARE.searchUrl = 'https://share.osf.io/api/search/abstractcreativework/_search'
     }
 
     return ENV;
