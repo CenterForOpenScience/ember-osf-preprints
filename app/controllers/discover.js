@@ -143,7 +143,7 @@ export default Ember.Controller.extend({
 
                 // Temporary fix to handle half way migrated SHARE ES
                 // Only false will result in a false here.
-                result.contributors.map(contributor => contributor.users.bibliographic = !(contributor.users.bibliographic === false));
+                result.contributors.map(contributor => contributor.users.bibliographic = (contributor.users.bibliographic !== false));
 
                 return result;
             });
