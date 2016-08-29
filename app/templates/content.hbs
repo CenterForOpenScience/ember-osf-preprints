@@ -3,9 +3,19 @@
         <div class="container">{{!CONTAINER DIV}}
             <h1 class="p-b-md">{{model.title}}</h1>
             <h5 class="view-authors">
-                {{#each model.contributors as |author index| ~}}
-                    {{~if index ', ' ''}}<a href={{author.users.profileURL}}>{{author.users.givenName}} {{author.users.familyName}}</a>
-                {{~/each}}
+                <ul class="comma-list">
+                    {{#if authors}}
+                        {{#each authors as |author index| ~}}
+                            {{#if author.bibliographic}}
+                                <li><a href={{author.users.profileURL}}>{{author.users.givenName}} {{author.users.familyName}}</a></li>
+                            {{/if}}
+                        {{~/each}}
+                    {{else}}
+                        <div>
+                            {{fa-icon 'spinner' pulse=true size=2}}
+                        </div>
+                    {{/if}}
+                </ul>
             </h5>
             <h6>Added on: {{moment-format model.date_created "MMMM DD, YYYY"}} | Last edited: {{moment-format model.date_modified "MMMM DD, YYYY"}} </h6>
         </div> {{!END CONTAINER DIV}}
