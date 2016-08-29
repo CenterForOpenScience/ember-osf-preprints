@@ -25,8 +25,8 @@ module.exports = function(environment) {
             // when it is created
         },
         SHARE: {
-            baseUrl: 'https://staging-share.osf.io/',
-            searchUrl: 'https://staging-share.osf.io/api/search/abstractcreativework/_search'
+            baseUrl: process.env.SHARE_BASE_URL || 'https://staging-share.osf.io/',
+            searchUrl: process.env.SHARE_SEARCH_URL || 'https://staging-share.osf.io/api/search/abstractcreativework/_search'
         },
         moment: {
             outputFormat: 'YYYY-MM-DD hh:mm a'
@@ -47,24 +47,19 @@ module.exports = function(environment) {
     }
 
     if (environment === 'test') {
-        // // Testem prefers this...
-        // // ENV.baseURL = '/';
-        // ENV.locationType = 'none';
+        // Testem prefers this...
+        // ENV.baseURL = '/';
+        ENV.locationType = 'none';
 
-        // // keep test console output quieter
-        // ENV.APP.LOG_ACTIVE_GENERATION = false;
-        // ENV.APP.LOG_VIEW_LOOKUPS = false;
+        // keep test console output quieter
+        ENV.APP.LOG_ACTIVE_GENERATION = false;
+        ENV.APP.LOG_VIEW_LOOKUPS = false;
 
-        // ENV.APP.rootElement = '#ember-testing';
-        
-        ENV.sentryDSN = 'https://2f0a61d03b99480ea11e259edec18bd9@sentry.cos.io/45';
+        ENV.APP.rootElement = '#ember-testing';
     }
 
     if (environment === 'production') {
-        ENV.sentryDSN = 'https://14a8f28b817b4c21bb535ff68c7b5828@sentry.cos.io/46';
-
-        ENV.SHARE.baseUrl = 'https://share.osf.io/',
-        ENV.SHARE.searchUrl = 'https://share.osf.io/api/search/abstractcreativework/_search'
+        ENV.sentryDSN = process.env.SENTRY_DSN || 'https://2f0a61d03b99480ea11e259edec18bd9@sentry.cos.io/45';
     }
 
     return ENV;
