@@ -7,14 +7,15 @@ moduleForComponent('supplementary-file-browser', 'Integration | Component | supp
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.set('primaryFile', Ember.RSVP.resolve());
-  this.render(hbs`{{supplementary-file-browser primaryFile=primaryFile}}`);
+    this.set('preprint', Ember.RSVP.resolve());
+    this.render(hbs`{{supplementary-file-browser preprint=preprint}}`);
 
-  assert.equal(this.$().text().trim(), '');
+    assert.equal(this.$().text().trim(), '');
 
-//  this.on('changeFile', function() {});
-
+    //  this.on('changeFile', function() {});
 });
+
+//   {{supplementary-file-browser preprint=model projectURL=model.links.html chooseFile=(action 'chooseFile')}}
