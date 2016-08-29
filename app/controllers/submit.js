@@ -146,7 +146,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsTags: Ember.computed.alias('basicsModel.tags'), // TODO: This may need to provide a default value (list)? Via default or field transform?
     basicsDOI: Ember.computed.alias('model.doi'),
 
-
     //// TODO: Turn off autosave functionality for now. Direct 2-way binding was causing a fight between autosave and revalidation, so autosave never fired. Fixme.
     // createAutosave: Ember.observer('node', function() {
     //     // Create autosave proxy only when a node has been loaded.
@@ -184,7 +183,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     canEdit: Ember.computed('isAdmin', 'node', function() {
         return this.get('isAdmin') && !(this.get('node.registration'));
     }),
-
 
     actions: {
         // Open next panel
