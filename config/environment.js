@@ -25,6 +25,7 @@ module.exports = function(environment) {
             // when it is created
         },
         SHARE: {
+            baseUrl: 'https://staging-share.osf.io/',
             searchUrl: 'https://staging-share.osf.io/api/search/abstractcreativework/_search'
         },
         moment: {

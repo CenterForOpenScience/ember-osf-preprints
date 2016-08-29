@@ -136,6 +136,7 @@ export default Ember.Controller.extend({
                     osfProvider: hit._source.sources.reduce((acc, source) => (acc || this.get('osfProviders').indexOf(source) !== -1), false),
                 });
 
+                result.links.push({'url': config.SHARE.baseUrl + 'curate/preprint/' + result.id});
                 result.contributors = result.lists.contributors.map(contributor => ({
                     users: Object.keys(contributor).reduce((acc, key) => Ember.merge(acc, {[key.camelize()]: contributor[key]}), {})
                 }));
