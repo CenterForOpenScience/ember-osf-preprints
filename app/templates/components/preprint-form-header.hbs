@@ -43,7 +43,8 @@
                     <span> None</span>
                 {{/if}}
             </p>
-            <p><em class="m-r-md"> Abstract: </em> {{if abstract abstract 'None'}} </p>
+            <em class="m-r-md"> Abstract: </em>
+            <p class="abstract">{{if abstract abstract 'None'}} </p>
         {{else if (eq name 'Discipline')}}
             {{#if subjects}}
                 {{#each subjects as |subject|}}
