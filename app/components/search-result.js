@@ -1,6 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+    providerUrlRegex: {
+        //'bioRxiv': '', doesnt currently have urls
+        'Cognitive Sciences ePrint Archive': 'cogprints',
+        OSF: 'osf',
+        PeerJ: 'peerj',
+        arXiv: 'arxiv'
+    },
 
     numMaxChars: 300,
     showBody: false,
@@ -18,13 +25,21 @@ export default Ember.Component.extend({
     }),
 
     osfID: function() {
-        return this.get('result.osfProvider') ?
-            /osf.io\/(\w+)\/$/.exec(this.get('result.lists.links.0.url'))[1]
-            : false;
+        let re = /osf.io\/(\w+)\/$/;
+        if (this.get('result.osfProvider'))
+            for (let i = 0; i < this.get('result.lists.links.length'); i++)
+                if (re.test(this.get('result.lists.links')[i].url))
+                    return re.exec(this.get('result.lists.links')[i].url)[1];
+        return false;
     }.property('result'),
 
     hyperlink: function() {
-        return this.get('result.lists.links.0.url');
+        var rule = this.get('providerUrlRegex')[this.get('result.providers.0.name')];
+        var matches = [];
+        if (rule) {
+            matches = this.get('result.lists.links').slice().filter(each => each.url.indexOf(rule) !== -1);
+        }
+        return matches.length ? matches[0].url : this.get('result.lists.links.0.url');
     }.property('result'),
 
     actions: {

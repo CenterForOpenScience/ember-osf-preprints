@@ -40,17 +40,29 @@
                         <h3 class="p-v-md">Abstract</h3>
                         <p class="abstract">{{model.abstract}}</p>
                     </div>
+
+                    {{#if model.doi}}
+                        <div class="f-w-xs m-b-xl p-t-xs">
+                            <h3 class="p-v-md">Article DOI</h3>
+                            <a href="https://dx.doi.org/{{model.doi}}">{{model.doi}}</a>
+                        </div>
+                    {{/if}}
+
                     <div class="f-w-xs m-b-xl p-t-xs">
-                        <h3 class="p-v-md">Subjects</h3>
+                        <h3 class="p-v-md">Disciplines</h3>
                         {{#each model.subjects as |subject|}}
                             <span class='subject-preview'>{{subject.text}}</span>
                         {{/each}}
                     </div>
                     <div class="f-w-xs m-b-xl p-t-xs">
                         <h3 class="p-v-md">Tags</h3>
-                        {{#each model.tags as |tag|}}
-                            <span class="badge">{{tag}}</span>
-                        {{/each}}
+                        {{#if hasTag}}
+                            {{#each model.tags as |tag|}}
+                                <span class="badge">{{tag}}</span>
+                            {{/each}}
+                        {{else}}
+                            None
+                        {{/if}}
                     </div>
                     {{!PROJECT BUTTON}}
                     <div class="p-lg osf-box-lt text-center">

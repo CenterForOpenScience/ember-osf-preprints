@@ -14,5 +14,7 @@ import OsfModel from 'ember-osf/models/osf-model';
  */
 export default OsfModel.extend({
     text: DS.attr('string'),
-    parents: DS.attr(),
+    // TODO: Api implements this as a list field for now. This should be a relationship field in the future, when API supports it
+    child_count: DS.attr(),
+    parents: DS.attr()
 });

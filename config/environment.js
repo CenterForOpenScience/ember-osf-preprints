@@ -25,7 +25,8 @@ module.exports = function(environment) {
             // when it is created
         },
         SHARE: {
-            searchUrl: 'https://staging-share.osf.io/api/search/abstractcreativework/_search'
+            baseUrl: process.env.SHARE_BASE_URL || 'https://staging-share.osf.io/',
+            searchUrl: process.env.SHARE_SEARCH_URL || 'https://staging-share.osf.io/api/search/abstractcreativework/_search'
         },
         moment: {
             outputFormat: 'YYYY-MM-DD hh:mm a'
@@ -58,7 +59,7 @@ module.exports = function(environment) {
     }
 
     if (environment === 'production') {
-        ENV.sentryDSN = 'https://2f0a61d03b99480ea11e259edec18bd9@sentry.cos.io/45';
+        ENV.sentryDSN = process.env.SENTRY_DSN || 'https://2f0a61d03b99480ea11e259edec18bd9@sentry.cos.io/45';
     }
 
     return ENV;

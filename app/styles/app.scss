@@ -250,7 +250,7 @@ ul.comma-list {
 .dark-overlay-header-background {
     background: url("img/dark-overlay.png") top center;
 }
-#view-page{
+#view-page {
     background-color: #FCFCFC;
     font-family : 'Open Sans', Helvetica, sans-serif;
     .osf-box-lt {
@@ -317,6 +317,9 @@ ul.comma-list {
         i {
             color: #888;
             display: block;
+        }
+        .abstract {
+            white-space: pre-line;
         }
     }
 }

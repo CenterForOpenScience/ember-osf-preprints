@@ -14,7 +14,8 @@ export default Ember.Component.extend({
                 id: result.id,
                 text: result.get('text'),
                 children: [],
-                showChildren: false
+                showChildren: false,
+                childCount: result.get('child_count')
             });
         });
         return parsed.sort((prev, next) => {
