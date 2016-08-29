@@ -8,7 +8,7 @@ export default OsfSerializer.extend({
             primary_file: {
                 data: {
                     id: snapshot.belongsTo('primaryFile', { id: true }),
-                    type: 'file'
+                    type: 'primary_file'
                 }
             }
         };
