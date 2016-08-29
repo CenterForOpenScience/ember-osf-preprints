@@ -7,6 +7,10 @@ export default Ember.Controller.extend({
     // The currently selected file (defaults to primary)
     activeFile: null,
 
+    hasTag: Ember.computed('model.tags', function() {
+        return this.get('model.tags').length;
+    }),
+
     actions: {
         expandMFR() {
             this.toggleProperty('fullScreenMFR');
