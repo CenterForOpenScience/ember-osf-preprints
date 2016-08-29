@@ -26,7 +26,7 @@
                     <p class="lead"> or </p>
                     {{#link-to "submit" type="button" class="btn btn-success btn-lg"}}Add a preprint{{/link-to}}
                     {{!TODO: Needs a good example before production }}
-                    <div class="m-t-md"><a href="#">See an example </a></div>
+                    <div class="m-t-md">{{#link-to 'content' 'khbvy'}}See an example {{/link-to}}</div>
 
                 </div>
             </div>
@@ -58,13 +58,20 @@
                 </div>
             </div>
             <div class="row p-v-md">{{!BRANDED ROW}}
-                <div class="col-sm-4"> <div class="provider-logo provider-socarxiv"></div></div>
                 <div class="col-sm-4"> <div class=" provider-logo provider-engrxiv"></div></div>
+                <div class="col-sm-4"> <div class="provider-logo provider-socarxiv"></div></div>
                 <div class="col-sm-4"> <div class=" provider-logo provider-psyarxiv"></div></div>
             </div>
             <div class="row p-v-md">
                 <div class="col-md-12 text-center">
-                    <p class="lead"> Create your own branded preprint servers backed by the OSF.</p>
+                    <p class="lead">
+                        Create your own branded preprint servers backed by the OSF.
+                        <div class="p-t-sm">
+                            Check out the <a class="source_code_link" href="https://github.com/CenterForOpenScience/ember-preprints"> open source code</a>
+                            and the <a class="source_code_link"href="https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270">
+                            requirements and road map</a>. Input welcome!
+                        </div>
+                    </p>
                     <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">Contact us</a>
                 </div>
             </div>
@@ -78,13 +85,19 @@
                 <div class="col-xs-12">
                     <h2>Advisory Group</h2>
                     <p class="m-b-lg"> Our advisory group includes leaders in preprints and scholarly communication</p>
+                </div>
+                 <div class="col-xs-6">
+                        <ul>
+                            <li><b>Devin Berg :</b> engrXiv, University of Wisconsin-Stout</li>
+                            <li><b>Pete Binfield :</b> PeerJ PrePrints</li>
+                            <li><b>Philip Cohen :</b> SocArXiv, University of Maryland</li>
+                            <li><b>Kathleen Fitzpatrick :</b> Modern Language Association</li>
+                            <li><b>John Inglis :</b> bioRxiv, Cold Spring Harbor Laboratory Press</li>
+                            <li><b>Rebecca Kennison :</b> K|N Consultants</li>
+                        </ul>
+                </div>
+                <div class="col-xs-6">
                     <ul>
-                        <li><b>Devin Berg :</b> engrXiv, University of Wisconsin-Stout</li>
-                        <li><b>Pete Binfield :</b> PeerJ PrePrints</li>
-                        <li><b>Philip Cohen :</b> SocArXiv, University of Maryland</li>
-                        <li><b>Kathleen Fitzpatrick :</b> Modern Language Association</li>
-                        <li><b>John Inglis :</b> bioRxiv, Cold Spring Harbor Laboratory Press</li>
-                        <li><b>Rebecca Kennison :</b> K|N Consultants</li>
                         <li><b>Bethany Nowviskie :</b> Digital Library Federation, University of Virginia</li>
                         <li><b>Kristen Ratan :</b> CoKo Foundation</li>
                         <li><b>Oya Rieger :</b> arXiv, Cornell University</li>

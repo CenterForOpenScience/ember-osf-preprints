@@ -132,7 +132,7 @@ export default CpPanelBodyComponent.extend({
             var originalOrder = this.get('contributors');
             this.set('contributors', itemModels);
             var newIndex = itemModels.indexOf(draggedContrib);
-            this.attrs.reorderContributors(draggedContrib, newIndex).then(() => {
+            this.attrs.reorderContributors(draggedContrib, newIndex, itemModels).then(() => {
                 this.highlightSuccessOrFailure(draggedContrib.id, this, 'success');
             }, () => {
                 this.highlightSuccessOrFailure(draggedContrib.id, this, 'error');

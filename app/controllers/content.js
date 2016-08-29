@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import loadAll from 'ember-osf/utils/load-relationship';
 
 export default Ember.Controller.extend({
     fullScreenMFR: false,
@@ -9,6 +10,16 @@ export default Ember.Controller.extend({
 
     hasTag: Ember.computed('model.tags', function() {
         return this.get('model.tags').length;
+    }),
+
+    getAuthors: Ember.observer('model', function() {
+        // Cannot be called until preprint has loaded!
+        var model = this.get('model');
+        if (!model) return [];
+
+        let contributors = Ember.A();
+        loadAll(model, 'contributors', contributors).then(()=>
+             this.set('authors', contributors));
     }),
 
     actions: {

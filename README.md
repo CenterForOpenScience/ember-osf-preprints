@@ -66,6 +66,7 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 ## Further Reading / Useful Links
 
+* [Requirements and road map for this service](https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270)
 * [ember.js](http://emberjs.com/)
 * [ember-cli](http://ember-cli.com/)
 * Development Browser Extensions
