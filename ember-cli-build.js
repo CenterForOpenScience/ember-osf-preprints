@@ -7,7 +7,7 @@ const nonCdnEnvironments = ['development', 'test'];
 
 module.exports = function(defaults) {
     var config = require('./config/environment')(process.env.EMBER_ENV);
-    const useCdn = (nonCdnEnvironments.indexOf(process.env.EMBER_ENV) !== -1);
+    const useCdn = (nonCdnEnvironments.indexOf(process.env.EMBER_ENV) === -1);
 
     // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
     var app = new EmberApp(defaults, {
@@ -19,8 +19,8 @@ module.exports = function(defaults) {
             // next line is needed to prevent ember-cli to load
             // handlebars (it happens automatically in 0.1.x)
             'handlebars.js': {production: null},
-            [!useCdn ? 'ember.js' : '']: null,
-            [!useCdn ? 'jquery.js' : '']: null,
+            [useCdn ? 'ember.js' : '']: false,
+            [useCdn ? 'jquery.js' : '']: false,
         },
         'ember-bootstrap': {
             importBootstrapCSS: false
