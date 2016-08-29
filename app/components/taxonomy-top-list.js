@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+    // jscs:disable disallowQuotedKeysInObjects
     subjectTooltips: {
         'Physical sciences': 'Astronomical Sciences, Chemistry, Materials Science, Mathematics, Physics',
         'Engineering and technology': 'Civil Engineering, Digital Imaging, Fluidics, Nanotechnology, Synthetic Biology',
@@ -19,6 +20,7 @@ export default Ember.Component.extend({
         'Arts and Humanities': 'Fine Arts, History, Music, Philosophy, Religion',
         'Architecture': 'Architectural Engineering, Construction Engineering, Environmental Design, Interior Architecture, Landscape Architecture'
     },
+    // jscs:enable
     sortedList: Ember.computed('list', 'list.content', function() {
         if (!this.get('list')) {
             return;
