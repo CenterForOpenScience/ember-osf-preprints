@@ -25,9 +25,12 @@ export default Ember.Component.extend({
     }),
 
     osfID: function() {
-        return this.get('result.osfProvider') ?
-            /osf.io\/(\w+)\/$/.exec(this.get('result.lists.links.0.url'))[1]
-            : false;
+        let re = /osf.io\/(\w+)\/$/;
+        if (this.get('result.osfProvider'))
+            for (let i = 0; i < this.get('result.lists.links.length'); i++)
+                if (re.test(this.get('result.lists.links')[i].url))
+                    return re.exec(this.get('result.lists.links')[i].url)[1];
+        return false;
     }.property('result'),
 
     hyperlink: function() {
