@@ -1,7 +1,7 @@
 <ul>
     {{#each topLevelItem as |item|}}
         <li>
-            <span class="pointer m-r-xs" {{action 'expand' item}}>
+            <span class="pointer m-r-xs" {{action 'expand' item}} style="{{if item.showChildren 'margin-right:2px;'}}">
                 <i style="vertical-align: top; padding-top: 4px" class="fa {{if item.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
             </span>
             <label style="max-width: 85%; word-wrap: break-word;">
@@ -13,16 +13,20 @@
             <ul>
                 {{#each item.children as |child|}}
                     <li>
-                        <span class="pointer m-r-xs" {{action 'expand' child}}>
-                            <i style="vertical-align: top; padding-top: 4px" class="fa {{if child.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
+                        {{# if child.childCount }}
+                        <span class="pointer m-r-xs" {{action 'expand' child}} style="{{if child.showChildren 'margin-right:2px;'}}">
+                            <i style="vertical-align: top; padding-top: 4px;" class="fa {{if child.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
                         </span>
+                        {{else}}
+                            <span style="padding-right: 14px"></span>
+                        {{/if}}
                         <label style="max-width: 85%; word-wrap: break-word;">
                             <input type="checkbox" checked="{{if (if-filter child.text subjects) 'checked'}}" onclick={{action 'select' child}}>
                             {{child.text}}
                         </label>
                     </li>
                     {{#if child.showChildren}}
-                        <ul>
+                        <ul style="padding-left:40px">
                             {{#each child.children as |grandkid|}}
                                 <li>
                                     <label style="max-width: 85%; word-wrap: break-word;">
