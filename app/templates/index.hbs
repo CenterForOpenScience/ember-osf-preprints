@@ -1,0 +1,99 @@
+<div class="preprints-page"> {{!INDEX}}
+
+    {{!HEADER}}
+    <div class="preprint-header"> {{!HEADER}}
+        <div class="container"> {{!CONTAINER}}
+            <div class="row">{{!HEADER ROW}}
+                {{!TITLE}}
+                <div class="text-center m-t-lg col-xs-12">
+                    <h1 class="preprint-lead">OSF Preprints</h1>
+                    <p class="lead">
+                        The <span class="f-w-lg">open</span> preprint repository network
+                    </p>
+                </div>
+                {{!SEARCH}}
+                <div class="preprint-search col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 m-v-lg" >
+                    {{search-preprints search="search"}}
+                    <p class="p-l-md">
+                        <span class="f-w-lg">{{model.sharePreprintsTotal}} searchable preprints </span>
+                        <span>as of {{moment-format model.theDate "MMMM DD, YYYY"}}</span>
+
+                    </p>
+                </div>
+            </div> {{!END ROW}}
+            <div class="row">
+                <div class="text-center col-xs-12">
+                    <p class="lead"> or </p>
+                    {{#link-to "submit" type="button" class="btn btn-success btn-lg"}}Add a preprint{{/link-to}}
+                    {{!TODO: Needs a good example before production }}
+                    <div class="m-t-md"><a href="#">See an example </a></div>
+
+                </div>
+            </div>
+        </div> {{!END CONTAINER}}
+    </div> {{!END HEADER}}
+
+    {{!SUBJECTS}}
+    <div class="preprint-subjects p-v-md"> {{!SUBJECTS LIST}}
+        <div class="container"> {{!CONTAINER DIV}}
+            <div class="row p-v-md">{{!SUBJECTS ROW}}
+                <div class="col-xs-12">
+                    <h2>Browse <small>by subject</small></h2>
+                    <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
+                        {{taxonomy-top-list list=model.subjects}}
+                    </div> {{!END SUBJECTS LIST}}
+                </div>
+            </div>{{!END ROW}}
+        </div> {{!END CONTAINER}}
+    </div> {{!END SUBJECTS LIST}}
+
+
+    {{!SERVICES}}
+    <div class="preprint-tool p-v-md">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2>Preprint Services</h2>
+                    <p class="m-b-lg"> Leading preprint service providers use this open source infrastructure to support their communities.</p>
+                </div>
+            </div>
+            <div class="row p-v-md">{{!BRANDED ROW}}
+                <div class="col-sm-4"> <div class="provider-logo provider-socarxiv"></div></div>
+                <div class="col-sm-4"> <div class=" provider-logo provider-engrxiv"></div></div>
+                <div class="col-sm-4"> <div class=" provider-logo provider-psyarxiv"></div></div>
+            </div>
+            <div class="row p-v-md">
+                <div class="col-md-12 text-center">
+                    <p class="lead"> Create your own branded preprint servers backed by the OSF.</p>
+                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">Contact us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{!ADVISORY GROUP}}
+    <div class="preprint-advisory p-v-md">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                <h2>Advisory Group</h2>
+                <p class="m-b-lg"> Our advisory group includes leaders in preprints and scholarly communication</p>
+                <ul>
+                    <li><b>Devin Berg :</b> engrXiv, University of Wisconsin-Stout</li>
+                    <li><b>Pete Binfield :</b> PeerJ PrePrints</li>
+                    <li><b>Philip Cohen :</b> SocArXiv, University of Maryland</li>
+                    <li><b>Kathleen Fitzpatrick :</b> Modern Language Association</li>
+                    <li><b>John Inglis :</b> bioRxiv, Cold Spring Harbor Laboratory Press</li>
+                    <li><b>Rebecca Kennison :</b> K|N Consultants</li>
+                    <li><b>Bethany Nowviskie :</b> Digital Library Federation, University of Virginia</li>
+                    <li><b>Kristen Ratan :</b> CoKo Foundation</li>
+                    <li><b>Oya Rieger :</b> arXiv, Cornell University</li>
+                    <li><b>Judy Ruttenberg :</b> SHARE, Association of Research Libraries</li>
+                    <li><b>Simine Vazire :</b> PsyArXiv, University of California, Davis</li>
+                </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div> {{!END INDEX}}

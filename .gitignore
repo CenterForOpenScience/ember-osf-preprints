@@ -18,3 +18,5 @@ testem.log
 
 # idea
 .idea
+
+.editorconfig

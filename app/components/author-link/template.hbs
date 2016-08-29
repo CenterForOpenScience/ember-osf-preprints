@@ -1,0 +1,7 @@
+{{#if profileLink~}}
+    <a href={{profileLink}}>
+        {{contributor.users.givenName}} {{contributor.users.familyName}}
+    </a>
+{{else}}
+    {{contributor.users.givenName}} {{contributor.users.familyName}}
+{{~/if}}

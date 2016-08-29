@@ -1,0 +1,40 @@
+{{#file-renderer download=selectedFile.links.download
+    width="99%" height="700"}}
+{{/file-renderer}}
+
+{{#if hasAdditionalFiles}}
+    <p class="f-w-lg p-b-md">{{selectedFile.name}}</p>
+    <section class="osf-box p-md m-b-lg">
+        {{#liquid-bind (slice-array files startIndex endIndex) use=scrollAnim as |list|}}
+            {{#each list as |supplement index|}}
+                {{#if (eq supplement.kind "folder")}}
+                    <a href={{preprint.links.html}} class="hint--bottom col-xs-2 p-md box m-b-xl" aria-label={{supplement.name}}>
+                        <i class="fa fa-folder fa-2x p-b-xs" aria-hidden="true"></i>
+                    </a>
+                {{else}}
+                    <label class="hint--bottom col-xs-2 p-md box m-b-xl {{if (eq selectedFile supplement) 'selected'}}" aria-label={{supplement.name}} {{action 'changeFile' supplement}}>
+                        {{#if (eq selectedFile supplement)}}
+                            <b class="file-selected-arrow">&#9660;</b>
+                        {{/if}}
+                        {{#if (eq preprint.primaryFile.id supplement.id)}}
+                            <i style="margin-top: -4px" class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
+                            <p style="font-size: 75%; margin-bottom: -10px">Primary</p>
+                        {{else}}
+                            <i class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
+                        {{/if}}
+                    </label>
+                {{/if}}
+            {{/each}}
+        {{/liquid-bind}}
+        {{#if hasPrev}}
+            <button id="leftArrow" class="show-more-button left" {{action 'prev'}}>
+                <i class="fa fa-caret-left"></i>
+            </button>
+        {{/if}}
+        {{#if hasNext}}
+            <button id="rightArrow" class="show-more-button right" {{action 'next'}}>
+                <i class="fa fa-caret-right"></i>
+            </button>
+        {{/if}}
+    </section>
+{{/if}}

@@ -1,0 +1,148 @@
+.vert-align-disabled-permissions {
+    padding-top: 6px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.vert-align-enabled-permissions {
+    padding-top: 2px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.drag-drop-contrib {
+    padding-top: 4px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: gray;
+
+}
+.vert-align {
+    padding-top: 4px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.vert-align-contributor-name {
+    padding-top: 8px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.bib-padding {
+    text-align: center;
+}
+
+// Author table divisions
+.author-table {
+    td {
+        border-top: 1px solid #ddd;
+    }
+}
+
+.col-division-left {
+    padding-left: 20px;
+    border-left: 1px solid #ccc;
+}
+
+.col-division-right {
+    border-right: 1px solid #ccc;
+}
+
+.author-search-box {
+    padding-top: 20px;
+}
+
+.unregisteredUsers {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom:20px;
+    background-color: #EEEEEE;
+}
+
+.unregistered-name {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.unregistered-email {
+    padding-bottom: 20px;
+    padding-top: 5px;
+}
+
+.unregistered-submit {
+    padding-top: 10px;
+}
+
+.header-inline {
+    display: inline;
+}
+
+.drag-drop {
+    padding-top: 10px;
+}
+
+.author-header {
+    padding-top: 15px;
+}
+
+tr.contributor-row:hover {
+    background: #EEE;
+}
+
+span.sortable-bars:hover {
+    cursor: move;
+}
+
+.sortable-item {
+    transition: background-color 125ms;
+    &.is-dragging {
+        transition-duration: 0;
+        background: white;
+        z-index: 10;
+    }
+}
+
+.contrib-column-header {
+    padding-left: 12px;
+}
+
+.disabled-checkmark {
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+.successHighlight{
+    background-color: #DFF0D8 !important;
+    -webkit-transition: background-color 1500ms linear;
+    -moz-transition: background-color 1500ms linear;
+    -o-transition: background-color 1500ms linear;
+    transition: background-color 1500ms linear;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate;
+}
+
+.restoreWhiteBackground{
+    background-color: white !important;
+    -webkit-transition: background-color 1500ms linear;
+    -moz-transition: background-color 1500ms linear;
+    -o-transition: background-color 1500ms linear;
+    transition: background-color 1500ms linear;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate;
+}
+
+.errorHighlight{
+    background-color: #F2DEDE !important;
+    -webkit-transition: background-color 1500ms linear;
+    -moz-transition: background-color 1500ms linear;
+    -o-transition: background-color 1500ms linear;
+    transition: background-color 1500ms linear;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate;
+}
+
+.nudge-right {
+    text-align: left;
+}

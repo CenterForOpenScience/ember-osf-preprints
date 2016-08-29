@@ -1,0 +1,11 @@
+{{#each sortedList as |pair|}}
+    <div class="subject row m-b-sm">
+        {{#each pair as |subject|}}
+            <div class="col-sm-6 subject-item">
+                {{#link-to 'discover' (query-params subjectFilter=subject.text) class='btn btn-primary p-sm'}}
+                    {{subject.text}}
+                {{/link-to}}
+            </div>
+        {{/each}}
+    </div>
+{{/each}}

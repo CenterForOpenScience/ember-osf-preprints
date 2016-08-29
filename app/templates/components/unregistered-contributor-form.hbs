@@ -1,0 +1,15 @@
+<form {{action (action addUnregisteredContributor fullName email) on="submit"}}>
+    <div>
+        <label>Full Name</label>
+        {{validated-input model=this valuePath='fullName' placeholder='Full Name' value=fullName}}
+    </div>
+    <div>
+        <label>Email</label>
+        {{validated-input model=this valuePath='username' placeholder='Email' value=email}}
+    </div>
+    <p class="text-muted"> We will notify the user that they have been added to your preprint. </p>
+    <div class="pull-right unregistered-submit">
+        <button {{action resetfindContributorsView}} type="button" class="btn btn-default btn-small"> Cancel </button>
+        <button type="submit" disabled={{not isFormValid}} {{action "addUnregistered" fullName email}} class="btn btn-success btn-small"> Add </button>
+    </div>
+</form>
