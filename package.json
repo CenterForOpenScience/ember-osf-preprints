@@ -54,7 +54,7 @@
     "ember-font-awesome": "2.1.1",
     "ember-get-config": "0.0.4",
     "ember-load-initializers": "^0.5.1",
-    "ember-osf": "git+https://github.com/CenterForOpenScience/ember-osf.git#043c02d1b04fd4e8ca6391887d257e63c12d9560",
+    "ember-osf": "git+https://github.com/CenterForOpenScience/ember-osf.git#6f3c8d3df45d4b7a9b51830b0a3651e5a36feb4c",
     "ember-power-select": "1.0.0-beta.7",
     "ember-read-more": "0.0.13",
     "ember-resolver": "^2.0.3",
