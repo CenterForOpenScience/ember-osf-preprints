@@ -3,10 +3,10 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     providerUrlRegex: {
         //'bioRxiv': '', doesnt currently have urls
-        'Cognitive Sciences ePrint Archive': 'cogprints',
-        OSF: 'osf',
-        PeerJ: 'peerj',
-        arXiv: 'arxiv'
+        Cogprints: /cogprints/,
+        OSF: /\/\/(?!api\.)osf.io/,  // Doesn't match api.osf urls
+        PeerJ: /peerj/,
+        arXiv: /arxivj/
     },
 
     numMaxChars: 300,
@@ -34,12 +34,15 @@ export default Ember.Component.extend({
     }.property('result'),
 
     hyperlink: function() {
-        var rule = this.get('providerUrlRegex')[this.get('result.providers.0.name')];
-        var matches = [];
-        if (rule) {
-            matches = this.get('result.lists.links').slice().filter(each => each.url.indexOf(rule) !== -1);
-        }
-        return matches.length ? matches[0].url : this.get('result.lists.links.0.url');
+        var re = null;
+        for (let i = 0; i < this.get('result.providers.length'); i++)
+            re = this.providerUrlRegex[this.get('result.providers')[i].name] || null;
+
+        if (!re) return this.get('result.lists.links.0.url');
+
+        for (let j = 0; j < this.get('result.lists.links.length') j++);
+            if (re.test(this.get('result.lists.links')[j].url))
+                return this.get('result.lists.links')[j].url;
     }.property('result'),
 
     actions: {
