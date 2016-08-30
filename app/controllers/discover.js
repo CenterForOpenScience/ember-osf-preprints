@@ -8,6 +8,9 @@ var filterMap = {
     subjects: 'subjects.raw'
 };
 
+// Share returns different link types. This is a whitelist of which ones we will display in details
+var linkTypes = ['doi'];
+
 export default Ember.Controller.extend({
     // TODO: either remove or add functionality to info icon on "Refine your search panel"
 
@@ -135,7 +138,18 @@ export default Ember.Controller.extend({
                     osfProvider: hit._source.sources.reduce((acc, source) => (acc || this.get('osfProviders').indexOf(source) !== -1), false),
                 });
 
-                result.shareLink = config.SHARE.baseUrl + 'curate/preprint/' + result.id;
+                result.linksToShow = hit._source.lists.links.filter(function(link){
+                    if(linkTypes.indexOf(link.type) > -1 ){
+                        return true;
+                    }
+                    return false;
+                });
+                result.linksToShow.push(
+                    {
+                        'type': 'share',
+                        'url' : config.SHARE.baseUrl + 'curate/preprint/' + result.id
+                    }
+                );
 
                 result.contributors = result.lists.contributors.map(contributor => ({
                     users: Object.keys(contributor).reduce((acc, key) => Ember.merge(acc, {[key.camelize()]: contributor[key]}), {})

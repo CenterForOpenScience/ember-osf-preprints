@@ -57,8 +57,14 @@
 
                 {{#if showBody}}
                     {{!Tags}}
-                    {{#if result.shareLink}}
-                        <p><a href='{{result.shareLink}}'>{{result.shareLink}}</a></p>
+                    {{#if result.linksToShow}}
+                        <ul class="preprints-block-list m-t-sm">
+                            {{#each result.linksToShow as |link|}}
+                                {{#unless (eq link.url hyperlink)}}
+                                    <li><a href='{{link.url}}'>{{link.url}}</a></li>
+                                {{/unless}}
+                            {{/each}}
+                        </ul>
                     {{/if}}
                     {{#if result.tags}}
                         <div class="m-t-sm">
