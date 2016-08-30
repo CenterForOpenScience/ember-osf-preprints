@@ -91,7 +91,7 @@ export default Ember.Controller.extend({
                     providers.push(each);
                 }
             });
-            this.set('otherProviders', providers.sort((a, b) => a < b ? 1 : -1).sort(a => a === 'Open Science Framework' ? -1 : 1));
+            this.set('otherProviders', providers.sort((a, b) => a.toLowerCase() < b.toLowerCase() ? 1 : -1).sort(a => a === 'OSF' ? -1 : 1));
             this.notifyPropertyChange('otherProviders');
         });
         this.loadPage();
