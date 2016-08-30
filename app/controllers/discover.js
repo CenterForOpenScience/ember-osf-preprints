@@ -19,18 +19,26 @@ export default Ember.Controller.extend({
         providerFilter: 'provider',
     },
 
-    activeFilters: { providers: [], subjects: [] },
-    osfProviders: ['OSF', 'PsyArXiv', 'SocArXiv', 'engrXiv'],
-
+    // Query param defaults
+    // TODO: Do these need to be reset if page reloads?
     page: 1,
     size: 10,
-    numberOfResults: 0,
     queryString: '',
     subjectFilter: null,
-    queryBody: {},
-    providersPassed: false,
 
-    sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
+    // Unchanging default values
+    osfProviders: ['OSF', 'PsyArXiv', 'SocArXiv', 'engrXiv'],
+
+    // Parameters tracked on the controller; default values set in `manualResetController` method
+    activeFilters: null,
+
+    sortByOptions: null,
+    numberOfResults: 0,
+    showActiveFilters: null, //should always have a provider, don't want to mix osfProviders and non-osf
+    providersPassed: null,
+    queryBody: null,
+    results: null,
+    expandedOSFProviders: null,
 
     treeSubjects: Ember.computed('activeFilters', function() {
         return this.get('activeFilters.subjects').slice();
@@ -40,18 +48,14 @@ export default Ember.Controller.extend({
         return this.get('sortByOptions')[0];
     }),
 
-    showActiveFilters: true, //should always have a provider, don't want to mix osfProviders and non-osf
     showPrev: Ember.computed.gt('page', 1),
     showNext: Ember.computed('page', 'size', 'numberOfResults', function() {
         return this.get('page') * this.get('size') < this.get('numberOfResults');
     }),
 
-    results: Ember.ArrayProxy.create({ content: [] }),
-
     searchUrl: config.SHARE.searchUrl,
 
     init() {
-        var _this = this;
         this._super(...arguments);
         this.set('facetFilters', Ember.Object.create());
         Ember.$.ajax({
@@ -60,22 +64,41 @@ export default Ember.Controller.extend({
             data: getProvidersPayload,
             contentType: 'application/json',
             crossDomain: true,
-        }).then(function(results) {
+        }).then((results) => {
             var hits = results.aggregations.sources.buckets;
             var providers = [];
             hits.map(function(each) {
                 providers.push(each.key);
             });
-            _this.get('osfProviders').slice().map(function(each) {
+            this.get('osfProviders').slice().map(function(each) {
                 if (providers.indexOf(each) === -1) {
                     providers.push(each);
                 }
             });
-            _this.set('otherProviders', providers.sort((a, b) => a < b ? 1 : -1).sort(a => a === 'Open Science Framework' ? -1 : 1));
-            _this.notifyPropertyChange('otherProviders');
+            this.set('otherProviders', providers.sort((a, b) => a < b ? 1 : -1).sort(a => a === 'Open Science Framework' ? -1 : 1));
+            this.notifyPropertyChange('otherProviders');
         });
         this.loadPage();
     },
+
+    manualResetController() {
+        // Ember controllers are singletons; provide a method that can be called by `route#setupController` in each page view
+        // This sets defaults for any properties that should be cleared on page load
+
+        //TODO: Do query params get cleared on new page visit?
+        this.setProperties({
+            loading: false,
+            activeFilters: { providers: [], subjects: [] },
+            numberOfResults: 0,
+            queryBody: {},
+            sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
+            showActiveFilters: true,
+            providersPassed: false,
+            results: Ember.ArrayProxy.create({ content: [] }),
+            expandedOSFProviders: false,
+        });
+    },
+
     otherProvidersLoaded: Ember.observer('otherProviders', function() {
         if (!this.get('providersPassed')) {
             this.set('activeFilters.providers', this.get('otherProviders').slice());
@@ -83,25 +106,23 @@ export default Ember.Controller.extend({
         }
     }),
     subjectChanged: Ember.observer('subjectFilter', function() {
-        var _this = this;
-        Ember.run.once(function() {
-            let filter = _this.get('subjectFilter');
+        Ember.run.once(() => {
+            let filter = this.get('subjectFilter');
             if (filter) {
-                _this.set('activeFilters.subjects', filter.split('AND'));
-                _this.notifyPropertyChange('activeFilters');
-                _this.loadPage();
+                this.set('activeFilters.subjects', filter.split('AND'));
+                this.notifyPropertyChange('activeFilters');
+                this.loadPage();
             }
         });
     }),
     providerChanged: Ember.observer('providerFilter', function() {
-        var _this = this;
-        Ember.run.once(function() {
-            let filter = _this.get('providerFilter');
+        Ember.run.once(() => {
+            let filter = this.get('providerFilter');
             if (filter) {
-                _this.set('activeFilters.providers', filter.split('AND'));
-                _this.notifyPropertyChange('activeFilters');
-                _this.set('providersPassed', true);
-                _this.loadPage();
+                this.set('activeFilters.providers', filter.split('AND'));
+                this.notifyPropertyChange('activeFilters');
+                this.set('providersPassed', true);
+                this.loadPage();
             }
         });
     }),
@@ -207,7 +228,6 @@ export default Ember.Controller.extend({
         return this.set('queryBody', queryBody);
     },
 
-    expandedOSFProviders: false,
     reloadSearch: Ember.observer('activeFilters', function() {
         this.set('page', 1);
         this.loadPage();
@@ -272,7 +292,7 @@ export default Ember.Controller.extend({
             this.notifyPropertyChange('activeFilters');
         },
         expandOSFProviders() {
-            this.set('expandedOSFProviders', !this.get('expandedOSFProviders'));
+            this.toggleProperty('expandedOSFProviders');
         }
     },
 });
