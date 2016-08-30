@@ -138,16 +138,16 @@ export default Ember.Controller.extend({
                     osfProvider: hit._source.sources.reduce((acc, source) => (acc || this.get('osfProviders').indexOf(source) !== -1), false),
                 });
 
-                result.linksToShow = hit._source.lists.links.filter(function(link){
-                    if(linkTypes.indexOf(link.type) > -1 ){
+                result.linksToShow = hit._source.lists.links.filter(function(link) {
+                    if (linkTypes.indexOf(link.type) > -1) {
                         return true;
                     }
                     return false;
                 });
                 result.linksToShow.push(
                     {
-                        'type': 'share',
-                        'url' : config.SHARE.baseUrl + 'curate/preprint/' + result.id
+                        type: 'share',
+                        url: config.SHARE.baseUrl + 'curate/preprint/' + result.id
                     }
                 );
 
