@@ -184,6 +184,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return this.get('isAdmin') && !(this.get('node.registration'));
     }),
 
+    renderMathJax: Ember.observer('uploadValid', 'node.title', function() {
+        Ember.run.next(this, function() {
+            //node.title gets changed on every character input, so debounce this.
+            Ember.run.debounce(this, function() {
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+            }, 250);
+        });
+    }),
+
     actions: {
         // Open next panel
         next(currentPanelName) {
@@ -247,8 +256,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.set('node.title', this.get('nodeTitle'));
             let node = this.get('node');
             node.save();
+            this.notifyPropertyChange('node.title');
             this.send('next', section);
-
         },
 
         /*
@@ -261,6 +270,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             node.save()
                 .then(() => this.send('next', this.get('_names.2')))
                 .catch(()=> this.send('error', 'Could not save information; please try again'));
+            //Hack here because run.next doesnt pick up until the next edit.
+            Ember.run.later(this, function() {
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+            }, 300);
         },
 
         saveSubjects(subjects) {
@@ -350,4 +363,3 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
     }
 });
-
