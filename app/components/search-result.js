@@ -8,7 +8,9 @@ export default Ember.Component.extend({
         PeerJ: 'peerj',
         arXiv: 'arxiv'
     },
-
+    didRender() {
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+    },
     numMaxChars: 300,
     showBody: false,
     footerIcon: Ember.computed('showBody', function() {
