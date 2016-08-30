@@ -88,7 +88,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     authorsSaveState: false,
     disciplineSaveState: false,
 
-    clearFields() {
+    manualResetController() {
         this.get('panelActions').open('Upload');
         this.get('panelActions').close('Submit');
 
@@ -117,9 +117,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         }));
     },
 
-    hasFile: function() {
-        return this.get('file') != null;
-    }.property('file'),
+    hasFile: Ember.computed.notEmpty('file'),
 
     ///////////////////////////////////////
     // Validation rules for form sections

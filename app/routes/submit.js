@@ -13,8 +13,7 @@ export default Ember.Route.extend(ResetScrollMixin, CasAuthenticatedRouteMixin, 
         });
     },
     setupController(controller) {
-        if (controller.get('model.isLoaded'))
-            controller.clearFields();
+        controller.manualResetController();
 
         // Fetch values required to operate the page: user and userNodes
         this.get('currentUser').load()
