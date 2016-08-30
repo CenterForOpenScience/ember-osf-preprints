@@ -30,8 +30,8 @@ export default Ember.Controller.extend({
     osfProviders: ['OSF', 'PsyArXiv', 'SocArXiv', 'engrXiv'],
 
     // Parameters tracked on the controller; default values set in `manualResetController` method
+    facetFilters: null,
     activeFilters: null,
-
     sortByOptions: null,
     numberOfResults: 0,
     showActiveFilters: null, //should always have a provider, don't want to mix osfProviders and non-osf
@@ -55,8 +55,24 @@ export default Ember.Controller.extend({
 
     searchUrl: config.SHARE.searchUrl,
 
-    init() {
-        this._super(...arguments);
+    manualResetController() {
+        // Ember controllers are singletons; provide a method that can be called by `route#setupController` in each page view
+        // This sets defaults for any properties that should be cleared on page load
+
+        //TODO: Do query params get cleared on new page visit?
+        this.setProperties({
+            loading: false,
+            activeFilters: { providers: [], subjects: [] },
+            numberOfResults: 0,
+            queryBody: {},
+            sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
+            showActiveFilters: true,
+            providersPassed: false,
+            results: Ember.ArrayProxy.create({ content: [] }),
+            expandedOSFProviders: false,
+        });
+
+        // Populate filters for page
         this.set('facetFilters', Ember.Object.create());
         Ember.$.ajax({
             type: 'POST',
@@ -79,24 +95,6 @@ export default Ember.Controller.extend({
             this.notifyPropertyChange('otherProviders');
         });
         this.loadPage();
-    },
-
-    manualResetController() {
-        // Ember controllers are singletons; provide a method that can be called by `route#setupController` in each page view
-        // This sets defaults for any properties that should be cleared on page load
-
-        //TODO: Do query params get cleared on new page visit?
-        this.setProperties({
-            loading: false,
-            activeFilters: { providers: [], subjects: [] },
-            numberOfResults: 0,
-            queryBody: {},
-            sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
-            showActiveFilters: true,
-            providersPassed: false,
-            results: Ember.ArrayProxy.create({ content: [] }),
-            expandedOSFProviders: false,
-        });
     },
 
     otherProvidersLoaded: Ember.observer('otherProviders', function() {
