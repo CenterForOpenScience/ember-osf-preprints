@@ -4,7 +4,7 @@
 
 `develop` Build Status: [![Build Status](https://travis-ci.org/CenterForOpenScience/ember-preprints.svg?branch=develop)](https://travis-ci.org/CenterForOpenScience/ember-preprints)
 
-This is the prototype of the upcoming OSF preprints.
+This is the codebase for OSF preprints.
 This guide will help you get started if you're interested.
 
 ## Prerequisites
