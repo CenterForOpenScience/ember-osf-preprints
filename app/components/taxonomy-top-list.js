@@ -8,7 +8,7 @@ export default Ember.Component.extend({
         'Biology and life sciences': 'Ecology, Genetics, Neuroscience, Toxicology, Zoology',
         'Research and analysis methods': 'Computational Techniques, Decision Analysis, Imaging Techniques, Research Assessment, Simulation and Modeling',
         'Medicine and health sciences': 'Anatomy, Epidemiology, Medical Ethics, Sports and Exercise Medicine, Oncology',
-        'Social sciences': 'Anthropology, Economics, Philosophy, Political Science, Psychology',
+        'Social and behavioral sciences': 'Anthropology, Economics, Philosophy, Political Science, Psychology',
         'Science policy': 'Bioethics, Open Science, Research Integrity, Science Education, Technology Regulations',
         'People and places': 'Demography, Geographical Locations, Population groups',
         'Computer and information sciences': 'Artificial Intelligence, Cryptography, Data Visualization, Library Science, Software Engineering',
@@ -16,7 +16,7 @@ export default Ember.Component.extend({
         'Ecology and environmental sciences': 'Biogeochemistry, Environmental Geology, Natural Resources, Soil Science, Sustainability Science',
         'Business': 'Accounting, Finance and Financial Management, Human Resource Management, Marketing, Taxation',
         'Law': 'Civil Law, Criminal Law, Legislation, State and Local Government Law, Supreme Court of the United State',
-        'Education': 'Bilingual, Multilingual and Multicultural Education, Curriculum Instruction, Educational Administration and Supervision, Higher Education, Teacher Education and Professional Development',
+        'Education': 'Curriculum Instruction, Educational Leadership, Educational Administration and Supervision, Higher Education, Liberal Studies',
         'Arts and Humanities': 'Fine Arts, History, Music, Philosophy, Religion',
         'Architecture': 'Architectural Engineering, Construction Engineering, Environmental Design, Interior Architecture, Landscape Architecture'
     },
