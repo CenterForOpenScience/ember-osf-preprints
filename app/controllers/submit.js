@@ -188,7 +188,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         Ember.run.next(this, function() {
             //node.title gets changed on every character input, so debounce this.
             Ember.run.debounce(this, function() {
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub]);  // jshint ignore:line
             }, 250);
         });
     }),
@@ -272,7 +272,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 .catch(()=> this.send('error', 'Could not save information; please try again'));
             //Hack here because run.next doesnt pick up until the next edit.
             Ember.run.later(this, function() {
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub]);  // jshint ignore:line
             }, 300);
         },
 

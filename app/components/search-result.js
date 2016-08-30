@@ -9,7 +9,7 @@ export default Ember.Component.extend({
         arXiv: 'arxiv'
     },
     didRender() {
-        MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub]);  // jshint ignore:line
     },
     numMaxChars: 300,
     showBody: false,
