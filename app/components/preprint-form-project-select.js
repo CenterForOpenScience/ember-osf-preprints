@@ -53,6 +53,7 @@ export default Ember.Component.extend({
         changeExistingState(newState) {
             this.set('existingState', newState);
             this.set('selectedFile', null);
+            this.set('hasFile', false);
         },
     },
 
