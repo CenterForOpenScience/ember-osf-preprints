@@ -254,6 +254,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.send('next', section);
 
         },
+        selectExistingFile(file) {
+            this.set('selectedFile', file);
+        },
 
         /*
           Basics section
