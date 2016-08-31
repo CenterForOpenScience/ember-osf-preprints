@@ -4,6 +4,7 @@ import loadAll from 'ember-osf/utils/load-relationship';
 export default Ember.Controller.extend({
     fullScreenMFR: false,
     expandedAuthors: true,
+    expandShare: false,
 
     // The currently selected file (defaults to primary)
     activeFile: null,
@@ -23,6 +24,9 @@ export default Ember.Controller.extend({
     }),
 
     actions: {
+        toggleShare() {
+            this.toggleProperty('expandShare');
+        },
         expandMFR() {
             this.toggleProperty('fullScreenMFR');
         },
