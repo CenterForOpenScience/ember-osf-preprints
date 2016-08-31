@@ -44,6 +44,15 @@ ul.comma-list {
         content: "";
     }
 }
+ul.preprints-block-list {
+    display: block;
+    list-style: none;
+    padding-left: 0;
+    li {
+        
+    }
+}
+
 .subject-preview {
     display: inline-block;
     background-color: #f8f8f8;
