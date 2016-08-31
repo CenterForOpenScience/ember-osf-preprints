@@ -26,7 +26,7 @@ export default Ember.Component.extend({
 
     osfID: function() {
         let re = /osf.io\/(\w+)\/$/;
-        if (this.get('result.providers').indexOf('OSF') !== -1)
+        if (this.get('result.providers').find(provider => provider.name === 'OSF'))
             for (let i = 0; i < this.get('result.lists.links.length'); i++)
                 if (re.test(this.get('result.lists.links')[i].url))
                     return re.exec(this.get('result.lists.links')[i].url)[1];
