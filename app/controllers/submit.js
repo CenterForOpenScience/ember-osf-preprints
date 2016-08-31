@@ -59,6 +59,7 @@ const BasicsValidations = buildValidations({
  */
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
     _State: State,
+    filePickerState: State.START,
     fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
@@ -205,6 +206,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         /*
           Upload section
          */
+        changeState(newState) {
+            this.set('filePickerState', newState);
+        },
         lockFileAndNode() {
             this.set('fileAndNodeLocked', true);
         },

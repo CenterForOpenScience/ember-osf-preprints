@@ -31,20 +31,52 @@
                                         {{confirm-restart-submit-preprint isOpen=showModalRestartPreprint resetFileUpload=(action 'resetFileUpload')}}
                                     </div>
                                 {{else}}
-                                    <div>
-                                        {{file-uploader
-                                            hasFile=hasFile
-                                            file=file
-                                            node=node
-                                            nodeTitle=nodeTitle
-                                            userNodes=userNodes
-                                            osfFile=selectedFile
-                                            next=(action 'next')
-                                            _names=_names
-                                            projectsCreatedForPreprint=projectsCreatedForPreprint
-                                            filesUploadedForPreprint=filesUploadedForPreprint
-                                            finishUpload=(action 'finishUpload')}}
-                                    </div>
+                                    {{#liquid-bind filePickerState class='translate' as |currentState|}}
+                                        <div class={{currentState}}>
+                                            {{#if (eq currentState _State.START)}}
+                                                <div class="row">
+                                                    <div class="col-xs-6 p-h-xl">
+                                                        <button class="btn btn-block btn-big" {{action 'changeState' _State.NEW}}>Upload a New File</button>
+                                                    </div>
+                                                    <div class="col-xs-6  p-h-xl">
+                                                        <button class="btn btn-block btn-big" {{action 'changeState' _State.EXISTING}}>Select a file from OSF</button>
+                                                    </div>
+                                                </div>
+
+                                            {{else if (eq currentState _State.NEW)}}
+                                                {{file-uploader
+                                                    hasFile=hasFile
+                                                    file=file
+                                                    node=node
+                                                    nodeTitle=nodeTitle
+                                                    userNodes=userNodes
+                                                    osfFile=selectedFile
+                                                    next=(action 'next')
+                                                    _names=_names
+                                                    projectsCreatedForPreprint=projectsCreatedForPreprint
+                                                    filesUploadedForPreprint=filesUploadedForPreprint
+                                                    finishUpload=(action 'finishUpload')}}
+                                                <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
+
+
+                                            {{else if (eq currentState _State.EXISTING)}}
+                                                {{preprint-form-project-select
+                                                  userNodes=userNodes
+                                                  fileSelect=true
+                                                  selectedNode=node
+                                                  selectedFile=selectedFile
+                                                  selectFile=(action "selectExistingFile")
+                                                  chooseExistingProjectHeader=chooseExistingProjectHeader
+                                                  createComponentHeader=createComponentHeader
+                                                  highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+                                                  shouldCreateChild=shouldCreateChild}}
+                                                {{! TODO: cleanup created component if needed }}
+                                                <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
+                                                {{! TODO: check if project and file are selected before allowing user to continue }}
+                                                <button class="btn btn-primary" disabled={{unless (and node selectedFile) true}} {{action (if shouldCreateChild 'addChild' 'finishUpload') name}}>Next</button>
+                                            {{/if}}
+                                        </div>
+                                    {{/liquid-bind}}
                                 {{/if}}
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
