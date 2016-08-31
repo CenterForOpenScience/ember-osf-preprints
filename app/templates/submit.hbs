@@ -61,13 +61,15 @@
 
                                             {{else if (eq currentState _State.EXISTING)}}
                                                 {{preprint-form-project-select
+                                                  hasFile=hasFile
                                                   userNodes=userNodes
+                                                  hasFile=hasFile
+                                                  file=file
+                                                  node=node
                                                   fileSelect=true
                                                   selectedNode=node
                                                   selectedFile=selectedFile
                                                   selectFile=(action "selectExistingFile")
-                                                  chooseExistingProjectHeader=chooseExistingProjectHeader
-                                                  createComponentHeader=createComponentHeader
                                                   highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
                                                   shouldCreateChild=shouldCreateChild}}
                                                 {{! TODO: cleanup created component if needed }}

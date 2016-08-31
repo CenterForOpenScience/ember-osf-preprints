@@ -3,7 +3,14 @@ import DS from 'ember-data';
 
 import Permissions from 'ember-osf/const/permissions';
 
+export const existingState = Object.freeze(Ember.Object.create({
+    CHOOSE: 'choose',
+    EXISTINGFILE: 'existing',
+    NEWFILE: 'new'
+}));
+
 export default Ember.Component.extend({
+    _existingState: existingState,
     userNodes: Ember.A(),
     selectedNode: null,
     isAdmin: Ember.computed('selectedNode', function() {
@@ -18,6 +25,7 @@ export default Ember.Component.extend({
             promise: this.get('selectedNode.files').then(files => files.findBy('name', 'osfstorage'))
         });
     }),
+    existingState: existingState.CHOOSE,
     actions: {
         // Sets selectedNode, then loads node's osfstorage provider. Once osfstorage is loaded,
         // file-browser component can be loaded.
@@ -41,7 +49,11 @@ export default Ember.Component.extend({
         },
         convertExisting() {
             this.set('shouldCreateChild', false);
-        }
+        },
+        changeExistingState(newState) {
+            this.set('existingState', newState);
+            this.set('selectedFile', null);
+        },
     },
 
     /**

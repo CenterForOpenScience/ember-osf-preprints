@@ -1,4 +1,4 @@
-<label> {{chooseExistingProjectHeader}} </label>
+<label class="text-bigger"> 1. Choose existing OSF project </label>
 <div class="m-b-md">
     {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
         <strong>{{node.title}}</strong>
@@ -7,21 +7,40 @@
 {{#liquid-if selectedNode use='crossFade'}}
     {{#liquid-bind selectedNode use='crossFade'}}
         {{#if isAdmin}}
-            {{#unless selectedNode.public}}
-                <p class="alert alert-warning m-t-md m-r-xs" role="alert">
-                    This project is private and will be made public
-                </p>
-            {{/unless}}
-            {{#if (and fileSelect osfProviderLoaded)}}
-                <label> 2. Choose existing file </label>
+            <label> 2. </label>
 
-                <div>
-                    {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
-                </div>
-                {{#if selectedFile}}
-                    <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
-                {{/if}}
+            {{#if fileSelect}}
+                 <div class="row">
+                      <div class="row text-center text-bigger">
+                        <div class="radio-option col-xs-6 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 p-md">
+                            <label><input onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}> Upload preprint to this OSF project </label>
+                        </div>
+                        <div class="radio-option col-xs-6 col-sm-5 col-md-4 p-md">
+                            <label><input onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}> Identify existing file as the preprint</label>
+                        </div>
+                    </div>
+                 </div>
             {{/if}}
+                 {{#if (eq existingState _existingState.EXISTINGFILE)}}
+                    <div>
+                        {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
+                    </div>
+                    {{#if selectedFile}}
+                        <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
+                    {{/if}}
+                 {{else if (eq existingState _existingState.NEWFILE)}}
+                     {{file-uploader
+                        hasFile=hasFile
+                        file=file
+                        node=node
+                        nodeTitle=nodeTitle
+                        userNodes=userNodes
+                        osfFile=selectedFile
+                        _names=_names
+                        projectsCreatedForPreprint=projectsCreatedForPreprint
+                        filesUploadedForPreprint=filesUploadedForPreprint
+                        }}
+                {{/if}}
         {{else}}
             <p class="alert alert-danger" role="alert">
                 You must be the admin of this component to share it.
@@ -36,20 +55,21 @@
 {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
     {{#liquid-bind selectedFile use='crossFade'}}
         <div class="m-t-lg">
-            <label> {{createComponentHeader}} </label>
+            <label> 3. Convert this project or copy file to a new component to organize </label>
             <p class="text-muted">
-                If you choose to convert this project, its contributors will be considered authors of this preprint.
-                Any changes to preprint contributors will also change the contributors of the project.
-
-                If you do not want to change the original OSF project contributors, then you can copy the file to a <b>new component</b>.
+                You have a choice for how to organize your preprint in your project. If you select, "make a new component" then the preprint file will
+                be placed in a new component inside the project.  The title of that component will be the title of your preprint, and the contributor list will
+                be the authors of the preprint. If you select "use the current component" then the title and authors of the component you selected will
+                be tied to the preprint.  If you change the title or authors on the preprint, then they will change the tittle and authors on that component
+                and vice versa.  If you are unsure, then select "make a new component".
             </p>
             <div id='convertExistingOrCreateComponent'>
                 <div class="row text-center text-bigger">
                     <div class="radio-option col-xs-6 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 p-md">
-                        <label><input onchange={{action "convertExisting"}} type="radio" name="createComponentDecision" checked={{not shouldCreateChild}}> Convert this OSF Project</label>
+                        <label><input onchange={{action "convertExisting"}} type="radio" name="createComponentDecision" checked={{not shouldCreateChild}}> Use the current component for the preprint </label>
                     </div>
                     <div class="radio-option col-xs-6 col-sm-5 col-md-4 p-md">
-                        <label><input onchange={{action "createComponent" value="true"}} type="radio" name="createComponentDecision" checked={{shouldCreateChild}}> Copy file to new component</label>
+                        <label><input onchange={{action "createComponent" value="true"}} type="radio" name="createComponentDecision" checked={{shouldCreateChild}}> Make a new component for the preprint</label>
                     </div>
                 </div>
             </div>
