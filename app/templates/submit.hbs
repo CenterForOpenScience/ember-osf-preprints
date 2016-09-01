@@ -3,6 +3,9 @@
         <div class="row">
             <div class="col-xs-12 text-center">
                 <h1> Add Preprint </h1>
+                Node: {{node}}
+                Selected File: {{selectedFile}}
+                nodeTitle: {{nodeTitle}}
             </div>
         </div>
 
@@ -78,6 +81,7 @@
                                                   fileSelect=true
                                                   selectedNode=node
                                                   selectedFile=selectedFile
+                                                  createComponentCopyFile=(action "createComponentCopyFile")
                                                   selectFile=(action "selectExistingFile")
                                                   highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')}}
                                                 {{! TODO: cleanup created component if needed }}
