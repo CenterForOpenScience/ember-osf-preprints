@@ -63,6 +63,7 @@
 
                                             {{else if (eq currentState _State.EXISTING)}}
                                                 {{preprint-form-project-select
+                                                  nodeTitle=nodeTitle
                                                   finishUpload=(action 'finishUpload')
                                                   currentUser=user
                                                   osfFile=selectedFile
