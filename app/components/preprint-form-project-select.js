@@ -19,12 +19,6 @@ export default Ember.Component.extend({
     osfProviderLoaded: false,
     osfStorageProvider: null,
 
-    osfProvider: Ember.computed('selectedNode', function() {
-        // TODO: Support a tree widget, eg get filebrowser working
-        return DS.PromiseObject.create({
-            promise: this.get('selectedNode.files').then(files => files.findBy('name', 'osfstorage'))
-        });
-    }),
     createComponent:null,
     existingState: existingState.CHOOSE,
     actions: {

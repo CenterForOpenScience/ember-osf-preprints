@@ -23,7 +23,9 @@
             {{/if}}
              {{#if (eq existingState _existingState.EXISTINGFILE)}}
                 <div>
-                    {{select-existing-file rootItem=osfStorageProvider openFile=(action 'selectFile')}}
+                    {{#if osfProviderLoaded}}
+                        {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
+                    {{/if}}
                 </div>
                 {{#if selectedFile}}
                     <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
