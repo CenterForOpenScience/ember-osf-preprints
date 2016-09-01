@@ -58,9 +58,18 @@
                 {{#if showBody}}
                     {{!Tags}}
                     {{#if result.hyperLinks}}
-                        {{#each result.hyperLinks as |link|}}
-                            <p><a href='{{link.url}}'>{{link.url}}</a></p>
-                        {{/each}}
+                        <ul class="preprints-block-list m-t-sm">
+                            {{#each result.hyperLinks as |link|}}
+                                <li><a href='{{link.url}}'>{{link.url}}</a></li>
+                            {{/each}}
+                        </ul>
+                    {{/if}}
+                    {{#if result.infoLinks}}
+                        <ul class="preprints-block-list">
+                            {{#each result.infoLinks as |link|}}
+                                <li><b>{{link.type}}:</b> {{link.url}}</li>
+                            {{/each}}
+                        </ul>
                     {{/if}}
                     {{#if result.tags}}
                         <div class="m-t-sm">
