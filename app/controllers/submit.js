@@ -184,18 +184,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return this.get('isAdmin') && !(this.get('node.registration'));
     }),
 
-    renderMathJax: Ember.observer('uploadValid', 'node.title', function() {
-        Ember.run.next(this, function() {
-            //node.title gets changed on every character input, so debounce this.
-            Ember.run.debounce(this, function() {
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub]);  // jshint ignore:line
-            }, 250);
-        });
-    }),
-
     actions: {
         // Open next panel
         next(currentPanelName) {
+            if (currentPanelName === 'Upload') {
+                Ember.run.next(this, function() {
+                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('#nodeTitle')[0]]);  // jshint ignore:line
+                });
+            }
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
             this.send('changesSaved', currentPanelName);
         },
@@ -256,7 +252,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.set('node.title', this.get('nodeTitle'));
             let node = this.get('node');
             node.save();
-            this.notifyPropertyChange('node.title');
+            Ember.run.next(this, function() {
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('#nodeTitle')[0]]);  // jshint ignore:line
+            });
             this.send('next', section);
         },
 
@@ -272,7 +270,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 .catch(()=> this.send('error', 'Could not save information; please try again'));
             //Hack here because run.next doesnt pick up until the next edit.
             Ember.run.later(this, function() {
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub]);  // jshint ignore:line
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('#abstract')[0]]);  // jshint ignore:line
             }, 300);
         },
 
