@@ -1,21 +1,7 @@
 import Ember from 'ember';
 import {State} from '../controllers/submit';
-import { validator, buildValidations } from 'ember-cp-validations';
 
-const TitleValidation = buildValidations({
-    nodeTitle: {
-        description: 'Title',
-        validators: [
-            validator('presence', true),
-            validator('length', {
-                // minimum length for title?
-                max: 200,
-            })
-        ]
-    },
-});
-
-export default Ember.Component.extend(TitleValidation, {
+export default Ember.Component.extend({
     State,
     store: Ember.inject.service(),
     toast: Ember.inject.service(),
@@ -25,13 +11,14 @@ export default Ember.Component.extend(TitleValidation, {
     callback: null,
     nodeTitle: null,
     createChild: false,
+    convertOrCopy:null,
 
     dropzoneOptions: {
         maxFiles: 1,
         method: 'PUT',
         uploadMultiple: false,
     },
-    titleValid: Ember.computed.alias('validations.isValid'),
+    titleValid: null,
 
     init() {
         this._super(...arguments);
@@ -58,6 +45,16 @@ export default Ember.Component.extend(TitleValidation, {
             });
         },
 
+        setNodeAndFile() {
+            if (this.get('uploadIntent') === 'newNodeNewFile') {
+                this.send('createProjectAndUploadFile');
+            } else if (this.get('convertOrCopy') === 'copy') {
+                this.send('createComponentAndUploadFile');
+            } else if (this.get('convertOrCopy') === 'convert') {
+                this.send('uploadFileToExistingNode');
+            }
+        },
+
         createProjectAndUploadFile() {
             this.get('store').createRecord('node', {
                 public: false, // ?
@@ -68,6 +65,28 @@ export default Ember.Component.extend(TitleValidation, {
                 this.send('upload');
                 this.get('projectsCreatedForPreprint').pushObject(node);
             });
+        },
+
+        createComponentAndUploadFile() {
+            var parentNode = this.get('node');
+            parentNode
+                .addChild(`${this.get('node.title')} Preprint`, this.get('node.description'))
+                .then(child => {
+                     this.set('node', child);
+                     parentNode.get('contributors').toArray().forEach(contributor => {
+                        if (this.get('currentUser').id !== contributor.get('userId')) {
+                            this.get('node').addContributor(contributor.get('userId'), contributor.get('permission'), contributor.get('bibliographic')).then((contrib) => {
+                                this.get('contributors').pushObject(contrib);
+                            });
+                        }
+                     });
+                     this.send('upload');
+                     // this.get('projectsCreatedForPreprint').pushObject(this.get('node'));
+                });
+        },
+
+        uploadFileToExistingNode() {
+            this.send('upload');
         },
 
         // Dropzone hooks
