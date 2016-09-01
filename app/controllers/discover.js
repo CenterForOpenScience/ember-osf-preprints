@@ -8,6 +8,19 @@ var filterMap = {
     subjects: 'subjects.raw'
 };
 
+// Regex for checking url from osf repo website/static/js/profile.js
+var urlRule =  '^(https?:\\/\\/)?'+ // protocol
+           '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+           '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+           '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+           '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+           '(\\#[-a-z\\d_]*)?$';
+
+function isHyperLink (link) {
+    var urlexp = new RegExp(urlRule,'i');
+    return urlexp.test(link);
+}
+
 export default Ember.Controller.extend({
     // TODO: either remove or add functionality to info icon on "Refine your search panel"
 
