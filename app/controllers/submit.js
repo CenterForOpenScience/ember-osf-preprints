@@ -217,10 +217,21 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         toggleRestartPreprintModal() {
             this.toggleProperty('showModalRestartPreprint');
         },
+        existingNodeExistingFile() {
+            var node = this.get('node');
+            if (node.title !== this.get('nodeTitle')) {
+                node.set('title', this.get('nodeTitle'));
+                node.save().then(() => {
+                    this.send('finishUpload');
+                });
+            } else {
+                this.send('finishUpload')
+            }
+        },
         createComponentCopyFile() {
              // TODO need error handling on this.  Too many promises.
             var node = this.get('node');
-            node.addChild(`${this.get('node.title')} Preprint`, this.get('node.description')).then(child => {
+            node.addChild(this.get('nodeTitle'), this.get('node.description')).then(child => {
                  this.get('projectsCreatedForPreprint').pushObject(child);
                  this.get('userNodes').pushObject(child);
                  var parentNode = this.get('node');

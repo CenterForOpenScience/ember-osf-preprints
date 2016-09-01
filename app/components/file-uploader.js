@@ -46,6 +46,7 @@ export default Ember.Component.extend({
         },
 
         setNodeAndFile() {
+            debugger
             if (this.get('uploadIntent') === 'newNodeNewFile') {
                 this.send('createProjectAndUploadFile');
             } else if (this.get('convertOrCopy') === 'copy') {
@@ -86,7 +87,15 @@ export default Ember.Component.extend({
         },
 
         uploadFileToExistingNode() {
-            this.send('upload');
+            var node = this.get('node');
+            if (node.get('title') !== this.get('nodeTitle')) {
+                node.set('title', this.get('nodeTitle'));
+                node.save().then(() => {
+                    this.send('upload');
+                });
+            } else {
+                this.send('upload');
+            }
         },
 
         // Dropzone hooks
