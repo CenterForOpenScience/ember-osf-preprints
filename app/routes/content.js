@@ -10,7 +10,8 @@ export default Ember.Route.extend(ResetScrollMixin, {
         return this._super(...arguments);
     },
     actions: {
-        error: function() {
+        error(error, transition) {
+            window.history.replaceState( {} , 'preprints', 'preprints/'+ transition.params.content.preprint_id);
             this.intermediateTransitionTo('page-not-found');
         }
     }
