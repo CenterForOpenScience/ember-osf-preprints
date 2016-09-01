@@ -19,11 +19,14 @@ export default OsfModel.extend({
     title: DS.attr('string'),
     // TODO: May be a relationship in the future pending APIv2 changes
     subjects: DS.attr(),
-    date_created: DS.attr('date'),
+    date_created: DS.attr('date'),  // TODO: Check capitalization?
     date_modified: DS.attr('date'),
     abstract: DS.attr('string'),
     tags: DS.attr(),
     doi: DS.attr('string'),
+
+    currentUserCanComment: DS.attr('boolean'),
+    currentUserPermissions: DS.attr('string'),
 
     // Relationships
     primaryFile: DS.belongsTo('file', { inverse: null }),
