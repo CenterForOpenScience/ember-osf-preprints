@@ -37,7 +37,7 @@ export default Ember.Component.extend(TitleValidation, {
     titlePlaceholder: 'Enter preprint title',
     isValid: Ember.observer('nodeTitle', function() {
         if (this.get('nodeTitle') && this.get('validations.isValid')) {
-                this.set('titleValid', true);
+            this.set('titleValid', true);
         } else {
             this.set('titleValid', false);
         }

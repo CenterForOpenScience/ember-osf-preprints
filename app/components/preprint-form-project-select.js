@@ -19,7 +19,7 @@ export default Ember.Component.extend({
     osfProviderLoaded: false,
     osfStorageProvider: null,
 
-    createComponent:null,
+    createComponent: null,
     existingState: existingState.CHOOSE,
     actions: {
         // Sets selectedNode, then loads node's osfstorage provider. Once osfstorage is loaded,

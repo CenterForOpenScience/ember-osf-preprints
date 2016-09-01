@@ -11,7 +11,7 @@ export default Ember.Component.extend({
     callback: null,
     nodeTitle: null,
     createChild: false,
-    convertOrCopy:null,
+    convertOrCopy: null,
 
     dropzoneOptions: {
         maxFiles: 1,
@@ -46,7 +46,6 @@ export default Ember.Component.extend({
         },
 
         setNodeAndFile() {
-            debugger
             if (this.get('uploadIntent') === 'newNodeNewFile') {
                 this.send('createProjectAndUploadFile');
             } else if (this.get('convertOrCopy') === 'copy') {
@@ -71,18 +70,18 @@ export default Ember.Component.extend({
         createComponentAndUploadFile() {
             var parentNode = this.get('node');
             parentNode
-                .addChild(`${this.get('node.title')} Preprint`, this.get('node.description'))
+                .addChild(this.get('nodeTitle'), this.get('node.description'))
                 .then(child => {
-                     this.set('node', child);
-                     parentNode.get('contributors').toArray().forEach(contributor => {
+                    this.set('node', child);
+                    parentNode.get('contributors').toArray().forEach(contributor => {
                         if (this.get('currentUser').id !== contributor.get('userId')) {
                             this.get('node').addContributor(contributor.get('userId'), contributor.get('permission'), contributor.get('bibliographic')).then((contrib) => {
                                 this.get('contributors').pushObject(contrib);
                             });
                         }
-                     });
-                     this.send('upload');
-                     // this.get('projectsCreatedForPreprint').pushObject(this.get('node'));
+                    });
+                    this.send('upload');
+                    // this.get('projectsCreatedForPreprint').pushObject(this.get('node'));
                 });
         },
 

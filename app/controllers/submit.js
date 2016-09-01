@@ -225,37 +225,37 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     this.send('finishUpload');
                 });
             } else {
-                this.send('finishUpload')
+                this.send('finishUpload');
             }
         },
         createComponentCopyFile() {
-             // TODO need error handling on this.  Too many promises.
+            // TODO need error handling on this.  Too many promises.
             var node = this.get('node');
             node.addChild(this.get('nodeTitle'), this.get('node.description')).then(child => {
-                 this.get('projectsCreatedForPreprint').pushObject(child);
-                 this.get('userNodes').pushObject(child);
-                 var parentNode = this.get('node');
-                 this.set('node', child);
-                 child.get('files').then((providers) => {
-                     var osfstorage = providers.findBy('name', 'osfstorage');
-                     this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}}).then((copiedFile) => {
-                         this.get('filesUploadedForPreprint').push(copiedFile);
-                     });
-                     parentNode.get('contributors').toArray().forEach((contributor) => {
-                         if (this.get('user').id !== contributor.get('userId')) {
-                             child.addContributor(contributor.get('userId'), contributor.get('permission'), contributor.get('bibliographic')).then((contrib) => {
-                                 this.get('contributors').pushObject(contrib);
-                             });
-                         }
-                     });
-                 }).then(() => {
-                     this.get('toast').info('File copied to component!');
-                     this.send('finishUpload');
-                 }, () => {
-                     this.get('toast').info('Could not create component.');
-                 });
-              });
-         },
+                this.get('projectsCreatedForPreprint').pushObject(child);
+                this.get('userNodes').pushObject(child);
+                var parentNode = this.get('node');
+                this.set('node', child);
+                child.get('files').then((providers) => {
+                    var osfstorage = providers.findBy('name', 'osfstorage');
+                    this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}}).then((copiedFile) => {
+                        this.get('filesUploadedForPreprint').push(copiedFile);
+                    });
+                    parentNode.get('contributors').toArray().forEach((contributor) => {
+                        if (this.get('user').id !== contributor.get('userId')) {
+                            child.addContributor(contributor.get('userId'), contributor.get('permission'), contributor.get('bibliographic')).then((contrib) => {
+                                this.get('contributors').pushObject(contrib);
+                            });
+                        }
+                    });
+                }).then(() => {
+                    this.get('toast').info('File copied to component!');
+                    this.send('finishUpload');
+                }, () => {
+                    this.get('toast').info('Could not create component.');
+                });
+            });
+        },
         resetFileUpload() {
             var promisesArray = [];
             var filePromises = [];

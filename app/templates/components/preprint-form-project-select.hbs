@@ -41,7 +41,7 @@
                         {{/liquid-if}}
 
                         <div class="p-t-xs pull-right">
-                            <button class="btn btn-primary" disabled={{not (and selectedFile titleValid)}} {{action (if (eq convertOrCopy 'convert') finishUpload createComponentCopyFile) name}}>Next</button>
+                            <button class="btn btn-primary" disabled={{not (and selectedFile titleValid)}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>Next</button>
                         </div>
                     {{/if}}
                 </div>
