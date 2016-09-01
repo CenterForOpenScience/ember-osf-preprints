@@ -9,7 +9,7 @@ export default Ember.Component.extend({
         arXiv: 'arxiv'
     },
     didRender() {
-        MathJax.Hub.Queue(['Typeset', MathJax.Hub]);  // jshint ignore:line
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$()[0]]);  // jshint ignore:line
     },
     numMaxChars: 300,
     showBody: false,
@@ -23,7 +23,7 @@ export default Ember.Component.extend({
         if (result.description && result.description.length > this.numMaxChars) {
             return result.description.substring(0, this.numMaxChars) + '...';
         }
-        return result.description;
+        return result.description.slice();
     }),
 
     osfID: function() {

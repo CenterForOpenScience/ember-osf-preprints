@@ -36,7 +36,11 @@
                 {{!Abstract}}
                 {{#if result.abstract}}
                     <div class="text-muted m-t-sm">
-                        {{if showBody result.abstract shortDescription}}
+                        {{#if showBody}}
+                            {{result.description}}
+                        {{else}}
+                            {{shortDescription}}
+                        {{/if}}
                     </div>
                 {{/if}}
 
