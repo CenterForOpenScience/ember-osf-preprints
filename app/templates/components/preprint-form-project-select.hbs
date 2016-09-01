@@ -30,6 +30,7 @@
                 {{/if}}
              {{else if (eq existingState _existingState.NEWFILE)}}
                  {{file-uploader
+                    finishUpload=finishUpload
                     contributors=contributors
                     currentUser=currentUser
                     hasFile=hasFile
