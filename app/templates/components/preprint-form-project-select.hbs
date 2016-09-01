@@ -29,7 +29,7 @@
                         {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
                             {{#liquid-bind selectedFile use='crossFade'}}
                                 <div class="m-t-lg">
-                                    {{convert-or-copy-project convertOrCopy=convertOrCopy}}
+                                    {{convert-or-copy-project nodeTitle=nodeTitle node=node titleValid=titleValid convertOrCopy=convertOrCopy}}
                                 </div>
                             {{/liquid-bind}}
                         {{/liquid-if}}
