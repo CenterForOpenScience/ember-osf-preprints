@@ -21,26 +21,26 @@
                     </div>
                  </div>
             {{/if}}
-                 {{#if (eq existingState _existingState.EXISTINGFILE)}}
-                    <div>
-                        {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
-                    </div>
-                    {{#if selectedFile}}
-                        <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
-                    {{/if}}
-                 {{else if (eq existingState _existingState.NEWFILE)}}
-                     {{file-uploader
-                        hasFile=hasFile
-                        file=file
-                        node=node
-                        nodeTitle=nodeTitle
-                        userNodes=userNodes
-                        osfFile=selectedFile
-                        _names=_names
-                        projectsCreatedForPreprint=projectsCreatedForPreprint
-                        filesUploadedForPreprint=filesUploadedForPreprint
-                        }}
+             {{#if (eq existingState _existingState.EXISTINGFILE)}}
+                <div>
+                    {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
+                </div>
+                {{#if selectedFile}}
+                    <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
                 {{/if}}
+             {{else if (eq existingState _existingState.NEWFILE)}}
+                 {{file-uploader
+                    hasFile=hasFile
+                    file=file
+                    node=node
+                    nodeTitle=nodeTitle
+                    userNodes=userNodes
+                    osfFile=selectedFile
+                    _names=_names
+                    projectsCreatedForPreprint=projectsCreatedForPreprint
+                    filesUploadedForPreprint=filesUploadedForPreprint
+                    }}
+            {{/if}}
         {{else}}
             <p class="alert alert-danger" role="alert">
                 You must be the admin of this component to share it.
@@ -60,7 +60,7 @@
                 You have a choice for how to organize your preprint in your project. If you select, "make a new component" then the preprint file will
                 be placed in a new component inside the project.  The title of that component will be the title of your preprint, and the contributor list will
                 be the authors of the preprint. If you select "use the current component" then the title and authors of the component you selected will
-                be tied to the preprint.  If you change the title or authors on the preprint, then they will change the tittle and authors on that component
+                be tied to the preprint.  If you change the title or authors on the preprint, then they will change the title and authors on that component
                 and vice versa.  If you are unsure, then select "make a new component".
             </p>
             <div id='convertExistingOrCreateComponent'>
