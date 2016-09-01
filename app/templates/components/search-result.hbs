@@ -48,8 +48,8 @@
                         {{/each}}
                     </span>
                     <span class="pull-right">
-                        {{#if result.date_modified}} {{! moment-format will use current time if null}}
-                            <span>{{moment-format result.date_modified "MMMM YYYY"}}</span>
+                        {{#if result.dateModified}} {{! moment-format will use current time if null}}
+                            <span>{{moment-format result.dateModified "MMMM YYYY"}}</span>
                         {{/if}}
                     </span>
                 </div>
@@ -68,7 +68,7 @@
                         </div>
                     {{/if}}
                     {{!Added on}}
-                    <div class="m-t-sm"> Added on: {{moment-format result.date_created}} </div>
+                    <div class="m-t-sm"> Added on: {{moment-format result.dateCreated}} </div>
                 {{/if}}
 
             </div>
