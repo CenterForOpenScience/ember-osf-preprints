@@ -18,7 +18,7 @@
     {{/liquid-bind}}
 {{/liquid-if}}
 
-{{#liquid-if hasFile use='crossFade'}}
+{{#liquid-if (and hasFile (or (eq uploadIntent 'newNodeNewFile') convertOrCopy)) use='crossFade'}}
     {{#liquid-bind hasFile use='crossFade'}}
         {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
     {{/liquid-bind}}
