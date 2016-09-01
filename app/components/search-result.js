@@ -24,16 +24,16 @@ export default Ember.Component.extend({
         return result.description;
     }),
 
-    osfID: function() {
+    osfID: Ember.computed('result', function() {
         let re = /osf.io\/(\w+)\/$/;
         if (this.get('result.providers').find(provider => provider.name === 'OSF'))
             for (let i = 0; i < this.get('result.lists.links.length'); i++)
                 if (re.test(this.get('result.lists.links')[i].url))
                     return re.exec(this.get('result.lists.links')[i].url)[1];
         return false;
-    }.property('result'),
+    }),
 
-    hyperlink: function() {
+    hyperlink: Ember.computed('result', function() {
         var re = null;
         for (let i = 0; i < this.get('result.providers.length'); i++)
             re = this.providerUrlRegex[this.get('result.providers')[i].name] || null;
@@ -45,7 +45,7 @@ export default Ember.Component.extend({
                 return this.get('result.lists.links')[j].url;
 
         return this.get('result.lists.links.0.url');
-    }.property('result'),
+    }),
 
     actions: {
         toggleShowBody() {
