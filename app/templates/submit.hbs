@@ -45,6 +45,8 @@
 
                                             {{else if (eq currentState _State.NEW)}}
                                                 {{file-uploader
+                                                    currentUser=user
+                                                    uploadIntent='newNodeNewFile'
                                                     hasFile=hasFile
                                                     file=file
                                                     node=node
@@ -61,6 +63,10 @@
 
                                             {{else if (eq currentState _State.EXISTING)}}
                                                 {{preprint-form-project-select
+                                                  finishUpload=(action 'finishUpload')
+                                                  currentUser=user
+                                                  osfFile=selectedFile
+                                                  contributors=contributors
                                                   hasFile=hasFile
                                                   userNodes=userNodes
                                                   hasFile=hasFile
@@ -73,9 +79,9 @@
                                                   highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
                                                   shouldCreateChild=shouldCreateChild}}
                                                 {{! TODO: cleanup created component if needed }}
-                                                <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
+                                                <!--<button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>-->
                                                 {{! TODO: check if project and file are selected before allowing user to continue }}
-                                                <button class="btn btn-primary" disabled={{unless (and node selectedFile) true}} {{action (if shouldCreateChild 'addChild' 'finishUpload') name}}>Next</button>
+                                                <!--<button class="btn btn-primary" disabled={{unless (and node selectedFile) true}} {{action (if shouldCreateChild 'addChild' 'finishUpload') name}}>Next</button>-->
                                             {{/if}}
                                         </div>
                                     {{/liquid-bind}}

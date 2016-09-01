@@ -23,17 +23,21 @@
             {{/if}}
              {{#if (eq existingState _existingState.EXISTINGFILE)}}
                 <div>
-                    {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
+                    {{select-existing-file rootItem=osfStorageProvider openFile=(action 'selectFile')}}
                 </div>
                 {{#if selectedFile}}
                     <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
                 {{/if}}
              {{else if (eq existingState _existingState.NEWFILE)}}
                  {{file-uploader
+                    contributors=contributors
+                    currentUser=currentUser
                     hasFile=hasFile
                     file=file
                     node=node
-                    nodeTitle=nodeTitle
+                    osfFile=osfFile
+                    selectedNode=selectedNode
+                    nodeTitle=selectedNode.title
                     userNodes=userNodes
                     osfFile=selectedFile
                     _names=_names
@@ -49,30 +53,5 @@
                 so you may share this component.
             </p>
         {{/if}}
-    {{/liquid-bind}}
-{{/liquid-if}}
-
-{{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-    {{#liquid-bind selectedFile use='crossFade'}}
-        <div class="m-t-lg">
-            <label> 3. Convert this project or copy file to a new component to organize </label>
-            <p class="text-muted">
-                You have a choice for how to organize your preprint in your project. If you select, "make a new component" then the preprint file will
-                be placed in a new component inside the project.  The title of that component will be the title of your preprint, and the contributor list will
-                be the authors of the preprint. If you select "use the current component" then the title and authors of the component you selected will
-                be tied to the preprint.  If you change the title or authors on the preprint, then they will change the title and authors on that component
-                and vice versa.  If you are unsure, then select "make a new component".
-            </p>
-            <div id='convertExistingOrCreateComponent'>
-                <div class="row text-center text-bigger">
-                    <div class="radio-option col-xs-6 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 p-md">
-                        <label><input onchange={{action "convertExisting"}} type="radio" name="createComponentDecision" checked={{not shouldCreateChild}}> Use the current component for the preprint </label>
-                    </div>
-                    <div class="radio-option col-xs-6 col-sm-5 col-md-4 p-md">
-                        <label><input onchange={{action "createComponent" value="true"}} type="radio" name="createComponentDecision" checked={{shouldCreateChild}}> Make a new component for the preprint</label>
-                    </div>
-                </div>
-            </div>
-        </div>
     {{/liquid-bind}}
 {{/liquid-if}}
