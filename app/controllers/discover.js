@@ -136,9 +136,22 @@ export default Ember.Controller.extend({
                     subjects: hit._source.subjects.map(each => ({text: each})),
                     providers: hit._source.sources.map(item => ({name: item})),
                     osfProvider: hit._source.sources.reduce((acc, source) => (acc || this.get('osfProviders').indexOf(source) !== -1), false),
+                    hyperLinks : [ // Links that are hyperlinks from hit._source.lists.links
+                        {
+                            type: 'share',
+                            url: config.SHARE.baseUrl + 'curate/preprint/' + hit._id
+                        }
+                    ],
+                    infoLinks : [] // Links that are not hyperlinks  hit._source.lists.links
                 });
 
-                result.shareLink = config.SHARE.baseUrl + 'curate/preprint/' + result.id;
+                hit._source.lists.links.forEach(function(linkItem){
+                    if(isHyperLink(linkItem.url)){
+                        result.hyperLinks.push(linkItem);
+                    } else {
+                        result.infoLinks.push(linkItem);
+                    }
+                });
 
                 result.contributors = result.lists.contributors.map(contributor => ({
                     users: Object.keys(contributor).reduce((acc, key) => Ember.merge(acc, {[key.camelize()]: contributor[key]}), {})

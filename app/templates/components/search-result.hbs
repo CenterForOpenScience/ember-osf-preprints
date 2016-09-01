@@ -57,8 +57,10 @@
 
                 {{#if showBody}}
                     {{!Tags}}
-                    {{#if result.shareLink}}
-                        <p><a href='{{result.shareLink}}'>{{result.shareLink}}</a></p>
+                    {{#if result.hyperLinks}}
+                        {{#each result.hyperLinks as |link|}}
+                            <p><a href='{{link.url}}'>{{link.url}}</a></p>
+                        {{/each}}
                     {{/if}}
                     {{#if result.tags}}
                         <div class="m-t-sm">
