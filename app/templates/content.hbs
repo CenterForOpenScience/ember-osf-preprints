@@ -39,20 +39,16 @@
                                 <span class="p-sm pull-right">
                                     <p class="f-w-lg">
                                         <a href='' {{action 'toggleShare'}} class='link-solid'>Share</a>
-                                        {{!-- Disable until share/edit functionality is available
-                                        {{#link-to "preprints.edit" class="link-solid m-r-xs"}}Edit{{/link-to}}
-                                        {{#link-to "preprints.edit" class="link-solid"}}Share{{/link-to}}
-                                        --}}
                                     </p>
                                 </span>
                             </div>
                         {{#if expandShare}}
                             <div class="row osf-box-lt">
                                 <span class="p-sm pull-right" >
-                                    <a style='margin: 5px' href=''>{{fa-icon 'twitter' size=2 }}</a>
-                                    <a style='margin: 5px' href=''>{{fa-icon 'facebook' size=2 }}</a>
-                                    <a style='margin: 5px' href=''>{{fa-icon 'linkedin' size=2 }}</a>
-                                    <a style='margin: 5px' href=''>{{fa-icon 'envelope' size=2 }}</a>
+                                    <a style='margin: 5px' href={{twitterHref}}>{{fa-icon 'twitter' size=2 }}</a>
+                                    <a style='margin: 5px' href={{facebookHref}}>{{fa-icon 'facebook' size=2 }}</a>
+                                    <a style='margin: 5px' href={{linkedinHref}}>{{fa-icon 'linkedin' size=2 }}</a>
+                                    <a style='margin: 5px' href={{mailHref}}>{{fa-icon 'envelope' size=2 }}</a>
                                     <a style='margin: 5px; margin-right: -50px' href='' {{action 'toggleShare'}} class='link-solid'>Dismiss</a>
                                 </span>
                             </div>
