@@ -25,6 +25,7 @@ export default Ember.Component.extend({
             promise: this.get('selectedNode.files').then(files => files.findBy('name', 'osfstorage'))
         });
     }),
+    createComponent:null,
     existingState: existingState.CHOOSE,
     actions: {
         // Sets selectedNode, then loads node's osfstorage provider. Once osfstorage is loaded,
@@ -43,12 +44,6 @@ export default Ember.Component.extend({
             if (this.get('selectedFile')) {
                 this.highlightSuccessOrFailure('selectedFileExisting', this, 'success');
             }
-        },
-        createComponent() {
-            this.set('shouldCreateChild', true);
-        },
-        convertExisting() {
-            this.set('shouldCreateChild', false);
         },
         changeExistingState(newState) {
             this.set('existingState', newState);
