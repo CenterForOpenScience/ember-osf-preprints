@@ -9,7 +9,7 @@ export default Ember.Route.extend(ResetScrollMixin, {
     },
     setupController(controller, model) {
         model.get('primaryFile').then((file) => {
-            let key = model.get('keenioReadKey');
+            let key = model.get('analyticsReadKey');
             let path = file.get('path');
             return getKeenFileCounts(path, key);
         }).then((counts) => {
