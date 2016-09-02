@@ -32,13 +32,14 @@
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
                     <div class="p-sm osf-box-lt" id="download_project">{{!SHARE ROW}}
                         <a class="btn btn-primary" href={{activeFile.links.download}}>Download</a>
-                        <span class="p-sm pull-right">Downloads: {{activeFile.extra.downloads}}</span>
+                        <span class="p-sm pull-right">
+                            {{#if keenCounts}}
+                                Views: {{keenCounts.view_file}} /
+                            {{/if}}
+                            Downloads: {{activeFile.extra.downloads}}
+                        </span>
                         <span class="p-sm pull-right">
                             <p class="f-w-lg">
-                                {{#if keenCounts}}
-                                    {{keenCounts.view_file}} views / {{keenCounts.download_file}} downloads
-                                {{/if}}
-
                                 {{!-- Disable until share/edit functionality is available
                                 {{#link-to "preprints.edit" class="link-solid m-r-xs"}}Edit{{/link-to}}
                                 {{#link-to "preprints.edit" class="link-solid"}}Share{{/link-to}}
