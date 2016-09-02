@@ -188,7 +188,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         // Open next panel
         next(currentPanelName) {
             if (currentPanelName === 'Upload') {
-                Ember.run.next(this, function() {
+                Ember.run.scheduleOnce('afterRender', this, function() {
                     MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('#nodeTitle')[0]]);  // jshint ignore:line
                 });
             }
@@ -252,7 +252,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.set('node.title', this.get('nodeTitle'));
             let node = this.get('node');
             node.save();
-            Ember.run.next(this, function() {
+            Ember.run.scheduleOnce('afterRender', this, function() {
                 MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('#nodeTitle')[0]]);  // jshint ignore:line
             });
             this.send('next', section);
@@ -268,7 +268,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             node.save()
                 .then(() => this.send('next', this.get('_names.2')))
                 .catch(()=> this.send('error', 'Could not save information; please try again'));
-            //Hack here because run.next doesnt pick up until the next edit.
+            //Hack here because run.next and run.scheduleOnce afterRender dont pick up until the next edit.
             Ember.run.later(this, function() {
                 MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('#abstract')[0]]);  // jshint ignore:line
             }, 300);

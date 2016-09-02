@@ -23,7 +23,7 @@ export default Ember.Controller.extend({
     }),
 
     applyMathJax: Ember.observer('model', function() {
-        Ember.run.next(this, function() {
+        Ember.run.scheduleOnce('afterRender', this, function() {
             MathJax.Hub.Queue(['Typeset', MathJax.Hub]);  // jshint ignore:line
         });
     }),
