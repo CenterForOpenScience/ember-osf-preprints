@@ -187,7 +187,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     actions: {
         // Open next panel
         next(currentPanelName) {
-            if (currentPanelName === 'Upload') {
+            if (currentPanelName === 'Upload' || currentPanelName === 'Basics') {
                 Ember.run.scheduleOnce('afterRender', this, function() {
                     MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('#nodeTitle')[0]]);  // jshint ignore:line
                 });
@@ -268,10 +268,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             node.save()
                 .then(() => this.send('next', this.get('_names.2')))
                 .catch(()=> this.send('error', 'Could not save information; please try again'));
-            //Hack here because run.next and run.scheduleOnce afterRender dont pick up until the next edit.
-            Ember.run.later(this, function() {
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('#abstract')[0]]);  // jshint ignore:line
-            }, 300);
         },
 
         saveSubjects(subjects) {
