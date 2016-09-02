@@ -189,7 +189,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         next(currentPanelName) {
             if (currentPanelName === 'Upload' || currentPanelName === 'Basics') {
                 Ember.run.scheduleOnce('afterRender', this, function() {
-                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('#nodeTitle')[0]]);  // jshint ignore:line
+                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$(currentPanelName === 'Upload' ? '.preprint-header-preview' : '.abstract')[0]]);  // jshint ignore:line
                 });
             }
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
@@ -253,7 +253,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             let node = this.get('node');
             node.save();
             Ember.run.scheduleOnce('afterRender', this, function() {
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('#nodeTitle')[0]]);  // jshint ignore:line
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('.preprint-header-preview')[0]]);  // jshint ignore:line
             });
             this.send('next', section);
         },
