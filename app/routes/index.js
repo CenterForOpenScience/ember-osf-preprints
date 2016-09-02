@@ -19,8 +19,8 @@ export default Ember.Route.extend(ResetScrollMixin, {
             data: getTotalPayload,
             contentType: 'application/json',
             crossDomain: true,
-        }).done(results => results.hits.total.toLocaleString())
-          .done(count => controller.set('sharePreprintsTotal', count))
+        }).then(results => results.hits.total.toLocaleString())
+          .then(count => controller.set('sharePreprintsTotal', count))
           .fail(() => {});
     },
     actions: {
