@@ -61,12 +61,8 @@
 
                 {{#if showBody}}
                     {{!Tags}}
-                    {{#if result.links}}
-                        {{#each result.links as |link|}}
-                            {{#unless (eq link.url hyperlink)}}
-                                <p><a href='{{link.url}}'>{{link.url}}</a></p>
-                            {{/unless}}
-                        {{/each}}
+                    {{#if result.shareLink}}
+                        <p><a href='{{result.shareLink}}'>{{result.shareLink}}</a></p>
                     {{/if}}
                     {{#if result.tags}}
                         <div class="m-t-sm">

@@ -76,33 +76,23 @@ export default Ember.Controller.extend({
         });
         this.loadPage();
     },
-    otherProvidersLoaded: Ember.observer('otherProviders', function() {
-        if (!this.get('providersPassed')) {
-            this.set('activeFilters.providers', this.get('otherProviders').slice());
-            this.notifyPropertyChange('activeFilters');
-        }
-    }),
     subjectChanged: Ember.observer('subjectFilter', function() {
-        var _this = this;
-        Ember.run.once(function() {
-            let filter = _this.get('subjectFilter');
-            if (filter) {
-                _this.set('activeFilters.subjects', filter.split('AND'));
-                _this.notifyPropertyChange('activeFilters');
-                _this.loadPage();
-            }
+        Ember.run.once(() => {
+            let filter = this.get('subjectFilter');
+            if (!filter) return;
+            this.set('activeFilters.subjects', filter.split('AND'));
+            this.notifyPropertyChange('activeFilters');
+            this.loadPage();
         });
     }),
     providerChanged: Ember.observer('providerFilter', function() {
-        var _this = this;
-        Ember.run.once(function() {
-            let filter = _this.get('providerFilter');
-            if (filter) {
-                _this.set('activeFilters.providers', filter.split('AND'));
-                _this.notifyPropertyChange('activeFilters');
-                _this.set('providersPassed', true);
-                _this.loadPage();
-            }
+        Ember.run.once(() => {
+            let filter = this.get('providerFilter');
+            if (!filter) return;
+            this.set('activeFilters.providers', filter.split('AND'));
+            this.notifyPropertyChange('activeFilters');
+            this.set('providersPassed', true);
+            this.loadPage();
         });
     }),
     loadPage() {
@@ -130,13 +120,13 @@ export default Ember.Controller.extend({
                     type: 'elastic-search-result',
                     workType: hit._source['@type'],
                     abstract: hit._source.description,
-                    links: hit._source.lists.links,
                     subjects: hit._source.subjects.map(each => ({text: each})),
                     providers: hit._source.sources.map(item => ({name: item})),
                     osfProvider: hit._source.sources.reduce((acc, source) => (acc || this.get('osfProviders').indexOf(source) !== -1), false),
                 });
 
-                result.links.push({url: config.SHARE.baseUrl + 'curate/preprint/' + result.id});
+                result.shareLink = config.SHARE.baseUrl + 'curate/preprint/' + result.id;
+
                 result.contributors = result.lists.contributors.map(contributor => ({
                     users: Object.keys(contributor).reduce((acc, key) => Ember.merge(acc, {[key.camelize()]: contributor[key]}), {})
                 }));
@@ -207,7 +197,6 @@ export default Ember.Controller.extend({
         return this.set('queryBody', queryBody);
     },
 
-    expandedOSFProviders: false,
     reloadSearch: Ember.observer('activeFilters', function() {
         this.set('page', 1);
         this.loadPage();
@@ -271,8 +260,5 @@ export default Ember.Controller.extend({
             }
             this.notifyPropertyChange('activeFilters');
         },
-        expandOSFProviders() {
-            this.set('expandedOSFProviders', !this.get('expandedOSFProviders'));
-        }
     },
 });
