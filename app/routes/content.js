@@ -11,7 +11,7 @@ export default Ember.Route.extend(ResetScrollMixin, {
     },
     actions: {
         error(error, transition) {
-            window.history.replaceState( {} , 'preprints', 'preprints/'+ transition.params.content.preprint_id);
+            window.history.replaceState({}, 'preprints', 'preprints/' + transition.params.content.preprint_id);
             this.intermediateTransitionTo('page-not-found');
         }
     }
