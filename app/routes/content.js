@@ -7,6 +7,9 @@ export default Ember.Route.extend(ResetScrollMixin, {
     },
     setupController(controller, model) {
         controller.set('activeFile', model.get('primaryFile'));
+        Ember.run.scheduleOnce('afterRender', this, function() {
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub]);  // jshint ignore:line
+        });
         return this._super(...arguments);
     },
     actions: {

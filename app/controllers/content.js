@@ -22,12 +22,6 @@ export default Ember.Controller.extend({
              this.set('authors', contributors));
     }),
 
-    applyMathJax: Ember.observer('model', function() {
-        Ember.run.scheduleOnce('afterRender', this, function() {
-            MathJax.Hub.Queue(['Typeset', MathJax.Hub]);  // jshint ignore:line
-        });
-    }),
-
     actions: {
         expandMFR() {
             this.toggleProperty('fullScreenMFR');
