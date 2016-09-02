@@ -2,25 +2,26 @@ import Ember from 'ember';
 import config from 'ember-get-config';
 import ResetScrollMixin from '../mixins/reset-scroll';
 
+const getTotalPayload = '{"size": 0, "from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}}}';
+
 export default Ember.Route.extend(ResetScrollMixin, {
     model() {
-        var getTotalPayload = '{"size": 0, "from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}}}';
+        return this.store.query('taxonomy', { filter: { parents: 'null' }, page: { size: 20 } });
+    },
+    setupController(controller, model) {
+        this._super(controller, model);
+        controller.set('currentDate', new Date());
 
-        var sharePreprintsTotal = Ember.$.ajax({
-                type: 'POST',
-                url: config.SHARE.searchUrl,
-                data: getTotalPayload,
-                contentType: 'application/json',
-                crossDomain: true,
-            }).then(function (results) {
-                return results.hits.total.toLocaleString();
-            });
-
-        return Ember.RSVP.hash({
-            theDate: new Date(),
-            subjects: this.store.query('taxonomy', { filter: { parents: 'null' }, page: { size: 20 } }),
-            sharePreprintsTotal: sharePreprintsTotal
-        });
+        // Fetch total number of preprints. Allow elasticsearch failure to pass silently.
+        Ember.$.ajax({
+            type: 'POST',
+            url: config.SHARE.searchUrl,
+            data: getTotalPayload,
+            contentType: 'application/json',
+            crossDomain: true,
+        }).done(results => results.hits.total.toLocaleString())
+          .done(count => controller.set('sharePreprintsTotal', count))
+          .fail(() => {});
     },
     actions: {
         // TODO: properly transfer subject to discover route
