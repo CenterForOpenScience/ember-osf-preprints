@@ -1,15 +1,8 @@
-<div class="panel panel-default">
+<div class="panel panel-default search-result">
     <div class="panel-body">
         <div class="row">
-            <div class="col-sm-12">
-                {{#if result.date_modified}} {{! moment-format will use current time if null}}
-                    <span class="pull-right">{{moment-format result.date_modified "MMMM YYYY"}}</span>
-                {{/if}}
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
+            <div class="col-xs-12">
+                {{!Title}}
                 <h4>
                     {{#if osfID}}
                         {{#link-to "content" osfID}}{{result.title}}{{/link-to}}
@@ -21,54 +14,66 @@
                         {{/if}}
                     {{/if}}
                 </h4>
+                {{!Authors}}
+                <div>
+                    <ul class="comma-list">
+                        {{#each result.contributors as |contributor index|}}
+                            {{#if contributor.users.bibliographic}}
+                                {{author-link contributor=contributor}}
+                            {{/if}}
+                        {{/each}}
+                    </ul>
+                </div>
+
+                {{#if result.subjects}}
+                    <div class="m-t-sm">
+                        {{#each result.subjects as |subject|}}
+                            <span class='subject-preview pointer' onclick={{action 'select' subject}}>{{subject.text}}</span>
+                        {{/each}}
+                    </div>
+                {{/if}}
+
+                {{!Abstract}}
+                {{#if result.abstract}}
+                    <div class="text-muted m-t-sm">
+                        {{if showBody result.abstract shortDescription}}
+                    </div>
+                {{/if}}
+
+                {{!Provider and date}}
+                <div class="m-t-sm">
+                    <span class="search-result-providers">
+                        {{#each result.providers as |provider index|}}
+                            {{if index '| '}}{{filter-replace provider.name}}
+                        {{/each}}
+                    </span>
+                    <span class="pull-right">
+                        {{#if result.date_modified}} {{! moment-format will use current time if null}}
+                            <span>{{moment-format result.date_modified "MMMM YYYY"}}</span>
+                        {{/if}}
+                    </span>
+                </div>
+
+
+                {{#if showBody}}
+                    {{!Tags}}
+                    {{#if result.shareLink}}
+                        <p><a href='{{result.shareLink}}'>{{result.shareLink}}</a></p>
+                    {{/if}}
+                    {{#if result.tags}}
+                        <div class="m-t-sm">
+                            {{#each result.tags as |tag index|}}
+                                <span class="badge">{{tag}}</span>
+                            {{/each}}
+                        </div>
+                    {{/if}}
+                    {{!Added on}}
+                    <div class="m-t-sm"> Added on: {{moment-format result.date_created}} </div>
+                {{/if}}
+
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-12">
-                {{#each result.contributors as |contributor index|}}
-                    {{#if index}}
-                        |
-                    {{/if}}
-                    {{#if result.osfProvider}}
-                        <a href={{contributor.users.id}}>
-                            {{contributor.users.familyName}}{{if contributor.users.familyName ', '}}{{contributor.users.givenName}}
-                        </a>
-                    {{else}}
-                        {{contributor.users.familyName}}{{if contributor.users.familyName ', '}}{{contributor.users.givenName}}
-                    {{/if}}
-                {{/each}}
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-8">
-                {{#each result.subjects as |subject|}}
-                    <span class='badge pointer' onclick={{action 'select' subject}}>{{subject.text}}</span>
-                {{/each}}
-            </div>
-            <div class="col-sm-4">
-                {{#each result.providers as |provider index|}}
-                    {{if index '| '}}{{provider.name}}
-                {{/each}}
-            </div>
-        </div>
-        <br>
-        {{#if showBody}}
-            {{result.abstract}}
-            <div class="row">
-                <div class="col-sm-12">
-                    {{#each result.tags as |tag index|}}
-                        {{if index '| '}}{{tag}}
-                    {{/each}}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 text-muted">
-                    Released on: {{moment-format result.date_created}}
-                </div>
-            </div>
-        {{/if}}
         <div class="text-center" {{action "toggleShowBody"}}>
             <a href=''>{{fa-icon footerIcon size=1}}</a>
         </div>

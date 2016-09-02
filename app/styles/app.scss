@@ -9,9 +9,20 @@
 /* Override styles from ember-osf and osf */
 .footer {
     margin-top: 0;
+    text-shadow: 0 1px 0 #fff;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    width: 100%;
+    color: #555;
 }
 
-/* GLOBAL to PREPRINTS */
+.footer ul, .footer li {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+/* GLOBAL to PREPRINTS, these may be used in multiple pages */
 .pointer {
     cursor: pointer;
 }
@@ -22,6 +33,7 @@ body {
 ul.comma-list {
     display: inline;
     list-style: none;
+    padding-left: 0;
     li {
         display: inline;
     }
@@ -31,6 +43,14 @@ ul.comma-list {
     li:last-child:after {
         content: "";
     }
+}
+.subject-preview {
+    display: inline-block;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    border: 1px solid #eee;
+    padding: 1px 7px;
+    margin-bottom: 4px;
 }
 
 
@@ -49,6 +69,9 @@ ul.comma-list {
     }
     .nav > li > a:hover, .nav > li > a.active, .navbar-brand:hover {
         background-color: #65a0b9;
+    }
+    .nav > li > a:focus:not(.active) {
+        background-color: transparent;
     }
     .navbar-brand a {
         text-decoration: none;
@@ -131,6 +154,17 @@ ul.comma-list {
         background-position: center;
     }
 }
+.preprint-advisory  {
+    background-color: #f3f5f7;
+    border-bottom: 1px solid #e0e6ea;
+    ul {
+        list-style: none;
+        li {
+            padding-top: 5px;
+            font-size: 16px;
+        }
+    }
+}
 
 @media (max-width: 768px) {
     .subject-item {
@@ -143,8 +177,6 @@ ul.comma-list {
         margin-bottom: 15px;
     }
 }
-
-
 
 
 /* SEARCH page */
@@ -174,11 +206,17 @@ ul.comma-list {
     label {
         font-weight: normal;
     }
-    ul {
+    .preprint-search-sidebar ul {
         padding-left: 25px;
         li {
             list-style: none;
         }
+    }
+    .search-result {
+        margin-bottom: 10px;
+        word-wrap: break-word;
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
 }
 
@@ -199,6 +237,10 @@ ul.comma-list {
         color: #777777;
     }
 }
+.search-result-providers {
+    font-weight: bold;
+}
+
 
 
 /* VIEW page */
@@ -206,7 +248,43 @@ ul.comma-list {
 .dark-overlay-header-background {
     background: url("img/dark-overlay.png") top center;
 }
-
+#view-page {
+    background-color: #FCFCFC;
+    font-family : 'Open Sans', Helvetica, sans-serif;
+    .osf-box-lt {
+        background-color: #F3F5F5;
+    }
+    .header-row {
+        color: #ffffff;
+        padding-top: 90px;
+    }
+    .view-authors {
+        color: #337ab7;
+        a {
+            color: #6dd1de;
+        }
+    }
+    .round-btn {
+        border-radius: 25px;
+        background-color: #4c4c4c;
+        color: white;
+    }
+    #mfr-col {
+        position: relative;
+        .expand-mfr-carrot {
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: #888888;
+            background: 0;
+            border: 0;
+            outline: none;
+        }
+    }
+    .abstract {
+        white-space: pre-line;
+    }
+}
 
 /* SUBMIT page */
 
@@ -238,13 +316,8 @@ ul.comma-list {
             color: #888;
             display: block;
         }
-        .subject-preview {
-            display: inline-block;
-            background-color: #f8f8f8;
-            border-radius: 3px;
-            border: 1px solid #eee;
-            padding: 1px 7px;
-            margin-bottom: 4px;
+        .abstract {
+            white-space: pre-line;
         }
     }
 }
@@ -261,14 +334,13 @@ ul.comma-list {
         margin-top: 10px;
         text-align: center;
     }
-    .form-control {
-        width: 95%; /* this is a bit of a hack, TODO: Proper fix for this */
+    .dz-progress {
+        z-index : 10;
     }
     .radio-option {
         background: #f5f5f5;
         border-radius: 2px;
     }
-
 }
 .file-browser-header {
     display: none;
@@ -364,9 +436,6 @@ ul.comma-list {
     opacity: 1.0;
     box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, .2);
 }
-
-
-
 
 .logo {
     width: 150px;
@@ -667,37 +736,7 @@ hr {
 }
 
 
-#view-page{
-    background-color: #FCFCFC;
-    font-family : 'Open Sans', Helvetica, sans-serif;
-    .osf-box-lt{
-        background-color: #F3F5F5;
-    }
-    .header-row{
-        color: white;
-    }
-    .view-authors{
-        color: #337ab7;
-        //float: left;
-    }
-    .round-btn {
-        border-radius: 25px;
-        background-color: #4c4c4c;
-        color: white;
-    }
-    #mfr-col{
-        position: relative;
-    .expand-mfr-carrot {
-        position: absolute;
-        right: 0;
-        top: 0;
-        color: #888888;
-        background: 0;
-        border: 0;
-        outline: none;
-        }
-    }
-}
+
 
 //For Supplementary File Widget
 #preprint-file-view {
@@ -715,11 +754,11 @@ hr {
             }
         }
         .file-selected-arrow {
-            color: #888888;
+            color: #578ca2;
             position: absolute;
             top: -20px;
             font-size: xx-large;
-            left: 2px;
+            margin: 0 auto;
         }
     }
 
@@ -794,18 +833,11 @@ hr {
     opacity: 1 !important;
 }
 
-ul.author-preview {
-    display: inline;
-    list-style: none;
-    padding: 0;
-    li {
-        display: inline;
-    }
-    li:after {
-        content: ", "
-    }
-    li:last-child:after {
-        content: "";
-    }
+.authors-search-button {
+    height: 34px;
 }
 
+.source_code_link {
+    color: white;
+    text-decoration: underline;
+}

@@ -58,9 +58,11 @@ const BasicsValidations = buildValidations({
  * "Add preprint" page definitions
  */
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
+    _State: State,
     fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
+    _names: ['upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()),
 
     // Data for project picker; tracked internally on load
     user: null,
@@ -68,14 +70,64 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     // Information about the thing to be turned into a preprint
     node: null,
+    file: null,
     selectedFile: null,
     contributors: Ember.A(),
+    uploadFile: null,
+    nodeTitle: null,
+    shouldCreateChild: false,
+    fileAndNodeLocked: false,
+    projectsCreatedForPreprint:  Ember.A(),
+    filesUploadedForPreprint: Ember.A(),
+    searchResults: [],
+    savingPreprint: false,
+    showModalSharePreprint: false,
+    showModalRestartPreprint: false,
+    uploadSaveState: false,
+    basicsSaveState: false,
+    authorsSaveState: false,
+    disciplineSaveState: false,
+
+    clearFields() {
+        this.get('panelActions').open('Upload');
+        this.get('panelActions').close('Submit');
+
+        this.setProperties(Ember.merge(
+            this.get('_names').reduce((acc, name) => Ember.merge(acc, {[`${name.toLowerCase()}SaveState`]: false}), {}), {
+            user: null,
+            userNodes: Ember.A(),
+            node: null,
+            file: null,
+            selectedFile: null,
+            contributors: Ember.A(),
+            uploadFile: null,
+            nodeTitle: null,
+            shouldCreateChild: false,
+            fileAndNodeLocked: false,
+            projectsCreatedForPreprint:  Ember.A(),
+            filesUploadedForPreprint: Ember.A(),
+            searchResults: [],
+            savingPreprint: false,
+            showModalSharePreprint: false,
+            showModalRestartPreprint: false,
+            uploadSaveState: false,
+            basicsSaveState: false,
+            authorsSaveState: false,
+            disciplineSaveState: false,
+        }));
+    },
+
+    hasFile: function() {
+        return this.get('file') != null;
+    }.property('file'),
 
     ///////////////////////////////////////
     // Validation rules for form sections
-    uploadValid: Ember.computed.and('node', 'selectedFile'),
+    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle'),
+    abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
+    doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
     // Basics fields are currently the only ones with validation. Make this more specific in the future if we add more form fields.
-    basicsValid: Ember.computed.alias('validations.isValid'),
+    basicsValid: Ember.computed.and('abstractValid', 'doiValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject.
@@ -83,7 +135,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     allSectionsValid: Ember.computed('uploadValid', 'basicsValid', 'authorsValid', 'disciplineValid', function() {
         return this.get('uploadValid') && this.get('basicsValid') && this.get('authorsValid') && this.get('disciplineValid');
     }),
-    nodeTitle: null,
 
     ////////////////////////////////////////////////////
     // Fields used in the "basics" section of the form.
@@ -94,10 +145,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsAbstract: Ember.computed.alias('basicsModel.description'),
     basicsTags: Ember.computed.alias('basicsModel.tags'), // TODO: This may need to provide a default value (list)? Via default or field transform?
     basicsDOI: Ember.computed.alias('model.doi'),
-    uploadSaveState: false,
-    basicsSaveState: false,
-    disciplineSaveState: false,
-    authorsSaveState: false,
 
     //// TODO: Turn off autosave functionality for now. Direct 2-way binding was causing a fight between autosave and revalidation, so autosave never fired. Fixme.
     // createAutosave: Ember.observer('node', function() {
@@ -119,24 +166,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     getContributors: Ember.observer('node', function() {
         // Cannot be called until a project has been selected!
+        if (!this.get('node')) return [];
+
         let node = this.get('node');
         let contributors = Ember.A();
         loadAll(node, 'contributors', contributors).then(()=>
              this.set('contributors', contributors));
     }),
-
-    // Upload variables
-    _State: State,
-    uploadFile: null,
-    resolve: null,
-    shouldCreateChild: false,
-    dropzoneOptions: {
-        uploadMultiple: false,
-        method: 'PUT'
-    },
-    fileAndNodeLocked: false,
-    projectsCreatedForPreprint:  Ember.A(),
-    filesUploadedForPreprint: Ember.A(),
 
     isAdmin: Ember.computed('node', function() {
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
@@ -148,20 +184,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return this.get('isAdmin') && !(this.get('node.registration'));
     }),
 
-    searchResults: [],
-    showModalSharePreprint: false,
-
-    _names: ['upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()),
-
-    clearFields() {
-        // node should also be cleared, currently throws an error
-        this.set('selectedFile', null);
-        this.set('model.subjects', []);
-        this.set('contributors', Ember.A());
-        this.set('_url', '');
-        this.set('searchResults', []);
-        this.set('uploadFile', null);
-    },
     actions: {
         // Open next panel
         next(currentPanelName) {
@@ -189,6 +211,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         finishUpload() {
             this.send('lockFileAndNode');
             this.send('next', this.get('_names.0'));
+        },
+        toggleRestartPreprintModal() {
+            this.toggleProperty('showModalRestartPreprint');
         },
         resetFileUpload() {
             var promisesArray = [];
@@ -305,7 +330,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 id: this.get('node.id'),
                 primaryFile: this.get('selectedFile')
             });
-
+            this.set('savingPreprint', true);
+            if (model.get('doi') === '') {
+                model.set('doi', undefined);
+            }
             model.save()
                 // Ember data is not worth the time investment currently
                 .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
@@ -317,7 +345,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     }
                 }))
                 .then(() => model.get('providers'))
-                .then(() => this.clearFields())
                 .then(() => this.transitionToRoute('content', model))
                 .catch(() => this.send('error', 'Could not save preprint; please try again later'));
         },

@@ -19,17 +19,24 @@
                             {{preprint-form-header uploadSaveState=uploadSaveState showValidationIndicator=false name=name preprintFile=selectedFile.name preprintTitle=node.title valid=uploadValid}}
                             {{#preprint-form-body}}
                                 {{#if fileAndNodeLocked}}
-                                    <p><label> Preprint file: </label> {{selectedFile.name}}</p>
+                                    <p><em> Preprint file: </em> {{selectedFile.name}}</p>
 
-                                    <label> Preprint title </label>
+                                    <p><em> Preprint title: </em></p>
                                     {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=nodeTitle}}
 
-                                    <button class="btn btn-danger" {{action 'resetFileUpload'}}>Restart</button>
-                                    <button class="btn btn-primary" {{action 'editTitleNext' name}}>Next</button>
+                                    <button class="btn btn-danger" {{action 'toggleRestartPreprintModal'}}>Restart</button>
+                                    <button class="btn btn-primary" disabled={{unless nodeTitle true}} {{action 'editTitleNext' name}}>Next</button>
+
+                                    <div>
+                                        {{confirm-restart-submit-preprint isOpen=showModalRestartPreprint resetFileUpload=(action 'resetFileUpload')}}
+                                    </div>
                                 {{else}}
                                     <div>
                                         {{file-uploader
+                                            hasFile=hasFile
+                                            file=file
                                             node=node
+                                            nodeTitle=nodeTitle
                                             userNodes=userNodes
                                             osfFile=selectedFile
                                             next=(action 'next')
@@ -47,7 +54,7 @@
                         {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header disciplineSaveState=disciplineSaveState subjects=model.subjects name=name valid=disciplineValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
-                                <p class="m-b-lg small"> Select a discipline and subdiscipline, if relevant. Add another discipline by clicking on a new discipline at the top level.</p>
+                                <p class="m-b-lg small"> Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.</p>
 
                                 {{subject-picker save=(action 'saveSubjects')}}
 
@@ -70,22 +77,23 @@
                                     <div class="col-md-6">
                                         <div>
                                             <label>
-                                                DOI (optional):
-                                                {{validated-input model=this valuePath='basicsDOI' placeholder="DOI" value=basicsDOI}}
+                                                If published, DOI of associated journal article (optional):
                                             </label>
+                                            {{validated-input model=this valuePath='basicsDOI' placeholder="DOI" value=basicsDOI}}
                                         </div>
                                         <div>
                                             <label>
                                                 Keywords:
-                                                {{tags-widget addATag=(action 'addATag' node) removeATag=(action 'removeATag' node) tags=node.tags}}
                                             </label>
+                                            <p class="small"> Add keywords to increase discoverability of your preprint</p>
+                                            {{tags-widget addATag=(action 'addATag' node) removeATag=(action 'removeATag' node) tags=node.tags}}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label>
                                             <span class="required">Abstract:</span>
-                                            {{validated-input model=this valuePath='basicsAbstract' placeholder="Add a brief summary of your preprint" value=basicsAbstract large=true}}
                                         </label>
+                                        {{validated-input model=this valuePath='basicsAbstract' placeholder="Add a brief summary of your preprint" value=basicsAbstract large=true}}
                                     </div>
                                 </div>
                                 <div class="row">

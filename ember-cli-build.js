@@ -3,8 +3,11 @@
 var path = require('path');
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
+const nonCdnEnvironments = ['development', 'test'];
+
 module.exports = function(defaults) {
     var config = require('./config/environment')(process.env.EMBER_ENV);
+    const useCdn = (nonCdnEnvironments.indexOf(process.env.EMBER_ENV) === -1);
 
     // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
     var app = new EmberApp(defaults, {
@@ -17,8 +20,8 @@ module.exports = function(defaults) {
             // next line is needed to prevent ember-cli to load
             // handlebars (it happens automatically in 0.1.x)
             'handlebars.js': {production: null},
-            [process.env.EMBER_ENV !== 'development' ? 'ember.js' : '']: null,
-            [process.env.EMBER_ENV !== 'development' ? 'jquery.js' : '']: null,
+            [useCdn ? 'ember.js' : '']: false,
+            [useCdn ? 'jquery.js' : '']: false,
         },
         'ember-bootstrap': {
             importBootstrapCSS: false
@@ -33,13 +36,13 @@ module.exports = function(defaults) {
         },
         inlineContent: {
             raven: {
-                enabled: process.env.EMBER_ENV !== 'development',
+                enabled: useCdn,
                 content: `
                     <script src="https://cdn.ravenjs.com/3.5.1/ember/raven.min.js"></script>
                     <script>Raven.config("${config.sentryDSN}", {}).install();</script>`
             },
             cdn: {
-                enabled: process.env.EMBER_ENV !== 'development',
+                enabled: useCdn,
                 content: `
                     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
                     <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.7.1/ember.prod.js"></script>`

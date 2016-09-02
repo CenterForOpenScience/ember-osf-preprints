@@ -1,8 +1,6 @@
 import Ember from 'ember';
 
-//currently using the max page size our api allows, to not have to paginate. This
-// (should, test incoming) get all children of any given subject
-var pageSize = 100;
+var pageSize = 150;
 
 export default Ember.Component.extend({
     store: Ember.inject.service(),
@@ -14,7 +12,8 @@ export default Ember.Component.extend({
                 id: result.id,
                 text: result.get('text'),
                 children: [],
-                showChildren: false
+                showChildren: false,
+                childCount: result.get('child_count')
             });
         });
         return parsed.sort((prev, next) => {

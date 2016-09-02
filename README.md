@@ -4,7 +4,7 @@
 
 `develop` Build Status: [![Build Status](https://travis-ci.org/CenterForOpenScience/ember-preprints.svg?branch=develop)](https://travis-ci.org/CenterForOpenScience/ember-preprints)
 
-This is the prototype of the upcoming OSF preprints.
+This is the codebase for OSF preprints.
 This guide will help you get started if you're interested.
 
 ## Prerequisites
@@ -66,6 +66,7 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 ## Further Reading / Useful Links
 
+* [Requirements and road map for this service](https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270)
 * [ember.js](http://emberjs.com/)
 * [ember-cli](http://ember-cli.com/)
 * Development Browser Extensions

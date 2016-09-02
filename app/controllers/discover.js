@@ -16,10 +16,11 @@ export default Ember.Controller.extend({
         page: 'page',
         queryString: 'q',
         subjectFilter: 'subject',
+        providerFilter: 'provider',
     },
 
     activeFilters: { providers: [], subjects: [] },
-    osfProviders: ['Open Science Framework', 'PsyArXiv', 'SocArxiv', 'Engrxiv'],
+    osfProviders: ['OSF', 'PsyArXiv', 'SocArXiv', 'engrXiv'],
 
     page: 1,
     size: 10,
@@ -27,6 +28,7 @@ export default Ember.Controller.extend({
     queryString: '',
     subjectFilter: null,
     queryBody: {},
+    providersPassed: false,
 
     sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
 
@@ -74,17 +76,24 @@ export default Ember.Controller.extend({
         });
         this.loadPage();
     },
-    otherProvidersLoaded: Ember.observer('otherProviders', function() {
-        this.set('activeFilters.providers', this.get('otherProviders').slice());
-        this.notifyPropertyChange('activeFilters');
-    }),
     subjectChanged: Ember.observer('subjectFilter', function() {
-        let filter = this.get('subjectFilter');
-        if (filter) {
-            this.set('activeFilters.subjects', [filter]);
+        Ember.run.once(() => {
+            let filter = this.get('subjectFilter');
+            if (!filter) return;
+            this.set('activeFilters.subjects', filter.split('AND'));
             this.notifyPropertyChange('activeFilters');
             this.loadPage();
-        }
+        });
+    }),
+    providerChanged: Ember.observer('providerFilter', function() {
+        Ember.run.once(() => {
+            let filter = this.get('providerFilter');
+            if (!filter) return;
+            this.set('activeFilters.providers', filter.split('AND'));
+            this.notifyPropertyChange('activeFilters');
+            this.set('providersPassed', true);
+            this.loadPage();
+        });
     }),
     loadPage() {
         this.set('loading', true);
@@ -116,13 +125,15 @@ export default Ember.Controller.extend({
                     osfProvider: hit._source.sources.reduce((acc, source) => (acc || this.get('osfProviders').indexOf(source) !== -1), false),
                 });
 
+                result.shareLink = config.SHARE.baseUrl + 'curate/preprint/' + result.id;
+
                 result.contributors = result.lists.contributors.map(contributor => ({
-                    users: {
-                        id: contributor.id,
-                        familyName: contributor.family_name,
-                        givenName: contributor.given_name,
-                    }
+                    users: Object.keys(contributor).reduce((acc, key) => Ember.merge(acc, {[key.camelize()]: contributor[key]}), {})
                 }));
+
+                // Temporary fix to handle half way migrated SHARE ES
+                // Only false will result in a false here.
+                result.contributors.map(contributor => contributor.users.bibliographic = !(contributor.users.bibliographic === false));  // jshint ignore:line
 
                 return result;
             });
@@ -136,6 +147,8 @@ export default Ember.Controller.extend({
     }),
     getQueryBody() {
         let facetFilters = this.get('activeFilters');
+        this.set('subjectFilter', facetFilters.subjects.slice().join('AND'));
+        this.set('providerFilter', facetFilters.providers.slice().join('AND'));
         let filters = {};
         for (let k of Object.keys(facetFilters)) {
             let key = filterMap[k];
@@ -184,7 +197,6 @@ export default Ember.Controller.extend({
         return this.set('queryBody', queryBody);
     },
 
-    expandedOSFProviders: false,
     reloadSearch: Ember.observer('activeFilters', function() {
         this.set('page', 1);
         this.loadPage();
@@ -248,8 +260,5 @@ export default Ember.Controller.extend({
             }
             this.notifyPropertyChange('activeFilters');
         },
-        expandOSFProviders() {
-            this.set('expandedOSFProviders', !this.get('expandedOSFProviders'));
-        }
     },
 });

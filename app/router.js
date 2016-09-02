@@ -10,6 +10,7 @@ Router.map(function() {
     this.route('submit');
     this.route('discover');
     this.route('content', { path: '/:preprint_id' });
+    this.route('404', { path: '/*bad_url'});
     this.route('page-not-found');
 });
 

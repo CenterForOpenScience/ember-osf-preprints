@@ -40,7 +40,7 @@
 <div class="preprint-search-main p-v-xl">
     <div class="container">
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-4 preprint-search-sidebar">
                 {{#if showActiveFilters}}
                     <div id="activeFilters" class="well well-sm p-md">
                         <div class="row">
@@ -55,7 +55,7 @@
                         </div>
                         <div id="activeFiltersList">
                             {{#each activeFilters.providers as |filter|}}
-                                <span class='preprint-filter provider-filter'>{{filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'selectProvider' filter)}}</span></span>
+                                <span class='preprint-filter provider-filter'>{{filter-replace filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'selectProvider' filter)}}</span></span>
                             {{/each}}
                             {{#each activeFilters.subjects as |filter|}}
                                 <span class='preprint-filter subject-filter'>{{filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'selectSubjectFilter' filter)}}</span></span>
@@ -71,7 +71,7 @@
                             <li>
                                 <label>
                                     <input type="checkbox" checked="{{if (if-filter item activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item}}>
-                                    {{item}}
+                                    {{filter-replace item}}
                                 </label>
                             </li>
                         {{/each}}

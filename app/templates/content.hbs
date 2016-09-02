@@ -1,11 +1,21 @@
-<body id="view-page">
+<div id="view-page">
     <div class="p-t-xl m-t-xl p-b-md m-b-md dark-overlay-header-background header-row">{{!HEADER ROW}}
         <div class="container">{{!CONTAINER DIV}}
             <h1 class="p-b-md">{{model.title}}</h1>
             <h5 class="view-authors">
-                {{#each model.contributors as |author index|}}
-                    {{if index ', ' ''}}<a href={{author.users.profileURL}}>{{author.users.fullName}}</a>
-                {{/each}}
+                <ul class="comma-list">
+                    {{#if authors}}
+                        {{#each authors as |author index| ~}}
+                            {{#if author.bibliographic}}
+                                <li><a href={{author.users.profileURL}}>{{author.users.givenName}} {{author.users.familyName}}</a></li>
+                            {{/if}}
+                        {{~/each}}
+                    {{else}}
+                        <div>
+                            {{fa-icon 'spinner' pulse=true size=2}}
+                        </div>
+                    {{/if}}
+                </ul>
             </h5>
             <h6>Added on: {{moment-format model.date_created "MMMM DD, YYYY"}} | Last edited: {{moment-format model.date_modified "MMMM DD, YYYY"}} </h6>
         </div> {{!END CONTAINER DIV}}
@@ -13,7 +23,7 @@
     <div id="view-page" class="container">{{!CONTAINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
             <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}
-                {{supplementary-file-browser preprint=model projectURL=model.links.html}}
+                {{supplementary-file-browser preprint=model projectURL=model.links.html chooseFile=(action 'chooseFile')}}
                 <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
                     <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                 </button>
@@ -21,7 +31,8 @@
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
                     <div class="p-sm osf-box-lt" id="download_project">{{!SHARE ROW}}
-                        <a type="button" class="btn btn-primary" href={{model.primaryFile.links.download}}>Download</a>
+                        <a class="btn btn-primary" href={{activeFile.links.download}}>Download</a>
+                        <span class="p-sm pull-right">Downloads: {{activeFile.extra.downloads}}</span>
                         <span class="p-sm pull-right">
                             <p class="f-w-lg">
                                 {{#if keenCounts}}
@@ -35,9 +46,33 @@
                             </p>
                         </span>
                     </div>{{!END SHARE ROW}}
-                    <div class="f-w-xs m-b-xl p-t-xs">
-                        <h3 class="page-header p-l-md">Abstract</h3>
-                        <p class="p-l-md">{{model.abstract}}</p>
+                    <div class="p-t-xs">
+                        <h4 class="p-v-md f-w-md">Abstract</h4>
+                        <p class="abstract">{{model.abstract}}</p>
+                    </div>
+
+                    {{#if model.doi}}
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md  f-w-md">Article DOI</h4>
+                            <a href="https://dx.doi.org/{{model.doi}}">{{model.doi}}</a>
+                        </div>
+                    {{/if}}
+
+                    <div class="p-t-xs">
+                        <h4 class="p-v-md f-w-md">Disciplines</h4>
+                        {{#each model.subjects as |subject|}}
+                            <span class='subject-preview'>{{subject.text}}</span>
+                        {{/each}}
+                    </div>
+                    <div class="m-b-lg p-t-xs">
+                        <h4 class=" f-w-md p-v-md">Tags</h4>
+                        {{#if hasTag}}
+                            {{#each model.tags as |tag|}}
+                                <span class="badge">{{tag}}</span>
+                            {{/each}}
+                        {{else}}
+                            None
+                        {{/if}}
                     </div>
                     {{!PROJECT BUTTON}}
                     <div class="p-lg osf-box-lt text-center">
@@ -48,4 +83,4 @@
             {{/unless}}
         </div> {{!END CONTENT ROW}}
     </div>{{!END DIV CONTAINER}}
-</body>
+</div>

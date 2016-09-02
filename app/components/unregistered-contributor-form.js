@@ -23,7 +23,8 @@ const Validations = buildValidations({
         validators: [
             validator('presence', true),
             validator('format', {
-                type: 'email'
+                type: 'email',
+                regex: /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i,
             })
        ]
     },
@@ -33,4 +34,12 @@ export default Ember.Component.extend(Validations, {
     fullName: null,
     username: null,
     isFormValid: Ember.computed.alias('validations.isValid'),
+    actions: {
+        addUnregistered(fullName, email) {
+            if (this.get('isFormValid')) {
+                this.attrs.addUnregisteredContributor(fullName, email);
+            }
+        }
+    }
+
 });
