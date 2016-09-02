@@ -24,10 +24,6 @@ export default Ember.Route.extend(ResetScrollMixin, {
           .fail(() => {});
     },
     actions: {
-        // TODO: properly transfer subject to discover route
-        goToSubject(sub) {
-            this.transitionTo('discover', { queryParams: { subject: sub } });
-        },
         search(q) {
             this.transitionTo('discover', { queryParams: { queryString: q } });
         }
