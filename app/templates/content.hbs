@@ -78,5 +78,18 @@
                 </div> {{!END RIGHT SIDE COL}}
             {{/unless}}
         </div> {{!END CONTENT ROW}}
+        <div class="row">
+            <div class="col-md-12">
+                {{comment-pane
+                  comments=comments
+                  title=model.title
+                  resource=model
+                  addComment=(action 'addComment')
+                  editComment=(action 'editComment')
+                  deleteComment=(action 'deleteComment')
+                  restoreComment=(action 'restoreComment')
+                  reportComment=(action 'reportComment')}}
+            </div>
+        </div>
     </div>{{!END DIV CONTAINER}}
 </div>

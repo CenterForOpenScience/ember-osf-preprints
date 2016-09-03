@@ -1,7 +1,9 @@
 import Ember from 'ember';
-import loadAll from 'ember-osf/utils/load-relationship';
 
-export default Ember.Controller.extend({
+import loadAll from 'ember-osf/utils/load-relationship';
+import CommentableMixin from 'ember-osf/mixins/commentable';
+
+export default Ember.Controller.extend(CommentableMixin, {
     fullScreenMFR: false,
     expandedAuthors: true,
 
