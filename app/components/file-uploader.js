@@ -107,6 +107,7 @@ export default Ember.Component.extend({
         },
         preUpload(_, dropzone, file) {
             this.set('file', file);
+            this.set('hasFile', true);
             this.set('callback', Ember.RSVP.defer());
             return this.get('callback.promise');
         },

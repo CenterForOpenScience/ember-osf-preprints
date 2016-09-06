@@ -106,9 +106,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         }));
     },
 
-    hasFile: function() {
-        return this.get('file') != null;
-    }.property('file'),
+    hasFile: Ember.computed('file', 'selectedFile', function() {
+        if (this.get('file') || this.get('selectedFile')) {
+            return true;
+        } else {
+            return false;
+        }
+    }),
 
     ///////////////////////////////////////
     // Validation rules for form sections
