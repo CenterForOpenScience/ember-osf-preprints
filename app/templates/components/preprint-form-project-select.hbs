@@ -1,5 +1,9 @@
 <label class="text-bigger"> 1. Choose existing OSF project </label>
-<div class="m-b-md">
+<p class="text-muted">
+    The list of projects appearing in the selector are projects and components for which you have admin access.  Deleted projects and registrations
+    are not included here.
+</p>
+<div class="m-b-lg">
     {{#if userNodes}}
         {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
             <strong>{{node.title}}</strong>
