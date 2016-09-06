@@ -25,5 +25,6 @@
 {{/liquid-if}}
 
 <div class="p-t-xs pull-right">
+    <button class="btn btn-default" {{action changeState startState}}>Back</button>
     <button class="btn btn-primary" disabled={{not (and hasFile titleValid)}} {{action 'setNodeAndFile'}}>Next</button>
 </div>

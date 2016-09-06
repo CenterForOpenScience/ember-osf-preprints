@@ -36,6 +36,7 @@
                         {{/liquid-if}}
 
                         <div class="p-t-xs pull-right">
+                            <button class="btn btn-default" {{action changeState startState}}>Back</button>
                             <button class="btn btn-primary" disabled={{not (and selectedFile titleValid)}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>Next</button>
                         </div>
                     {{/if}}
@@ -45,6 +46,8 @@
                 {{/if}}
              {{else if (eq existingState _existingState.NEWFILE)}}
                  {{file-uploader
+                    changeState=changeState
+                    startState=startState
                     selectFile=selectFile
                     finishUpload=finishUpload
                     contributors=contributors

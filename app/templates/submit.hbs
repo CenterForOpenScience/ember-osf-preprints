@@ -48,6 +48,8 @@
 
                                             {{else if (eq currentState _State.NEW)}}
                                                 {{file-uploader
+                                                    changeState=(action 'changeState')
+                                                    startState=_State.START
                                                     currentUser=user
                                                     uploadIntent='newNodeNewFile'
                                                     hasFile=hasFile
@@ -61,11 +63,12 @@
                                                     projectsCreatedForPreprint=projectsCreatedForPreprint
                                                     filesUploadedForPreprint=filesUploadedForPreprint
                                                     finishUpload=(action 'finishUpload')}}
-                                                <button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>
 
 
                                             {{else if (eq currentState _State.EXISTING)}}
                                                 {{preprint-form-project-select
+                                                  changeState=(action 'changeState')
+                                                  startState=_State.START
                                                   nodeTitle=nodeTitle
                                                   finishUpload=(action 'finishUpload')
                                                   currentUser=user
