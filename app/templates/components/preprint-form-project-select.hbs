@@ -5,7 +5,6 @@
     {{/power-select}}
 </div>
 {{#liquid-if selectedNode use='crossFade'}}
-    {{#liquid-bind selectedNode use='crossFade'}}
         {{#if isAdmin}}
             <label> 2. </label>
 
@@ -27,17 +26,13 @@
                         {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
 
                         {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-                            {{#liquid-bind selectedFile use='crossFade'}}
                                 <div class="m-t-lg">
                                     {{convert-or-copy-project nodeTitle=nodeTitle node=node titleValid=titleValid convertOrCopy=convertOrCopy}}
                                 </div>
-                            {{/liquid-bind}}
                         {{/liquid-if}}
 
                         {{#liquid-if (and selectedFile (and convertOrCopy)) use='crossFade'}}
-                            {{#liquid-bind hasFile use='crossFade'}}
                                 {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
-                            {{/liquid-bind}}
                         {{/liquid-if}}
 
                         <div class="p-t-xs pull-right">
@@ -75,5 +70,4 @@
                 so you may share this component.
             </p>
         {{/if}}
-    {{/liquid-bind}}
 {{/liquid-if}}
