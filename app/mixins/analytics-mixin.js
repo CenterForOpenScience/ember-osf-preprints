@@ -4,11 +4,11 @@ export default Ember.Mixin.create({
     actions: {
         didTransition() {
             this._super(...arguments);
-            if (ga) {
+            if (ga) {  // jshint ignore: line
                 let url = window.location.href;
-                ga('send', 'pageview', {
-                    'page': url,
-                    'title': url
+                ga('send', 'pageview', {  // jshint ignore: line
+                    page: url,
+                    title: url
                 });
             }
         }
