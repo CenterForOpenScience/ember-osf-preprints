@@ -1,8 +1,15 @@
 <label class="text-bigger"> 1. Choose existing OSF project </label>
 <div class="m-b-md">
-    {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
-        <strong>{{node.title}}</strong>
-    {{/power-select}}
+    {{#if userNodes}}
+        {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
+            <strong>{{node.title}}</strong>
+        {{/power-select}}
+    {{else}}
+        <div class="text-center">
+            {{fa-icon 'spinner' pulse=true size=3}}
+        </div>
+    {{/if}}
+
 </div>
 {{#liquid-if selectedNode use='crossFade'}}
     {{#if isAdmin}}
