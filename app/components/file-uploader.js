@@ -173,6 +173,9 @@ export default Ember.Component.extend({
             } else {
                 //Failure
                 dropzone.removeAllFiles();
+                this.set('hasFile', false);
+                this.set('selectedFile', null);
+                this.set('convertOrCopy', null);
                 this.get('toast').error(
                     file.xhr.status === 409 ?
                     'A file with that name already exists'
