@@ -17,6 +17,7 @@
 {{/liquid-if}}
 
 {{#liquid-if (and hasFile (or (eq uploadIntent 'newNodeNewFile') convertOrCopy)) use='crossFade'}}
+    <label> 4. Add or edit preprint title</label>
     {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
 {{/liquid-if}}
 

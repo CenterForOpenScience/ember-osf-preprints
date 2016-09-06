@@ -5,74 +5,75 @@
     {{/power-select}}
 </div>
 {{#liquid-if selectedNode use='crossFade'}}
-        {{#if isAdmin}}
-            <label> 2. </label>
+    {{#if isAdmin}}
+        <label> 2. </label>
 
-            {{#if fileSelect}}
-                 <div class="row">
-                      <div class="row text-center text-bigger">
-                        <div class="radio-option col-xs-6 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 p-md">
-                            <label><input onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}> Upload preprint to this OSF project </label>
-                        </div>
-                        <div class="radio-option col-xs-6 col-sm-5 col-md-4 p-md">
-                            <label><input onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}> Identify existing file as the preprint</label>
-                        </div>
+        {{#if fileSelect}}
+            <div class="row">
+                <div class="row text-center text-bigger">
+                    <div class="radio-option col-xs-6 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 p-md">
+                        <label><input onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}> Upload preprint to this OSF project </label>
                     </div>
-                 </div>
-            {{/if}}
-             {{#if (eq existingState _existingState.EXISTINGFILE)}}
-                <div>
-                    {{#if osfProviderLoaded}}
-                        {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
-
-                        {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-                                <div class="m-t-lg">
-                                    {{convert-or-copy-project nodeTitle=nodeTitle node=node titleValid=titleValid convertOrCopy=convertOrCopy}}
-                                </div>
-                        {{/liquid-if}}
-
-                        {{#liquid-if (and selectedFile (and convertOrCopy)) use='crossFade'}}
-                                {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
-                        {{/liquid-if}}
-
-                        <div class="p-t-xs pull-right">
-                            <button class="btn btn-default" {{action changeState startState}}>Back</button>
-                            <button class="btn btn-primary" disabled={{not (and selectedFile titleValid)}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>Next</button>
-                        </div>
-                    {{/if}}
+                    <div class="radio-option col-xs-6 col-sm-5 col-md-4 p-md">
+                        <label><input onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}> Identify existing file as the preprint</label>
+                    </div>
                 </div>
-                {{#if selectedFile}}
-                    <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
-                {{/if}}
-             {{else if (eq existingState _existingState.NEWFILE)}}
-                 {{file-uploader
-                    changeState=changeState
-                    startState=startState
-                    selectFile=selectFile
-                    finishUpload=finishUpload
-                    contributors=contributors
-                    currentUser=currentUser
-                    hasFile=hasFile
-                    file=file
-                    node=node
-                    osfFile=osfFile
-                    selectedNode=selectedNode
-                    nodeTitle=nodeTitle
-                    userNodes=userNodes
-                    osfFile=selectedFile
-                    _names=_names
-                    projectsCreatedForPreprint=projectsCreatedForPreprint
-                    filesUploadedForPreprint=filesUploadedForPreprint
-                    }}
-            {{/if}}
-        {{else}}
-            <p class="alert alert-danger" role="alert">
-                You must be the admin of this component to share it.
-
-                Please ask the admin of this project to make you an admin
-                so you may share this component.
-            </p>
+            </div>
         {{/if}}
+        {{#if (eq existingState _existingState.EXISTINGFILE)}}
+            <div>
+                {{#if osfProviderLoaded}}
+                    {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
+
+                    {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
+                        <div class="m-t-lg">
+                            {{convert-or-copy-project nodeTitle=nodeTitle node=node titleValid=titleValid convertOrCopy=convertOrCopy}}
+                        </div>
+                    {{/liquid-if}}
+
+                    {{#liquid-if (and selectedFile (and convertOrCopy)) use='crossFade'}}
+                        <label> 4. Add or edit preprint title</label>
+                        {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                    {{/liquid-if}}
+
+                    <div class="p-t-xs pull-right">
+                        <button class="btn btn-default" {{action changeState startState}}>Back</button>
+                        <button class="btn btn-primary" disabled={{not (and selectedFile titleValid)}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>Next</button>
+                    </div>
+                {{/if}}
+            </div>
+            {{#if selectedFile}}
+                <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
+            {{/if}}
+        {{else if (eq existingState _existingState.NEWFILE)}}
+            {{file-uploader
+                changeState=changeState
+                startState=startState
+                selectFile=selectFile
+                finishUpload=finishUpload
+                contributors=contributors
+                currentUser=currentUser
+                hasFile=hasFile
+                file=file
+                node=node
+                osfFile=osfFile
+                selectedNode=selectedNode
+                nodeTitle=nodeTitle
+                userNodes=userNodes
+                osfFile=selectedFile
+                _names=_names
+                projectsCreatedForPreprint=projectsCreatedForPreprint
+                filesUploadedForPreprint=filesUploadedForPreprint
+            }}
+        {{/if}}
+    {{else}}
+        <p class="alert alert-danger" role="alert">
+            You must be the admin of this component to share it.
+
+            Please ask the admin of this project to make you an admin
+            so you may share this component.
+        </p>
+    {{/if}}
 {{/liquid-if}}
 
 {{#if (eq existingState _existingState.CHOOSE)}}
