@@ -15,7 +15,7 @@ export default Ember.Controller.extend({
         return encodeURI('https://www.linkedin.com/cws/share?url=' + window.location.href + '&title=' + this.get('model.title'));
     }),
     emailHref: Ember.computed('model', function() {
-        return encodeURI('mailto:?subject=' + this.get('model.title') + '&body=' + window.location.href);
+        return 'mailto:?subject=' + encodeURIComponent(this.get('model.title') + '&body=' + window.location.href);
     }),
     // The currently selected file (defaults to primary)
     activeFile: null,
