@@ -48,7 +48,7 @@
 
                                             {{else if (eq currentState _State.NEW)}}
                                                 {{file-uploader
-                                                    changeState=(action 'changeState')
+                                                    changeState=(action 'changeToInitialState')
                                                     startState=_State.START
                                                     currentUser=user
                                                     uploadIntent='newNodeNewFile'
@@ -67,7 +67,7 @@
 
                                             {{else if (eq currentState _State.EXISTING)}}
                                                 {{preprint-form-project-select
-                                                  changeState=(action 'changeState')
+                                                  changeState=(action 'changeToInitialState')
                                                   startState=_State.START
                                                   nodeTitle=nodeTitle
                                                   finishUpload=(action 'finishUpload')

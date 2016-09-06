@@ -74,3 +74,10 @@
             </p>
         {{/if}}
 {{/liquid-if}}
+
+{{#if (eq existingState _existingState.CHOOSE)}}
+    <div class="p-t-xs pull-right">
+        <button class="btn btn-default" {{action changeState startState}}>Back</button>
+        <button class="btn btn-primary" disabled=true>Next</button>
+    </div>
+{{/if}}

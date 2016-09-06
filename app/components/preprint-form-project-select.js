@@ -14,7 +14,11 @@ export default Ember.Component.extend({
     userNodes: Ember.A(),
     selectedNode: null,
     isAdmin: Ember.computed('selectedNode', function() {
-        return this.get('selectedNode.currentUserPermissions').indexOf(Permissions.ADMIN) !== -1;
+        if (this.get('selectedNode')) {
+            return this.get('selectedNode.currentUserPermissions').indexOf(Permissions.ADMIN) !== -1;
+        } else {
+            return null;
+        }
     }),
     osfProviderLoaded: false,
     osfStorageProvider: null,

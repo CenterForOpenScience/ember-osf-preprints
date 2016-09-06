@@ -130,10 +130,31 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     // Fields used in the "basics" section of the form.
     // Proxy for "basics" section, to support autosave when fields change (created when model selected)
     basicsModel: Ember.computed.alias('node'),
-
-    basicsTitle: Ember.computed.alias('basicsModel.title'),
-    basicsAbstract: Ember.computed.alias('basicsModel.description'),
-    basicsTags: Ember.computed.alias('basicsModel.tags'), // TODO: This may need to provide a default value (list)? Via default or field transform?
+    basicsTitle: Ember.computed('node', function() {
+        var node = this.get('node');
+        if (node) {
+            return node.get('title');
+        } else {
+            return null;
+        }
+    }),
+    // basicsTitle: Ember.computed.alias('basicsModel.title'),
+    basicsAbstract:  Ember.computed('node', function() {
+        var node = this.get('node');
+        if (node) {
+            return node.get('description');
+        } else {
+            return null;
+        }
+    }),
+    basicsTags: Ember.computed('node', function() {
+        var node = this.get('node');
+        if (node) {
+            return node.get('tags'); // TODO: This may need to provide a default value (list)? Via default or field transform?
+        } else {
+            return null;
+        }
+    }),
     basicsDOI: Ember.computed.alias('model.doi'),
 
     //// TODO: Turn off autosave functionality for now. Direct 2-way binding was causing a fight between autosave and revalidation, so autosave never fired. Fixme.
@@ -197,6 +218,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
          */
         changeState(newState) {
             this.set('filePickerState', newState);
+        },
+        changeToInitialState(newState) {
+            this.send('changeState', newState);
+            this.set('node', null);
+            this.set('selectedFile', null);
+            this.set('hasFile', false);
+            this.set('nodeTitle', null);
         },
         lockFileAndNode() {
             this.set('fileAndNodeLocked', true);
