@@ -17,3 +17,9 @@
         </div>
     </div>
 </div>
+
+{{#if (and (eq convertOrCopy 'convert') (not node.public))}}
+    <p class="alert alert-warning m-t-md m-r-xs" role="alert">
+        This project is private and will be made public
+    </p>
+{{/if}}
