@@ -75,12 +75,15 @@
             }}
         {{/if}}
     {{else}}
-        <p class="alert alert-danger" role="alert">
-            You must be the admin of this component to share it.
+        {{#unless (eq currentState 'start')}}
+            <p class="alert alert-danger" role="alert">
+                You must be the admin of this component to share it.
 
-            Please ask the admin of this project to make you an admin
-            so you may share this component.
-        </p>
+                Please ask the admin of this project to make you an admin
+                so you may share this component.
+            </p>
+        {{/unless}}
+
     {{/if}}
 {{/liquid-if}}
 
