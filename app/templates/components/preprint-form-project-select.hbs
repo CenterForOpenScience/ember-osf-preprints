@@ -24,6 +24,9 @@
             <div>
                 {{#if osfProviderLoaded}}
                     {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
+                    {{#if selectedFile}}
+                        <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
+                    {{/if}}
 
                     {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
                         <div class="m-t-lg">
@@ -42,9 +45,6 @@
                     </div>
                 {{/if}}
             </div>
-            {{#if selectedFile}}
-                <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
-            {{/if}}
         {{else if (eq existingState _existingState.NEWFILE)}}
             {{file-uploader
                 changeState=changeState
