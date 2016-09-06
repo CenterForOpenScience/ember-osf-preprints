@@ -50,6 +50,7 @@
                 {{/if}}
              {{else if (eq existingState _existingState.NEWFILE)}}
                  {{file-uploader
+                    selectFile=selectFile
                     finishUpload=finishUpload
                     contributors=contributors
                     currentUser=currentUser
