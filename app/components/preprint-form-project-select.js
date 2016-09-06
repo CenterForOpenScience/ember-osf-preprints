@@ -7,6 +7,40 @@ export const existingState = Object.freeze(Ember.Object.create({
     NEWFILE: 'new'
 }));
 
+/**
+ * Preprint form project select widget - handles all cases where the first step is to select an existing OSF project to contain
+ * your preprint.
+ *
+ *  Uses the file-uploader component, hence the large number of properties for this component, that are passed along to the file-uploader.
+ *  Cases not needing the file-uploader are where you are selecting an existing file on an existing node, or copying a file into
+ *  a newly-created component - no file uploading needed.
+ *
+ * Sample usage:
+ * ```handlebars
+ *{{preprint-form-project-select
+ *         changeState=(action 'changeToInitialState')
+ *         finishUpload=(action 'finishUpload')
+ *         existingNodeExistingFile=(action 'existingNodeExistingFile')
+ *         createComponentCopyFile=(action "createComponentCopyFile")
+ *         selectFile=(action "selectExistingFile")
+ *         highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+ *         startState=_State.START
+ *         nodeTitle=nodeTitle
+ *         currentUser=user
+ *         selectedFile=selectedFile
+ *         hasFile=hasFile
+ *         file=file
+ *         filesUploadedForPreprint=filesUploadedForPreprint
+ *         projectsCreatedForPreprint=projectsCreatedForPreprint
+ *         node=node
+ *         userNodes=userNodes
+ *         selectedNode=node
+ *         contributors=contributors
+ *         fileSelect=true
+ *         }}
+ * ```
+ * @class preprint-form-project-select
+ */
 export default Ember.Component.extend({
     _existingState: existingState,
     userNodes: Ember.A(),
@@ -18,14 +52,14 @@ export default Ember.Component.extend({
             return null;
         }
     }),
-    osfProviderLoaded: false,
+    osfProviderLoaded: false, // True when selectedNode's osfstorage provider has been loaded.  T
     osfStorageProvider: null,
 
     createComponent: null,
     existingState: existingState.CHOOSE,
     actions: {
         nodeSelected(node) {
-            // Sets selectedNode, then loads node's osfstorage provider. Once osfstorage is loaded,
+            // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded,
             // file-browser component can be loaded.
             this.set('selectedNode', node);
             this.set('selectedFile', null);

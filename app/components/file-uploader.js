@@ -1,6 +1,39 @@
 import Ember from 'ember';
 import {State} from '../controllers/submit';
 
+/**
+ * File uploader widget - handles all cases where uploading a new file as your preprint
+ *
+ *  Currently used for the following scenarios 1) Upload file to a new project 2) Upload file to a new component 3) Upload
+ *  file to an existing node.
+ *
+ *  Contains dropzone-widget where you can drag and drop preprint file. "file" will be set to the preuploaded file. 'node' will
+ *  either become the newly created project or component, or the existing node.  After file is uploaded to the designated "node",
+ *  "osfFile" is set to the uploadedFile.  Any projects or files created here are appended to "projectsCreatedForPreprint" and
+ *  "filesUploadedForPreprint" respectively.
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{file-uploader
+ *       changeState=changeState (action)
+ *       finishUpload=finishUpload (action)
+ *       uploadIntent='newNodeNewFile' (if new node, new file instance)
+ *       startState=startState ('start')
+ *       nodeTitle=nodeTitle
+ *       currentUser=currentUser (current logged-in user)
+ *       osfFile=selectedFile
+ *       hasFile=hasFile
+ *       file=file
+ *       projectsCreatedForPreprint=projectsCreatedForPreprint
+ *       filesUploadedForPreprint=filesUploadedForPreprint
+ *       contributors=contributors (if need to copy contributors to new component)
+ *       node=node
+ *       selectedNode=selectedNode
+ *       userNodes=userNodes
+ *}}
+ * ```
+ * @class file-uploader
+ */
 export default Ember.Component.extend({
     State,
     store: Ember.inject.service(),
@@ -64,6 +97,7 @@ export default Ember.Component.extend({
             }).save().then(node => {
                 this.set('node', node);
                 this.send('upload');
+                this.get('userNodes').pushObject(node);
                 this.get('projectsCreatedForPreprint').pushObject(node);
             });
         },
@@ -76,6 +110,7 @@ export default Ember.Component.extend({
                 .addChild(this.get('nodeTitle'), this.get('node.description'))
                 .then(child => {
                     this.set('node', child);
+                    this.get('userNodes').pushObject(child);
                     parentNode.get('contributors').toArray().forEach(contributor => {
                         if (this.get('currentUser').id !== contributor.get('userId')) {
                             this.get('node').addContributor(contributor.get('userId'), contributor.get('permission'), contributor.get('bibliographic')).then((contrib) => {

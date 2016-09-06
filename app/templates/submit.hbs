@@ -3,9 +3,6 @@
         <div class="row">
             <div class="col-xs-12 text-center">
                 <h1> Add Preprint </h1>
-                Node: {{node}}
-                Selected File: {{selectedFile}}
-                nodeTitle: {{nodeTitle}}
             </div>
         </div>
 
@@ -49,45 +46,42 @@
                                             {{else if (eq currentState _State.NEW)}}
                                                 {{file-uploader
                                                     changeState=(action 'changeToInitialState')
-                                                    startState=_State.START
-                                                    currentUser=user
+                                                    finishUpload=(action 'finishUpload')
                                                     uploadIntent='newNodeNewFile'
+                                                    startState=_State.START
+                                                    nodeTitle=nodeTitle
+                                                    currentUser=user
+                                                    osfFile=selectedFile
                                                     hasFile=hasFile
                                                     file=file
-                                                    node=node
-                                                    nodeTitle=nodeTitle
-                                                    userNodes=userNodes
-                                                    osfFile=selectedFile
-                                                    next=(action 'next')
-                                                    _names=_names
                                                     projectsCreatedForPreprint=projectsCreatedForPreprint
                                                     filesUploadedForPreprint=filesUploadedForPreprint
-                                                    finishUpload=(action 'finishUpload')}}
-
+                                                    node=node
+                                                    userNodes=userNodes
+                                                    }}
 
                                             {{else if (eq currentState _State.EXISTING)}}
                                                 {{preprint-form-project-select
                                                   changeState=(action 'changeToInitialState')
-                                                  startState=_State.START
-                                                  nodeTitle=nodeTitle
                                                   finishUpload=(action 'finishUpload')
-                                                  currentUser=user
-                                                  osfFile=selectedFile
-                                                  filesUploadedForPreprint=filesUploadedForPreprint
-                                                  projectsCreatedForPreprint=projectsCreatedForPreprint
                                                   existingNodeExistingFile=(action 'existingNodeExistingFile')
-                                                  contributors=contributors
-                                                  hasFile=hasFile
-                                                  userNodes=userNodes
-                                                  hasFile=hasFile
-                                                  file=file
-                                                  node=node
-                                                  fileSelect=true
-                                                  selectedNode=node
-                                                  selectedFile=selectedFile
                                                   createComponentCopyFile=(action "createComponentCopyFile")
                                                   selectFile=(action "selectExistingFile")
-                                                  highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')}}
+                                                  highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+                                                  startState=_State.START
+                                                  nodeTitle=nodeTitle
+                                                  currentUser=user
+                                                  selectedFile=selectedFile
+                                                  hasFile=hasFile
+                                                  file=file
+                                                  filesUploadedForPreprint=filesUploadedForPreprint
+                                                  projectsCreatedForPreprint=projectsCreatedForPreprint
+                                                  node=node
+                                                  userNodes=userNodes
+                                                  selectedNode=node
+                                                  contributors=contributors
+                                                  fileSelect=true
+                                                  }}
                                             {{/if}}
                                         </div>
                                     {{/liquid-bind}}

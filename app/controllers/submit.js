@@ -61,17 +61,17 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     // Information about the thing to be turned into a preprint
     node: null, // Project or component containing the preprint
-    file: null, // Preuploaded file - file has been dragged to dropzone, but not uploaded to node.
+    file: null, // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
     selectedFile: null, // File that will be the preprint (already uploaded to node or selected from existing node)
-    contributors: Ember.A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent.
+    contributors: Ember.A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
     nodeTitle: null, // Preprint title
-    fileAndNodeLocked: false, // After advancing beyond Step 1: Upload of Add Preprint form, both the file and node are locked
-    projectsCreatedForPreprint:  Ember.A(), // Projects or components created in the Add Preprint process - can be deleted upon reset.
-    filesUploadedForPreprint: Ember.A(), // Files uploaded or copied during the Add Preprint process - can be deleted upon reset.
+    fileAndNodeLocked: false, // After advancing beyond Step 1: Upload on Add Preprint form, both the file and node are locked
+    projectsCreatedForPreprint:  Ember.A(), // Projects or components created in the Add Preprint process - can be deleted upon reset
+    filesUploadedForPreprint: Ember.A(), // Files uploaded or copied during the Add Preprint process - can be deleted upon reset
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
-    showModalSharePreprint: false, // True when modal displaying for confirmation of sharing preprint
-    showModalRestartPreprint: false, // True when modal displaying for confirmation of restarting preprint.
+    showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
+    showModalRestartPreprint: false, // True when restarting preprint confirmation modal is displayed
     uploadSaveState: false, // True temporarily when changes have been saved in upload section
     disciplineSaveState: false, // True temporarily when changes have been saved in discipline section
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
@@ -196,8 +196,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
             this.send('changesSaved', currentPanelName);
         },
-        // Temporarily changes panel save state to true.  Used for flashing 'Changes Saved' in UI.
         changesSaved(currentPanelName) {
+            // Temporarily changes panel save state to true.  Used for flashing 'Changes Saved' in UI.
             var currentPanelSaveState = currentPanelName.toLowerCase() + 'SaveState';
             this.set(currentPanelSaveState, true);
             setTimeout(() => {
@@ -213,6 +213,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
           Upload section
          */
         changeState(newState) {
+            // Sets filePickerState to newState - this is the initial decision on the form.
             this.set('filePickerState', newState);
         },
         changeToInitialState(newState) {
@@ -233,6 +234,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.send('next', this.get('_names.0'));
         },
         toggleRestartPreprintModal() {
+            // Toggles property that will then display restart preprint modal
             this.toggleProperty('showModalRestartPreprint');
         },
         existingNodeExistingFile() {
@@ -393,6 +395,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.toggleProperty('showModalSharePreprint');
         },
         savePreprint() {
+            // Converts 'node' into a preprint, with its primaryFile as the 'selectedFile'f.
             // TODO: Check validation status of all sections before submitting
             // TODO: Make sure subjects is working so request doesn't get rejected
             // TODO: Test and get this code working

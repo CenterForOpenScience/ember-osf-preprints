@@ -55,22 +55,19 @@
         {{else if (eq existingState _existingState.NEWFILE)}}
             {{file-uploader
                 changeState=changeState
-                startState=startState
-                selectFile=selectFile
                 finishUpload=finishUpload
-                contributors=contributors
+                startState=startState
+                nodeTitle=nodeTitle
                 currentUser=currentUser
+                osfFile=selectedFile
                 hasFile=hasFile
                 file=file
-                node=node
-                osfFile=osfFile
-                selectedNode=selectedNode
-                nodeTitle=nodeTitle
-                userNodes=userNodes
-                osfFile=selectedFile
-                _names=_names
                 projectsCreatedForPreprint=projectsCreatedForPreprint
                 filesUploadedForPreprint=filesUploadedForPreprint
+                contributors=contributors
+                node=node
+                selectedNode=selectedNode
+                userNodes=userNodes
             }}
         {{/if}}
     {{else}}
