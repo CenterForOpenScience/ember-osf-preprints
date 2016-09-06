@@ -10,7 +10,6 @@ export default Ember.Component.extend({
     node: null,
     callback: null,
     nodeTitle: null,
-    createChild: false,
     convertOrCopy: null,
 
     dropzoneOptions: {
@@ -26,7 +25,6 @@ export default Ember.Component.extend({
         this.set('file', null);
         this.set('callback', null);
         this.set('nodeTitle', null);
-        this.set('createChild', false);
     },
 
     actions: {
