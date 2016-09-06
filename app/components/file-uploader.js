@@ -81,7 +81,7 @@ export default Ember.Component.extend({
                         }
                     });
                     this.send('upload');
-                    // this.get('projectsCreatedForPreprint').pushObject(this.get('node'));
+                    this.get('projectsCreatedForPreprint').pushObject(this.get('node'));
                 });
         },
 

@@ -25,7 +25,7 @@
                                     <p><em> Preprint file: </em> {{selectedFile.name}}</p>
 
                                     <p><em> Preprint title: </em></p>
-                                    {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=nodeTitle}}
+                                    {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
 
                                     <button class="btn btn-danger" {{action 'toggleRestartPreprintModal'}}>Restart</button>
                                     <button class="btn btn-primary" disabled={{unless nodeTitle true}} {{action 'editTitleNext' name}}>Next</button>
@@ -85,10 +85,6 @@
                                                   createComponentCopyFile=(action "createComponentCopyFile")
                                                   selectFile=(action "selectExistingFile")
                                                   highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')}}
-                                                {{! TODO: cleanup created component if needed }}
-                                                <!--<button class="btn btn-default" {{action 'changeState' _State.START}}>Back</button>-->
-                                                {{! TODO: check if project and file are selected before allowing user to continue }}
-                                                <!--<button class="btn btn-primary" disabled={{unless (and node selectedFile) true}} {{action (if shouldCreateChild 'addChild' 'finishUpload') name}}>Next</button>-->
                                             {{/if}}
                                         </div>
                                     {{/liquid-bind}}

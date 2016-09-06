@@ -20,16 +20,6 @@ export const State = Object.freeze(Ember.Object.create({
   Form data and validations
  *****************************/
 const BasicsValidations = buildValidations({
-    basicsTitle: {
-        description: 'Title',
-        validators: [
-            validator('presence', true),
-            validator('length', {
-                // minimum length for title?
-                max: 200,
-            })
-        ]
-    },
     basicsAbstract: {
         description: 'Abstract',
         validators: [
@@ -122,10 +112,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     ///////////////////////////////////////
     // Validation rules for form sections
+    // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
     uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle'),
     abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
-    // Basics fields are currently the only ones with validation. Make this more specific in the future if we add more form fields.
+    // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
     basicsValid: Ember.computed.and('abstractValid', 'doiValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
