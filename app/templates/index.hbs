@@ -14,18 +14,19 @@
                 {{!SEARCH}}
                 <div class="preprint-search col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 m-v-lg" >
                     {{search-preprints search="search"}}
-                    <p class="p-l-md">
-                        <span class="f-w-lg">{{model.sharePreprintsTotal}} searchable preprints </span>
-                        <span>as of {{moment-format model.theDate "MMMM DD, YYYY"}}</span>
 
-                    </p>
+                    {{#if sharePreprintsTotal}}
+                        <p class="p-l-md">
+                            <span class="f-w-lg">{{sharePreprintsTotal}} searchable preprints </span>
+                            <span>as of {{moment-format currentDate "MMMM DD, YYYY"}}</span>
+                        </p>
+                    {{/if}}
                 </div>
             </div> {{!END ROW}}
             <div class="row">
                 <div class="text-center col-xs-12">
                     <p class="lead"> or </p>
                     {{#link-to "submit" type="button" class="btn btn-success btn-lg"}}Add a preprint{{/link-to}}
-                    {{!TODO: Needs a good example before production }}
                     <div class="m-t-md">{{#link-to 'content' 'khbvy'}}See an example {{/link-to}}</div>
 
                 </div>
@@ -40,7 +41,7 @@
                 <div class="col-xs-12">
                     <h2>Browse <small>by subject</small></h2>
                     <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
-                        {{taxonomy-top-list list=model.subjects}}
+                        {{taxonomy-top-list list=model}}
                     </div> {{!END SUBJECTS LIST}}
                 </div>
             </div>{{!END ROW}}
