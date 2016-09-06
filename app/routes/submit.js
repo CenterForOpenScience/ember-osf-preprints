@@ -37,6 +37,7 @@ export default Ember.Route.extend(ResetScrollMixin, CasAuthenticatedRouteMixin, 
     },
     actions: {
         willTransition: function(transition) {
+            // Displays confirmation message if user attempts to navigate away from Add Preprint process with unsaved changes
             var controller = this.get('controller');
 
             if (controller.get('hasFile') && !controller.get('savingPreprint') && !confirm('Are you sure you want to abandon this preprint?')) {

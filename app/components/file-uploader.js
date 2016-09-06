@@ -10,7 +10,7 @@ export default Ember.Component.extend({
     node: null,
     callback: null,
     nodeTitle: null,
-    convertOrCopy: null,
+    convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
 
     dropzoneOptions: {
         maxFiles: 1,
@@ -44,6 +44,7 @@ export default Ember.Component.extend({
         },
 
         setNodeAndFile() {
+            // Switches between various upload scenarios involving uploading file to 1) a new project 2) a new component 3) an existing node.
             if (this.get('uploadIntent') === 'newNodeNewFile') {
                 this.send('createProjectAndUploadFile');
             } else if (this.get('convertOrCopy') === 'copy') {
@@ -54,6 +55,8 @@ export default Ember.Component.extend({
         },
 
         createProjectAndUploadFile() {
+            // Upload case where user starting from scratch - new project/new file.  Creates project and then uploads file to newly
+            // created project
             this.get('store').createRecord('node', {
                 public: false, // ?
                 category: 'project',
@@ -66,6 +69,8 @@ export default Ember.Component.extend({
         },
 
         createComponentAndUploadFile() {
+            // Upload case for using a new component and a new file for the preprint.  Creates component of parent node
+            // and then copies contributors to new component.  Finally, uploads file to newly created component.
             var parentNode = this.get('node');
             parentNode
                 .addChild(this.get('nodeTitle'), this.get('node.description'))
@@ -84,6 +89,7 @@ export default Ember.Component.extend({
         },
 
         uploadFileToExistingNode() {
+            // Upload case for using an existing node with a new file for the preprint.  Updates title of existing node and then uploads file to node.
             var node = this.get('node');
             if (node.get('title') !== this.get('nodeTitle')) {
                 node.set('title', this.get('nodeTitle'));
