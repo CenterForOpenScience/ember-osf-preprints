@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import DS from 'ember-data';
-
 import Permissions from 'ember-osf/const/permissions';
 
 export const existingState = Object.freeze(Ember.Object.create({

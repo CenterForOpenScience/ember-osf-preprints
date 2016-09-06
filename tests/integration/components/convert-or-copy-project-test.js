@@ -11,7 +11,7 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{convert-or-copy-project}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.equal(this.$('#convertExistingOrCreateComponent label').text(), 'Make a new component for the preprintUse the current component for the preprint');
 
   // Template block usage:
   this.render(hbs`
@@ -19,6 +19,4 @@ test('it renders', function(assert) {
       template block text
     {{/convert-or-copy-project}}
   `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });

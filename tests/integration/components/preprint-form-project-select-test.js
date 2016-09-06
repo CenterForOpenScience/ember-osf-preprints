@@ -8,17 +8,16 @@ moduleForComponent('preprint-form-project-select', 'Integration | Component | pr
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
+  let noop = () => {};
+  this.set('noop', noop);
 
-  this.render(hbs`{{preprint-form-project-select}}`);
+  this.render(hbs`{{preprint-form-project-select
+                    existingNodeExistingFile=(action noop)
+                    changeState=(action noop)
+                    finishUpload=(action noop)
+                    createComponentCopyFile=(action noop)
+                    highlightSuccessOrFailure=(action noop)}}  
+  }}`);
+  assert.equal(this.$('label').text().trim(), '1. Choose existing OSF project');
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#preprint-form-project-select}}
-      template block text
-    {{/preprint-form-project-select}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });
