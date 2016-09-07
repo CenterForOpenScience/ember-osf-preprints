@@ -30,18 +30,33 @@
             </div> {{!END LEFT COL DIV}}
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
-                    <div class="p-sm osf-box-lt" id="download_project">{{!SHARE ROW}}
-                        <a class="btn btn-primary" href={{activeFile.links.download}}>Download</a>
-                        <span class="p-sm pull-right">Downloads: {{activeFile.extra.downloads}}</span>
-                        <span class="p-sm pull-right">
-                            <p class="f-w-lg">
-                                {{!-- Disable until share/edit functionality is available
-                                {{#link-to "preprints.edit" class="link-solid m-r-xs"}}Edit{{/link-to}}
-                                {{#link-to "preprints.edit" class="link-solid"}}Share{{/link-to}}
-                                --}}
-                            </p>
-                        </span>
-                    </div>{{!END SHARE ROW}}
+                    {{#liquid-spacer growDuration=250 growWidth=false}}
+
+                        <div class="p-sm osf-box-lt">{{!SHARE ROW}}
+                            <div class="osf-box-lt" id="download_project">
+                                <a class="btn btn-primary" href={{activeFile.links.download}}>Download</a>
+                                <span class="p-sm">Downloads: {{activeFile.extra.downloads}}</span>
+                                <span class="p-sm pull-right">
+                                    <p class="f-w-lg">
+                                        <a href='' {{action 'toggleShare'}} class='link-solid'>Share</a>
+                                    </p>
+                                </span>
+                            </div>
+                            {{#if expandShare}}
+                                <div class="row osf-box-lt">
+                                    <span class="p-sm pull-right" >
+                                        <a style='margin: 5px' href={{twitterHref}} onclick={{action 'shareLink' twitterHref}}>{{fa-icon 'twitter' size=2 }}</a>
+                                        <a style='margin: 5px' href={{facebookHref}} onclick={{action 'shareLink' facebookHref}}>{{fa-icon 'facebook' size=2 }}</a>
+                                        <a style='margin: 5px' href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref}}>{{fa-icon 'linkedin' size=2 }}</a>
+                                        <a style='margin: 5px' href={{emailHref}} onclick={{action 'shareLink' emailHref}}>{{fa-icon 'envelope' size=2 }}</a>
+                                        <a style='margin: 5px; margin-right: -50px' href='' {{action 'toggleShare'}} class='link-solid'>Dismiss</a>
+                                    </span>
+                                </div>
+                            {{/if}}
+                        </div>
+
+
+                    {{/liquid-spacer}}
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">Abstract</h4>
                         <p class="abstract">{{model.abstract}}</p>

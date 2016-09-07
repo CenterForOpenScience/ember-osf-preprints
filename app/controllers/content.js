@@ -4,7 +4,19 @@ import loadAll from 'ember-osf/utils/load-relationship';
 export default Ember.Controller.extend({
     fullScreenMFR: false,
     expandedAuthors: true,
-
+    expandShare: false,
+    twitterHref: Ember.computed('model', function() {
+        return encodeURI('https://twitter.com/intent/tweet?url=' + window.location.href + '&text=' + this.get('model.title') + '&via=OSFramework');
+    }),
+    facebookHref: Ember.computed('model', function() {
+        return encodeURI('https://www.facebook.com/sharer/sharer.php?u=' + window.location.href);
+    }),
+    linkedinHref: Ember.computed('model', function() {
+        return encodeURI('https://www.linkedin.com/cws/share?url=' + window.location.href + '&title=' + this.get('model.title'));
+    }),
+    emailHref: Ember.computed('model', function() {
+        return 'mailto:?subject=' + encodeURIComponent(this.get('model.title') + '&body=' + window.location.href);
+    }),
     // The currently selected file (defaults to primary)
     activeFile: null,
 
@@ -23,6 +35,9 @@ export default Ember.Controller.extend({
     }),
 
     actions: {
+        toggleShare() {
+            this.toggleProperty('expandShare');
+        },
         expandMFR() {
             this.toggleProperty('fullScreenMFR');
         },
@@ -31,6 +46,11 @@ export default Ember.Controller.extend({
         },
         chooseFile(fileItem) {
             this.set('activeFile', fileItem);
+        },
+        shareLink(href) {
+            window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
+            this.toggleProperty('expandShare');
+            return false;
         }
     },
 });
