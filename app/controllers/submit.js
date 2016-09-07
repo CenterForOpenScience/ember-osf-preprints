@@ -255,7 +255,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
             // TODO need error handling on this.  Too many promises.
             var node = this.get('node');
-            node.addChild(this.get('nodeTitle'), this.get('node.description')).then(child => {
+            node.addChild(this.get('nodeTitle')).then(child => {
                 this.get('projectsCreatedForPreprint').pushObject(child);
                 this.get('userNodes').pushObject(child);
                 var parentNode = this.get('node');

@@ -107,7 +107,7 @@ export default Ember.Component.extend({
             // and then copies contributors to new component.  Finally, uploads file to newly created component.
             var parentNode = this.get('node');
             parentNode
-                .addChild(this.get('nodeTitle'), this.get('node.description'))
+                .addChild(this.get('nodeTitle'))
                 .then(child => {
                     this.set('node', child);
                     this.get('userNodes').pushObject(child);
