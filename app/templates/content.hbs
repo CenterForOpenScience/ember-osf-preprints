@@ -31,30 +31,18 @@
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
                     {{#liquid-spacer growDuration=250 growWidth=false}}
-
                         <div class="p-sm osf-box-lt">{{!SHARE ROW}}
-                            <div class="osf-box-lt" id="download_project">
+                            <div class="" id="download_project">
                                 <a class="btn btn-primary" href={{activeFile.links.download}}>Download</a>
                                 <span class="p-sm">Downloads: {{activeFile.extra.downloads}}</span>
-                                <span class="p-sm pull-right">
-                                    <p class="f-w-lg">
-                                        <a href='' {{action 'toggleShare'}} class='link-solid'>Share</a>
-                                    </p>
+                                <span class="p-xs pull-right">
+                                    <a class="m-h-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref}}>{{fa-icon 'twitter-square' size=2 }}</a>
+                                    <a class="m-h-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref}}>{{fa-icon 'facebook-square' size=2 }}</a>
+                                    <a class="m-h-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref}}>{{fa-icon 'linkedin-square' size=2 }}</a>
+                                    <a class="m-h-xs text-smaller" href={{emailHref}} onclick={{action 'shareLink' emailHref}}>{{fa-icon 'envelope' size=2 }}</a>
                                 </span>
                             </div>
-                            {{#if expandShare}}
-                                <div class="row osf-box-lt">
-                                    <span class="p-sm pull-right" >
-                                        <a style='margin: 5px' href={{twitterHref}} onclick={{action 'shareLink' twitterHref}}>{{fa-icon 'twitter' size=2 }}</a>
-                                        <a style='margin: 5px' href={{facebookHref}} onclick={{action 'shareLink' facebookHref}}>{{fa-icon 'facebook' size=2 }}</a>
-                                        <a style='margin: 5px' href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref}}>{{fa-icon 'linkedin' size=2 }}</a>
-                                        <a style='margin: 5px' href={{emailHref}} onclick={{action 'shareLink' emailHref}}>{{fa-icon 'envelope' size=2 }}</a>
-                                        <a style='margin: 5px; margin-right: -50px' href='' {{action 'toggleShare'}} class='link-solid'>Dismiss</a>
-                                    </span>
-                                </div>
-                            {{/if}}
                         </div>
-
 
                     {{/liquid-spacer}}
                     <div class="p-t-xs">

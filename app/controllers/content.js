@@ -4,7 +4,6 @@ import loadAll from 'ember-osf/utils/load-relationship';
 export default Ember.Controller.extend({
     fullScreenMFR: false,
     expandedAuthors: true,
-    expandShare: false,
     twitterHref: Ember.computed('model', function() {
         return encodeURI('https://twitter.com/intent/tweet?url=' + window.location.href + '&text=' + this.get('model.title') + '&via=OSFramework');
     }),
@@ -35,9 +34,6 @@ export default Ember.Controller.extend({
     }),
 
     actions: {
-        toggleShare() {
-            this.toggleProperty('expandShare');
-        },
         expandMFR() {
             this.toggleProperty('fullScreenMFR');
         },
@@ -49,7 +45,6 @@ export default Ember.Controller.extend({
         },
         shareLink(href) {
             window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
-            this.toggleProperty('expandShare');
             return false;
         }
     },
