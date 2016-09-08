@@ -264,6 +264,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 child.get('files').then((providers) => {
                     var osfstorage = providers.findBy('name', 'osfstorage');
                     this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}}).then((copiedFile) => {
+                        this.set('selectedFile', copiedFile);
                         this.get('filesUploadedForPreprint').push(copiedFile);
                     });
                 }).then(() => {
