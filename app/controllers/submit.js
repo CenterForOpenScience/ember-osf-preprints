@@ -76,6 +76,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     disciplineSaveState: false, // True temporarily when changes have been saved in discipline section
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
     authorsSaveState: false, // True temporarily when changes have been saved in authors section
+    parentNode: null,
 
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
@@ -102,6 +103,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             basicsSaveState: false,
             authorsSaveState: false,
             disciplineSaveState: false,
+            parentNode: null,
         }));
     },
 
@@ -250,27 +252,19 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             }
         },
         createComponentCopyFile() {
-            // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies contributors from parent node.  Copies
+            // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
             // file from parent node to new component.
 
-            // TODO need error handling on this.  Too many promises.
             var node = this.get('node');
             node.addChild(this.get('nodeTitle')).then(child => {
                 this.get('projectsCreatedForPreprint').pushObject(child);
                 this.get('userNodes').pushObject(child);
-                var parentNode = this.get('node');
+                this.set('parentNode', node);
                 this.set('node', child);
                 child.get('files').then((providers) => {
                     var osfstorage = providers.findBy('name', 'osfstorage');
                     this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}}).then((copiedFile) => {
                         this.get('filesUploadedForPreprint').push(copiedFile);
-                    });
-                    parentNode.get('contributors').toArray().forEach((contributor) => {
-                        if (this.get('user').id !== contributor.get('userId')) {
-                            child.addContributor(contributor.get('userId'), contributor.get('permission'), contributor.get('bibliographic')).then((contrib) => {
-                                this.get('contributors').pushObject(contrib);
-                            });
-                        }
                     });
                 }).then(() => {
                     this.get('toast').info('File copied to component!');

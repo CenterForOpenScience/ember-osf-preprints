@@ -104,20 +104,14 @@ export default Ember.Component.extend({
 
         createComponentAndUploadFile() {
             // Upload case for using a new component and a new file for the preprint.  Creates component of parent node
-            // and then copies contributors to new component.  Finally, uploads file to newly created component.
-            var parentNode = this.get('node');
-            parentNode
+            // and then uploads file to newly created component.
+            var node = this.get('node');
+            node
                 .addChild(this.get('nodeTitle'))
                 .then(child => {
+                    this.set('parentNode', node);
                     this.set('node', child);
                     this.get('userNodes').pushObject(child);
-                    parentNode.get('contributors').toArray().forEach(contributor => {
-                        if (this.get('currentUser').id !== contributor.get('userId')) {
-                            this.get('node').addContributor(contributor.get('userId'), contributor.get('permission'), contributor.get('bibliographic')).then((contrib) => {
-                                this.get('contributors').pushObject(contrib);
-                            });
-                        }
-                    });
                     this.send('upload');
                     this.get('projectsCreatedForPreprint').pushObject(this.get('node'));
                 });
