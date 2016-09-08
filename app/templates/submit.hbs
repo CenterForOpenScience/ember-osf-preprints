@@ -58,6 +58,7 @@
                                                     filesUploadedForPreprint=filesUploadedForPreprint
                                                     node=node
                                                     userNodes=userNodes
+                                                    parentNode=parentNode
                                                     }}
 
                                             {{else if (eq currentState _State.EXISTING)}}
@@ -82,6 +83,7 @@
                                                   contributors=contributors
                                                   fileSelect=true
                                                   currentState=filePickerState
+                                                  parentNode=parentNode
                                                   }}
                                             {{/if}}
                                         </div>
@@ -170,6 +172,7 @@
                                     editContributor=(action 'updateContributor')
                                     reorderContributors=(action 'reorderContributors')
                                     highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+                                    parentNode=parentNode
                                 }}
                                 <div class="row">
                                     <div class="col-md-12">
