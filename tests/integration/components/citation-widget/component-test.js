@@ -11,14 +11,6 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{citation-widget}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.ok(this.$().text());
 
-  // Template block usage:
-  this.render(hbs`
-    {{#citation-widget}}
-      template block text
-    {{/citation-widget}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });
