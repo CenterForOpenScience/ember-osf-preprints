@@ -138,7 +138,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         var node = this.get('node');
         return node ? node.get('title') : null;
     }),
-    basicsAbstract: Ember.computed.alias('basicsModel.description'),
+    basicsAbstract:  Ember.computed('node', function() {
+        var node = this.get('node');
+        return node ? node.get('description') : null;
+    }),
     basicsTags: Ember.computed('node', function() {
         var node = this.get('node');
         // TODO: This may need to provide a default value (list)? Via default or field transform?
