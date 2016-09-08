@@ -10,6 +10,9 @@
                 </span>
             </div>
         </form>
+        {{#if (and (gt numParentContributors 1) (not parentContributorsAdded))}}
+            <button class="icon-no-border text-muted small" {{action 'addContributorsFromParentProject'}}> <i class="fa fa-plus icon-large small"></i> <em class="small"> Add contributors from parent project </em> </button>
+        {{/if}}
         {{#if (not-eq addState 'emptyView')}}
             {{#if (eq addState 'searchView')}}
                 <div class="unregisteredUsers">
