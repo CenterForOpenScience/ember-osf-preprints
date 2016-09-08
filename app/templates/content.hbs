@@ -50,14 +50,17 @@
                         <p class="abstract">{{model.abstract}}</p>
                     </div>
 
-                    {{citation-widget nodeId=model.id}}
-
                     {{#if model.doi}}
                         <div class="p-t-xs">
                             <h4 class="p-v-md  f-w-md">Article DOI</h4>
                             <a href="https://dx.doi.org/{{model.doi}}">{{model.doi}}</a>
                         </div>
                     {{/if}}
+
+                    <div class="p-t-xs">
+                        <h4 class="p-v-md f-w-md">Citations</h4>
+                        {{citation-widget nodeId=model.id}}
+                    </div>
 
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">Disciplines</h4>
