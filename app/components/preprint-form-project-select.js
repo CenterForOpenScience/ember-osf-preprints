@@ -65,6 +65,7 @@ export default Ember.Component.extend({
             this.set('selectedNode', node);
             this.set('selectedFile', null);
             this.set('osfProviderLoaded', false);
+            this.send('changeExistingState', existingState.CHOOSE);
             this.get('selectedNode.files').then((files) => {
                 this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
                 this.set('osfProviderLoaded', true);
@@ -83,6 +84,8 @@ export default Ember.Component.extend({
             this.set('existingState', newState);
             this.set('selectedFile', null);
             this.set('hasFile', false);
+            this.set('nodeTitle', null);
+            this.set('convertOrCopy', null);
         },
     },
 
