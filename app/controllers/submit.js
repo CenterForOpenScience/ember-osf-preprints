@@ -279,19 +279,23 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.send('next', this.get('_names.1'));
         },
         /**
-         * findContributors method.  Queries APIv2 users endpoint on full_name.  Fetches specified page of results.
-         * TODO will eventually need to be changed to multifield query.
+         * findContributors method.  Queries APIv2 users endpoint on any of a set of name fields.  Fetches specified page of results.
          *
          * @method findContributors
          * @param {String} query ID of user that will be a contributor on the node
          * @param {Integer} page Page number of results requested
-         * @return {Record} Returns specified page of user records matching full_name query
+         * @return {User[]} Returns specified page of user records matching query
          */
         findContributors(query, page) {
-            return this.store.query('user', { filter: { full_name: query }, page: page }).then((contributors) => {
+            return this.store.query('user', {
+                filter: {
+                    'full_name,given_name,middle_names,family_name': query
+                },
+                page: page
+            }).then((contributors) => {
                 this.set('searchResults', contributors);
                 return contributors;
-            }, () => {
+            }).catch(() => {
                 this.get('toast').error('Could not perform search query.');
                 this.highlightSuccessOrFailure('author-search-box', this, 'error');
             });
