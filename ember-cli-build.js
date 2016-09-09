@@ -40,7 +40,7 @@ module.exports = function(defaults) {
                     <script src="https://cdn.ravenjs.com/3.5.1/ember/raven.min.js"></script>
                     <script>Raven.config("${config.sentryDSN}", {}).install();</script>`
             },
-            google-analytics: {
+            'google-analytics': {
                 enabled: true,
                 content: `
                     <script>
