@@ -25,6 +25,7 @@ export default Ember.Component.extend(TitleValidation, {
     callback: null,
     nodeTitle: null,
     createChild: false,
+    uploadInProgress: false,
 
     dropzoneOptions: {
         maxFiles: 1,
@@ -59,6 +60,7 @@ export default Ember.Component.extend(TitleValidation, {
         },
 
         createProjectAndUploadFile() {
+            this.set('uploadInProgress', true);
             this.get('store').createRecord('node', {
                 public: false, // ?
                 category: 'project',
