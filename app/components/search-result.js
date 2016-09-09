@@ -8,7 +8,9 @@ export default Ember.Component.extend({
         PeerJ: /peerj/,
         arXiv: /arxivj/
     },
-
+    didRender() {
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$()[0]]);  // jshint ignore:line
+    },
     numMaxChars: 300,
     showBody: false,
     footerIcon: Ember.computed('showBody', function() {
@@ -21,7 +23,7 @@ export default Ember.Component.extend({
         if (result.description && result.description.length > this.numMaxChars) {
             return result.description.substring(0, this.numMaxChars) + '...';
         }
-        return result.description;
+        return result.description.slice();
     }),
 
     osfID: Ember.computed('result', function() {
