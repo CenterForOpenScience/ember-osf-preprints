@@ -41,7 +41,7 @@ module.exports = function(defaults) {
                     <script>Raven.config("${config.sentryDSN}", {}).install();</script>`
             },
             'google-analytics': {
-                enabled: true,
+                enabled: useCdn,
                 content: `
                     <script>
                     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
