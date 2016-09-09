@@ -1,4 +1,4 @@
-<label> 3. Convert this project or copy file to a new component to organize </label>
+<label> 3. Organize </label>
 <p class="text-muted">
     You have a choice for how to organize your preprint in your project. If you select, "make a new component" then the preprint file will
     be placed in a new component inside the project.  The title of that component will be the title of your preprint, and the contributor list will
@@ -17,8 +17,32 @@
     </div>
 </div>
 
-{{#if (and (eq convertOrCopy 'convert') (not node.public))}}
-    <p class="alert alert-warning m-t-md m-r-xs" role="alert">
-        This project is private and will be made public
-    </p>
-{{/if}}
+{{#liquid-if (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))}}
+    <div class="row p-t-md">
+        <div class="col-xs-10 col-xs-offset-1">
+            <div class="osf-box p-t-md" role="alert">
+                <div class="row">
+                    <div class="col-xs-1 text-right">
+                        <h4 class="exclamation-confirm-convert">
+                            <i class="fa fa-exclamation"></i>
+                        </h4>
+                    </div>
+                    <div class="col-xs-10">
+                            <h4 class="m-b-md"> Your project details will be saved as you continue to work on this form. </h4>
+
+                            <p class="m-b-md"> Changes you make on this page are saved immediately.  Create a new component under this project to avoid
+                            overwriting its details. </p>
+                        </div>
+                    </div>
+                <div class="row p-b-md">
+                    <div class="col-xs-6 text-right">
+                        <button {{action "copyToComponent"}} class="btn btn-default">Create a new component </button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button {{action "confirmConvert"}} class="btn btn-success"> Continue with this project </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/liquid-if}}

@@ -76,7 +76,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     disciplineSaveState: false, // True temporarily when changes have been saved in discipline section
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
     authorsSaveState: false, // True temporarily when changes have been saved in authors section
-    parentNode: null,
+    parentNode: null, // If component created, parentNode will be defined
+    convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint
 
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
@@ -104,6 +105,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             authorsSaveState: false,
             disciplineSaveState: false,
             parentNode: null,
+            convertProjectConfirmed: false
         }));
     },
 
@@ -390,7 +392,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.toggleProperty('showModalSharePreprint');
         },
         savePreprint() {
-            // Converts 'node' into a preprint, with its primaryFile as the 'selectedFile'f.
+            // Converts 'node' into a preprint, with its primaryFile as the 'selectedFile'.
             // TODO: Check validation status of all sections before submitting
             // TODO: Make sure subjects is working so request doesn't get rejected
             // TODO: Test and get this code working

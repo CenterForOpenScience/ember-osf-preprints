@@ -30,6 +30,7 @@ import {State} from '../controllers/submit';
  *       node=node
  *       selectedNode=selectedNode
  *       userNodes=userNodes
+ *       convertProjectConfirmed=convertProjectConfirmed
  *}}
  * ```
  * @class file-uploader
