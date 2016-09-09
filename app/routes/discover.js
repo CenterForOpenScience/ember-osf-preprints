@@ -4,7 +4,7 @@ import ResetScrollMixin from '../mixins/reset-scroll';
 export default Ember.Route.extend(ResetScrollMixin, {
     queryParams: {
         queryString: {
-          replace: true
+            replace: true
         }
-      }
+    }
 });
