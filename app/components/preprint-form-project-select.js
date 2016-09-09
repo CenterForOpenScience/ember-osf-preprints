@@ -39,6 +39,7 @@ export const existingState = Object.freeze(Ember.Object.create({
  *         fileSelect=true
  *         currentState=filePickerState
  *         convertProjectConfirmed=convertProjectConfirmed
+ *         userNodesLoaded=userNodesLoaded
  *         }}
  * ```
  * @class preprint-form-project-select

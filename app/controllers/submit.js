@@ -58,6 +58,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     // Data for project picker; tracked internally on load
     user: null,
     userNodes: Ember.A(),
+    userNodesLoaded: false,
 
     // Information about the thing to be turned into a preprint
     node: null, // Project or component containing the preprint

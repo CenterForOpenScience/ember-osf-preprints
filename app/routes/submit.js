@@ -32,6 +32,7 @@ export default Ember.Route.extend(ResetScrollMixin, CasAuthenticatedRouteMixin, 
                 // on front end for now until filtering support can be added to backend
                 let onlyAdminNodes = userNodes.filter((item) => item.get('currentUserPermissions').indexOf(permissions.ADMIN) !== -1);
                 controller.set('userNodes', onlyAdminNodes);
+                controller.set('userNodesLoaded', true);
             }));
         return this._super(...arguments);
     },
