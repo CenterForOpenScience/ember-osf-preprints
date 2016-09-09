@@ -31,15 +31,15 @@
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
                     {{#liquid-spacer growDuration=250 growWidth=false}}
-                        <div class="p-sm osf-box-lt">{{!SHARE ROW}}
-                            <div class="" id="download_project">
+                        <div class="p-sm osf-box-lt clearfix">{{!SHARE ROW}}
+                            <div class="" id="download_project clearfix">
                                 <a class="btn btn-primary" href={{activeFile.links.download}}>Download</a>
                                 <span class="p-sm">Downloads: {{activeFile.extra.downloads}}</span>
                                 <span class="p-xs pull-right">
-                                    <a class="m-h-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref}}>{{fa-icon 'twitter-square' size=2 }}</a>
-                                    <a class="m-h-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref}}>{{fa-icon 'facebook-square' size=2 }}</a>
-                                    <a class="m-h-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref}}>{{fa-icon 'linkedin-square' size=2 }}</a>
-                                    <a class="m-h-xs text-smaller" href={{emailHref}} onclick={{action 'shareLink' emailHref}}>{{fa-icon 'envelope' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref}}>{{fa-icon 'twitter-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref}}>{{fa-icon 'facebook-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref}}>{{fa-icon 'linkedin-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{emailHref}} onclick={{action 'shareLink' emailHref}}>{{fa-icon 'envelope' size=2 }}</a>
                                 </span>
                             </div>
                         </div>
