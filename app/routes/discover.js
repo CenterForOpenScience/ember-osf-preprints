@@ -3,5 +3,9 @@ import ResetScrollMixin from '../mixins/reset-scroll';
 import AnalyticsMixin from '../mixins/analytics-mixin';
 
 export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, {
-
+    queryParams: {
+        queryString: {
+            replace: true
+        }
+    }
 });
