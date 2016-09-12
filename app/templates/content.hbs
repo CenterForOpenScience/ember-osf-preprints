@@ -38,7 +38,8 @@
                                     {{#if keenCounts}}
                                         Views: {{keenCounts.view_file}} /
                                     {{/if}}
-                                    Downloads: {{activeFile.extra.downloads}}</span>
+                                    Downloads: {{activeFile.extra.downloads}}
+                                </span>
                                 <span class="p-xs pull-right">
                                     <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref}}>{{fa-icon 'twitter-square' size=2 }}</a>
                                     <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref}}>{{fa-icon 'facebook-square' size=2 }}</a>
@@ -47,7 +48,6 @@
                                 </span>
                             </div>
                         </div>
-
                     {{/liquid-spacer}}
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">Abstract</h4>
