@@ -15,6 +15,15 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,300,700' rel='stylesheet' type='text/css'>
 
     {{content-for "head-footer"}}
+    <script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true},
+            skipStartupTypeset: true
+        });
+    </script>
   </head>
   <body>
     {{content-for "body"}}
@@ -25,6 +34,8 @@
     <script src="{{rootURL}}assets/preprint-service.js"></script>
 
     {{content-for "raven"}}
+
+    {{content-for "google-analytics"}}
 
     {{content-for "body-footer"}}
   </body>
