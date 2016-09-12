@@ -121,6 +121,7 @@ export default Ember.Component.extend({
         uploadFileToExistingNode() {
             // Upload case for using an existing node with a new file for the preprint.  Updates title of existing node and then uploads file to node.
             var node = this.get('node');
+            this.sendAction('saveExistingProjectData');
             if (node.get('title') !== this.get('nodeTitle')) {
                 node.set('title', this.get('nodeTitle'));
                 node.save().then(() => {

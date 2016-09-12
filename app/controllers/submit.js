@@ -78,7 +78,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
     authorsSaveState: false, // True temporarily when changes have been saved in authors section
     parentNode: null, // If component created, parentNode will be defined
-    convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint
+    convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
+    originalTitle: null, // If converting existing project, originalTitle is saved
+    originalDescription: null, // If converting existing project, originalDescription is saved
+    originalTags: null, // If converting existing project, originalTags are saved
+    originalContributors: Ember.A(), // If converting existing project, originalContributors are saved
 
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
@@ -106,7 +110,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             authorsSaveState: false,
             disciplineSaveState: false,
             parentNode: null,
-            convertProjectConfirmed: false
+            convertProjectConfirmed: false,
+            originalTitle: null,
+            originalDescription: null,
+            originalTags: null,
+            originalContributors: Ember.A(),
         }));
     },
 
@@ -245,6 +253,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
             var node = this.get('node');
+            this.send('saveExistingProjectData');
             if (node.title !== this.get('nodeTitle')) {
                 node.set('title', this.get('nodeTitle'));
                 node.save().then(() => {
@@ -253,6 +262,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             } else {
                 this.send('finishUpload');
             }
+        },
+        saveExistingProjectData() {
+            // If converting existing project, save  original attributes/relationship info that can be modified through preprint process.
+            // This way, the information can be restored upon restart.
+            this.set('originalTitle', this.get('basicsTitle'));
+            this.set('originalDescription', this.get('basicsAbstract'));
+            this.set('originalTags', this.get('basicsTags'));
+            this.set('originalContributors', this.get('contributors'));
         },
         createComponentCopyFile() {
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
