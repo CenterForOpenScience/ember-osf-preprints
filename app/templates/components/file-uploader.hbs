@@ -26,6 +26,8 @@
             <label> 4. Add preprint title</label>
             {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
         {{/if}}
+    {{else}}
+        {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
     {{/if}}
 {{/liquid-if}}
 
