@@ -45,6 +45,7 @@ export default Ember.Component.extend({
     callback: null,
     nodeTitle: null,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
+    uploadInProgress: false,
 
     dropzoneOptions: {
         maxFiles: 1,
@@ -79,6 +80,7 @@ export default Ember.Component.extend({
 
         setNodeAndFile() {
             // Switches between various upload scenarios involving uploading file to 1) a new project 2) a new component 3) an existing node.
+            this.set('uploadInProgress', true);
             if (this.get('uploadIntent') === 'newNodeNewFile') {
                 this.send('createProjectAndUploadFile');
             } else if (this.get('convertOrCopy') === 'copy') {
