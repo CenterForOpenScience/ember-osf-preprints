@@ -16,5 +16,5 @@
 {{/liquid-if}}
 
 <div class="p-t-xs pull-right">
-    <button class="btn btn-primary" disabled={{not (and hasFile titleValid)}} {{action 'createProjectAndUploadFile'}}>Next</button>
+    <button class="btn btn-primary" disabled={{not (and (not uploadInProgress)(and hasFile titleValid))}} {{action 'createProjectAndUploadFile'}}>Next</button>
 </div>

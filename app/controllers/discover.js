@@ -8,6 +8,19 @@ var filterMap = {
     subjects: 'subjects.raw'
 };
 
+// Regex for checking url from osf repo website/static/js/profile.js
+var urlRule = '^(https?:\\/\\/)?' + // protocol
+           '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+           '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+           '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+           '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+           '(\\#[-a-z\\d_]*)?$';
+
+function isHyperLink(link) {
+    var urlexp = new RegExp(urlRule, 'i');
+    return urlexp.test(link);
+}
+
 export default Ember.Controller.extend({
     // TODO: either remove or add functionality to info icon on "Refine your search panel"
 
@@ -123,9 +136,22 @@ export default Ember.Controller.extend({
                     subjects: hit._source.subjects.map(each => ({text: each})),
                     providers: hit._source.sources.map(item => ({name: item})),
                     osfProvider: hit._source.sources.reduce((acc, source) => (acc || this.get('osfProviders').indexOf(source) !== -1), false),
+                    hyperLinks: [// Links that are hyperlinks from hit._source.lists.links
+                        {
+                            type: 'share',
+                            url: config.SHARE.baseUrl + 'curate/preprint/' + hit._id
+                        }
+                    ],
+                    infoLinks: [] // Links that are not hyperlinks  hit._source.lists.links
                 });
 
-                result.shareLink = config.SHARE.baseUrl + 'curate/preprint/' + result.id;
+                hit._source.lists.links.forEach(function(linkItem) {
+                    if (isHyperLink(linkItem.url)) {
+                        result.hyperLinks.push(linkItem);
+                    } else {
+                        result.infoLinks.push(linkItem);
+                    }
+                });
 
                 result.contributors = result.lists.contributors.map(contributor => ({
                     users: Object.keys(contributor).reduce((acc, key) => Ember.merge(acc, {[key.camelize()]: contributor[key]}), {})
