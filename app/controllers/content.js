@@ -2,6 +2,7 @@ import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 
 export default Ember.Controller.extend({
+    keenCounts: null,
     fullScreenMFR: false,
     expandedAuthors: true,
     twitterHref: Ember.computed('model', function() {

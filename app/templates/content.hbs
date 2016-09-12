@@ -34,7 +34,12 @@
                         <div class="p-sm osf-box-lt clearfix">{{!SHARE ROW}}
                             <div class="" id="download_project clearfix">
                                 <a class="btn btn-primary" href={{activeFile.links.download}}>Download</a>
-                                <span class="p-sm">Downloads: {{activeFile.extra.downloads}}</span>
+                                <span class="p-sm">
+                                    {{#if keenCounts}}
+                                        Views: {{keenCounts.view_file}} /
+                                    {{/if}}
+                                    Downloads: {{activeFile.extra.downloads}}
+                                </span>
                                 <span class="p-xs pull-right">
                                     <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref}}>{{fa-icon 'twitter-square' size=2 }}</a>
                                     <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref}}>{{fa-icon 'facebook-square' size=2 }}</a>
@@ -45,6 +50,7 @@
                         </div>
 
                     {{/liquid-spacer}}
+
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">Abstract</h4>
                         <p class="abstract">{{model.abstract}}</p>
