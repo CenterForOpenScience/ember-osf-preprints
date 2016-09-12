@@ -13,18 +13,18 @@ export default Ember.Component.extend({
             url: url + 'apa/',
             contentType: 'application/json',
             crossDomain: true,
-        }).then(result => this.set('apa', result.citation));
+        }).then(result => this.set('apa', result.data.attributes.citation));
         Ember.$.ajax({
             type: 'GET',
             url: url + 'modern-language-association/',
             contentType: 'application/json',
             crossDomain: true,
-        }).then(result => this.set('mla', result.citation));
+        }).then(result => this.set('mla', result.data.attributes.citation));
         Ember.$.ajax({
             type: 'GET',
             url: url + 'chicago-author-date/',
             contentType: 'application/json',
             crossDomain: true,
-        }).then(result => this.set('chicago', result.citation));
+        }).then(result => this.set('chicago', result.data.attributes.citation));
     }
 });
