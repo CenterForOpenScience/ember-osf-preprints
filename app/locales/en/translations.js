@@ -1,4 +1,20 @@
 export default {
+    global: {
+        share: 'Share',
+        cancel: 'Cancel',
+        next: 'Next',
+        none: 'None',
+        abstract: 'Abstract',
+        doi: 'DOI',
+        tags: 'Tags',
+        search: 'Search',
+        brand: 'OSF Preprints',
+        add_preprint: 'Add a preprint',
+        title: 'Title',
+        search_preprints: 'Search preprints...',
+        added_on: 'Added on',
+        add: `Add`
+    },
     _404: {
         heading: `Page not found`,
         paragraph: {
@@ -138,22 +154,102 @@ export default {
         }
     },
     components: {
-        'confirm-restart-submit-preprint': {},
-        'confirm-share-preprint': {},
-        'file-uploader': {},
-        'preprint-form-authors': {},
-        'preprint-form-body': {},
-        'preprint-form-header': {},
-        'preprint-form-section': {},
-        'preprint-navbar': {},
-        'project-chooser': {},
-        'search-preprints': {},
-        'search-result': {},
-        'share-popup': {},
-        'supplementary-file-browser': {},
-        'taxonomy-top-list': {},
-        'taxonomy-tree': {},
-        'unregistered-contributor-form': {},
-        'validated-input': {},
+        'confirm-restart-submit-preprint': {
+            title: `Restart Preprint`,
+            body: `Are you sure you want to restart this preprint? Your uploaded file and supplemental information will be deleted.`,
+            cancel: `Cancel`,
+            restart: `Restart`
+        },
+        'confirm-share-preprint': {
+            title: `Share Preprint`,
+            body: `Once this preprint is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.`,
+            cancel: `Cancel`,
+            share: `Share`
+        },
+        'file-uploader': {
+            dropzone_message: `Drop preprint file here to upload`,
+            title_placeholder: `Enter preprint title`
+        },
+        'preprint-form-authors': {
+            search: {
+                placeholder: `Search by name`
+            },
+            unregistered_users: {
+                paragraph: `Can't find the user you're looking for?`,
+                button: `Add author by email address`
+            },
+            results: `Results`,
+            yourself: `Yourself`,
+            already_added: `Already added`,
+            add: `Add`,
+            no_results: `No results found.`,
+            add_email: `Add author by email`,
+            authors: {
+                heading: `Authors`,
+                title: `Author Information`,
+                order_instructions: `Drag and drop authors to change authorship order.`,
+                name: `Name`,
+                permissions: `Permissions`,
+                permission_info: `Permission Information`,
+                citation: `Citation`,
+                citation_info: `Citation Information`
+            },
+            remove: `Remove`
+        },
+        'preprint-form-body': {
+            // Nothing to translate
+         },
+        'preprint-form-header': {
+            changes_saved: `Changes Saved!`,
+            file: `Preprint file`,
+            title: `Preprint title`,
+            click_edit: `Click to Edit`
+        },
+        'preprint-form-section': {
+            // Nothing to translate
+        },
+        'preprint-navbar': {
+            toggle: `Toggle navigation`
+        },
+        'project-chooser': {
+            file_upload_create: `Upload a file and create an OSF project`,
+            provide_title: `Please provide a title for your project`,
+            continue: `Continue`,
+            choose_project_component: `Choose an existing project or component`,
+            file_upload_existing: `Upload a file to an existing OSF project`,
+            choose_project: `Choose project`,
+            file_choose_existing: `Choose a file from an existing OSF project`,
+            choose_file: `Choose file`
+        },
+        'search-preprints': {
+            // Nothing to translate
+        },
+        'search-result': {
+            // Nothing to translate
+        },
+        'share-popup': {
+            tweet: `Tweet`,
+            post_facebook: `Post to Facebook`,
+            share_linkedin: `Share on LinkedIn`,
+            send_email: `Send in email`
+        },
+        'supplementary-file-browser': {
+            primary: `Primary`
+        },
+        'taxonomy-top-list': {
+            // Nothing to translate
+        },
+        'taxonomy-tree': {
+            // Nothing to translate
+        },
+        'unregistered-contributor-form': {
+            full_name: `Full name`,
+            email: `Email`,
+            paragraph: `We will notify the user that they have been added to your preprint.`
+
+        },
+        'validated-input': {
+            // Nothing to translate
+        },
     }
 };

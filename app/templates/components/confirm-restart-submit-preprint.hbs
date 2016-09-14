@@ -1,15 +1,15 @@
 {{#bs-modal open=isOpen body=false header=false footer=false}}
     {{#bs-modal-header}}
-        <h3 class="modal-title">Restart Preprint</h3>
+        <h3 class="modal-title">{{t "components.confirm-restart-submit-preprint.title"}}</h3>
     {{/bs-modal-header}}
     {{#bs-modal-body}}
-        Are you sure you want to restart this preprint? Your uploaded file and supplemental information will be deleted.
+        {{t "components.confirm-restart-submit-preprint.body"}}
     {{/bs-modal-body}}
 
     {{#bs-modal-footer}}
         <div align="right">
-            <button {{action 'close'}} class="btn btn-default"> Cancel </button>
-            <a class="btn btn-danger" {{action 'resetFileUpload'}}>Restart </a>
+            <button {{action 'close'}} class="btn btn-default"> {{t "components.confirm-restart-submit-preprint.cancel"}} </button>
+            <a class="btn btn-danger" {{action 'resetFileUpload'}}>{{t "components.confirm-restart-submit-preprint.restart"}}</a>
         </div>
     {{/bs-modal-footer}}
 {{/bs-modal}}
