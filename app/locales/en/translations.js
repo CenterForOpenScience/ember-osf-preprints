@@ -221,7 +221,7 @@ export default {
             // Nothing to translate
         },
         'unregistered-contributor-form': {
-            full_name: `Full name`,
+            full_name: `Full Name`,
             email: `Email`,
             paragraph: `We will notify the user that they have been added to your preprint.`
 
