@@ -69,7 +69,6 @@
         {{else if (eq existingState _existingState.NEWFILE)}}
             {{file-uploader
                 changeState=changeState
-                saveExistingProjectData=saveExistingProjectData
                 finishUpload=finishUpload
                 startState=startState
                 nodeTitle=nodeTitle
@@ -77,8 +76,6 @@
                 osfFile=selectedFile
                 hasFile=hasFile
                 file=file
-                projectsCreatedForPreprint=projectsCreatedForPreprint
-                filesUploadedForPreprint=filesUploadedForPreprint
                 contributors=contributors
                 node=node
                 selectedNode=selectedNode
