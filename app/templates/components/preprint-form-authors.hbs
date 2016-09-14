@@ -10,9 +10,6 @@
                 </span>
             </div>
         </form>
-        {{#if (and (gt numParentContributors 1) (not parentContributorsAdded))}}
-            <button class="icon-no-border text-muted small" {{action 'addContributorsFromParentProject'}}> <i class="fa fa-plus icon-large small"></i> <em class="small"> Add contributors from parent project </em> </button>
-        {{/if}}
         {{#if (not-eq addState 'emptyView')}}
             {{#if (eq addState 'searchView')}}
                 <div class="unregisteredUsers">
@@ -68,6 +65,9 @@
                     id="author-popover">
                 </i>
             </span>
+            {{#if (and (gt numParentContributors 1) (not parentContributorsAdded))}}
+                <button class="btn btn-default pull-right" {{action 'addContributorsFromParentProject'}}> <i class="fa fa-plus icon-large small"></i> <em class="small"> Add contributors from parent project </em> </button>
+            {{/if}}
         </div>
         <p class="drag-drop small"> Drag and drop authors to change authorship order. </p>
         <div class="panel-body">
