@@ -99,6 +99,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             contributors: Ember.A(),
             nodeTitle: null,
             fileAndNodeLocked: false,
+            filePickerState: State.START,
             projectsCreatedForPreprint:  Ember.A(),
             filesUploadedForPreprint: Ember.A(),
             searchResults: [],
