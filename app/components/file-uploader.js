@@ -41,7 +41,6 @@ export default Ember.Component.extend({
     node: null,
     callback: null,
     nodeTitle: null,
-    convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
     uploadInProgress: false,
 
     dropzoneOptions: {

@@ -76,6 +76,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     authorsSaveState: false, // True temporarily when changes have been saved in authors section
     parentNode: null, // If component created, parentNode will be defined
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
+    convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
+
 
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
@@ -380,6 +382,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             if (model.get('doi') === '') {
                 model.set('doi', undefined);
             }
+            if (this.get('convertOrCopy') === 'convert') {
+                model.set('isConversion', true);
+            }
+
             model.save()
                 // Ember data is not worth the time investment currently
                 .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {

@@ -24,6 +24,7 @@ export default OsfModel.extend({
     abstract: DS.attr('string'),
     tags: DS.attr(),
     doi: DS.attr('string'),
+    isConversion: DS.attr('boolean'),
 
     // Relationships
     primaryFile: DS.belongsTo('file', { inverse: null }),

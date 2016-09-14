@@ -56,7 +56,8 @@
                                                     userNodes=userNodes
                                                     parentNode=parentNode
                                                     convertProjectConfirmed=convertProjectConfirmed
-                                                    }}
+                                                    convertOrCopy=convertOrCopy
+                                                }}
 
                                             {{else if (eq currentState _State.EXISTING)}}
                                                 {{preprint-form-project-select
@@ -81,6 +82,7 @@
                                                   parentNode=parentNode
                                                   convertProjectConfirmed=convertProjectConfirmed
                                                   userNodesLoaded=userNodesLoaded
+                                                  convertOrCopy=convertOrCopy
                                                   }}
                                             {{/if}}
                                         </div>
