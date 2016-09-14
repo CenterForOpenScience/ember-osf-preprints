@@ -1,19 +1,23 @@
 export default {
     global: {
-        share: 'Share',
-        cancel: 'Cancel',
-        next: 'Next',
-        none: 'None',
-        abstract: 'Abstract',
-        doi: 'DOI',
-        tags: 'Tags',
-        search: 'Search',
-        brand: 'OSF Preprints',
-        add_preprint: 'Add a preprint',
-        title: 'Title',
-        search_preprints: 'Search preprints...',
-        added_on: 'Added on',
-        add: `Add`
+        share: `Share`,
+        cancel: `Cancel`,
+        prev: `Prev`,
+        next: `Next`,
+        none: `None`,
+        abstract: `Abstract`,
+        doi: `DOI`,
+        tags: `Tags`,
+        search: `Search`,
+        brand: `OSF Preprints`,
+        add_preprint: `Add a preprint`,
+        title: `Title`,
+        search_preprints: `Search preprints...`,
+        added_on: `Added on`,
+        add: `Add`,
+        restart: `Restart`,
+        no_results_found: `No results found.`,
+        authors: `Authors`
     },
     _404: {
         heading: `Page not found`,
@@ -28,18 +32,14 @@ export default {
     },
     content: {
         header: {
-            added_on: `Added on`,
             last_edited: `Last edited`
         },
         share: {
             download: `Download`,
             downloads: `Downloads`
         },
-        abstract: `Abstract`,
         article_doi: `Article DOI`,
         disciplines: `Disciplines`,
-        tags: `Tags`,
-        none: `None`,
         project_button: {
             paragraph: `The project for this paper is available on the Open Science Framework.`,
             button: `Visit project`
@@ -49,8 +49,7 @@ export default {
         search: {
             heading: `Preprint Search`,
             paragraph: `powered by`,
-            placeholder: `Search preprints...`,
-            button: `Search`
+            placeholder: `Search preprints...`
         },
         sort_by: `Sort by`,
         main: {
@@ -66,25 +65,18 @@ export default {
                 button: `Add your preprint`
             },
             results: {
-                prev: `Prev`,
                 of: `of`,
-                next: `Next`,
-                no_results: {
-                    line1: `No results found`,
-                    line2: `Try broadening your search terms`
-                }
+                no_results: `Try broadening your search terms`
             }
         }
     },
     index: {
         header: {
             title: {
-                heading: `OSF Preprints`,
                 paragraph: `The <span class="f-w-lg">open</span> preprint repository network`
             },
             search: `{{count}} searchable preprints`,
             as_of: `as of`,
-            add: `Add a preprint`,
             example: `See an example`
         },
         subjects: {
@@ -119,21 +111,16 @@ export default {
             p: `Follow these five easy steps to add your preprint to the OSF preprint repository.`,
             file: `Preprint file`,
             title: `Preprint title`,
-            title_placeholder: `Title`,
-            restart: `Restart`,
-            next: `Next`,
             subjects_description: `Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.`,
             basics: {
                 doi: {
-                    label: `If published, DOI of associated journal article (optional)`,
-                    placeholder: `DOI`
+                    label: `If published, DOI of associated journal article (optional)`
                 },
                 keywords: {
                     label: `Keywords`,
                     paragraph: `Add keywords to increase discoverability of your preprint`
                 },
                 abstract: {
-                    label: `Abstract`,
                     placeholder: `Add a brief summary of your preprint`
                 }
             },
@@ -145,10 +132,8 @@ export default {
                 invalid: {
                     description: `The following section(s) must be completed before sharing this preprint.`,
                     discipline: `Discipline`,
-                    basics: `Basics`,
-                    authors: `Authors`
-                },
-                share: `Share`
+                    basics: `Basics`
+                }
             },
             save_continue: `Save and continue`
         }
@@ -156,15 +141,11 @@ export default {
     components: {
         'confirm-restart-submit-preprint': {
             title: `Restart Preprint`,
-            body: `Are you sure you want to restart this preprint? Your uploaded file and supplemental information will be deleted.`,
-            cancel: `Cancel`,
-            restart: `Restart`
+            body: `Are you sure you want to restart this preprint? Your uploaded file and supplemental information will be deleted.`
         },
         'confirm-share-preprint': {
             title: `Share Preprint`,
-            body: `Once this preprint is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.`,
-            cancel: `Cancel`,
-            share: `Share`
+            body: `Once this preprint is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.`
         },
         'file-uploader': {
             dropzone_message: `Drop preprint file here to upload`,
@@ -181,11 +162,8 @@ export default {
             results: `Results`,
             yourself: `Yourself`,
             already_added: `Already added`,
-            add: `Add`,
-            no_results: `No results found.`,
             add_email: `Add author by email`,
             authors: {
-                heading: `Authors`,
                 title: `Author Information`,
                 order_instructions: `Drag and drop authors to change authorship order.`,
                 name: `Name`,

@@ -22,10 +22,10 @@
                                     <p><em> {{t "subject.body.file"}}: </em> {{selectedFile.name}}</p>
 
                                     <p><em> {{t "subject.body.title"}}: </em></p>
-                                    {{validated-input model=this valuePath='basicsTitle' placeholder=(t "subject.body.title_placeholder") value=nodeTitle}}
+                                    {{validated-input model=this valuePath='basicsTitle' placeholder=(t "global.title") value=nodeTitle}}
 
-                                    <button class="btn btn-danger" {{action 'toggleRestartPreprintModal'}}>{{t "subject.body.restart"}}</button>
-                                    <button class="btn btn-primary" disabled={{unless nodeTitle true}} {{action 'editTitleNext' name}}>{{t "subject.body.next"}}</button>
+                                    <button class="btn btn-danger" {{action 'toggleRestartPreprintModal'}}>{{t "global.restart"}}</button>
+                                    <button class="btn btn-primary" disabled={{unless nodeTitle true}} {{action 'editTitleNext' name}}>{{t "global.next"}}</button>
 
                                     <div>
                                         {{confirm-restart-submit-preprint isOpen=showModalRestartPreprint resetFileUpload=(action 'resetFileUpload')}}
@@ -79,7 +79,7 @@
                                             <label>
 	                                            {{t "submit.body.basics.doi.label"}}:
                                             </label>
-                                            {{validated-input model=this valuePath='basicsDOI' placeholder=(t "submit.body.basics.doi.placeholder") value=basicsDOI}}
+                                            {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI}}
                                         </div>
                                         <div>
                                             <label>
@@ -91,7 +91,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>
-                                            <span class="required">{{t "submit.body.basics.abstract.label"}}:</span>
+                                            <span class="required">{{t "global.abstract"}}:</span>
                                         </label>
                                         {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
                                     </div>
@@ -153,10 +153,10 @@
                                             <p class="m-t-md"> <strong>{{t "submit.body.submit.invalid.description"}}</strong></p>
                                             <p class="text-danger"> {{if (not disciplineValid) (t "submit.body.submit.invalid.discipline")}}</p>
                                             <p class="text-danger"> {{if (not basicsValid) (t "submit.body.submit.invalid.basics")}}</p>
-                                            <p class="text-danger"> {{if (not authorsValid) (t "submit.body.submit.invalid.authors")}}</p>
+                                            <p class="text-danger"> {{if (not authorsValid) (t "global.authors")}}</p>
                                         {{/unless}}
                                         <p> </p>
-                                        <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>{{t "submit.body.submit.share"}}</button>
+                                        <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>{{t "global.share"}}</button>
                                         <div>
                                             {{confirm-share-preprint isOpen=showModalSharePreprint savePreprint=(action 'savePreprint')}}
                                         </div>

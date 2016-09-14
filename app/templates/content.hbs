@@ -17,7 +17,7 @@
                     {{/if}}
                 </ul>
             </h5>
-            <h6>{{t "content.header.added_on"}}: {{moment-format model.date_created "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.date_modified "MMMM DD, YYYY"}} </h6>
+            <h6>{{t "global.added_on"}}: {{moment-format model.date_created "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.date_modified "MMMM DD, YYYY"}} </h6>
         </div> {{!END CONTAINER DIV}}
     </div> {{!END HEADER ROW}}
     <div id="view-page" class="container">{{!CONTAINER DIV}}
@@ -46,7 +46,7 @@
 
                     {{/liquid-spacer}}
                     <div class="p-t-xs">
-                        <h4 class="p-v-md f-w-md">{{t "content.abstract"}}</h4>
+                        <h4 class="p-v-md f-w-md">{{t "global.abstract"}}</h4>
                         <p class="abstract">{{model.abstract}}</p>
                     </div>
 
@@ -64,18 +64,18 @@
                         {{/each}}
                     </div>
                     <div class="m-b-lg p-t-xs">
-                        <h4 class=" f-w-md p-v-md">{{t "content.tags"}}</h4>
+                        <h4 class=" f-w-md p-v-md">{{t "global.tags"}}</h4>
                         {{#if hasTag}}
                             {{#each model.tags as |tag|}}
                                 <span class="badge">{{tag}}</span>
                             {{/each}}
                         {{else}}
-                            {{t "content.none"}}
+                            {{t "global.none"}}
                         {{/if}}
                     </div>
                     {{!PROJECT BUTTON}}
                     <div class="p-lg osf-box-lt text-center">
-                        <p class="f-w-xs">{{t "content.project_button"}}</p>
+                        <p class="f-w-xs">{{t "content.project_button.paragraph"}}</p>
                         <a type="button" class="btn btn-info" href={{model.links.html}}>{{t "content.project_button.button"}}</a>
                     </div>
                 </div> {{!END RIGHT SIDE COL}}

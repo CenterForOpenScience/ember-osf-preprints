@@ -36,14 +36,14 @@
                                             </button>
                                         </span>
                                     {{else}}
-                                        <button class="btn btn-success btn-small pull-right" {{action "addContributor" result}}> {{t "components.preprint-form-authors.add"}} </button>
+                                        <button class="btn btn-success btn-small pull-right" {{action "addContributor" result}}> {{t "global.add"}} </button>
                                     {{/if}}
                                 </td>
                             </tr>
                         {{/each}}
                     </table>
                 {{else}}
-                    {{t "components.preprint-form-authors.no_results"}}
+                    {{t "global.no_results_found"}}
                 {{/if}}
                 {{#if (gt pages 1)}}
                     {{osf-paginator totalSearchResults=totalSearchResults fetchResults=(action findContributors) query=query}}
@@ -59,7 +59,7 @@
     </div>
     <div class="col-xs-12 col-md-7">
         <div class="author-header">
-            <h2 class="header-inline"> {{t "components.preprint-form-authors.authors.heading"}} </h2>
+            <h2 class="header-inline"> {{t "global.authors"}} </h2>
             <span>
                 <i class="fa fa-question-circle permission-info"
                     data-toggle="popover"
