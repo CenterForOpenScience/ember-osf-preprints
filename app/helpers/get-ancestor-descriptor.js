@@ -35,7 +35,7 @@ export function getAncestorDescriptor(params/*, hash*/) {
         parentDescriptor = '';
     }
 
-    if (parentId && parent.get('parent').get('id') !== rootId) {
+    if (parentId && parent.get('parent') && parent.get('parent').get('id') !== rootId) {
         rootDescriptor += '... / ';
     }
 
