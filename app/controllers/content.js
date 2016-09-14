@@ -8,13 +8,13 @@ export default Ember.Controller.extend({
         return encodeURI('https://twitter.com/intent/tweet?url=' + window.location.href + '&text=' + this.get('model.title') + '&via=OSFramework');
     }),
     facebookHref: Ember.computed('model', function() {
-        return encodeURI('https://www.facebook.com/sharer/sharer.php?u=' + window.location.href);
+        return 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href);
     }),
     linkedinHref: Ember.computed('model', function() {
-        return encodeURI('https://www.linkedin.com/cws/share?url=' + window.location.href + '&title=' + this.get('model.title'));
+        return 'https://www.linkedin.com/cws/share?url=' + encodeURIComponent(window.location.href) + '&title=' + encodeURIComponent(this.get('model.title'));
     }),
     emailHref: Ember.computed('model', function() {
-        return 'mailto:?subject=' + encodeURIComponent(this.get('model.title') + '&body=' + window.location.href);
+        return 'mailto:?subject=' + encodeURIComponent(this.get('model.title')) + '&body=' + encodeURIComponent(window.location.href);
     }),
     // The currently selected file (defaults to primary)
     activeFile: null,
