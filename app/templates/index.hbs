@@ -6,10 +6,8 @@
             <div class="row">{{!HEADER ROW}}
                 {{!TITLE}}
                 <div class="text-center m-t-lg col-xs-12">
-                    <h1 class="preprint-lead">OSF Preprints</h1>
-                    <p class="lead">
-                        The <span class="f-w-lg">open</span> preprint repository network
-                    </p>
+                    <h1 class="preprint-lead">{{t "index.header.title.heading"}}</h1>
+                    <p class="lead">{{t "index.header.title.paragraph"}}</p>
                 </div>
                 {{!SEARCH}}
                 <div class="preprint-search col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 m-v-lg" >
@@ -17,8 +15,8 @@
 
                     {{#if sharePreprintsTotal}}
                         <p class="p-l-md">
-                            <span class="f-w-lg">{{sharePreprintsTotal}} searchable preprints </span>
-                            <span>as of {{moment-format currentDate "MMMM DD, YYYY"}}</span>
+                            <span class="f-w-lg">{{t "index.header.search" count=sharePreprintsTotal}}</span>
+                            <span>{{t "index.header.as_of"}} {{moment-format currentDate "MMMM DD, YYYY"}}</span>
                         </p>
                     {{/if}}
                 </div>
@@ -26,7 +24,7 @@
             <div class="row">
                 <div class="text-center col-xs-12">
                     <p class="lead"> or </p>
-                    {{#link-to "submit" type="button" class="btn btn-success btn-lg"}}Add a preprint{{/link-to}}
+                    {{#link-to "submit" type="button" class="btn btn-success btn-lg"}}Add a {{t "preprint.plural"}}{{/link-to}}
                     <div class="m-t-md">{{#link-to 'content' 'khbvy'}}See an example {{/link-to}}</div>
 
                 </div>
@@ -54,8 +52,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    <h2>Preprint Services</h2>
-                    <p class="m-b-lg"> Leading preprint service providers use this open source infrastructure to support their communities.</p>
+                    <h2>{{t "index.services.top.heading"}}</h2>
+                    <p class="m-b-lg">{{t "index.services.top.paragraph"}}</p>
                 </div>
             </div>
             <div class="row p-v-md">{{!BRANDED ROW}}
@@ -66,14 +64,14 @@
             <div class="row p-v-md">
                 <div class="col-md-12 text-center">
                     <p class="lead">
-                        Create your own branded preprint servers backed by the OSF.
+                        {{t "index.services.bottom.p1"}}
                         <div class="p-t-sm">
-                            Check out the <a class="source_code_link" href="https://github.com/CenterForOpenScience/ember-preprints"> open source code</a>
-                            and the <a class="source_code_link"href="https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270">requirements and road map</a>.
-                            Input welcome!
+                            {{t "index.services.bottom.div.line1" href='https://github.com/CenterForOpenScience/ember-preprints'}}
+                            {{t "index.services.bottom.div.line2" href='https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270'}}
+                            {{t "index.services.bottom.div.line3"}}
                         </div>
                     </p>
-                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">Contact us</a>
+                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">{{t "index.services.bottom.contact"}}</a>
                 </div>
             </div>
         </div>
@@ -84,8 +82,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    <h2>Advisory Group</h2>
-                    <p class="m-b-lg"> Our advisory group includes leaders in preprints and scholarly communication</p>
+                    <h2>{{t "index.advisory.heading"}}</h2>
+                    <p class="m-b-lg">{{t "index.advisory.paragraph"}}</p>
                 </div>
                 <div class="col-xs-6">
                     <ul>
