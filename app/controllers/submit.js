@@ -350,14 +350,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 var highlightClass =  status === 'success' ? 'successHighlight' : 'errorHighlight';
 
                 _this.$('#' + elementId).addClass(highlightClass);
-                setTimeout(() => {
-                    _this.$('#' + elementId).addClass('restoreWhiteBackground');
 
-                }, 2000);
                 setTimeout(() => {
                     _this.$('#' + elementId).removeClass(highlightClass);
-                    _this.$('#' + elementId).removeClass('restoreWhiteBackground');
-                }, 4000);
+                }, 2000);
             });
         },
         /*

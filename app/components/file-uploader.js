@@ -176,15 +176,11 @@ export default Ember.Component.extend({
         formatDropzoneAfterPreUpload() {
             this.$('.dz-default.dz-message').before(this.$('.dz-preview.dz-file-preview'));
             this.$('.dz-message span').contents().replaceWith('Click or drag another preprint file to swap');
-            this.$('.dropzone').addClass('successHighlight');
-            setTimeout(() => {
-                this.$('.dropzone').addClass('restoreGrayBackground');
-            }, 2000);
+            this.$('.dropzone').addClass('successHighlightGreenGray');
 
             setTimeout(() => {
-                this.$('.dropzone').removeClass('successHighlight');
-                this.$('.dropzone').removeClass('restoreGrayBackground');
-            }, 4000);
+                this.$('.dropzone').removeClass('successHighlightGreenGray');
+            }, 1000);
         }
     }
 });
