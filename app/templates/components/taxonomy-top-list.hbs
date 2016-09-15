@@ -1,7 +1,7 @@
 {{#each sortedList as |pair|}}
     <div class="subject row m-b-sm">
         {{#each pair as |subject|}}
-            <div class="col-sm-6 subject-item {{if (get subjectTooltips subject.text) 'hint--bottom hint--large'}}" aria-label={{get subjectTooltips subject.text}}>
+            <div class="col-xs-12 col-sm-6 subject-item {{if (get subjectTooltips subject.text) 'hint--bottom hint--large'}}" aria-label={{get subjectTooltips subject.text}}>
                 {{#link-to 'discover' (query-params subjectFilter=subject.text) class='btn btn-primary p-sm'}}
                     {{subject.text}}
                 {{/link-to}}
