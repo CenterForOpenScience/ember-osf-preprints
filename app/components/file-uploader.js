@@ -136,6 +136,7 @@ export default Ember.Component.extend({
             xhr.withCredentials = true;
         },
         preUpload(_, dropzone, file) {
+            this.send('formatDropzoneAfterPreUpload');
             this.set('file', file);
             this.set('hasFile', true);
             this.set('callback', Ember.RSVP.defer());
@@ -171,6 +172,19 @@ export default Ember.Component.extend({
                     'A file with that name already exists'
                     : 'Upload Failed');
             }
+        },
+        formatDropzoneAfterPreUpload() {
+            this.$('.dz-default.dz-message').before(this.$('.dz-preview.dz-file-preview'));
+            this.$('.dz-message span').contents().replaceWith('Click or drag another preprint file to swap');
+            this.$('.dropzone').addClass('successHighlight');
+            setTimeout(() => {
+                this.$('.dropzone').addClass('restoreGrayBackground');
+            }, 2000);
+
+            setTimeout(() => {
+                this.$('.dropzone').removeClass('successHighlight');
+                this.$('.dropzone').removeClass('restoreGrayBackground');
+            }, 4000);
         }
     }
 });

@@ -346,6 +346,18 @@ ul.preprints-block-list {
     .dz-progress {
         z-index : 10;
     }
+
+    .dropzone.dz-started .dz-message {
+        opacity: 1; // Override default to keep from disappearing
+        margin-top: 0;
+        margin-bottom: 0;
+        display: block;
+    }
+
+    .dropzone.dz-drag-hover {
+        border-color: #95cd7e;
+    }
+
     .radio-option {
         background: #f5f5f5;
         border-radius: 2px;
@@ -743,8 +755,6 @@ hr {
 .preprint-providers {
 
 }
-
-
 
 
 //For Supplementary File Widget

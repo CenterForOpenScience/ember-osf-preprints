@@ -133,6 +133,16 @@ span.sortable-bars:hover {
     animation-direction: alternate;
 }
 
+.restoreGrayBackground{
+    background-color: #F8F8F8 !important;
+    -webkit-transition: background-color 1500ms linear;
+    -moz-transition: background-color 1500ms linear;
+    -o-transition: background-color 1500ms linear;
+    transition: background-color 1500ms linear;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate;
+}
+
 .errorHighlight{
     background-color: #F2DEDE !important;
     -webkit-transition: background-color 1500ms linear;

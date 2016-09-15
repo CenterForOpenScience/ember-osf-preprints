@@ -78,7 +78,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
 
-
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
         this.get('panelActions').open('Upload');
