@@ -3,7 +3,7 @@ import Ember from 'ember';
 var filters = {
     'Open Science Framework': 'OSF',
     'Cognitive Sciences ePrint Archive': 'Cogprints',
-    'OSF': 'OSF Preprints',
+    OSF: 'OSF Preprints',
     'Research Papers in Economics': 'ResPEc'
 };
 
