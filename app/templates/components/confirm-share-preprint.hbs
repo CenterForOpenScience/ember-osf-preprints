@@ -9,7 +9,7 @@
     {{#bs-modal-footer}}
         <div align="right">
             <button {{action 'close'}} class="btn btn-default">{{t "global.cancel"}}</button>
-            <a class="btn btn-success" {{action 'savePreprint'}}>{{t "global.share"}}</a>
+            <button class="btn btn-success" disabled={{shareButtonDisabled}} {{action 'savePreprint'}}>{{t "global.share"}}</button>
         </div>
     {{/bs-modal-footer}}
 {{/bs-modal}}
