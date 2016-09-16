@@ -14,9 +14,9 @@
                 {{#each item.children as |child|}}
                     <li>
                         {{# if child.childCount }}
-                        <span class="pointer m-r-xs" {{action 'expand' child}} style="{{if child.showChildren 'margin-right:2px;'}}">
-                            <i style="vertical-align: top; padding-top: 4px;" class="fa {{if child.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
-                        </span>
+                            <span class="pointer m-r-xs" {{action 'expand' child}} style="{{if child.showChildren 'margin-right:2px;'}}">
+                                <i style="vertical-align: top; padding-top: 4px;" class="fa {{if child.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
+                            </span>
                         {{else}}
                             <span style="padding-right: 14px"></span>
                         {{/if}}
