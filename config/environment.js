@@ -39,6 +39,7 @@ module.exports = function(environment) {
     };
 
     if (environment === 'development') {
+        ENV.apiUrl = 'http://localhost:8000/v2/'
         // ENV.APP.LOG_RESOLVER = true;
         // ENV.APP.LOG_ACTIVE_GENERATION = true;
         // ENV.APP.LOG_TRANSITIONS = true;
@@ -64,6 +65,7 @@ module.exports = function(environment) {
     }
 
     if (environment === 'production') {
+        ENV.apiUrl = 'https://api.osf.io/v2/';
         ENV.sentryDSN = process.env.SENTRY_DSN || 'https://2f0a61d03b99480ea11e259edec18bd9@sentry.cos.io/45';
         ENV.googleID = process.env.GOOGLE_ID || '123plschangeme';
     }

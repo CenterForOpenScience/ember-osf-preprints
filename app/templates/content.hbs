@@ -60,6 +60,11 @@
                     {{/if}}
 
                     <div class="p-t-xs">
+                        <h4 class="p-v-md f-w-md">Citations</h4>
+                        {{citation-widget nodeId=model.id}}
+                    </div>
+
+                    <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">Disciplines</h4>
                         {{#each model.subjects as |subject|}}
                             <span class='subject-preview'>{{subject.text}}</span>
