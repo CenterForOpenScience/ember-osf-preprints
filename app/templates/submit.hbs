@@ -81,7 +81,7 @@
                                             <label>{{t "submit.body.basics.doi.label"}}:</label>
                                             {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI}}
                                         </div>
-                                        <div>
+                                        <div class="clearfix">
                                             <label>{{t "submit.body.basics.keywords.label"}}:</label>
                                             <p class="small">{{t "submit.body.basics.keywords.paragraph"}}</p>
                                             {{tags-widget addATag=(action 'addATag' node) removeATag=(action 'removeATag' node) tags=node.tags}}
