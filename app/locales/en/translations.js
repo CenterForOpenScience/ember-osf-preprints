@@ -19,7 +19,7 @@ export default {
         no_results_found: `No results found.`,
         authors: `Authors`
     },
-    _404: {
+    '404': {
         heading: `Page not found`,
         paragraph: {
             line1: `The page you were looking for is not found on the OSF Preprint service.`,
@@ -103,7 +103,7 @@ export default {
         }
     },
     'page-not-found': {
-        // See _404
+        // See 404
     },
     submit: {
         heading: `Add Preprint`,
