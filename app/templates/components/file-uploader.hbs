@@ -21,6 +21,16 @@
             {{/if}}
         {{/cp-panel-toggle}}
         {{#cp-panel-body}}
+            <form class="form">
+                <div class="toggle-choose-file">
+                    <input id='existing' onchange={{action changeExistingState _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
+                    <label for="existing"><i class="fa fa-cloud-upload"></i> Upload </label>
+
+                    <input id='newfile' onchange={{action changeExistingState _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
+                    <label for="newfile"><i class="fa fa-th-list"></i>Select</label>
+                </div>
+            </form>
+
             {{dropzone-widget
                 url=url
                 options=dropzoneOptions
@@ -38,7 +48,6 @@
         {{#cp-panel name='organize'}}
             {{#cp-panel-toggle tagName='div'}}
                 Organize
-
                 {{#if (eq convertOrCopy 'convert')}}
                     The current project/component will contain the preprint.
                 {{/if}}
@@ -52,9 +61,7 @@
                 {{/if}}
             {{/cp-panel-toggle}}
             {{#cp-panel-body}}
-                 <div class="m-t-lg">
-                    {{convert-or-copy-project convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
-                </div>
+                {{convert-or-copy-project convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
 
                 {{#liquid-if convertOrCopy use='crossFade'}}
                     {{#if (eq convertOrCopy 'convert')}}
