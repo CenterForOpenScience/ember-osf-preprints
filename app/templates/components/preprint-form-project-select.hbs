@@ -110,7 +110,7 @@
                                         {{/if}}
                                         <div class="row text-center m-v-md">
                                             <p> You are about to initiate the preprint process.  You will not be able to update your project or file after this point. </p>
-                                            <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>Finalize upload</button>
+                                            <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>Save and continue</button>
                                         </div>
                                     {{/cp-panel-body}}
                                 {{/cp-panel}}
