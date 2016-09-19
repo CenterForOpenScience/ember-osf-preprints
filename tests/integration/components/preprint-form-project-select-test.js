@@ -18,6 +18,6 @@ test('it renders', function(assert) {
                     createComponentCopyFile=(action noop)
                     highlightSuccessOrFailure=(action noop)}}  
   }}`);
-  assert.equal(this.$('label').text().trim(), '1. Choose existing OSF project');
+  assert.equal(this.$('p.text-muted').text().trim(), 'The list of projects appearing in the selector are projects and components for which you have admin access.  Deleted projects and registrations are not included here.');
 
 });
