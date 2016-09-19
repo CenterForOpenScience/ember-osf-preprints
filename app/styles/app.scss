@@ -866,7 +866,7 @@ hr {
 }
 
 
-.toggle-choose-file {
+.toggle-button {
     overflow: hidden;
 
     input {
@@ -907,6 +907,16 @@ hr {
             font-size: 70px;
         }
     }
+
+    label.wide-text-only {
+        float: none;
+        margin-right: -4px;
+        padding: 10px 10px;
+        height: 60px;
+        font-size: 14px;
+        width: 200px;
+    }
+
 
     label:hover {
         cursor: pointer;

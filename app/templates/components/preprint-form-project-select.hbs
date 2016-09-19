@@ -36,7 +36,7 @@
                     {{/cp-panel-toggle}}
                     {{#cp-panel-body}}
                         <form class="form">
-                            <div class="toggle-choose-file">
+                            <div class="toggle-button">
                                 <div class="row">
                                     <div class="col-xs-3 col-xs-offset-3 text-center">
                                         <input id='existing' class="radio_item" onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
@@ -65,7 +65,7 @@
                             {{#cp-panel-body}}
                                 <div class="m-t-sm">
                                     <form class="form">
-                                        <div class="toggle-choose-file">
+                                        <div class="toggle-button">
                                             <input id='existing' onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
                                             <label for="existing"><i class="fa fa-cloud-upload"></i> </label>
 
@@ -162,6 +162,5 @@
 {{#if (eq existingState _existingState.CHOOSE)}}
     <div class="p-t-xs pull-right">
         <button class="btn btn-default" {{action changeState startState}}>Back</button>
-        <button class="btn btn-primary" disabled=true>Next</button>
     </div>
 {{/if}}
