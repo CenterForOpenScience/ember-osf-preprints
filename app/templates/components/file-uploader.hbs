@@ -1,35 +1,62 @@
-{{dropzone-widget
-    url=url
-    options=dropzoneOptions
-    sending=(action 'sending')
-    buildUrl=(action 'getUrl')
-    complete=(action 'complete')
-    preUpload=(action 'preUpload')
-    defaultMessage='Drop preprint file here to upload'
-    maxfilesexceeded=(action 'maxfilesexceeded')
-}}
-
-{{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-    <div class="m-t-lg">
-        {{convert-or-copy-project convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
-    </div>
-{{/liquid-if}}
-
-{{#liquid-if (and hasFile (or (eq uploadIntent 'newNodeNewFile') convertOrCopy)) use='crossFade'}}
-    {{#if (not-eq uploadIntent 'newNodeNewFile')}}
-        {{#if (eq convertOrCopy 'convert')}}
-            {{#if convertProjectConfirmed}}
-                <label> 4. Edit preprint title </label>
-                {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
-            {{/if}}
-        {{else}}
-            <label> 4. Add preprint title</label>
-            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
-        {{/if}}
-    {{else}}
+{{#if (eq uploadIntent 'newNodeNewFile')}}
+    {{dropzone-widget
+        url=url
+        options=dropzoneOptions
+        sending=(action 'sending')
+        buildUrl=(action 'getUrl')
+        complete=(action 'complete')
+        preUpload=(action 'preUpload')
+        defaultMessage='Drop preprint file here to upload'
+        maxfilesexceeded=(action 'maxfilesexceeded')
+    }}
+    {{#if hasFile}}
         {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
     {{/if}}
-{{/liquid-if}}
+{{else}}
+    {{#cp-panel open=uploadNewFileSectionOpened}}
+        {{#cp-panel-toggle tagName='div'}}
+            Choose File
+        {{/cp-panel-toggle}}
+        {{#cp-panel-body}}
+            {{dropzone-widget
+                url=url
+                options=dropzoneOptions
+                sending=(action 'sending')
+                buildUrl=(action 'getUrl')
+                complete=(action 'complete')
+                preUpload=(action 'preUpload')
+                defaultMessage='Drop preprint file here to upload'
+                maxfilesexceeded=(action 'maxfilesexceeded')
+            }}
+        {{/cp-panel-body}}
+    {{/cp-panel}}
+
+    {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
+        {{#cp-panel open=organizeSectionOpened}}
+            {{#cp-panel-toggle}}
+                Organize
+            {{/cp-panel-toggle}}
+            {{#cp-panel-body}}
+                 <div class="m-t-lg">
+                    {{convert-or-copy-project convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
+                </div>
+
+                {{#liquid-if convertOrCopy use='crossFade'}}
+                    {{#if (eq convertOrCopy 'convert')}}
+                        {{#if convertProjectConfirmed}}
+                            <p> Edit preprint title </p>
+                            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                        {{/if}}
+                    {{else}}
+                        <p> Add preprint title</p>
+                        {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                    {{/if}}
+                {{/liquid-if}}
+            {{/cp-panel-body}}
+        {{/cp-panel}}
+    {{/liquid-if}}
+{{/if}}
+
 
 <div class="p-t-xs pull-right">
     <button class="btn btn-default" {{action changeState startState}}>Back</button>
