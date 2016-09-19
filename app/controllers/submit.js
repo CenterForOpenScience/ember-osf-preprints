@@ -222,6 +222,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         changeState(newState) {
             // Sets filePickerState to newState - this is the initial decision on the form.
             this.set('filePickerState', newState);
+            if (newState === this.get('_State').EXISTING) {
+                this.get('panelActions').open('chooseProject');
+                this.get('panelActions').close('selectExistingFile');
+                this.get('panelActions').close('uploadNewFile');
+                this.get('panelActions').close('organize');
+                this.get('panelActions').close('finalizeUpload');
+            }
         },
         changeToInitialState(newState) {
             // Changes state to initial upload state presenting choice: Upload new preprint or connect preprint to existing OSF project

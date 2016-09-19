@@ -78,9 +78,6 @@ export default Ember.Component.extend({
             this.attrs.selectFile(file);
             this.get('panelActions').toggle('selectExistingFile');
             this.get('panelActions').toggle('organize');
-            if (this.get('selectedFile')) {
-                this.highlightSuccessOrFailure('selectedFileExisting', this, 'success');
-            }
         },
         changeExistingState(newState) {
             // Toggles existingState between 'existing' or 'new', meaning user wants to select existing file from file browser
