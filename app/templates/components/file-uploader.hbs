@@ -33,5 +33,5 @@
 
 <div class="p-t-xs pull-right">
     <button class="btn btn-default" {{action changeState startState}}>Back</button>
-    <button class="btn btn-primary" disabled={{not (and (not uploadInProgress)(and hasFile titleValid))}} {{action 'setNodeAndFile'}}>Next</button>
+    <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>Next</button>
 </div>

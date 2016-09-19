@@ -9,8 +9,7 @@ import {State} from '../controllers/submit';
  *
  *  Contains dropzone-widget where you can drag and drop preprint file. "file" will be set to the preuploaded file. 'node' will
  *  either become the newly created project or component, or the existing node.  After file is uploaded to the designated "node",
- *  "osfFile" is set to the uploadedFile.  Any projects or files created here are appended to "projectsCreatedForPreprint" and
- *  "filesUploadedForPreprint" respectively.
+ *  "osfFile" is set to the uploadedFile.
  *
  * Sample usage:
  * ```handlebars
@@ -24,8 +23,6 @@ import {State} from '../controllers/submit';
  *       osfFile=selectedFile
  *       hasFile=hasFile
  *       file=file
- *       projectsCreatedForPreprint=projectsCreatedForPreprint
- *       filesUploadedForPreprint=filesUploadedForPreprint
  *       contributors=contributors (if need to copy contributors to new component)
  *       node=node
  *       selectedNode=selectedNode
@@ -44,7 +41,6 @@ export default Ember.Component.extend({
     node: null,
     callback: null,
     nodeTitle: null,
-    convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
     uploadInProgress: false,
 
     dropzoneOptions: {
@@ -101,7 +97,6 @@ export default Ember.Component.extend({
                 this.set('node', node);
                 this.send('upload');
                 this.get('userNodes').pushObject(node);
-                this.get('projectsCreatedForPreprint').pushObject(node);
             });
         },
 
@@ -116,14 +111,12 @@ export default Ember.Component.extend({
                     this.set('node', child);
                     this.get('userNodes').pushObject(child);
                     this.send('upload');
-                    this.get('projectsCreatedForPreprint').pushObject(this.get('node'));
                 });
         },
 
         uploadFileToExistingNode() {
             // Upload case for using an existing node with a new file for the preprint.  Updates title of existing node and then uploads file to node.
             var node = this.get('node');
-            this.sendAction('saveExistingProjectData');
             if (node.get('title') !== this.get('nodeTitle')) {
                 node.set('title', this.get('nodeTitle'));
                 node.save().then(() => {
@@ -143,6 +136,7 @@ export default Ember.Component.extend({
             xhr.withCredentials = true;
         },
         preUpload(_, dropzone, file) {
+            this.send('formatDropzoneAfterPreUpload');
             this.set('file', file);
             this.set('hasFile', true);
             this.set('callback', Ember.RSVP.defer());
@@ -165,7 +159,6 @@ export default Ember.Component.extend({
                     .findRecord('file', resp.data.id.split('/')[1])
                     .then(file => {
                         this.set('osfFile', file);
-                        this.get('filesUploadedForPreprint').push(file);
                         this.sendAction('finishUpload');
                     });
             } else {
@@ -179,6 +172,15 @@ export default Ember.Component.extend({
                     'A file with that name already exists'
                     : 'Upload Failed');
             }
+        },
+        formatDropzoneAfterPreUpload() {
+            this.$('.dz-default.dz-message').before(this.$('.dz-preview.dz-file-preview'));
+            this.$('.dz-message span').contents().replaceWith('Click or drag another preprint file to swap');
+            this.$('.dropzone').addClass('successHighlightGreenGray');
+
+            setTimeout(() => {
+                this.$('.dropzone').removeClass('successHighlightGreenGray');
+            }, 1000);
         }
     }
 });

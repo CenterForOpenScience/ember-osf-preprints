@@ -1,3 +1,5 @@
+{{title model.title}}
+
 <div id="view-page">
     <div class="p-t-xl m-t-xl p-b-md m-b-md dark-overlay-header-background header-row">{{!HEADER ROW}}
         <div class="container">{{!CONTAINER DIV}}
@@ -17,7 +19,7 @@
                     {{/if}}
                 </ul>
             </h5>
-            <h6>Added on: {{moment-format model.date_created "MMMM DD, YYYY"}} | Last edited: {{moment-format model.date_modified "MMMM DD, YYYY"}} </h6>
+            <h6>Added on:  {{moment-format model.dateCreated "MMMM DD, YYYY"}} | Last edited: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
         </div> {{!END CONTAINER DIV}}
     </div> {{!END HEADER ROW}}
     <div id="view-page" class="container">{{!CONTAINER DIV}}

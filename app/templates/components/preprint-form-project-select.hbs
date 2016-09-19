@@ -62,14 +62,13 @@
 
                     <div class="p-t-xs pull-right">
                         <button class="btn btn-default" {{action changeState startState}}>Back</button>
-                        <button class="btn btn-primary" disabled={{not (and selectedFile titleValid)}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>Next</button>
+                        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>Next</button>
                     </div>
                 {{/if}}
             </div>
         {{else if (eq existingState _existingState.NEWFILE)}}
             {{file-uploader
                 changeState=changeState
-                saveExistingProjectData=saveExistingProjectData
                 finishUpload=finishUpload
                 startState=startState
                 nodeTitle=nodeTitle
@@ -77,14 +76,13 @@
                 osfFile=selectedFile
                 hasFile=hasFile
                 file=file
-                projectsCreatedForPreprint=projectsCreatedForPreprint
-                filesUploadedForPreprint=filesUploadedForPreprint
                 contributors=contributors
                 node=node
                 selectedNode=selectedNode
                 userNodes=userNodes
                 parentNode=parentNode
                 convertProjectConfirmed=convertProjectConfirmed
+                convertOrCopy=convertOrCopy
             }}
         {{/if}}
     {{else}}

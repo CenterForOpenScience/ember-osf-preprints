@@ -67,22 +67,16 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     contributors: Ember.A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
     nodeTitle: null, // Preprint title
     fileAndNodeLocked: false, // After advancing beyond Step 1: Upload on Add Preprint form, both the file and node are locked
-    projectsCreatedForPreprint:  Ember.A(), // Projects or components created in the Add Preprint process - can be deleted upon reset
-    filesUploadedForPreprint: Ember.A(), // Files uploaded or copied during the Add Preprint process - can be deleted upon reset
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
-    showModalRestartPreprint: false, // True when restarting preprint confirmation modal is displayed
     uploadSaveState: false, // True temporarily when changes have been saved in upload section
     disciplineSaveState: false, // True temporarily when changes have been saved in discipline section
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
     authorsSaveState: false, // True temporarily when changes have been saved in authors section
     parentNode: null, // If component created, parentNode will be defined
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
-    originalTitle: null, // If converting existing project, originalTitle is saved
-    originalDescription: null, // If converting existing project, originalDescription is saved
-    originalTags: null, // If converting existing project, originalTags are saved
-    originalContributors: Ember.A(), // If converting existing project, originalContributors are saved
+    convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
 
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
@@ -99,22 +93,16 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             contributors: Ember.A(),
             nodeTitle: null,
             fileAndNodeLocked: false,
-            projectsCreatedForPreprint:  Ember.A(),
-            filesUploadedForPreprint: Ember.A(),
+            filePickerState: State.START,
             searchResults: [],
             savingPreprint: false,
             showModalSharePreprint: false,
-            showModalRestartPreprint: false,
             uploadSaveState: false,
             basicsSaveState: false,
             authorsSaveState: false,
             disciplineSaveState: false,
             parentNode: null,
-            convertProjectConfirmed: false,
-            originalTitle: null,
-            originalDescription: null,
-            originalTags: null,
-            originalContributors: Ember.A(),
+            convertProjectConfirmed: false
         }));
     },
 
@@ -258,7 +246,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
             var node = this.get('node');
-            this.send('saveExistingProjectData');
             if (node.title !== this.get('nodeTitle')) {
                 node.set('title', this.get('nodeTitle'));
                 node.save().then(() => {
@@ -268,21 +255,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 this.send('finishUpload');
             }
         },
-        saveExistingProjectData() {
-            // If converting existing project, save  original attributes/relationship info that can be modified through preprint process.
-            // This way, the information can be restored upon restart.
-            this.set('originalTitle', this.get('basicsTitle'));
-            this.set('originalDescription', this.get('basicsAbstract'));
-            this.set('originalTags', this.get('basicsTags'));
-            this.set('originalContributors', this.get('contributors'));
-        },
         createComponentCopyFile() {
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
             // file from parent node to new component.
 
             var node = this.get('node');
             node.addChild(this.get('nodeTitle')).then(child => {
-                this.get('projectsCreatedForPreprint').pushObject(child);
                 this.get('userNodes').pushObject(child);
                 this.set('parentNode', node);
                 this.set('node', child);
@@ -290,7 +268,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     var osfstorage = providers.findBy('name', 'osfstorage');
                     this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}}).then((copiedFile) => {
                         this.set('selectedFile', copiedFile);
-                        this.get('filesUploadedForPreprint').push(copiedFile);
                     });
                 }).then(() => {
                     this.get('toast').info('File copied to component!');
@@ -298,36 +275,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 }, () => {
                     this.get('toast').info('Could not create component.');
                 });
-            });
-        },
-        resetFileUpload() {
-            // Resets file upload.  Deletes all files and projects/components that have been created as part of the Add Preprint process.
-            // Does not delete existing nodes/files.
-            var promisesArray = [];
-            var filePromises = [];
-            this.get('filesUploadedForPreprint').forEach((file) => {
-                filePromises.push(this.get('fileManager').deleteFile(file).then(() => {
-                    this.get('toast').info('Preprint removed!');
-                }).catch(() => {
-                    this.get('toast').error('Could not remove uploaded preprint');
-                }));
-            });
-
-            Ember.RSVP.allSettled(filePromises).then(() => {
-                this.get('projectsCreatedForPreprint').forEach((project) => {
-                    promisesArray.push(project.destroyRecord());
-                });
-            });
-
-            Ember.RSVP.allSettled(promisesArray).then(() => {
-                if (promisesArray.length > 0 || filePromises.length > 0) {
-                    window.setTimeout(
-                        function () {
-                            location.reload();
-                        }, 3000);
-                } else {
-                    window.location.reload();
-                }
             });
         },
         editTitleNext(section) {
@@ -403,14 +350,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 var highlightClass =  status === 'success' ? 'successHighlight' : 'errorHighlight';
 
                 _this.$('#' + elementId).addClass(highlightClass);
-                setTimeout(() => {
-                    _this.$('#' + elementId).addClass('restoreWhiteBackground');
 
-                }, 2000);
                 setTimeout(() => {
                     _this.$('#' + elementId).removeClass(highlightClass);
-                    _this.$('#' + elementId).removeClass('restoreWhiteBackground');
-                }, 4000);
+                }, 2000);
             });
         },
         /*
@@ -434,6 +377,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             if (model.get('doi') === '') {
                 model.set('doi', undefined);
             }
+            if (this.get('convertOrCopy') === 'convert') {
+                model.set('isConversion', true);
+            }
+
             model.save()
                 // Ember data is not worth the time investment currently
                 .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {

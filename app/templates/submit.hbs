@@ -1,3 +1,5 @@
+{{title 'Submit'}}
+
 <div class="preprint-submit-header">
     <div class="container">
         <div class="row">
@@ -23,12 +25,8 @@
 
                                     <p><em> Preprint title: </em></p>
                                     {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
-
-                                    <button class="btn btn-danger" {{action 'toggleRestartPreprintModal'}}>Restart</button>
-                                    <button class="btn btn-primary" disabled={{unless nodeTitle true}} {{action 'editTitleNext' name}}>Next</button>
-
-                                    <div>
-                                        {{confirm-restart-submit-preprint isOpen=showModalRestartPreprint resetFileUpload=(action 'resetFileUpload')}}
+                                    <div class="pull-right">
+                                        <button class="btn btn-primary" disabled={{unless nodeTitle true}} {{action 'editTitleNext' name}}>Save and continue</button>
                                     </div>
                                 {{else}}
                                     {{#liquid-bind filePickerState class='translate' as |currentState|}}
@@ -47,7 +45,6 @@
                                                 {{file-uploader
                                                     changeState=(action 'changeToInitialState')
                                                     finishUpload=(action 'finishUpload')
-                                                    saveExistingProjectData=(action 'saveExistingProjectData')
                                                     uploadIntent='newNodeNewFile'
                                                     startState=_State.START
                                                     nodeTitle=nodeTitle
@@ -55,18 +52,16 @@
                                                     osfFile=selectedFile
                                                     hasFile=hasFile
                                                     file=file
-                                                    projectsCreatedForPreprint=projectsCreatedForPreprint
-                                                    filesUploadedForPreprint=filesUploadedForPreprint
                                                     node=node
                                                     userNodes=userNodes
                                                     parentNode=parentNode
                                                     convertProjectConfirmed=convertProjectConfirmed
-                                                    }}
+                                                    convertOrCopy=convertOrCopy
+                                                }}
 
                                             {{else if (eq currentState _State.EXISTING)}}
                                                 {{preprint-form-project-select
                                                   changeState=(action 'changeToInitialState')
-                                                  saveExistingProjectData=(action 'saveExistingProjectData')
                                                   finishUpload=(action 'finishUpload')
                                                   existingNodeExistingFile=(action 'existingNodeExistingFile')
                                                   createComponentCopyFile=(action "createComponentCopyFile")
@@ -78,8 +73,6 @@
                                                   selectedFile=selectedFile
                                                   hasFile=hasFile
                                                   file=file
-                                                  filesUploadedForPreprint=filesUploadedForPreprint
-                                                  projectsCreatedForPreprint=projectsCreatedForPreprint
                                                   node=node
                                                   userNodes=userNodes
                                                   selectedNode=node
@@ -89,6 +82,7 @@
                                                   parentNode=parentNode
                                                   convertProjectConfirmed=convertProjectConfirmed
                                                   userNodesLoaded=userNodesLoaded
+                                                  convertOrCopy=convertOrCopy
                                                   }}
                                             {{/if}}
                                         </div>
