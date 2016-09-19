@@ -8,10 +8,10 @@
          <form class="form">
             <div class="toggle-button">
                 <input id='copy' onchange={{action "copyToComponent" value="true"}} type="radio" name="createComponentDecision" checked={{eq convertOrCopy 'copy'}}>
-                <label class='wide-text-only' for="copy"> Make a new component for the preprint </label>
+                <label class='wide-text-only' for="copy"><i class="fa fa-plus-circle"></i> Make a new component </label>
 
                 <input id='convert' onchange={{action "convertExisting"}} type="radio" name="createComponentDecision" checked={{eq convertOrCopy 'convert'}}>
-                <label class='wide-text-only' for="convert"> Use the current component for the preprint </label>
+                <label class='wide-text-only' for="convert"><i class="fa fa-cube"></i> Use the current component </label>
             </div>
         </form>
     </div>

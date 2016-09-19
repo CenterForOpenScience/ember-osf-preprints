@@ -912,9 +912,13 @@ hr {
         float: none;
         margin-right: -4px;
         padding: 10px 10px;
-        height: 60px;
+        height: 70px;
         font-size: 14px;
         width: 200px;
+
+        i {
+            font-size: 30px;
+        }
     }
 
 
@@ -940,4 +944,8 @@ hr {
         font-size: 25px;
         display: block;
     }
+}
+
+label.title-label {
+    font-weight: normal;
 }

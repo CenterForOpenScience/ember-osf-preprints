@@ -70,11 +70,11 @@
                 {{#cp-panel-body}}
                     {{#if (eq convertOrCopy 'convert')}}
                         {{#if convertProjectConfirmed}}
-                            <p> Edit preprint title </p>
+                            <label class="text-muted title-label"> Edit preprint title </label>
                             {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
                         {{/if}}
                     {{else}}
-                        <p> Add preprint title</p>
+                        <label class="text-muted title-label"> Add preprint title</label>
                         {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
                     {{/if}}
                     <div class="row text-center m-v-md">
