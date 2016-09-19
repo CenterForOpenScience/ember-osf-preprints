@@ -31,6 +31,10 @@ module.exports = function(environment) {
         moment: {
             outputFormat: 'YYYY-MM-DD hh:mm a'
         },
+        ANALYTICS: {
+            // Keen Project ID, common across all nodes. Must be filled in!
+            keenProjectId: null,
+        },
         PREPRINTS: {
             provider: 'osf',
             // The name of the OSF campaign used to track signups

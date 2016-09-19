@@ -15,6 +15,7 @@ module.exports = function(defaults) {
             enabled: true,
             extensions: ['js']
         },
+        // TODO: This configuration completely breaks the test runner
         vendorFiles: {
             // next line is needed to prevent ember-cli to load
             // handlebars (it happens automatically in 0.1.x)
