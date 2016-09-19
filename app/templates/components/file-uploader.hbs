@@ -16,6 +16,9 @@
     {{#cp-panel name='uploadNewFile'}}
         {{#cp-panel-toggle tagName='div'}}
             Choose File
+            {{#if file}}
+                {{file.name}}
+            {{/if}}
         {{/cp-panel-toggle}}
         {{#cp-panel-body}}
             {{dropzone-widget
@@ -35,6 +38,18 @@
         {{#cp-panel name='organize'}}
             {{#cp-panel-toggle}}
                 Organize
+
+                {{#if (eq convertOrCopy 'convert')}}
+                    The current project/component will contain the preprint.
+                {{/if}}
+
+                {{#if (eq convertOrCopy 'copy')}}
+                    A new component inside the current project will contain the preprint.
+                {{/if}}
+
+                {{#if nodeTitle}}
+                    {{nodeTitle}}
+                {{/if}}
             {{/cp-panel-toggle}}
             {{#cp-panel-body}}
                  <div class="m-t-lg">

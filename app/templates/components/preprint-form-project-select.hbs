@@ -2,6 +2,9 @@
     {{#cp-panel name='chooseProject' open=true}}
         {{#cp-panel-toggle tagName='div'}}
             Choose Project
+            {{#if selectedNode}}
+                {{selectedNode.title}}
+            {{/if}}
         {{/cp-panel-toggle}}
         {{#cp-panel-body}}
             <p class="text-muted">
@@ -53,20 +56,32 @@
                         {{#cp-panel name='selectExistingFile' open=false}}
                             {{#cp-panel-toggle tagName='div'}}
                                 Choose File
+
+                            {{#if selectedFile}}
+                                    <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
+                            {{/if}}
                             {{/cp-panel-toggle}}
                             {{#cp-panel-body}}
                                  {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
-                                    {{#if selectedFile}}
-                                        <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
-                                    {{/if}}
+
                             {{/cp-panel-body}}
                         {{/cp-panel}}
-
-
                         {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
                             {{#cp-panel name='organize' open=false}}
                                 {{#cp-panel-toggle tagName='div'}}
                                     Organize
+
+                                    {{#if (eq convertOrCopy 'convert')}}
+                                        The current project/component will contain the preprint.
+                                    {{/if}}
+
+                                    {{#if (eq convertOrCopy 'copy')}}
+                                        A new component inside the current project will contain the preprint.
+                                    {{/if}}
+
+                                    {{#if nodeTitle}}
+                                        {{nodeTitle}}
+                                    {{/if}}
                                 {{/cp-panel-toggle}}
                                 {{#cp-panel-body}}
                                     <div class="m-t-lg">
