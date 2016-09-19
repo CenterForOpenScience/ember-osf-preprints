@@ -11,7 +11,7 @@
     {{else}}
         {{#if userNodes}}
             {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
-                <strong>{{node.title}}</strong>
+                <strong>{{get-ancestor-descriptor node}}</strong>
             {{/power-select}}
         {{else}}
             <p class="m-t-md text-danger"> You have no valid nodes that can be converted into a preprint.  Go back to upload a new preprint. </p>
