@@ -21,15 +21,17 @@
             {{/if}}
         {{/cp-panel-toggle}}
         {{#cp-panel-body}}
-            <form class="form">
-                <div class="toggle-choose-file">
-                    <input id='existing' onchange={{action changeExistingState _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
-                    <label for="existing"><i class="fa fa-cloud-upload"></i> Upload </label>
+            <div class="m-t-sm">
+                <form class="form">
+                    <div class="toggle-choose-file">
+                        <input id='existing' onchange={{action changeExistingState _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
+                        <label for="existing"><i class="fa fa-cloud-upload"></i></label>
 
-                    <input id='newfile' onchange={{action changeExistingState _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
-                    <label for="newfile"><i class="fa fa-th-list"></i>Select</label>
-                </div>
-            </form>
+                        <input id='newfile' onchange={{action changeExistingState _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
+                        <label for="newfile"><i class="fa fa-th-list"></i></label>
+                    </div>
+                </form>
+            </div>
 
             {{dropzone-widget
                 url=url

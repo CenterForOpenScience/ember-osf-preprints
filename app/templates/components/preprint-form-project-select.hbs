@@ -39,11 +39,16 @@
                     {{#cp-panel-body}}
                         <form class="form">
                             <div class="toggle-choose-file">
-                                <input id='existing' class="radio_item" onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
-                                <label for="existing" class='choose-large'><i class="fa fa-cloud-upload"></i> Upload preprint</label>
-
-                                <input id='newfile' class="radio_item" onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
-                                <label class='choose-large' for="newfile"><i class="fa fa-th-list"></i>Select existing file as preprint</label>
+                                <div class="row">
+                                    <div class="col-xs-3 col-xs-offset-3 text-center">
+                                        <input id='existing' class="radio_item" onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
+                                        <label for="existing" class='choose-large'><i class="fa fa-cloud-upload"></i> Upload preprint</label>
+                                    </div>
+                                    <div class="col-xs-3 text-center">
+                                        <input id='newfile' class="radio_item" onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
+                                        <label class='choose-large' for="newfile"><i class="fa fa-th-list"></i>Select existing file as preprint</label>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     {{/cp-panel-body}}
@@ -57,21 +62,22 @@
                                 Choose File
 
                             {{#if selectedFile}}
-                                    <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
+                                    <span id='selectedFileExisting'> {{selectedFile.name}} </span>
                             {{/if}}
                             {{/cp-panel-toggle}}
                             {{#cp-panel-body}}
-                                <form class="form">
-                                    <div class="toggle-choose-file">
-                                        <input id='existing' onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
-                                        <label for="existing"><i class="fa fa-cloud-upload"></i> Upload </label>
+                                <div class="m-t-sm">
+                                    <form class="form">
+                                        <div class="toggle-choose-file">
+                                            <input id='existing' onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
+                                            <label for="existing"><i class="fa fa-cloud-upload"></i> </label>
 
-                                        <input id='newfile' onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
-                                        <label for="newfile"><i class="fa fa-th-list"></i>Select</label>
-                                    </div>
-                                </form>
+                                            <input id='newfile' onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
+                                            <label for="newfile"><i class="fa fa-th-list"></i> </label>
+                                        </div>
+                                    </form>
+                                </div>
                                 {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
-
                             {{/cp-panel-body}}
                         {{/cp-panel}}
                         {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}

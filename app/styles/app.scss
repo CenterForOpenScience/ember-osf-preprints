@@ -875,14 +875,14 @@ hr {
     label {
         float: left;
         display: inline-block;
-        width: 70px;
+        width: 55px;
         background-color: #e4e4e4;
         color: rgba(0, 0, 0, 0.6);
-        font-size: 14px;
+        font-size: 12px;
         font-weight: normal;
         text-align: center;
         text-shadow: none;
-        padding: 7px 10px;
+        padding: 7px 7px;
         border: 1px solid rgba(0, 0, 0, 0.2);
         -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
         box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
@@ -894,19 +894,23 @@ hr {
     }
 
     label.choose-large {
-        width: 150px;
-        background-color: #e4e4e4;
+        float: none;
+        background-color: white;
         font-size: 14px;
         padding: 10px 10px;
-        height: 110px;
+        height: 120px;
+        display: inline;
+        border: none;
+        box-shadow: none;
 
         i {
-            font-size: 50px;
+            font-size: 70px;
         }
     }
 
     label:hover {
         cursor: pointer;
+        color: gray;
     }
 
     input:checked + label {
@@ -923,7 +927,7 @@ hr {
     }
 
     label i {
-        font-size: 30px;
+        font-size: 25px;
         display: block;
     }
 }

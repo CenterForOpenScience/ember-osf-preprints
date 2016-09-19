@@ -89,6 +89,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             userNodes: Ember.A(),
             node: null,
             file: null,
+            hasFile: false,
             selectedFile: null,
             contributors: Ember.A(),
             nodeTitle: null,
