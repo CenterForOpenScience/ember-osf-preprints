@@ -1,10 +1,9 @@
-Choose Project Section Opened {{chooseProjectSectionOpened}}
 {{#cp-panels accordion=true}}
-    {{#cp-panel open=chooseProjectSectionOpened}}
+    {{#cp-panel name='chooseProject' open=true}}
         {{#cp-panel-toggle tagName='div'}}
             Choose Project
         {{/cp-panel-toggle}}
-        {{#cp-panel-body open=chooseProjectSectionOpened}}
+        {{#cp-panel-body}}
             <p class="text-muted">
                 The list of projects appearing in the selector are projects and components for which you have admin access.  Deleted projects and registrations
                 are not included here.
@@ -30,7 +29,7 @@ Choose Project Section Opened {{chooseProjectSectionOpened}}
     {{#if selectedNode}}
         {{#if isAdmin}}
             {{#if (and fileSelect (eq existingState _existingState.CHOOSE))}}
-                {{#cp-panel open=chooseExistingStateOpened}}
+                {{#cp-panel name='chooseFile' open=false}}
                     {{#cp-panel-toggle tagName='div'}}
                         Choose File
                     {{/cp-panel-toggle}}
@@ -51,7 +50,7 @@ Choose Project Section Opened {{chooseProjectSectionOpened}}
             {{#if (eq existingState _existingState.EXISTINGFILE)}}
                 <div>
                     {{#if osfProviderLoaded}}
-                        {{#cp-panel open=selectExistingFileSectionOpened}}
+                        {{#cp-panel name='selectExistingFile' open=false}}
                             {{#cp-panel-toggle tagName='div'}}
                                 Choose File
                             {{/cp-panel-toggle}}
@@ -65,7 +64,7 @@ Choose Project Section Opened {{chooseProjectSectionOpened}}
 
 
                         {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-                            {{#cp-panel open=organizeSectionOpened}}
+                            {{#cp-panel name='organize' open=false}}
                                 {{#cp-panel-toggle tagName='div'}}
                                     Organize
                                 {{/cp-panel-toggle}}

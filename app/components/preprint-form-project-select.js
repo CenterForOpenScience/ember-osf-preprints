@@ -46,6 +46,7 @@ export default Ember.Component.extend({
     _existingState: existingState,
     userNodes: Ember.A(),
     selectedNode: null,
+    panelActions: Ember.inject.service(),
     isAdmin: Ember.computed('selectedNode', function() {
         if (this.get('selectedNode')) {
             return this.get('selectedNode.currentUserPermissions').indexOf(Permissions.ADMIN) !== -1;
@@ -68,24 +69,20 @@ export default Ember.Component.extend({
             // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded,
             // file-browser component can be loaded.
             this.set('selectedNode', node);
-            this.toggleProperty('chooseProjectSectionOpened');
-            this.set('chooseProjectSectionOpened', false);
+            this.get('panelActions').toggle('chooseProject');
             this.set('selectedFile', null);
             this.set('osfProviderLoaded', false);
             this.send('changeExistingState', existingState.CHOOSE);
             this.get('selectedNode.files').then((files) => {
                 this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
                 this.set('osfProviderLoaded', true);
-                this.set('chooseExistingStateOpened', true);
             });
         },
         selectFile(file) {
             // Select existing file from file-browser
             this.attrs.selectFile(file);
-            this.set('chooseProjectSectionOpened', false);
-            this.set('organizeSectionOpened', true);
-            this.set('chooseExistingStateOpened', false);
-            this.set('selectExistingFileSectionOpened', false);
+            this.get('panelActions').toggle('selectExistingFile');
+            this.get('panelActions').toggle('organize');
             if (this.get('selectedFile')) {
                 this.highlightSuccessOrFailure('selectedFileExisting', this, 'success');
             }
@@ -94,13 +91,13 @@ export default Ember.Component.extend({
             // Toggles existingState between 'existing' or 'new', meaning user wants to select existing file from file browser
             // or upload a new file.
             this.set('existingState', newState);
+            this.get('panelActions').toggle('chooseFile');
             if (newState === existingState.EXISTINGFILE) {
-                this.set('selectExistingFileSectionOpened', true);
+                this.get('panelActions').toggle('selectExistingFile');
             }
             if (newState === existingState.NEWFILE) {
-                this.set('uploadNewFileSectionOpened', true);
+                this.get('panelActions').toggle('uploadNewFile');
             }
-            this.set('chooseProjectSectionOpened', false);
             this.set('selectedFile', null);
             this.set('hasFile', false);
             this.set('nodeTitle', null);
