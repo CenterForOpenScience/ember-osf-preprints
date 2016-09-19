@@ -59,11 +59,6 @@ export default Ember.Component.extend({
 
     createComponent: null,
     existingState: existingState.CHOOSE,
-    chooseProjectSectionOpened: true,
-    chooseExistingFileOpened: false,
-    organizeSectionOpened: false,
-    uploadNewFileSectionOpened: false,
-    selectExistingFileSectionOpened: false,
     actions: {
         nodeSelected(node) {
             // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded,

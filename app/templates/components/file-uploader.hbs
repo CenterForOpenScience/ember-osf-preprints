@@ -36,7 +36,7 @@
 
     {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
         {{#cp-panel name='organize'}}
-            {{#cp-panel-toggle}}
+            {{#cp-panel-toggle tagName='div'}}
                 Organize
 
                 {{#if (eq convertOrCopy 'convert')}}
