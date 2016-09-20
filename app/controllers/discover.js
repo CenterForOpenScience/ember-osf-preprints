@@ -78,13 +78,7 @@ export default Ember.Controller.extend({
             var hits = results.aggregations.sources.buckets;
             var providers = [];
             var whiteList = _this.get('whiteListedProviders');
-            hits.map(function(each) {
-                each = each.key;
-                console.log(each);
-                if (whiteList.indexOf(each) !== -1) {
-                    providers.push(each);
-                }
-            });
+            var providers = hits.map(each => each.key).filter(each => whiteList.indexOf(each) !== -1);
             _this.get('osfProviders').slice().map(function(each) {
                 if (providers.indexOf(each) === -1) {
                     providers.push(each);
