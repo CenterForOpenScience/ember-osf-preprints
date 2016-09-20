@@ -36,6 +36,9 @@ module.exports = function(environment) {
             // The name of the OSF campaign used to track signups
             campaign: 'osf-preprints'
         },
+        i18n: {
+            defaultLocale: 'en'
+        },
     };
 
     if (environment === 'development') {
