@@ -30,7 +30,7 @@
             {{#if (eq name 'Basics')}}
                 <p><em class="m-r-md"> DOI: </em> {{if doi doi 'None'}} </p>
                 <p>
-                    <em class="m-r-md"> Tags: </em>
+                   <em class="m-r-md"> Tags: </em>
                     {{#if tags}}
                         <ul class="comma-list">
                             {{#each tags as |tag|~}}
@@ -43,14 +43,14 @@
                 </p>
                 <em class="m-r-md"> Abstract: </em>
                 <p class="abstract">{{if abstract abstract 'None'}} </p>
-                {{else if (eq name 'Discipline')}}
-                    {{#if subjects}}
-                        {{#each subjects as |subject|}}
-                            <span class="subject-preview">{{subject.text}} </span>
-                        {{/each}}
-                    {{else}}
-                        <span> None </span>
-                    {{/if}}
+            {{else if (eq name 'Discipline')}}
+                {{#if subjects}}
+                    {{#each subjects as |subject|}}
+                        <span class="subject-preview">{{subject.text}} </span>
+                    {{/each}}
+                {{else}}
+                    <span> None </span>
+                {{/if}}
         {{#if (eq name 'Basics')}}
             <p><em class="m-r-md"> {{t "global.doi"}}: </em> {{if doi doi (t "global.none")}} </p>
             <p>
@@ -89,6 +89,7 @@
                         {{~/each}}
                     </ul>
                 {{/if}}
+            {{/if}}
         {{/if}}
 
         {{#if (eq name 'Choose Project')}}
@@ -105,17 +106,17 @@
 
         {{#if (eq name 'Organize')}}
             {{#if (eq convertOrCopy 'convert')}}
-                <p>The current project/component will contain the preprint. </p>
+                <p>{{t "global.convert"}}</p>
             {{/if}}
 
             {{#if (eq convertOrCopy 'copy')}}
-                <p>A new component inside the current project will contain the preprint.</p>
+                <p>{{t "global.copy"}}</p>
             {{/if}}
         {{/if}}
 
         {{#if (eq name 'Finalize Upload')}}
             {{#if nodeTitle}}
-                 <p>Preprint title: {{nodeTitle}} </p>
+                 <p>{{t "components.preprint-form-header.title"}}: {{nodeTitle}} </p>
             {{/if}}
         {{/if}}
 
