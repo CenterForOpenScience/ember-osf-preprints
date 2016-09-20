@@ -1,15 +1,15 @@
 <form {{action (action addUnregisteredContributor fullName email) on="submit"}}>
     <div>
-        <label>Full Name</label>
-        {{validated-input model=this valuePath='fullName' placeholder='Full Name' value=fullName}}
+        <label>{{t "components.unregistered-contributor-form.full_name"}}</label>
+        {{validated-input model=this valuePath='fullName' placeholder=(t "components.unregistered-contributor-form.full_name") value=fullName}}
     </div>
     <div>
-        <label>Email</label>
-        {{validated-input model=this valuePath='username' placeholder='Email' value=email}}
+        <label>{{t "components.unregistered-contributor-form.email"}}</label>
+        {{validated-input model=this valuePath='username' placeholder=(t "components.unregistered-contributor-form.email") value=email}}
     </div>
-    <p class="text-muted"> We will notify the user that they have been added to your preprint. </p>
+    <p class="text-muted">{{t "components.unregistered-contributor-form.paragraph"}}</p>
     <div class="pull-right unregistered-submit">
-        <button {{action resetfindContributorsView}} type="button" class="btn btn-default btn-small"> Cancel </button>
-        <button type="submit" disabled={{not isFormValid}} {{action "addUnregistered" fullName email}} class="btn btn-success btn-small"> Add </button>
+        <button {{action resetfindContributorsView}} type="button" class="btn btn-default btn-small"> {{t "global.cancel"}} </button>
+        <button type="submit" disabled="{{not isFormValid}}" {{action "addUnregistered" fullName email}} class="btn btn-success btn-small"> {{t "global.add"}} </button>
     </div>
 </form>
