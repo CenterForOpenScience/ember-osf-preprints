@@ -59,7 +59,7 @@
                     {{/if}}
                     {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
                     <div class="row text-center m-v-md">
-                        <p> You are about to initiate the preprint process.  You will not be able to update your project or file after this point. </p>
+                        <p> You are about to initiate the preprint process.  You will not be able to change your project or file after this point. </p>
                         <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>Save and continue</button>
                     </div>
                 {{/preprint-form-body}}
