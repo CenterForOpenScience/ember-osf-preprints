@@ -138,11 +138,13 @@ export default Ember.Component.extend({
         },
         preUpload(_, dropzone, file) {
             this.send('formatDropzoneAfterPreUpload');
-            this.get('panelActions').toggle('uploadNewFile');
-            this.get('panelActions').toggle('organize');
             this.set('file', file);
             this.set('hasFile', true);
             this.set('callback', Ember.RSVP.defer());
+            Ember.run.later(() => {
+                this.get('panelActions').toggle('uploadNewFile');
+                this.get('panelActions').toggle('organize');
+            }, 2000);
             return this.get('callback.promise');
         },
         maxfilesexceeded(_, dropzone, file) {
