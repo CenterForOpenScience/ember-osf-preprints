@@ -8,12 +8,13 @@
             {{#if (not userNodesLoaded)}}
                 <div class="text-center">
                     {{fa-icon 'spinner' pulse=true size=3}}
+
                 </div>
             {{else}}
                 {{#if userNodes}}
                     <div class="p-b-md">
                         {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
-                            <strong>{{node.title}}</strong>
+                            <strong>{{get-ancestor-descriptor node}}</strong>
                         {{/power-select}}
                     </div>
                 {{else}}
