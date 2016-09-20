@@ -76,7 +76,6 @@ export default Ember.Controller.extend({
             crossDomain: true,
         }).then(function(results) {
             var hits = results.aggregations.sources.buckets;
-            var providers = [];
             var whiteList = _this.get('whiteListedProviders');
             var providers = hits.map(each => each.key).filter(each => whiteList.indexOf(each) !== -1);
             _this.get('osfProviders').slice().map(function(each) {
