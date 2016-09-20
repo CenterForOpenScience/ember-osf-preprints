@@ -1,12 +1,7 @@
 {{#cp-panels accordion=true}}
-    {{#cp-panel name='chooseProject' open=true}}
-        {{#cp-panel-toggle tagName='div'}}
-            Choose Project
-            {{#if selectedNode}}
-                {{selectedNode.title}}
-            {{/if}}
-        {{/cp-panel-toggle}}
-        {{#cp-panel-body}}
+    {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}}
+        {{preprint-form-header name='Choose Project' selectedNode=selectedNode showValidationIndicator=false}}
+        {{#preprint-form-body}}
             <p class="text-muted">
                 The list of projects appearing in the selector are projects and components for which you have admin access.  Deleted projects and registrations are not included here.
             </p>
@@ -16,24 +11,23 @@
                 </div>
             {{else}}
                 {{#if userNodes}}
-                    {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
-                        <strong>{{node.title}}</strong>
-                    {{/power-select}}
+                    <div class="p-b-md">
+                        {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
+                            <strong>{{node.title}}</strong>
+                        {{/power-select}}
+                    </div>
                 {{else}}
                     <p class="m-t-md text-danger"> You have no valid nodes that can be converted into a preprint.  Go back to upload a new preprint. </p>
                 {{/if}}
             {{/if}}
-        {{/cp-panel-body}}
-    {{/cp-panel}}
-
+        {{/preprint-form-body}}
+    {{/preprint-form-section}}
     {{#if selectedNode}}
         {{#if isAdmin}}
             {{#if (and fileSelect (eq existingState _existingState.CHOOSE))}}
-                {{#cp-panel name='chooseFile' open=false}}
-                    {{#cp-panel-toggle tagName='div'}}
-                        Choose File
-                    {{/cp-panel-toggle}}
-                    {{#cp-panel-body}}
+                {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseFile' open=false}}
+                    {{preprint-form-header name='Choose File' showValidationIndicator=false}}
+                    {{#preprint-form-body}}
                         <form class="form">
                             <div class="toggle-button">
                                 <div class="row">
@@ -48,20 +42,15 @@
                                 </div>
                             </div>
                         </form>
-                    {{/cp-panel-body}}
-                {{/cp-panel}}
+                    {{/preprint-form-body}}
+                {{/preprint-form-section}}
             {{/if}}
             {{#if (eq existingState _existingState.EXISTINGFILE)}}
                 <div>
                     {{#if osfProviderLoaded}}
-                        {{#cp-panel name='selectExistingFile' open=false}}
-                            {{#cp-panel-toggle tagName='div'}}
-                                Choose File
-                                {{#if selectedFile}}
-                                    <span id='selectedFileExisting'> {{selectedFile.name}} </span>
-                                {{/if}}
-                            {{/cp-panel-toggle}}
-                            {{#cp-panel-body}}
+                        {{#preprint-form-section class="upload-section-block" allowOpen=true name='selectExistingFile' open=false}}
+                            {{preprint-form-header name='Choose File' selectedFile=selectedFile showValidationIndicator=false}}
+                            {{#preprint-form-body}}
                                 <div class="m-t-sm">
                                     <form class="form">
                                         <div class="toggle-button">
@@ -74,31 +63,19 @@
                                     </form>
                                 </div>
                                 {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
-                            {{/cp-panel-body}}
-                        {{/cp-panel}}
-                        {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-                            {{#cp-panel name='organize' open=false}}
-                                {{#cp-panel-toggle tagName='div'}}
-                                    Organize
-
-                                    {{#if (eq convertOrCopy 'convert')}}
-                                        The current project/component will contain the preprint.
-                                    {{/if}}
-
-                                    {{#if (eq convertOrCopy 'copy')}}
-                                        A new component inside the current project will contain the preprint.
-                                    {{/if}}
-                                {{/cp-panel-toggle}}
-                                {{#cp-panel-body}}
+                            {{/preprint-form-body}}
+                        {{/preprint-form-section}}
+                        {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
+                            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
+                                {{preprint-form-header convertOrCopy=convertOrCopy name='Organize' showValidationIndicator=false}}
+                                {{#preprint-form-body}}
                                     {{convert-or-copy-project nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
-                                {{/cp-panel-body}}
-                            {{/cp-panel}}
-                            {{#liquid-if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
-                                {{#cp-panel name='finalizeUpload'}}
-                                    {{#cp-panel-toggle tagName='div'}}
-                                        Finalize Upload
-                                    {{/cp-panel-toggle}}
-                                    {{#cp-panel-body}}
+                                {{/preprint-form-body}}
+                            {{/preprint-form-section}}
+                            {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
+                                {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
+                                    {{preprint-form-header name='Finalize Upload' showValidationIndicator=false}}
+                                    {{#preprint-form-body}}
                                         {{#if (eq convertOrCopy 'convert')}}
                                             {{#if convertProjectConfirmed}}
                                                 <label class="text-muted title-label"> Edit preprint title </label>
@@ -112,10 +89,10 @@
                                             <p> You are about to initiate the preprint process.  You will not be able to update your project or file after this point. </p>
                                             <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>Save and continue</button>
                                         </div>
-                                    {{/cp-panel-body}}
-                                {{/cp-panel}}
-                            {{/liquid-if}}
-                        {{/liquid-if}}
+                                    {{/preprint-form-body}}
+                                {{/preprint-form-section}}
+                            {{/if}}
+                        {{/if}}
 
                         <div class="p-t-xs pull-right">
                             <button class="btn btn-default" {{action changeState startState}}>Back</button>

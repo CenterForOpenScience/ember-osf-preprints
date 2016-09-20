@@ -31,48 +31,76 @@
     </div>
 {{/if}}
 
-{{#if (and isValidationActive (not isOpen))}}
+{{#if (not isOpen)}}
     <div class="m-t-md preprint-header-preview">
-        {{#if (eq name 'Basics')}}
-            <p><em class="m-r-md"> DOI: </em> {{if doi doi 'None'}} </p>
-            <p>
-                <em class="m-r-md"> Tags: </em>
-                {{#if tags}}
-                    <ul class="comma-list">
-                        {{#each tags as |tag|~}}
-                            <li> {{~tag~}} </li>
+        {{#if isValidationActive}}
+            {{#if (eq name 'Basics')}}
+                <p><em class="m-r-md"> DOI: </em> {{if doi doi 'None'}} </p>
+                <p>
+                    <em class="m-r-md"> Tags: </em>
+                    {{#if tags}}
+                        <ul class="comma-list">
+                            {{#each tags as |tag|~}}
+                                <li> {{~tag~}} </li>
+                            {{~/each}}
+                        </ul>
+                    {{else}}
+                        <span> None</span>
+                    {{/if}}
+                </p>
+                <em class="m-r-md"> Abstract: </em>
+                <p class="abstract">{{if abstract abstract 'None'}} </p>
+                {{else if (eq name 'Discipline')}}
+                    {{#if subjects}}
+                        {{#each subjects as |subject|}}
+                            <span class="subject-preview">{{subject.text}} </span>
+                        {{/each}}
+                    {{else}}
+                        <span> None </span>
+                    {{/if}}
+
+                {{else if (eq name 'Authors')}}
+                    <ul class="author-preview comma-list">
+                        {{#each authors as |contrib| ~}}
+                            <li>
+                                {{~#if contrib.unregisteredContributor~}}
+                                    {{~contrib.unregisteredContributor~}}
+                                {{else}}
+                                    {{~contrib.users.fullName~}}
+                                {{~/if~}}
+                            </li>
                         {{~/each}}
                     </ul>
-                {{else}}
-                    <span> None</span>
                 {{/if}}
-            </p>
-            <em class="m-r-md"> Abstract: </em>
-            <p class="abstract">{{if abstract abstract 'None'}} </p>
-        {{else if (eq name 'Discipline')}}
-            {{#if subjects}}
-                {{#each subjects as |subject|}}
-                    <span class="subject-preview">{{subject.text}} </span>
-                {{/each}}
-            {{else}}
-                <span> None </span>
-            {{/if}}
-
-        {{else if (eq name 'Authors')}}
-            <ul class="author-preview comma-list">
-                {{#each authors as |contrib| ~}}
-                    <li>
-                        {{~#if contrib.unregisteredContributor~}}
-                            {{~contrib.unregisteredContributor~}}
-                        {{else}}
-                            {{~contrib.users.fullName~}}
-                        {{~/if~}}
-                    </li>
-                {{~/each}}
-            </ul>
         {{/if}}
 
-        <i class="text-smaller m-t-md">Click to Edit</i>
+        {{#if (eq name 'Choose Project')}}
+            {{#if selectedNode}}
+                <p> {{selectedNode.title}} </p>
+            {{/if}}
+        {{/if}}
 
+        {{#if (eq name 'Choose File')}}
+            {{#if selectedFile}}
+                <p> {{selectedFile.name}}</p>
+            {{/if}}
+        {{/if}}
+
+        {{#if (eq name 'Organize')}}
+            {{#if (eq convertOrCopy 'convert')}}
+                The current project/component will contain the preprint.
+            {{/if}}
+
+            {{#if (eq convertOrCopy 'copy')}}
+                A new component inside the current project will contain the preprint.
+            {{/if}}
+        {{/if}}
+
+
+        {{#if (and (not-eq name 'Submit') (or (not showValidationIndicator) isValidationActive))}}
+            <i class="text-smaller m-t-md">Click to Edit</i>
+        {{/if}}
     </div>
 {{/if}}
+
+

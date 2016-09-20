@@ -144,7 +144,7 @@ export default Ember.Component.extend({
             Ember.run.later(() => {
                 this.get('panelActions').toggle('uploadNewFile');
                 this.get('panelActions').toggle('organize');
-            }, 2000);
+            }, 1500);
             return this.get('callback.promise');
         },
         maxfilesexceeded(_, dropzone, file) {
