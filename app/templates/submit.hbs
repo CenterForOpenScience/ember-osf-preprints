@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h1> Add Preprint </h1>
+                <h1>{{t "submit.heading"}}</h1>
             </div>
         </div>
 
@@ -14,16 +14,16 @@
     <div class="container">
         <div class="row m-t-lg">
             <div class="col-xs-12 col-md-10 col-md-offset-1 ">
-                <p>Follow these five easy steps to add your preprint to the OSF preprint repository.</p>
+                <p>{{t "submit.body.p"}}</p>
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error')}}
                             {{preprint-form-header uploadSaveState=uploadSaveState showValidationIndicator=false name=name preprintFile=selectedFile.name preprintTitle=node.title valid=uploadValid}}
                             {{#preprint-form-body}}
                                 {{#if fileAndNodeLocked}}
-                                    <p><em> Preprint file: </em> {{selectedFile.name}}</p>
+                                    <p><em> {{t "submit.body.file"}}: </em> {{selectedFile.name}}</p>
 
-                                    <p><em> Preprint title: </em></p>
+                                    <p><em> {{t "submit.body.title"}}: </em></p>
                                     {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
                                     <div class="pull-right">
                                         <button class="btn btn-primary" disabled={{unless nodeTitle true}} {{action 'editTitleNext' name}}>Save and continue</button>
@@ -96,14 +96,14 @@
                         {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header disciplineSaveState=disciplineSaveState subjects=model.subjects name=name valid=disciplineValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
-                                <p class="m-b-lg small"> Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.</p>
+                                <p class="m-b-lg small">{{t "submit.body.subjects_description"}}</p>
 
                                 {{subject-picker save=(action 'saveSubjects')}}
 
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">
-                                            <button {{action 'subjectsNext'}} class="btn btn-primary" disabled={{unless disciplineValid true}} >Save and continue</button>
+                                            <button {{action 'subjectsNext'}} class="btn btn-primary" disabled={{unless disciplineValid true}} >{{t "submit.body.save_continue"}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -118,30 +118,26 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div>
-                                            <label>
-                                                If published, DOI of associated journal article (optional):
-                                            </label>
-                                            {{validated-input model=this valuePath='basicsDOI' placeholder="DOI" value=basicsDOI}}
+                                            <label>{{t "submit.body.basics.doi.label"}}:</label>
+                                            {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI}}
                                         </div>
                                         <div class="clearfix">
-                                            <label>
-                                                Keywords:
-                                            </label>
-                                            <p class="small"> Add keywords to increase discoverability of your preprint</p>
+                                            <label>{{t "submit.body.basics.keywords.label"}}:</label>
+                                            <p class="small">{{t "submit.body.basics.keywords.paragraph"}}</p>
                                             {{tags-widget addATag=(action 'addATag' node) removeATag=(action 'removeATag' node) tags=node.tags}}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label>
-                                            <span class="required">Abstract:</span>
+                                            <span class="required">{{t "global.abstract"}}:</span>
                                         </label>
-                                        {{validated-input model=this valuePath='basicsAbstract' placeholder="Add a brief summary of your preprint" value=basicsAbstract large=true}}
+                                        {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">
-                                            <button {{action 'saveBasics'}} class="btn btn-primary" disabled={{unless basicsValid true}} >Save and continue</button>
+                                            <button {{action 'saveBasics'}} class="btn btn-primary" disabled={{unless basicsValid true}} >{{t "submit.body.save_continue"}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -155,8 +151,7 @@
                             {{preprint-form-header authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="small">
-                                    Add preprint authors and order them appropriately. Search looks for authors that have OSF accounts already.
-                                    Unregistered users can be added and invited to join the preprint.
+                                    {{t "submit.body.authors.paragraph"}}
                                 </p>
                                 {{preprint-form-authors
                                     contributors=contributors
@@ -176,7 +171,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">
-                                            <button {{action 'next' name}} class="btn btn-primary" disabled={{unless authorsValid true}} >Save and continue</button>
+                                            <button {{action 'next' name}} class="btn btn-primary" disabled={{unless authorsValid true}} >{{t "submit.body.save_continue"}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -190,20 +185,17 @@
                             {{#cp-panel-body}}
                                 <div>
                                     <p>
-                                        When you share this preprint, it will become publicly accessible via OSF Preprints.
-                                        This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials,
-                                        appendices, data, or protocols. If posting this preprint is your first exposure to the OSF,
-                                        you will receive an email introducing OSF to you.
+                                        {{t "submit.body.submit.paragraph"}}
                                     </p>
                                     <div class="text-center">
                                         {{#unless allSectionsValid}}
-                                            <p class="m-t-md"> <strong> The following section(s) must be completed before sharing this preprint. </strong></p>
-                                            <p class="text-danger"> {{if (not disciplineValid) 'Discipline'}}</p>
-                                            <p class="text-danger"> {{if (not basicsValid) 'Basics'}}</p>
-                                            <p class="text-danger"> {{if (not authorsValid) 'Authors'}}</p>
+                                            <p class="m-t-md"> <strong>{{t "submit.body.submit.invalid.description"}}</strong></p>
+                                            <p class="text-danger"> {{if (not disciplineValid) (t "submit.body.submit.invalid.discipline")}}</p>
+                                            <p class="text-danger"> {{if (not basicsValid) (t "submit.body.submit.invalid.basics")}}</p>
+                                            <p class="text-danger"> {{if (not authorsValid) (t "global.authors")}}</p>
                                         {{/unless}}
                                         <p> </p>
-                                        <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>Share</button>
+                                        <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>{{t "global.share"}}</button>
                                         <div>
                                             {{confirm-share-preprint isOpen=showModalSharePreprint savePreprint=(action 'savePreprint')}}
                                         </div>

@@ -6,7 +6,7 @@
         buildUrl=(action 'getUrl')
         complete=(action 'complete')
         preUpload=(action 'preUpload')
-        defaultMessage='Drop preprint file here to upload'
+        defaultMessage=(t 'components.file-uploader.dropzone_message')
         maxfilesexceeded=(action 'maxfilesexceeded')
     }}
     {{#if hasFile}}
@@ -35,7 +35,7 @@
                 buildUrl=(action 'getUrl')
                 complete=(action 'complete')
                 preUpload=(action 'preUpload')
-                defaultMessage='Drop preprint file here to upload'
+                defaultMessage=(t 'components.file-uploader.dropzone_message')
                 maxfilesexceeded=(action 'maxfilesexceeded')
             }}
         {{/preprint-form-body}}
@@ -71,6 +71,6 @@
 <div class="p-t-xs pull-right">
     {{#if (eq uploadIntent 'newNodeNewFile')}}
         <button class="btn btn-default" {{action changeState startState}}>Back</button>
-        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>Next</button>
+        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "global.next"}}</button>
     {{/if}}
 </div>

@@ -114,6 +114,13 @@ ul.comma-list {
     }
 
 }
+
+.preprint-lead,
+.preprint-tool h2
+{
+    text-transform: capitalize;
+}
+
 /* Recent uploads list panel */
 .preprint-list {
     background: #fbfbfb;

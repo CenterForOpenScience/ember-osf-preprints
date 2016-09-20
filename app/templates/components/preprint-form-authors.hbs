@@ -2,7 +2,7 @@
     <div class="col-xs-12 col-md-5 col-division-right">
         <form {{action 'findContributors' 1 on='submit'}}>
             <div class="input-group author-search-box">
-                <input id="author-search-box" type="text" class="form-control searchQuery" onchange={{action (mut query) value="target.value"}} placeholder="Search by name">
+                <input id="author-search-box" type="text" class="form-control searchQuery" onchange={{action (mut query) value="target.value"}} placeholder={{t "components.preprint-form-authors.search.placeholder"}}>
                 <span class="input-group-btn">
                     <button class="btn btn-default authors-search-button" type="button" {{action 'findContributors' 1}} >
                         <i class="glyphicon glyphicon-search"></i>
@@ -13,10 +13,10 @@
         {{#if (not-eq addState 'emptyView')}}
             {{#if (eq addState 'searchView')}}
                 <div class="unregisteredUsers">
-                    <p> Can't find the user you're looking for? </p>
-                    <button class="btn btn-primary btn-small" {{action "unregisteredView"}}> Add author by email address </button>
+                    <p>{{t "components.preprint-form-authors.unregistered_users.paragraph"}}</p>
+                    <button class="btn btn-primary btn-small" {{action "unregisteredView"}}>{{t "components.preprint-form-authors.unregistered_users.button"}}</button>
                 </div>
-                <h3> Results </h3>
+                <h3> {{t "components.preprint-form-authors.results"}} </h3>
                 {{#if searchResults}}
                     <table class="table author-table">
                         {{#each searchResults as |result|}}
@@ -25,27 +25,32 @@
                                     <img class="m-l-xs" src={{result.links.profile_image}} height=30 width=30>
                                     <a href={{result.links.html}}> {{result.fullName}} </a>
                                     {{#if (eq currentUser result)}}
-                                        <span class="small"> Yourself </span>
+                                        <span class="small"> {{t "components.preprint-form-authors.yourself"}} </span>
                                     {{/if}}
-
                                 </td>
-                                {{#if (userIsContributor result contributors authorModification)}}
-                                    <td class="p-v-xs"><span class="hint hint--left pull-right" aria-label="Already added"> <button class="btn btn-default btn-small disabled disabled-checkmark"><i class="fa fa-check" aria-hidden="true"></i> </button> </span> </td>
-                                {{else}}
-                                    <td class="p-v-xs"> <button class="btn btn-success btn-small pull-right" {{action "addContributor" result}}> Add </button> </td>
-                                {{/if}}
+                                <td class="p-v-xs">
+                                    {{#if (userIsContributor result contributors authorModification)}}
+                                        <span class="hint hint--left pull-right" aria-label="{{t "components.preprint-form-authors.already_added"}}">
+                                            <button class="btn btn-default btn-small disabled disabled-checkmark">
+                                                <i class="fa fa-check" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
+                                    {{else}}
+                                        <button class="btn btn-success btn-small pull-right" {{action "addContributor" result}}> {{t "global.add"}} </button>
+                                    {{/if}}
+                                </td>
                             </tr>
                         {{/each}}
                     </table>
                 {{else}}
-                    No results found.
+                    {{t "global.no_results_found"}}
                 {{/if}}
                 {{#if (gt pages 1)}}
                     {{osf-paginator totalSearchResults=totalSearchResults fetchResults=(action findContributors) query=query}}
                 {{/if}}
             {{/if}}
             {{#if (eq addState 'unregisteredView')}}
-                <h3> Add author by email </h3>
+                <h3> {{t "components.preprint-form-authors.add_email"}} </h3>
                 <div class="user-validation" id="add-unregistered-contributor-form">
                     {{unregistered-contributor-form resetfindContributorsView=(action 'resetfindContributorsView') addUnregisteredContributor=(action 'addUnregisteredContributor')}}
                 </div>
@@ -54,11 +59,11 @@
     </div>
     <div class="col-xs-12 col-md-7">
         <div class="author-header">
-            <h2 class="header-inline"> Authors </h2>
+            <h2 class="header-inline"> {{t "global.authors"}} </h2>
             <span>
                 <i class="fa fa-question-circle permission-info"
                     data-toggle="popover"
-                    data-title="Author Information"
+                    data-title="{{t "components.preprint-form-authors.authors.title"}}"
                     data-trigger="hover"
                     data-html="true"
                     data-placement="bottom"
@@ -69,18 +74,18 @@
                 <button class="btn btn-default pull-right" {{action 'addContributorsFromParentProject'}}> <i class="fa fa-plus icon-large small"></i> <em class="small"> Add contributors from parent project </em> </button>
             {{/if}}
         </div>
-        <p class="drag-drop small"> Drag and drop authors to change authorship order. </p>
+        <p class="drag-drop small"> {{t "components.preprint-form-authors.authors.order_instructions"}} </p>
         <div class="panel-body">
             <table class="table author-table">
                 <tr>
                     <th> </th>
-                    <th class="contrib-column-header"> Name </th>
+                    <th class="contrib-column-header"> {{t "components.preprint-form-authors.authors.name"}} </th>
                     <th class="contrib-column-header">
-                        Permissions
+                        {{t "components.preprint-form-authors.authors.permissions"}}
                         <span>
                             <i class="fa fa-question-circle permission-info"
                                 data-toggle="popover"
-                                data-title="Permission Information"
+                                data-title="{{t "components.preprint-form-authors.authors.permission_information"}}"
                                 data-trigger="hover"
                                 data-html="true"
                                 data-placement="bottom"
@@ -90,11 +95,11 @@
                         <br>
                     </th>
                     <th class="bib-padding">
-                        Citation
+                        {{t "components.preprint-form-authors.authors.citation"}}
                         <span>
                             <i class="fa fa-question-circle permission-info"
                                 data-toggle="popover"
-                                data-title="Citation Information"
+                                data-title="{{t "components.preprint-form-authors.authors.citation_information"}}"
                                 data-trigger="hover"
                                 data-html="true"
                                 data-placement="bottom"
@@ -148,9 +153,9 @@
                             <td>
                                 <div class="form-group vert-align nudge-right">
                                     {{#if (and (permissionToRemoveContributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors authorModification))}}
-                                        <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm" > Remove </button>
+                                        <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm" > {{t "components.preprint-form-authors.remove"}} </button>
                                     {{else}}
-                                        <button class="btn btn-danger btn-sm disabled"> Remove </button>
+                                        <button class="btn btn-danger btn-sm disabled"> {{t "components.preprint-form-authors.remove"}} </button>
                                     {{/if}}
                                 </div>
                             </td>

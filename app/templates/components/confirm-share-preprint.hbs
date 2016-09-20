@@ -1,15 +1,15 @@
 {{#bs-modal open=isOpen body=false header=false footer=false}}
     {{#bs-modal-header}}
-        <h3 class="modal-title">Share Preprint</h3>
+        <h3 class="modal-title">{{t "components.confirm-share-preprint.title"}}</h3>
     {{/bs-modal-header}}
     {{#bs-modal-body}}
-        Once this preprint is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.
+        {{t "components.confirm-share-preprint.body"}}
     {{/bs-modal-body}}
 
     {{#bs-modal-footer}}
         <div align="right">
-            <button {{action 'close'}} class="btn btn-default"> Cancel </button>
-            <button class="btn btn-success" disabled={{shareButtonDisabled}} {{action 'savePreprint'}}>Share</button>
+            <button {{action 'close'}} class="btn btn-default">{{t "global.cancel"}}</button>
+            <button class="btn btn-success" disabled={{shareButtonDisabled}} {{action 'savePreprint'}}>{{t "global.share"}}</button>
         </div>
     {{/bs-modal-footer}}
 {{/bs-modal}}
