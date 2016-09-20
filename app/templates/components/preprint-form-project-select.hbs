@@ -74,7 +74,7 @@
                             {{/preprint-form-section}}
                             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
                                 {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
-                                    {{preprint-form-header name='Finalize Upload' showValidationIndicator=false}}
+                                    {{preprint-form-header nodeTitle=nodeTitle name='Finalize Upload' showValidationIndicator=false}}
                                     {{#preprint-form-body}}
                                         {{#if (eq convertOrCopy 'convert')}}
                                             {{#if convertProjectConfirmed}}

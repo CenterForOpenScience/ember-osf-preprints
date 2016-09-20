@@ -40,7 +40,6 @@ export default Ember.Component.extend({
     url: null,
     node: null,
     callback: null,
-    nodeTitle: null,
     uploadInProgress: false,
     panelActions: Ember.inject.service(),
 

@@ -87,11 +87,17 @@
 
         {{#if (eq name 'Organize')}}
             {{#if (eq convertOrCopy 'convert')}}
-                The current project/component will contain the preprint.
+                <p>The current project/component will contain the preprint. </p>
             {{/if}}
 
             {{#if (eq convertOrCopy 'copy')}}
-                A new component inside the current project will contain the preprint.
+                <p>A new component inside the current project will contain the preprint.</p>
+            {{/if}}
+        {{/if}}
+
+        {{#if (eq name 'Finalize Upload')}}
+            {{#if nodeTitle}}
+                 <p>Preprint title: {{nodeTitle}} </p>
             {{/if}}
         {{/if}}
 
