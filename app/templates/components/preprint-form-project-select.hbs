@@ -1,106 +1,166 @@
-<label class="text-bigger"> 1. Choose existing OSF project </label>
-<p class="text-muted">
-    The list of projects appearing in the selector are projects and components for which you have admin access.  Deleted projects and registrations
-    are not included here.
-</p>
-<div class="m-b-lg">
-    {{#if (not userNodesLoaded)}}
-        <div class="text-center">
-            {{fa-icon 'spinner' pulse=true size=3}}
-        </div>
-    {{else}}
-        {{#if userNodes}}
-            {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
-                <strong>{{get-ancestor-descriptor node}}</strong>
-            {{/power-select}}
-        {{else}}
-            <p class="m-t-md text-danger"> You have no valid nodes that can be converted into a preprint.  Go back to upload a new preprint. </p>
-        {{/if}}
-    {{/if}}
-</div>
-{{#liquid-if selectedNode use='crossFade'}}
-    {{#if isAdmin}}
-        <label> 2. </label>
-
-        {{#if fileSelect}}
-            <div class="row">
-                <div class="row text-center text-bigger">
-                    <div class="radio-option col-xs-6 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 p-md">
-                        <label><input onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}> Upload preprint to this OSF project </label>
-                    </div>
-                    <div class="radio-option col-xs-6 col-sm-5 col-md-4 p-md">
-                        <label><input onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}> Identify existing file as the preprint</label>
-                    </div>
-                </div>
-            </div>
-        {{/if}}
-        {{#if (eq existingState _existingState.EXISTINGFILE)}}
-            <div>
-                {{#if osfProviderLoaded}}
-                    {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
-                    {{#if selectedFile}}
-                        <span id='selectedFileExisting'> Selected file: {{selectedFile.name}} </span>
-                    {{/if}}
-
-                    {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-                        <div class="m-t-lg">
-                            {{convert-or-copy-project nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
-                        </div>
-                    {{/liquid-if}}
-
-                    {{#liquid-if (and selectedFile (and convertOrCopy)) use='crossFade'}}
-                        {{#if (eq convertOrCopy 'convert')}}
-                            {{#if convertProjectConfirmed}}
-                                <label> 4. Edit preprint title </label>
-                                {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
-                            {{/if}}
-                        {{else}}
-                            <label> 4. Add preprint title</label>
-                            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
-                        {{/if}}
-                    {{/liquid-if}}
-
-                    <div class="p-t-xs pull-right">
-                        <button class="btn btn-default" {{action changeState startState}}>Back</button>
-                        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>Next</button>
-                    </div>
-                {{/if}}
-            </div>
-        {{else if (eq existingState _existingState.NEWFILE)}}
-            {{file-uploader
-                changeState=changeState
-                finishUpload=finishUpload
-                startState=startState
-                nodeTitle=nodeTitle
-                currentUser=currentUser
-                osfFile=selectedFile
-                hasFile=hasFile
-                file=file
-                contributors=contributors
-                node=node
-                selectedNode=selectedNode
-                userNodes=userNodes
-                parentNode=parentNode
-                convertProjectConfirmed=convertProjectConfirmed
-                convertOrCopy=convertOrCopy
-            }}
-        {{/if}}
-    {{else}}
-        {{#unless (eq currentState 'start')}}
-            <p class="alert alert-danger" role="alert">
-                You must be the admin of this component to share it.
-
-                Please ask the admin of this project to make you an admin
-                so you may share this component.
+{{#cp-panels accordion=true}}
+    {{#cp-panel name='chooseProject' open=true}}
+        {{#cp-panel-toggle tagName='div'}}
+            Choose Project
+            {{#if selectedNode}}
+                {{selectedNode.title}}
+            {{/if}}
+        {{/cp-panel-toggle}}
+        {{#cp-panel-body}}
+            <p class="text-muted">
+                The list of projects appearing in the selector are projects and components for which you have admin access.  Deleted projects and registrations are not included here.
             </p>
-        {{/unless}}
+            {{#if (not userNodesLoaded)}}
+                <div class="text-center">
+                    {{fa-icon 'spinner' pulse=true size=3}}
 
+                </div>
+            {{else}}
+                {{#if userNodes}}
+                    {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
+                        <strong>{{get-ancestor-descriptor node}}</strong>
+                    {{/power-select}}
+                {{else}}
+                    <p class="m-t-md text-danger"> You have no valid nodes that can be converted into a preprint.  Go back to upload a new preprint. </p>
+                {{/if}}
+            {{/if}}
+        {{/cp-panel-body}}
+    {{/cp-panel}}
+
+    {{#if selectedNode}}
+        {{#if isAdmin}}
+            {{#if (and fileSelect (eq existingState _existingState.CHOOSE))}}
+                {{#cp-panel name='chooseFile' open=false}}
+                    {{#cp-panel-toggle tagName='div'}}
+                        Choose File
+                    {{/cp-panel-toggle}}
+                    {{#cp-panel-body}}
+                        <form class="form">
+                            <div class="toggle-button">
+                                <div class="row">
+                                    <div class="col-xs-3 col-xs-offset-3 text-center">
+                                        <input id='existing' class="radio_item" onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
+                                        <label for="existing" class='choose-large'><i class="fa fa-cloud-upload"></i> Upload preprint</label>
+                                    </div>
+                                    <div class="col-xs-3 text-center">
+                                        <input id='newfile' class="radio_item" onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
+                                        <label class='choose-large' for="newfile"><i class="fa fa-th-list"></i>Select existing file as preprint</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    {{/cp-panel-body}}
+                {{/cp-panel}}
+            {{/if}}
+            {{#if (eq existingState _existingState.EXISTINGFILE)}}
+                <div>
+                    {{#if osfProviderLoaded}}
+                        {{#cp-panel name='selectExistingFile' open=false}}
+                            {{#cp-panel-toggle tagName='div'}}
+                                Choose File
+                                {{#if selectedFile}}
+                                    <span id='selectedFileExisting'> {{selectedFile.name}} </span>
+                                {{/if}}
+                            {{/cp-panel-toggle}}
+                            {{#cp-panel-body}}
+                                <div class="m-t-sm">
+                                    <form class="form">
+                                        <div class="toggle-button">
+                                            <input id='existing' onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
+                                            <label for="existing"><i class="fa fa-cloud-upload"></i> </label>
+
+                                            <input id='newfile' onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
+                                            <label for="newfile"><i class="fa fa-th-list"></i> </label>
+                                        </div>
+                                    </form>
+                                </div>
+                                {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
+                            {{/cp-panel-body}}
+                        {{/cp-panel}}
+                        {{#liquid-if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
+                            {{#cp-panel name='organize' open=false}}
+                                {{#cp-panel-toggle tagName='div'}}
+                                    Organize
+
+                                    {{#if (eq convertOrCopy 'convert')}}
+                                        The current project/component will contain the preprint.
+                                    {{/if}}
+
+                                    {{#if (eq convertOrCopy 'copy')}}
+                                        A new component inside the current project will contain the preprint.
+                                    {{/if}}
+                                {{/cp-panel-toggle}}
+                                {{#cp-panel-body}}
+                                    {{convert-or-copy-project nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
+                                {{/cp-panel-body}}
+                            {{/cp-panel}}
+                            {{#liquid-if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
+                                {{#cp-panel name='finalizeUpload'}}
+                                    {{#cp-panel-toggle tagName='div'}}
+                                        Finalize Upload
+                                    {{/cp-panel-toggle}}
+                                    {{#cp-panel-body}}
+                                        {{#if (eq convertOrCopy 'convert')}}
+                                            {{#if convertProjectConfirmed}}
+                                                <label class="text-muted title-label"> Edit preprint title </label>
+                                                {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                                            {{/if}}
+                                        {{else}}
+                                            <label class="text-muted title-label"> Add preprint title</label>
+                                            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                                        {{/if}}
+                                        <div class="row text-center m-v-md">
+                                            <p> You are about to initiate the preprint process.  You will not be able to update your project or file after this point. </p>
+                                            <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>Save and continue</button>
+                                        </div>
+                                    {{/cp-panel-body}}
+                                {{/cp-panel}}
+                            {{/liquid-if}}
+                        {{/liquid-if}}
+
+                        <div class="p-t-xs pull-right">
+                            <button class="btn btn-default" {{action changeState startState}}>Back</button>
+                        </div>
+                    {{/if}}
+                </div>
+            {{else if (eq existingState _existingState.NEWFILE)}}
+                {{file-uploader
+                    changeState=changeState
+                    changeExistingState = (action "changeExistingState")
+                    finishUpload=finishUpload
+                    startState=startState
+                    nodeTitle=nodeTitle
+                    currentUser=currentUser
+                    osfFile=selectedFile
+                    hasFile=hasFile
+                    file=file
+                    contributors=contributors
+                    node=node
+                    selectedNode=selectedNode
+                    userNodes=userNodes
+                    parentNode=parentNode
+                    convertProjectConfirmed=convertProjectConfirmed
+                    convertOrCopy=convertOrCopy
+                    uploadNewFileSectionOpened=uploadNewFileSectionOpened
+                    existingState=existingState
+                    _existingState=_existingState
+                }}
+            {{/if}}
+        {{else}}
+            {{#unless (eq currentState 'start')}}
+                <p class="alert alert-danger" role="alert">
+                    You must be the admin of this component to share it.
+
+                    Please ask the admin of this project to make you an admin
+                    so you may share this component.
+                </p>
+            {{/unless}}
+        {{/if}}
     {{/if}}
-{{/liquid-if}}
+{{/cp-panels}}
 
 {{#if (eq existingState _existingState.CHOOSE)}}
     <div class="p-t-xs pull-right">
         <button class="btn btn-default" {{action changeState startState}}>Back</button>
-        <button class="btn btn-primary" disabled=true>Next</button>
     </div>
 {{/if}}

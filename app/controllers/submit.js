@@ -89,6 +89,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             userNodes: Ember.A(),
             node: null,
             file: null,
+            hasFile: false,
             selectedFile: null,
             contributors: Ember.A(),
             nodeTitle: null,
@@ -102,7 +103,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             authorsSaveState: false,
             disciplineSaveState: false,
             parentNode: null,
-            convertProjectConfirmed: false
+            convertProjectConfirmed: false,
+            basicsAbstract: null,
         }));
     },
 
@@ -221,6 +223,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         changeState(newState) {
             // Sets filePickerState to newState - this is the initial decision on the form.
             this.set('filePickerState', newState);
+            if (newState === this.get('_State').EXISTING) {
+                this.get('panelActions').open('chooseProject');
+                this.get('panelActions').close('selectExistingFile');
+                this.get('panelActions').close('uploadNewFile');
+                this.get('panelActions').close('organize');
+                this.get('panelActions').close('finalizeUpload');
+            }
         },
         changeToInitialState(newState) {
             // Changes state to initial upload state presenting choice: Upload new preprint or connect preprint to existing OSF project
@@ -299,6 +308,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Save the model associated with basics field, then advance to next panel
             // If save fails, do not transition
             let node = this.get('node');
+            node.set('description', this.get('basicsAbstract'));
             node.save()
                 .then(() => this.send('next', this.get('_names.2')))
                 .catch(()=> this.send('error', 'Could not save information; please try again'));
@@ -377,10 +387,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             if (model.get('doi') === '') {
                 model.set('doi', undefined);
             }
-            if (this.get('convertOrCopy') === 'convert') {
-                model.set('isConversion', true);
-            }
-
             model.save()
                 // Ember data is not worth the time investment currently
                 .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {

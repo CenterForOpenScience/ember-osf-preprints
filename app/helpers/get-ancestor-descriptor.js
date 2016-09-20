@@ -5,37 +5,35 @@ export function getAncestorDescriptor(params/*, hash*/) {
     // TODO consolidate this function
     var node = params[0];
     var nodeId = node.get('id');
-    var root = node.get('root');
-    var rootId = root.get('id');
-    var parent = node.get('parent');
-    var parentId = parent.get('id');
+    var rootId = node.get('root.id');
+    var parentId = node.get('parent.id');
     var rootDescriptor;
 
-    if (root.isFulfilled) {
-        if (parent.isFulfilled) {
+    if (typeof rootId !== 'undefined') {
+        if (typeof parentId !== 'undefined') {
             if (parentId === rootId) {
-                rootDescriptor = root.get('title') + ' / ';
+                rootDescriptor = node.get('root.title') + ' / ';
             } else {
-                if (parent.get('parent').get('id') && parent.get('parent').get('id') === rootId) {
-                    rootDescriptor = root.get('title') + ' / ' + parent.get('title') + ' / ';
+                if (node.get('parent.parent.id') === rootId) {
+                    rootDescriptor = node.get('root.title') + ' / ' + node.get('parent.title') + ' / ';
                 } else {
-                    rootDescriptor = root.get('title') + ' /.../ ' + parent.get('title') + ' / ';
+                    rootDescriptor = node.get('root.title') + ' /.../ ' + node.get('parent.title') + ' / ';
                 }
             }
         } else {
             if (rootId === nodeId) {
                 rootDescriptor = '';
             } else {
-                rootDescriptor = root.get('title') + '/.../ ';
+                rootDescriptor = node.get('root.title') + '/.../ ';
             }
         }
     } else {
-        if (parent.isFulfilled) {
-            if (parent.get('parent') && parent.get('parent').get('id')) {
-                rootDescriptor = 'Private / ... / ' + parent.get('title') + ' / ';
+        if (typeof parentId !== 'undefined') {
+            if (node.get('parent.parent.id')) {
+                rootDescriptor = 'Private / ... / ' + node.get('parent.title') + ' / ';
 
             } else {
-                rootDescriptor = 'Private / ' + parent.get('title') + ' / ';
+                rootDescriptor = 'Private / ' + node.get('parent.title') + ' / ';
             }
         } else {
             rootDescriptor = 'Private / ';

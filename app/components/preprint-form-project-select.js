@@ -46,6 +46,7 @@ export default Ember.Component.extend({
     _existingState: existingState,
     userNodes: Ember.A(),
     selectedNode: null,
+    panelActions: Ember.inject.service(),
     isAdmin: Ember.computed('selectedNode', function() {
         if (this.get('selectedNode')) {
             return this.get('selectedNode.currentUserPermissions').indexOf(Permissions.ADMIN) !== -1;
@@ -63,6 +64,7 @@ export default Ember.Component.extend({
             // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded,
             // file-browser component can be loaded.
             this.set('selectedNode', node);
+            this.get('panelActions').toggle('chooseProject');
             this.set('selectedFile', null);
             this.set('osfProviderLoaded', false);
             this.send('changeExistingState', existingState.CHOOSE);
@@ -74,14 +76,20 @@ export default Ember.Component.extend({
         selectFile(file) {
             // Select existing file from file-browser
             this.attrs.selectFile(file);
-            if (this.get('selectedFile')) {
-                this.highlightSuccessOrFailure('selectedFileExisting', this, 'success');
-            }
+            this.get('panelActions').toggle('selectExistingFile');
+            this.get('panelActions').toggle('organize');
         },
         changeExistingState(newState) {
             // Toggles existingState between 'existing' or 'new', meaning user wants to select existing file from file browser
             // or upload a new file.
             this.set('existingState', newState);
+            this.get('panelActions').toggle('chooseFile');
+            if (newState === existingState.EXISTINGFILE) {
+                this.get('panelActions').toggle('selectExistingFile');
+            }
+            if (newState === existingState.NEWFILE) {
+                this.get('panelActions').toggle('uploadNewFile');
+            }
             this.set('selectedFile', null);
             this.set('hasFile', false);
             this.set('nodeTitle', null);

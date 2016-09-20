@@ -21,12 +21,16 @@ import Ember from 'ember';
  * @class convert-or-copy-project
  */
 export default Ember.Component.extend({
+    panelActions: Ember.inject.service(),
     actions: {
         copyToComponent() {
             this.set('convertProjectConfirmed', false);
             this.set('convertOrCopy', 'copy');
             this.set('nodeTitle', null);
             this.set('titleValid', false);
+            this.get('panelActions').toggle('organize');
+            this.get('panelActions').toggle('finalizeUpload');
+
         },
         convertExisting() {
             this.set('convertProjectConfirmed', false);
@@ -38,6 +42,8 @@ export default Ember.Component.extend({
         },
         confirmConvert() {
             this.set('convertProjectConfirmed', true);
+            this.get('panelActions').toggle('organize');
+            this.get('panelActions').toggle('finalizeUpload');
         }
     }
 });

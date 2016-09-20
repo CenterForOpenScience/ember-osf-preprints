@@ -42,6 +42,7 @@ export default Ember.Component.extend({
     callback: null,
     nodeTitle: null,
     uploadInProgress: false,
+    panelActions: Ember.inject.service(),
 
     dropzoneOptions: {
         maxFiles: 1,
@@ -137,6 +138,8 @@ export default Ember.Component.extend({
         },
         preUpload(_, dropzone, file) {
             this.send('formatDropzoneAfterPreUpload');
+            this.get('panelActions').toggle('uploadNewFile');
+            this.get('panelActions').toggle('organize');
             this.set('file', file);
             this.set('hasFile', true);
             this.set('callback', Ember.RSVP.defer());
