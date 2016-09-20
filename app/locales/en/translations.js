@@ -19,14 +19,6 @@ export default {
         no_results_found: `No results found.`,
         authors: `Authors`
     },
-    '404': {
-        heading: `Page not found`,
-        paragraph: {
-            line1: `The page you were looking for is not found on the OSF Preprint service.`,
-            line2: `If this should not have occurred and the issue persists, please report it to`
-        },
-        go_to: `Go to OSF Preprints`
-    },
     application: {
         // Nothing to translate
     },
@@ -103,7 +95,12 @@ export default {
         }
     },
     'page-not-found': {
-        // See 404
+        heading: `Page not found`,
+        paragraph: {
+            line1: `The page you were looking for is not found on the OSF Preprint service.`,
+            line2: `If this should not have occurred and the issue persists, please report it to`
+        },
+        go_to: `Go to OSF Preprints`
     },
     submit: {
         heading: `Add Preprint`,
