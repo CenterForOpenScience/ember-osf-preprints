@@ -90,10 +90,6 @@
                                 {{/preprint-form-section}}
                             {{/if}}
                         {{/if}}
-
-                        <div class="p-t-xs pull-right">
-                            <button class="btn btn-default" {{action changeState startState}}>Back</button>
-                        </div>
                     {{/if}}
                 </div>
             {{else if (eq existingState _existingState.NEWFILE)}}
@@ -131,9 +127,6 @@
         {{/if}}
     {{/if}}
 {{/cp-panels}}
-
-{{#if (eq existingState _existingState.CHOOSE)}}
-    <div class="p-t-xs pull-right">
-        <button class="btn btn-default" {{action changeState startState}}>Back</button>
-    </div>
-{{/if}}
+ <div class="p-t-xs">
+     <button class="btn btn-default" {{action changeState startState}}>Back</button>
+ </div>
