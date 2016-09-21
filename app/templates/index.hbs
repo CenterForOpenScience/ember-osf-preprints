@@ -24,8 +24,8 @@
             <div class="row">
                 <div class="text-center col-xs-12">
                     <p class="lead"> or </p>
-                    {{#link-to "submit" type="button" class="btn btn-success btn-lg"}}{{t "global.add_preprint"}}{{/link-to}}
-                    <div class="m-t-md">{{#link-to 'content' 'khbvy'}}{{t "index.header.example"}}{{/link-to}}</div>
+                    {{#link-to "submit" type="button" class="btn btn-success btn-lg" invokeAction=(action "click" "link" "Index - Add preprint")}}{{t "global.add_preprint"}}{{/link-to}}
+                    <div class="m-t-md">{{#link-to 'content' 'khbvy' invokeAction=(action "click" "link" "Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
 
                 </div>
             </div>
@@ -71,7 +71,7 @@
                             {{t "index.services.bottom.div.line3"}}
                         </div>
                     </p>
-                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg">{{t "index.services.bottom.contact"}}</a>
+                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg" {{action "click" "link" "Index - Contact"}}>{{t "index.services.bottom.contact"}}</a>
                 </div>
             </div>
         </div>

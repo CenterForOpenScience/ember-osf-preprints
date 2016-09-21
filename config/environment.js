@@ -39,7 +39,26 @@ module.exports = function(environment) {
         i18n: {
             defaultLocale: 'en'
         },
+        metricsAdapters: [
+            {
+                name: 'GoogleAnalytics',
+                environments: ['development', 'test'],
+                config: {
+                    id: 'UA-XXXX-Y',
+                    cookieDomain: 'none'
+                }
+            },
+            {
+                name: 'GoogleAnalytics',
+                environments: ['production'],
+                config: {
+                    id: 'UA-XXXX-Y'
+                }
+            }
+        ]
     };
+
+    console.log({environment});
 
     if (environment === 'development') {
         // ENV.APP.LOG_RESOLVER = true;

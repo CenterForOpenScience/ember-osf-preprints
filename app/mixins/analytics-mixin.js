@@ -1,16 +1,27 @@
 import Ember from 'ember';
 
+const actionTypes = [
+    'click',
+    'blur'
+];
+
+const actions = {};
+
+for (let action of actionTypes) {
+    actions[action] = function(category, label) {
+        console.log('mixin works');
+        Ember
+            .get(this, 'metrics')
+            .trackEvent({
+                category,
+                action,
+                label
+            });
+    };
+}
+
+
 export default Ember.Mixin.create({
-    actions: {
-        didTransition() {
-            this._super(...arguments);
-            if (typeof ga !== 'undefined') {  // jshint ignore: line
-                let url = window.location.href;
-                ga('send', 'pageview', {  // jshint ignore: line
-                    page: url,
-                    title: url
-                });
-            }
-        }
-    }
+    metrics: Ember.inject.service(),
+    actions
 });
