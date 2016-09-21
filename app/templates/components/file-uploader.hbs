@@ -12,6 +12,11 @@
     {{#if hasFile}}
         {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
     {{/if}}
+
+    <div class="p-t-xs pull-right">
+        <button class="btn btn-default" {{action changeState startState}}>Back</button>
+        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "global.next"}}</button>
+    </div>
 {{else}}
     {{#preprint-form-section class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}
         {{preprint-form-header name='Choose File' selectedFile=file showValidationIndicator=false}}
@@ -67,10 +72,3 @@
         {{/if}}
     {{/if}}
 {{/if}}
-
-<div class="p-t-xs pull-right">
-    {{#if (eq uploadIntent 'newNodeNewFile')}}
-        <button class="btn btn-default" {{action changeState startState}}>Back</button>
-        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "global.next"}}</button>
-    {{/if}}
-</div>

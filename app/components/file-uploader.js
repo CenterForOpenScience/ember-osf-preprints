@@ -7,9 +7,9 @@ import {State} from '../controllers/submit';
  *  Currently used for the following scenarios 1) Upload file to a new project 2) Upload file to a new component 3) Upload
  *  file to an existing node.
  *
- *  Contains dropzone-widget where you can drag and drop preprint file. "file" will be set to the preuploaded file. 'node' will
- *  either become the newly created project or component, or the existing node.  After file is uploaded to the designated "node",
- *  "osfFile" is set to the uploadedFile.
+ *  Contains dropzone-widget where you can drag and drop preprint file. 'file' will be set to the preuploaded file. 'node' will
+ *  either become the newly created project or component, or the existing node.  After file is uploaded to the designated 'node',
+ *  'osfFile' is set to the uploadedFile.
  *
  * Sample usage:
  * ```handlebars
@@ -27,6 +27,8 @@ import {State} from '../controllers/submit';
  *       node=node
  *       selectedNode=selectedNode
  *       userNodes=userNodes
+ *       convertOrCopy=convertOrCopy
+ *       parentNode=parentNode
  *       convertProjectConfirmed=convertProjectConfirmed
  *}}
  * ```
@@ -90,7 +92,7 @@ export default Ember.Component.extend({
             // Upload case where user starting from scratch - new project/new file.  Creates project and then uploads file to newly
             // created project
             this.get('store').createRecord('node', {
-                public: false, // ?
+                public: false,
                 category: 'project',
                 title: this.get('nodeTitle'),
             }).save().then(node => {

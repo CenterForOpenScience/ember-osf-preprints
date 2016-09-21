@@ -38,6 +38,7 @@ export const existingState = Object.freeze(Ember.Object.create({
  *         currentState=filePickerState
  *         convertProjectConfirmed=convertProjectConfirmed
  *         userNodesLoaded=userNodesLoaded
+ *         parentNode=parentNode
  *         }}
  * ```
  * @class preprint-form-project-select
@@ -54,10 +55,8 @@ export default Ember.Component.extend({
             return null;
         }
     }),
-    osfProviderLoaded: false, // True when selectedNode's osfstorage provider has been loaded.  T
+    osfProviderLoaded: false, // True when selectedNode's osfstorage provider has been loaded.
     osfStorageProvider: null,
-
-    createComponent: null,
     existingState: existingState.CHOOSE,
     actions: {
         nodeSelected(node) {

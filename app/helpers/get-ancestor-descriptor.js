@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 // Formats titles similar to the way they're displayed in the dashboard.  For example, Root Name / ... / Parent Name / Node Name.
 export function getAncestorDescriptor(params/*, hash*/) {
-    // TODO consolidate this function
     var node = params[0];
     var nodeId = node.get('id');
     var rootId = node.get('root.id');

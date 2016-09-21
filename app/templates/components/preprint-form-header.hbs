@@ -28,9 +28,9 @@
     <div class="m-t-md preprint-header-preview">
         {{#if isValidationActive}}
             {{#if (eq name 'Basics')}}
-                <p><em class="m-r-md"> DOI: </em> {{if doi doi 'None'}} </p>
+                <p><em class="m-r-md"> {{t "global.doi"}}: </em> {{if doi doi (t "global.none")}} </p>
                 <p>
-                   <em class="m-r-md"> Tags: </em>
+                    <em class="m-r-md"> {{t "global.tags"}}: </em>
                     {{#if tags}}
                         <ul class="comma-list">
                             {{#each tags as |tag|~}}
@@ -38,57 +38,31 @@
                             {{~/each}}
                         </ul>
                     {{else}}
-                        <span> None</span>
+                        <span>{{t "global.none"}}</span>
                     {{/if}}
                 </p>
-                <em class="m-r-md"> Abstract: </em>
-                <p class="abstract">{{if abstract abstract 'None'}} </p>
+                <em class="m-r-md"> {{t "global.abstract"}}: </em>
+                <p class="abstract">{{if abstract abstract (t "global.none")}} </p>
             {{else if (eq name 'Discipline')}}
                 {{#if subjects}}
                     {{#each subjects as |subject|}}
                         <span class="subject-preview">{{subject.text}} </span>
                     {{/each}}
                 {{else}}
-                    <span> None </span>
-                {{/if}}
-        {{#if (eq name 'Basics')}}
-            <p><em class="m-r-md"> {{t "global.doi"}}: </em> {{if doi doi (t "global.none")}} </p>
-            <p>
-                <em class="m-r-md"> {{t "global.tags"}}: </em>
-                {{#if tags}}
-                    <ul class="comma-list">
-                        {{#each tags as |tag|~}}
-                            <li> {{~tag~}} </li>
-                        {{~/each}}
-                    </ul>
-                {{else}}
                     <span>{{t "global.none"}}</span>
                 {{/if}}
-            </p>
-            <em class="m-r-md"> {{t "global.abstract"}}: </em>
-            <p class="abstract">{{if abstract abstract (t "global.none")}} </p>
-        {{else if (eq name 'Discipline')}}
-            {{#if subjects}}
-                {{#each subjects as |subject|}}
-                    <span class="subject-preview">{{subject.text}} </span>
-                {{/each}}
-            {{else}}
-                <span>{{t "global.none"}}</span>
-            {{/if}}
-
-                {{else if (eq name 'Authors')}}
-                    <ul class="author-preview comma-list">
-                        {{#each authors as |contrib| ~}}
-                            <li>
-                                {{~#if contrib.unregisteredContributor~}}
-                                    {{~contrib.unregisteredContributor~}}
-                                {{else}}
-                                    {{~contrib.users.fullName~}}
-                                {{~/if~}}
-                            </li>
-                        {{~/each}}
-                    </ul>
-                {{/if}}
+            {{else if (eq name 'Authors')}}
+                <ul class="author-preview comma-list">
+                    {{#each authors as |contrib| ~}}
+                        <li>
+                            {{~#if contrib.unregisteredContributor~}}
+                                {{~contrib.unregisteredContributor~}}
+                            {{else}}
+                                {{~contrib.users.fullName~}}
+                            {{~/if~}}
+                        </li>
+                    {{~/each}}
+                </ul>
             {{/if}}
         {{/if}}
 

@@ -150,24 +150,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
     basicsDOI: Ember.computed.alias('model.doi'),
 
-    //// TODO: Turn off autosave functionality for now. Direct 2-way binding was causing a fight between autosave and revalidation, so autosave never fired. Fixme.
-    // createAutosave: Ember.observer('node', function() {
-    //     // Create autosave proxy only when a node has been loaded.
-    //     // TODO: This could go badly if a request is in flight when trying to destroy the proxy
-    //
-    //     var controller = this;
-    //     this.set('basicsModel', autosave('node', {
-    //         save(model) {
-    //             // Do not save fields if validation fails.
-    //             console.log('trying autosave');
-    //             if (controller.get('basicsValid')) {
-    //                 console.log('decided to autosave');
-    //                 model.save();
-    //             }
-    //         }
-    //     }));
-    // }),
-
     getContributors: Ember.observer('node', function() {
         // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
         // and combines into one array
@@ -248,10 +230,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.send('lockFileAndNode');
             this.send('next', this.get('_names.0'));
         },
-        toggleRestartPreprintModal() {
-            // Toggles property that will then display restart preprint modal
-            this.toggleProperty('showModalRestartPreprint');
-        },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
             var node = this.get('node');
@@ -289,8 +267,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         editTitleNext(section) {
             // Edits title when user returns to upload section after upload section has already been completed.
             this.set('node.title', this.get('nodeTitle'));
-            let node = this.get('node');
-            node.save();
             Ember.run.scheduleOnce('afterRender', this, function() {
                 MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('.preprint-header-preview')[0]]);  // jshint ignore:line
             });
