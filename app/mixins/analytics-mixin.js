@@ -9,7 +9,6 @@ const actions = {};
 
 for (let action of actionTypes) {
     actions[action] = function(category, label) {
-        console.log('mixin works');
         Ember
             .get(this, 'metrics')
             .trackEvent({
