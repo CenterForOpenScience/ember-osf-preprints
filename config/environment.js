@@ -44,7 +44,7 @@ module.exports = function(environment) {
                 name: 'GoogleAnalytics',
                 environments: ['development', 'test'],
                 config: {
-                    id: 'UA-XXXX-Y',
+                    id: process.env.GOOGLE_ANALYTICS_ID || 'UA-XXXX-Y',
                     cookieDomain: 'none'
                 }
             },
