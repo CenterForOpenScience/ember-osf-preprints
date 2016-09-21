@@ -75,6 +75,8 @@ export default Ember.Component.extend({
         selectFile(file) {
             // Select existing file from file-browser
             this.attrs.selectFile(file);
+            this.set('convertOrCopy', null);
+            this.set('nodeTitle', null);
             this.get('panelActions').toggle('selectExistingFile');
             this.get('panelActions').toggle('organize');
         },
