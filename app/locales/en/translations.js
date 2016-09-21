@@ -200,7 +200,7 @@ export default {
             click_edit: `Click to Edit`
         },
         'preprint-form-project-select': {
-            existing_project_selector: `The list of projects appearing in the selector are projects and components for which you have admin access.  Deleted projects and registrations are not included here.`,
+            existing_project_selector: `The list of projects appearing in the selector are projects and components for which you have admin access.  Registrations are not included here.`,
             no_valid_existing_nodes: `You have no valid nodes that can be converted into a preprint.  Go back to upload a new preprint.`,
             upload_preprint: `Upload preprint`,
             select_existing_file: `Select existing file as preprint`,
