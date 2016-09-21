@@ -50,7 +50,7 @@
         {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
             {{preprint-form-header name='Organize' convertOrCopy=convertOrCopy showValidationIndicator=false}}
             {{#preprint-form-body}}
-                {{convert-or-copy-project convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
+                {{convert-or-copy-project isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
             {{/preprint-form-body}}
         {{/preprint-form-section}}
         {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}

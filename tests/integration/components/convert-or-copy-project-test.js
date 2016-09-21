@@ -10,9 +10,7 @@ test('it renders', function(assert) {
   // Handle any actions with this.on('myAction', function(val) { ... });
 
   this.render(hbs`{{convert-or-copy-project}}`);
-
-  assert.equal(this.$('#convertExistingOrCreateComponent label').text().trim(), 'Make a new component Use the current component');
-
+  assert.equal(this.$('#convertExistingOrCreateComponent label').first().text().trim(), 'Make a new component');
   // Template block usage:
   this.render(hbs`
     {{#convert-or-copy-project}}

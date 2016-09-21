@@ -78,6 +78,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
 
+    isTopLevelNode: Ember.computed('node', function() {
+        // Returns true if node is a top-level node
+        var node = this.get('node');
+        return node ? (node.get('id') === node.get('root.id')) : null;
+    }),
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
         this.get('panelActions').open('Upload');
@@ -276,7 +281,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Takes file chosen from file-browser and sets equal to selectedFile. This file will become the preprint.
             this.set('selectedFile', file);
         },
-
         /*
           Basics section
          */

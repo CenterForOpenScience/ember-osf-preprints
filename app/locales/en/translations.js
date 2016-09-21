@@ -148,16 +148,22 @@ export default {
             body: `Once this preprint is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.`
         },
         'convert-or-copy': {
-            organize_language: `You have a choice for how to organize your preprint in your project. If you select, "make a new component", then the preprint file will
-            be placed in a new component inside the project.  If you select "use the current component", then the preprint file will be placed inside the
-            selected project/component. If you are unsure, then select "make a new component".`,
+            organize_language_project: `You have a choice for how to organize your preprint in this project. If you select, "Make a new component", then the preprint file will
+            be placed in a new component inside the current project.  If you select "Use the current project", then the preprint file will be placed inside the
+            current project. If you are unsure, then select "Make a new component".`,
+            organize_language_component: `You have a choice for how to organize your preprint in this component. If you select, "Make a new component", then the preprint file will
+            be placed in a new component inside the current component.  If you select "Use the current component", then the preprint file will be placed inside the
+            current component. If you are unsure, then select "Make a new component".`,
             copy: `Make a new component`,
-            convert: `Use the current component`,
+            convert_project: `Use the current project`,
+            convert_component: `Use the current component`,
             create_a_new_component: `Create a new component`,
             continue_with_this_project: `Continue with this project`,
-            header_convert_confirmation: `Your project details will be saved as you continue to work on this form.`,
-            convert_confirmation_details: `Changes you make on this page are saved immediately.  Create a new component under this project to avoid overwriting its details.
-`
+            continue_with_this_component: `Continue with this component`,
+            header_convert_confirmation_project: `Your project details will be saved as you continue to work on this form.`,
+            header_convert_confirmation_component: `Your component details will be saved as you continue to work on this form.`,
+            convert_confirmation_details_project: `Changes you make on this page are saved immediately.  Create a new component under this project to avoid overwriting its details.`,
+            convert_confirmation_details_component: `Changes you make on this page are saved immediately.  Create a new component under this component to avoid overwriting its details.`
         },
         'file-uploader': {
             dropzone_message: `Drop preprint file here to upload`,

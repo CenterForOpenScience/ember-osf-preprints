@@ -70,7 +70,7 @@
                             {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
                                 {{preprint-form-header convertOrCopy=convertOrCopy name='Organize' showValidationIndicator=false}}
                                 {{#preprint-form-body}}
-                                    {{convert-or-copy-project nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
+                                    {{convert-or-copy-project nodeTitle=nodeTitle node=node isTopLevelNode=isTopLevelNode titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
                             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
@@ -97,6 +97,7 @@
                 {{file-uploader
                     changeState=changeState
                     changeExistingState = (action "changeExistingState")
+                    isTopLevelNode=isTopLevelNode
                     finishUpload=finishUpload
                     startState=startState
                     nodeTitle=nodeTitle
@@ -113,6 +114,7 @@
                     convertOrCopy=convertOrCopy
                     existingState=existingState
                     _existingState=_existingState
+                    isTopLevelNode=isTopLevelNode
                 }}
             {{/if}}
         {{else}}

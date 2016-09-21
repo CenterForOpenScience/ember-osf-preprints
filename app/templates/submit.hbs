@@ -57,8 +57,8 @@
                                                     parentNode=parentNode
                                                     convertProjectConfirmed=convertProjectConfirmed
                                                     convertOrCopy=convertOrCopy
+                                                    isTopLevelNode=isTopLevelNode
                                                 }}
-
                                             {{else if (eq currentState _State.EXISTING)}}
                                                 {{preprint-form-project-select
                                                   changeState=(action 'changeToInitialState')
@@ -83,6 +83,7 @@
                                                   convertProjectConfirmed=convertProjectConfirmed
                                                   userNodesLoaded=userNodesLoaded
                                                   convertOrCopy=convertOrCopy
+                                                  isTopLevelNode=isTopLevelNode
                                                   }}
                                             {{/if}}
                                         </div>
