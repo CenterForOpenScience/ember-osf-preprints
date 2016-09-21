@@ -19,8 +19,10 @@ export default {
         restart: `Restart`,
         no_results_found: `No results found.`,
         authors: `Authors`,
-        convert: `The current project/component will contain the preprint.`,
-        copy: `A new component inside the current project will contain the preprint.`
+        convert_project: `The current project will contain the preprint.`,
+        convert_component: `The current component will contain the preprint`,
+        copy_inside_project: `A new component inside the current project will contain the preprint.`,
+        copy_inside_component: `A new component inside the current component will contain the preprint.`,
     },
     application: {
         // Nothing to translate

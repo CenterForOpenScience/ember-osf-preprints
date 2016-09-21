@@ -48,7 +48,7 @@
 
     {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
         {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
-            {{preprint-form-header name='Organize' convertOrCopy=convertOrCopy showValidationIndicator=false}}
+            {{preprint-form-header name='Organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false}}
             {{#preprint-form-body}}
                 {{convert-or-copy-project isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
             {{/preprint-form-body}}
