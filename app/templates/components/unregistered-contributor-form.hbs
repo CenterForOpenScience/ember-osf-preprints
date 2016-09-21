@@ -10,6 +10,6 @@
     <p class="text-muted">{{t "components.unregistered-contributor-form.paragraph"}}</p>
     <div class="pull-right unregistered-submit">
         <button {{action resetfindContributorsView}} type="button" class="btn btn-default btn-small"> {{t "global.cancel"}} </button>
-        <button type="submit" disabled="{{not isFormValid}}" {{action "addUnregistered" fullName email}} class="btn btn-success btn-small"> {{t "global.add"}} </button>
+        <button type="submit" disabled={{not isFormValid}} {{action "addUnregistered" fullName email}} class="btn btn-success btn-small"> {{t "global.add"}} </button>
     </div>
 </form>
