@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import Analytics from '../mixins/analytics-mixin';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(Analytics, {
     providerUrlRegex: {
         //'bioRxiv': '', doesnt currently have urls
         Cogprints: /cogprints/,
@@ -55,6 +56,13 @@ export default Ember.Component.extend({
     actions: {
         toggleShowBody() {
             this.set('showBody', !this.showBody);
+
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'result',
+                    action: !this.showBody ? 'contract' : 'expand',
+                    label: this.result.title
+                });
         },
         select(item) {
             this.attrs.select(item);

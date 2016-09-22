@@ -8,7 +8,7 @@ const actionTypes = [
 const actions = {};
 
 for (let action of actionTypes) {
-    actions[action] = function(category, label) {
+    actions[action] = function(category, label, url) {
         Ember.get(this, 'metrics')
             .trackEvent({
                 category,
@@ -16,7 +16,10 @@ for (let action of actionTypes) {
                 label
             });
 
-        return true;
+        if (url)
+            window.location.href = url;
+
+        return false;
     };
 }
 

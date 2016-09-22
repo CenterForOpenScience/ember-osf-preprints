@@ -235,6 +235,13 @@ export default Ember.Controller.extend(Analytics, {
 
             this.set('page', 1);
             this.loadPage();
+
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Discover - Search'
+                });
         },
 
         previous() {
@@ -253,6 +260,13 @@ export default Ember.Controller.extend(Analytics, {
 
         clearFilters() {
             this.set('activeFilters',  { providers: [], subjects: [] });
+
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Discover - Clear Filters'
+                });
         },
 
         sortBySelect(index) {
@@ -264,28 +278,31 @@ export default Ember.Controller.extend(Analytics, {
             this.set('sortByOptions', copy);
             this.set('page', 1);
             this.loadPage();
-        },
 
-        selectSubjectFilter(subject) {
-            if (typeof subject === 'object') {
-                subject = subject.text;
-            }
-            if (this.get('activeFilters.subjects').indexOf(subject) === -1) {
-                this.get('activeFilters.subjects').pushObject(subject);
-            } else {
-                this.get('activeFilters.subjects').removeObject(subject);
-            }
-            this.notifyPropertyChange('activeFilters');
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'dropdown',
+                    action: 'select',
+                    label: `Discover - ${copy}`
+                });
         },
-
-        selectProvider(provider) {
-            let currentProviders = this.get('activeFilters.providers').slice();
-            if (currentProviders.indexOf(provider) !== -1) {
-                this.get('activeFilters.providers').removeObject(provider);
-            } else {
-                this.get('activeFilters.providers').pushObject(provider);
+        updateFilters(filterType, item) {
+            if (typeof item === 'object') {
+                item = item.text;
             }
+
+            const items = this.get(`activeFilters.${filterType}`);
+            const hasItem = items.includes(item);
+
+            items[`${hasItem ? 'remove' : 'push'}Object`](item);
             this.notifyPropertyChange('activeFilters');
+
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'filter',
+                    action: hasItem ? 'remove' : 'add',
+                    label: `Discover - ${item}`
+                });
         },
     },
 });
