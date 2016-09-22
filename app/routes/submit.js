@@ -2,9 +2,9 @@ import Ember from 'ember';
 
 import CasAuthenticatedRouteMixin from 'ember-osf/mixins/cas-authenticated-route';
 import ResetScrollMixin from '../mixins/reset-scroll';
-import AnalyticsMixin from '../mixins/analytics-mixin';
+import Analytics from '../mixins/analytics';
 
-export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, CasAuthenticatedRouteMixin, {
+export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedRouteMixin, {
     currentUser: Ember.inject.service('currentUser'),
     model() {
         // Store the empty preprint to be created on the model hook for page. Node will be fetched

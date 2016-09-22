@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Analytics from '../mixins/analytics-mixin'
+import Analytics from '../mixins/analytics'
 
 var pageSize = 150;
 

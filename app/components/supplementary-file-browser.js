@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
-import Analytics from '../mixins/analytics-mixin';
+import Analytics from '../mixins/analytics';
 
 export default Ember.Component.extend(Analytics, {
     elementId: 'preprint-file-view',

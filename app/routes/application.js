@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 import OSFAgnosticAuthRouteMixin from 'ember-osf/mixins/osf-agnostic-auth-route';
-import AnalyticsMixin from '../mixins/analytics-mixin';
+import Analytics from '../mixins/analytics';
 
-export default Ember.Route.extend(AnalyticsMixin, OSFAgnosticAuthRouteMixin, {
+export default Ember.Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
     i18n: Ember.inject.service(),
     afterModel: function() {
         let locale;

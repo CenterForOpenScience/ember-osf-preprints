@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
-import Analytics from '../mixins/analytics-mixin';
+import Analytics from '../mixins/analytics';
 
 var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}},"aggregations": {"sources": {"terms": {"field": "sources.raw","size": 200}}}}';
 
