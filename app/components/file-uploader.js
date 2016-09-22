@@ -16,7 +16,7 @@ import {State} from '../controllers/submit';
  * {{file-uploader
  *       changeState=changeState (action)
  *       finishUpload=finishUpload (action)
- *       uploadIntent='newNodeNewFile' (if new node, new file instance)
+ *       newNodeNewFile=true (if new node, new file instance)
  *       startState=startState ('start')
  *       nodeTitle=nodeTitle
  *       currentUser=currentUser (current logged-in user)
@@ -26,7 +26,6 @@ import {State} from '../controllers/submit';
  *       contributors=contributors (if need to copy contributors to new component)
  *       node=node
  *       selectedNode=selectedNode
- *       userNodes=userNodes
  *       convertOrCopy=convertOrCopy
  *       parentNode=parentNode
  *       convertProjectConfirmed=convertProjectConfirmed
@@ -79,7 +78,7 @@ export default Ember.Component.extend({
         setNodeAndFile() {
             // Switches between various upload scenarios involving uploading file to 1) a new project 2) a new component 3) an existing node.
             this.set('uploadInProgress', true);
-            if (this.get('uploadIntent') === 'newNodeNewFile') {
+            if (this.get('newNodeNewFile')) {
                 this.send('createProjectAndUploadFile');
             } else if (this.get('convertOrCopy') === 'copy') {
                 this.send('createComponentAndUploadFile');
@@ -98,7 +97,6 @@ export default Ember.Component.extend({
             }).save().then(node => {
                 this.set('node', node);
                 this.send('upload');
-                this.get('userNodes').pushObject(node);
             });
         },
 
@@ -111,7 +109,6 @@ export default Ember.Component.extend({
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
-                    this.get('userNodes').pushObject(child);
                     this.send('upload');
                 });
         },
@@ -144,6 +141,8 @@ export default Ember.Component.extend({
             this.set('nodeTitle', null);
             this.set('hasFile', true);
             this.set('callback', Ember.RSVP.defer());
+            // Delays so user can see that file has been preuploaded before
+            // advancing to next panel
             Ember.run.later(() => {
                 this.get('panelActions').toggle('uploadNewFile');
                 this.get('panelActions').toggle('organize');

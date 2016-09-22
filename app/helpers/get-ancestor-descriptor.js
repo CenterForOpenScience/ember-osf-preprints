@@ -39,7 +39,7 @@ export function getAncestorDescriptor(params/*, hash*/) {
         }
     }
 
-    return rootDescriptor + node.get('title');
+    return rootDescriptor;
 }
 
 export default Ember.Helper.helper(getAncestorDescriptor);

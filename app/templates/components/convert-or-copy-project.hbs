@@ -2,7 +2,7 @@
     {{if isTopLevelNode (t "components.convert-or-copy.organize_language_project") (t "components.convert-or-copy.organize_language_component")}}
 </p>
 <div id='convertExistingOrCreateComponent'>
-    <div class="row text-center">
+    <div class="row text-center m-v-md">
         <form class="form">
             <div class="toggle-button">
                 <input id='copy' onchange={{action "copyToComponent" value="true"}} type="radio" name="createComponentDecision" checked={{eq convertOrCopy 'copy'}}>

@@ -77,7 +77,7 @@ export default CpPanelBodyComponent.extend({
                     }
                 });
                 if (!allFulfilled) {
-                    this.get('toast').error('Error adding contributors from parent project.  Try adding manually.');
+                    this.get('toast').error('Some contributors may not have been added.  Try adding manually.');
                 }
             });
         },

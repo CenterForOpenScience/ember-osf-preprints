@@ -253,7 +253,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
             var node = this.get('node');
             node.addChild(this.get('nodeTitle')).then(child => {
-                this.get('userNodes').pushObject(child);
                 this.set('parentNode', node);
                 this.set('node', child);
                 child.get('files').then((providers) => {

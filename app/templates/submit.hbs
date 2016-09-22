@@ -45,7 +45,7 @@
                                                 {{file-uploader
                                                     changeState=(action 'changeToInitialState')
                                                     finishUpload=(action 'finishUpload')
-                                                    uploadIntent='newNodeNewFile'
+                                                    newNodeNewFile=true
                                                     startState=_State.START
                                                     nodeTitle=nodeTitle
                                                     currentUser=user
@@ -53,7 +53,6 @@
                                                     hasFile=hasFile
                                                     file=file
                                                     node=node
-                                                    userNodes=userNodes
                                                     parentNode=parentNode
                                                     convertProjectConfirmed=convertProjectConfirmed
                                                     convertOrCopy=convertOrCopy

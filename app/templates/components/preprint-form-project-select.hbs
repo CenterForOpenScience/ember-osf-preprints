@@ -14,7 +14,7 @@
                 {{#if userNodes}}
                     <div class="p-b-md">
                         {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
-                            <strong>{{get-ancestor-descriptor node}}</strong>
+                            {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
                         {{/power-select}}
                     </div>
                 {{else}}
@@ -108,7 +108,6 @@
                     contributors=contributors
                     node=node
                     selectedNode=selectedNode
-                    userNodes=userNodes
                     parentNode=parentNode
                     convertProjectConfirmed=convertProjectConfirmed
                     convertOrCopy=convertOrCopy
