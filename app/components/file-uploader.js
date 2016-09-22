@@ -14,7 +14,7 @@ import {State} from '../controllers/submit';
  * Sample usage:
  * ```handlebars
  * {{file-uploader
- *       changeState=changeState (action)
+ *       changeInitialState=changeInitialState (action)
  *       finishUpload=finishUpload (action)
  *       newNodeNewFile=true (if new node, new file instance)
  *       startState=startState ('start')

@@ -34,16 +34,16 @@
                                             {{#if (eq currentState _State.START)}}
                                                 <div class="row">
                                                     <div class="col-xs-6 p-h-xl">
-                                                        <button class="btn btn-block btn-big" {{action 'changeState' _State.NEW}}>Upload new preprint</button>
+                                                        <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.NEW}}>Upload new preprint</button>
                                                     </div>
                                                     <div class="col-xs-6  p-h-xl">
-                                                        <button class="btn btn-block btn-big" {{action 'changeState' _State.EXISTING}}>Connect preprint to existing OSF project</button>
+                                                        <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.EXISTING}}>Connect preprint to existing OSF project</button>
                                                     </div>
                                                 </div>
 
                                             {{else if (eq currentState _State.NEW)}}
                                                 {{file-uploader
-                                                    changeState=(action 'changeToInitialState')
+                                                    changeInitialState=(action 'changeInitialState')
                                                     finishUpload=(action 'finishUpload')
                                                     clearDownstreamFields=(action 'clearDownstreamFields')
                                                     newNodeNewFile=true
@@ -61,7 +61,7 @@
                                                 }}
                                             {{else if (eq currentState _State.EXISTING)}}
                                                 {{preprint-form-project-select
-                                                  changeState=(action 'changeToInitialState')
+                                                  changeInitialState=(action 'changeInitialState')
                                                   finishUpload=(action 'finishUpload')
                                                   clearDownstreamFields=(action 'clearDownstreamFields')
                                                   existingNodeExistingFile=(action 'existingNodeExistingFile')

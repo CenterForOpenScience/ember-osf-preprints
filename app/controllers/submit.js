@@ -207,9 +207,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         /*
           Upload section
          */
-        changeState(newState) {
-            // Sets filePickerState to newState - this is the initial decision on the form.
+        changeInitialState(newState) {
+            // Sets filePickerState to start, new, or existing - this is the initial decision on the form.
             this.set('filePickerState', newState);
+            this.send('clearDownstreamFields', 'allUpload');
             if (newState === this.get('_State').EXISTING) {
                 this.get('panelActions').open('chooseProject');
                 this.get('panelActions').close('selectExistingFile');
@@ -217,11 +218,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 this.get('panelActions').close('organize');
                 this.get('panelActions').close('finalizeUpload');
             }
-        },
-        changeToInitialState(newState) {
-            // Changes state to initial upload state presenting choice: Upload new preprint or connect preprint to existing OSF project
-            this.send('changeState', newState);
-            this.send('clearDownstreamFields', 'allUpload');
         },
         lockFileAndNode() {
             // Locks file and node so that they cannot be modified.  Occurs after upload step is complete.

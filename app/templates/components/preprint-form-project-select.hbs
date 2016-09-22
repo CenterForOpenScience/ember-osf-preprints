@@ -95,7 +95,7 @@
                 </div>
             {{else if (eq existingState _existingState.NEWFILE)}}
                 {{file-uploader
-                    changeState=changeState
+                    changeInitialState=changeInitialState
                     changeExistingState = (action "changeExistingState")
                     isTopLevelNode=isTopLevelNode
                     finishUpload=finishUpload
@@ -127,5 +127,5 @@
     {{/if}}
 {{/cp-panels}}
  <div class="p-t-xs">
-     <button class="btn btn-default" {{action changeState startState}}>{{t "global.back"}}</button>
+     <button class="btn btn-default" {{action changeInitialState startState}}>{{t "global.back"}}</button>
  </div>

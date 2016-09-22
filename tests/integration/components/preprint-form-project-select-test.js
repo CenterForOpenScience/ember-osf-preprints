@@ -13,7 +13,7 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{preprint-form-project-select
                     existingNodeExistingFile=(action noop)
-                    changeState=(action noop)
+                    changeInitialState=(action noop)
                     finishUpload=(action noop)
                     createComponentCopyFile=(action noop)
                     highlightSuccessOrFailure=(action noop)}}  

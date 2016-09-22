@@ -18,7 +18,7 @@ export const existingState = Object.freeze(Ember.Object.create({
  * Sample usage:
  * ```handlebars
  *{{preprint-form-project-select
- *         changeState=(action 'changeToInitialState')
+ *         changeInitialState=(action 'changeInitialState')
  *         finishUpload=(action 'finishUpload')
  *         existingNodeExistingFile=(action 'existingNodeExistingFile')
  *         createComponentCopyFile=(action "createComponentCopyFile")
@@ -64,6 +64,7 @@ export default Ember.Component.extend({
             // file-browser component can be loaded.
             this.attrs.clearDownstreamFields('belowNode');
             this.set('selectedNode', node);
+            this.get('panelActions').toggle('chooseProject');
             this.set('osfProviderLoaded', false);
             this.send('changeExistingState', existingState.CHOOSE);
             this.get('selectedNode.files').then((files) => {
@@ -71,7 +72,6 @@ export default Ember.Component.extend({
                 this.set('osfProviderLoaded', true);
             });
             // Closes panel
-            this.get('panelActions').toggle('chooseProject');
         },
         selectFile(file) {
             // Select existing file from file-browser
