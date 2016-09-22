@@ -68,19 +68,19 @@
             {{/if}}
         {{/if}}
 
-        {{#if (eq name 'Choose Project')}}
+        {{#if (eq name 'choose_project')}}
             {{#if selectedNode}}
                 <p> {{selectedNode.title}} </p>
             {{/if}}
         {{/if}}
 
-        {{#if (eq name 'Choose File')}}
+        {{#if (eq name 'choose_file')}}
             {{#if selectedFile}}
                 <p> {{selectedFile.name}}</p>
             {{/if}}
         {{/if}}
 
-        {{#if (eq name 'Organize')}}
+        {{#if (eq name 'organize')}}
             {{#if (eq convertOrCopy 'convert')}}
                 <p>
                     {{#if isTopLevelNode}}
@@ -102,7 +102,7 @@
             {{/if}}
         {{/if}}
 
-        {{#if (eq name 'Finalize Upload')}}
+        {{#if (eq name 'finalize_upload')}}
             {{#if nodeTitle}}
                  <p>{{t "components.preprint-form-header.title"}}: {{nodeTitle}} </p>
             {{/if}}

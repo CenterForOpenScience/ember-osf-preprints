@@ -209,10 +209,10 @@ export default {
                 Basics: 'Basics',
                 Authors: 'Authors',
                 Submit: 'Submit',
-                'Choose Project': 'Choose Project',
-                'Choose File': 'Choose File',
-                'Organize': 'Organize',
-                'Finalize Upload': 'Finalize Upload'
+                choose_project: 'Choose Project',
+                choose_file: 'Choose File',
+                organize: 'Organize',
+                finalize_upload: 'Finalize Upload'
             }
         },
         'preprint-form-project-select': {

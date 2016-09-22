@@ -47,7 +47,6 @@ export default Ember.Component.extend({
     _existingState: existingState,
     userNodes: Ember.A(),
     selectedNode: null,
-    panelActions: Ember.inject.service(),
     isAdmin: Ember.computed('selectedNode', function() {
         if (this.get('selectedNode')) {
             return this.get('selectedNode.currentUserPermissions').indexOf(Permissions.ADMIN) !== -1;
@@ -60,37 +59,34 @@ export default Ember.Component.extend({
     existingState: existingState.CHOOSE,
     actions: {
         nodeSelected(node) {
-            // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded,
-            // file-browser component can be loaded.
+            // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded, file-browser component can be loaded.
             this.attrs.clearDownstreamFields('belowNode');
             this.set('selectedNode', node);
-            this.get('panelActions').toggle('chooseProject');
             this.set('osfProviderLoaded', false);
             this.send('changeExistingState', existingState.CHOOSE);
             this.get('selectedNode.files').then((files) => {
                 this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
                 this.set('osfProviderLoaded', true);
             });
-            // Closes panel
+            this.attrs.nextUploadSection('chooseProject', 'chooseFile');
+
         },
         selectFile(file) {
             // Select existing file from file-browser
             this.attrs.clearDownstreamFields('belowFile');
             this.attrs.selectFile(file);
-            this.get('panelActions').toggle('selectExistingFile');
-            this.get('panelActions').toggle('organize');
+            this.attrs.nextUploadSection('selectExistingFile', 'organize');
         },
         changeExistingState(newState) {
             // Toggles existingState between 'existing' or 'new', meaning user wants to select existing file from file browser
             // or upload a new file.
             this.attrs.clearDownstreamFields('belowNode');
             this.set('existingState', newState);
-            this.get('panelActions').toggle('chooseFile');
             if (newState === existingState.EXISTINGFILE) {
-                this.get('panelActions').toggle('selectExistingFile');
+                this.attrs.nextUploadSection('chooseFile', 'selectExistingFile');
             }
             if (newState === existingState.NEWFILE) {
-                this.get('panelActions').toggle('uploadNewFile');
+                this.attrs.nextUploadSection('chooseFile', 'uploadNewFile');
             }
         },
     },

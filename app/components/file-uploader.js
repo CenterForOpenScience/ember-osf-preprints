@@ -42,7 +42,6 @@ export default Ember.Component.extend({
     node: null,
     callback: null,
     uploadInProgress: false,
-    panelActions: Ember.inject.service(),
 
     dropzoneOptions: {
         maxFiles: 1,
@@ -134,15 +133,14 @@ export default Ember.Component.extend({
         },
         preUpload(_, dropzone, file) {
             this.send('formatDropzoneAfterPreUpload');
+            this.attrs.clearDownstreamFields('belowFile');
             this.set('file', file);
             this.set('hasFile', true);
-            this.attrs.clearDownstreamFields('belowFile');
             this.set('callback', Ember.RSVP.defer());
             // Delays so user can see that file has been preuploaded before
             // advancing to next panel
             Ember.run.later(() => {
-                this.get('panelActions').toggle('uploadNewFile');
-                this.get('panelActions').toggle('organize');
+                this.attrs.nextUploadSection('uploadNewFile', 'organize');
             }, 1500);
             return this.get('callback.promise');
         },

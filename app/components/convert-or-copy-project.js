@@ -21,7 +21,6 @@ import Ember from 'ember';
  * @class convert-or-copy-project
  */
 export default Ember.Component.extend({
-    panelActions: Ember.inject.service(),
     actions: {
         chooseCopyToComponent() {
             // Decision to create a component to contain the preprint
@@ -29,9 +28,7 @@ export default Ember.Component.extend({
             this.set('convertProjectConfirmed', false);
             this.set('convertOrCopy', 'copy');
             this.set('titleValid', false);
-            this.get('panelActions').toggle('organize');
-            this.get('panelActions').toggle('finalizeUpload');
-
+            this.attrs.nextUploadSection('organize', 'finalizeUpload');
         },
         chooseConvertExisting() {
             // Decision to have the existing project contain the preprint
@@ -46,8 +43,7 @@ export default Ember.Component.extend({
             // Confirmation that user wishes to use existing project to contain preprint,
             // as edits to the preprint will edit the project.
             this.set('convertProjectConfirmed', true);
-            this.get('panelActions').toggle('organize');
-            this.get('panelActions').toggle('finalizeUpload');
+            this.attrs.nextUploadSection('organize', 'finalizeUpload');
         }
     }
 });

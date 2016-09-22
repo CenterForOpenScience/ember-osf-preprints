@@ -191,6 +191,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
             this.send('changesSaved', currentPanelName);
         },
+        nextUploadSection(currentUploadPanel, nextUploadPanel) {
+            // Opens next panel within the Upload Section, Existing Workflow (Choose Project - Choose File - Organize - Finalize Upload)
+            this.get('panelActions').toggle(currentUploadPanel);
+            this.get('panelActions').toggle(nextUploadPanel);
+        },
         changesSaved(currentPanelName) {
             // Temporarily changes panel save state to true.  Used for flashing 'Changes Saved' in UI.
             var currentPanelSaveState = currentPanelName.toLowerCase() + 'SaveState';
