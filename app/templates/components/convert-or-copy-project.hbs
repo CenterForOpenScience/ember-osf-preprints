@@ -5,10 +5,10 @@
     <div class="row text-center m-v-md">
         <form class="form">
             <div class="toggle-button">
-                <input id='copy' onchange={{action "copyToComponent" value="true"}} type="radio" name="createComponentDecision" checked={{eq convertOrCopy 'copy'}}>
+                <input id='copy' onchange={{action "chooseCopyToComponent" value="true"}} type="radio" name="createComponentDecision" checked={{eq convertOrCopy 'copy'}}>
                 <label class='wide-text-only' for="copy"><i class="fa fa-plus-circle"></i> {{t "components.convert-or-copy.copy"}}</label>
 
-                <input id='convert' onchange={{action "convertExisting"}} type="radio" name="createComponentDecision" checked={{eq convertOrCopy 'convert'}}>
+                <input id='convert' onchange={{action "chooseConvertExisting"}} type="radio" name="createComponentDecision" checked={{eq convertOrCopy 'convert'}}>
                 <label class='wide-text-only' for="convert">
                     <i class="fa fa-cube"></i>
                     {{if isTopLevelNode (t "components.convert-or-copy.convert_project") (t "components.convert-or-copy.convert_component")}}
@@ -38,7 +38,7 @@
                 </div>
                 <div class="row p-b-md">
                     <div class="col-xs-6 text-right">
-                        <button {{action "copyToComponent"}} class="btn btn-default">{{t "components.convert-or-copy.create_a_new_component"}} </button>
+                        <button {{action "chooseCopyToComponent"}} class="btn btn-default">{{t "components.convert-or-copy.create_a_new_component"}} </button>
                     </div>
                     <div class="col-xs-6">
                         <button {{action "confirmConvert"}} class="btn btn-success">

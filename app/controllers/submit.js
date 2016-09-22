@@ -221,10 +221,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         changeToInitialState(newState) {
             // Changes state to initial upload state presenting choice: Upload new preprint or connect preprint to existing OSF project
             this.send('changeState', newState);
-            this.set('node', null);
-            this.set('selectedFile', null);
-            this.set('hasFile', false);
-            this.set('nodeTitle', null);
+            this.send('clearDownstreamFields', 'allUpload');
         },
         lockFileAndNode() {
             // Locks file and node so that they cannot be modified.  Occurs after upload step is complete.
@@ -279,6 +276,35 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         selectExistingFile(file) {
             // Takes file chosen from file-browser and sets equal to selectedFile. This file will become the preprint.
             this.set('selectedFile', file);
+        },
+        clearDownstreamFields(section) {
+            //If user goes back and changes a section inside Upload, all fields downstream of that section need to clear.
+            switch (section) {
+                case 'allUpload':
+                    this.set('node', null);
+                    this.set('selectedFile', null);
+                    this.set('hasFile', false);
+                    this.set('file', null);
+                    this.set('convertOrCopy', null);
+                    this.set('nodeTitle', null);
+                    break;
+                case 'belowNode':
+                    this.set('selectedFile', null);
+                    this.set('hasFile', false);
+                    this.set('file', null);
+                    this.set('convertOrCopy', null);
+                    this.set('nodeTitle', null);
+                    break;
+                case 'belowFile': {
+                    this.set('convertOrCopy', null);
+                    this.set('nodeTitle', null);
+                    break;
+                }
+                case 'belowConvertOrCopy': {
+                    this.set('nodeTitle', null);
+                    break;
+                }
+            }
         },
         /*
           Basics section

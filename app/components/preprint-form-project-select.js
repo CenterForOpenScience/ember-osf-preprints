@@ -62,27 +62,28 @@ export default Ember.Component.extend({
         nodeSelected(node) {
             // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded,
             // file-browser component can be loaded.
+            this.attrs.clearDownstreamFields('belowNode');
             this.set('selectedNode', node);
-            this.get('panelActions').toggle('chooseProject');
-            this.set('selectedFile', null);
             this.set('osfProviderLoaded', false);
             this.send('changeExistingState', existingState.CHOOSE);
             this.get('selectedNode.files').then((files) => {
                 this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
                 this.set('osfProviderLoaded', true);
             });
+            // Closes panel
+            this.get('panelActions').toggle('chooseProject');
         },
         selectFile(file) {
             // Select existing file from file-browser
+            this.attrs.clearDownstreamFields('belowFile');
             this.attrs.selectFile(file);
-            this.set('convertOrCopy', null);
-            this.set('nodeTitle', null);
             this.get('panelActions').toggle('selectExistingFile');
             this.get('panelActions').toggle('organize');
         },
         changeExistingState(newState) {
             // Toggles existingState between 'existing' or 'new', meaning user wants to select existing file from file browser
             // or upload a new file.
+            this.attrs.clearDownstreamFields('belowNode');
             this.set('existingState', newState);
             this.get('panelActions').toggle('chooseFile');
             if (newState === existingState.EXISTINGFILE) {
@@ -91,10 +92,6 @@ export default Ember.Component.extend({
             if (newState === existingState.NEWFILE) {
                 this.get('panelActions').toggle('uploadNewFile');
             }
-            this.set('selectedFile', null);
-            this.set('hasFile', false);
-            this.set('nodeTitle', null);
-            this.set('convertOrCopy', null);
         },
     },
 

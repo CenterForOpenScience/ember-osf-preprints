@@ -23,6 +23,6 @@ test('it works', function(assert) {
         'title': 'Node title'
     });
     let result = getAncestorDescriptor([node]);
-    assert.equal(result, 'Root title / Parent title / Node title');
+    assert.equal(result, 'Root title / Parent title / ');
 
 });

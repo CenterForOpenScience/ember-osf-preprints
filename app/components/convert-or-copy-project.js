@@ -23,16 +23,18 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     panelActions: Ember.inject.service(),
     actions: {
-        copyToComponent() {
+        chooseCopyToComponent() {
+            // Decision to create a component to contain the preprint
+            this.attrs.clearDownstreamFields('belowConvertOrCopy');
             this.set('convertProjectConfirmed', false);
             this.set('convertOrCopy', 'copy');
-            this.set('nodeTitle', null);
             this.set('titleValid', false);
             this.get('panelActions').toggle('organize');
             this.get('panelActions').toggle('finalizeUpload');
 
         },
-        convertExisting() {
+        chooseConvertExisting() {
+            // Decision to have the existing project contain the preprint
             this.set('convertProjectConfirmed', false);
             this.set('convertOrCopy', 'convert');
             if (this.get('node')) {
@@ -41,6 +43,8 @@ export default Ember.Component.extend({
             }
         },
         confirmConvert() {
+            // Confirmation that user wishes to use existing project to contain preprint,
+            // as edits to the preprint will edit the project.
             this.set('convertProjectConfirmed', true);
             this.get('panelActions').toggle('organize');
             this.get('panelActions').toggle('finalizeUpload');

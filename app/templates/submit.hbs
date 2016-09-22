@@ -45,6 +45,7 @@
                                                 {{file-uploader
                                                     changeState=(action 'changeToInitialState')
                                                     finishUpload=(action 'finishUpload')
+                                                    clearDownstreamFields=(action 'clearDownstreamFields')
                                                     newNodeNewFile=true
                                                     startState=_State.START
                                                     nodeTitle=nodeTitle
@@ -62,6 +63,7 @@
                                                 {{preprint-form-project-select
                                                   changeState=(action 'changeToInitialState')
                                                   finishUpload=(action 'finishUpload')
+                                                  clearDownstreamFields=(action 'clearDownstreamFields')
                                                   existingNodeExistingFile=(action 'existingNodeExistingFile')
                                                   createComponentCopyFile=(action "createComponentCopyFile")
                                                   selectFile=(action "selectExistingFile")

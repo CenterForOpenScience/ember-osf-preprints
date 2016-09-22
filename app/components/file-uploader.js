@@ -53,10 +53,8 @@ export default Ember.Component.extend({
 
     init() {
         this._super(...arguments);
-
-        this.set('file', null);
+        this.attrs.clearDownstreamFields('belowNode');
         this.set('callback', null);
-        this.set('nodeTitle', null);
     },
 
     actions: {
@@ -137,9 +135,8 @@ export default Ember.Component.extend({
         preUpload(_, dropzone, file) {
             this.send('formatDropzoneAfterPreUpload');
             this.set('file', file);
-            this.set('convertOrCopy', null);
-            this.set('nodeTitle', null);
             this.set('hasFile', true);
+            this.attrs.clearDownstreamFields('belowFile');
             this.set('callback', Ember.RSVP.defer());
             // Delays so user can see that file has been preuploaded before
             // advancing to next panel
@@ -171,9 +168,8 @@ export default Ember.Component.extend({
             } else {
                 //Failure
                 dropzone.removeAllFiles();
-                this.set('hasFile', false);
-                this.set('selectedFile', null);
-                this.set('convertOrCopy', null);
+                // Error uploading file. Clear downstream fields.
+                this.attrs.clearDownstreamFields('belowNode');
                 this.get('toast').error(
                     file.xhr.status === 409 ?
                     'A file with that name already exists'
