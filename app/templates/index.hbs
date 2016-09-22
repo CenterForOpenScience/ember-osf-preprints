@@ -66,8 +66,16 @@
                     <p class="lead">
                         {{t "index.services.bottom.p1"}}
                         <div class="p-t-sm">
-                            {{t "index.services.bottom.div.line1" href='https://github.com/CenterForOpenScience/ember-preprints'}}
-                            {{t "index.services.bottom.div.line2" href='https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270'}}
+                            {{t "index.services.bottom.div.line1"}}
+                            <a class="source_code_link" href="https://github.com/CenterForOpenScience/ember-preprints"
+                                {{action "click" "link" "Index - GitHub Repo" "https://github.com/CenterForOpenScience/ember-preprints"}}>
+                                {{t "index.services.bottom.div.linkText1"}}
+                            </a>
+                            {{t "index.services.bottom.div.line2"}}
+                            <a class="source_code_link" href="https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"
+                                {{action "click" "link" "Index - GitHub Repo" "https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"}}>
+                                {{t "index.services.bottom.div.linkText2"}}
+                            </a>
                             {{t "index.services.bottom.div.line3"}}
                         </div>
                     </p>

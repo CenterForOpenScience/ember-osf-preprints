@@ -34,6 +34,10 @@ export default Ember.Controller.extend(Analytics, {
              this.set('authors', contributors));
     }),
 
+    doiUrl: Ember.computed('model.doi', function() {
+        return `https://dx.doi.org/${this.get('model.doi')}`;
+    }),
+
     actions: {
         expandMFR() {
             // State of fullScreenMFR before the transition (what the user perceives as the action)

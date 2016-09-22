@@ -16,6 +16,7 @@ for (let action of actionTypes) {
                 label
             });
 
+        // Needed for outbound links, see https://support.google.com/analytics/answer/1136920?hl=en
         if (url)
             window.location.href = url;
 
