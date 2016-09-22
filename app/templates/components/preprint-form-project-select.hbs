@@ -1,6 +1,6 @@
 {{#cp-panels accordion=true}}
     {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}}
-        {{preprint-form-header name='Choose Project' selectedNode=selectedNode showValidationIndicator=false}}
+        {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
         {{#preprint-form-body}}
             <p class="text-muted">
                 {{t "components.preprint-form-project-select.existing_project_selector"}}
@@ -27,7 +27,7 @@
         {{#if isAdmin}}
             {{#if (and fileSelect (eq existingState _existingState.CHOOSE))}}
                 {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseFile' open=false}}
-                    {{preprint-form-header name='Choose File' showValidationIndicator=false}}
+                    {{preprint-form-header name='choose_file' showValidationIndicator=false}}
                     {{#preprint-form-body}}
                         <form class="form">
                             <div class="toggle-button">
@@ -50,7 +50,7 @@
                 <div>
                     {{#if osfProviderLoaded}}
                         {{#preprint-form-section class="upload-section-block" allowOpen=true name='selectExistingFile' open=false}}
-                            {{preprint-form-header name='Choose File' selectedFile=selectedFile showValidationIndicator=false}}
+                            {{preprint-form-header name='choose_file' selectedFile=selectedFile showValidationIndicator=false}}
                             {{#preprint-form-body}}
                                 <div class="m-t-sm">
                                     <form class="form">
@@ -68,14 +68,14 @@
                         {{/preprint-form-section}}
                         {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
                             {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
-                                {{preprint-form-header isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy name='Organize' showValidationIndicator=false}}
+                                {{preprint-form-header isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy name='organize' showValidationIndicator=false}}
                                 {{#preprint-form-body}}
                                     {{convert-or-copy-project clearDownstreamFields=clearDownstreamFields nodeTitle=nodeTitle node=node isTopLevelNode=isTopLevelNode titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
                             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
                                 {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
-                                    {{preprint-form-header nodeTitle=nodeTitle name='Finalize Upload' showValidationIndicator=false}}
+                                    {{preprint-form-header nodeTitle=nodeTitle name='finalize_upload' showValidationIndicator=false}}
                                     {{#preprint-form-body}}
                                         {{#if (eq convertOrCopy 'convert')}}
                                             {{#if convertProjectConfirmed}}

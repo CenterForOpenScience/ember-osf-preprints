@@ -19,7 +19,7 @@
     </div>
 {{else}}
     {{#preprint-form-section class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}
-        {{preprint-form-header name='Choose File' selectedFile=file showValidationIndicator=false}}
+        {{preprint-form-header name='choose_file' selectedFile=file showValidationIndicator=false}}
         {{#preprint-form-body}}
             <div class="m-t-sm">
                 <form class="form">
@@ -48,14 +48,14 @@
 
     {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
         {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
-            {{preprint-form-header name='Organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false}}
+            {{preprint-form-header name='organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false}}
             {{#preprint-form-body}}
                 {{convert-or-copy-project clearDownstreamFields=clearDownstreamFields isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
             {{/preprint-form-body}}
         {{/preprint-form-section}}
         {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
             {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
-                {{preprint-form-header name='Finalize Upload' nodeTitle=nodeTitle showValidationIndicator=false}}
+                {{preprint-form-header name='finalize_upload' nodeTitle=nodeTitle showValidationIndicator=false}}
                 {{#preprint-form-body}}
                     {{#if (eq convertOrCopy 'convert')}}
                         {{#if convertProjectConfirmed}}

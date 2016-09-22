@@ -202,7 +202,18 @@ export default {
             changes_saved: `Changes Saved!`,
             file: `Preprint file`,
             title: `Preprint title`,
-            click_edit: `Click to Edit`
+            click_edit: `Click to Edit`,
+            name: {
+                Upload: 'Upload',
+                Discipline: 'Discipline',
+                Basics: 'Basics',
+                Authors: 'Authors',
+                Submit: 'Submit',
+                'Choose Project': 'Choose Project',
+                'Choose File': 'Choose File',
+                'Organize': 'Organize',
+                'Finalize Upload': 'Finalize Upload'
+            }
         },
         'preprint-form-project-select': {
             existing_project_selector: `The list of projects appearing in the selector are projects and components for which you have admin access.  Registrations are not included here.`,

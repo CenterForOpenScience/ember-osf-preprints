@@ -8,10 +8,9 @@ moduleForComponent('preprint-form-header', 'Integration | Component | preprint f
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
-  const name = 'test';
+  const name = 'Upload';
   this.set('name', name);
 
   this.render(hbs`{{preprint-form-header name=name}}`);
-
-  assert.equal(this.$().text().trim(), name);
+  assert.equal(this.$('.section-header').text().trim(), name);
 });

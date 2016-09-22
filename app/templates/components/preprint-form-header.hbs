@@ -2,7 +2,9 @@
     Can remove when this PR merged: https://github.com/rwjblue/ember-template-lint/pull/98 }}
 <!-- template-lint block-indentation=false -->
 
-{{name}}
+<div class="section-header">
+    {{t (concat "components.preprint-form-header.name." name)}}
+</div>
 
 <div class="preprint-section-status pull-right">
     {{#if (or
