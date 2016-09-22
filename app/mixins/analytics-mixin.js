@@ -9,13 +9,14 @@ const actions = {};
 
 for (let action of actionTypes) {
     actions[action] = function(category, label) {
-        Ember
-            .get(this, 'metrics')
+        Ember.get(this, 'metrics')
             .trackEvent({
                 category,
                 action,
                 label
             });
+
+        return true;
     };
 }
 

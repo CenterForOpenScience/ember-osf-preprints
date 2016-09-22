@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
+import Analytics from '../mixins/analytics-mixin';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(Analytics, {
     fullScreenMFR: false,
     expandedAuthors: true,
     twitterHref: Ember.computed('model', function() {
@@ -35,16 +36,45 @@ export default Ember.Controller.extend({
 
     actions: {
         expandMFR() {
-            this.toggleProperty('fullScreenMFR');
+            // State of fullScreenMFR before the transition (what the user perceives as the action)
+            const beforeState = this.toggleProperty('fullScreenMFR') ? 'Expand' : 'Contract';
+
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Content - MFR ${beforeState}`
+                });
         },
+        // Unused
         expandAuthors() {
             this.toggleProperty('expandedAuthors');
         },
+        // Metrics are handled in the component
         chooseFile(fileItem) {
             this.set('activeFile', fileItem);
         },
-        shareLink(href) {
+        shareLink(href, network, action, label) {
             window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
+
+            const metrics = Ember.get(this, 'metrics');
+
+            if (network === 'email') {
+                metrics.trackEvent({
+                    category: 'link',
+                    action,
+                    label
+                })
+            }
+            else {
+                // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
+                metrics.trackEvent({
+                    category: network,
+                    action,
+                    label: window.location.href
+                });
+            }
+
             return false;
         }
     },
