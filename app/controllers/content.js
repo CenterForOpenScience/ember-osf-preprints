@@ -6,16 +6,16 @@ export default Ember.Controller.extend(Analytics, {
     fullScreenMFR: false,
     expandedAuthors: true,
     twitterHref: Ember.computed('model', function() {
-        return encodeURI('https://twitter.com/intent/tweet?url=' + window.location.href + '&text=' + this.get('model.title') + '&via=OSFramework');
+        return encodeURI(`https://twitter.com/intent/tweet?url=${window.location.href}&text=${this.get('model.title')}&via=OSFramework`);
     }),
     facebookHref: Ember.computed('model', function() {
-        return 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href);
+        return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
     }),
     linkedinHref: Ember.computed('model', function() {
-        return 'https://www.linkedin.com/cws/share?url=' + encodeURIComponent(window.location.href) + '&title=' + encodeURIComponent(this.get('model.title'));
+        return `https://www.linkedin.com/cws/share?url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(this.get('model.title'))}`;
     }),
     emailHref: Ember.computed('model', function() {
-        return 'mailto:?subject=' + encodeURIComponent(this.get('model.title')) + '&body=' + encodeURIComponent(window.location.href);
+        return `mailto:?subject=${encodeURIComponent(this.get('model.title'))}&body=${encodeURIComponent(window.location.href)}`;
     }),
     // The currently selected file (defaults to primary)
     activeFile: null,
@@ -26,12 +26,13 @@ export default Ember.Controller.extend(Analytics, {
 
     getAuthors: Ember.observer('model', function() {
         // Cannot be called until preprint has loaded!
-        var model = this.get('model');
+        const model = this.get('model');
         if (!model) return [];
 
-        let contributors = Ember.A();
-        loadAll(model, 'contributors', contributors).then(()=>
-             this.set('authors', contributors));
+        const contributors = Ember.A();
+        loadAll(model, 'contributors', contributors).then(() =>
+            this.set('authors', contributors)
+        );
     }),
 
     doiUrl: Ember.computed('model.doi', function() {
@@ -69,8 +70,7 @@ export default Ember.Controller.extend(Analytics, {
                     action,
                     label
                 })
-            }
-            else {
+            } else {
                 // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
                 metrics.trackEvent({
                     category: network,
