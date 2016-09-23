@@ -95,7 +95,7 @@ export default Ember.Controller.extend(Analytics, {
     subjectChanged: Ember.observer('subjectFilter', function() {
         Ember.run.once(() => {
             let filter = this.get('subjectFilter');
-            if (!filter) return;
+            if (!filter || filter === 'true') return;
             this.set('activeFilters.subjects', filter.split('AND'));
             this.notifyPropertyChange('activeFilters');
             this.loadPage();
@@ -104,7 +104,7 @@ export default Ember.Controller.extend(Analytics, {
     providerChanged: Ember.observer('providerFilter', function() {
         Ember.run.once(() => {
             let filter = this.get('providerFilter');
-            if (!filter) return;
+            if (!filter || filter === 'true') return;
             this.set('activeFilters.providers', filter.split('AND'));
             this.notifyPropertyChange('activeFilters');
             this.set('providersPassed', true);
