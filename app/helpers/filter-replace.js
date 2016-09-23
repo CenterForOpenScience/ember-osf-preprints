@@ -2,7 +2,9 @@ import Ember from 'ember';
 
 var filters = {
     'Open Science Framework': 'OSF',
-    'Cognitive Sciences ePrint Archive': 'Cogprints'
+    'Cognitive Sciences ePrint Archive': 'Cogprints',
+    OSF: 'OSF Preprints',
+    'Research Papers in Economics': 'ResPEc'
 };
 
 export function filterReplace(params) {

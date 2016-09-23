@@ -36,6 +36,7 @@ export default Ember.Controller.extend(Analytics, {
     activeFilters: { providers: [], subjects: [] },
     osfProviders: ['OSF', 'PsyArXiv', 'SocArXiv', 'engrXiv'],
 
+    whiteListedProviders: ['OSF', 'arXiv', 'bioRxiv', 'Cogprints', 'engrXiv', 'PeerJ', 'PsyArXiv', 'Research Papers in Economics', 'SocArXiv'],
     page: 1,
     size: 10,
     numberOfResults: 0,
@@ -76,16 +77,17 @@ export default Ember.Controller.extend(Analytics, {
             crossDomain: true,
         }).then(function(results) {
             var hits = results.aggregations.sources.buckets;
-            var providers = [];
-            hits.map(function(each) {
-                providers.push(each.key);
-            });
+            var whiteList = _this.get('whiteListedProviders');
+            var providers = hits.map(each => each.key).filter(each => whiteList.indexOf(each) !== -1);
             _this.get('osfProviders').slice().map(function(each) {
                 if (providers.indexOf(each) === -1) {
                     providers.push(each);
                 }
             });
-            _this.set('otherProviders', providers.sort((a, b) => a < b ? 1 : -1).sort(a => a === 'Open Science Framework' ? -1 : 1));
+            providers.splice(providers.indexOf('OSF'), 1);
+            providers.sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1);
+            providers.unshift('OSF');
+            _this.set('otherProviders', providers);
             _this.notifyPropertyChange('otherProviders');
         });
         this.loadPage();
