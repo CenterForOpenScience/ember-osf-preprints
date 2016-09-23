@@ -69,7 +69,7 @@ export default Ember.Controller.extend(Analytics, {
                     category: 'link',
                     action,
                     label
-                })
+                });
             } else {
                 // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
                 metrics.trackEvent({
