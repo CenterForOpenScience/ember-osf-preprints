@@ -30,14 +30,16 @@ export default Ember.Component.extend({
                 return loadAll(this.get('provider'), 'files', this.get('files'), {'page[size]': 50});
             })
             .then(() => {
-                let pf = this.get('files').findBy('id', this.get('preprint.primaryFile.id'));
-                if (pf) {
-                    this.get('files').removeObject(pf);
-                    this.set('primaryFile', pf);
+                const primaryFile = this.get('files')
+                    .findBy('id', this.get('preprint.primaryFile.id'));
+
+                if (primaryFile) {
+                    this.get('files').removeObject(primaryFile);
+                    this.set('primaryFile', primaryFile);
                 }
 
-                this.set('selectedFile', this.get('primaryFile'));
-                this.set('files', [this.get('primaryFile')].concat(this.get('files')));
+                this.set('selectedFile', primaryFile);
+                this.set('files', [primaryFile, ...this.get('files')]);
             });
 
     }.observes('preprint'),
