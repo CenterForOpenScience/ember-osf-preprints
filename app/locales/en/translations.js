@@ -2,6 +2,7 @@ export default {
     global: {
         share: `Share`,
         cancel: `Cancel`,
+        back: `Back`,
         prev: `Prev`,
         next: `Next`,
         none: `None`,
@@ -17,7 +18,11 @@ export default {
         add: `Add`,
         restart: `Restart`,
         no_results_found: `No results found.`,
-        authors: `Authors`
+        authors: `Authors`,
+        convert_project: `The current project will contain the preprint.`,
+        convert_component: `The current component will contain the preprint`,
+        copy_inside_project: `A new component inside the current project will contain the preprint.`,
+        copy_inside_component: `A new component inside the current component will contain the preprint.`,
     },
     application: {
         // Nothing to translate
@@ -144,6 +149,24 @@ export default {
             title: `Share Preprint`,
             body: `Once this preprint is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.`
         },
+        'convert-or-copy': {
+            organize_language_project: `You have a choice for how to organize your preprint in this project. If you select, "Make a new component", then the preprint file will
+            be placed in a new component inside the current project.  If you select "Use the current project", then the preprint file will be placed inside the
+            current project. If you are unsure, then select "Make a new component".`,
+            organize_language_component: `You have a choice for how to organize your preprint in this component. If you select, "Make a new component", then the preprint file will
+            be placed in a new component inside the current component.  If you select "Use the current component", then the preprint file will be placed inside the
+            current component. If you are unsure, then select "Make a new component".`,
+            copy: `Make a new component`,
+            convert_project: `Use the current project`,
+            convert_component: `Use the current component`,
+            create_a_new_component: `Create a new component`,
+            continue_with_this_project: `Continue with this project`,
+            continue_with_this_component: `Continue with this component`,
+            header_convert_confirmation_project: `Your project details will be saved as you continue to work on this form.`,
+            header_convert_confirmation_component: `Your component details will be saved as you continue to work on this form.`,
+            convert_confirmation_details_project: `Changes you make on this page are saved immediately.  Create a new component under this project to avoid overwriting its details.`,
+            convert_confirmation_details_component: `Changes you make on this page are saved immediately.  Create a new component under this component to avoid overwriting its details.`
+        },
         'file-uploader': {
             dropzone_message: `Drop preprint file here to upload`,
             title_placeholder: `Enter preprint title`
@@ -167,7 +190,8 @@ export default {
                 permissions: `Permissions`,
                 permission_info: `Permission Information`,
                 citation: `Citation`,
-                citation_info: `Citation Information`
+                citation_info: `Citation Information`,
+                parent_contributors: `Add contributors from parent project`
             },
             remove: `Remove`
         },
@@ -178,7 +202,27 @@ export default {
             changes_saved: `Changes Saved!`,
             file: `Preprint file`,
             title: `Preprint title`,
-            click_edit: `Click to Edit`
+            click_edit: `Click to Edit`,
+            name: {
+                Upload: 'Upload',
+                Discipline: 'Discipline',
+                Basics: 'Basics',
+                Authors: 'Authors',
+                Submit: 'Submit',
+                choose_project: 'Choose Project',
+                choose_file: 'Choose File',
+                organize: 'Organize',
+                finalize_upload: 'Finalize Upload'
+            }
+        },
+        'preprint-form-project-select': {
+            existing_project_selector: `The list of projects appearing in the selector are projects and components for which you have admin access.  Registrations are not included here.`,
+            no_valid_existing_nodes: `You have no valid nodes that can be converted into a preprint.  Go back to upload a new preprint.`,
+            upload_preprint: `Upload preprint`,
+            select_existing_file: `Select existing file as preprint`,
+            edit_preprint_title: `Edit preprint title`,
+            initiate_preprint_process: `You are about to initiate the preprint process.  You will not be able to change your project or file after this point.`,
+            admin_only: `You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.`
         },
         'preprint-form-section': {
             // Nothing to translate
