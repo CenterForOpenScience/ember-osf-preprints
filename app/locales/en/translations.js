@@ -30,6 +30,7 @@ export default {
             download: `Download`,
             downloads: `Downloads`
         },
+        version: 'Version',
         article_doi: `Article DOI`,
         disciplines: `Disciplines`,
         project_button: {
