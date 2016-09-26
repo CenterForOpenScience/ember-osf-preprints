@@ -2,8 +2,9 @@ import Ember from 'ember';
 
 import OSFAgnosticAuthRouteMixin from 'ember-osf/mixins/osf-agnostic-auth-route';
 import AnalyticsMixin from '../mixins/analytics-mixin';
+import KeenTrackPageviewMixin from 'ember-keen/mixins/keen-track-pageview';
 
-export default Ember.Route.extend(AnalyticsMixin, OSFAgnosticAuthRouteMixin, {
+export default Ember.Route.extend(AnalyticsMixin, OSFAgnosticAuthRouteMixin, KeenTrackPageviewMixin, {
     i18n: Ember.inject.service(),
     afterModel: function() {
         let locale;

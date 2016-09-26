@@ -2,12 +2,27 @@ import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 
 export default Ember.Component.extend({
+    keen: Ember.inject.service(),
     elementId: 'preprint-file-view',
     endIndex: 6,
     startIndex: 0,
 
     scrollAnim: '',
     selectedFile: null,
+
+    selectedFileChanged: Ember.observer('selectedFile', function() {
+        const eventData = {
+            node: {
+                type: 'preprint',
+                id: this.get('preprint.id')
+            },
+            file: {
+                id: this.get('selectedFile.id')
+            }
+        };
+
+        this.get('keen').sendEvent('file_views', eventData, true);
+    }),
 
     hasAdditionalFiles: function() {
         return this.get('files.length') > 1;

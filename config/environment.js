@@ -39,6 +39,8 @@ module.exports = function(environment) {
         i18n: {
             defaultLocale: 'en'
         },
+        KEEN_PROJECT_ID: process.env.KEEN_PROJECT_ID,
+        KEEN_WRITE_KEY: process.env.KEEN_WRITE_KEY,
     };
 
     if (environment === 'development') {
