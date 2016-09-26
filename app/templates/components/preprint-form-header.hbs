@@ -2,7 +2,9 @@
     Can remove when this PR merged: https://github.com/rwjblue/ember-template-lint/pull/98 }}
 <!-- template-lint block-indentation=false -->
 
-{{name}}
+<div class="section-header">
+    {{t (concat "components.preprint-form-header.name." name)}}
+</div>
 
 <div class="preprint-section-status pull-right">
     {{#if (or
@@ -21,52 +23,94 @@
     <div class="m-t-md preprint-header-preview">
         <p><em class="m-r-md"> {{t "components.preprint-form-header.file"}} </em> {{preprintFile}} </p>
         <p><em class="m-r-md"> {{t "components.preprint-form-header.title"}} </em> {{preprintTitle}} </p>
-        <i class="text-smaller">{{t "components.preprint-form-header.click_edit"}}</i>
     </div>
 {{/if}}
 
-{{#if (and isValidationActive (not isOpen))}}
+{{#if (not isOpen)}}
     <div class="m-t-md preprint-header-preview">
-        {{#if (eq name 'Basics')}}
-            <p><em class="m-r-md"> {{t "global.doi"}}: </em> {{if doi doi (t "global.none")}} </p>
-            <p>
-                <em class="m-r-md"> {{t "global.tags"}}: </em>
-                {{#if tags}}
-                    <ul class="comma-list">
-                        {{#each tags as |tag|~}}
-                            <li> {{~tag~}} </li>
-                        {{~/each}}
-                    </ul>
+        {{#if isValidationActive}}
+            {{#if (eq name 'Basics')}}
+                <p><em class="m-r-md"> {{t "global.doi"}}: </em> {{if doi doi (t "global.none")}} </p>
+                <p>
+                    <em class="m-r-md"> {{t "global.tags"}}: </em>
+                    {{#if tags}}
+                        <ul class="comma-list">
+                            {{#each tags as |tag|~}}
+                                <li> {{~tag~}} </li>
+                            {{~/each}}
+                        </ul>
+                    {{else}}
+                        <span>{{t "global.none"}}</span>
+                    {{/if}}
+                </p>
+                <em class="m-r-md"> {{t "global.abstract"}}: </em>
+                <p class="abstract">{{if abstract abstract (t "global.none")}} </p>
+            {{else if (eq name 'Discipline')}}
+                {{#if subjects}}
+                    {{#each subjects as |subject|}}
+                        <span class="subject-preview">{{subject.text}} </span>
+                    {{/each}}
                 {{else}}
                     <span>{{t "global.none"}}</span>
                 {{/if}}
-            </p>
-            <em class="m-r-md"> {{t "global.abstract"}}: </em>
-            <p class="abstract">{{if abstract abstract (t "global.none")}} </p>
-        {{else if (eq name 'Discipline')}}
-            {{#if subjects}}
-                {{#each subjects as |subject|}}
-                    <span class="subject-preview">{{subject.text}} </span>
-                {{/each}}
-            {{else}}
-                <span>{{t "global.none"}}</span>
+            {{else if (eq name 'Authors')}}
+                <ul class="author-preview comma-list">
+                    {{#each authors as |contrib| ~}}
+                        <li>
+                            {{~#if contrib.unregisteredContributor~}}
+                                {{~contrib.unregisteredContributor~}}
+                            {{else}}
+                                {{~contrib.users.fullName~}}
+                            {{~/if~}}
+                        </li>
+                    {{~/each}}
+                </ul>
             {{/if}}
-
-        {{else if (eq name 'Authors')}}
-            <ul class="author-preview comma-list">
-                {{#each authors as |contrib| ~}}
-                    <li>
-                        {{~#if contrib.unregisteredContributor~}}
-                            {{~contrib.unregisteredContributor~}}
-                        {{else}}
-                            {{~contrib.users.fullName~}}
-                        {{~/if~}}
-                    </li>
-                {{~/each}}
-            </ul>
         {{/if}}
 
-        <i class="text-smaller m-t-md">{{t "components.preprint-form-header.click_edit"}}</i>
+        {{#if (eq name 'choose_project')}}
+            {{#if selectedNode}}
+                <p> {{selectedNode.title}} </p>
+            {{/if}}
+        {{/if}}
 
+        {{#if (eq name 'choose_file')}}
+            {{#if selectedFile}}
+                <p> {{selectedFile.name}}</p>
+            {{/if}}
+        {{/if}}
+
+        {{#if (eq name 'organize')}}
+            {{#if (eq convertOrCopy 'convert')}}
+                <p>
+                    {{#if isTopLevelNode}}
+                        {{t "global.convert_project"}}
+                    {{else}}
+                        {{t "global.convert_component"}}
+                    {{/if}}
+                </p>
+            {{/if}}
+
+            {{#if (eq convertOrCopy 'copy')}}
+                <p>
+                {{#if isTopLevelNode}}
+                        {{t "global.copy_inside_project"}}
+                    {{else}}
+                        {{t "global.copy_inside_component"}}
+                    {{/if}}
+                </p>
+            {{/if}}
+        {{/if}}
+
+        {{#if (eq name 'finalize_upload')}}
+            {{#if nodeTitle}}
+                 <p>{{t "components.preprint-form-header.title"}}: {{nodeTitle}} </p>
+            {{/if}}
+        {{/if}}
+
+
+        {{#if (and (not-eq name 'Submit') (or (not showValidationIndicator) isValidationActive))}}
+            <i class="text-smaller m-t-md">{{t "components.preprint-form-header.click_edit"}}</i>
+        {{/if}}
     </div>
 {{/if}}

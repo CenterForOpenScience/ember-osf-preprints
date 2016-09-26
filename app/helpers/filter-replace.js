@@ -4,7 +4,7 @@ var filters = {
     'Open Science Framework': 'OSF',
     'Cognitive Sciences ePrint Archive': 'Cogprints',
     OSF: 'OSF Preprints',
-    'Research Papers in Economics': 'ResPEc'
+    'Research Papers in Economics': 'RePEc'
 };
 
 export function filterReplace(params) {

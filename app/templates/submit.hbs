@@ -24,29 +24,73 @@
                                     <p><em> {{t "submit.body.file"}}: </em> {{selectedFile.name}}</p>
 
                                     <p><em> {{t "submit.body.title"}}: </em></p>
-                                    {{validated-input model=this valuePath='basicsTitle' placeholder=(t "global.title") value=nodeTitle}}
-
-                                    <button class="btn btn-danger" {{action 'toggleRestartPreprintModal'}}>{{t "global.restart"}}</button>
-                                    <button class="btn btn-primary" disabled={{unless nodeTitle true}} {{action 'editTitleNext' name}}>{{t "global.next"}}</button>
-
-                                    <div>
-                                        {{confirm-restart-submit-preprint isOpen=showModalRestartPreprint resetFileUpload=(action 'resetFileUpload')}}
+                                    {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                                    <div class="pull-right">
+                                        <button class="btn btn-primary" disabled={{unless nodeTitle true}} {{action 'editTitleNext' name}}>Save and continue</button>
                                     </div>
                                 {{else}}
-                                    <div>
-                                        {{file-uploader
-                                            hasFile=hasFile
-                                            file=file
-                                            node=node
-                                            nodeTitle=nodeTitle
-                                            userNodes=userNodes
-                                            osfFile=selectedFile
-                                            next=(action 'next')
-                                            _names=_names
-                                            projectsCreatedForPreprint=projectsCreatedForPreprint
-                                            filesUploadedForPreprint=filesUploadedForPreprint
-                                            finishUpload=(action 'finishUpload')}}
-                                    </div>
+                                    {{#liquid-bind filePickerState class='translate' as |currentState|}}
+                                        <div class={{currentState}}>
+                                            {{#if (eq currentState _State.START)}}
+                                                <div class="row">
+                                                    <div class="col-xs-6 p-h-xl">
+                                                        <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.NEW}}>Upload new preprint</button>
+                                                    </div>
+                                                    <div class="col-xs-6  p-h-xl">
+                                                        <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.EXISTING}}>Connect preprint to existing OSF project</button>
+                                                    </div>
+                                                </div>
+
+                                            {{else if (eq currentState _State.NEW)}}
+                                                {{file-uploader
+                                                    changeInitialState=(action 'changeInitialState')
+                                                    finishUpload=(action 'finishUpload')
+                                                    clearDownstreamFields=(action 'clearDownstreamFields')
+                                                    nextUploadSection=(action 'nextUploadSection')
+                                                    newNodeNewFile=true
+                                                    startState=_State.START
+                                                    nodeTitle=nodeTitle
+                                                    currentUser=user
+                                                    osfFile=selectedFile
+                                                    hasFile=hasFile
+                                                    file=file
+                                                    node=node
+                                                    parentNode=parentNode
+                                                    convertProjectConfirmed=convertProjectConfirmed
+                                                    convertOrCopy=convertOrCopy
+                                                    isTopLevelNode=isTopLevelNode
+                                                }}
+                                            {{else if (eq currentState _State.EXISTING)}}
+                                                {{preprint-form-project-select
+                                                  changeInitialState=(action 'changeInitialState')
+                                                  finishUpload=(action 'finishUpload')
+                                                  clearDownstreamFields=(action 'clearDownstreamFields')
+                                                  nextUploadSection=(action 'nextUploadSection')
+                                                  existingNodeExistingFile=(action 'existingNodeExistingFile')
+                                                  createComponentCopyFile=(action "createComponentCopyFile")
+                                                  selectFile=(action "selectExistingFile")
+                                                  highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+                                                  startState=_State.START
+                                                  nodeTitle=nodeTitle
+                                                  currentUser=user
+                                                  selectedFile=selectedFile
+                                                  hasFile=hasFile
+                                                  file=file
+                                                  node=node
+                                                  userNodes=userNodes
+                                                  selectedNode=node
+                                                  contributors=contributors
+                                                  fileSelect=true
+                                                  currentState=filePickerState
+                                                  parentNode=parentNode
+                                                  convertProjectConfirmed=convertProjectConfirmed
+                                                  userNodesLoaded=userNodesLoaded
+                                                  convertOrCopy=convertOrCopy
+                                                  isTopLevelNode=isTopLevelNode
+                                                  }}
+                                            {{/if}}
+                                        </div>
+                                    {{/liquid-bind}}
                                 {{/if}}
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
@@ -126,6 +170,7 @@
                                     editContributor=(action 'updateContributor')
                                     reorderContributors=(action 'reorderContributors')
                                     highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+                                    parentNode=parentNode
                                 }}
                                 <div class="row">
                                     <div class="col-md-12">
