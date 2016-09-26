@@ -79,7 +79,7 @@
                                     {{#preprint-form-body}}
                                         {{#if (eq convertOrCopy 'convert')}}
                                             {{#if convertProjectConfirmed}}
-                                                <label class="text-muted title-label"> {{t "components.preprint-form-project-select.edit_preprint_title"}} </label>
+                                                <label class="text-muted title-label">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                                             {{/if}}
                                         {{/if}}
                                         {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}

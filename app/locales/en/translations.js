@@ -219,7 +219,8 @@ export default {
             no_valid_existing_nodes: `You have no valid nodes that can be converted into a preprint.  Go back to upload a new preprint.`,
             upload_preprint: `Upload preprint`,
             select_existing_file: `Select existing file as preprint`,
-            edit_preprint_title: `Edit preprint title (will also become the name of the project)`,
+            edit_preprint_title_project: `Edit preprint title (will also become the name of the project)`,
+            edit_preprint_title_component: `Edit preprint title (will also become the name of the component)`,
             initiate_preprint_process: `You have selected and organized your preprint file. Clicking "Save and continue" will immediately make changes to your OSF project.`,
             admin_only: `You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.`
         },
