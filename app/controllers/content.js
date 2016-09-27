@@ -2,7 +2,7 @@ import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 
 /**
- * Takes an object with query parameter name as the key and [value, maxLength] as the values.
+ * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
  *
  * @param queryParams {!object}
  * @param queryParams.key {!array|!string}
