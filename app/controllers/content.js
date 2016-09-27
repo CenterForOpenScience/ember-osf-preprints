@@ -18,8 +18,8 @@ function queryStringify(queryParams) {
         let maxLength = null;
 
         if (Array.isArray(value)) {
-            value = value[0];
             maxLength = value[1];
+            value = value[0];
         }
 
         if (!value)
