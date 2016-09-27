@@ -28,7 +28,9 @@ export default {
         },
         share: {
             download: `Download`,
-            downloads: `Downloads`
+            downloads: `Downloads`,
+            download_file: `Download file`,
+            download_preprint: `Download preprint`
         },
         version: 'Version',
         article_doi: `Article DOI`,
