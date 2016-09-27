@@ -13,8 +13,7 @@ import loadAll from 'ember-osf/utils/load-relationship';
 function queryStringify(queryParams) {
     const query = [];
 
-    for (let param in queryParams) {
-        let value = queryParams[param];
+    for (let [param, value] of Object.entries(queryParams)) {
         let maxLength = null;
 
         if (Array.isArray(value)) {
