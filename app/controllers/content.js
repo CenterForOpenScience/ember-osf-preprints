@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
+import config from '../config/environment';
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -52,10 +53,13 @@ export default Ember.Controller.extend({
      */
     facebookHref: Ember.computed('model', function() {
         const queryParams = {
-            u: window.location.href
+            app_id: config.FB_APP_ID,
+            display: 'popup',
+            href: window.location.href,
+            redirect_uri: window.location.href
         };
 
-        return `https://www.facebook.com/sharer/sharer.php?${queryStringify(queryParams)}`;
+        return `https://www.facebook.com/dialog/share?${queryStringify(queryParams)}`;
     }),
     // https://developer.linkedin.com/docs/share-on-linkedin
     linkedinHref: Ember.computed('model', function() {

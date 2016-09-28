@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import ResetScrollMixin from '../mixins/reset-scroll';
 import AnalyticsMixin from '../mixins/analytics-mixin';
+import config from '../config/environment';
 
 export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, {
     model(params) {
@@ -21,6 +22,7 @@ export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, {
     },
     afterModel(resolvedModel) {
         const ogp = [
+            ['fb:app_id', config.FB_APP_ID],
             ['og:title', resolvedModel.get('title')],
             ['og:image', '//osf.io/static/img/circle_logo.png'],
             ['og:image:type', 'image/png'],
@@ -40,7 +42,7 @@ export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, {
                     property: item[0],
                     content: item[1]
                 }
-            }
+            };
         });
 
         this.set('headTags', tags);

@@ -39,6 +39,7 @@ module.exports = function(environment) {
         i18n: {
             defaultLocale: 'en'
         },
+        FB_APP_ID: process.env.FB_APP_ID
     };
 
     if (environment === 'development') {
