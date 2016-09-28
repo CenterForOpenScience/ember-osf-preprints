@@ -313,11 +313,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         saveBasics() {
             // Save the model associated with basics field, then advance to next panel
             // If save fails, do not transition
+            this.send('saveAbstract');
+            this.send('next', this.get('_names.2'));
+        },
+
+        saveAbstract() {
             let node = this.get('node');
             node.set('description', this.get('basicsAbstract'));
             node.save()
-                .then(() => this.send('next', this.get('_names.2')))
-                .catch(()=> this.send('error', 'Could not save information; please try again'));
+                .catch(() => this.send('error', 'Could not save information; please try again'));
         },
 
         saveSubjects(subjects) {
