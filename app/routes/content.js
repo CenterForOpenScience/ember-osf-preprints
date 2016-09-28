@@ -2,8 +2,10 @@ import Ember from 'ember';
 import ResetScrollMixin from '../mixins/reset-scroll';
 import AnalyticsMixin from '../mixins/analytics-mixin';
 import config from '../config/environment';
+import loadAll from 'ember-osf/utils/load-relationship';
 
 export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, {
+    headTagsService: Ember.inject.service('head-tags'),
     model(params) {
         return this.store.findRecord('preprint', params.preprint_id);
     },
@@ -29,22 +31,41 @@ export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, {
             ['og:url', window.location.href],
             ['og:description', resolvedModel.get('abstract')],
             ['og:site_name', 'Open Science Framework'],
-            ['og:type', 'article']
+            ['og:type', 'article'],
+            ['article:published_time', new Date(resolvedModel.get('dateCreated')).toISOString()],
+            ['article:modified_time', new Date(resolvedModel.get('dateModified')).toISOString()]
         ];
 
-        for (let tag of resolvedModel.get('tags'))
+        const tags = [
+            ...resolvedModel.get('subjects').map(subject => subject.text),
+            ...resolvedModel.get('tags')
+        ];
+
+        for (let tag of tags)
             ogp.push(['article:tag', tag]);
 
-        const tags = ogp.map(item => {
-            return {
-                type: 'meta',
-                attrs: {
-                    property: item[0],
-                    content: item[1]
-                }
-            };
-        });
+        let contributors = Ember.A();
 
-        this.set('headTags', tags);
+        loadAll(resolvedModel, 'contributors', contributors).then(() => {
+            contributors.forEach(contributor => {
+                ogp.push(
+                    ['og:type', 'article:author'],
+                    ['profile:first_name', contributor.get('users.givenName')],
+                    ['profile:last_name', contributor.get('users.familyName')]
+                );
+            });
+
+            this.set('headTags', ogp.map(item => {
+                return {
+                    type: 'meta',
+                    attrs: {
+                        property: item[0],
+                        content: item[1]
+                    }
+                };
+            }));
+
+            this.get('headTagsService').collectHeadTags();
+        });
     }
 });
