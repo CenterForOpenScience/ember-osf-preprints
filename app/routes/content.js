@@ -55,15 +55,15 @@ export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, {
                 );
             });
 
-            this.set('headTags', ogp.map(item => {
-                return {
+            this.set('headTags', ogp.map(item => (
+                {
                     type: 'meta',
                     attrs: {
                         property: item[0],
                         content: item[1]
                     }
-                };
-            }));
+                }
+            )));
 
             this.get('headTagsService').collectHeadTags();
         });
