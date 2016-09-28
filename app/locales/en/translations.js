@@ -19,10 +19,9 @@ export default {
         restart: `Restart`,
         no_results_found: `No results found.`,
         authors: `Authors`,
-        convert_project: `The current project will contain the preprint.`,
-        convert_component: `The current component will contain the preprint`,
-        copy_inside_project: `A new component inside the current project will contain the preprint.`,
-        copy_inside_component: `A new component inside the current component will contain the preprint.`,
+        convert_project: `The preprint will be organized in the current project`,
+        convert_component: `The preprint will be organized in the current component`,
+        copy_inside_project: `The preprint will be organized in a new component`,
     },
     application: {
         // Nothing to translate
@@ -150,12 +149,12 @@ export default {
             body: `Once this preprint is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.`
         },
         'convert-or-copy': {
-            organize_language_project: `You have a choice for how to organize your preprint in this project. If you select, "Make a new component", then the preprint file will
-            be placed in a new component inside the current project.  If you select "Use the current project", then the preprint file will be placed inside the
-            current project. If you are unsure, then select "Make a new component".`,
-            organize_language_component: `You have a choice for how to organize your preprint in this component. If you select, "Make a new component", then the preprint file will
-            be placed in a new component inside the current component.  If you select "Use the current component", then the preprint file will be placed inside the
-            current component. If you are unsure, then select "Make a new component".`,
+            organize_language_project: `You can organize your preprint by storing the file in this project or in its own new component.  If you select ‘Make a new component’, 
+            the preprint file will be stored in a new component inside this project.  If you select ‘Use the current project’, the preprint file will be stored in this project. 
+            If you are unsure, select ‘Make a new component’.`,
+            organize_language_component: `You can organize your preprint by storing the file in this component or in its own new component.  If you select ‘Make a new component’, 
+            the preprint file will be stored in a new component inside this component.  If you select ‘Use the current component’, the preprint file will be stored in this component. 
+            If you are unsure, select ‘Make a new component’.`,
             copy: `Make a new component`,
             convert_project: `Use the current project`,
             convert_component: `Use the current component`,
@@ -220,8 +219,9 @@ export default {
             no_valid_existing_nodes: `You have no valid nodes that can be converted into a preprint.  Go back to upload a new preprint.`,
             upload_preprint: `Upload preprint`,
             select_existing_file: `Select existing file as preprint`,
-            edit_preprint_title: `Edit preprint title`,
-            initiate_preprint_process: `You are about to initiate the preprint process.  You will not be able to change your project or file after this point.`,
+            edit_preprint_title_project: `Edit preprint title (will also become the name of the project)`,
+            edit_preprint_title_component: `Edit preprint title (will also become the name of the component)`,
+            initiate_preprint_process: `You have selected and organized your preprint file. Clicking "Save and continue" will immediately make changes to your OSF project.`,
             admin_only: `You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.`
         },
         'preprint-form-section': {

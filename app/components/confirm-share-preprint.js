@@ -9,7 +9,10 @@ export default Ember.Component.extend({
         },
         savePreprint() {
             this.set('shareButtonDisabled', true);
-            this.attrs.savePreprint();
+            this.attrs.savePreprint().catch(() => {
+                    this.toast.error('Could not save preprint; please try again later');
+                    this.set('shareButtonDisabled', false);
+                });
         }
     }
 });
