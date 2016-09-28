@@ -115,7 +115,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     hasFile: Ember.computed('file', 'selectedFile', function() {
         // True if file has either been preuploaded, or already uploaded file has been selected.
-        return this.get('file') || this.get('selectedFile');
+        return this.get('file') !== null || this.get('selectedFile') !== null;
     }),
 
     ///////////////////////////////////////
@@ -313,11 +313,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         saveBasics() {
             // Save the model associated with basics field, then advance to next panel
             // If save fails, do not transition
+            this.send('saveAbstract');
+            this.send('next', this.get('_names.2'));
+        },
+
+        saveAbstract() {
             let node = this.get('node');
             node.set('description', this.get('basicsAbstract'));
             node.save()
-                .then(() => this.send('next', this.get('_names.2')))
-                .catch(()=> this.send('error', 'Could not save information; please try again'));
+                .catch(() => this.send('error', 'Could not save information; please try again'));
         },
 
         saveSubjects(subjects) {
@@ -393,7 +397,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             if (model.get('doi') === '') {
                 model.set('doi', undefined);
             }
-            model.save()
+            return model.save()
                 // Ember data is not worth the time investment currently
                 .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
                     data: {
@@ -404,8 +408,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     }
                 }))
                 .then(() => model.get('providers'))
-                .then(() => this.transitionToRoute('content', model))
-                .catch(() => this.send('error', 'Could not save preprint; please try again later'));
+                .then(() => this.transitionToRoute('content', model));
         },
     }
 });
