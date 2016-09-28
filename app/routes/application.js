@@ -9,8 +9,6 @@ export default Ember.Route.extend(AnalyticsMixin, OSFAgnosticAuthRouteMixin, {
         const availableLocales = this.get('i18n.locales').toArray();
         let locale;
 
-        console.log(availableLocales);
-
         // Works in Chrome and Firefox (editable in settings)
         if (navigator.languages && navigator.languages.length) {
             for (let lang of navigator.languages) {
