@@ -115,7 +115,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     hasFile: Ember.computed('file', 'selectedFile', function() {
         // True if file has either been preuploaded, or already uploaded file has been selected.
-        return this.get('file') || this.get('selectedFile');
+        return this.get('file') !== null || this.get('selectedFile') !== null;
     }),
 
     ///////////////////////////////////////
