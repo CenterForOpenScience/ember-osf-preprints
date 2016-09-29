@@ -24,6 +24,6 @@ export default Ember.Route.extend(AnalyticsMixin, OSFAgnosticAuthRouteMixin, {
         }
 
         if (locale)
-            this.set('i18n.locale', navigator.language);
+            this.set('i18n.locale', locale);
     }
 });
