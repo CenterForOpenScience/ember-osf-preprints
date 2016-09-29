@@ -6,9 +6,11 @@
                 {{t "components.preprint-form-project-select.existing_project_selector"}}
             </p>
             {{#if (not userNodesLoaded)}}
-                <div class="text-center">
-                    {{fa-icon 'spinner' pulse=true size=3}}
-
+                <div class="ball-pulse text-center">
+                    <!-- Leave these divs in -->
+                    <div></div>
+                    <div></div>
+                    <div></div>
                 </div>
             {{else}}
                 {{#if userNodes}}
