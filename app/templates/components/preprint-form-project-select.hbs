@@ -2,9 +2,7 @@
     {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}}
         {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
         {{#preprint-form-body}}
-            <p class="text-muted">
-                {{t "components.preprint-form-project-select.existing_project_selector"}}
-            </p>
+
             {{#if (not userNodesLoaded)}}
                 <div class="ball-pulse text-center">
                     <!-- Leave these divs in -->
@@ -14,7 +12,7 @@
                 </div>
             {{else}}
                 {{#if userNodes}}
-                    <div class="p-b-md">
+                    <div class="m-t-sm">
                         {{#power-select options=userNodes placeholder="Click to select" searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
                             {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
                         {{/power-select}}
@@ -23,6 +21,9 @@
                     <p class="m-t-md text-danger"> {{t "components.preprint-form-project-select.no_valid_existing_nodes"}} </p>
                 {{/if}}
             {{/if}}
+            <p class="text-muted text-smaller m-t-xs">
+                {{t "components.preprint-form-project-select.existing_project_selector"}}
+            </p>
         {{/preprint-form-body}}
     {{/preprint-form-section}}
     {{#if selectedNode}}
