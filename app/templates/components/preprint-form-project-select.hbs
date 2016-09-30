@@ -35,11 +35,11 @@
                         <form class="form">
                             <div class="toggle-button">
                                 <div class="row">
-                                    <div class="col-xs-3 col-xs-offset-3 text-center">
+                                    <div class="col-xs-6 col-sm-3 col-sm-offset-3 text-center">
                                         <input id='existing' class="radio_item" onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
                                         <label for="existing" class='choose-large'><i class="fa fa-cloud-upload"></i> {{t "components.preprint-form-project-select.upload_preprint"}}</label>
                                     </div>
-                                    <div class="col-xs-3 text-center">
+                                    <div class="col-xs-6 col-sm-3 text-center">
                                         <input id='newfile' class="radio_item" onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
                                         <label class='choose-large' for="newfile"><i class="fa fa-th-list"></i>{{t "components.preprint-form-project-select.select_existing_file"}}</label>
                                     </div>

@@ -30,6 +30,9 @@ body {
     font-family: "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+.btn-wrap {
+    white-space: normal;
+}
 ul.comma-list {
     display: inline;
     list-style: none;
@@ -389,6 +392,7 @@ ul.preprints-block-list {
     background-color: #ecf2f3;
     border-bottom: 1px solid #d6dbdc;
 }
+
 
 
 
@@ -983,4 +987,16 @@ label.title-label {
             white-space: pre-line;
         }
     }
+}
+
+// Narrow views for submit
+@media (max-width: 768px) {
+    #preprint-form-upload .btn-big {
+        min-height: 100px;
+        font-size: 14px;
+    }
+    .toggle-button label.choose-large i {
+        font-size: 35px;
+    }
+
 }

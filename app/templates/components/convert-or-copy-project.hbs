@@ -20,7 +20,7 @@
 {{#liquid-if (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))}}
     <div class="row p-t-md">
         <div class="col-xs-10 col-xs-offset-1">
-            <div class="osf-box p-md" role="alert">
+            <div class="osf-box p-md " role="alert">
                 <div class="row">
                     <div class="col-xs-1 text-right">
                         <div class="exclamation-confirm-convert">
@@ -36,15 +36,11 @@
                         </p>
                     </div>
                 </div>
-                <div class="row p-t-md">
-                    <div class="col-xs-6 text-right">
-                        <button {{action "chooseCopyToComponent"}} class="btn btn-default">{{t "components.convert-or-copy.create_a_new_component"}} </button>
-                    </div>
-                    <div class="col-xs-6">
-                        <button {{action "confirmConvert"}} class="btn btn-success">
-                            {{if isTopLevelNode (t "components.convert-or-copy.continue_with_this_project") (t "components.convert-or-copy.continue_with_this_component")}}
-                        </button>
-                    </div>
+                <div class="p-t-md text-right">
+                    <button {{action "chooseCopyToComponent"}} class="btn btn-default">{{t "components.convert-or-copy.create_a_new_component"}} </button>
+                    <button {{action "confirmConvert"}} class="btn btn-success btn-wrap m-t-xs">
+                        {{if isTopLevelNode (t "components.convert-or-copy.continue_with_this_project") (t "components.convert-or-copy.continue_with_this_component")}}
+                    </button>
                 </div>
             </div>
         </div>
