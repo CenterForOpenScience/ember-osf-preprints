@@ -78,7 +78,7 @@ export default Ember.Controller.extend({
             const hits = results.aggregations.sources.buckets;
             const whiteList = this.get('whiteListedProviders');
             const providers = hits
-                .filter(hit => whiteList.contains(hit.key));
+                .filter(hit => whiteList.includes(hit.key));
 
             providers.push(
                 ...this.get('osfProviders')
