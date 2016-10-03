@@ -60,26 +60,26 @@ export default CpPanelBodyComponent.extend({
         addContributorsFromParentProject() {
             this.set('parentContributorsAdded', true);
             var parentNode = this.get('parentNode');
-            var contribPromises = [];
+            var contributorsToAdd = Ember.A();
             parentNode.get('contributors').toArray().forEach(contributor => {
                 if (this.get('currentContributorIds').indexOf(contributor.get('userId')) === -1) {
-                    contribPromises.push(this.get('node').addContributor(contributor.get('userId'), contributor.get('permission'), contributor.get('bibliographic'), false).then((contrib) => {
+                    contributorsToAdd.push({
+                        permission: contributor.get('permission'),
+                        bibliographic: contributor.get('bibliographic'),
+                        userId: contributor.get('userId'),
+                    });
+                }
+            });
+            this.attrs.addContributors(contributorsToAdd, false)
+                .then((contributors) => {
+                    contributors.map((contrib) => {
                         this.get('contributors').pushObject(contrib);
-                    }));
-                }
-            });
-            Ember.RSVP.allSettled(contribPromises).then((array) => {
-                this.toggleAuthorModification();
-                var allFulfilled = true;
-                array.forEach((stateObject) => {
-                    if (stateObject.state === 'rejected') {
-                        allFulfilled = false;
-                    }
+                    });
+                    this.toggleAuthorModification();
+                })
+                .catch(() => {
+                    this.get('toast').error('Some contributors may not have been added. Try adding manually.');
                 });
-                if (!allFulfilled) {
-                    this.get('toast').error('Some contributors may not have been added.  Try adding manually.');
-                }
-            });
         },
         // Adds unregistered contributor, then clears form and switches back to search view.
         // Should wait to transition until request has completed.
