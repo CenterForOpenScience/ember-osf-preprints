@@ -59,9 +59,8 @@ export default CpPanelBodyComponent.extend({
         // Adds all contributors from parent project to current component as long as they are not current contributors
         addContributorsFromParentProject() {
             this.set('parentContributorsAdded', true);
-            var parentNode = this.get('parentNode');
             var contributorsToAdd = Ember.A();
-            parentNode.get('contributors').toArray().forEach(contributor => {
+            this.get('parentContributors').toArray().forEach(contributor => {
                 if (this.get('currentContributorIds').indexOf(contributor.get('userId')) === -1) {
                     contributorsToAdd.push({
                         permission: contributor.get('permission'),

@@ -75,6 +75,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
     authorsSaveState: false, // True temporarily when changes have been saved in authors section
     parentNode: null, // If component created, parentNode will be defined
+    parentContributors: Ember.A(),
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
 
@@ -166,6 +167,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         let contributors = Ember.A();
         loadAll(node, 'contributors', contributors).then(()=>
              this.set('contributors', contributors));
+    }),
+
+    getParentContributors: Ember.observer('parentNode', function() {
+        let parent = this.get('parentNode');
+        let contributors = Ember.A();
+        loadAll(parent, 'contributors', contributors).then(()=>
+             this.set('parentContributors', contributors));
     }),
 
     isAdmin: Ember.computed('node', function() {
