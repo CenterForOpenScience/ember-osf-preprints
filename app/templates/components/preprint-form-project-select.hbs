@@ -2,18 +2,17 @@
     {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}}
         {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
         {{#preprint-form-body}}
-            <p class="text-muted">
-                {{t "components.preprint-form-project-select.existing_project_selector"}}
-            </p>
-            {{#if (not userNodesLoaded)}}
-                <div class="text-center">
-                    {{fa-icon 'spinner' pulse=true size=3}}
 
+            {{#if (not userNodesLoaded)}}
+                <div class="ball-pulse text-center">
+                    <div></div>
+                    <div></div>
+                    <div></div>
                 </div>
             {{else}}
                 {{#if userNodes}}
-                    <div class="p-b-md">
-                        {{#power-select options=userNodes searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
+                    <div class="m-t-sm">
+                        {{#power-select options=userNodes placeholder="Click to select" searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
                             {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
                         {{/power-select}}
                     </div>
@@ -21,6 +20,9 @@
                     <p class="m-t-md text-danger"> {{t "components.preprint-form-project-select.no_valid_existing_nodes"}} </p>
                 {{/if}}
             {{/if}}
+            <p class="text-muted text-smaller m-t-xs">
+                {{t "components.preprint-form-project-select.existing_project_selector"}}
+            </p>
         {{/preprint-form-body}}
     {{/preprint-form-section}}
     {{#if selectedNode}}
@@ -32,11 +34,11 @@
                         <form class="form">
                             <div class="toggle-button">
                                 <div class="row">
-                                    <div class="col-xs-3 col-xs-offset-3 text-center">
+                                    <div class="col-xs-6 col-sm-3 col-sm-offset-3 text-center">
                                         <input id='existing' class="radio_item" onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
                                         <label for="existing" class='choose-large'><i class="fa fa-cloud-upload"></i> {{t "components.preprint-form-project-select.upload_preprint"}}</label>
                                     </div>
-                                    <div class="col-xs-3 text-center">
+                                    <div class="col-xs-6 col-sm-3 text-center">
                                         <input id='newfile' class="radio_item" onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
                                         <label class='choose-large' for="newfile"><i class="fa fa-th-list"></i>{{t "components.preprint-form-project-select.select_existing_file"}}</label>
                                     </div>
@@ -83,7 +85,7 @@
                                             {{/if}}
                                         {{/if}}
                                         {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
-                                        <div class="row text-center m-v-md">
+                                        <div class="text-center m-v-md">
                                             <p>{{t "components.preprint-form-project-select.initiate_preprint_process"}}  </p>
                                             <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>{{t "submit.body.save_continue"}}</button>
                                         </div>
