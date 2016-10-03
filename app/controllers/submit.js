@@ -122,7 +122,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     // Validation rules for form sections
 
     // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
-    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle'),
+    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle', 'fileAndNodeLocked'),
     abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
     // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
