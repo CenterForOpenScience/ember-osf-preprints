@@ -134,6 +134,7 @@ export default Ember.Component.extend({
         preUpload(_, dropzone, file) {
             this.send('formatDropzoneAfterPreUpload');
             this.attrs.clearDownstreamFields('belowFile');
+            this.set('uploadInProgress', false);
             this.set('file', file);
             this.set('hasFile', true);
             this.set('callback', Ember.RSVP.defer());
