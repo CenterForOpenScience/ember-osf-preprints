@@ -78,6 +78,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     parentContributors: Ember.A(),
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
+    newSubjects: Ember.A(),
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -131,7 +132,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject.
-    disciplineValid: Ember.computed.notEmpty('model.subjects'),
+    disciplineValid: Ember.computed.notEmpty('newSubjects'),
     // All form sections are valid and preprint can be shared.
     allSectionsValid: Ember.computed('uploadValid', 'basicsValid', 'authorsValid', 'disciplineValid', function() {
         return this.get('uploadValid') && this.get('basicsValid') && this.get('authorsValid') && this.get('disciplineValid');
@@ -358,12 +359,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
 
         saveSubjects(subjects) {
-            // If save fails, do not transition
-            this.set('model.subjects', subjects);
+            this.set('newSubjects', subjects);
         },
 
-        subjectsNext() {
-            this.send('next', this.get('_names.1'));
+        subjectsSaveAndNext() {
+            var model = this.get('model');
+            var subjectMap = this.get('newSubjects').map(subjectBlock => subjectBlock.map(subject => subject.get('id')));
+            model.set('subjects', subjectMap);
+            model.save()
+                .then(() => this.send('next', this.get('_names.1')));
         },
         /**
          * findContributors method.  Queries APIv2 users endpoint on any of a set of name fields.  Fetches specified page of results.
