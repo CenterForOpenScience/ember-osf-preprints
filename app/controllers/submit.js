@@ -20,16 +20,6 @@ export const State = Object.freeze(Ember.Object.create({
   Form data and validations
  *****************************/
 const BasicsValidations = buildValidations({
-    basicsTitle: {
-        description: 'Title',
-        validators: [
-            validator('presence', true),
-            validator('length', {
-                // minimum length for title?
-                max: 200,
-            })
-        ]
-    },
     basicsAbstract: {
         description: 'Abstract',
         validators: [
@@ -59,6 +49,7 @@ const BasicsValidations = buildValidations({
  */
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
     _State: State,
+    filePickerState: State.START,
     fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
@@ -67,28 +58,34 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     // Data for project picker; tracked internally on load
     user: null,
     userNodes: Ember.A(),
+    userNodesLoaded: false,
 
     // Information about the thing to be turned into a preprint
-    node: null,
-    file: null,
-    selectedFile: null,
-    contributors: Ember.A(),
-    uploadFile: null,
-    nodeTitle: null,
-    shouldCreateChild: false,
-    fileAndNodeLocked: false,
-    projectsCreatedForPreprint:  Ember.A(),
-    filesUploadedForPreprint: Ember.A(),
-    searchResults: [],
-    savingPreprint: false,
-    showModalSharePreprint: false,
-    showModalRestartPreprint: false,
-    uploadSaveState: false,
-    basicsSaveState: false,
-    authorsSaveState: false,
-    disciplineSaveState: false,
+    node: null, // Project or component containing the preprint
+    file: null, // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
+    selectedFile: null, // File that will be the preprint (already uploaded to node or selected from existing node)
+    contributors: Ember.A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
+    nodeTitle: null, // Preprint title
+    fileAndNodeLocked: false, // After advancing beyond Step 1: Upload on Add Preprint form, both the file and node are locked
+    searchResults: [], // List of users matching search query
+    savingPreprint: false, // True when Share button is pressed on Add Preprint page
+    showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
+    uploadSaveState: false, // True temporarily when changes have been saved in upload section
+    disciplineSaveState: false, // True temporarily when changes have been saved in discipline section
+    basicsSaveState: false, // True temporarily when changes have been saved in basics section
+    authorsSaveState: false, // True temporarily when changes have been saved in authors section
+    parentNode: null, // If component created, parentNode will be defined
+    parentContributors: Ember.A(),
+    convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
+    convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
 
+    isTopLevelNode: Ember.computed('node', function() {
+        // Returns true if node is a top-level node
+        var node = this.get('node');
+        return node ? (node.get('id') === node.get('root.id')) : null;
+    }),
     clearFields() {
+        // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
         this.get('panelActions').open('Upload');
         this.get('panelActions').close('Submit');
 
@@ -98,40 +95,44 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             userNodes: Ember.A(),
             node: null,
             file: null,
+            hasFile: false,
             selectedFile: null,
             contributors: Ember.A(),
-            uploadFile: null,
             nodeTitle: null,
-            shouldCreateChild: false,
             fileAndNodeLocked: false,
-            projectsCreatedForPreprint:  Ember.A(),
-            filesUploadedForPreprint: Ember.A(),
+            filePickerState: State.START,
             searchResults: [],
             savingPreprint: false,
             showModalSharePreprint: false,
-            showModalRestartPreprint: false,
             uploadSaveState: false,
             basicsSaveState: false,
             authorsSaveState: false,
             disciplineSaveState: false,
+            parentNode: null,
+            convertProjectConfirmed: false,
+            basicsAbstract: null,
         }));
     },
 
-    hasFile: function() {
-        return this.get('file') != null;
-    }.property('file'),
+    hasFile: Ember.computed('file', 'selectedFile', function() {
+        // True if file has either been preuploaded, or already uploaded file has been selected.
+        return this.get('file') !== null || this.get('selectedFile') !== null;
+    }),
 
     ///////////////////////////////////////
     // Validation rules for form sections
-    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle'),
+
+    // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
+    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle', 'fileAndNodeLocked'),
     abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
-    // Basics fields are currently the only ones with validation. Make this more specific in the future if we add more form fields.
+    // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
     basicsValid: Ember.computed.and('abstractValid', 'doiValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject.
     disciplineValid: Ember.computed.notEmpty('model.subjects'),
+    // All form sections are valid and preprint can be shared.
     allSectionsValid: Ember.computed('uploadValid', 'basicsValid', 'authorsValid', 'disciplineValid', function() {
         return this.get('uploadValid') && this.get('basicsValid') && this.get('authorsValid') && this.get('disciplineValid');
     }),
@@ -140,31 +141,25 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     // Fields used in the "basics" section of the form.
     // Proxy for "basics" section, to support autosave when fields change (created when model selected)
     basicsModel: Ember.computed.alias('node'),
-
-    basicsTitle: Ember.computed.alias('basicsModel.title'),
-    basicsAbstract: Ember.computed.alias('basicsModel.description'),
-    basicsTags: Ember.computed.alias('basicsModel.tags'), // TODO: This may need to provide a default value (list)? Via default or field transform?
+    basicsTitle: Ember.computed('node', function() {
+        var node = this.get('node');
+        return node ? node.get('title') : null;
+    }),
+    basicsAbstract:  Ember.computed('node', function() {
+        var node = this.get('node');
+        return node ? node.get('description') : null;
+    }),
+    basicsTags: Ember.computed('node', function() {
+        var node = this.get('node');
+        // TODO: This may need to provide a default value (list)? Via default or field transform?
+        return node ? node.get('tags') : null;
+    }),
     basicsDOI: Ember.computed.alias('model.doi'),
 
-    //// TODO: Turn off autosave functionality for now. Direct 2-way binding was causing a fight between autosave and revalidation, so autosave never fired. Fixme.
-    // createAutosave: Ember.observer('node', function() {
-    //     // Create autosave proxy only when a node has been loaded.
-    //     // TODO: This could go badly if a request is in flight when trying to destroy the proxy
-    //
-    //     var controller = this;
-    //     this.set('basicsModel', autosave('node', {
-    //         save(model) {
-    //             // Do not save fields if validation fails.
-    //             console.log('trying autosave');
-    //             if (controller.get('basicsValid')) {
-    //                 console.log('decided to autosave');
-    //                 model.save();
-    //             }
-    //         }
-    //     }));
-    // }),
-
     getContributors: Ember.observer('node', function() {
+        // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
+        // and combines into one array
+
         // Cannot be called until a project has been selected!
         if (!this.get('node')) return [];
 
@@ -174,19 +169,28 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
              this.set('contributors', contributors));
     }),
 
+    getParentContributors: Ember.observer('parentNode', function() {
+        let parent = this.get('parentNode');
+        let contributors = Ember.A();
+        loadAll(parent, 'contributors', contributors).then(()=>
+             this.set('parentContributors', contributors));
+    }),
+
     isAdmin: Ember.computed('node', function() {
+        // True if the current user has admin permissions
         // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
         let userPermissions = this.get('node.currentUserPermissions') || [];
         return userPermissions.indexOf(permissions.ADMIN) >= 0;
     }),
 
     canEdit: Ember.computed('isAdmin', 'node', function() {
+        // True if the current user is and admin and the node is not a registration.
         return this.get('isAdmin') && !(this.get('node.registration'));
     }),
 
     actions: {
-        // Open next panel
         next(currentPanelName) {
+            // Open next panel
             if (currentPanelName === 'Upload' || currentPanelName === 'Basics') {
                 Ember.run.scheduleOnce('afterRender', this, function() {
                     MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$(currentPanelName === 'Upload' ? '.preprint-header-preview' : '.abstract')[0]]);  // jshint ignore:line
@@ -195,7 +199,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
             this.send('changesSaved', currentPanelName);
         },
+        nextUploadSection(currentUploadPanel, nextUploadPanel) {
+            // Opens next panel within the Upload Section, Existing Workflow (Choose Project - Choose File - Organize - Finalize Upload)
+            this.get('panelActions').toggle(currentUploadPanel);
+            this.get('panelActions').toggle(nextUploadPanel);
+        },
         changesSaved(currentPanelName) {
+            // Temporarily changes panel save state to true.  Used for flashing 'Changes Saved' in UI.
             var currentPanelSaveState = currentPanelName.toLowerCase() + 'SaveState';
             this.set(currentPanelSaveState, true);
             setTimeout(() => {
@@ -210,64 +220,116 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         /*
           Upload section
          */
+        changeInitialState(newState) {
+            // Sets filePickerState to start, new, or existing - this is the initial decision on the form.
+            this.set('filePickerState', newState);
+            this.send('clearDownstreamFields', 'allUpload');
+            if (newState === this.get('_State').EXISTING) {
+                this.get('panelActions').open('chooseProject');
+                this.get('panelActions').close('selectExistingFile');
+                this.get('panelActions').close('uploadNewFile');
+                this.get('panelActions').close('organize');
+                this.get('panelActions').close('finalizeUpload');
+            }
+        },
         lockFileAndNode() {
+            // Locks file and node so that they cannot be modified.  Occurs after upload step is complete.
             this.set('fileAndNodeLocked', true);
         },
         finishUpload() {
+            // Locks file and node and advances to next form section.
             this.send('lockFileAndNode');
             this.send('next', this.get('_names.0'));
         },
-        toggleRestartPreprintModal() {
-            this.toggleProperty('showModalRestartPreprint');
-        },
-        resetFileUpload() {
-            var promisesArray = [];
-            var filePromises = [];
-            this.get('filesUploadedForPreprint').forEach((file) => {
-                filePromises.push(this.get('fileManager').deleteFile(file).then(() => {
-                    this.get('toast').info('Preprint removed!');
-                }).catch(() => {
-                    this.get('toast').error('Could not remove uploaded preprint');
-                }));
-            });
-
-            Ember.RSVP.allSettled(filePromises).then(() => {
-                this.get('projectsCreatedForPreprint').forEach((project) => {
-                    promisesArray.push(project.destroyRecord());
+        existingNodeExistingFile() {
+            // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
+            var node = this.get('node');
+            if (node.title !== this.get('nodeTitle')) {
+                node.set('title', this.get('nodeTitle'));
+                node.save().then(() => {
+                    this.send('finishUpload');
                 });
-            });
+            } else {
+                this.send('finishUpload');
+            }
+        },
+        createComponentCopyFile() {
+            // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
+            // file from parent node to new component.
 
-            Ember.RSVP.allSettled(promisesArray).then(() => {
-                if (promisesArray.length > 0 || filePromises.length > 0) {
-                    window.setTimeout(
-                        function () {
-                            location.reload();
-                        }, 3000);
-                } else {
-                    window.location.reload();
-                }
+            var node = this.get('node');
+            node.addChild(this.get('nodeTitle')).then(child => {
+                this.set('parentNode', node);
+                this.set('node', child);
+                child.get('files').then((providers) => {
+                    var osfstorage = providers.findBy('name', 'osfstorage');
+                    this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}}).then((copiedFile) => {
+                        this.set('selectedFile', copiedFile);
+                    });
+                }).then(() => {
+                    this.get('toast').info('File copied to component!');
+                    this.send('finishUpload');
+                }, () => {
+                    this.get('toast').info('Could not create component.');
+                });
             });
         },
         editTitleNext(section) {
+            // Edits title when user returns to upload section after upload section has already been completed.
             this.set('node.title', this.get('nodeTitle'));
-            let node = this.get('node');
-            node.save();
             Ember.run.scheduleOnce('afterRender', this, function() {
                 MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('.preprint-header-preview')[0]]);  // jshint ignore:line
             });
             this.send('next', section);
         },
-
+        selectExistingFile(file) {
+            // Takes file chosen from file-browser and sets equal to selectedFile. This file will become the preprint.
+            this.set('selectedFile', file);
+        },
+        clearDownstreamFields(section) {
+            //If user goes back and changes a section inside Upload, all fields downstream of that section need to clear.
+            switch (section) {
+                case 'allUpload':
+                    this.set('node', null);
+                    this.set('selectedFile', null);
+                    this.set('hasFile', false);
+                    this.set('file', null);
+                    this.set('convertOrCopy', null);
+                    this.set('nodeTitle', null);
+                    break;
+                case 'belowNode':
+                    this.set('selectedFile', null);
+                    this.set('hasFile', false);
+                    this.set('file', null);
+                    this.set('convertOrCopy', null);
+                    this.set('nodeTitle', null);
+                    break;
+                case 'belowFile': {
+                    this.set('convertOrCopy', null);
+                    this.set('nodeTitle', null);
+                    break;
+                }
+                case 'belowConvertOrCopy': {
+                    this.set('nodeTitle', null);
+                    break;
+                }
+            }
+        },
         /*
           Basics section
          */
         saveBasics() {
             // Save the model associated with basics field, then advance to next panel
             // If save fails, do not transition
+            this.send('saveAbstract');
+            this.send('next', this.get('_names.2'));
+        },
+
+        saveAbstract() {
             let node = this.get('node');
+            node.set('description', this.get('basicsAbstract'));
             node.save()
-                .then(() => this.send('next', this.get('_names.2')))
-                .catch(()=> this.send('error', 'Could not save information; please try again'));
+                .catch(() => this.send('error', 'Could not save information; please try again'));
         },
 
         saveSubjects(subjects) {
@@ -316,23 +378,21 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 var highlightClass =  status === 'success' ? 'successHighlight' : 'errorHighlight';
 
                 _this.$('#' + elementId).addClass(highlightClass);
-                setTimeout(() => {
-                    _this.$('#' + elementId).addClass('restoreWhiteBackground');
 
-                }, 2000);
                 setTimeout(() => {
                     _this.$('#' + elementId).removeClass(highlightClass);
-                    _this.$('#' + elementId).removeClass('restoreWhiteBackground');
-                }, 4000);
+                }, 2000);
             });
         },
         /*
           Submit tab actions
          */
         toggleSharePreprintModal() {
+            // Toggles display of share preprint modal
             this.toggleProperty('showModalSharePreprint');
         },
         savePreprint() {
+            // Converts 'node' into a preprint, with its primaryFile as the 'selectedFile'.
             // TODO: Check validation status of all sections before submitting
             // TODO: Make sure subjects is working so request doesn't get rejected
             // TODO: Test and get this code working
@@ -345,7 +405,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             if (model.get('doi') === '') {
                 model.set('doi', undefined);
             }
-            model.save()
+            return model.save()
                 // Ember data is not worth the time investment currently
                 .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
                     data: {
@@ -356,8 +416,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     }
                 }))
                 .then(() => model.get('providers'))
-                .then(() => this.transitionToRoute('content', model))
-                .catch(() => this.send('error', 'Could not save preprint; please try again later'));
+                .then(() => this.transitionToRoute('content', model));
         },
     }
 });

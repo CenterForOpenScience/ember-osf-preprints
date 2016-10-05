@@ -26,7 +26,7 @@ module.exports = function(environment) {
         },
         SHARE: {
             baseUrl: process.env.SHARE_BASE_URL || 'https://staging-share.osf.io/',
-            searchUrl: process.env.SHARE_SEARCH_URL || 'https://staging-share.osf.io/api/search/abstractcreativework/_search'
+            searchUrl: process.env.SHARE_SEARCH_URL || 'https://staging-share.osf.io/api/v2/search/abstractcreativework/_search'
         },
         moment: {
             outputFormat: 'YYYY-MM-DD hh:mm a'
@@ -35,6 +35,9 @@ module.exports = function(environment) {
             provider: 'osf',
             // The name of the OSF campaign used to track signups
             campaign: 'osf-preprints'
+        },
+        i18n: {
+            defaultLocale: 'en'
         },
     };
 

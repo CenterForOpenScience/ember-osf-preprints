@@ -1,0 +1,48 @@
+<p class="text-muted">
+    {{if isTopLevelNode (t "components.convert-or-copy.organize_language_project") (t "components.convert-or-copy.organize_language_component")}}
+</p>
+<div id='convertExistingOrCreateComponent'>
+    <div class="row text-center m-v-md">
+        <form class="form">
+            <div class="toggle-button">
+                <input id='copy' onchange={{action "chooseCopyToComponent" value="true"}} type="radio" name="createComponentDecision" checked={{eq convertOrCopy 'copy'}}>
+                <label class='wide-text-only' for="copy"><i class="fa fa-plus-circle"></i> {{t "components.convert-or-copy.copy"}}</label>
+
+                <input id='convert' onchange={{action "chooseConvertExisting"}} type="radio" name="createComponentDecision" checked={{eq convertOrCopy 'convert'}}>
+                <label class='wide-text-only' for="convert">
+                    <i class="fa fa-cube"></i>
+                    {{if isTopLevelNode (t "components.convert-or-copy.convert_project") (t "components.convert-or-copy.convert_component")}}
+                </label>
+            </div>
+        </form>
+    </div>
+</div>
+{{#liquid-if (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))}}
+    <div class="row p-t-md">
+        <div class="col-xs-10 col-xs-offset-1">
+            <div class="osf-box p-md " role="alert">
+                <div class="row">
+                    <div class="col-xs-1 text-right">
+                        <div class="exclamation-confirm-convert">
+                            <i class="fa fa-exclamation"></i>
+                        </div>
+                    </div>
+                    <div class="col-xs-10">
+                        <h4 class="m-b-md">
+                            {{if isTopLevelNode (t "components.convert-or-copy.header_convert_confirmation_project") (t "components.convert-or-copy.header_convert_confirmation_component")}}
+                        </h4>
+                        <p class="m-b-md">
+                            {{if isTopLevelNode (t "components.convert-or-copy.convert_confirmation_details_project") (t "components.convert-or-copy.convert_confirmation_details_component")}}
+                        </p>
+                    </div>
+                </div>
+                <div class="p-t-md text-right">
+                    <button {{action "chooseCopyToComponent"}} class="btn btn-default btn-wrap m-t-xs">{{t "components.convert-or-copy.create_a_new_component"}} </button>
+                    <button {{action "confirmConvert"}} class="btn btn-success btn-wrap m-t-xs">
+                        {{if isTopLevelNode (t "components.convert-or-copy.continue_with_this_project") (t "components.convert-or-copy.continue_with_this_component")}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/liquid-if}}
