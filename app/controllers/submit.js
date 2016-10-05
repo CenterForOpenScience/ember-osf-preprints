@@ -20,7 +20,7 @@ export const State = Object.freeze(Ember.Object.create({
   Form data and validations
  *****************************/
 const BasicsValidations = buildValidations({
-    basicsAbstract: {
+    pendingAbstract: {
         description: 'Abstract',
         validators: [
             validator('presence', true),
@@ -31,7 +31,7 @@ const BasicsValidations = buildValidations({
             })
         ]
     },
-    basicsDOI: {
+    pendingDOI: {
         description: 'DOI',
         validators: [
             validator('format', {
@@ -78,7 +78,16 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     parentContributors: Ember.A(),
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
-    newSubjects: Ember.A(),
+    pendingSubjects: Ember.A(),
+    pendingDOI: '',
+    pendingAbstract: Ember.computed('node.description', function() {
+        var node = this.get('node');
+        return node ? node.get('description') : '';
+    }),
+    pendingTags: Ember.computed('node.tags', function() {
+        var node = this.get('node');
+        return node ? node.get('tags') : Ember.A();
+    }),
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -125,16 +134,18 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
     uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle', 'fileAndNodeLocked'),
-    abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
-    doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
-    // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
-    basicsValid: Ember.computed.and('abstractValid', 'doiValid'),
+    pendingAbstractValid: Ember.computed.alias('validations.attrs.pendingAbstract.isValid'),
+    pendingDOIValid: Ember.computed.alias('validations.attrs.pendingDOI.isValid'),
+    // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand pendingBasicsValid definition.
+    pendingBasicsValid: Ember.computed.and('pendingAbstractValid', 'pendingDOIValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
+    basicsValid: false,
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject.
-    disciplineValid: Ember.computed.notEmpty('newSubjects'),
+    pendingDisciplineValid: Ember.computed.notEmpty('pendingSubjects'),
+    disciplineValid: false,
     // All form sections are valid and preprint can be shared.
-    allSectionsValid: Ember.computed('uploadValid', 'basicsValid', 'authorsValid', 'disciplineValid', function() {
+    allSectionsValid: Ember.computed('uploadValid', 'node.description', 'model.doi', 'authorsValid', 'model.subjects', function() {
         return this.get('uploadValid') && this.get('basicsValid') && this.get('authorsValid') && this.get('disciplineValid');
     }),
 
@@ -146,7 +157,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         var node = this.get('node');
         return node ? node.get('title') : null;
     }),
-    basicsAbstract:  Ember.computed('node', function() {
+    basicsAbstract:  Ember.computed('node.description', function() {
         var node = this.get('node');
         return node ? node.get('description') : null;
     }),
@@ -156,6 +167,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return node ? node.get('tags') : null;
     }),
     basicsDOI: Ember.computed.alias('model.doi'),
+    disciplineReduced: Ember.computed('model.subjects', function() {
+        return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
+    }),
 
     getContributors: Ember.observer('node', function() {
         // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
@@ -347,27 +361,49 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         saveBasics() {
             // Save the model associated with basics field, then advance to next panel
             // If save fails, do not transition
-            this.send('saveAbstract');
-            this.send('next', this.get('_names.2'));
+            let node = this.get('node');
+            var model = this.get('model');
+
+            node.set('description', this.get('pendingAbstract'));
+            node.set('tags', this.get('pendingTags'));
+            model.set('doi', this.get('pendingDOI'));
+            if (model.get('doi') === '') {
+                model.set('doi', undefined);
+            }
+            node.save().then(() => {
+                model.save().then(() => {
+                    this.set('basicsValid', true);
+                    this.send('next', this.get('_names.2'));
+                });
+            });
         },
 
-        saveAbstract() {
-            let node = this.get('node');
-            node.set('description', this.get('basicsAbstract'));
-            node.save()
-                .catch(() => this.send('error', 'Could not save information; please try again'));
+        addTag(tag) {
+            var tags = this.get('pendingTags');
+            tags.pushObject(tag);
+            return tags;
+        },
+
+        removeTag(tag) {
+            var tags = this.get('pendingTags');
+            tags.splice(tags.indexOf(tag), 1);
+            return tags;
+
         },
 
         saveSubjects(subjects) {
-            this.set('newSubjects', subjects);
+            this.set('pendingSubjects', subjects);
         },
 
         subjectsSaveAndNext() {
             var model = this.get('model');
-            var subjectMap = this.get('newSubjects').map(subjectBlock => subjectBlock.map(subject => subject.get('id')));
+            var subjectMap = this.get('pendingSubjects').map(subjectBlock => subjectBlock.map(subject => subject.get('id')));
             model.set('subjects', subjectMap);
             model.save()
-                .then(() => this.send('next', this.get('_names.1')));
+                .then(() => {
+                    this.send('next', this.get('_names.1'));
+                    this.set('disciplineValid', true);
+                });
         },
         /**
          * findContributors method.  Queries APIv2 users endpoint on any of a set of name fields.  Fetches specified page of results.
@@ -426,14 +462,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // TODO: Make sure subjects is working so request doesn't get rejected
             // TODO: Test and get this code working
             let model = this.get('model');
-            model.setProperties({
-                id: this.get('node.id'),
-                primaryFile: this.get('selectedFile')
-            });
+
             this.set('savingPreprint', true);
-            if (model.get('doi') === '') {
-                model.set('doi', undefined);
-            }
+
             return model.save()
                 // Ember data is not worth the time investment currently
                 .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {

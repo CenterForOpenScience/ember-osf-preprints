@@ -100,7 +100,7 @@
 
                     {{#with _names.[1] as |name|}}
                         {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header disciplineSaveState=disciplineSaveState subjects=model.subjects name=name valid=disciplineValid isValidationActive=hasOpened}}
+                            {{preprint-form-header disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=pendingDisciplineValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="m-b-lg small">{{t "submit.body.subjects_description"}}</p>
 
@@ -109,7 +109,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">
-                                            <button {{action 'subjectsSaveAndNext'}} class="btn btn-primary" disabled={{unless disciplineValid true}} >{{t "submit.body.save_continue"}}</button>
+                                            <button {{action 'subjectsSaveAndNext'}} class="btn btn-primary" disabled={{unless pendingDisciplineValid true}} >{{t "submit.body.save_continue"}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -119,33 +119,31 @@
 
                     {{#with _names.[2] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header doi=basicsDOI basicsSaveState=basicsSaveState tags=node.tags abstract=basicsAbstract name=name valid=basicsValid isValidationActive=hasOpened}}
+                            {{preprint-form-header doi=basicsDOI basicsSaveState=basicsSaveState tags=node.tags abstract=basicsAbstract name=name valid=pendingBasicsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div>
                                             <label>{{t "submit.body.basics.doi.label"}}:</label>
-                                            {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI}}
+                                            {{validated-input model=this valuePath='pendingDOI' placeholder=(t "global.doi") value=pendingDOI}}
                                         </div>
                                         <div class="clearfix">
                                             <label>{{t "submit.body.basics.keywords.label"}}:</label>
                                             <p class="small">{{t "submit.body.basics.keywords.paragraph"}}</p>
-                                            {{tags-widget addATag=(action 'addATag' node) removeATag=(action 'removeATag' node) tags=node.tags}}
+                                            {{tags-widget addATag=(action 'addTag') removeATag=(action 'removeTag') tags=pendingTags}}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <form onchange={{action 'saveAbstract'}}>
-                                            <label>
-                                                <span class="required">{{t "global.abstract"}}:</span>
-                                            </label>
-                                            {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
-                                        </form>
+                                        <label>
+                                            <span class="required">{{t "global.abstract"}}:</span>
+                                        </label>
+                                        {{validated-input model=this valuePath='pendingAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=pendingAbstract large=true}}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">
-                                            <button {{action 'saveBasics'}} class="btn btn-primary" disabled={{unless basicsValid true}} >{{t "submit.body.save_continue"}}</button>
+                                            <button {{action 'saveBasics'}} class="btn btn-primary" disabled={{unless pendingBasicsValid true}} >{{t "submit.body.save_continue"}}</button>
                                         </div>
                                     </div>
                                 </div>
