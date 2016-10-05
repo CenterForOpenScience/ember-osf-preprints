@@ -10,6 +10,19 @@ export default OsfSerializer.extend({
                     id: snapshot.belongsTo('primaryFile', { id: true }),
                     type: 'file'
                 }
+            },
+            node: {
+                data: {
+                    id: snapshot.belongsTo('node', { id: true}),
+                    type: 'nodes'
+                }
+            },
+            provider: {
+                data: {
+                    id: 'osf',
+                    type: 'provider'
+                }
+
             }
         };
 
