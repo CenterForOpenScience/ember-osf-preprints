@@ -20,7 +20,7 @@ export const State = Object.freeze(Ember.Object.create({
   Form data and validations
  *****************************/
 const BasicsValidations = buildValidations({
-    pendingAbstract: {
+    basicsAbstract: {
         description: 'Abstract',
         validators: [
             validator('presence', true),
@@ -31,7 +31,7 @@ const BasicsValidations = buildValidations({
             })
         ]
     },
-    pendingDOI: {
+    basicsDOI: {
         description: 'DOI',
         validators: [
             validator('format', {
@@ -78,16 +78,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     parentContributors: Ember.A(),
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
-    pendingSubjects: Ember.A(),
-    pendingDOI: '',
-    pendingAbstract: Ember.computed('node.description', function() {
-        var node = this.get('node');
-        return node ? node.get('description') : '';
-    }),
-    pendingTags: Ember.computed('node.tags', function() {
-        var node = this.get('node');
-        return node ? node.get('tags') : Ember.A();
-    }),
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -120,7 +110,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             disciplineSaveState: false,
             parentNode: null,
             convertProjectConfirmed: false,
-            basicsAbstract: null,
         }));
     },
 
@@ -134,16 +123,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
     uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle', 'fileAndNodeLocked'),
-    pendingAbstractValid: Ember.computed.alias('validations.attrs.pendingAbstract.isValid'),
-    pendingDOIValid: Ember.computed.alias('validations.attrs.pendingDOI.isValid'),
+    abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
+    doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
     // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand pendingBasicsValid definition.
-    pendingBasicsValid: Ember.computed.and('pendingAbstractValid', 'pendingDOIValid'),
+    basicsValid: Ember.computed.and('abstractValid', 'doiValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
-    basicsValid: false,
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject.
-    pendingDisciplineValid: Ember.computed.notEmpty('pendingSubjects'),
-    disciplineValid: false,
+    disciplineValid: Ember.computed.notEmpty('subjectsList'),
     // All form sections are valid and preprint can be shared.
     allSectionsValid: Ember.computed('uploadValid', 'node.description', 'model.doi', 'authorsValid', 'model.subjects', function() {
         return this.get('uploadValid') && this.get('basicsValid') && this.get('authorsValid') && this.get('disciplineValid');
@@ -157,16 +144,21 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         var node = this.get('node');
         return node ? node.get('title') : null;
     }),
-    basicsAbstract:  Ember.computed('node.description', function() {
+    basicsAbstract:  Ember.computed('node', function() {
         var node = this.get('node');
         return node ? node.get('description') : null;
     }),
     basicsTags: Ember.computed('node', function() {
         var node = this.get('node');
         // TODO: This may need to provide a default value (list)? Via default or field transform?
-        return node ? node.get('tags') : null;
+        return node ? node.get('tags') : Ember.A();
     }),
-    basicsDOI: Ember.computed.alias('model.doi'),
+    basicsDOI: Ember.computed('model', function() {
+        return this.get('model.doi');
+    }),
+    subjectsList: Ember.computed('model', function() {
+        return this.get('model.subjects') ? this.get('model.subjects') : Ember.A();
+    }),
     disciplineReduced: Ember.computed('model.subjects', function() {
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
@@ -359,14 +351,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
           Basics section
          */
         saveBasics() {
-            // Save the model associated with basics field, then advance to next panel
+            // Saves the description/tags on the node and the DOI on the preprint, then advances to next panel
             // If save fails, do not transition
             let node = this.get('node');
             var model = this.get('model');
 
-            node.set('description', this.get('pendingAbstract'));
-            node.set('tags', this.get('pendingTags'));
-            model.set('doi', this.get('pendingDOI'));
+            node.set('description', this.get('basicsAbstract'));
+            node.set('tags', this.get('basicsTags'));
+            model.set('doi', this.get('basicsDOI'));
             if (model.get('doi') === '') {
                 model.set('doi', undefined);
             }
@@ -379,30 +371,36 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
 
         addTag(tag) {
-            var tags = this.get('pendingTags');
+            // Custom addATag method that appends tag to list instead of auto-saving
+            var tags = this.get('basicsTags');
             tags.pushObject(tag);
             return tags;
         },
 
         removeTag(tag) {
-            var tags = this.get('pendingTags');
+            // Custom removeATag method that removes tag from list instead of auto-saving
+            var tags = this.get('basicsTags');
             tags.splice(tags.indexOf(tag), 1);
             return tags;
 
         },
 
-        saveSubjects(subjects) {
-            this.set('pendingSubjects', subjects);
+        /*
+          Discipline section
+         */
+        setSubjects(subjects) {
+            // Sets subjectsList with pending subjects. Does not save.
+            this.set('subjectsList', subjects);
         },
 
-        subjectsSaveAndNext() {
+        saveSubjects() {
+            // Saves subjects (disciplines) and then moves to next section.
             var model = this.get('model');
-            var subjectMap = this.get('pendingSubjects').map(subjectBlock => subjectBlock.map(subject => subject.get('id')));
+            var subjectMap = this.get('subjectsList').map(subjectBlock => subjectBlock.map(subject => subject.get('id')));
             model.set('subjects', subjectMap);
             model.save()
                 .then(() => {
                     this.send('next', this.get('_names.1'));
-                    this.set('disciplineValid', true);
                 });
         },
         /**
