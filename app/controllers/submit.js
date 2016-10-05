@@ -144,19 +144,19 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         var node = this.get('node');
         return node ? node.get('title') : null;
     }),
-    basicsAbstract:  Ember.computed('node', function() {
+    basicsAbstract:  Ember.computed('node.description', function() {
         var node = this.get('node');
         return node ? node.get('description') : null;
     }),
-    basicsTags: Ember.computed('node', function() {
+    basicsTags: Ember.computed('node.tags', function() {
         var node = this.get('node');
         // TODO: This may need to provide a default value (list)? Via default or field transform?
         return node ? node.get('tags') : Ember.A();
     }),
-    basicsDOI: Ember.computed('model', function() {
+    basicsDOI: Ember.computed('model.doi', function() {
         return this.get('model.doi');
     }),
-    subjectsList: Ember.computed('model', function() {
+    subjectsList: Ember.computed('model.subjects', function() {
         return this.get('model.subjects') ? this.get('model.subjects') : Ember.A();
     }),
     disciplineReduced: Ember.computed('model.subjects', function() {
@@ -364,7 +364,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             }
             node.save().then(() => {
                 model.save().then(() => {
-                    this.set('basicsValid', true);
                     this.send('next', this.get('_names.2'));
                 });
             });
