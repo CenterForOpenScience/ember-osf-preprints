@@ -170,6 +170,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
 
     getParentContributors: Ember.observer('parentNode', function() {
+        // Returns all contributors of parentNode if component was created.  User later has option to import
+        // parentContributors to component.
         let parent = this.get('parentNode');
         let contributors = Ember.A();
         loadAll(parent, 'contributors', contributors).then(()=>
@@ -246,11 +248,24 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             var node = this.get('node');
             if (node.title !== this.get('nodeTitle')) {
                 node.set('title', this.get('nodeTitle'));
-                node.save().then(() => {
-                    this.send('finishUpload');
-                });
+                node.save()
+                    .then(() => {
+                        this.send('startPreprint');
+                    })
+                    .then(() => {
+                        this.get('toast').info('Preprint file uploaded!');
+                        this.send('finishUpload');
+
+                    })
+                    .catch(() => this.get('toast').error('Could not save information; please try again.'));
+
             } else {
-                this.send('finishUpload');
+                this.send('startPreprint')
+                    .then(() => {
+                        this.get('toast').info('Preprint file uploaded!');
+                        this.send('finishUpload');
+                    })
+                    .catch(() => this.get('toast').error('Could not save information; please try again.'));
             }
         },
         createComponentCopyFile() {
@@ -265,14 +280,24 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     var osfstorage = providers.findBy('name', 'osfstorage');
                     this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}}).then((copiedFile) => {
                         this.set('selectedFile', copiedFile);
-                    });
-                }).then(() => {
-                    this.get('toast').info('File copied to component!');
-                    this.send('finishUpload');
-                }, () => {
-                    this.get('toast').info('Could not create component.');
+                    })
+                    .then(() => {
+                        this.send('startPreprint');
+                    })
+                        .then(() => {
+                            this.get('toast').info('Preprint file uploaded!');
+                            this.send('finishUpload');
+                        })
+                        .catch(() => this.get('toast').error('Could not save information; please try again.'));
                 });
             });
+        },
+        startPreprint() {
+            let model = this.get('model');
+            model.set('primaryFile', this.get('selectedFile'));
+            model.set('node', this.get('node'));
+            model.set('provider', 'osf');
+            return model.save();
         },
         editTitleNext(section) {
             // Edits title when user returns to upload section after upload section has already been completed.
