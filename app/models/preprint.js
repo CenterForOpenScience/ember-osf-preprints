@@ -27,7 +27,7 @@ export default OsfModel.extend({
 
     // Relationships
     primaryFile: DS.belongsTo('file', { inverse: null }),
-    node: DS.belongsTo('node', { inverse: null}),
+    node: DS.belongsTo('node', { inverse: null, async: false}),
     files: DS.hasMany('file-providers', { inverse: null }),
     provider: DS.belongsTo('preprint-provider', { inverse: 'preprints', async: true }),
 
