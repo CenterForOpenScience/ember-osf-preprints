@@ -360,7 +360,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             node.set('tags', this.get('basicsTags'));
             model.set('doi', this.get('basicsDOI'));
             if (model.get('doi') === '') {
-                model.set('doi', undefined);
+                model.set('doi', null);
             }
             node.save().then(() => {
                 model.save().then(() => {

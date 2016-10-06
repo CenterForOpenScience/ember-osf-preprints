@@ -15,7 +15,7 @@
 
     <div class="p-t-xs pull-right">
         <button class="btn btn-default" {{action changeInitialState startState}}>Back</button>
-        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "global.next"}}</button>
+        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "submit.body.save_continue"}}</button>
     </div>
 {{else}}
     {{#preprint-form-section class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}
