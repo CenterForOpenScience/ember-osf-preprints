@@ -454,26 +454,19 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.toggleProperty('showModalSharePreprint');
         },
         savePreprint() {
-            // Converts 'node' into a preprint, with its primaryFile as the 'selectedFile'.
             // TODO: Check validation status of all sections before submitting
             // TODO: Make sure subjects is working so request doesn't get rejected
             // TODO: Test and get this code working
             let model = this.get('model');
-
+            let node = this.get('node');
             this.set('savingPreprint', true);
+            model.set('isPublished', true);
+            node.set('public', true);
 
             return model.save()
-                // Ember data is not worth the time investment currently
-                .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
-                    data: {
-                        data: [{
-                            type: 'preprint_providers',
-                            id: config.PREPRINTS.provider,
-                        }]
-                    }
-                }))
-                .then(() => model.get('providers'))
-                .then(() => this.transitionToRoute('content', model));
+                .then(() => node.save().then(() => {
+                    this.transitionToRoute('content', model);
+                }));
         },
     }
 });
