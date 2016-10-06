@@ -2,6 +2,7 @@ export default {
     global: {
         share: `Share`,
         cancel: `Cancel`,
+        discard: `Discard changes`,
         back: `Back`,
         prev: `Prev`,
         next: `Next`,

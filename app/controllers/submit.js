@@ -144,6 +144,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         var node = this.get('node');
         return node ? node.get('title') : null;
     }),
+    abstractChanged: Ember.computed('basicsAbstract', 'node.description', function() {
+        var basicsAbstract = this.get('basicsAbstract');
+        var nodeDescription = this.get('node.description');
+        var changed = false;
+        if (basicsAbstract) {
+            changed = basicsAbstract.trim() !== nodeDescription;
+        }
+        return changed;
+    }),
     basicsAbstract:  Ember.computed('node.description', function() {
         var node = this.get('node');
         return node ? node.get('description') : null;
@@ -153,8 +162,24 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         // TODO: This may need to provide a default value (list)? Via default or field transform?
         return node ? node.get('tags') : Ember.A();
     }),
-    basicsDOI: Ember.computed('model.doi', function() {
+    tagsChanged: Ember.computed('basicsTags', 'node.tags', function() {
+        var basicsTags = this.get('basicsTags');
+        var nodeTags = this.get('node.tags');
+        var changed = false;
+        if (basicsTags && nodeTags) {
+            changed = !(basicsTags.length === nodeTags.length && basicsTags.every((v, i)=> v === nodeTags[i]));
+        }
+        return changed;
+    }),
+    basicsDOI: Ember.computed('model', function() {
         return this.get('model.doi');
+    }),
+    doiChanged: Ember.computed('model.doi', 'basicsDOI', function() {
+        //TODO fix DOI's value changes from undefined to null?
+        return this.get('basicsDOI') != this.get('model.doi');
+    }),
+    basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', function() {
+        return this.get('tagsChanged') || this.get('abstractChanged') || this.get('doiChanged');
     }),
     subjectsList: Ember.computed('model.subjects', function() {
         return this.get('model.subjects') ? this.get('model.subjects') : Ember.A();
@@ -350,6 +375,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         /*
           Basics section
          */
+        discardBasics() {
+            this.set('basicsTags', this.get('node.tags'));
+            this.set('basicsAbstract', this.get('node.description'));
+            this.set('basicsDOI', this.get('model.doi'));
+        },
         saveBasics() {
             // Saves the description/tags on the node and the DOI on the preprint, then advances to next panel
             // If save fails, do not transition
@@ -371,15 +401,18 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
         addTag(tag) {
             // Custom addATag method that appends tag to list instead of auto-saving
-            var tags = this.get('basicsTags');
+            var tags = this.get('basicsTags').slice(0);
+            Ember.A(tags);
             tags.pushObject(tag);
+            this.set('basicsTags', tags);
             return tags;
         },
 
         removeTag(tag) {
             // Custom removeATag method that removes tag from list instead of auto-saving
-            var tags = this.get('basicsTags');
+            var tags = this.get('basicsTags').slice(0);
             tags.splice(tags.indexOf(tag), 1);
+            this.set('basicsTags', tags);
             return tags;
 
         },
