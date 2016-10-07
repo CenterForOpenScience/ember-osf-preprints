@@ -44,6 +44,24 @@ const BasicsValidations = buildValidations({
     }
 });
 
+function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+
+    for (var i = 0; i < a.length; ++i) {
+        if (a[i].length !== b[i].length) return false;
+        for (var j = 0; j < a[i].length; ++j) {
+            if (a[i][j] !== b[i][j]) return false;
+        }
+    }
+    return true;
+}
+
+function subjectIdMap(subjectArray) {
+    return subjectArray.slice(0).map(subjectBlock => subjectBlock.map(subject => subject.id));
+}
+
 /**
  * "Add preprint" page definitions
  */
@@ -181,11 +199,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', function() {
         return this.get('tagsChanged') || this.get('abstractChanged') || this.get('doiChanged');
     }),
-    subjectsList: Ember.computed('model.subjects', function() {
-        return this.get('model.subjects') ? this.get('model.subjects') : Ember.A();
+    subjectsList: Ember.computed('model.subjects.@each', function() {
+        return this.get('model.subjects') ? this.get('model.subjects').slice(0) : Ember.A();
     }),
     disciplineReduced: Ember.computed('model.subjects', function() {
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
+    }),
+    disciplineChanged: Ember.computed('model.subjects.@each', 'subjectsList.@each', function() {
+        return !(arraysEqual(subjectIdMap(this.get('model.subjects')), subjectIdMap(this.get('subjectsList'))));
     }),
 
     getContributors: Ember.observer('node', function() {
@@ -425,10 +446,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.set('subjectsList', subjects);
         },
 
+        discardSubjects() {
+            this.set('subjectsList', this.get('model.subjects').slice(0));
+        },
+
         saveSubjects() {
             // Saves subjects (disciplines) and then moves to next section.
             var model = this.get('model');
-            var subjectMap = this.get('subjectsList').map(subjectBlock => subjectBlock.map(subject => subject.get('id')));
+            var subjectMap = subjectIdMap(this.get('subjectsList'));
             model.set('subjects', subjectMap);
             model.save()
                 .then(() => {

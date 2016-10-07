@@ -104,11 +104,12 @@
                             {{#preprint-form-body}}
                                 <p class="m-b-lg small">{{t "submit.body.subjects_description"}}</p>
 
-                                {{subject-picker save=(action 'setSubjects')}}
+                                {{subject-picker selected=subjectsList save=(action 'setSubjects')}}
 
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">
+                                            <button {{action 'discardSubjects'}} class="btn btn-default" disabled={{unless disciplineChanged true}} >{{t "global.discard"}}</button>
                                             <button {{action 'saveSubjects'}} class="btn btn-primary" disabled={{unless disciplineValid true}} >{{t "submit.body.save_continue"}}</button>
                                         </div>
                                     </div>

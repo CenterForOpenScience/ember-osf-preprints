@@ -5,7 +5,9 @@ function arrayEquals(arr1, arr2) {
 }
 
 function arrayStartsWith(arr, prefix) {
-    return prefix.reduce((acc, val, i) => acc && val === arr[i], true);
+    // TODO discrepancy between subjects being array of objects or array of classes
+    // depending if item was saved to server.
+    return prefix.reduce((acc, val, i) => acc && val && arr[i] && val.id === arr[i].id, true);
 }
 
 export default Ember.Component.extend({
