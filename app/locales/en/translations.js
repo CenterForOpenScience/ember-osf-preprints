@@ -150,11 +150,11 @@ export default {
             body: `Once this preprint is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.`
         },
         'convert-or-copy': {
-            organize_language_project: `You can organize your preprint by storing the file in this project or in its own new component.  If you select ‘Make a new component’, 
-            the preprint file will be stored in a new component inside this project.  If you select ‘Use the current project’, the preprint file will be stored in this project. 
+            organize_language_project: `You can organize your preprint by storing the file in this project or in its own new component.  If you select ‘Make a new component’,
+            the preprint file will be stored in a new component inside this project.  If you select ‘Use the current project’, the preprint file will be stored in this project.
             If you are unsure, select ‘Make a new component’.`,
-            organize_language_component: `You can organize your preprint by storing the file in this component or in its own new component.  If you select ‘Make a new component’, 
-            the preprint file will be stored in a new component inside this component.  If you select ‘Use the current component’, the preprint file will be stored in this component. 
+            organize_language_component: `You can organize your preprint by storing the file in this component or in its own new component.  If you select ‘Make a new component’,
+            the preprint file will be stored in a new component inside this component.  If you select ‘Use the current component’, the preprint file will be stored in this component.
             If you are unsure, select ‘Make a new component’.`,
             copy: `Make a new component`,
             convert_project: `Use the current project`,
@@ -202,6 +202,7 @@ export default {
             changes_saved: `Changes Saved!`,
             file: `Preprint file`,
             title: `Preprint title`,
+            location: `Preprint location`,
             click_edit: `Click to Edit`,
             name: {
                 Upload: 'Upload',
@@ -212,7 +213,9 @@ export default {
                 choose_project: 'Choose Project',
                 choose_file: 'Choose File',
                 organize: 'Organize',
-                finalize_upload: 'Finalize Upload'
+                finalize_upload: 'Finalize Upload',
+                location_of_preprint: 'Location of Preprint',
+                title_of_preprint: 'Title of Preprint'
             }
         },
         'preprint-form-project-select': {
@@ -223,7 +226,8 @@ export default {
             edit_preprint_title_project: `Edit preprint title (will also become the name of the project)`,
             edit_preprint_title_component: `Edit preprint title (will also become the name of the component)`,
             initiate_preprint_process: `You have selected and organized your preprint file. Clicking "Save and continue" will immediately make changes to your OSF project.`,
-            admin_only: `You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.`
+            edit_organize_section: `Edits to this preprint will update both the preprint and the OSF project.`,
+            admin_only: `You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.`,
         },
         'preprint-form-section': {
             // Nothing to translate
