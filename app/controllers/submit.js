@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import config from 'ember-get-config';
 
 import { validator, buildValidations } from 'ember-cp-validations';
 
@@ -84,7 +83,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     selectedFile: null, // File that will be the preprint (already uploaded to node or selected from existing node)
     contributors: Ember.A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
     nodeTitle: null, // Preprint title
-    fileAndNodeLocked: false, // After advancing beyond Step 1: Upload on Add Preprint form, both the file and node are locked
+    nodeLocked: false, // After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
@@ -117,7 +116,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             selectedFile: null,
             contributors: Ember.A(),
             nodeTitle: null,
-            fileAndNodeLocked: false,
+            nodeLocked: false, // Will be set to true if edit?
             filePickerState: State.START,
             searchResults: [],
             savingPreprint: false,
@@ -140,7 +139,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     // Validation rules for form sections
 
     // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
-    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle', 'fileAndNodeLocked'),
+    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle', 'nodeLocked'),
     abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
     // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand pendingBasicsValid definition.
@@ -287,14 +286,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 this.get('panelActions').close('finalizeUpload');
             }
         },
-        lockFileAndNode() {
+        lockNode() {
             // Locks file and node so that they cannot be modified.  Occurs after upload step is complete.
-            this.set('fileAndNodeLocked', true);
+            this.set('nodeLocked', true);
         },
         finishUpload() {
             // Locks file and node and advances to next form section.
-            this.send('lockFileAndNode');
             this.send('next', this.get('_names.0'));
+            this.send('lockNode');
         },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
