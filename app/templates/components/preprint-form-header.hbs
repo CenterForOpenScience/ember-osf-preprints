@@ -21,6 +21,9 @@
 
 {{#if (and (not isOpen) (eq name 'Upload'))}}
     <div class="m-t-md preprint-header-preview">
+        {{#if preprintNode}}
+            <p><em class="m-r-md"> {{t "components.preprint-form-header.location"}} </em> {{get-ancestor-descriptor preprintNode}} <strong> {{preprintNode.title}}</strong></p>
+        {{/if}}
         <p><em class="m-r-md"> {{t "components.preprint-form-header.file"}} </em> {{preprintFile}} </p>
         <p><em class="m-r-md"> {{t "components.preprint-form-header.title"}} </em> {{preprintTitle}} </p>
     </div>
@@ -68,6 +71,12 @@
             {{/if}}
         {{/if}}
 
+        {{#if (eq name 'location_of_preprint')}}
+            {{#if node}}
+                <p> <span class='lock-span text-muted p-r-xs'><i class='fa fa-lock'></i></span> {{get-ancestor-descriptor node}} {{node.title}} </p>
+            {{/if}}
+        {{/if}}
+
         {{#if (eq name 'choose_project')}}
             {{#if selectedNode}}
                 <p> {{selectedNode.title}} </p>
@@ -104,8 +113,14 @@
             {{/if}}
         {{/if}}
 
+        {{#if (eq name 'title_of_preprint')}}
+            {{#if nodeTitle}}
+                 <p> {{nodeTitle}} </p>
+            {{/if}}
+        {{/if}}
 
-        {{#if (and (not-eq name 'Submit') (or (not showValidationIndicator) isValidationActive))}}
+
+        {{#if (and (isSectionEditable name) (or (not showValidationIndicator) isValidationActive))}}
             <i class="text-smaller m-t-md">{{t "components.preprint-form-header.click_edit"}}</i>
         {{/if}}
     </div>
