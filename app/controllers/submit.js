@@ -358,13 +358,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.set('filePickerState', State.EXISTING);
             return model.save();
         },
-        editTitleNext(section) {
-            // Edits title when user returns to upload section after upload section has already been completed.
-            this.set('node.title', this.get('nodeTitle'));
-            Ember.run.scheduleOnce('afterRender', this, function() {
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$('.preprint-header-preview')[0]]);  // jshint ignore:line
-            });
-            this.send('next', section);
         },
         selectExistingFile(file) {
             // Takes file chosen from file-browser and sets equal to selectedFile. This file will become the preprint.
