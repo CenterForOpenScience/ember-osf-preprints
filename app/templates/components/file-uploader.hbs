@@ -47,13 +47,15 @@
     {{/preprint-form-section}}
 
     {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-        {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
-            {{preprint-form-header name='organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false}}
-            {{#preprint-form-body}}
-                {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
-            {{/preprint-form-body}}
-        {{/preprint-form-section}}
-        {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
+        {{#unless nodeLocked}}
+            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
+                {{preprint-form-header name='organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false}}
+                {{#preprint-form-body}}
+                    {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
+                {{/preprint-form-body}}
+            {{/preprint-form-section}}
+        {{/unless}}
+        {{#if (or nodeLocked (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed))) use='crossFade'}}
             {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
                 {{preprint-form-header name='finalize_upload' nodeTitle=nodeTitle showValidationIndicator=false}}
                 {{#preprint-form-body}}

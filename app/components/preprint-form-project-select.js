@@ -54,8 +54,6 @@ export default Ember.Component.extend({
             return null;
         }
     }),
-    osfProviderLoaded: false, // True when selectedNode's osfstorage provider has been loaded.
-    osfStorageProvider: null,
     existingState: existingState.CHOOSE,
     actions: {
         nodeSelected(node) {

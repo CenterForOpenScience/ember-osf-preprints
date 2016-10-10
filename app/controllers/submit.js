@@ -94,7 +94,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     parentNode: null, // If component created, parentNode will be defined
     parentContributors: Ember.A(),
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
-    convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
+    convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.,
+    osfStorageProvider: null, // Preprint node's osfStorage object
+    osfProviderLoaded: false, // Preprint node's osfStorageProvider is loaded.
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -292,8 +294,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         finishUpload() {
             // Locks file and node and advances to next form section.
-            this.send('next', this.get('_names.0'));
             this.send('lockNode');
+            this.get('node.files').then((files) => {
+                this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
+                this.set('osfProviderLoaded', true);
+                this.send('next', this.get('_names.0'));
+            });
         },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
@@ -349,6 +355,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
             model.set('provider', 'osf');
+            this.set('filePickerState', State.EXISTING);
             return model.save();
         },
         editTitleNext(section) {
@@ -365,30 +372,32 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         clearDownstreamFields(section) {
             //If user goes back and changes a section inside Upload, all fields downstream of that section need to clear.
-            switch (section) {
-                case 'allUpload':
-                    this.set('node', null);
-                    this.set('selectedFile', null);
-                    this.set('hasFile', false);
-                    this.set('file', null);
-                    this.set('convertOrCopy', null);
-                    this.set('nodeTitle', null);
-                    break;
-                case 'belowNode':
-                    this.set('selectedFile', null);
-                    this.set('hasFile', false);
-                    this.set('file', null);
-                    this.set('convertOrCopy', null);
-                    this.set('nodeTitle', null);
-                    break;
-                case 'belowFile': {
-                    this.set('convertOrCopy', null);
-                    this.set('nodeTitle', null);
-                    break;
-                }
-                case 'belowConvertOrCopy': {
-                    this.set('nodeTitle', null);
-                    break;
+            if (!this.get('nodeLocked')){
+                switch (section) {
+                    case 'allUpload':
+                        this.set('node', null);
+                        this.set('selectedFile', null);
+                        this.set('hasFile', false);
+                        this.set('file', null);
+                        this.set('convertOrCopy', null);
+                        this.set('nodeTitle', null);
+                        break;
+                    case 'belowNode':
+                        this.set('selectedFile', null);
+                        this.set('hasFile', false);
+                        this.set('file', null);
+                        this.set('convertOrCopy', null);
+                        this.set('nodeTitle', null);
+                        break;
+                    case 'belowFile': {
+                        this.set('convertOrCopy', null);
+                        this.set('nodeTitle', null);
+                        break;
+                    }
+                    case 'belowConvertOrCopy': {
+                        this.set('nodeTitle', null);
+                        break;
+                    }
                 }
             }
         },
