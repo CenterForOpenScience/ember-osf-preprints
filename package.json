@@ -42,12 +42,14 @@
     "ember-cli-qunit": "^2.0.0",
     "ember-cli-release": "^0.2.9",
     "ember-cli-sass": "5.3.1",
+    "ember-cli-showdown": "2.8.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-template-lint": "^0.4.12",
     "ember-cli-test-loader": "^1.1.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-collapsible-panel": "1.0.0",
     "ember-collection": "1.0.0-alpha.6",
+    "ember-content-editable": "0.9.0",
     "ember-cp-validations": "^2.9.4",
     "ember-data": "^2.7.0",
     "ember-export-application-global": "^1.0.5",
@@ -66,7 +68,8 @@
     "liquid-fire": "0.24.1",
     "loader.js": "^4.0.1",
     "phantomjs-prebuilt": "^2.1.11",
-    "postcss": "^5.1.0"
+    "postcss": "^5.1.0",
+    "showdown": "1.4.3"
   },
   "dependencies": {},
   "bugs": {

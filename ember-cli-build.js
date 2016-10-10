@@ -109,6 +109,9 @@ module.exports = function(defaults) {
     });
 
     app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
+    app.import(path.join(app.bowerDirectory, 'At.js/dist/js/jquery.atwho.js'));
+    app.import(path.join(app.bowerDirectory, 'Caret.js/src/jquery.caret.js'));
+    app.import(path.join(app.bowerDirectory, 'At.js/dist/css/jquery.atwho.css'));
 
      app.import({
         development: path.join(app.bowerDirectory, 'hint.css/hint.css'),
