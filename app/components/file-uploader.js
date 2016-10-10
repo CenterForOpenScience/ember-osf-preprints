@@ -112,6 +112,7 @@ export default Ember.Component.extend({
 
         uploadFileToExistingNode() {
             // Upload case for using an existing node with a new file for the preprint.  Updates title of existing node and then uploads file to node.
+            this.set('uploadInProgress', true);
             var node = this.get('node');
             if (node.get('title') !== this.get('nodeTitle')) {
                 node.set('title', this.get('nodeTitle'));
@@ -160,10 +161,18 @@ export default Ember.Component.extend({
                     .findRecord('file', resp.data.id.split('/')[1])
                     .then(file => {
                         this.set('osfFile', file);
-                        this.attrs.startPreprint().then(() => {
-                            this.get('toast').info('Preprint file uploaded!');
-                            this.sendAction('finishUpload');
-                        }).catch(() => this.get('toast').error('Could not save information; please try again.'));
+                        if (this.get('nodeLocked')) {
+                            this.attrs.editPreprintFile().then(() => {
+                                this.get('toast').info('Preprint file updated!');
+                                this.sendAction('finishUpload')
+                            })
+
+                        } else {
+                            this.attrs.startPreprint().then(() => {
+                                this.get('toast').info('Preprint file uploaded!');
+                                this.sendAction('finishUpload');
+                            }).catch(() => this.get('toast').error('Could not save information; please try again.'));
+                        }
                     });
             } else {
                 //Failure
@@ -187,4 +196,3 @@ export default Ember.Component.extend({
         }
     }
 });
-

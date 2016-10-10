@@ -977,9 +977,14 @@ label.title-label {
     padding:5px 20px 5px 20px;
     border-top: 1px solid #eee;
 
+
     header {
         font-size: 15px;
         line-height: 75%;
+    }
+
+    &.bottom-title-underline {
+        border-bottom: 1px solid #eee;
     }
 
     .preprint-header-preview {

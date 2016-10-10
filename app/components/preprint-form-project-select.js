@@ -45,6 +45,7 @@ export const existingState = Object.freeze(Ember.Object.create({
  */
 export default Ember.Component.extend({
     _existingState: existingState,
+    panelActions: Ember.inject.service('panelActions'),
     userNodes: Ember.A(),
     selectedNode: null,
     isAdmin: Ember.computed('selectedNode', function() {
@@ -86,6 +87,7 @@ export default Ember.Component.extend({
             if (newState === existingState.NEWFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'uploadNewFile');
             }
+            this.get('panelActions').open('uploadNewFile');
         },
     },
 

@@ -358,6 +358,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.set('filePickerState', State.EXISTING);
             return model.save();
         },
+        editPreprintFile() {
+            let model = this.get('model');
+            model.set('primaryFile', this.get('selectedFile'));
+            return model.save();
         },
         selectExistingFile(file) {
             // Takes file chosen from file-browser and sets equal to selectedFile. This file will become the preprint.
