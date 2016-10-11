@@ -374,7 +374,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         editPreprintFile() {
             let model = this.get('model');
-            model.set('primaryFile', this.get('selectedFile'));
+            if (model.get('primaryFile.id') !== this.get('selectedFile.id')) {
+                model.set('primaryFile', this.get('selectedFile'));
+            }
             return model.save();
         },
         selectExistingFile(file) {

@@ -3,7 +3,7 @@ import Ember from 'ember';
 
 export default OsfSerializer.extend({
     serialize(snapshot) {
-        // Normal OSF serializer strips out relationships. We need to add back primaryFile for this endpoint
+        // Normal OSF serializer strips out relationships. We need to add back primaryFile/node/provider for this endpoint
         let res = this._super(...arguments);
         res.data.relationships = {};
         for (var rel in snapshot.record._dirtyRelationships) {
