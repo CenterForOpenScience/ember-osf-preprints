@@ -98,11 +98,11 @@
 
                     {{#with _names.[1] as |name|}}
                         {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header disciplineSaveState=disciplineSaveState subjects=model.subjects name=name valid=disciplineValid isValidationActive=hasOpened}}
+                            {{preprint-form-header disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=disciplineValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="m-b-lg small">{{t "submit.body.subjects_description"}}</p>
 
-                                {{subject-picker save=(action 'saveSubjects')}}
+                                {{subject-picker disciplineReduced=disciplineReduced save=(action 'saveSubjects')}}
 
                                 <div class="row">
                                     <div class="col-md-12">
