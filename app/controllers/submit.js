@@ -97,6 +97,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.,
     osfStorageProvider: null, // Preprint node's osfStorage object
     osfProviderLoaded: false, // Preprint node's osfStorageProvider is loaded.
+    titleValid: null,  // If node's pending title is valid.
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -326,6 +327,19 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     .catch(() => this.get('toast').error('Could not save information; please try again.'));
             }
         },
+        editExistingFileAndTitle() {
+            // Edit mode - Change preprint file to an existing file and/or update node title.
+            var node = this.get('node');
+            node.set('title', this.get('nodeTitle'));
+            node.save()
+                .then(() => {
+                    this.send('editPreprintFile');
+                })
+                .then(() => {
+                    this.get('toast').info('Preprint file updated!');
+                    this.send('finishUpload');
+                });
+        },
         createComponentCopyFile() {
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
             // file from parent node to new component.
@@ -369,7 +383,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         clearDownstreamFields(section) {
             //If user goes back and changes a section inside Upload, all fields downstream of that section need to clear.
-            if (!this.get('nodeLocked')){
+            if (!this.get('nodeLocked')) { // Only clear downstream fields in Add mode!
                 switch (section) {
                     case 'allUpload':
                         this.set('node', null);

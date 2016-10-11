@@ -83,7 +83,7 @@
             {{/if}}
         {{/if}}
 
-        {{#if (eq name 'choose_file')}}
+        {{#if (or (eq name 'choose_file') (eq name 'preprint_file'))}}
             {{#if selectedFile}}
                 <p> {{selectedFile.name}}</p>
             {{/if}}

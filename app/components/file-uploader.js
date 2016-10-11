@@ -48,7 +48,6 @@ export default Ember.Component.extend({
         method: 'PUT',
         uploadMultiple: false,
     },
-    titleValid: null,
 
     init() {
         this._super(...arguments);
@@ -138,6 +137,9 @@ export default Ember.Component.extend({
             this.set('uploadInProgress', false);
             this.set('file', file);
             this.set('hasFile', true);
+            if (!(this.get('nodeLocked'))) {
+                this.set('titleValid', false);
+            }
             this.set('callback', Ember.RSVP.defer());
             // Delays so user can see that file has been preuploaded before
             // advancing to next panel
@@ -164,9 +166,8 @@ export default Ember.Component.extend({
                         if (this.get('nodeLocked')) {
                             this.attrs.editPreprintFile().then(() => {
                                 this.get('toast').info('Preprint file updated!');
-                                this.sendAction('finishUpload')
-                            })
-
+                                this.sendAction('finishUpload');
+                            });
                         } else {
                             this.attrs.startPreprint().then(() => {
                                 this.get('toast').info('Preprint file uploaded!');

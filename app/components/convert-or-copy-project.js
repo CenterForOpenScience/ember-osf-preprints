@@ -28,6 +28,7 @@ export default Ember.Component.extend({
             this.set('convertProjectConfirmed', false);
             this.set('convertOrCopy', 'copy');
             this.set('titleValid', false);
+            this.set('nodeTitle', '');
             this.attrs.nextUploadSection('organize', 'finalizeUpload');
         },
         chooseConvertExisting() {

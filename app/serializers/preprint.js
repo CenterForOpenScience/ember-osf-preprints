@@ -14,8 +14,8 @@ export default OsfSerializer.extend({
                     id: id,
                     type: relTypes[rel]
                 }
-            }
-        }
+            };
+        };
 
         if (res.data.attributes && 'subjects' in snapshot.record.changedAttributes())
             res.data.attributes.subjects = (snapshot.record.get('subjects') || []);
@@ -24,9 +24,9 @@ export default OsfSerializer.extend({
 
 });
 
+// Type mapping for preprint relationship fields
 var relTypes = {
     primaryFile: 'file',
     node: 'nodes',
     provider: 'providers'
-
-}
+};

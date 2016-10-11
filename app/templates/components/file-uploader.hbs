@@ -1,4 +1,4 @@
-{{#if newNodeNewFile}}
+{{#if newNodeNewFile}}  {{!UPLOAD NEW FILE SECTION - NEW OSF USERS}}
     {{dropzone-widget
         url=url
         options=dropzoneOptions
@@ -18,8 +18,8 @@
         <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "submit.body.save_continue"}}</button>
     </div>
 {{else}}
-    {{#preprint-form-section class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}
-        {{preprint-form-header name='choose_file' selectedFile=file showValidationIndicator=false}}
+    {{#preprint-form-section class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}  {{!UPLOAD NEW FILE SECTION}}
+        {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=file showValidationIndicator=false}}
         {{#preprint-form-body}}
             <div class="m-t-sm">
                 <form class="form">
@@ -48,7 +48,7 @@
 
     {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
         {{#if nodeLocked}}
-            {{#preprint-form-section class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}}
+            {{#preprint-form-section class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}} {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
                 {{preprint-form-header nodeTitle=nodeTitle name='title_of_preprint' showValidationIndicator=false}}
                 {{#preprint-form-body}}
                     <label class="text-muted title-label">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
@@ -60,14 +60,14 @@
                 <button class="btn btn-primary" disabled={{not (and hasFile titleValid)}} {{action 'uploadFileToExistingNode'}}>Save and continue</button>
             </div>
         {{else}}
-            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
+            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}} {{!ORGANIZE DECISION SECTION}}
                 {{preprint-form-header name='organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false}}
                 {{#preprint-form-body}}
                     {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
-                {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
+                {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}} {{!FINALIZE UPLOAD SECTION - NEW FILE}}
                     {{preprint-form-header name='finalize_upload' nodeTitle=nodeTitle showValidationIndicator=false}}
                     {{#preprint-form-body}}
                         {{#if (eq convertOrCopy 'convert')}}

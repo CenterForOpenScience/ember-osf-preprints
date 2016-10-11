@@ -214,8 +214,9 @@ export default {
                 choose_file: 'Choose File',
                 organize: 'Organize',
                 finalize_upload: 'Finalize Upload',
-                location_of_preprint: 'Location of Preprint',
-                title_of_preprint: 'Title of Preprint'
+                location_of_preprint: 'Preprint Location',
+                title_of_preprint: 'Preprint Title',
+                preprint_file: 'Preprint File'
             }
         },
         'preprint-form-project-select': {

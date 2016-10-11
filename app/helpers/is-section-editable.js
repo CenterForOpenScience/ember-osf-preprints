@@ -8,9 +8,9 @@ import Ember from 'ember';
  * @return {Boolean} Is this section editable?
  */
 export function isSectionEditable(params/*, hash*/) {
-  let section = params[0];
-  let uneditableSections= ['Submit', 'location_of_preprint'];
-  return uneditableSections.indexOf(section) === -1;
+    let section = params[0];
+    let uneditableSections = ['Submit', 'location_of_preprint'];
+    return uneditableSections.indexOf(section) === -1;
 }
 
 export default Ember.Helper.helper(isSectionEditable);
