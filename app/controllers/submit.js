@@ -130,6 +130,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             disciplineSaveState: false,
             parentNode: null,
             convertProjectConfirmed: false,
+            basicsAbstract: null,
+            userNodesLoaded: false,
         }));
     },
 
