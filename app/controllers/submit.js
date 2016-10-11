@@ -79,7 +79,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
     disciplineReduced: null,
-    
+
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
         var node = this.get('node');
