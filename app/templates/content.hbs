@@ -3,7 +3,7 @@
 <div id="view-page">
     <div class="p-t-xl m-t-xl p-b-md m-b-md dark-overlay-header-background header-row">{{!HEADER ROW}}
         <div class="container">{{!CONTAINER DIV}}
-            <h1 id="preprintTitle" class="p-b-md">{{model.title}}</h1>
+            <h1 id="preprintTitle" class="p-b-md">{{model.node.title}}</h1>
             <h5 class="view-authors">
                 <ul class="comma-list">
                     {{#if authors}}
@@ -19,7 +19,7 @@
                     {{/if}}
                 </ul>
             </h5>
-            <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
+            <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.node.dateModified "MMMM DD, YYYY"}} </h6>
         </div> {{!END CONTAINER DIV}}
     </div> {{!END HEADER ROW}}
     <div id="view-page" class="container">{{!CONTAINER DIV}}
@@ -49,7 +49,7 @@
                     {{/liquid-spacer}}
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">{{t "global.abstract"}}</h4>
-                        <p class="abstract">{{model.abstract}}</p>
+                        <p class="abstract">{{model.node.description}}</p>
                     </div>
 
                     {{#if model.doi}}
@@ -68,7 +68,7 @@
                     <div class="m-b-lg p-t-xs">
                         <h4 class=" f-w-md p-v-md">{{t "global.tags"}}</h4>
                         {{#if hasTag}}
-                            {{#each model.tags as |tag|}}
+                            {{#each model.node.tags as |tag|}}
                                 <span class="badge">{{tag}}</span>
                             {{/each}}
                         {{else}}
