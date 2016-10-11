@@ -8,14 +8,26 @@ export default OsfSerializer.extend({
             primary_file: {
                 data: {
                     id: snapshot.belongsTo('primaryFile', { id: true }),
-                    type: 'file'
+                    type: 'files'
+                }
+            },
+            node: {
+                data: {
+                    id: snapshot.belongsTo('node', { id: true}),
+                    type: 'nodes'
+                }
+            },
+            provider: {
+                data: {
+                    id: 'osf',
+                    type: 'preprint-providers'
                 }
             }
         };
 
         if (res.data.attributes)
             // TODO: This should not be in the serializer. It is the responsibility of the person creating a record to give the correct data format.
-            res.data.attributes.subjects = (snapshot.record.get('subjects') || []).map(subject => subject.get('id'));
+            res.data.attributes.subjects = (snapshot.record.get('subjects') || []).map(subjectBlock => subjectBlock.map(subject => subject.get('id')));
 
         return res;
     }
