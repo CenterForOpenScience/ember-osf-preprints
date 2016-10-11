@@ -7,11 +7,11 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-    this.route('submit');
-    this.route('discover');
+    this.route('preprints/submit');
+    this.route('preprints/discover');
     this.route('content', { path: '/:preprint_id' });
-    this.route('404', { path: '/*bad_url'});
-    this.route('page-not-found');
+    this.route('404', { path: 'preprints/*bad_url'});
+    this.route('preprints/page-not-found');
 });
 
 export default Router;

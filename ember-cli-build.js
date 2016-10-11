@@ -90,7 +90,20 @@ module.exports = function(defaults) {
         babel: {
             optional: ['es6.spec.symbols'],
             includePolyfill: true
-        }
+        },
+        // outputPaths: {
+        //     app: {
+        //       html: '/preprints/index.html',
+        //       css: {
+        //         'app': '/preprints/assets/preprint-service.css'
+        //       },
+        //       js: '/preprints/assets/preprint-service.js'
+        //     },
+        //     vendor: {
+        //       css: '/preprints/assets/vendor.css',
+        //       js: '/preprints/assets/vendor.js'
+        //     }
+        //  }
     });
 
     // Use `app.import` to add additional libraries to the generated
