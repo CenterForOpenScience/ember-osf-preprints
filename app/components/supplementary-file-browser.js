@@ -24,7 +24,7 @@ export default Ember.Component.extend({
     __files: function() {
         this.set('files', []);
         this.set('selectedFile', null);
-        this.get('preprint').get('files')
+        this.get('preprint.node').get('files')
             .then(providers => {
                 this.set('provider', providers.findBy('name', 'osfstorage'));
                 return loadAll(this.get('provider'), 'files', this.get('files'), {'page[size]': 50});

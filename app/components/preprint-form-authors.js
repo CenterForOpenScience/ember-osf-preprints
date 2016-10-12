@@ -7,6 +7,22 @@ export default CpPanelBodyComponent.extend({
     authorModification: false,
     // Permissions labels for dropdown
     permissionOptions: permissionSelector,
+    parentContributorsAdded: false,
+    // Returns list of user ids associated with current node
+    currentContributorIds: Ember.computed('contributors', function() {
+        var contribIds = [];
+        this.get('contributors').forEach((contrib) => {
+            contribIds.push(contrib.get('userId'));
+        });
+        return contribIds;
+    }),
+    numParentContributors: Ember.computed('parentNode', function() {
+        if (this.get('parentNode')) {
+            return this.get('parentNode').get('contributors').get('length');
+        } else {
+            return 0;
+        }
+    }),
     addState: 'emptyView', // There are 3 view states on left side of Authors panel. Default state just shows search bar.
     query: null,
     // Total contributor search results
@@ -39,6 +55,30 @@ export default CpPanelBodyComponent.extend({
                 this.highlightSuccessOrFailure(user.id, this, 'error');
                 user.rollbackAttributes();
             });
+        },
+        // Adds all contributors from parent project to current component as long as they are not current contributors
+        addContributorsFromParentProject() {
+            this.set('parentContributorsAdded', true);
+            var contributorsToAdd = Ember.A();
+            this.get('parentContributors').toArray().forEach(contributor => {
+                if (this.get('currentContributorIds').indexOf(contributor.get('userId')) === -1) {
+                    contributorsToAdd.push({
+                        permission: contributor.get('permission'),
+                        bibliographic: contributor.get('bibliographic'),
+                        userId: contributor.get('userId'),
+                    });
+                }
+            });
+            this.attrs.addContributors(contributorsToAdd, false)
+                .then((contributors) => {
+                    contributors.map((contrib) => {
+                        this.get('contributors').pushObject(contrib);
+                    });
+                    this.toggleAuthorModification();
+                })
+                .catch(() => {
+                    this.get('toast').error('Some contributors may not have been added. Try adding manually.');
+                });
         },
         // Adds unregistered contributor, then clears form and switches back to search view.
         // Should wait to transition until request has completed.

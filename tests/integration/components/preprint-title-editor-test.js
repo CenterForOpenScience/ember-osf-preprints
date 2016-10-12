@@ -1,16 +1,16 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('preprint-form-header', 'Integration | Component | preprint form header', {
+moduleForComponent('preprint-title-editor', 'Integration | Component | preprint title editor', {
   integration: true
 });
 
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
-  const name = 'Upload';
-  this.set('name', name);
 
-  this.render(hbs`{{preprint-form-header name=name}}`);
-  assert.equal(this.$('.section-header').text().trim(), name);
+  this.render(hbs`{{preprint-title-editor}}`);
+
+  assert.equal(this.$().text().trim(), '');
+
 });
