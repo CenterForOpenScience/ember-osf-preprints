@@ -2,8 +2,21 @@
     width="99%" height="700"}}
 {{/file-renderer}}
 
+<div class="row">
+    <div class="col-xs-8">
+        <p class="f-w-lg p-b-md">{{selectedFile.name}}</p>
+    </div>
+    <div class="col-xs-4 text-nowrap">
+        <div class="pull-right">
+            {{#if (and hasAdditionalFiles (not-eq selectedFile.id preprint.primaryFile.id))}}
+                <a class="btn btn-default btn-sm" href={{selectedFile.links.download}}>{{t "content.share.download_file"}}</a>
+            {{/if}}
+            <span class="p-sm"> {{t "content.version"}}: {{selectedFile.currentVersion}}</span>
+        </div>
+    </div>
+</div>
+
 {{#if hasAdditionalFiles}}
-    <p class="f-w-lg p-b-md">{{selectedFile.name}}</p>
     <section class="osf-box p-md m-b-lg">
         {{#liquid-bind (slice-array files startIndex endIndex) use=scrollAnim as |list|}}
             {{#each list as |supplement index|}}

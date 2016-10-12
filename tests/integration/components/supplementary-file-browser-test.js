@@ -45,7 +45,7 @@ test('it renders', function(assert) {
 
     this.render(hbs`{{supplementary-file-browser preprint=preprint}}`);
 
-    assert.equal(this.$().text().trim(), '');
+    assert.equal(this.$().text().trim(), 'Version:');
 
     //  this.on('changeFile', function() {});
 });
