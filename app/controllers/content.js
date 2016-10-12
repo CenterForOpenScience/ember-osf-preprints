@@ -22,7 +22,7 @@ export default Ember.Controller.extend({
     disciplineReduced: Ember.computed('model.subjects', function() {
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
-
+    
     hasTag: Ember.computed('model.node.tags', function() {
         return this.get('model.node.tags').length;
     }),
