@@ -22,9 +22,23 @@ test('it renders', function(assert) {
             name: 'osfstorage',
             query: providerFiles
     }]));
+
+    let node = Ember.Object.create({
+        dateModified: '10-11-2016',
+        title:'My Preprint Title'
+    });
+
+    let file = Ember.Object.create({
+
+    });
     let preprint = Ember.Object.create({
+        primaryFile: file,
+        node: node,
+        provider: 'osf',
         files: providersQuery
     });
+
+
 
     this.set('preprint', preprint);
 
