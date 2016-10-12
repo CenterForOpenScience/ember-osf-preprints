@@ -43,7 +43,7 @@ test('it renders', function(assert) {
 
     this.set('preprint', preprint);
 
-    this.render(hbs`{{supplementary-file-browser preprint=preprint}}`);
+    this.render(hbs`{{supplementary-file-browser node=node preprint=preprint}}`);
 
     assert.equal(this.$().text().trim(), 'Version:');
 
