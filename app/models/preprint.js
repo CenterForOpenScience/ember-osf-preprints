@@ -26,7 +26,7 @@ export default OsfModel.extend({
     isPreprintOrphan: DS.attr('boolean'),
 
     // Relationships
-    node: DS.belongsTo('node', { inverse: null, async: false}),
+    node: DS.belongsTo('node', { inverse: null, async: true}),
     primaryFile: DS.belongsTo('file', { inverse: null }),
     provider: DS.belongsTo('preprint-provider', { inverse: 'preprints', async: true }),
 });
