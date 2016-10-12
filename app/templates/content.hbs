@@ -1,9 +1,9 @@
-{{title model.title}}
+{{title model.node.title}}
 
 <div id="view-page">
     <div class="p-t-xl m-t-xl p-b-md m-b-md dark-overlay-header-background header-row">{{!HEADER ROW}}
         <div class="container">{{!CONTAINER DIV}}
-            <h1 id="preprintTitle" class="p-b-md">{{model.title}}</h1>
+            <h1 id="preprintTitle" class="p-b-md">{{model.node.title}}</h1>
             <h5 class="view-authors">
                 <ul class="comma-list">
                     {{#if authors}}
@@ -19,13 +19,13 @@
                     {{/if}}
                 </ul>
             </h5>
-            <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
+            <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.node.dateModified "MMMM DD, YYYY"}} </h6>
         </div> {{!END CONTAINER DIV}}
     </div> {{!END HEADER ROW}}
     <div id="view-page" class="container">{{!CONTAINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
             <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}
-                {{supplementary-file-browser preprint=model projectURL=model.links.html chooseFile=(action 'chooseFile')}}
+                {{supplementary-file-browser preprint=model node=node projectURL=model.node.links.html chooseFile=(action 'chooseFile')}}
                 <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
                     <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                 </button>
@@ -49,7 +49,7 @@
                     {{/liquid-spacer}}
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">{{t "global.abstract"}}</h4>
-                        <p class="abstract">{{model.abstract}}</p>
+                        <p class="abstract">{{model.node.description}}</p>
                     </div>
 
                     {{#if model.doi}}
@@ -61,14 +61,14 @@
 
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">{{t "content.disciplines"}}</h4>
-                        {{#each model.subjects as |subject|}}
+                        {{#each disciplineReduced as |subject|}}
                             <span class='subject-preview'>{{subject.text}}</span>
                         {{/each}}
                     </div>
                     <div class="m-b-lg p-t-xs">
                         <h4 class=" f-w-md p-v-md">{{t "global.tags"}}</h4>
                         {{#if hasTag}}
-                            {{#each model.tags as |tag|}}
+                            {{#each model.node.tags as |tag|}}
                                 <span class="badge">{{tag}}</span>
                             {{/each}}
                         {{else}}
@@ -78,7 +78,7 @@
                     {{!PROJECT BUTTON}}
                     <div class="p-lg osf-box-lt text-center">
                         <p class="f-w-xs">{{t "content.project_button.paragraph"}}</p>
-                        <a type="button" class="btn btn-info" href={{model.links.html}}>{{t "content.project_button.button"}}</a>
+                        <a type="button" class="btn btn-info" href={{model.node.links.html}}>{{t "content.project_button.button"}}</a>
                     </div>
                 </div> {{!END RIGHT SIDE COL}}
             {{/unless}}

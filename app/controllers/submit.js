@@ -78,6 +78,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     parentContributors: Ember.A(),
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
+    disciplineReduced: null,
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -393,30 +394,18 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.toggleProperty('showModalSharePreprint');
         },
         savePreprint() {
-            // Converts 'node' into a preprint, with its primaryFile as the 'selectedFile'.
-            // TODO: Check validation status of all sections before submitting
-            // TODO: Make sure subjects is working so request doesn't get rejected
-            // TODO: Test and get this code working
+            // Creates a preprint.
             let model = this.get('model');
-            model.setProperties({
-                id: this.get('node.id'),
-                primaryFile: this.get('selectedFile')
-            });
+            model.set('primaryFile', this.get('selectedFile'));
+            model.set('node', this.get('node'));
+            model.set('provider', config.PREPRINTS.provider);
+            model.set('isPublished', true);
+
             this.set('savingPreprint', true);
             if (model.get('doi') === '') {
-                model.set('doi', undefined);
+                model.set('doi', null);
             }
             return model.save()
-                // Ember data is not worth the time investment currently
-                .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
-                    data: {
-                        data: [{
-                            type: 'preprint_providers',
-                            id: config.PREPRINTS.provider,
-                        }]
-                    }
-                }))
-                .then(() => model.get('providers'))
                 .then(() => this.transitionToRoute('content', model));
         },
     }
