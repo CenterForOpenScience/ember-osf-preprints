@@ -35,7 +35,7 @@
                     {{#liquid-spacer growDuration=250 growWidth=false}}
                         <div class="p-sm osf-box-lt clearfix">{{!SHARE ROW}}
                             <div class="" id="download_project clearfix">
-                                <a class="btn btn-primary" href={{activeFile.links.download}}>{{t "content.share.download"}}</a>
+                                <a class="btn btn-primary" href={{model.primaryFile.links.download}}>{{t "content.share.download_preprint"}}</a>
                                 <span class="p-sm">{{t "content.share.downloads"}}: {{activeFile.extra.downloads}}</span>
                                 <span class="p-xs pull-right">
                                     <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref}}>{{fa-icon 'twitter-square' size=2 }}</a>
