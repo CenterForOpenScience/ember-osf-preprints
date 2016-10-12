@@ -1,4 +1,4 @@
-{{title model.title}}
+{{title model.node.title}}
 
 <div id="view-page">
     <div class="p-t-xl m-t-xl p-b-md m-b-md dark-overlay-header-background header-row">{{!HEADER ROW}}
@@ -25,7 +25,7 @@
     <div id="view-page" class="container">{{!CONTAINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
             <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}
-                {{supplementary-file-browser preprint=model projectURL=model.links.html chooseFile=(action 'chooseFile')}}
+                {{supplementary-file-browser preprint=model node=node projectURL=model.node.links.html chooseFile=(action 'chooseFile')}}
                 <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
                     <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                 </button>
@@ -78,7 +78,7 @@
                     {{!PROJECT BUTTON}}
                     <div class="p-lg osf-box-lt text-center">
                         <p class="f-w-xs">{{t "content.project_button.paragraph"}}</p>
-                        <a type="button" class="btn btn-info" href={{model.links.html}}>{{t "content.project_button.button"}}</a>
+                        <a type="button" class="btn btn-info" href={{model.node.links.html}}>{{t "content.project_button.button"}}</a>
                     </div>
                 </div> {{!END RIGHT SIDE COL}}
             {{/unless}}
