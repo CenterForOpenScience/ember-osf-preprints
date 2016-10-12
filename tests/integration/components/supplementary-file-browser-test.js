@@ -25,7 +25,8 @@ test('it renders', function(assert) {
 
     let node = Ember.Object.create({
         dateModified: '10-11-2016',
-        title:'My Preprint Title'
+        title:'My Preprint Title',
+        files: providersQuery
     });
 
     let file = Ember.Object.create({
