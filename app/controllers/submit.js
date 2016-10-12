@@ -394,10 +394,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.toggleProperty('showModalSharePreprint');
         },
         savePreprint() {
-            // Converts 'node' into a preprint, with its primaryFile as the 'selectedFile'.
-            // TODO: Check validation status of all sections before submitting
-            // TODO: Make sure subjects is working so request doesn't get rejected
-            // TODO: Test and get this code working
+            // Creates a preprint.
             let model = this.get('model');
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
@@ -409,7 +406,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 model.set('doi', null);
             }
             return model.save()
-                .then(() => model.get('providers'))
                 .then(() => this.transitionToRoute('content', model));
         },
     }
