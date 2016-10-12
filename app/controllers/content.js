@@ -22,20 +22,20 @@ export default Ember.Controller.extend({
     disciplineReduced: Ember.computed('model.subjects', function() {
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
+    //
+    // hasTag: Ember.computed('model.node.tags', function() {
+    //     return this.get('model.node.tags').length;
+    // }),
 
-    hasTag: Ember.computed('model.node.tags', function() {
-        return this.get('model.node.tags').length;
-    }),
-
-    getAuthors: Ember.observer('model', function() {
-        // Cannot be called until preprint has loaded!
-        var model = this.get('model');
-        if (!model) return [];
-
-        let contributors = Ember.A();
-        loadAll(model.get('node'), 'contributors', contributors).then(()=>
-             this.set('authors', contributors));
-    }),
+    // getAuthors: Ember.observer('model', function() {
+    //     // Cannot be called until preprint has loaded!
+    //     var model = this.get('model');
+    //     if (!model) return [];
+    //
+    //     let contributors = Ember.A();
+    //     loadAll(model.get('node'), 'contributors', contributors).then(()=>
+    //          this.set('authors', contributors));
+    // }),
 
     actions: {
         expandMFR() {

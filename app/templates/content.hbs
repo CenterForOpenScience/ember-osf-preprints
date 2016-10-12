@@ -25,7 +25,7 @@
     <div id="view-page" class="container">{{!CONTAINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
             <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}
-                {{supplementary-file-browser preprint=model projectURL=model.links.html chooseFile=(action 'chooseFile')}}
+                <!-- {{supplementary-file-browser preprint=model projectURL=model.links.html chooseFile=(action 'chooseFile')}} -->
                 <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
                     <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                 </button>
@@ -65,7 +65,7 @@
                             <span class='subject-preview'>{{subject.text}}</span>
                         {{/each}}
                     </div>
-                    <div class="m-b-lg p-t-xs">
+                    <!-- <div class="m-b-lg p-t-xs">
                         <h4 class=" f-w-md p-v-md">{{t "global.tags"}}</h4>
                         {{#if hasTag}}
                             {{#each model.node.tags as |tag|}}
@@ -74,7 +74,7 @@
                         {{else}}
                             {{t "global.none"}}
                         {{/if}}
-                    </div>
+                    </div> -->
                     {{!PROJECT BUTTON}}
                     <div class="p-lg osf-box-lt text-center">
                         <p class="f-w-xs">{{t "content.project_button.paragraph"}}</p>
