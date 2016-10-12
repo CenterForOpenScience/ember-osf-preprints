@@ -13,13 +13,13 @@ export default OsfSerializer.extend({
             },
             node: {
                 data: {
-                    id: snapshot.belongsTo('node', { id: true}),
+                    id: snapshot.belongsTo('node', { id: true }),
                     type: 'nodes'
                 }
             },
             provider: {
                 data: {
-                    id: 'osf',
+                    id: snapshot.belongsTo('provider', { id: true }),
                     type: 'providers'
                 }
             }

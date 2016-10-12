@@ -8,5 +8,5 @@ export default OsfModel.extend({
     description: DS.attr('string'),
 
     // Relationships
-    preprints: DS.hasMany('preprint', { inverse: 'providers', async: true }),
+    preprints: DS.hasMany('preprint', { inverse: 'provider', async: true }),
 });

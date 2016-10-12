@@ -396,9 +396,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         savePreprint() {
             // Creates a preprint.
             let model = this.get('model');
+
+            let provider = this.get('store').peekRecord('preprint-provider', config.PREPRINTS.provider);
+
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
-            model.set('provider', config.PREPRINTS.provider);
+            model.set('provider', provider);
             model.set('isPublished', true);
 
             this.set('savingPreprint', true);

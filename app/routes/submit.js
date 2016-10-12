@@ -22,6 +22,8 @@ export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, CasAuthentic
         // Fetch values required to operate the page: user and userNodes
         let userNodes = Ember.A();
 
+        var providers = this.get('store').findAll('preprint-provider');
+
         this.get('currentUser').load()
             .then((user) => {
                 controller.set('user', user);
@@ -49,4 +51,3 @@ export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, CasAuthentic
         }
     }
 });
-
