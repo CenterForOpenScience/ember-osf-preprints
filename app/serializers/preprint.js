@@ -20,7 +20,7 @@ export default OsfSerializer.extend({
             provider: {
                 data: {
                     id: 'osf',
-                    type: 'preprint-providers'
+                    type: 'providers'
                 }
             }
         };
