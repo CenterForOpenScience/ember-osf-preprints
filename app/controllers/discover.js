@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
 
+import { elasticEscape } from '../utils/elastic-query';
+
 var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}},"aggregations": {"sources": {"terms": {"field": "sources.raw","size": 200}}}}';
 
 var filterMap = {
@@ -201,7 +203,7 @@ export default Ember.Controller.extend({
         }
         let query = {
             query_string: {
-                query: this.get('queryString') || '*'
+                query: elasticEscape(this.get('queryString')) || '*'
             }
         };
 
