@@ -42,6 +42,7 @@ test('it renders', function(assert) {
 
 
     this.set('preprint', preprint);
+    this.set('node', node);
 
     this.render(hbs`{{supplementary-file-browser node=node preprint=preprint}}`);
 
