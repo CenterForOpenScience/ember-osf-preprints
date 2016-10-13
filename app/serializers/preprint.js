@@ -8,7 +8,7 @@ export default OsfSerializer.extend({
         res.data.relationships = {};
         for (var rel in snapshot.record._dirtyRelationships) {
             let relationship = Ember.String.underscore(rel);
-            let id = snapshot.belongsTo(rel, {id: true}) || 'osf'; // 'osf' is for provider id.  Should not be hardcoding.
+            let id = snapshot.belongsTo(rel, {id: true})
             res.data.relationships[relationship] = {
                 data: {
                     id: id,
@@ -26,7 +26,7 @@ export default OsfSerializer.extend({
 
 // Type mapping for preprint relationship fields
 var relTypes = {
-    primaryFile: 'file',
+    primaryFile: 'files',
     node: 'nodes',
     provider: 'providers'
 };

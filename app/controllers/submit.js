@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from 'ember-get-config';
 
 import { validator, buildValidations } from 'ember-cp-validations';
 
@@ -98,6 +99,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     osfStorageProvider: null, // Preprint node's osfStorage object
     osfProviderLoaded: false, // Preprint node's osfStorageProvider is loaded.
     titleValid: null,  // If node's pending title is valid.
+    convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
+    disciplineReduced: null,
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -207,7 +210,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return this.get('model.subjects') ? this.get('model.subjects').slice(0) : Ember.A();
     }),
     disciplineReduced: Ember.computed('model.subjects', function() {
-        return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
+        return this.get('model.subjects').slice(0).reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
     disciplineChanged: Ember.computed('model.subjects.@each', 'subjectsList.@each', function() {
         return !(arraysEqual(subjectIdMap(this.get('model.subjects')), subjectIdMap(this.get('subjectsList'))));
@@ -368,9 +371,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         startPreprint() {
             let model = this.get('model');
+            let provider = this.get('store').peekRecord('preprint-provider', config.PREPRINTS.provider);
+
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
-            model.set('provider', 'osf');
+            model.set('provider', provider);
             this.set('filePickerState', State.EXISTING);
             return model.save();
         },
