@@ -18,7 +18,7 @@
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error')}}
-                            {{preprint-form-header uploadSaveState=uploadSaveState showValidationIndicator=false name=name preprintNode=node preprintFile=selectedFile.name preprintTitle=node.title valid=uploadValid}}
+                            {{preprint-form-header uploadSaveState=uploadSaveState showValidationIndicator=false name=name preprintNode=node preprintFile=model.primaryFile.name preprintTitle=node.title valid=uploadValid}}
                             {{#preprint-form-body}}
                                 {{#liquid-bind filePickerState class='translate' as |currentState|}}
                                     <div class={{currentState}}>
@@ -40,6 +40,7 @@
                                                 nextUploadSection=(action 'nextUploadSection')
                                                 startPreprint=(action 'startPreprint')
                                                 editPreprintFile=(action 'editPreprintFile')
+                                                discardUploadChanges=(action 'discardUploadChanges')
                                                 newNodeNewFile=true
                                                 startState=_State.START
                                                 nodeTitle=nodeTitle
@@ -54,6 +55,7 @@
                                                 isTopLevelNode=isTopLevelNode
                                                 nodeLocked=nodeLocked
                                                 titleValid=titleValid
+                                                uploadChanged=uploadChanged
                                             }}
                                         {{else if (eq currentState _State.EXISTING)}}
                                             {{preprint-form-project-select
@@ -68,6 +70,7 @@
                                               startPreprint=(action 'startPreprint')
                                               editPreprintFile=(action 'editPreprintFile')
                                               editExistingFileAndTitle=(action 'editExistingFileAndTitle')
+                                              discardUploadChanges=(action 'discardUploadChanges')
                                               startState=_State.START
                                               nodeTitle=nodeTitle
                                               currentUser=user
@@ -89,6 +92,7 @@
                                               osfStorageProvider=osfStorageProvider
                                               osfProviderLoaded=osfProviderLoaded
                                               titleValid=titleValid
+                                              uploadChanged=uploadChanged
                                               }}
                                         {{/if}}
                                     </div>

@@ -57,6 +57,7 @@
             {{/preprint-form-section}}
             <div class="m-v-md text-center">
                 <p>{{t "components.preprint-form-project-select.edit_organize_section"}}  </p>
+                <button {{action "discardUploadChanges"}} class="btn btn-default" disabled={{unless uploadChanged true}} >{{t "global.discard"}}</button>
                 <button class="btn btn-primary" disabled={{not (and hasFile titleValid)}} {{action 'uploadFileToExistingNode'}}>Save and continue</button>
             </div>
         {{else}}

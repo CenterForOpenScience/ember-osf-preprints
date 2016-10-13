@@ -44,6 +44,9 @@ const BasicsValidations = buildValidations({
     }
 });
 
+/*****************************
+ Helper function to determine if discipline has changed (comparing list of lists)
+ *****************************/
 function arraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;
@@ -214,6 +217,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
     disciplineChanged: Ember.computed('model.subjects.@each', 'subjectsList.@each', function() {
         return !(arraysEqual(subjectIdMap(this.get('model.subjects')), subjectIdMap(this.get('subjectsList'))));
+    }),
+    preprintFileChanged: Ember.computed('model.primaryFile', 'selectedFile', 'file', function() {
+        return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('model.primaryFile.name') !== this.get('file.name');
+    }),
+    titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
+        return this.get('node.title') !== this.get('nodeTitle');
+    }),
+    uploadChanged: Ember.computed('preprintFileChanged', 'titleChanged', function() {
+        return this.get('preprintFileChanged') || this.get('titleChanged');
     }),
 
     getContributors: Ember.observer('node', function() {
@@ -389,6 +401,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         selectExistingFile(file) {
             // Takes file chosen from file-browser and sets equal to selectedFile. This file will become the preprint.
             this.set('selectedFile', file);
+        },
+        discardUploadChanges() {
+            // Discards upload section changes in edit mode.  Restores displayed file to current preprint primaryFile
+            // and resets displayed title to current node title. (No requests sent, front-end only.)
+            var currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
+            this.set('file', currentFile);
+            this.set('selectedFile', currentFile);
+            this.set('nodeTitle', this.get('node.title'));
+            this.set('titleValid', true);
         },
         clearDownstreamFields(section) {
             //If user goes back and changes a section inside Upload, all fields downstream of that section need to clear.

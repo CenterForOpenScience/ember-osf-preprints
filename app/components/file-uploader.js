@@ -148,6 +148,10 @@ export default Ember.Component.extend({
             }, 1500);
             return this.get('callback.promise');
         },
+        discardUploadChanges() {
+            Dropzone.forElement('.dropzone').removeAllFiles(true);
+            this.attrs.discardUploadChanges();
+        },
         maxfilesexceeded(_, dropzone, file) {
             dropzone.removeAllFiles();
             dropzone.addFile(file);
