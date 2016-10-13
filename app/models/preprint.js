@@ -29,5 +29,4 @@ export default OsfModel.extend({
     node: DS.belongsTo('node', { inverse: null, async: true}),
     primaryFile: DS.belongsTo('file', { inverse: null }),
     provider: DS.belongsTo('preprint-provider', { inverse: 'preprints', async: true }),
-
 });

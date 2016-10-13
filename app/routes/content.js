@@ -7,9 +7,7 @@ export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, {
         return this.store.findRecord('preprint', params.preprint_id);
     },
     afterModel(preprint) {
-        return preprint.get('node').then(node => {
-            this.set('node', node);
-        });
+        return preprint.get('node').then(node => this.set('node', node));
     },
     setupController(controller, model) {
         controller.set('activeFile', model.get('primaryFile'));
