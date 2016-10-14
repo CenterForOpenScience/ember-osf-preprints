@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import ResetScrollMixin from '../mixins/reset-scroll';
-import AnalyticsMixin from '../mixins/analytics-mixin';
+import Analytics from '../mixins/analytics';
 import config from '../config/environment';
 import loadAll from 'ember-osf/utils/load-relationship';
 
-export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, {
+export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     headTagsService: Ember.inject.service('head-tags'),
     model(params) {
         return this.store.findRecord('preprint', params.preprint_id);
@@ -18,7 +18,7 @@ export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, {
     },
     actions: {
         error(error, transition) {
-            window.history.replaceState({}, 'preprints', 'preprints/' + transition.params.content.preprint_id);
+            window.history.replaceState({}, 'preprints', '/preprints/' + transition.params.content.preprint_id);
             this.intermediateTransitionTo('page-not-found');
         }
     },
