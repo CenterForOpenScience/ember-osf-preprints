@@ -19,20 +19,23 @@
     </div>
 {{else}}
     {{#preprint-form-section class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}  {{!UPLOAD NEW FILE SECTION}}
-        {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=file showValidationIndicator=false}}
+        {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=(or file osfFile) showValidationIndicator=false}}
         {{#preprint-form-body}}
-            <div class="m-t-sm">
-                <form class="form">
-                    <div class="toggle-button">
-                        <input id='existing' onchange={{action changeExistingState _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
-                        <label for="existing"><i class="fa fa-cloud-upload"></i></label>
+            {{#if nodeLocked}}
+                <p class='text-muted m-v-sm'> {{t "components.file-uploader.update_version"}}</p>
+            {{else}}
+                <div class="m-t-sm">
+                    <form class="form">
+                        <div class="toggle-button">
+                            <input id='existing' onchange={{action changeExistingState _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
+                            <label for="existing"><i class="fa fa-cloud-upload"></i></label>
 
-                        <input id='newfile' onchange={{action changeExistingState _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
-                        <label for="newfile"><i class="fa fa-th-list"></i></label>
-                    </div>
-                </form>
-            </div>
-
+                            <input id='newfile' onchange={{action changeExistingState _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
+                            <label for="newfile"><i class="fa fa-th-list"></i></label>
+                        </div>
+                    </form>
+                </div>
+            {{/if}}
             {{dropzone-widget
                 url=url
                 options=dropzoneOptions
@@ -46,7 +49,7 @@
         {{/preprint-form-body}}
     {{/preprint-form-section}}
 
-    {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
+    {{#if (and selectedNode (or hasFile osfFile)) use='crossFade'}}
         {{#if nodeLocked}}
             {{#preprint-form-section class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}} {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
                 {{preprint-form-header nodeTitle=nodeTitle name='title_of_preprint' showValidationIndicator=false}}

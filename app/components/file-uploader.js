@@ -51,7 +51,6 @@ export default Ember.Component.extend({
 
     init() {
         this._super(...arguments);
-        this.attrs.clearDownstreamFields('belowNode');
         this.set('callback', null);
     },
 
@@ -61,14 +60,18 @@ export default Ember.Component.extend({
         },
 
         upload() {
-            return this.get('node.files').then(files => {
-                this.set('url', files.findBy('name', 'osfstorage').get('links.upload') + '?' + Ember.$.param({
-                    kind: 'file',
-                    name: this.get('file.name'),
-                }));
+            if (this.get('file') === null) {
+                this.sendAction('finishUpload');
+            } else {
+                return this.get('node.files').then(files => {
+                    this.set('url', files.findBy('name', 'osfstorage').get('links.upload') + '?' + Ember.$.param({
+                        kind: 'file',
+                        name: this.get('file.name'),
+                    }));
 
-                this.callback.resolve(this.get('file'));
-            });
+                    this.callback.resolve(this.get('file'));
+                });
+            }
         },
 
         setNodeAndFile() {
@@ -169,11 +172,14 @@ export default Ember.Component.extend({
                         this.set('osfFile', file);
                         if (this.get('nodeLocked')) {
                             this.attrs.editPreprintFile().then(() => {
+                                Dropzone.forElement('.dropzone').removeAllFiles(true);
+                                this.set('file', null);
                                 this.get('toast').info('Preprint file updated!');
                                 this.sendAction('finishUpload');
                             });
                         } else {
                             this.attrs.startPreprint().then(() => {
+                                Dropzone.forElement('.dropzone').removeAllFiles(true);
                                 this.get('toast').info('Preprint file uploaded!');
                                 this.sendAction('finishUpload');
                             }).catch(() => this.get('toast').error('Could not save information; please try again.'));

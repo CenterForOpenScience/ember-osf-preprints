@@ -16,6 +16,13 @@ export const State = Object.freeze(Ember.Object.create({
     EXISTING: 'existing'
 }));
 
+// Enum of available file states > New file or existing file?
+export const existingState = Object.freeze(Ember.Object.create({
+    CHOOSE: 'choose',
+    EXISTINGFILE: 'existing',
+    NEWFILE: 'new'
+}));
+
 /*****************************
   Form data and validations
  *****************************/
@@ -71,6 +78,8 @@ function subjectIdMap(subjectArray) {
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
     _State: State,
     filePickerState: State.START,
+    _existingState: existingState,
+    existingState: existingState.CHOOSE,
     fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
@@ -217,7 +226,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return !(arraysEqual(subjectIdMap(this.get('model.subjects')), subjectIdMap(this.get('subjectsList'))));
     }),
     preprintFileChanged: Ember.computed('model.primaryFile', 'selectedFile', 'file', function() {
-        return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('model.primaryFile.name') !== this.get('file.name');
+        return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('file') !== null;
     }),
     titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
         return this.get('node.title') !== this.get('nodeTitle');
@@ -342,19 +351,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     .catch(() => this.get('toast').error('Could not save information; please try again.'));
             }
         },
-        editExistingFileAndTitle() {
-            // Edit mode - Change preprint file to an existing file and/or update node title.
-            var node = this.get('node');
-            node.set('title', this.get('nodeTitle'));
-            node.save()
-                .then(() => {
-                    this.send('editPreprintFile');
-                })
-                .then(() => {
-                    this.get('toast').info('Preprint file updated!');
-                    this.send('finishUpload');
-                });
-        },
         createComponentCopyFile() {
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
             // file from parent node to new component.
@@ -382,11 +378,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         startPreprint() {
             let model = this.get('model');
             let provider = this.get('store').peekRecord('preprint-provider', config.PREPRINTS.provider);
-
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
             model.set('provider', provider);
-            this.set('filePickerState', State.EXISTING);
+            this.set('filePickerState', State.EXISTING); // Sets upload form state to existing project (now that project has been created)
+            this.set('existingState', existingState.NEWFILE); // Sets file state to new file, for edit mode.
+            this.set('file', null);
             return model.save();
         },
         editPreprintFile() {
@@ -394,6 +391,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             if (model.get('primaryFile.id') !== this.get('selectedFile.id')) {
                 model.set('primaryFile', this.get('selectedFile'));
             }
+            this.set('file', null);
             return model.save();
         },
         selectExistingFile(file) {
@@ -404,7 +402,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Discards upload section changes in edit mode.  Restores displayed file to current preprint primaryFile
             // and resets displayed title to current node title. (No requests sent, front-end only.)
             var currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
-            this.set('file', currentFile);
+            this.set('file', null);
             this.set('selectedFile', currentFile);
             this.set('nodeTitle', this.get('node.title'));
             this.set('titleValid', true);

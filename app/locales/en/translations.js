@@ -172,7 +172,8 @@ export default {
         },
         'file-uploader': {
             dropzone_message: `Drop preprint file here to upload`,
-            title_placeholder: `Enter preprint title`
+            title_placeholder: `Enter preprint title`,
+            update_version: `Update preprint file version.  File must have the same name as the original.`
         },
         'preprint-form-authors': {
             search: {

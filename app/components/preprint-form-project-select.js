@@ -1,12 +1,6 @@
 import Ember from 'ember';
 import Permissions from 'ember-osf/const/permissions';
 
-export const existingState = Object.freeze(Ember.Object.create({
-    CHOOSE: 'choose',
-    EXISTINGFILE: 'existing',
-    NEWFILE: 'new'
-}));
-
 /**
  * Preprint form project select widget - handles all cases where the first step is to select an existing OSF project to contain
  * your preprint.
@@ -44,7 +38,6 @@ export const existingState = Object.freeze(Ember.Object.create({
  * @class preprint-form-project-select
  */
 export default Ember.Component.extend({
-    _existingState: existingState,
     panelActions: Ember.inject.service('panelActions'),
     userNodes: Ember.A(),
     selectedNode: null,
@@ -55,14 +48,14 @@ export default Ember.Component.extend({
             return null;
         }
     }),
-    existingState: existingState.CHOOSE,
+
     actions: {
         nodeSelected(node) {
             // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded, file-browser component can be loaded.
             this.attrs.clearDownstreamFields('belowNode');
             this.set('selectedNode', node);
             this.set('osfProviderLoaded', false);
-            this.send('changeExistingState', existingState.CHOOSE);
+            this.send('changeExistingState', this.get('_existingState').CHOOSE);
             this.get('selectedNode.files').then((files) => {
                 this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
                 this.set('osfProviderLoaded', true);
@@ -81,11 +74,11 @@ export default Ember.Component.extend({
             // or upload a new file.
             this.attrs.clearDownstreamFields('belowNode');
             this.set('existingState', newState);
-            if (newState === existingState.EXISTINGFILE) {
+            if (newState === this.get('_existingState').EXISTINGFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'selectExistingFile');
                 this.get('panelActions').open('selectExistingFile'); // Why aren't these opening with above line in edit mode?
             }
-            if (newState === existingState.NEWFILE) {
+            if (newState === this.get('_existingState').NEWFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'uploadNewFile');
                 this.get('panelActions').open('uploadNewFile');  // Why aren't these opening with above line in edit mode?
             }
