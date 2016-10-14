@@ -5,10 +5,10 @@
                 {{!Title}}
                 <h4>
                     {{#if osfID}}
-                        {{#link-to "content" osfID}}{{result.title}}{{/link-to}}
+                        {{#link-to "content" osfID invokeAction=(action 'click' 'link' 'Result Title')}}{{result.title}}{{/link-to}}
                     {{else}}
                         {{#if hyperlink}}
-                            <a href='{{hyperlink}}'>{{result.title}}</a>
+                            <a href='{{hyperlink}}' {{action 'click' 'link' 'Result Title' hyperlink}}>{{result.title}}</a>
                         {{else}}
                             <span>{{result.title}}</span>
                         {{/if}}
@@ -64,7 +64,7 @@
                     {{#if result.hyperLinks}}
                         <ul class="preprints-block-list m-t-sm">
                             {{#each result.hyperLinks as |link|}}
-                                <li><a href='{{link.url}}'>{{link.url}}</a></li>
+                                <li><a href='{{link.url}}' {{action 'click' 'link' 'Result Hyperlink' link.url}}>{{link.url}}</a></li>
                             {{/each}}
                         </ul>
                     {{/if}}
@@ -83,7 +83,7 @@
                         </div>
                     {{/if}}
                     {{!Added on}}
-                    <div class="m-t-sm"> {{t "global.added_on"}}: {{moment-format result.dateCreated}} </div>
+                    <div class="m-t-sm"> {{t "global.added_on"}}: {{moment-format result.date_created}} </div>
                 {{/if}}
 
             </div>

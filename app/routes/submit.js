@@ -4,9 +4,9 @@ import CasAuthenticatedRouteMixin from 'ember-osf/mixins/cas-authenticated-route
 import ResetScrollMixin from '../mixins/reset-scroll';
 import permissions from 'ember-osf/const/permissions';
 import loadAll from 'ember-osf/utils/load-relationship';
-import AnalyticsMixin from '../mixins/analytics-mixin';
+import Analytics from '../mixins/analytics';
 
-export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, CasAuthenticatedRouteMixin, {
+export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedRouteMixin, {
     currentUser: Ember.inject.service('currentUser'),
     model() {
         // Store the empty preprint to be created on the model hook for page. Node will be fetched
@@ -41,8 +41,9 @@ export default Ember.Route.extend(AnalyticsMixin, ResetScrollMixin, CasAuthentic
         willTransition: function(transition) {
             // Displays confirmation message if user attempts to navigate away from Add Preprint process with unsaved changes
             var controller = this.get('controller');
+            var hasFile = controller.get('file') !== null || controller.get('selectedFile') !== null;
 
-            if (controller.get('hasFile') && !controller.get('savingPreprint') && !confirm('Are you sure you want to abandon this preprint?')) {
+            if (hasFile && !controller.get('savingPreprint') && !confirm('Are you sure you want to abandon this preprint?')) {
                 transition.abort();
             }
         }

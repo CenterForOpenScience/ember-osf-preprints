@@ -75,6 +75,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
     authorsSaveState: false, // True temporarily when changes have been saved in authors section
     parentNode: null, // If component created, parentNode will be defined
+    parentContributors: Ember.A(),
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
 
@@ -110,19 +111,20 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             parentNode: null,
             convertProjectConfirmed: false,
             basicsAbstract: null,
+            userNodesLoaded: false,
         }));
     },
 
     hasFile: Ember.computed('file', 'selectedFile', function() {
         // True if file has either been preuploaded, or already uploaded file has been selected.
-        return this.get('file') || this.get('selectedFile');
+        return this.get('file') !== null || this.get('selectedFile') !== null;
     }),
 
     ///////////////////////////////////////
     // Validation rules for form sections
 
     // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
-    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle'),
+    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle', 'fileAndNodeLocked'),
     abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
     // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
@@ -166,6 +168,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         let contributors = Ember.A();
         loadAll(node, 'contributors', contributors).then(()=>
              this.set('contributors', contributors));
+    }),
+
+    getParentContributors: Ember.observer('parentNode', function() {
+        let parent = this.get('parentNode');
+        let contributors = Ember.A();
+        loadAll(parent, 'contributors', contributors).then(()=>
+             this.set('parentContributors', contributors));
     }),
 
     isAdmin: Ember.computed('node', function() {
@@ -313,11 +322,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         saveBasics() {
             // Save the model associated with basics field, then advance to next panel
             // If save fails, do not transition
+            this.send('saveAbstract');
+            this.send('next', this.get('_names.2'));
+        },
+
+        saveAbstract() {
             let node = this.get('node');
             node.set('description', this.get('basicsAbstract'));
             node.save()
-                .then(() => this.send('next', this.get('_names.2')))
-                .catch(()=> this.send('error', 'Could not save information; please try again'));
+                .catch(() => this.send('error', 'Could not save information; please try again'));
         },
 
         saveSubjects(subjects) {
@@ -393,7 +406,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             if (model.get('doi') === '') {
                 model.set('doi', undefined);
             }
-            model.save()
+            return model.save()
                 // Ember data is not worth the time investment currently
                 .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
                     data: {
@@ -404,8 +417,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     }
                 }))
                 .then(() => model.get('providers'))
-                .then(() => this.transitionToRoute('content', model))
-                .catch(() => this.send('error', 'Could not save preprint; please try again later'));
+                .then(() => this.transitionToRoute('content', model));
         },
     }
 });

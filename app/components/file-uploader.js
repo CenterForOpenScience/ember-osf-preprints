@@ -134,6 +134,7 @@ export default Ember.Component.extend({
         preUpload(_, dropzone, file) {
             this.send('formatDropzoneAfterPreUpload');
             this.attrs.clearDownstreamFields('belowFile');
+            this.set('uploadInProgress', false);
             this.set('file', file);
             this.set('hasFile', true);
             this.set('callback', Ember.RSVP.defer());
@@ -176,7 +177,7 @@ export default Ember.Component.extend({
         },
         formatDropzoneAfterPreUpload() {
             this.$('.dz-default.dz-message').before(this.$('.dz-preview.dz-file-preview'));
-            this.$('.dz-message span').contents().replaceWith('Click or drag another preprint file to swap');
+            this.$('.dz-message span').contents().replaceWith('Click or drag another preprint file to replace');
             this.$('.dropzone').addClass('successHighlightGreenGray');
 
             setTimeout(() => {

@@ -1,5 +1,8 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
+import Analytics from '../mixins/analytics';
+
+import { elasticEscape } from '../utils/elastic-query';
 
 var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}},"aggregations": {"sources": {"terms": {"field": "sources.raw","size": 200}}}}';
 
@@ -21,7 +24,7 @@ function isHyperLink(link) {
     return urlexp.test(link);
 }
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(Analytics, {
     // TODO: either remove or add functionality to info icon on "Refine your search panel"
 
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
@@ -65,30 +68,45 @@ export default Ember.Controller.extend({
     searchUrl: config.SHARE.searchUrl,
 
     init() {
-        var _this = this;
         this._super(...arguments);
         this.set('facetFilters', Ember.Object.create());
+
         Ember.$.ajax({
             type: 'POST',
             url: this.get('searchUrl'),
             data: getProvidersPayload,
             contentType: 'application/json',
             crossDomain: true,
-        }).then(function(results) {
-            var hits = results.aggregations.sources.buckets;
-            var whiteList = _this.get('whiteListedProviders');
-            var providers = hits.map(each => each.key).filter(each => whiteList.indexOf(each) !== -1);
-            _this.get('osfProviders').slice().map(function(each) {
-                if (providers.indexOf(each) === -1) {
-                    providers.push(each);
-                }
-            });
-            providers.splice(providers.indexOf('OSF'), 1);
-            providers.sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1);
-            providers.unshift('OSF');
-            _this.set('otherProviders', providers);
-            _this.notifyPropertyChange('otherProviders');
+        }).then(results => {
+            const hits = results.aggregations.sources.buckets;
+            const whiteList = this.get('whiteListedProviders');
+            const providers = hits
+                .filter(hit => whiteList.includes(hit.key));
+
+            providers.push(
+                ...this.get('osfProviders')
+                .filter(key => !providers
+                    .find(hit => hit.key === key)
+                )
+                .map(key => ({
+                    key,
+                    doc_count: 0
+                }))
+            );
+
+            providers
+                .sort((a, b) => a.key.toLowerCase() < b.key.toLowerCase() ? -1 : 1)
+                .unshift(
+                    ...providers.splice(
+                        providers.findIndex(item => item.key === 'OSF'),
+                        1
+                    )
+                );
+
+            this.set('otherProviders', providers);
+            this.notifyPropertyChange('otherProviders');
         });
+
         this.loadPage();
     },
     subjectChanged: Ember.observer('subjectFilter', function() {
@@ -186,7 +204,7 @@ export default Ember.Controller.extend({
         }
         let query = {
             query_string: {
-                query: this.get('queryString') || '*'
+                query: elasticEscape(this.get('queryString')) || '*'
             }
         };
 
@@ -236,6 +254,13 @@ export default Ember.Controller.extend({
 
             this.set('page', 1);
             this.loadPage();
+
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Discover - Search'
+                });
         },
 
         previous() {
@@ -254,6 +279,13 @@ export default Ember.Controller.extend({
 
         clearFilters() {
             this.set('activeFilters',  { providers: [], subjects: [] });
+
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Discover - Clear Filters'
+                });
         },
 
         sortBySelect(index) {
@@ -265,6 +297,32 @@ export default Ember.Controller.extend({
             this.set('sortByOptions', copy);
             this.set('page', 1);
             this.loadPage();
+
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'dropdown',
+                    action: 'select',
+                    label: `Discover - ${copy}`
+                });
+        },
+
+        updateFilters(filterType, item) {
+            if (typeof item === 'object') {
+                item = item.text;
+            }
+
+            const items = this.get(`activeFilters.${filterType}`);
+            const hasItem = items.includes(item);
+
+            items[`${hasItem ? 'remove' : 'push'}Object`](item);
+            this.notifyPropertyChange('activeFilters');
+
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'filter',
+                    action: hasItem ? 'remove' : 'add',
+                    label: `Discover - ${item}`
+                });
         },
 
         selectSubjectFilter(subject) {

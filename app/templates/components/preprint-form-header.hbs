@@ -93,11 +93,7 @@
 
             {{#if (eq convertOrCopy 'copy')}}
                 <p>
-                {{#if isTopLevelNode}}
-                        {{t "global.copy_inside_project"}}
-                    {{else}}
-                        {{t "global.copy_inside_component"}}
-                    {{/if}}
+                    {{t "global.copy_inside_project"}}
                 </p>
             {{/if}}
         {{/if}}

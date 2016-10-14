@@ -110,6 +110,8 @@ module.exports = function(defaults) {
     app.import(path.join(app.bowerDirectory, 'osf-style/vendor/prism/prism.css'));
     app.import(path.join(app.bowerDirectory, 'osf-style/page.css'));
     app.import(path.join(app.bowerDirectory, 'osf-style/css/base.css'));
+    app.import(path.join(app.bowerDirectory, 'loaders.css/loaders.min.css'));
+
 
     app.import(path.join(app.bowerDirectory, 'osf-style/img/cos-white2.png'), {
         destDir: 'img'

@@ -41,6 +41,16 @@ module.exports = function(environment) {
         },
         KEEN_PROJECT_ID: process.env.KEEN_PROJECT_ID,
         KEEN_WRITE_KEY: process.env.KEEN_WRITE_KEY,
+        metricsAdapters: [
+            {
+                name: 'GoogleAnalytics',
+                environments: ['all'],
+                config: {
+                    id: process.env.GOOGLE_ANALYTICS_ID
+                }
+            },
+
+        ],
     };
 
     if (environment === 'development') {
@@ -49,6 +59,8 @@ module.exports = function(environment) {
         // ENV.APP.LOG_TRANSITIONS = true;
         // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
         // ENV.APP.LOG_VIEW_LOOKUPS = true;
+
+        ENV.metricsAdapters[0].config.cookieDomain = 'none'
     }
 
     if (environment === 'test') {
@@ -66,11 +78,12 @@ module.exports = function(environment) {
         // TODO: Provide mocks for all components with manual AJAX calls in the future.
         ENV.SHARE.baseUrl = '/nowhere';
         ENV.SHARE.searchUrl = '/nowhere';
+
+        ENV.metricsAdapters[0].config.cookieDomain = 'none'
     }
 
     if (environment === 'production') {
         ENV.sentryDSN = process.env.SENTRY_DSN || 'https://2f0a61d03b99480ea11e259edec18bd9@sentry.cos.io/45';
-        ENV.googleID = process.env.GOOGLE_ID || '123plschangeme';
     }
 
     return ENV;

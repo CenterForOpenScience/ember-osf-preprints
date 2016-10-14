@@ -33,10 +33,10 @@
                                         <div class={{currentState}}>
                                             {{#if (eq currentState _State.START)}}
                                                 <div class="row">
-                                                    <div class="col-xs-6 p-h-xl">
+                                                    <div class="col-xs-6">
                                                         <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.NEW}}>Upload new preprint</button>
                                                     </div>
-                                                    <div class="col-xs-6  p-h-xl">
+                                                    <div class="col-xs-6">
                                                         <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.EXISTING}}>Connect preprint to existing OSF project</button>
                                                     </div>
                                                 </div>
@@ -132,10 +132,12 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>
-                                            <span class="required">{{t "global.abstract"}}:</span>
-                                        </label>
-                                        {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
+                                        <form onchange={{action 'saveAbstract'}}>
+                                            <label>
+                                                <span class="required">{{t "global.abstract"}}:</span>
+                                            </label>
+                                            {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -159,11 +161,13 @@
                                 </p>
                                 {{preprint-form-authors
                                     contributors=contributors
+                                    parentContributors=parentContributors
                                     node=node
                                     isAdmin=isAdmin
                                     canEdit=canEdit
                                     currentUser=user
                                     addContributor=(action 'addContributor')
+                                    addContributors=(action 'addContributors')
                                     findContributors=(action 'findContributors')
                                     searchResults=searchResults
                                     removeContributor=(action 'removeContributor')
