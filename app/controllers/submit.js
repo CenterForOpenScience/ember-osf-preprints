@@ -9,7 +9,7 @@ import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
 
 import loadAll from 'ember-osf/utils/load-relationship';
 
-// Enum of available upload states
+// Enum of available upload states > New project or existing project?
 export const State = Object.freeze(Ember.Object.create({
     START: 'start',
     NEW: 'new',
@@ -98,12 +98,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     parentNode: null, // If component created, parentNode will be defined
     parentContributors: Ember.A(),
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
-    convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.,
+    convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
     osfStorageProvider: null, // Preprint node's osfStorage object
     osfProviderLoaded: false, // Preprint node's osfStorageProvider is loaded.
     titleValid: null,  // If node's pending title is valid.
-    convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
-    disciplineReduced: null,
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
