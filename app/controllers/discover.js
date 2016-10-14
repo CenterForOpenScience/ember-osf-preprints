@@ -305,6 +305,7 @@ export default Ember.Controller.extend(Analytics, {
                     label: `Discover - ${copy}`
                 });
         },
+
         updateFilters(filterType, item) {
             if (typeof item === 'object') {
                 item = item.text;
@@ -322,6 +323,28 @@ export default Ember.Controller.extend(Analytics, {
                     action: hasItem ? 'remove' : 'add',
                     label: `Discover - ${item}`
                 });
+        },
+
+        selectSubjectFilter(subject) {
+            if (typeof subject === 'object') {
+                subject = subject.text;
+            }
+            if (this.get('activeFilters.subjects').indexOf(subject) === -1) {
+                this.get('activeFilters.subjects').pushObject(subject);
+            } else {
+                this.get('activeFilters.subjects').removeObject(subject);
+            }
+            this.notifyPropertyChange('activeFilters');
+        },
+
+        selectProvider(provider) {
+            let currentProviders = this.get('activeFilters.providers').slice();
+            if (currentProviders.indexOf(provider) !== -1) {
+                this.get('activeFilters.providers').removeObject(provider);
+            } else {
+                this.get('activeFilters.providers').pushObject(provider);
+            }
+            this.notifyPropertyChange('activeFilters');
         },
     },
 });
