@@ -3,12 +3,27 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from '../mixins/analytics';
 
 export default Ember.Component.extend(Analytics, {
+    keen: Ember.inject.service(),
     elementId: 'preprint-file-view',
     endIndex: 6,
     startIndex: 0,
 
     scrollAnim: '',
     selectedFile: null,
+
+    selectedFileChanged: Ember.observer('selectedFile', function() {
+        const eventData = {
+            node: {
+                type: 'preprint',
+                id: this.get('preprint.id')
+            },
+            file: {
+                id: this.get('selectedFile.id')
+            }
+        };
+
+        this.get('keen').sendEvent('file_views', eventData, true);
+    }),
 
     hasAdditionalFiles: function() {
         return this.get('files.length') > 1;
@@ -31,14 +46,16 @@ export default Ember.Component.extend(Analytics, {
                 return loadAll(this.get('provider'), 'files', this.get('files'), {'page[size]': 50});
             })
             .then(() => {
-                let pf = this.get('files').findBy('id', this.get('preprint.primaryFile.id'));
-                if (pf) {
-                    this.get('files').removeObject(pf);
-                    this.set('primaryFile', pf);
+                const primaryFile = this.get('files')
+                    .findBy('id', this.get('preprint.primaryFile.id'));
+
+                if (primaryFile) {
+                    this.get('files').removeObject(primaryFile);
+                    this.set('primaryFile', primaryFile);
                 }
 
-                this.set('selectedFile', this.get('primaryFile'));
-                this.set('files', [this.get('primaryFile')].concat(this.get('files')));
+                this.set('selectedFile', primaryFile);
+                this.set('files', [primaryFile, ...this.get('files')]);
             });
 
     }.observes('preprint'),
