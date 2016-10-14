@@ -3,7 +3,12 @@ import { moduleFor, test } from 'ember-qunit';
 moduleFor('controller:submit', 'Unit | Controller | submit', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
-    needs: ['validator:presence', 'validator:length', 'validator:format'],
+    needs: [
+        'validator:presence',
+        'validator:length',
+        'validator:format',
+        'service:metrics'
+    ],
 });
 
 // Replace this with your real tests.
