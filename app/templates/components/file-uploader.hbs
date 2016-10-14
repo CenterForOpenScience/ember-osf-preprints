@@ -1,20 +1,74 @@
-{{dropzone-widget
-    url=url
-    options=dropzoneOptions
-    sending=(action 'sending')
-    buildUrl=(action 'getUrl')
-    complete=(action 'complete')
-    preUpload=(action 'preUpload')
-    defaultMessage=(t 'components.file-uploader.dropzone_message')
-    maxfilesexceeded=(action 'maxfilesexceeded')
-}}
+{{#if newNodeNewFile}}
+    {{dropzone-widget
+        url=url
+        options=dropzoneOptions
+        sending=(action 'sending')
+        buildUrl=(action 'getUrl')
+        complete=(action 'complete')
+        preUpload=(action 'preUpload')
+        defaultMessage=(t 'components.file-uploader.dropzone_message')
+        maxfilesexceeded=(action 'maxfilesexceeded')
+    }}
+    {{#if hasFile}}
+        {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+    {{/if}}
 
-{{#liquid-if hasFile use='crossFade'}}
-    {{#liquid-bind hasFile use='crossFade'}}
-        {{validated-input model=this valuePath='nodeTitle' placeholder=(t "components.file-uploader.title_placeholder") value=nodeTitle}}
-    {{/liquid-bind}}
-{{/liquid-if}}
+    <div class="p-t-xs pull-right">
+        <button class="btn btn-default" {{action changeInitialState startState}}>Back</button>
+        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "global.next"}}</button>
+    </div>
+{{else}}
+    {{#preprint-form-section class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}
+        {{preprint-form-header name='choose_file' selectedFile=file showValidationIndicator=false}}
+        {{#preprint-form-body}}
+            <div class="m-t-sm">
+                <form class="form">
+                    <div class="toggle-button">
+                        <input id='existing' onchange={{action changeExistingState _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
+                        <label for="existing"><i class="fa fa-cloud-upload"></i></label>
 
-<div class="p-t-xs pull-right">
-    <button class="btn btn-primary" disabled={{not (and (not uploadInProgress)(and hasFile titleValid))}} {{action 'createProjectAndUploadFile'}}>{{t "global.next"}}</button>
-</div>
+                        <input id='newfile' onchange={{action changeExistingState _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
+                        <label for="newfile"><i class="fa fa-th-list"></i></label>
+                    </div>
+                </form>
+            </div>
+
+            {{dropzone-widget
+                url=url
+                options=dropzoneOptions
+                sending=(action 'sending')
+                buildUrl=(action 'getUrl')
+                complete=(action 'complete')
+                preUpload=(action 'preUpload')
+                defaultMessage=(t 'components.file-uploader.dropzone_message')
+                maxfilesexceeded=(action 'maxfilesexceeded')
+            }}
+        {{/preprint-form-body}}
+    {{/preprint-form-section}}
+
+    {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
+        {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
+            {{preprint-form-header name='organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false}}
+            {{#preprint-form-body}}
+                {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
+            {{/preprint-form-body}}
+        {{/preprint-form-section}}
+        {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
+            {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
+                {{preprint-form-header name='finalize_upload' nodeTitle=nodeTitle showValidationIndicator=false}}
+                {{#preprint-form-body}}
+                    {{#if (eq convertOrCopy 'convert')}}
+                        {{#if convertProjectConfirmed}}
+                            <label class="text-muted title-label"> {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
+                        {{/if}}
+                    {{/if}}
+                    {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                    <div class="row text-center m-v-md">
+                        <p> {{t "components.preprint-form-project-select.initiate_preprint_process"}} </p>
+                        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>Save and continue</button>
+                    </div>
+                {{/preprint-form-body}}
+            {{/preprint-form-section}}
+        {{/if}}
+    {{/if}}
+{{/if}}

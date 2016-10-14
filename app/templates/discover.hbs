@@ -72,6 +72,9 @@
                         {{#each otherProviders as |item|}}
                             <li>
                                 <label>
+                                    <input type="checkbox" checked="{{if (if-filter item.key activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item.key}}>
+                                    {{filter-replace item.key}}
+                                    <small>({{item.doc_count}})</small>
                                     <input type="checkbox" checked="{{if (if-filter item activeFilters.providers) 'checked'}}" onclick={{action 'updateFilters' 'providers' item}}>
                                     {{filter-replace item}}
                                 </label>

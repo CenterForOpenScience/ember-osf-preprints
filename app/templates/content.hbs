@@ -19,7 +19,7 @@
                     {{/if}}
                 </ul>
             </h5>
-            <h6>{{t "global.added_on"}}: {{moment-format model.date_created "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
+            <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
         </div> {{!END CONTAINER DIV}}
     </div> {{!END HEADER ROW}}
     <div id="view-page" class="container">{{!CONTAINER DIV}}
@@ -35,7 +35,7 @@
                     {{#liquid-spacer growDuration=250 growWidth=false}}
                         <div class="p-sm osf-box-lt clearfix">{{!SHARE ROW}}
                             <div class="" id="download_project clearfix">
-                                <a class="btn btn-primary" href={{activeFile.links.download}} {{action 'click' 'link' 'Content - Download'}}>{{t "content.share.download"}}</a>
+                                <a class="btn btn-primary" href={{model.primaryFile.links.download}} {{action 'click' 'link' 'Content - Download'}}>{{t "content.share.download"}}</a>
                                 <span class="p-sm">{{t "content.share.downloads"}}: {{activeFile.extra.downloads}}</span>
                                 <span class="p-xs pull-right">
                                     <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'tweet'}}>{{fa-icon 'twitter-square' size=2 }}</a>
@@ -54,7 +54,7 @@
                     {{#if model.doi}}
                         <div class="p-t-xs">
                             <h4 class="p-v-md  f-w-md">{{t "content.article_doi"}}</h4>
-                            <a href="{{doiUrl}}" {{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
+                            <a href={{doiUrl}} {{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
                         </div>
                     {{/if}}
 

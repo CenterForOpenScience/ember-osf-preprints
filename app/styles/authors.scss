@@ -113,36 +113,52 @@ span.sortable-bars:hover {
     padding-right: 18px;
 }
 
-.successHighlight{
-    background-color: #DFF0D8 !important;
-    -webkit-transition: background-color 1500ms linear;
-    -moz-transition: background-color 1500ms linear;
-    -o-transition: background-color 1500ms linear;
-    transition: background-color 1500ms linear;
-    -webkit-animation-direction: alternate;
-    animation-direction: alternate;
-}
-
-.restoreWhiteBackground{
-    background-color: white !important;
-    -webkit-transition: background-color 1500ms linear;
-    -moz-transition: background-color 1500ms linear;
-    -o-transition: background-color 1500ms linear;
-    transition: background-color 1500ms linear;
-    -webkit-animation-direction: alternate;
-    animation-direction: alternate;
-}
-
-.errorHighlight{
-    background-color: #F2DEDE !important;
-    -webkit-transition: background-color 1500ms linear;
-    -moz-transition: background-color 1500ms linear;
-    -o-transition: background-color 1500ms linear;
-    transition: background-color 1500ms linear;
-    -webkit-animation-direction: alternate;
-    animation-direction: alternate;
-}
-
 .nudge-right {
     text-align: left;
+}
+
+.icon-no-border {
+  background:none;
+  border:none;
+  font-size:1em;
+  padding:0px;
+}
+
+@keyframes greenHighlight {
+  0% {
+    background: #DFF0D8;
+  }
+  100% {
+    background: white;
+  }
+}
+
+@keyframes greenGrayHighlight {
+  0% {
+    background: #DFF0D8
+  }
+  100% {
+    background: #F8F8F8;
+  }
+}
+
+@keyframes redHighlight {
+  0% {
+    background: #F2DEDE;
+  }
+  100% {
+    background: white;
+  }
+}
+
+.successHighlightGreenGray {
+    animation: greenGrayHighlight 2s;
+}
+
+.successHighlight {
+    animation: greenHighlight 2s;
+}
+
+.errorHighlight {
+    animation: redHighlight 2s;
 }

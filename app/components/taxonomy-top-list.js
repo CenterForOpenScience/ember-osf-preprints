@@ -16,7 +16,7 @@ export default Ember.Component.extend(Analytics, {
         'Earth sciences': 'Atmospheric Science, Geology, Hydrology, Marine and aquatic sciences, Mineralogy',
         'Ecology and environmental sciences': 'Biogeochemistry, Environmental Geology, Natural Resources, Soil Science, Sustainability Science',
         'Business': 'Accounting, Finance and Financial Management, Human Resource Management, Marketing, Taxation',
-        'Law': 'Civil Law, Criminal Law, Legislation, State and Local Government Law, Supreme Court of the United State',
+        'Law': 'Civil Law, Criminal Law, Legislation, State and Local Government Law, Supreme Court of the United States',
         'Education': 'Curriculum Instruction, Educational Leadership, Educational Administration and Supervision, Higher Education, Liberal Studies',
         'Arts and Humanities': 'Fine Arts, History, Music, Philosophy, Religion',
         'Architecture': 'Architectural Engineering, Construction Engineering, Environmental Design, Interior Architecture, Landscape Architecture'
