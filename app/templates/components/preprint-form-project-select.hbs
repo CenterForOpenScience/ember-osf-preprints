@@ -1,7 +1,7 @@
 {{#cp-panels accordion=true}}
     {{#if nodeLocked}}
         {{#preprint-form-section class="upload-section-block" allowOpen=false name='locationOfPreprint' open=false}} {{!PROJECT LOCKED (EDIT MODE)}}
-            {{preprint-form-header name='location_of_preprint' node=node selectedNode=selectedNode showValidationIndicator=false}}
+            {{preprint-form-header id='locked-section' name='location_of_preprint' node=node selectedNode=selectedNode showValidationIndicator=false}}
             {{#preprint-form-body}}
             {{/preprint-form-body}}
         {{/preprint-form-section}}

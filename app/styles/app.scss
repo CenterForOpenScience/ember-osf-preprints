@@ -1004,6 +1004,10 @@ label.title-label {
     }
 }
 
+#locked-section {
+    cursor: default;
+}
+
 // Narrow views for submit
 @media (max-width: 768px) {
     #preprint-form-upload .btn-big {
