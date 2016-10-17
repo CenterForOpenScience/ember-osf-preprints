@@ -48,7 +48,6 @@ export default Ember.Component.extend({
             return null;
         }
     }),
-
     actions: {
         nodeSelected(node) {
             // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded, file-browser component can be loaded.

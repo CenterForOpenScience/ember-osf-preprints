@@ -3,7 +3,11 @@
 <!-- template-lint block-indentation=false -->
 
 <div class="section-header">
-    {{t (concat "components.preprint-form-header.name." name)}}
+    {{#if (eq name 'location_of_preprint')}}
+        <span class='text-muted'> {{t (concat "components.preprint-form-header.name." name)}} </span>
+    {{else}}
+        {{t (concat "components.preprint-form-header.name." name)}}
+    {{/if}}
 </div>
 
 <div class="preprint-section-status pull-right">
@@ -22,10 +26,10 @@
 {{#if (and (not isOpen) (eq name 'Upload'))}}
     <div class="m-t-md preprint-header-preview">
         {{#if preprintNode}}
-            <p><em class="m-r-md"> {{t "components.preprint-form-header.location"}} </em> {{get-ancestor-descriptor preprintNode}} <strong> {{preprintNode.title}}</strong></p>
+            <p><em class="m-r-md"> {{t "components.preprint-form-header.location"}}: </em> {{get-ancestor-descriptor preprintNode}} <strong> {{preprintNode.title}}</strong></p>
         {{/if}}
-        <p><em class="m-r-md"> {{t "components.preprint-form-header.file"}} </em> {{preprintFile}} </p>
-        <p><em class="m-r-md"> {{t "components.preprint-form-header.title"}} </em> {{preprintTitle}} </p>
+        <p><em class="m-r-md"> {{t "components.preprint-form-header.file"}}: </em> {{preprintFile}} </p>
+        <p><em class="m-r-md"> {{t "components.preprint-form-header.title"}}: </em> {{preprintTitle}} </p>
     </div>
 {{/if}}
 
@@ -73,7 +77,7 @@
 
         {{#if (eq name 'location_of_preprint')}}
             {{#if node}}
-                <p> <span class='lock-span text-muted p-r-xs'><i class='fa fa-lock'></i></span> {{get-ancestor-descriptor node}} {{node.title}} </p>
+                <p class='text-muted'> <span class='lock-span p-r-xs'><i class='fa fa-lock'></i></span> {{get-ancestor-descriptor node}} {{node.title}} </p>
             {{/if}}
         {{/if}}
 
@@ -85,7 +89,15 @@
 
         {{#if (or (eq name 'choose_file') (eq name 'preprint_file'))}}
             {{#if selectedFile}}
-                <p> {{selectedFile.name}} <em> (Version: {{fileVersion}}) </em></p>
+                <p> {{selectedFile.name}}
+                    {{#if fileVersion}}
+                        <em> (Version: {{fileVersion}})</em>
+                    {{/if}}
+                </p>
+            {{else}}
+                {{#if file}}
+                    <p> {{file.name}} </p>
+                {{/if}}
             {{/if}}
         {{/if}}
 
