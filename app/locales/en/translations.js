@@ -90,9 +90,11 @@ export default {
             bottom: {
                 p1: `Create your own branded preprint servers backed by the OSF.`,
                 div: {
-                    line1: `Check out the <a class="source_code_link" href="{{href}}"> open source code</a>`,
-                    line2: `and the <a class="source_code_link" href="{{href}}">requirements and road map</a>.`,
-                    line3: `Input welcome!`
+                    line1: `Check out the`,
+                    linkText1: `open source code`,
+                    line2: `and the`,
+                    linkText2: `requirements and road map`,
+                    line3: `. Input welcome!`
                 },
                 contact: `Contact us`
             }

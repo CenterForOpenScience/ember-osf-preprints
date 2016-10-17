@@ -1,9 +1,10 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
+import Analytics from '../mixins/analytics';
 
 const getTotalPayload = '{"size": 0, "from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}}}';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(Analytics, {
     sharePreprintsTotal: null,
     init() {
         // Fetch total number of preprints. Allow elasticsearch failure to pass silently.

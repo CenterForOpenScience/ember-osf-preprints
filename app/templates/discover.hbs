@@ -5,7 +5,7 @@
         <div class="row m-v-md ">
             <div class="col-xs-12 text-center">
                 <h1>{{t "discover.search.heading"}}</h1>
-                <p class="lead">{{t "discover.search.paragraph"}} <a href="https://share.osf.io/" class="share-logo" title="SHARE"></a></p>
+                <p class="lead">{{t "discover.search.paragraph"}} <a href="https://share.osf.io/" class="share-logo" title="SHARE" {{action 'click' 'link' 'Discover - Share Logo' 'https://share.osf.io/'}}></a></p>
             </div>
         </div>
         <div class="row m-t-md m-b-lg">
@@ -23,7 +23,7 @@
                 <span class="pull-right">
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="true">
+                            aria-haspopup="true" aria-expanded="true" {{action 'click' 'button' 'Discover - Sort'}}>
                             {{t "discover.sort_by"}}: {{chosenSortByOption}}
                             <span class="caret"></span>
                         </button>
@@ -57,10 +57,10 @@
                         </div>
                         <div id="activeFiltersList">
                             {{#each activeFilters.providers as |filter|}}
-                                <span class='preprint-filter provider-filter'>{{filter-replace filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'selectProvider' filter)}}</span></span>
+                                <span class='preprint-filter provider-filter'>{{filter-replace filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'updateFilters' 'providers' filter)}}</span></span>
                             {{/each}}
                             {{#each activeFilters.subjects as |filter|}}
-                                <span class='preprint-filter subject-filter'>{{filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'selectSubjectFilter' filter)}}</span></span>
+                                <span class='preprint-filter subject-filter'>{{filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'updateFilters' 'subjects' filter)}}</span></span>
                             {{/each}}
                         </div>
                     </div>
@@ -72,8 +72,9 @@
                         {{#each otherProviders as |item|}}
                             <li>
                                 <label>
-                                    <input type="checkbox" checked="{{if (if-filter item activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item}}>
-                                    {{filter-replace item}}
+                                    <input type="checkbox" checked="{{if (if-filter item.key activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item.key}}>
+                                    {{filter-replace item.key}}
+                                    <small>({{item.doc_count}})</small>
                                 </label>
                             </li>
                         {{/each}}
@@ -82,11 +83,11 @@
                 </div>
                 <div class="m-t-lg">
                     <h4 class="filter-heading p-sm">{{t "discover.main.subject"}}</h4>
-                    {{taxonomy-tree select=(action 'selectSubjectFilter') subjects=treeSubjects}}
+                    {{taxonomy-tree select=(action 'updateFilters' 'subjects') subjects=treeSubjects}}
                 </div>
                 <div class="osf-box p-md m-b-lg clearfix m-t-xl">
                     <p>{{t "discover.main.box.paragraph"}}</p>
-                    {{#link-to "submit" type="button" class="btn btn-success btn-lg"}}{{t "discover.main.box.button"}}{{/link-to}}
+                    {{#link-to "submit" type="button" class="btn btn-success btn-lg" invokeAction=(action 'click' 'button' 'Discover - Add Preprint')}}{{t "discover.main.box.button"}}{{/link-to}}
                 </div>
             </div>
 
@@ -98,7 +99,7 @@
                 {{else}}
                     {{#if numberOfResults}}
                         {{#each results as |result|}}
-                            {{search-result result=result select=(action 'selectSubjectFilter')}}
+                            {{search-result result=result select=(action 'updateFilters' 'subjects')}}
                         {{/each}}
 
                         <div class="row">
