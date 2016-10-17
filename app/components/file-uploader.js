@@ -62,20 +62,31 @@ export default Ember.Component.extend({
             return this.get('url');
         },
 
+        uploadNewFileUrl(files) {
+            // Add mode - creates url for uploading a new file
+            this.set('url', files.findBy('name', 'osfstorage').get('links.upload')  + '?' + Ember.$.param({
+                kind: 'file',
+                name: this.get('file.name'),
+            }));
+        },
+
+        uploadNewVersionUrl(files) {
+            // Edit mode - creates url for uploading a new version of a file
+            this.set('url', files.findBy('name', 'osfstorage').get('links.upload') + this.get('osfFile.id') + '?' + Ember.$.param({
+                kind: 'file',
+            }));
+        },
+
         upload() {
+            // Uploads file to node
             if (this.get('file') === null) { // No new file to upload.
                 this.sendAction('finishUpload');
             } else {
                 return this.get('node.files').then(files => {
-                    if (this.get('nodeLocked')) {
-                        this.set('url', files.findBy('name', 'osfstorage').get('links.upload') + this.get('osfFile.id') + '?' + Ember.$.param({
-                            kind: 'file',
-                        }));
-                    } else {
-                        this.set('url', files.findBy('name', 'osfstorage').get('links.upload')  + '?' + Ember.$.param({
-                            kind: 'file',
-                            name: this.get('file.name'),
-                        }));
+                    if (this.get('nodeLocked')) { // Edit mode, fetch URL for uploading new version
+                        this.send('uploadNewVersionUrl', files);
+                    } else { // Add mode, fetch URL for uploading new file
+                        this.send('uploadNewFileUrl', files);
                     }
                     this.callback.resolve(this.get('file'));
                 });
@@ -122,6 +133,7 @@ export default Ember.Component.extend({
 
         uploadFileToExistingNode() {
             // Upload case for using an existing node with a new file for the preprint.  Updates title of existing node and then uploads file to node.
+            // Also applicable in edit mode.
             this.set('uploadInProgress', true);
             var node = this.get('node');
             if (node.get('title') !== this.get('nodeTitle')) {
@@ -143,29 +155,32 @@ export default Ember.Component.extend({
             xhr.withCredentials = true;
         },
         mustModifyCurrentPreprintFile() {
+            // Can only upload a new version of a preprint file once the preprint has been created.
             this.get('toast').error('This is not a version of the current preprint file.');
+            this.send('formatDropzoneAfterPreUpload', false);
             Dropzone.forElement('.dropzone').removeAllFiles(true);
             this.set('file', null);
         },
+        setPreUploadedFileAttributes(file, version) {
+            // Sets preUploadedFile attributes.
+            this.send('formatDropzoneAfterPreUpload', true);
+            this.set('file', file);
+            this.set('hasFile', true);
+            this.set('fileVersion', version);
+        },
         preUpload(_, dropzone, file) {
+            // preUpload or "stage" file. Has yet to be uploaded to node.
             this.set('uploadInProgress', false);
             if (this.get('nodeLocked')) { // Edit mode
-                if (file.name !== this.get('osfFile.name')) { // Invalid File
+                if (file.name !== this.get('osfFile.name')) { // Invalid File - throw error.
                     this.send('mustModifyCurrentPreprintFile');
-                    this.send('formatDropzoneAfterPreUpload', false);
-                } else { // Valid file
-                    this.send('formatDropzoneAfterPreUpload', true);
-                    this.set('file', file);
-                    this.set('hasFile', true);
-                    this.set('fileVersion', parseInt(this.get('osfFile.currentVersion')) + 1);
+                } else { // Valid file - can be staged.
+                    this.send('setPreUploadedFileAttributes', file, this.get('osfFile.currentVersion') + 1);
                 }
             } else { // Add mode
                 this.set('titleValid', false);
                 this.attrs.clearDownstreamFields('belowFile');
-                this.set('file', file);
-                this.set('hasFile', true);
-                this.send('formatDropzoneAfterPreUpload', true);
-                this.set('fileVersion', parseInt(this.get('osfFile.currentVersion')));
+                this.send('setPreUploadedFileAttributes', file, this.get('osfFile.currentVersion'));
             }
             this.set('callback', Ember.RSVP.defer());
             // Delays so user can see that file has been preuploaded before
@@ -176,8 +191,9 @@ export default Ember.Component.extend({
             return this.get('callback.promise');
         },
         discardUploadChanges() {
+            // Discards file upload changes.  Removes staged files from Dropzone, reverts visible file version.
             Dropzone.forElement('.dropzone').removeAllFiles(true);
-            this.set('fileVersion', this.get('osfFile.currentVersion')) || 1;
+            this.set('fileVersion', this.get('osfFile.currentVersion') || 1);
             this.attrs.discardUploadChanges();
         },
         maxfilesexceeded(_, dropzone, file) {
@@ -195,16 +211,13 @@ export default Ember.Component.extend({
                     .findRecord('file', resp.data.id.split('/')[1])
                     .then(file => {
                         this.set('osfFile', file);
-                        if (this.get('nodeLocked')) {
-                            this.attrs.editPreprintFile().then(() => {
-                                Dropzone.forElement('.dropzone').removeAllFiles(true);
-                                this.set('file', null);
-                                this.get('toast').info('Preprint file updated!');
-                                this.sendAction('finishUpload');
-                            });
-                        } else {
+                        this.set('file', null);
+                        Dropzone.forElement('.dropzone').removeAllFiles(true);
+                        if (this.get('nodeLocked')) { // Edit mode
+                            this.get('toast').info('Preprint file updated!');
+                            this.sendAction('finishUpload');
+                        } else { // Add mode
                             this.attrs.startPreprint().then(() => {
-                                Dropzone.forElement('.dropzone').removeAllFiles(true);
                                 this.get('toast').info('Preprint file uploaded!');
                                 this.sendAction('finishUpload');
                             }).catch(() => this.get('toast').error('Could not save information; please try again.'));

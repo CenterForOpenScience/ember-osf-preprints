@@ -76,13 +76,10 @@ export default Ember.Component.extend({
             this.set('existingState', newState);
             if (newState === this.get('_existingState').EXISTINGFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'selectExistingFile');
-                this.get('panelActions').open('selectExistingFile'); // Why aren't these opening with above line in edit mode?
             }
             if (newState === this.get('_existingState').NEWFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'uploadNewFile');
-                this.get('panelActions').open('uploadNewFile');  // Why aren't these opening with above line in edit mode?
             }
-
         },
     },
 

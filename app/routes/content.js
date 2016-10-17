@@ -7,6 +7,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
         return this.store.findRecord('preprint', params.preprint_id);
     },
     afterModel(preprint) {
+        // Loads node associated with preprint.
         return preprint.get('node').then(node => this.set('node', node));
     },
     setupController(controller, model) {

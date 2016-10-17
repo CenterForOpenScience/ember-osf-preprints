@@ -54,7 +54,7 @@ const BasicsValidations = buildValidations({
 /*****************************
  Helper function to determine if discipline has changed (comparing list of lists)
  *****************************/
-function arraysEqual(a, b) {
+function disciplineArraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;
     if (a.length !== b.length) return false;
@@ -69,6 +69,7 @@ function arraysEqual(a, b) {
 }
 
 function subjectIdMap(subjectArray) {
+    // Maps array of arrays of disciplines into array of arrays of discipline ids.
     return subjectArray.slice(0).map(subjectBlock => subjectBlock.map(subject => subject.id));
 }
 
@@ -173,11 +174,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     ////////////////////////////////////////////////////
     // Fields used in the "basics" section of the form.
-    // Proxy for "basics" section, to support autosave when fields change (created when model selected)
-    basicsModel: Ember.computed.alias('node'),
-    basicsTitle: Ember.computed('node', function() {
+    basicsAbstract:  Ember.computed('node.description', function() {
         var node = this.get('node');
-        return node ? node.get('title') : null;
+        return node ? node.get('description') : null;
     }),
     abstractChanged: Ember.computed('basicsAbstract', 'node.description', function() {
         var basicsAbstract = this.get('basicsAbstract');
@@ -187,10 +186,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             changed = basicsAbstract.trim() !== nodeDescription;
         }
         return changed;
-    }),
-    basicsAbstract:  Ember.computed('node.description', function() {
-        var node = this.get('node');
-        return node ? node.get('description') : null;
     }),
     basicsTags: Ember.computed('node', function() {
         var node = this.get('node');
@@ -223,7 +218,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return this.get('model.subjects').slice(0).reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
     disciplineChanged: Ember.computed('model.subjects.@each', 'subjectsList.@each', function() {
-        return !(arraysEqual(subjectIdMap(this.get('model.subjects')), subjectIdMap(this.get('subjectsList'))));
+        return !(disciplineArraysEqual(subjectIdMap(this.get('model.subjects')), subjectIdMap(this.get('subjectsList'))));
     }),
     preprintFileChanged: Ember.computed('model.primaryFile', 'selectedFile', 'file', function() {
         return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('file') !== null;
@@ -376,21 +371,16 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             });
         },
         startPreprint() {
+            // Initiates preprint.  Occurs in Upload section of Add Preprint form when pressing 'Save and continue'.  Creates a preprint with
+            // primaryFile, node, and provider fields populated.
             let model = this.get('model');
             let provider = this.get('store').peekRecord('preprint-provider', config.PREPRINTS.provider);
+
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
             model.set('provider', provider);
             this.set('filePickerState', State.EXISTING); // Sets upload form state to existing project (now that project has been created)
             this.set('existingState', existingState.NEWFILE); // Sets file state to new file, for edit mode.
-            this.set('file', null);
-            return model.save();
-        },
-        editPreprintFile() {
-            let model = this.get('model');
-            if (model.get('primaryFile.id') !== this.get('selectedFile.id')) {
-                model.set('primaryFile', this.get('selectedFile'));
-            }
             this.set('file', null);
             return model.save();
         },
@@ -442,6 +432,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
           Basics section
          */
         discardBasics() {
+            // Discards changes to basic fields in Edit mode. (No requests sent, front-end only.)
             this.set('basicsTags', this.get('node.tags'));
             this.set('basicsAbstract', this.get('node.description'));
             this.set('basicsDOI', this.get('model.doi'));
@@ -492,6 +483,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
 
         discardSubjects() {
+            // Discards changes to subjects in Edit mode. (No requests sent, front-end only.)
             this.set('subjectsList', this.get('model.subjects').slice(0));
         },
 
@@ -557,9 +549,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.toggleProperty('showModalSharePreprint');
         },
         savePreprint() {
-            // TODO: Check validation status of all sections before submitting
-            // TODO: Make sure subjects is working so request doesn't get rejected
-            // TODO: Test and get this code working
+            // Finalizes saving of preprint.  Publishes preprint and turns node public.
             let model = this.get('model');
             let node = this.get('node');
             this.set('savingPreprint', true);
