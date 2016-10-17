@@ -117,7 +117,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
         var node = this.get('node');
-        return node ? (node.get('id') === node.get('root.id')) : null;
+        if (node) {
+            return node.get('parent.id') ? false : true;
+        } else {
+            return null;
+        }
     }),
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
