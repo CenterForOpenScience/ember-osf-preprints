@@ -176,7 +176,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return this.get('model.primaryFile') !== null;
     }),
     savedAbstract: Ember.computed('node.description', function() {
-        return this.get('node.description') !== null;
+        return this.get('node.description') !== null && this.get('node.description') !== '';
     }),
     savedSubjects: Ember.computed('model.subjects.@each', function() {
         return this.get('model.subjects').length !== 0;
