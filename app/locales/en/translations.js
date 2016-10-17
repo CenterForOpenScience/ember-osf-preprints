@@ -139,7 +139,8 @@ export default {
                 invalid: {
                     description: `The following section(s) must be completed before sharing this preprint.`,
                     discipline: `Discipline`,
-                    basics: `Basics`
+                    basics: `Basics`,
+                    upload: `Upload`
                 }
             },
             save_continue: `Save and continue`

@@ -112,6 +112,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     osfStorageProvider: null, // Preprint node's osfStorage object
     osfProviderLoaded: false, // Preprint node's osfStorageProvider is loaded.
     titleValid: null,  // If node's pending title is valid.
+    disciplineModifiedToggle: false, // Helps determine if discipline has changed
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -158,7 +159,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     // Validation rules for form sections
 
     // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
-    uploadValid: Ember.computed.and('node', 'selectedFile', 'nodeTitle', 'nodeLocked'),
+    uploadValid: Ember.computed.alias('nodeLocked'),
     abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
     // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand pendingBasicsValid definition.
@@ -168,8 +169,20 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     // Must select at least one subject.
     disciplineValid: Ember.computed.notEmpty('subjectsList'),
     // All form sections are valid and preprint can be shared.
-    allSectionsValid: Ember.computed('uploadValid', 'node.description', 'model.doi', 'authorsValid', 'model.subjects', function() {
-        return this.get('uploadValid') && this.get('basicsValid') && this.get('authorsValid') && this.get('disciplineValid');
+    savedTitle: Ember.computed('node.title', function() {
+        return this.get('node.title') !== null;
+    }),
+    savedFile: Ember.computed('model.primaryFile', function() {
+        return this.get('model.primaryFile') !== null;
+    }),
+    savedAbstract: Ember.computed('node.description', function() {
+        return this.get('node.description') !== null;
+    }),
+    savedSubjects: Ember.computed('model.subjects.@each', function() {
+        return this.get('model.subjects').length !== 0;
+    }),
+    allSectionsValid: Ember.computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', function() {
+        return this.get('savedTitle') && this.get('savedFile') && this.get('savedAbstract') && this.get('savedSubjects') && this.get('authorsValid');
     }),
 
     ////////////////////////////////////////////////////
@@ -217,7 +230,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     disciplineReduced: Ember.computed('model.subjects', function() {
         return this.get('model.subjects').slice(0).reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
-    disciplineChanged: Ember.computed('model.subjects.@each', 'subjectsList.@each', function() {
+    disciplineChanged: Ember.computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle',  function() {
         return !(disciplineArraysEqual(subjectIdMap(this.get('model.subjects')), subjectIdMap(this.get('subjectsList'))));
     }),
     preprintFileChanged: Ember.computed('model.primaryFile', 'selectedFile', 'file', function() {
@@ -479,6 +492,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
          */
         setSubjects(subjects) {
             // Sets subjectsList with pending subjects. Does not save.
+            this.toggleProperty('disciplineModifiedToggle'); // Need to observe that discipline in nested array has changed
             this.set('subjectsList', subjects);
         },
 
