@@ -42,6 +42,9 @@ export default Ember.Component.extend({
     node: null,
     callback: null,
     uploadInProgress: false,
+    fileVersion: Ember.computed('osfFile', function() {
+        return this.get('osfFile.currentVersion') || 1;
+    }),
 
     dropzoneOptions: {
         maxFiles: 1,
@@ -60,15 +63,20 @@ export default Ember.Component.extend({
         },
 
         upload() {
-            if (this.get('file') === null) {
+            if (this.get('file') === null) { // No new file to upload.
                 this.sendAction('finishUpload');
             } else {
                 return this.get('node.files').then(files => {
-                    this.set('url', files.findBy('name', 'osfstorage').get('links.upload') + '?' + Ember.$.param({
-                        kind: 'file',
-                        name: this.get('file.name'),
-                    }));
-
+                    if (this.get('nodeLocked')) {
+                        this.set('url', files.findBy('name', 'osfstorage').get('links.upload') + this.get('osfFile.id') + '?' + Ember.$.param({
+                            kind: 'file',
+                        }));
+                    } else {
+                        this.set('url', files.findBy('name', 'osfstorage').get('links.upload')  + '?' + Ember.$.param({
+                            kind: 'file',
+                            name: this.get('file.name'),
+                        }));
+                    }
                     this.callback.resolve(this.get('file'));
                 });
             }
@@ -134,14 +142,30 @@ export default Ember.Component.extend({
             };
             xhr.withCredentials = true;
         },
+        mustModifyCurrentPreprintFile() {
+            this.get('toast').error('This is not a version of the current preprint file.');
+            Dropzone.forElement('.dropzone').removeAllFiles(true);
+            this.set('file', null);
+        },
         preUpload(_, dropzone, file) {
-            this.send('formatDropzoneAfterPreUpload');
-            this.attrs.clearDownstreamFields('belowFile');
             this.set('uploadInProgress', false);
-            this.set('file', file);
-            this.set('hasFile', true);
-            if (!(this.get('nodeLocked'))) {
+            if (this.get('nodeLocked')) { // Edit mode
+                if (file.name !== this.get('osfFile.name')) { // Invalid File
+                    this.send('mustModifyCurrentPreprintFile');
+                    this.send('formatDropzoneAfterPreUpload', false);
+                } else { // Valid file
+                    this.send('formatDropzoneAfterPreUpload', true);
+                    this.set('file', file);
+                    this.set('hasFile', true);
+                    this.set('fileVersion', parseInt(this.get('osfFile.currentVersion')) + 1);
+                }
+            } else { // Add mode
                 this.set('titleValid', false);
+                this.attrs.clearDownstreamFields('belowFile');
+                this.set('file', file);
+                this.set('hasFile', true);
+                this.send('formatDropzoneAfterPreUpload', true);
+                this.set('fileVersion', parseInt(this.get('osfFile.currentVersion')));
             }
             this.set('callback', Ember.RSVP.defer());
             // Delays so user can see that file has been preuploaded before
@@ -153,6 +177,7 @@ export default Ember.Component.extend({
         },
         discardUploadChanges() {
             Dropzone.forElement('.dropzone').removeAllFiles(true);
+            this.set('fileVersion', this.get('osfFile.currentVersion')) || 1;
             this.attrs.discardUploadChanges();
         },
         maxfilesexceeded(_, dropzone, file) {
@@ -196,14 +221,22 @@ export default Ember.Component.extend({
                     : 'Upload Failed');
             }
         },
-        formatDropzoneAfterPreUpload() {
-            this.$('.dz-default.dz-message').before(this.$('.dz-preview.dz-file-preview'));
-            this.$('.dz-message span').contents().replaceWith('Click or drag another preprint file to replace');
-            this.$('.dropzone').addClass('successHighlightGreenGray');
+        formatDropzoneAfterPreUpload(success) {
+            if (success) {
+                this.$('.dz-default.dz-message').before(this.$('.dz-preview.dz-file-preview'));
+                this.$('.dz-message span').contents().replaceWith('Click or drag another preprint file to replace');
+                this.$('.dropzone').addClass('successHighlightGreenGray');
 
-            setTimeout(() => {
-                this.$('.dropzone').removeClass('successHighlightGreenGray');
-            }, 1000);
+                setTimeout(() => {
+                    this.$('.dropzone').removeClass('successHighlightGreenGray');
+                }, 1000);
+            } else {
+                this.$('.dropzone').addClass('errorHighlight');
+
+                setTimeout(() => {
+                    this.$('.dropzone').removeClass('errorHighlight');
+                }, 1000);
+            }
         }
     }
 });

@@ -85,7 +85,7 @@
 
         {{#if (or (eq name 'choose_file') (eq name 'preprint_file'))}}
             {{#if selectedFile}}
-                <p> {{selectedFile.name}}</p>
+                <p> {{selectedFile.name}} <em> Version: {{fileVersion}} </em></p>
             {{/if}}
         {{/if}}
 

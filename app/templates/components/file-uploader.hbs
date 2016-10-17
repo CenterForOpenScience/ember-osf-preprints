@@ -19,7 +19,7 @@
     </div>
 {{else}}
     {{#preprint-form-section class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}  {{!UPLOAD NEW FILE SECTION}}
-        {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=(or file osfFile) showValidationIndicator=false}}
+        {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false}}
         {{#preprint-form-body}}
             {{#if nodeLocked}}
                 <p class='text-muted m-v-sm'> {{t "components.file-uploader.update_version"}}</p>
