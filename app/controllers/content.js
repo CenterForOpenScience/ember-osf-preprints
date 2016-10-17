@@ -34,7 +34,7 @@ export default Ember.Controller.extend(Analytics, {
         if (!node) return [];
 
         const contributors = Ember.A();
-        loadAll(this.get('node'), 'contributors', contributors).then(() =>
+        loadAll(node, 'contributors', contributors).then(() =>
             this.set('authors', contributors)
         );
     }),
