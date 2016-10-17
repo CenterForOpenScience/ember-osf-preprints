@@ -22,7 +22,7 @@
         {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false}}
         {{#preprint-form-body}}
             {{#if nodeLocked}}
-                <p class='text-muted m-v-sm'> {{t "components.file-uploader.update_version"}}</p>
+                <p class='text-muted m-v-sm text-smaller'> {{t "components.file-uploader.update_version"}}</p>
             {{else}}
                 <div class="m-t-sm">
                     <form class="form">
@@ -54,7 +54,7 @@
             {{#preprint-form-section class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}} {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
                 {{preprint-form-header nodeTitle=nodeTitle name='title_of_preprint' showValidationIndicator=false}}
                 {{#preprint-form-body}}
-                    <label class="text-muted title-label">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
+                    <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                     {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
@@ -76,7 +76,7 @@
                     {{#preprint-form-body}}
                         {{#if (eq convertOrCopy 'convert')}}
                             {{#if convertProjectConfirmed}}
-                                <label class="text-muted title-label"> {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
+                                <label class="text-muted title-label text-smaller"> {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                             {{/if}}
                         {{/if}}
                         {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}

@@ -107,7 +107,7 @@
                         {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
-                                <p class="m-b-lg small">{{t "submit.body.subjects_description"}}</p>
+                                <p class="m-b-lg text-smaller">{{t "submit.body.subjects_description"}}</p>
 
                                 {{subject-picker selected=subjectsList save=(action 'setSubjects')}}
 
@@ -135,7 +135,7 @@
                                         </div>
                                         <div class="clearfix">
                                             <label>{{t "submit.body.basics.keywords.label"}}:</label>
-                                            <p class="small">{{t "submit.body.basics.keywords.paragraph"}}</p>
+                                            <p class="text-smaller">{{t "submit.body.basics.keywords.paragraph"}}</p>
                                             {{tags-widget addATag=(action 'addTag') removeATag=(action 'removeTag') tags=basicsTags}}
                                         </div>
                                     </div>
@@ -163,7 +163,7 @@
                         {{#preprint-form-section id='preprint-form-authors' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
-                                <p class="small">
+                                <p class="text-smaller">
                                     {{t "submit.body.authors.paragraph"}}
                                 </p>
                                 {{preprint-form-authors

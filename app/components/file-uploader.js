@@ -235,6 +235,7 @@ export default Ember.Component.extend({
             }
         },
         formatDropzoneAfterPreUpload(success) {
+            // Replaces dropzone message, highlights green or red, depending on preupload success.
             if (success) {
                 this.$('.dz-default.dz-message').before(this.$('.dz-preview.dz-file-preview'));
                 this.$('.dz-message span').contents().replaceWith('Click or drag another preprint file to replace');
