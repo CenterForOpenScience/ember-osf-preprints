@@ -459,13 +459,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // If save fails, do not transition
             let node = this.get('node');
             var model = this.get('model');
-
-            node.set('description', this.get('basicsAbstract'));
-            node.set('tags', this.get('basicsTags'));
-            model.set('doi', this.get('basicsDOI'));
-            if (model.get('doi') === '') {
-                model.set('doi', null);
+            if (this.get('abstractChanged')) node.set('description', this.get('basicsAbstract'));
+            if (this.get('tagsChanged')) node.set('tags', this.get('basicsTags'));
+            if (this.get('doiChanged')) {
+                model.set('doi', this.get('basicsDOI'));
+                if (model.get('doi') === '') {
+                    model.set('doi', null);
+                }
             }
+
             node.save().then(() => {
                 model.save().then(() => {
                     this.send('next', this.get('_names.2'));
