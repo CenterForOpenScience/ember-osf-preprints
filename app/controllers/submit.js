@@ -113,6 +113,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     osfProviderLoaded: false, // Preprint node's osfStorageProvider is loaded.
     titleValid: null,  // If node's pending title is valid.
     disciplineModifiedToggle: false, // Helps determine if discipline has changed
+    uploadInProgress: false, // Set to true when upload step is underway,
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -335,6 +336,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.get('node.files').then((files) => {
                 this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
                 this.set('osfProviderLoaded', true);
+                Dropzone.forElement('.dropzone').removeAllFiles(true);
                 this.send('next', this.get('_names.0'));
             });
         },
@@ -342,25 +344,19 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
             var node = this.get('node');
             if (node.title !== this.get('nodeTitle')) {
+                var currentTitle = node.get('title');
                 node.set('title', this.get('nodeTitle'));
                 node.save()
                     .then(() => {
                         this.send('startPreprint');
                     })
-                    .then(() => {
-                        this.get('toast').info('Preprint file uploaded!');
-                        this.send('finishUpload');
-
-                    })
-                    .catch(() => this.get('toast').error('Could not save information; please try again.'));
+                    .catch(() => {
+                        node.set('title', currentTitle);
+                        this.get('toast').error('Error updating title. Please try again.');
+                    });
 
             } else {
-                this.send('startPreprint')
-                    .then(() => {
-                        this.get('toast').info('Preprint file uploaded!');
-                        this.send('finishUpload');
-                    })
-                    .catch(() => this.get('toast').error('Could not save information; please try again.'));
+                this.send('startPreprint');
             }
         },
         createComponentCopyFile() {
@@ -368,26 +364,30 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // file from parent node to new component.
 
             var node = this.get('node');
-            node.addChild(this.get('nodeTitle')).then(child => {
-                this.set('parentNode', node);
-                this.set('node', child);
-                child.get('files').then((providers) => {
-                    var osfstorage = providers.findBy('name', 'osfstorage');
-                    this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}}).then((copiedFile) => {
-                        this.set('selectedFile', copiedFile);
-                    })
-                    .then(() => {
-                        this.send('startPreprint');
-                    })
-                        .then(() => {
-                            this.get('toast').info('Preprint file uploaded!');
-                            this.send('finishUpload');
+            node.addChild(this.get('nodeTitle'))
+                .then(child => {
+                    this.set('parentNode', node);
+                    this.set('node', child);
+                    child.get('files')
+                        .then((providers) => {
+                            var osfstorage = providers.findBy('name', 'osfstorage');
+                            this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}})
+                                .then((copiedFile) => {
+                                    this.set('selectedFile', copiedFile);
+                                    this.send('startPreprint', this.get('parentNode'));
+                                })
+                                .catch(() => this.get('toast').error('Error copying file; please try again.'));
                         })
-                        .catch(() => this.get('toast').error('Could not save information; please try again.'));
+                        .catch(() => {
+                            this.get('toast').error('Error accessing parent files. Please try again.');
+                        });
+                })
+                .catch(() => {
+                    this.get('toast').error('Could not create component. Please try again.');
                 });
-            });
+
         },
-        startPreprint() {
+        startPreprint(parentNode) {
             // Initiates preprint.  Occurs in Upload section of Add Preprint form when pressing 'Save and continue'.  Creates a preprint with
             // primaryFile, node, and provider fields populated.
             let model = this.get('model');
@@ -396,10 +396,23 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
             model.set('provider', provider);
-            this.set('filePickerState', State.EXISTING); // Sets upload form state to existing project (now that project has been created)
-            this.set('existingState', existingState.NEWFILE); // Sets file state to new file, for edit mode.
-            this.set('file', null);
-            return model.save();
+
+            return model.save()
+                .then(() => {
+                    this.set('filePickerState', State.EXISTING); // Sets upload form state to existing project (now that project has been created)
+                    this.set('existingState', existingState.NEWFILE); // Sets file state to new file, for edit mode.
+                    this.set('file', null);
+                    this.get('toast').info('Preprint file uploaded!');
+                    this.send('finishUpload');
+                })
+                .catch(() => {
+                    this.set('uploadInProgress', false);
+                    if (parentNode) { // If creating preprint failed after a component was created, set the node back to the parentNode.
+                        // If user tries to initiate preprint again, a separate component will be created under the parentNode.
+                        this.set('node', parentNode);
+                    }
+                    this.get('toast').error('Could not initiate preprint. Please try again.');
+                });
         },
         selectExistingFile(file) {
             // Takes file chosen from file-browser and sets equal to selectedFile. This file will become the preprint.
@@ -456,9 +469,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         saveBasics() {
             // Saves the description/tags on the node and the DOI on the preprint, then advances to next panel
-            // If save fails, do not transition
             let node = this.get('node');
             var model = this.get('model');
+            // Saves off current server-state basics fields, so UI can be restored in case of failure
+            var currentAbstract = node.get('description');
+            var currentTags = node.get('tags').slice(0);
+            var currentDOI = model.get('doi');
+
             if (this.get('abstractChanged')) node.set('description', this.get('basicsAbstract'));
             if (this.get('tagsChanged')) node.set('tags', this.get('basicsTags'));
             if (this.get('doiChanged')) {
@@ -468,11 +485,19 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 }
             }
 
-            node.save().then(() => {
-                model.save().then(() => {
-                    this.send('next', this.get('_names.2'));
+            node.save()
+                .then(() => {
+                    model.save().then(() => {
+                        this.send('next', this.get('_names.2'));
+                    });
+                })
+                // If save fails, do not transition
+                .catch(() => {
+                    node.set('description', currentAbstract);
+                    node.set('tags', currentTags);
+                    model.set('doi', currentDOI);
+                    this.get('toast').error('Error saving basics fields.');
                 });
-            });
         },
 
         addTag(tag) {
@@ -510,11 +535,16 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         saveSubjects() {
             // Saves subjects (disciplines) and then moves to next section.
             var model = this.get('model');
+            var currentSubjects = model.get('subjects').slice(0);
             var subjectMap = subjectIdMap(this.get('subjectsList'));
             model.set('subjects', subjectMap);
             model.save()
                 .then(() => {
                     this.send('next', this.get('_names.1'));
+                })
+                .catch(() => {
+                    model.set('subjects', currentSubjects);
+                    this.get('toast').error('Error saving discipline(s).');
                 });
         },
         /**
@@ -576,6 +606,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             model.set('isPublished', true);
             node.set('public', true);
 
+            // If error, this is caught in the confirm-share-preprint component
             return model.save()
                 .then(() => node.save().then(() => {
                     this.transitionToRoute('content', model);

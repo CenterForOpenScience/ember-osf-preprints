@@ -41,7 +41,6 @@ export default Ember.Component.extend({
     url: null,
     node: null,
     callback: null,
-    uploadInProgress: false,
     fileVersion: Ember.computed('osfFile', function() {
         return this.get('osfFile.currentVersion') || 1;
     }),
@@ -112,10 +111,15 @@ export default Ember.Component.extend({
                 public: false,
                 category: 'project',
                 title: this.get('nodeTitle'),
-            }).save().then(node => {
-                this.set('node', node);
-                this.send('upload');
-            });
+            }).save()
+                .then(node => {
+                    this.set('node', node);
+                    this.send('upload');
+                })
+                .catch(() => {
+                    this.set('uploadInProgress', false);
+                    this.get('toast').error('Could not create project. Please try again.');
+                });
         },
 
         createComponentAndUploadFile() {
@@ -128,18 +132,31 @@ export default Ember.Component.extend({
                     this.set('parentNode', node);
                     this.set('node', child);
                     this.send('upload');
+                })
+                .catch(() => {
+                    this.set('uploadInProgress', false);
+                    this.get('toast').error('Could not create component. Please try again.');
                 });
         },
 
         uploadFileToExistingNode() {
             // Upload case for using an existing node with a new file for the preprint.  Updates title of existing node and then uploads file to node.
             // Also applicable in edit mode.
-            this.set('uploadInProgress', true);
+            if (this.get('nodeLocked')) {
+                this.set('uploadInProgress', true);
+            }
             var node = this.get('node');
+            var currentTitle = node.get('title');
             if (node.get('title') !== this.get('nodeTitle')) {
                 node.set('title', this.get('nodeTitle'));
-                node.save().then(() => {
+                node.save()
+                .then(() => {
                     this.send('upload');
+                })
+                .catch(() => {
+                    this.set('uploadInProgress', false);
+                    this.get('toast').error('Could not update title. Please try again.');
+                    node.set('title', currentTitle);
                 });
             } else {
                 this.send('upload');
@@ -210,23 +227,23 @@ export default Ember.Component.extend({
                 let resp = JSON.parse(file.xhr.response);
                 this.get('store')
                     .findRecord('file', resp.data.id.split('/')[1])
-                    .then(file => {
-                        this.set('osfFile', file);
-                        this.set('file', null);
-                        Dropzone.forElement('.dropzone').removeAllFiles(true);
-                        if (this.get('nodeLocked')) { // Edit mode
-                            this.get('toast').info('Preprint file updated!');
-                            this.sendAction('finishUpload');
-                        } else { // Add mode
-                            this.attrs.startPreprint().then(() => {
-                                this.get('toast').info('Preprint file uploaded!');
+                        .then(file => {
+                            this.set('osfFile', file);
+                            if (this.get('nodeLocked')) { // Edit mode
+                                this.get('toast').info('Preprint file updated!');
                                 this.sendAction('finishUpload');
-                            }).catch(() => this.get('toast').error('Could not save information; please try again.'));
-                        }
-                    });
+                            } else { // Add mode
+                                this.sendAction('startPreprint', this.get('parentNode'));
+                            }
+                        })
+                        .catch(() => {
+                            this.get('toast').error('Could not set preprint file. Please try again.');
+                            this.set('uploadInProgress', false);
+                        });
             } else {
                 //Failure
                 dropzone.removeAllFiles();
+                this.set('file', null);
                 // Error uploading file. Clear downstream fields.
                 this.attrs.clearDownstreamFields('belowNode');
                 this.get('toast').error(
