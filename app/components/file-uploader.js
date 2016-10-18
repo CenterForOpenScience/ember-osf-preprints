@@ -160,6 +160,7 @@ export default Ember.Component.extend({
             this.send('formatDropzoneAfterPreUpload', false);
             Dropzone.forElement('.dropzone').removeAllFiles(true);
             this.set('file', null);
+            this.set('fileVersion', this.get('osfFile.currentVersion'));
         },
         setPreUploadedFileAttributes(file, version) {
             // Sets preUploadedFile attributes.
