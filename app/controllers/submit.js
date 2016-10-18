@@ -201,6 +201,21 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
 
     ////////////////////////////////////////////////////
+    // Fields used in the "upload" section of the form.
+    ////////////////////////////////////////////////////
+    preprintFileChanged: Ember.computed('model.primaryFile', 'selectedFile', 'file', function() {
+        // Does the pending primaryFile differ from the primary file already saved?
+        return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('file') !== null;
+    }),
+    titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
+        // Does the pending title differ from the title already saved?
+        return this.get('node.title') !== this.get('nodeTitle');
+    }),
+    uploadChanged: Ember.computed('preprintFileChanged', 'titleChanged', function() {
+        // Are there any unsaved changes in the upload section?
+        return this.get('preprintFileChanged') || this.get('titleChanged');
+    }),
+    ////////////////////////////////////////////////////
     // Fields used in the "basics" section of the form.
     ////////////////////////////////////////////////////
     basicsAbstract:  Ember.computed('node.description', function() {
@@ -247,6 +262,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         // Are there any unsaved changes in the basics section?
         return this.get('tagsChanged') || this.get('abstractChanged') || this.get('doiChanged');
     }),
+    ////////////////////////////////////////////////////
+    // Fields used in the "discipline" section of the form.
+    ////////////////////////////////////////////////////
     subjectsList: Ember.computed('model.subjects.@each', function() {
         // Pending subjects
         return this.get('model.subjects') ? this.get('model.subjects').slice(0) : Ember.A();
@@ -258,18 +276,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     disciplineChanged: Ember.computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle',  function() {
         // Are there any unsaved changes in the discipline section?
         return !(disciplineArraysEqual(subjectIdMap(this.get('model.subjects')), subjectIdMap(this.get('subjectsList'))));
-    }),
-    preprintFileChanged: Ember.computed('model.primaryFile', 'selectedFile', 'file', function() {
-        // Does the pending primaryFile differ from the primary file already saved?
-        return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('file') !== null;
-    }),
-    titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
-        // Does the pending title differ from the title already saved?
-        return this.get('node.title') !== this.get('nodeTitle');
-    }),
-    uploadChanged: Ember.computed('preprintFileChanged', 'titleChanged', function() {
-        // Are there any unsaved changes in the upload section?
-        return this.get('preprintFileChanged') || this.get('titleChanged');
     }),
 
     getContributors: Ember.observer('node', function() {
