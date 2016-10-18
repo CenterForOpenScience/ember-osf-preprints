@@ -154,9 +154,9 @@ export default Ember.Component.extend({
                     this.send('upload');
                 })
                 .catch(() => {
+                    node.set('title', currentTitle);
                     this.set('uploadInProgress', false);
                     this.get('toast').error('Could not update title. Please try again.');
-                    node.set('title', currentTitle);
                 });
             } else {
                 this.send('upload');
@@ -219,11 +219,14 @@ export default Ember.Component.extend({
             dropzone.addFile(file);
         },
         complete(_, dropzone, file) {
+            // Called after uploading file to node is complete. After file has been uploaded,
+            // makes a request to create the preprint.
+
             // Complete is called when swapping out files for some reason...
             if (file.xhr === undefined) return;
 
             if (Math.floor(file.xhr.status / 100) === 2) {
-                // Success
+                // File upload success
                 let resp = JSON.parse(file.xhr.response);
                 this.get('store')
                     .findRecord('file', resp.data.id.split('/')[1])
@@ -241,7 +244,7 @@ export default Ember.Component.extend({
                             this.set('uploadInProgress', false);
                         });
             } else {
-                //Failure
+                //File upload failure
                 dropzone.removeAllFiles();
                 this.set('file', null);
                 // Error uploading file. Clear downstream fields.

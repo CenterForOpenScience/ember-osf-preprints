@@ -77,14 +77,14 @@ function subjectIdMap(subjectArray) {
  * "Add preprint" page definitions
  */
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
-    _State: State,
-    filePickerState: State.START,
-    _existingState: existingState,
-    existingState: existingState.CHOOSE,
     fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
-    _names: ['upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()),
+    _State: State, // Project states - new project or existing project
+    filePickerState: State.START, // Selected upload state (initial decision on form) - new or existing project? (is poorly named)
+    _existingState: existingState, // File states - new file or existing file
+    existingState: existingState.CHOOSE, // Selected file state - new or existing file (poorly named)
+    _names: ['upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()), // Form section headers
 
     // Data for project picker; tracked internally on load
     user: null,
@@ -106,7 +106,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
     authorsSaveState: false, // True temporarily when changes have been saved in authors section
     parentNode: null, // If component created, parentNode will be defined
-    parentContributors: Ember.A(),
+    parentContributors: Ember.A(), // Contributors on parent project
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
     osfStorageProvider: null, // Preprint node's osfStorage object
@@ -124,6 +124,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             return null;
         }
     }),
+
+    hasFile: Ember.computed('file', 'selectedFile', function() {
+        // True if file has either been preuploaded, or already uploaded file has been selected.
+        return this.get('file') !== null || this.get('selectedFile') !== null;
+    }),
+
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
         this.get('panelActions').open('Upload');
@@ -131,34 +137,34 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
         this.setProperties(Ember.merge(
             this.get('_names').reduce((acc, name) => Ember.merge(acc, {[`${name.toLowerCase()}SaveState`]: false}), {}), {
+            filePickerState: State.START,
+            existingState: existingState.CHOOSE,
             user: null,
             userNodes: Ember.A(),
+            userNodesLoaded: false,
             node: null,
             file: null,
-            hasFile: false,
             selectedFile: null,
             contributors: Ember.A(),
             nodeTitle: null,
             nodeLocked: false, // Will be set to true if edit?
-            filePickerState: State.START,
             searchResults: [],
             savingPreprint: false,
             showModalSharePreprint: false,
             uploadSaveState: false,
+            disciplineSaveState: false,
             basicsSaveState: false,
             authorsSaveState: false,
-            disciplineSaveState: false,
             parentNode: null,
+            parentContributors: Ember.A(),
             convertProjectConfirmed: false,
-            basicsAbstract: null,
-            userNodesLoaded: false,
+            convertOrCopy: null,
+            osfStorageProvider: null,
+            titleValid: null,
+            disciplineModifiedToggle: false,
+            uploadInProgress: false
         }));
     },
-
-    hasFile: Ember.computed('file', 'selectedFile', function() {
-        // True if file has either been preuploaded, or already uploaded file has been selected.
-        return this.get('file') !== null || this.get('selectedFile') !== null;
-    }),
 
     ///////////////////////////////////////
     // Validation rules for form sections
@@ -173,30 +179,37 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject.
     disciplineValid: Ember.computed.notEmpty('subjectsList'),
-    // All form sections are valid and preprint can be shared.
+    // Does node have a saved title?
     savedTitle: Ember.computed('node.title', function() {
         return this.get('node.title') !== null;
     }),
+    // Does preprint have a saved primaryFile?
     savedFile: Ember.computed('model.primaryFile', function() {
         return this.get('model.primaryFile') !== null;
     }),
+    // Does node have a saved description?
     savedAbstract: Ember.computed('node.description', function() {
         return this.get('node.description') !== null && this.get('node.description') !== '';
     }),
+    // Does preprint have saved subjects?
     savedSubjects: Ember.computed('model.subjects.@each', function() {
         return this.get('model.subjects').length !== 0;
     }),
+    // Preprint can be published once all required sections have been saved.
     allSectionsValid: Ember.computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', function() {
         return this.get('savedTitle') && this.get('savedFile') && this.get('savedAbstract') && this.get('savedSubjects') && this.get('authorsValid');
     }),
 
     ////////////////////////////////////////////////////
     // Fields used in the "basics" section of the form.
+    ////////////////////////////////////////////////////
     basicsAbstract:  Ember.computed('node.description', function() {
+        // Pending abstract
         var node = this.get('node');
         return node ? node.get('description') : null;
     }),
     abstractChanged: Ember.computed('basicsAbstract', 'node.description', function() {
+        // Does the pending abstract differ from the saved abstract in the db?
         var basicsAbstract = this.get('basicsAbstract');
         var nodeDescription = this.get('node.description');
         var changed = false;
@@ -206,11 +219,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return changed;
     }),
     basicsTags: Ember.computed('node', function() {
+        // Pending tags
         var node = this.get('node');
         // TODO: This may need to provide a default value (list)? Via default or field transform?
         return node ? node.get('tags') : Ember.A();
     }),
     tagsChanged: Ember.computed('basicsTags', 'node.tags', function() {
+        // Does the list of pending tags differ from the saved tags in the db?
         var basicsTags = this.get('basicsTags');
         var nodeTags = this.get('node.tags');
         var changed = false;
@@ -220,31 +235,40 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return changed;
     }),
     basicsDOI: Ember.computed('model', function() {
+        // Pending DOI
         return this.get('model.doi');
     }),
     doiChanged: Ember.computed('model.doi', 'basicsDOI', function() {
+        // Does the pending DOI differ from the saved DOI in the db?
         //TODO fix DOI's value changes from undefined to null?
         return this.get('basicsDOI') != this.get('model.doi');
     }),
     basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', function() {
+        // Are there any unsaved changes in the basics section?
         return this.get('tagsChanged') || this.get('abstractChanged') || this.get('doiChanged');
     }),
     subjectsList: Ember.computed('model.subjects.@each', function() {
+        // Pending subjects
         return this.get('model.subjects') ? this.get('model.subjects').slice(0) : Ember.A();
     }),
     disciplineReduced: Ember.computed('model.subjects', function() {
+        // Flattened subject list
         return this.get('model.subjects').slice(0).reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
     disciplineChanged: Ember.computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle',  function() {
+        // Are there any unsaved changes in the discipline section?
         return !(disciplineArraysEqual(subjectIdMap(this.get('model.subjects')), subjectIdMap(this.get('subjectsList'))));
     }),
     preprintFileChanged: Ember.computed('model.primaryFile', 'selectedFile', 'file', function() {
+        // Does the pending primaryFile differ from the primary file already saved?
         return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('file') !== null;
     }),
     titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
+        // Does the pending title differ from the title already saved?
         return this.get('node.title') !== this.get('nodeTitle');
     }),
     uploadChanged: Ember.computed('preprintFileChanged', 'titleChanged', function() {
+        // Are there any unsaved changes in the upload section?
         return this.get('preprintFileChanged') || this.get('titleChanged');
     }),
 
@@ -327,11 +351,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             }
         },
         lockNode() {
-            // Locks file and node so that they cannot be modified.  Occurs after upload step is complete.
+            // Locks node so that preprint location cannot be modified.  Occurs after upload step is complete.
             this.set('nodeLocked', true);
         },
         finishUpload() {
-            // Locks file and node and advances to next form section.
+            // Locks node and advances to next form section.
             this.send('lockNode');
             this.get('node.files').then((files) => {
                 this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
@@ -362,7 +386,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         createComponentCopyFile() {
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
             // file from parent node to new component.
-
             var node = this.get('node');
             node.addChild(this.get('nodeTitle'))
                 .then(child => {
@@ -406,7 +429,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     this.send('finishUpload');
                 })
                 .catch(() => {
-                    this.set('uploadInProgress', false);
+                    this.set('uploadInProgress', false); // Setting to false allows user to attempt operation again.
                     if (parentNode) { // If creating preprint failed after a component was created, set the node back to the parentNode.
                         // If user tries to initiate preprint again, a separate component will be created under the parentNode.
                         this.set('node', parentNode);
@@ -523,7 +546,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
          */
         setSubjects(subjects) {
             // Sets subjectsList with pending subjects. Does not save.
-            this.toggleProperty('disciplineModifiedToggle'); // Need to observe that discipline in nested array has changed
+            this.toggleProperty('disciplineModifiedToggle'); // Need to observe if discipline in nested array has changed. Toggling this will force 'disciplineChanged' to be recalculated
             this.set('subjectsList', subjects);
         },
 
