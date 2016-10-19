@@ -1,6 +1,7 @@
 export default {
     global: {
         share: `Share`,
+        complete: `Complete`,
         cancel: `Cancel`,
         discard: `Discard changes`,
         back: `Back`,
@@ -113,9 +114,11 @@ export default {
         go_to: `Go to OSF Preprints`
     },
     submit: {
-        heading: `Add Preprint`,
+        add_heading: `Add Preprint`,
+        edit_heading: `Edit Preprint`,
         body: {
-            p: `Follow these five easy steps to add your preprint to the OSF preprint repository.`,
+            p_add: `Follow these five easy steps to add your preprint to the OSF preprint repository.`,
+            p_edit: `Edit your preprint sections below.`,
             file: `Preprint file`,
             title: `Preprint title`,
             subjects_description: `Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.`,
@@ -142,6 +145,9 @@ export default {
                     basics: `Basics`,
                     upload: `Upload`
                 }
+            },
+            update: {
+                paragraph: `Edits to this preprint will update both the preprint and the OSF project and will become publicly accessible via OSF Preprints.`
             },
             save_continue: `Save and continue`
         }
@@ -217,6 +223,7 @@ export default {
                 Basics: 'Basics',
                 Authors: 'Authors',
                 Submit: 'Submit',
+                Update: 'Update',
                 choose_project: 'Choose Project',
                 choose_file: 'Choose File',
                 organize: 'Organize',

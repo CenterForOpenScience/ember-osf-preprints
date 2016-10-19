@@ -26,7 +26,7 @@
 {{#if (and (not isOpen) (eq name 'Upload'))}}
     <div class="m-t-md preprint-header-preview">
         {{#if preprintNode}}
-            <p><em class="m-r-md"> {{t "components.preprint-form-header.location"}}: </em> {{get-ancestor-descriptor preprintNode}} <strong> {{preprintNode.title}}</strong></p>
+            <p><em class="m-r-md"> {{t "components.preprint-form-header.location"}}: </em> {{get-ancestor-descriptor preprintNode}} {{preprintNode.title}}</p>
         {{/if}}
         <p><em class="m-r-md"> {{t "components.preprint-form-header.file"}}: </em> {{preprintFile}} </p>
         <p><em class="m-r-md"> {{t "components.preprint-form-header.title"}}: </em> {{preprintTitle}} </p>
@@ -35,7 +35,7 @@
 
 {{#if (not isOpen)}}
     <div class="m-t-md preprint-header-preview">
-        {{#if isValidationActive}}
+        {{#if (or isValidationActive editMode)}}
             {{#if (eq name 'Basics')}}
                 <p><em class="m-r-md"> {{t "global.doi"}}: </em> {{if doi doi (t "global.none")}} </p>
                 <p>
@@ -132,7 +132,7 @@
         {{/if}}
 
 
-        {{#if (and (isSectionEditable name) (or (not showValidationIndicator) isValidationActive))}}
+        {{#if (and (isSectionEditable name) (or editMode (or (not showValidationIndicator) isValidationActive)))}}
             <i class="text-smaller m-t-md">{{t "components.preprint-form-header.click_edit"}}</i>
         {{/if}}
     </div>

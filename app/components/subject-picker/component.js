@@ -13,9 +13,6 @@ function arrayStartsWith(arr, prefix) {
 export default Ember.Component.extend({
     store: Ember.inject.service(),
 
-    // Array of arrays containing subject lineages
-    selected: [],
-
     // Store the lists of subjects
     _tier1: null,
     _tier2: null,
@@ -64,8 +61,6 @@ export default Ember.Component.extend({
 
     init() {
         this._super(...arguments);
-        this.set('selected', []);
-
         this.get('store').query('taxonomy', {
             filter: {
                 parents: 'null'

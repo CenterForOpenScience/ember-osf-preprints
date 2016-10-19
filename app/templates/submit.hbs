@@ -4,7 +4,11 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h1>{{t "submit.heading"}}</h1>
+                {{#if editMode}}
+                    <h1>{{t "submit.edit_heading"}}</h1>
+                {{else}}
+                    <h1>{{t "submit.add_heading"}}</h1>
+                {{/if}}
             </div>
         </div>
 
@@ -14,11 +18,11 @@
     <div class="container">
         <div class="row m-t-lg">
             <div class="col-xs-12 col-md-10 col-md-offset-1 ">
-                <p>{{t "submit.body.p"}}</p>
+                <p>{{if editMode (t "submit.body.p_edit") (t "submit.body.p_add")}}</p>
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
-                        {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error')}}
-                            {{preprint-form-header uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile.name isValidationActive=nodeLocked preprintTitle=node.title valid=(not uploadChanged)}}
+                        {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile.name isValidationActive=(and hasOpened nodeLocked) preprintTitle=node.title valid=(not uploadChanged)}}
                             {{#preprint-form-body}}
                                 {{#liquid-bind filePickerState class='translate' as |currentState|}}
                                     <div class={{currentState}}>
@@ -107,11 +111,11 @@
 
                     {{#with _names.[1] as |name|}}
                         {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
+                            {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="m-b-lg text-smaller">{{t "submit.body.subjects_description"}}</p>
 
-                                {{subject-picker selected=subjectsList save=(action 'setSubjects')}}
+                                {{subject-picker selected=subjectsList disciplineModifiedToggle=disciplineModifiedToggle save=(action 'setSubjects')}}
 
                                 <div class="row">
                                     <div class="col-md-12">
@@ -127,7 +131,7 @@
 
                     {{#with _names.[2] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header doi=model.doi basicsSaveState=basicsSaveState tags=node.tags abstract=node.description name=name valid=(not basicsChanged) isValidationActive=hasOpened}}
+                            {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=node.tags abstract=node.description name=name valid=(not basicsChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class="row">
                                     <div class="col-md-6">
@@ -163,7 +167,7 @@
 
                     {{#with _names.[3] as |name|}}
                         {{#preprint-form-section id='preprint-form-authors' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
+                            {{preprint-form-header editMode=editMode authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="text-smaller">
                                     {{t "submit.body.authors.paragraph"}}
@@ -196,32 +200,48 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{#with _names.[4] as |name|}}
-                        {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header name=name showValidationIndicator=false}}
+                    {{#if editMode}}
+                        {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block" animate=true name='Update' allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header editMode=editMode name='Update' showValidationIndicator=false}}
                             {{#cp-panel-body}}
                                 <div>
-                                    <p>
-                                        {{t "submit.body.submit.paragraph"}}
-                                    </p>
                                     <div class="text-center">
-                                        {{#unless allSectionsValid}}
-                                            <p class="m-t-md"> <strong>{{t "submit.body.submit.invalid.description"}}</strong></p>
-                                            <p class="text-danger"> {{if (or (not savedTitle) (not savedFile))  (t "submit.body.submit.invalid.upload")}}</p>
-                                            <p class="text-danger"> {{if (not savedSubjects) (t "submit.body.submit.invalid.discipline")}}</p>
-                                            <p class="text-danger"> {{if (not savedAbstract)(t "submit.body.submit.invalid.basics")}}</p>
-                                            <p class="text-danger"> {{if (not authorsValid) (t "global.authors")}}</p>
-                                        {{/unless}}
-                                        <p> </p>
-                                        <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>{{t "global.share"}}</button>
-                                        <div>
-                                            {{confirm-share-preprint isOpen=showModalSharePreprint savePreprint=(action 'savePreprint')}}
-                                        </div>
+                                        <p>
+                                            {{t "submit.body.update.paragraph"}}
+                                        </p>
+                                        <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'savePreprint'}}>{{t "global.complete"}}</button>
                                     </div>
                                 </div>
                             {{/cp-panel-body}}
                         {{/preprint-form-section}}
-                    {{/with}}
+                    {{else}}
+                        {{#with _names.[4] as |name|}}
+                            {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                                {{preprint-form-header editMode=editMode name=name showValidationIndicator=false}}
+                                {{#cp-panel-body}}
+                                    <div>
+                                        <p>
+                                            {{t "submit.body.submit.paragraph"}}
+                                        </p>
+                                        <div class="text-center">
+                                            {{#unless allSectionsValid}}
+                                                <p class="m-t-md"> <strong>{{t "submit.body.submit.invalid.description"}}</strong></p>
+                                                <p class="text-danger"> {{if (or (not savedTitle) (not savedFile))  (t "submit.body.submit.invalid.upload")}}</p>
+                                                <p class="text-danger"> {{if (not savedSubjects) (t "submit.body.submit.invalid.discipline")}}</p>
+                                                <p class="text-danger"> {{if (not savedAbstract)(t "submit.body.submit.invalid.basics")}}</p>
+                                                <p class="text-danger"> {{if (not authorsValid) (t "global.authors")}}</p>
+                                            {{/unless}}
+                                            <p> </p>
+                                            <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>{{t "global.share"}}</button>
+                                            <div>
+                                                {{confirm-share-preprint isOpen=showModalSharePreprint savePreprint=(action 'savePreprint')}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/cp-panel-body}}
+                            {{/preprint-form-section}}
+                        {{/with}}
+                    {{/if}}
                 {{/cp-panels}}
             </div>
         </div>
