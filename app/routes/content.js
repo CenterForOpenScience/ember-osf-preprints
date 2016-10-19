@@ -25,7 +25,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     },
     afterModel(preprint) {
         return preprint.get('node').then(node => {
-            this.set('node', node)
+            this.set('node', node);
 
             const ogp = [
                 ['fb:app_id', config.FB_APP_ID],
