@@ -46,9 +46,9 @@ module.exports = function(environment) {
                 config: {
                     id: process.env.GOOGLE_ANALYTICS_ID
                 }
-            },
-
-        ]
+            }
+        ],
+        FB_APP_ID: process.env.FB_APP_ID,
     };
 
     if (environment === 'development') {
