@@ -43,7 +43,8 @@ export default {
         disciplines: `Disciplines`,
         project_button: {
             paragraph: `The project for this paper is available on the Open Science Framework.`,
-            button: `Visit project`
+            button: `Visit project`,
+            edit_preprint:  `Edit preprint`
         }
     },
     discover: {
