@@ -36,7 +36,7 @@ const BasicsValidations = buildValidations({
         validators: [
             validator('format', {
                 // Simplest regex- try not to diverge too much from the backend
-                regex: /^10\.\S+\//,
+                regex: /\b(10\.\d{4,}(?:\.\d+)*\/\S+(?:(?!["&\'<>])\S))\b/,
                 allowBlank: true,
                 message: 'Please use a valid {description}'
             })
