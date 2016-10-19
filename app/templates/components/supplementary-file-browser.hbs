@@ -8,9 +8,7 @@
     </div>
     <div class="col-xs-4 text-nowrap">
         <div class="pull-right">
-            {{#if (and hasAdditionalFiles (not-eq selectedFile.id preprint.primaryFile.id))}}
-                <a class="btn btn-default btn-sm" href={{selectedFile.links.download}}>{{t "content.share.download_file"}}</a>
-            {{/if}}
+            <a class="btn btn-default btn-sm" href={{selectedFile.links.download}}> {{if (eq selectedFile.id preprint.primaryFile.id) (t "content.share.download_preprint") (t "content.share.download_file")}} </a>
             <span class="p-sm"> {{t "content.version"}}: {{selectedFile.currentVersion}}</span>
         </div>
     </div>
