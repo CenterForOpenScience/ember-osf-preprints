@@ -78,8 +78,8 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedR
 
 // This function helps populate all the preprint fields in Edit mode.
 function loadEditModeDefaults(controller, model, node) {
-    controller.set('filePickerState', 'existing');
-    controller.set('existingState', 'new');
+    controller.set('filePickerState', 'existing'); // In edit mode, dealing with existing project
+    controller.set('existingState', 'new'); // In edit mode, only option to change file is to upload a NEW file
     controller.set('node', node);
     controller.set('nodeTitle', node.get('title'));
     controller.set('nodeLocked', true);
