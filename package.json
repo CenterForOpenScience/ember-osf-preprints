@@ -58,7 +58,7 @@
     "ember-link-action": "0.0.35",
     "ember-load-initializers": "^0.5.1",
     "ember-metrics": "0.6.3",
-    "ember-osf": "git+https://github.com/CenterForOpenScience/ember-osf.git#2d96e58805d73f9dad637f625b08d9ba70a1d35c",
+    "ember-osf": "git+https://github.com/CenterForOpenScience/ember-osf.git#1043e7fdb3bb53198dcb5d6c6b039287e93bf3f9",
     "ember-page-title": "3.0.6",
     "ember-power-select": "1.0.0-beta.7",
     "ember-read-more": "0.0.13",
