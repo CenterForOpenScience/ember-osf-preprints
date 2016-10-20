@@ -16,7 +16,10 @@ export function permissionToRemoveContributor(params/*, hash*/) {
     var [contributor, currentUser, isAdmin, node] = params;
     var currentUserId = currentUser.get('currentUserId') || currentUser.get('id');
     var removeSelf = contributor.get('userId') === currentUserId;
-    var isRegistration = node.get('registration');
+    var isRegistration = null;
+    if (node) {
+        isRegistration = node.get('registration');
+    }
     return (!removeSelf && isAdmin && !isRegistration);
 
 }

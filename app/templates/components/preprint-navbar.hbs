@@ -1,16 +1,16 @@
 <div class="preprint-navbar navbar">
     <div class="container">
         <div class="navbar-header">
-            {{#link-to "index" class="navbar-brand"}}OSF Preprints{{/link-to}}
+            {{#link-to "index" class="navbar-brand" invokeAction=(action "click" "link" "Navbar - Brand")}}{{t "global.brand"}}{{/link-to}}
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#preprint-navbar-links">
-                <span class="sr-only">Toggle navigation</span>
+                <span class="sr-only">{{t "components.preprint-navbar.toggle"}}</span>
                 <span class="fa fa-bars fa-lg"></span>
             </button>
         </div>
         <div id="preprint-navbar-links" class="navbar-collapse collapse navbar-right">
             <ul class="nav navbar-nav">
-                <li>{{#link-to "submit" class=""}}Add a preprint{{/link-to}}</li>
-                <li>{{#link-to "discover" class=""}}Search{{/link-to}}</li>
+                <li>{{#link-to "submit" class="" invokeAction=(action "click" "link" "Navbar - Add preprint")}}{{t "global.add_preprint"}}{{/link-to}}</li>
+                <li>{{#link-to "discover" class="" invokeAction=(action "click" "link" "Navbar - Search")}}{{t "global.search"}}{{/link-to}}</li>
             </ul>
         </div>
     </div>

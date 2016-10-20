@@ -1,32 +1,17 @@
 import Ember from 'ember';
-import config from 'ember-get-config';
+
 import ResetScrollMixin from '../mixins/reset-scroll';
+import Analytics from '../mixins/analytics';
 
-export default Ember.Route.extend(ResetScrollMixin, {
+export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     model() {
-        var getTotalPayload = '{"size": 0, "from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}}}';
-
-        var sharePreprintsTotal = Ember.$.ajax({
-                type: 'POST',
-                url: config.SHARE.searchUrl,
-                data: getTotalPayload,
-                contentType: 'application/json',
-                crossDomain: true,
-            }).then(function (results) {
-                return results.hits.total.toLocaleString();
-            });
-
-        return Ember.RSVP.hash({
-            theDate: new Date(),
-            subjects: this.store.query('taxonomy', { filter: { parents: 'null' }, page: { size: 20 } }),
-            sharePreprintsTotal: sharePreprintsTotal
-        });
+        return this.store.query('taxonomy', { filter: { parents: 'null' }, page: { size: 20 } });
+    },
+    setupController(controller, model) {
+        this._super(controller, model);
+        controller.set('currentDate', new Date());
     },
     actions: {
-        // TODO: properly transfer subject to discover route
-        goToSubject(sub) {
-            this.transitionTo('discover', { queryParams: { subject: sub } });
-        },
         search(q) {
             this.transitionTo('discover', { queryParams: { queryString: q } });
         }

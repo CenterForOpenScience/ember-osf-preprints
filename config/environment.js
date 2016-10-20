@@ -6,7 +6,7 @@ module.exports = function(environment) {
     var ENV = {
         modulePrefix: 'preprint-service',
         environment: environment,
-        rootURL: '/preprints/',
+        rootURL: '/',
         locationType: 'auto',
         authorizationType: authorizationType,
         sentryDSN: 'http://test@localhost/80' || process.env.SENTRY_DSN,
@@ -36,6 +36,19 @@ module.exports = function(environment) {
             // The name of the OSF campaign used to track signups
             campaign: 'osf-preprints'
         },
+        i18n: {
+            defaultLocale: 'en'
+        },
+        metricsAdapters: [
+            {
+                name: 'GoogleAnalytics',
+                environments: ['all'],
+                config: {
+                    id: process.env.GOOGLE_ANALYTICS_ID
+                }
+            }
+        ],
+        FB_APP_ID: process.env.FB_APP_ID,
     };
 
     if (environment === 'development') {
@@ -44,6 +57,8 @@ module.exports = function(environment) {
         // ENV.APP.LOG_TRANSITIONS = true;
         // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
         // ENV.APP.LOG_VIEW_LOOKUPS = true;
+
+        ENV.metricsAdapters[0].config.cookieDomain = 'none'
     }
 
     if (environment === 'test') {
@@ -56,6 +71,13 @@ module.exports = function(environment) {
         ENV.APP.LOG_VIEW_LOOKUPS = false;
 
         ENV.APP.rootElement = '#ember-testing';
+
+        // Don't make external requests during unit test
+        // TODO: Provide mocks for all components with manual AJAX calls in the future.
+        ENV.SHARE.baseUrl = '/nowhere';
+        ENV.SHARE.searchUrl = '/nowhere';
+
+        ENV.metricsAdapters[0].config.cookieDomain = 'none'
     }
 
     if (environment === 'production') {

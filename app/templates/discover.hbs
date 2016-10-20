@@ -1,17 +1,19 @@
+{{title 'Search'}}
+
 <div class="preprint-search-header">
     <div class="container">
         <div class="row m-v-md ">
             <div class="col-xs-12 text-center">
-                <h1>Preprint Search</h1>
-                <p class="lead">powered by <a href="https://share.osf.io/" class="share-logo" title="SHARE"></a></p>
+                <h1>{{t "discover.search.heading"}}</h1>
+                <p class="lead">{{t "discover.search.paragraph"}} <a href="https://share.osf.io/" class="share-logo" title="SHARE" {{action 'click' 'link' 'Discover - Share Logo' 'https://share.osf.io/'}}></a></p>
             </div>
         </div>
         <div class="row m-t-md m-b-lg">
             <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                 <div class="input-group input-group-lg">
-                    {{input id="searchBox" value=(mut queryString) class="form-control" key-up='search' placeholder="Search preprints..."}}
+                    {{input id="searchBox" value=(mut queryString) class="form-control" key-up='search' placeholder=(t "discover.search.placeholder")}}
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" {{action "search" this}}>Search</button>
+                        <button class="btn btn-default" type="button" {{action "search" this}}>{{t "global.search"}}</button>
                     </span>
                 </div>
             </div>
@@ -21,8 +23,8 @@
                 <span class="pull-right">
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="true">
-                            Sort by: {{chosenSortByOption}}
+                            aria-haspopup="true" aria-expanded="true" {{action 'click' 'button' 'Discover - Sort'}}>
+                            {{t "discover.sort_by"}}: {{chosenSortByOption}}
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="sortBy">
@@ -45,33 +47,34 @@
                     <div id="activeFilters" class="well well-sm p-md">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h4>Active Filters:</h4>
+                                <h4>{{t "discover.main.active_filters.heading"}}:</h4>
                             </div>
                             <div class="col-sm-6">
                                 <span class="pull-right">
-                                    <button type="button" class="btn btn-default btn-sm" {{action "clearFilters"}}>Clear filters {{fa-icon "remove"}}</button>
+                                    <button type="button" class="btn btn-default btn-sm" {{action "clearFilters"}}>{{t "discover.main.active_filters.button"}} {{fa-icon "remove"}}</button>
                                 </span>
                             </div>
                         </div>
                         <div id="activeFiltersList">
                             {{#each activeFilters.providers as |filter|}}
-                                <span class='preprint-filter provider-filter'>{{filter-replace filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'selectProvider' filter)}}</span></span>
+                                <span class='preprint-filter provider-filter'>{{filter-replace filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'updateFilters' 'providers' filter)}}</span></span>
                             {{/each}}
                             {{#each activeFilters.subjects as |filter|}}
-                                <span class='preprint-filter subject-filter'>{{filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'selectSubjectFilter' filter)}}</span></span>
+                                <span class='preprint-filter subject-filter'>{{filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'updateFilters' 'subjects' filter)}}</span></span>
                             {{/each}}
                         </div>
                     </div>
                 {{/if}}
-                <h4> Refine your search by </h4>
+                <h4>{{t "discover.main.refine"}}</h4>
                 <div class='m-v-md'>
-                    <h4 class="filter-heading p-sm">Providers</h4>
+                    <h4 class="filter-heading p-sm">{{t "discover.main.providers"}}</h4>
                     <ul>
                         {{#each otherProviders as |item|}}
                             <li>
                                 <label>
-                                    <input type="checkbox" checked="{{if (if-filter item activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item}}>
-                                    {{filter-replace item}}
+                                    <input type="checkbox" checked="{{if (if-filter item.key activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item.key}}>
+                                    {{filter-replace item.key}}
+                                    <small>({{item.doc_count}})</small>
                                 </label>
                             </li>
                         {{/each}}
@@ -79,12 +82,12 @@
                     </ul>
                 </div>
                 <div class="m-t-lg">
-                    <h4 class="filter-heading p-sm">Subject</h4>
-                    {{taxonomy-tree select=(action 'selectSubjectFilter') subjects=treeSubjects}}
+                    <h4 class="filter-heading p-sm">{{t "discover.main.subject"}}</h4>
+                    {{taxonomy-tree select=(action 'updateFilters' 'subjects') subjects=treeSubjects}}
                 </div>
                 <div class="osf-box p-md m-b-lg clearfix m-t-xl">
-                    <p>Do you want to add your own research as a preprint?</p>
-                    {{#link-to "submit" type="button" class="btn btn-success btn-lg"}}Add your preprint{{/link-to}}
+                    <p>{{t "discover.main.box.paragraph"}}</p>
+                    {{#link-to "submit" type="button" class="btn btn-success btn-lg" invokeAction=(action 'click' 'button' 'Discover - Add Preprint')}}{{t "discover.main.box.button"}}{{/link-to}}
                 </div>
             </div>
 
@@ -96,32 +99,32 @@
                 {{else}}
                     {{#if numberOfResults}}
                         {{#each results as |result|}}
-                            {{search-result result=result select=(action 'selectSubjectFilter')}}
+                            {{search-result result=result select=(action 'updateFilters' 'subjects')}}
                         {{/each}}
 
                         <div class="row">
                             <div class="col-xs-5">
                                 {{#if showPrev}}
-                                    <button type="button" class="btn btn-default" {{action "previous"}}>Prev</button>
+                                    <button type="button" class="btn btn-default" {{action "previous"}}>{{t "global.prev"}}</button>
                                 {{/if}}
                             </div>
                             <div class="col-xs-2">
                                 <div style='text-align: center; margin-top:5px'>
-                                    {{page}} of {{maxPages}}
+                                    {{page}} {{t "discover.main.results.of"}} {{maxPages}}
                                 </div>
                             </div>
                             <div class="col-xs-5">
                                 <span class="pull-right">
                                     {{#if showNext}}
-                                        <button type="button" class="btn btn-default" {{action "next"}}>Next</button>
+                                        <button type="button" class="btn btn-default" {{action "next"}}>{{t "global.next"}}</button>
                                     {{/if}}
                                 </span>
                             </div>
                         </div>
                     {{else}}
                         <div class="text-muted text-center">
-                            <p class="lead ">No results found</p>
-                            <p>Try broadening your search terms </p>
+                            <p class="lead ">{{t "global.no_results_found"}}</p>
+                            <p>{{t "discover.main.results.no_results"}}</p>
                         </div>
                     {{/if}}
                 {{/if}}

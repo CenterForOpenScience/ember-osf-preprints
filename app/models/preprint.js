@@ -19,25 +19,20 @@ export default OsfModel.extend({
     title: DS.attr('string'),
     // TODO: May be a relationship in the future pending APIv2 changes
     subjects: DS.attr(),
-    date_created: DS.attr('date'),  // TODO: Check capitalization?
-    date_modified: DS.attr('date'),
-    abstract: DS.attr('string'),
-    tags: DS.attr(),
+    dateCreated: DS.attr('date'),
+    datePublished: DS.attr('date'),
     doi: DS.attr('string'),
+    isPublished: DS.attr('boolean'),
+    isPreprintOrphan: DS.attr('boolean'),
 
     currentUserCanComment: DS.attr('boolean'),
     currentUserPermissions: DS.attr('string'),
 
     // Relationships
+    node: DS.belongsTo('node', { inverse: null, async: true}),
     primaryFile: DS.belongsTo('file', { inverse: null }),
+
     comments: DS.hasMany('comments'),
 
-    files: DS.hasMany('file-providers', { inverse: null }),
-    providers: DS.hasMany('preprint-provider', { inverse: 'preprints', async: true }),
-
-    contributors: DS.hasMany('contributors', {
-        allowBulkUpdate: true,
-        allowBulkRemove: true,
-        inverse: null
-    })
+    providers: DS.hasMany('preprint-provider', { inverse: 'preprints', async: true })
 });
