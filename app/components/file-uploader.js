@@ -235,6 +235,7 @@ export default Ember.Component.extend({
                             if (this.get('nodeLocked')) { // Edit mode
                                 this.get('toast').info('Preprint file updated!');
                                 this.sendAction('finishUpload');
+                                Dropzone.forElement('.dropzone').removeAllFiles(true);
                             } else { // Add mode
                                 this.sendAction('startPreprint', this.get('parentNode'));
                             }

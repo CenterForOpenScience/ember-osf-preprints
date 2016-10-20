@@ -366,7 +366,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.get('node.files').then((files) => {
                 this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
                 this.set('osfProviderLoaded', true);
-                Dropzone.forElement('.dropzone').removeAllFiles(true);
                 this.send('next', this.get('_names.0'));
             });
         },
