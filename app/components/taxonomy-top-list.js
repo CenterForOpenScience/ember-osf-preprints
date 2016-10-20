@@ -18,7 +18,7 @@ export default Ember.Component.extend(Analytics, {
         'Business': 'Accounting, Finance and Financial Management, Human Resource Management, Marketing, Taxation',
         'Law': 'Civil Law, Criminal Law, Legislation, State and Local Government Law, Supreme Court of the United States',
         'Education': 'Curriculum Instruction, Educational Administration and Supervision, Educational Leadership, Higher Education, Liberal Studies',
-        'Arts and humanities': 'Fine Arts, History, Music, Philosophy, Religion',
+        'Arts and Humanities': 'Fine Arts, History, Music, Philosophy, Religion',
         'Architecture': 'Architectural Engineering, Construction Engineering, Environmental Design, Interior Architecture, Landscape Architecture'
     },
     // jscs:enable
