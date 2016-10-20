@@ -4,21 +4,21 @@ import Analytics from '../mixins/analytics';
 export default Ember.Component.extend(Analytics, {
     // jscs:disable disallowQuotedKeysInObjects
     subjectTooltips: {
-        'Physical Sciences': 'Astronomical Sciences, Chemistry, Materials Science, Mathematics, Physics',
-        'Engineering and Technology': 'Civil Engineering, Digital Imaging, Fluidics, Nanotechnology, Synthetic Biology',
-        'Biology and Life Sciences': 'Ecology, Genetics, Neuroscience, Toxicology, Zoology',
-        'Research and Analysis Methods': 'Computational Techniques, Decision Analysis, Imaging Techniques, Research Assessment, Simulation and Modeling',
-        'Medicine and Health Sciences': 'Anatomy, Epidemiology, Medical Ethics, Oncology, Sports and Exercise Medicine',
-        'Social and Behavioral Sciences': 'Anthropology, Economics, Philosophy, Political Science, Psychology',
-        'Science Policy': 'Bioethics, Open Science, Research Integrity, Science Education, Technology Regulations',
-        'People and Places': 'Demography, Geographical Locations, Population Groups',
-        'Computer and Information Sciences': 'Artificial Intelligence, Cryptography, Data Visualization, Library Science, Software Engineering',
-        'Earth Sciences': 'Atmospheric Science, Geology, Hydrology, Marine and Aquatic Sciences, Mineralogy',
-        'Ecology and Environmental Sciences': 'Biogeochemistry, Environmental Geology, Natural Resources, Soil Science, Sustainability Science',
+        'Physical sciences': 'Astronomical Sciences, Chemistry, Materials Science, Mathematics, Physics',
+        'Engineering and technology': 'Civil Engineering, Digital Imaging, Fluidics, Nanotechnology, Synthetic Biology',
+        'Biology and life sciences': 'Ecology, Genetics, Neuroscience, Toxicology, Zoology',
+        'Research and analysis methods': 'Computational Techniques, Decision Analysis, Imaging Techniques, Research Assessment, Simulation and Modeling',
+        'Medicine and health sciences': 'Anatomy, Epidemiology, Medical Ethics, Oncology, Sports and Exercise Medicine',
+        'Social and behavioral sciences': 'Anthropology, Economics, Philosophy, Political Science, Psychology',
+        'Science policy': 'Bioethics, Open Science, Research Integrity, Science Education, Technology Regulations',
+        'People and places': 'Demography, Geographical Locations, Population Groups',
+        'Computer and information sciences': 'Artificial Intelligence, Cryptography, Data Visualization, Library Science, Software Engineering',
+        'Earth sciences': 'Atmospheric Science, Geology, Hydrology, Marine and Aquatic Sciences, Mineralogy',
+        'Ecology and environmental sciences': 'Biogeochemistry, Environmental Geology, Natural Resources, Soil Science, Sustainability Science',
         'Business': 'Accounting, Finance and Financial Management, Human Resource Management, Marketing, Taxation',
         'Law': 'Civil Law, Criminal Law, Legislation, State and Local Government Law, Supreme Court of the United States',
         'Education': 'Curriculum Instruction, Educational Administration and Supervision, Educational Leadership, Higher Education, Liberal Studies',
-        'Arts and Humanities': 'Fine Arts, History, Music, Philosophy, Religion',
+        'Arts and humanities': 'Fine Arts, History, Music, Philosophy, Religion',
         'Architecture': 'Architectural Engineering, Construction Engineering, Environmental Design, Interior Architecture, Landscape Architecture'
     },
     // jscs:enable
