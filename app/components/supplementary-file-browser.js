@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
+import Analytics from '../mixins/analytics';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(Analytics, {
     elementId: 'preprint-file-view',
     endIndex: 6,
     startIndex: 0,
@@ -49,6 +50,13 @@ export default Ember.Component.extend({
     },
     actions: {
         next() {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'file browser',
+                    action: 'click',
+                    label: 'next'
+                });
+
             if (this.get('endIndex') > this.get('files.length')) return;
 
             this.set('scrollAnim', 'toLeft');
@@ -56,6 +64,13 @@ export default Ember.Component.extend({
             this.set('startIndex', this.get('startIndex') + 5);
         },
         prev() {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'file browser',
+                    action: 'click',
+                    label: 'prev'
+                });
+
             if (this.get('startIndex') <= 0) return;
 
             this.set('scrollAnim', 'toRight');
@@ -63,6 +78,13 @@ export default Ember.Component.extend({
             this.set('startIndex', this.get('startIndex') - 5);
         },
         changeFile(file) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'file browser',
+                    action: 'select',
+                    label: 'file'
+                });
+
             this.set('selectedFile', file);
 
             if (this.attrs.chooseFile) {

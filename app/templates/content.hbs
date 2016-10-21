@@ -9,7 +9,7 @@
                     {{#if authors}}
                         {{#each authors as |author index| ~}}
                             {{#if author.bibliographic}}
-                                <li><a href={{author.users.profileURL}}>{{author.users.givenName}} {{author.users.familyName}}</a></li>
+                                <li><a href={{author.users.profileURL}} {{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.givenName}} {{author.users.familyName}}</a></li>
                             {{/if}}
                         {{~/each}}
                     {{else}}
@@ -35,17 +35,16 @@
                     {{#liquid-spacer growDuration=250 growWidth=false}}
                         <div class="p-sm osf-box-lt clearfix">{{!SHARE ROW}}
                             <div class="" id="download_project clearfix">
-                                <a class="btn btn-primary" href={{activeFile.links.download}}>{{t "content.share.download"}}</a>
-                                <span class="p-sm">{{t "content.share.downloads"}}: {{activeFile.extra.downloads}}</span>
+                                <a class="btn btn-primary" href={{model.primaryFile.links.download}} onbeforeclick={{action 'click' 'link' 'Content - Download'}}>{{t "content.share.download_preprint"}}</a>
+                                <span class="p-sm">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
                                 <span class="p-xs pull-right">
-                                    <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref}}>{{fa-icon 'twitter-square' size=2 }}</a>
-                                    <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref}}>{{fa-icon 'facebook-square' size=2 }}</a>
-                                    <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref}}>{{fa-icon 'linkedin-square' size=2 }}</a>
-                                    <a class="m-r-xs text-smaller" href={{emailHref}} onclick={{action 'shareLink' emailHref}}>{{fa-icon 'envelope' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'tweet'}}>{{fa-icon 'twitter-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref 'Facebook' 'share'}}>{{fa-icon 'facebook-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref 'LinkedIn' 'share'}}>{{fa-icon 'linkedin-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{emailHref}} onclick={{action 'shareLink' emailHref 'link' 'click' 'Content - email share'}}>{{fa-icon 'envelope' size=2 }}</a>
                                 </span>
                             </div>
                         </div>
-
                     {{/liquid-spacer}}
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">{{t "global.abstract"}}</h4>
@@ -55,7 +54,7 @@
                     {{#if model.doi}}
                         <div class="p-t-xs">
                             <h4 class="p-v-md  f-w-md">{{t "content.article_doi"}}</h4>
-                            <a href="https://dx.doi.org/{{model.doi}}">{{model.doi}}</a>
+                            <a href={{doiUrl}} {{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
                         </div>
                     {{/if}}
 
@@ -78,7 +77,7 @@
                     {{!PROJECT BUTTON}}
                     <div class="p-lg osf-box-lt text-center">
                         <p class="f-w-xs">{{t "content.project_button.paragraph"}}</p>
-                        <a type="button" class="btn btn-info" href={{model.links.html}}>{{t "content.project_button.button"}}</a>
+                        <a type="button" class="btn btn-info" href={{model.links.html}}  {{action "click" "link" "Content - Visit Project" model.links.html}}>{{t "content.project_button.button"}}</a>
                     </div>
                 </div> {{!END RIGHT SIDE COL}}
             {{/unless}}
