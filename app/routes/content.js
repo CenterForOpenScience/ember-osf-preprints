@@ -5,6 +5,7 @@ import config from '../config/environment';
 import loadAll from 'ember-osf/utils/load-relationship';
 
 export default Ember.Route.extend(Analytics, ResetScrollMixin, {
+    theme: Ember.inject.service(),
     headTagsService: Ember.inject.service('head-tags'),
     model(params) {
         return this.store.findRecord('preprint', params.preprint_id);
@@ -19,7 +20,14 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     },
     actions: {
         error(error, transition) {
-            window.history.replaceState({}, 'preprints', '/preprints/' + transition.params.content.preprint_id);
+            const path = ['', 'preprints'];
+
+            if (this.get('theme.isProvider'))
+                path.push(this.get('theme.id'));
+
+            path.push(transition.params[transition.targetName].preprint_id);
+
+            window.history.replaceState({}, 'preprints', path.join('/'));
             this.intermediateTransitionTo('page-not-found');
         }
     },

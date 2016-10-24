@@ -1,0 +1,13 @@
+{{title (concat model.name ' Preprints') separator=' | '}}
+
+{{#if theme.stylesheet}}
+    <style>
+        @import url('{{theme.stylesheet}}');
+    </style>
+{{/if}}
+
+{{preprint-navbar-branded model=model}}
+
+{{outlet}}
+
+{{preprint-footer-branded model=model}}

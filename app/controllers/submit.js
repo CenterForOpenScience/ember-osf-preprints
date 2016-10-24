@@ -48,6 +48,7 @@ const BasicsValidations = buildValidations({
  * "Add preprint" page definitions
  */
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
+    theme: Ember.inject.service(),
     _State: State,
     filePickerState: State.START,
     fileManager: Ember.inject.service(),
@@ -409,7 +410,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 model.set('doi', null);
             }
             return model.save()
-                .then(() => this.transitionToRoute('content', model));
+                .then(() => this.transitionToRoute(
+                    `${this.get('theme.isProvider') ? 'provider.' : ''}content`,
+                    model
+                ));
         },
     }
 });

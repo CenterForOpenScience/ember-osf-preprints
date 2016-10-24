@@ -1,0 +1,12 @@
+@import 'brand';
+
+@include brand(
+    #a92f2b,
+    white,
+    #462a2a,
+    #a90000,
+    #462a2a,
+    white,
+    none,
+    '/preprints/assets/img/provider_logos/psyarxiv.png'
+);

@@ -1,0 +1,12 @@
+@import 'brand';
+
+@include brand(
+    darkred,
+    white,
+    #550000,
+    red,
+    #550000,
+    white,
+    none,
+    '/preprints/assets/img/provider_logos/socarxiv.png'
+);

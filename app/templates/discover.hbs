@@ -4,8 +4,15 @@
     <div class="container">
         <div class="row m-v-md ">
             <div class="col-xs-12 text-center">
-                <h1>{{t "discover.search.heading"}}</h1>
-                <p class="lead">{{t "discover.search.paragraph"}} <a href="https://share.osf.io/" class="share-logo" title="SHARE" {{action 'click' 'link' 'Discover - Share Logo' 'https://share.osf.io/'}}></a></p>
+                {{#if theme.isProvider}}
+                    <div class="col-xs-6 text-right">
+                        <div class="preprint-brand" style="height: 140px; background-position-x: right;"></div>
+                    </div>
+                {{/if}}
+                <div class={{if theme.isProvider 'col-xs-6 text-left'}}>
+                    <h1>{{t "discover.search.heading"}}</h1>
+                    <p class="lead">{{t "discover.search.paragraph"}} <a href="https://share.osf.io/" class="share-logo" title="SHARE" {{action 'click' 'link' 'Discover - Share Logo' 'https://share.osf.io/'}}></a></p>
+                </div>
             </div>
         </div>
         <div class="row m-t-md m-b-lg">
@@ -57,7 +64,12 @@
                         </div>
                         <div id="activeFiltersList">
                             {{#each activeFilters.providers as |filter|}}
-                                <span class='preprint-filter provider-filter'>{{filter-replace filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'updateFilters' 'providers' filter)}}</span></span>
+                                <span class='preprint-filter provider-filter'>
+                                    {{filter-replace filter}}
+                                    {{#unless theme.isProvider}}
+                                        <span class='pointer'>{{fa-icon 'times-circle' click=(action 'updateFilters' 'providers' filter)}}</span>
+                                    {{/unless}}
+                                </span>
                             {{/each}}
                             {{#each activeFilters.subjects as |filter|}}
                                 <span class='preprint-filter subject-filter'>{{filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'updateFilters' 'subjects' filter)}}</span></span>
@@ -72,13 +84,15 @@
                         {{#each otherProviders as |item|}}
                             <li>
                                 <label>
-                                    <input type="checkbox" checked="{{if (if-filter item.key activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item.key}}>
+                                    <input type="checkbox" checked="{{if (if-filter item.key activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item.key}} disabled={{theme.isProvider}}>
                                     {{filter-replace item.key}}
-                                    <small>({{item.doc_count}})</small>
+                                    <small>({{number-format item.doc_count}})</small>
                                 </label>
                             </li>
                         {{/each}}
-
+                        {{#if theme.isProvider}}
+                            <a href="/preprints/" onbeforeclick={{action 'click' 'link' 'Discover - Other Preprint Repositories'}}>{{t "discover.main.otherRepositories"}}</a>
+                        {{/if}}
                     </ul>
                 </div>
                 <div class="m-t-lg">

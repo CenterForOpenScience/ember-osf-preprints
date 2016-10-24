@@ -25,6 +25,7 @@ function isHyperLink(link) {
 }
 
 export default Ember.Controller.extend(Analytics, {
+    theme: Ember.inject.service(), // jshint ignore:line
     // TODO: either remove or add functionality to info icon on "Refine your search panel"
 
     // Many pieces taken from: https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js
@@ -103,7 +104,19 @@ export default Ember.Controller.extend(Analytics, {
                     )
                 );
 
-            this.set('otherProviders', providers);
+            const theme = this.get('theme');
+
+            if (!this.get('theme.isProvider')) {
+                this.set('otherProviders', providers);
+            } else {
+                const filtered = providers.filter(
+                    item => item.key.toLowerCase() === this.get('theme.id').toLowerCase()
+                );
+
+                this.set('otherProviders', filtered);
+                this.get('activeFilters.providers').pushObject(filtered[0].key);
+            }
+
             this.notifyPropertyChange('otherProviders');
         });
 
@@ -278,7 +291,11 @@ export default Ember.Controller.extend(Analytics, {
         },
 
         clearFilters() {
-            this.set('activeFilters',  { providers: [], subjects: [] });
+            if (!this.get('theme.isProvider'))
+                this.set('activeFilters',  { providers: [], subjects: [] });
+            else
+                this.set('activeFilters.subjects', []);
+
 
             Ember.get(this, 'metrics')
                 .trackEvent({

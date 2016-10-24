@@ -66,7 +66,8 @@ export default {
             results: {
                 of: `of`,
                 no_results: `Try broadening your search terms`
-            }
+            },
+            otherRepositories: `Other preprint repositories`,
         }
     },
     index: {

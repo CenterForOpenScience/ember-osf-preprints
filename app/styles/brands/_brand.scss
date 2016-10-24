@@ -1,0 +1,85 @@
+@mixin brand(
+    $theme-color-1,
+    $theme-color-2,
+    $theme-color-3,
+    $theme-color-4,
+    $navbar-background-color,
+    $navbar-color,
+    $theme-nav-filter,
+    $logo
+) {
+    .preprint-header {
+        background-image: none;
+        background-color: $theme-color-1;
+
+        .preprint-brand {
+            height: 140px;
+        }
+    }
+
+    .navbar-image {
+        float: left;
+        clear: both;
+        text-align: center;
+        background: top center no-repeat;
+        background-size: contain;
+        height: 50px;
+        min-width: 120px;
+        display: block;
+        transform: translateY(-12px);
+    }
+
+    .navbar-image {
+        filter: $theme-nav-filter;
+    }
+
+    .navbar-image,
+    .preprint-brand {
+        background-image: url($logo);
+    }
+
+    .preprint-navbar {
+        top: 0;
+        background-color: $navbar-background-color;
+        color: $navbar-color;
+
+        a {
+            color: $navbar-color
+        }
+
+        .navbar-brand:hover,
+        .nav > li > a.active,
+        .nav > li > a:hover {
+            background-color: $theme-color-4;
+        }
+    }
+
+    a,
+    .preprint-form-section header {
+        color: $theme-color-4;
+    }
+
+    .btn-primary {
+        background-color: $theme-color-3;
+        border-color: $theme-color-1;
+    }
+
+    .btn-primary:hover {
+        background-color: $theme-color-1;
+        border-color: $theme-color-3;
+    }
+
+    #preprint-form-upload .btn-big,
+    .preprint-submit-header,
+    .preprint-search-header,
+    .provider-filter {
+        background: $theme-color-1;
+        color: $theme-color-2;
+    }
+
+    .subject-filter,
+    .subject-filter .fa {
+        background-color: $theme-color-3;
+        color: $theme-color-2;
+    }
+}

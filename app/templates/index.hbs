@@ -15,7 +15,7 @@
 
                     {{#if sharePreprintsTotal}}
                         <p class="p-l-md">
-                            <span class="f-w-lg">{{t "index.header.search" count=sharePreprintsTotal}}</span>
+                            <span class="f-w-lg">{{t "index.header.search" count=(number-format sharePreprintsTotal)}}</span>
                             <span>{{t "index.header.as_of"}} {{moment-format currentDate "MMMM DD, YYYY"}}</span>
                         </p>
                     {{/if}}
@@ -47,73 +47,75 @@
     </div> {{!END SUBJECTS LIST}}
 
 
-    {{!SERVICES}}
-    <div class="preprint-tool p-v-md">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <h2>{{t "index.services.top.heading"}}</h2>
-                    <p class="m-b-lg">{{t "index.services.top.paragraph"}}</p>
+    {{#unless theme.isProvider}}
+        {{!SERVICES}}
+        <div class="preprint-tool p-v-md">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2>{{t "index.services.top.heading"}}</h2>
+                        <p class="m-b-lg">{{t "index.services.top.paragraph"}}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="row p-v-md">{{!BRANDED ROW}}
-                <div class="col-sm-4"> <div class=" provider-logo provider-engrxiv"></div></div>
-                <div class="col-sm-4"> <div class="provider-logo provider-socarxiv"></div></div>
-                <div class="col-sm-4"> <div class=" provider-logo provider-psyarxiv"></div></div>
-            </div>
-            <div class="row p-v-md">
-                <div class="col-md-12 text-center">
-                    <p class="lead">
-                        {{t "index.services.bottom.p1"}}
-                        <div class="p-t-sm">
-                            {{t "index.services.bottom.div.line1"}}
-                            <a class="source_code_link" href="https://github.com/CenterForOpenScience/ember-preprints"
-                                {{action "click" "link" "Index - GitHub Repo" "https://github.com/CenterForOpenScience/ember-preprints"}}>
-                                {{t "index.services.bottom.div.linkText1"}}
-                            </a>
-                            {{t "index.services.bottom.div.line2"}}
-                            <a class="source_code_link" href="https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"
-                                {{action "click" "link" "Index - GitHub Repo" "https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"}}>
-                                {{t "index.services.bottom.div.linkText2"}}
-                            </a>
-                            {{t "index.services.bottom.div.line3"}}
-                        </div>
-                    </p>
-                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg" {{action "click" "link" "Index - Contact"}}>{{t "index.services.bottom.contact"}}</a>
+                <div class="row p-v-md">{{!BRANDED ROW}}
+                    <div class="col-sm-4"> <div class=" provider-logo provider-engrxiv"></div></div>
+                    <div class="col-sm-4"> <div class="provider-logo provider-socarxiv"></div></div>
+                    <div class="col-sm-4"> <div class=" provider-logo provider-psyarxiv"></div></div>
+                </div>
+                <div class="row p-v-md">
+                    <div class="col-md-12 text-center">
+                        <p class="lead">
+                            {{t "index.services.bottom.p1"}}
+                            <div class="p-t-sm">
+                                {{t "index.services.bottom.div.line1"}}
+                                <a class="source_code_link" href="https://github.com/CenterForOpenScience/ember-preprints"
+                                    {{action "click" "link" "Index - GitHub Repo" "https://github.com/CenterForOpenScience/ember-preprints"}}>
+                                    {{t "index.services.bottom.div.linkText1"}}
+                                </a>
+                                {{t "index.services.bottom.div.line2"}}
+                                <a class="source_code_link" href="https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"
+                                    {{action "click" "link" "Index - GitHub Repo" "https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"}}>
+                                    {{t "index.services.bottom.div.linkText2"}}
+                                </a>
+                                {{t "index.services.bottom.div.line3"}}
+                            </div>
+                        </p>
+                        <a href="mailto:contact@osf.io" class="btn btn-info btn-lg" {{action "click" "link" "Index - Contact"}}>{{t "index.services.bottom.contact"}}</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {{!ADVISORY GROUP}}
-    <div class="preprint-advisory p-v-md">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <h2>{{t "index.advisory.heading"}}</h2>
-                    <p class="m-b-lg">{{t "index.advisory.paragraph"}}</p>
-                </div>
-                <div class="col-xs-6">
-                    <ul>
-                        <li><b>Devin Berg :</b> engrXiv, University of Wisconsin-Stout</li>
-                        <li><b>Pete Binfield :</b> PeerJ PrePrints</li>
-                        <li><b>Philip Cohen :</b> SocArXiv, University of Maryland</li>
-                        <li><b>Kathleen Fitzpatrick :</b> Modern Language Association</li>
-                        <li><b>John Inglis :</b> bioRxiv, Cold Spring Harbor Laboratory Press</li>
-                        <li><b>Rebecca Kennison :</b> K|N Consultants</li>
-                    </ul>
-                </div>
-                <div class="col-xs-6">
-                    <ul>
-                        <li><b>Bethany Nowviskie :</b> Digital Library Federation, University of Virginia</li>
-                        <li><b>Kristen Ratan :</b> CoKo Foundation</li>
-                        <li><b>Oya Rieger :</b> arXiv, Cornell University</li>
-                        <li><b>Judy Ruttenberg :</b> SHARE, Association of Research Libraries</li>
-                        <li><b>Simine Vazire :</b> PsyArXiv, University of California, Davis</li>
-                    </ul>
+        {{!ADVISORY GROUP}}
+        <div class="preprint-advisory p-v-md">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2>{{t "index.advisory.heading"}}</h2>
+                        <p class="m-b-lg">{{t "index.advisory.paragraph"}}</p>
+                    </div>
+                    <div class="col-xs-6">
+                        <ul>
+                            <li><b>Devin Berg :</b> engrXiv, University of Wisconsin-Stout</li>
+                            <li><b>Pete Binfield :</b> PeerJ PrePrints</li>
+                            <li><b>Philip Cohen :</b> SocArXiv, University of Maryland</li>
+                            <li><b>Kathleen Fitzpatrick :</b> Modern Language Association</li>
+                            <li><b>John Inglis :</b> bioRxiv, Cold Spring Harbor Laboratory Press</li>
+                            <li><b>Rebecca Kennison :</b> K|N Consultants</li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-6">
+                        <ul>
+                            <li><b>Bethany Nowviskie :</b> Digital Library Federation, University of Virginia</li>
+                            <li><b>Kristen Ratan :</b> CoKo Foundation</li>
+                            <li><b>Oya Rieger :</b> arXiv, Cornell University</li>
+                            <li><b>Judy Ruttenberg :</b> SHARE, Association of Research Libraries</li>
+                            <li><b>Simine Vazire :</b> PsyArXiv, University of California, Davis</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {{/unless}}
 
 </div> {{!END INDEX}}

@@ -90,7 +90,7 @@ export default Ember.Controller.extend(Analytics, {
     }),
 
     hasTag: Ember.computed('node.tags', function() {
-        return this.get('node.tags').length;
+        return (this.get('node.tags') || []).length;
     }),
 
     getAuthors: Ember.observer('node', function() {
