@@ -43,7 +43,7 @@ const BasicsValidations = buildValidations({
         validators: [
             validator('format', {
                 // Simplest regex- try not to diverge too much from the backend
-                regex: /^10\.\S+\//,
+                regex:  /\b(10\.\d{4,}(?:\.\d+)*\/\S+(?:(?!["&\'<>])\S))\b/,
                 allowBlank: true,
                 message: 'Please use a valid {description}'
             })
@@ -462,14 +462,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     case 'allUpload':
                         this.set('node', null);
                         this.set('selectedFile', null);
-                        this.set('hasFile', false);
                         this.set('file', null);
                         this.set('convertOrCopy', null);
                         this.set('nodeTitle', null);
                         break;
                     case 'belowNode':
                         this.set('selectedFile', null);
-                        this.set('hasFile', false);
                         this.set('file', null);
                         this.set('convertOrCopy', null);
                         this.set('nodeTitle', null);

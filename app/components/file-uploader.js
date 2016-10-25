@@ -183,7 +183,6 @@ export default Ember.Component.extend({
             // Sets preUploadedFile attributes.
             this.send('formatDropzoneAfterPreUpload', true);
             this.set('file', file);
-            this.set('hasFile', true);
             this.set('fileVersion', version);
         },
         preUpload(_, dropzone, file) {
