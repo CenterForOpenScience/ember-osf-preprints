@@ -19,17 +19,22 @@
                     {{/if}}
                 </ul>
             </h5>
-            <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format node.dateModified "MMMM DD, YYYY"}} </h6>
+            <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
         </div> {{!END CONTAINER DIV}}
     </div> {{!END HEADER ROW}}
     <div id="view-page" class="container">{{!CONTAINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
             <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}
-                {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
-                <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
-                    <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
-                </button>
+                {{#if model.isPreprintOrphan}}
+                    <p class="m-t-md text-danger"> {{t "content.orphan_preprint"}} </p>
+                {{else}}
+                    {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
+                    <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
+                        <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
+                    </button>
+                {{/if}}
             </div> {{!END LEFT COL DIV}}
+
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
                     {{#liquid-spacer growDuration=250 growWidth=false}}
