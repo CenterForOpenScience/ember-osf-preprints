@@ -2,6 +2,7 @@ import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 import config from '../config/environment';
 import Analytics from '../mixins/analytics';
+import permissions from 'ember-osf/const/permissions';
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -40,6 +41,11 @@ function queryStringify(queryParams) {
 export default Ember.Controller.extend(Analytics, {
     fullScreenMFR: false,
     expandedAuthors: true,
+    isAdmin: Ember.computed('node', function() {
+        // True if the current user has admin permissions for the node that contains the preprint
+        let userPermissions = this.get('node.currentUserPermissions') || [];
+        return userPermissions.indexOf(permissions.ADMIN) >= 0;
+    }),
     twitterHref: Ember.computed('node', function() {
         const queryParams = {
             url: window.location.href,
