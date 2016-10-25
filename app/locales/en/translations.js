@@ -114,6 +114,13 @@ export default {
         },
         go_to: `Go to OSF Preprints`
     },
+    'page-forbidden': {
+        heading: `Forbidden`,
+        paragraph: {
+            line1: `User has restricted access to this page. If this should not have occurred and the issue persists, please report it to `,
+        },
+        go_to: `Go to OSF Preprints`
+    },
     submit: {
         add_heading: `Add Preprint`,
         edit_heading: `Edit Preprint`,

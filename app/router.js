@@ -29,6 +29,7 @@ Router.map(function() {
     this.route('content', { path: '/:preprint_id' });
     this.route('page-not-found', { path: 'preprints/*bad_url'});
     this.route('page-not-found', {path: 'preprints/page-not-found'});
+    this.route('forbidden');
 });
 
 export default Router;

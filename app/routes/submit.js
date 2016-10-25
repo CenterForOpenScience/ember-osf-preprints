@@ -24,7 +24,13 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedR
     afterModel(preprint) {
         // Loads node associated with preprint if in Edit Mode
         if (this.get('editMode')) {
-            return preprint.get('node').then(node => this.set('node', node));
+            return preprint.get('node').then(node => {
+                this.set('node', node);
+                let userPermissions = this.get('node.currentUserPermissions') || [];
+                if (userPermissions.indexOf(permissions.ADMIN) === -1) {
+                    this.transitionTo('forbidden');
+                }
+            });
         }
     },
     setupController(controller, model) {
