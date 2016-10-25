@@ -1,3 +1,5 @@
+$nav-height: 50px;
+
 @mixin brand(
     $theme-color-1,
     $theme-color-2,
@@ -23,7 +25,7 @@
         text-align: center;
         background: top center no-repeat;
         background-size: contain;
-        height: 50px;
+        height: $nav-height;
         min-width: 120px;
         display: block;
         transform: translateY(-12px);
@@ -51,6 +53,15 @@
         .nav > li > a.active,
         .nav > li > a:hover {
             background-color: $theme-color-4;
+        }
+
+        .nav-user-dropdown {
+            height: $nav-height;
+        }
+
+        .dropdown > a {
+            padding-top: 12px;
+            padding-bottom: 12px;
         }
     }
 

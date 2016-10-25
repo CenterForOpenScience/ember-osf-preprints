@@ -1,3 +1,5 @@
+const preprints = `Preprints`;
+
 export default {
     global: {
         share: `Share`,
@@ -10,7 +12,8 @@ export default {
         doi: `DOI`,
         tags: `Tags`,
         search: `Search`,
-        brand: `OSF Preprints`,
+        preprints,
+        brand: `OSF ${preprints}`,
         add_preprint: `Add a preprint`,
         title: `Title`,
         search_preprints: `Search preprints...`,
@@ -235,6 +238,10 @@ export default {
         },
         'preprint-navbar': {
             toggle: `Toggle navigation`
+        },
+        'preprint-navbar-branded': {
+            my_projects: `My OSF Projects`,
+            headline: `On the OSF`,
         },
         'project-chooser': {
             file_upload_create: `Upload a file and create an OSF project`,
