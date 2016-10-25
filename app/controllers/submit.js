@@ -386,6 +386,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.get('node.files').then((files) => {
                 this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
                 this.set('osfProviderLoaded', true);
+                this.set('file', null);
                 this.send('next', this.get('_names.0'));
             });
         },
