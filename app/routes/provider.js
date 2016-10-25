@@ -25,4 +25,15 @@ export default Ember.Route.extend({
             .findRecord('preprint-provider', params.slug);
     },
 
+    actions: {
+        error(error) {
+
+            // Manage your errors
+            Ember.onerror(error);
+
+            // substate implementation when returning `true`
+            return true;
+
+        }
+    }
 });

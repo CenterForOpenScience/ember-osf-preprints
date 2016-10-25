@@ -3,7 +3,7 @@
         <div class="navbar-header">
             {{#link-to "provider.index" class="navbar-brand" invokeAction=(action "click" "link" "Navbar - Brand")~}}
                 <span class="navbar-image"></span>
-                {{model.name}} Preprints {{model.logo_path}}
+                <span class="navbar-title">{{model.name}} Preprints</span>
             {{~/link-to}}
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#preprint-navbar-links">
                 <span class="sr-only">{{!t "components.preprint-navbar.toggle"}}</span>
@@ -12,7 +12,7 @@
         </div>
         <div id="preprint-navbar-links" class="navbar-collapse collapse navbar-right">
             <ul class="nav navbar-nav">
-                <li><a href="/" class="" {{action "click" "link" "Navbar - My OSF Projects"}}>My OSF Projects</a></li>
+                <li><a href="/" class="" onbeforeclick={{action "click" "link" "Navbar - My OSF Projects"}}>My OSF Projects</a></li>
                 <li>{{#link-to "provider.submit" class="" invokeAction=(action "click" "link" "Navbar - Add preprint")}}{{t "global.add_preprint"}}{{/link-to}}</li>
                 <li>{{#link-to "provider.discover" class="" invokeAction=(action "click" "link" "Navbar - Search")}}{{t "global.search"}}{{/link-to}}</li>
                 <li>{{!TODO Add User/login widget}}</li>

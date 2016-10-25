@@ -104,8 +104,6 @@ export default Ember.Controller.extend(Analytics, {
                     )
                 );
 
-            const theme = this.get('theme');
-
             if (!this.get('theme.isProvider')) {
                 this.set('otherProviders', providers);
             } else {
