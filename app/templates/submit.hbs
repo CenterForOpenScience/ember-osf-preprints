@@ -63,6 +63,8 @@
                                                 titleValid=titleValid
                                                 uploadChanged=uploadChanged
                                                 uploadInProgress=uploadInProgress
+                                                abandonedPreprint=abandonedPreprint
+                                                resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
                                             }}
                                         {{else if (eq currentState _State.EXISTING)}}
                                             {{preprint-form-project-select
@@ -101,6 +103,8 @@
                                               titleValid=titleValid
                                               uploadChanged=uploadChanged
                                               uploadInProgress=uploadInProgress
+                                              abandonedPreprint=abandonedPreprint
+                                              resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
                                               }}
                                         {{/if}}
                                     </div>

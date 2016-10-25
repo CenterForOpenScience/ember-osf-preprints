@@ -114,6 +114,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     titleValid: null,  // If node's pending title is valid.
     disciplineModifiedToggle: false, // Helps determine if discipline has changed
     uploadInProgress: false, // Set to true when upload step is underway,
+    existingPreprints: Ember.A(), // Existing preprints on the current node
+    abandonedPreprint: null, // Abandoned(draft) preprint on the current node
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -291,6 +293,24 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
              this.set('contributors', contributors));
     }),
 
+    getNodePreprints: Ember.observer('node', function() {
+        // Returns any existing preprints stored on the current node
+
+        // Cannot be called until a project has been selected!
+        if (!this.get('node')) return [];
+        let node = this.get('node');
+
+        node.get('preprints').then((preprints) => {
+            this.set('existingPreprints', preprints);
+            if (preprints.toArray().length > 0) { // If node already has a preprint
+                var preprint = preprints.toArray()[0]; // TODO once branded is finished, this will change
+                if (!(preprint.get('isPublished'))) { // Preprint exists in abandoned state.
+                    this.set('abandonedPreprint', preprint);
+                }
+            }
+        });
+    }),
+
     getParentContributors: Ember.observer('parentNode', function() {
         // Returns all contributors of parentNode if component was created.  User later has option to import
         // parentContributors to component.
@@ -372,20 +392,18 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
             var node = this.get('node');
-            if (node.title !== this.get('nodeTitle')) {
+            if (node.get('title') !== this.get('nodeTitle')) {
                 var currentTitle = node.get('title');
                 node.set('title', this.get('nodeTitle'));
                 node.save()
-                    .then(() => {
-                        this.send('startPreprint');
-                    })
+                    .then(() => this.get('abandonedPreprint') ? this.send('resumeAbandonedPreprint') : this.send('startPreprint'))
                     .catch(() => {
                         node.set('title', currentTitle);
                         this.get('toast').error('Error updating title. Please try again.');
                     });
 
             } else {
-                this.send('startPreprint');
+                return this.get('abandonedPreprint') ? this.send('resumeAbandonedPreprint') : this.send('startPreprint');
             }
         },
         createComponentCopyFile() {
@@ -414,6 +432,17 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     this.get('toast').error('Could not create component. Please try again.');
                 });
 
+        },
+        resumeAbandonedPreprint() {
+            // You can only have one preprint per provider. For now, we delete the abandoned preprint so another preprint can be created.
+            var preprintRecord = this.store.peekRecord('preprint', this.get('abandonedPreprint').id);
+            preprintRecord.destroyRecord()
+                .then(() => {
+                    this.send('startPreprint');
+                })
+                .catch(() => {
+                    this.get('toast').error('Error with abandoned preprint. Please try again.');
+                });
         },
         startPreprint(parentNode) {
             // Initiates preprint.  Occurs in Upload section of Add Preprint form when pressing 'Save and continue'.  Creates a preprint with
