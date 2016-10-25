@@ -42,7 +42,8 @@ export default {
         project_button: {
             paragraph: `The project for this paper is available on the Open Science Framework.`,
             button: `Visit project`
-        }
+        },
+        orphan_preprint: `The user has removed this file.`
     },
     discover: {
         search: {
