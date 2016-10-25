@@ -9,10 +9,6 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     model(params) {
         return this.store.findRecord('preprint', params.preprint_id);
     },
-    afterModel(preprint) {
-        // Loads node associated with preprint.
-        return preprint.get('node').then(node => this.set('node', node));
-    },
     setupController(controller, model) {
         controller.set('activeFile', model.get('primaryFile'));
         controller.set('node', this.get('node'));
@@ -27,23 +23,26 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
             this.intermediateTransitionTo('page-not-found');
         }
     },
-    afterModel(resolvedModel) {
+    afterModel(preprint) {
+    return preprint.get('node').then(node => {
+        this.set('node', node);
+
         const ogp = [
             ['fb:app_id', config.FB_APP_ID],
-            ['og:title', resolvedModel.get('title')],
+            ['og:title', node.get('title')],
             ['og:image', '//osf.io/static/img/circle_logo.png'],
             ['og:image:type', 'image/png'],
             ['og:url', window.location.href],
-            ['og:description', resolvedModel.get('abstract')],
+            ['og:description', node.get('description')],
             ['og:site_name', 'Open Science Framework'],
             ['og:type', 'article'],
-            ['article:published_time', new Date(resolvedModel.get('dateCreated')).toISOString()],
-            ['article:modified_time', new Date(resolvedModel.get('dateModified')).toISOString()]
+            ['article:published_time', new Date(preprint.get('dateCreated')).toISOString()],
+            ['article:modified_time', new Date(node.get('dateModified')).toISOString()]
         ];
 
         const tags = [
-            ...resolvedModel.get('subjects').map(subject => subject.text),
-            ...resolvedModel.get('tags')
+            ...preprint.get('subjects').map(subjectBlock => subjectBlock.map(subject => subject.text)),
+            ...node.get('tags')
         ];
 
         for (let tag of tags)
@@ -51,7 +50,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
 
         let contributors = Ember.A();
 
-        loadAll(resolvedModel, 'contributors', contributors).then(() => {
+        loadAll(node, 'contributors', contributors).then(() => {
             contributors.forEach(contributor => {
                 ogp.push(
                     ['og:type', 'article:author'],
@@ -72,5 +71,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
 
             this.get('headTagsService').collectHeadTags();
         });
-    }
+    });
+
+}
 });

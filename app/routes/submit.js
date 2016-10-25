@@ -87,4 +87,4 @@ function loadEditModeDefaults(controller, model, node) {
     model.get('primaryFile').then((file) => {
         controller.set('selectedFile', file);
     });
-};
+}
