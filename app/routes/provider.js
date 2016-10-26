@@ -21,8 +21,8 @@ export default Ember.Route.extend({
     },
 
     model(params) {
-        return this.get('store')
-            .findRecord('preprint-provider', params.slug);
+        return this.set('theme.provider', this.get('store')
+            .findRecord('preprint-provider', params.slug));
     },
 
     actions: {
