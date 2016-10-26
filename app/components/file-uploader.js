@@ -236,7 +236,7 @@ export default Ember.Component.extend({
                                 this.sendAction('finishUpload');
                                 Dropzone.forElement('.dropzone').removeAllFiles(true);
                             } else { // Add mode
-                                this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint',  this.get('parentNode'));
+                                return this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint',  this.get('parentNode'));
                             }
                         })
                         .catch(() => {
