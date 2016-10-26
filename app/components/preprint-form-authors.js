@@ -16,6 +16,14 @@ export default CpPanelBodyComponent.extend({
         });
         return contribIds;
     }),
+    sendEmail: Ember.computed('editMode', function() {
+        var editMode = this.get('editMode');
+        var sendEmail = false;
+        if (editMode) {
+            sendEmail = 'preprint';
+        }
+        return sendEmail;
+    }),
     numParentContributors: Ember.computed('parentNode', function() {
         if (this.get('parentNode')) {
             return this.get('parentNode').get('contributors').get('length');
@@ -46,7 +54,7 @@ export default CpPanelBodyComponent.extend({
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
-            this.attrs.addContributor(user.id, 'write', true, false, undefined, undefined, true).then((res) => {
+            this.attrs.addContributor(user.id, 'write', true, this.get('sendEmail'), undefined, undefined, true).then((res) => {
                 this.toggleAuthorModification();
                 this.get('contributors').pushObject(res);
                 this.highlightSuccessOrFailure(res.id, this, 'success');
@@ -69,7 +77,7 @@ export default CpPanelBodyComponent.extend({
                     });
                 }
             });
-            this.attrs.addContributors(contributorsToAdd, false)
+            this.attrs.addContributors(contributorsToAdd, this.get('sendEmail'))
                 .then((contributors) => {
                     contributors.map((contrib) => {
                         this.get('contributors').pushObject(contrib);
@@ -84,7 +92,7 @@ export default CpPanelBodyComponent.extend({
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
             if (fullName && email) {
-                let res = this.attrs.addContributor(null, 'write', true, false, fullName, email, true);
+                let res = this.attrs.addContributor(null, 'write', true, this.get('sendEmail'), fullName, email, true);
                 res.then((contributor) => {
                     this.get('contributors').pushObject(contributor);
                     this.toggleAuthorModification();
