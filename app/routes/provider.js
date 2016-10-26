@@ -10,7 +10,7 @@ export default Ember.Route.extend({
     },
 
     beforeModel(transition) {
-        const {slug} = transition.params['provider'];
+        const {slug} = transition.params.provider;
 
         if (this.get('providers').includes(slug)) {
             this.set('theme.id', slug);

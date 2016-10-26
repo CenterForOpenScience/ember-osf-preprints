@@ -35,7 +35,7 @@ export default Ember.Controller.extend(Analytics, {
             filter.push({
                 term: {
                     // TODO filter by name and use sources.raw (potential conflicts later), Needs API name to match SHARE source
-                    'sources': this.get('theme.id')
+                    sources: this.get('theme.id')
                 }
             });
         }

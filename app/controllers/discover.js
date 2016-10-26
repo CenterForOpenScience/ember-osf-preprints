@@ -6,7 +6,7 @@ import { elasticEscape } from '../utils/elastic-query';
 
 var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}},"aggregations": {"sources": {"terms": {"field": "sources.raw","size": 200}}}}';
 
-var filterMap = {
+const filterMap = {
     providers: 'sources.raw',
     subjects: 'subjects.raw'
 };
@@ -130,14 +130,16 @@ export default Ember.Controller.extend(Analytics, {
         });
     }),
     providerChanged: Ember.observer('providerFilter', function() {
-        Ember.run.once(() => {
-            let filter = this.get('providerFilter');
-            if (!filter || filter === 'true') return;
-            this.set('activeFilters.providers', filter.split('AND'));
-            this.notifyPropertyChange('activeFilters');
-            this.set('providersPassed', true);
-            this.loadPage();
-        });
+        if (!this.get('theme.isProvider')) {
+            Ember.run.once(() => {
+                let filter = this.get('providerFilter');
+                if (!filter || filter === 'true') return;
+                this.set('activeFilters.providers', filter.split('AND'));
+                this.notifyPropertyChange('activeFilters');
+                this.set('providersPassed', true);
+                this.loadPage();
+            });
+        }
     }),
     loadPage() {
         this.set('loading', true);
@@ -166,7 +168,7 @@ export default Ember.Controller.extend(Analytics, {
                     abstract: hit._source.description,
                     subjects: hit._source.subjects.map(each => ({text: each})),
                     providers: hit._source.sources.map(item => ({name: item})),
-                    osfProvider: hit._source.sources.reduce((acc, source) => (acc || this.get('osfProviders').indexOf(source) !== -1), false),
+                    osfProvider: hit._source.sources.reduce((acc, source) => (acc || this.get('osfProviders').includes(source)), false),
                     hyperLinks: [// Links that are hyperlinks from hit._source.lists.links
                         {
                             type: 'share',
@@ -203,55 +205,57 @@ export default Ember.Controller.extend(Analytics, {
         return ((this.get('numberOfResults') / this.get('size')) | 0) + (this.get('numberOfResults') % 10 === 0 ? 0 : 1);
     }),
     getQueryBody() {
-        let facetFilters = this.get('activeFilters');
-        this.set('subjectFilter', facetFilters.subjects.slice().join('AND'));
-        this.set('providerFilter', facetFilters.providers.slice().join('AND'));
-        let filters = {};
-        for (let k of Object.keys(facetFilters)) {
-            let key = filterMap[k];
-            if (key && facetFilters[k].length) {
-                filters[key] = facetFilters[k];
+        const facetFilters = this.get('activeFilters');
+
+        this.set('subjectFilter', facetFilters.subjects.join('AND'));
+
+        if (!this.get('theme.isProvider'))
+            this.set('providerFilter', facetFilters.providers.join('AND'));
+
+        const filter = [
+            {
+                terms: {
+                    'type.raw': [
+                        'preprint'
+                    ]
+                }
             }
+        ];
+
+        for (const [key, val] of Object.entries(filterMap)) {
+            const filterList = facetFilters[key];
+
+            if (!filterList.length)
+                continue;
+
+            const terms = {};
+            terms[val] = filterList;
+            filter.push({terms});
         }
-        let query = {
-            query_string: {
-                query: elasticEscape(this.get('queryString')) || '*'
-            }
-        };
 
-        let filters_ = [];
-        for (let k of Object.keys(filters)) {
-            let terms = {};
-            terms[k] = filters[k];
-            filters_.push({
-                terms: terms
-            });
-        }
-        filters_.push({
-            terms: {'type.raw': ['preprint']}
-        });
-        query = {
-            bool: {
-                must: query,
-                filter: filters_
-            }
-        };
+        const sortByOption = this.get('chosenSortByOption');
+        const sort = {};
 
-        let queryBody = {
-            query,
-            from: (this.get('page') - 1) * this.get('size'),
-        };
-
-        let sortByOption = this.get('chosenSortByOption');
         if (sortByOption === 'Upload date (oldest to newest)') {
-            queryBody.sort = {};
-            queryBody.sort.date_updated = 'asc';
+            sort.date_updated = 'asc';
         } else if (sortByOption === 'Upload date (newest to oldest)') {
-            queryBody.sort = {};
-            queryBody.sort.date_updated = 'desc';
+            sort.date_updated = 'desc';
         }
 
-        return this.set('queryBody', queryBody);
+        return this.set('queryBody', {
+            query: {
+                bool: {
+                    must: {
+                        query_string: {
+                            query: elasticEscape(this.get('queryString')) || '*'
+                        }
+                    },
+                    filter
+                }
+            },
+            sort,
+            from: (this.get('page') - 1) * this.get('size'),
+        });
     },
 
     reloadSearch: Ember.observer('activeFilters', function() {
@@ -261,7 +265,14 @@ export default Ember.Controller.extend(Analytics, {
     otherProviders: [],
     actions: {
         search(val, event) {
-            if (event && (event.keyCode < 49 || [91, 92, 93].indexOf(event.keyCode) !== -1) && [8, 32, 48].indexOf(event.keyCode) === -1) return;
+            if (event &&
+                (
+                    event.keyCode < 49 ||
+                    [91, 92, 93].includes(event.keyCode)
+                ) &&
+                ![8, 32, 48].includes(event.keyCode)
+            )
+                return;
 
             this.set('page', 1);
             this.loadPage();
@@ -293,7 +304,6 @@ export default Ember.Controller.extend(Analytics, {
                 this.set('activeFilters',  { providers: [], subjects: [] });
             else
                 this.set('activeFilters.subjects', []);
-
 
             Ember.get(this, 'metrics')
                 .trackEvent({
