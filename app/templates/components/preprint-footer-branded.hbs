@@ -1,14 +1,14 @@
 <div class="text-center">
     <span>{{model.name}}:</span>
     <div style="display: inline;">
-        <span><a href="mailto:{{model.email_support}}">Support</a></span>
+        <span><a href="mailto:{{if model.emailSupport model.emailSupport (concat 'contact+' model.id '@osf.io')}}">Support</a></span>
         <span> | </span>
-        <span><a href="mailto:{{model.email_contact}}">Contact</a></span>
+        <span><a href="mailto:{{if model.emailContact model.emailContact (concat 'support+' model.id '@osf.io')}}">Contact</a></span>
     </div>
     <div style="display: inline; margin-left: 8px;">
-        <a href={{social_twitter}} aria-label="Twitter"><i class="fa fa-twitter"></i></a>
-        <a href={{social_facebook}} aria-label="Facebook"><i class="fa fa-facebook"></i></a>
-        <a href={{social_instagram}} aria-label="Instagram"><i class="fa fa-instagram"></i></a>
+        <a href="https://twitter.com/{{model.socialTwitter}}" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+        <a href="https://www.facebook.com/{{model.socialFacebook}}" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+        <a href="https://instagram.com/{{model.socialInstagram}}" aria-label="Instagram"><i class="fa fa-instagram"></i></a>
     </div>
 </div>
 
