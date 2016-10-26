@@ -3,7 +3,6 @@ import Ember from 'ember';
 import CasAuthenticatedRouteMixin from 'ember-osf/mixins/cas-authenticated-route';
 import ResetScrollMixin from '../mixins/reset-scroll';
 import SetupSubmitControllerMixin from '../mixins/setup-submit-controller';
-import permissions from 'ember-osf/const/permissions';
 import Analytics from '../mixins/analytics';
 
 export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedRouteMixin, SetupSubmitControllerMixin, {
