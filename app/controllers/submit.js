@@ -257,8 +257,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
     doiChanged: Ember.computed('model.doi', 'basicsDOI', function() {
         // Does the pending DOI differ from the saved DOI in the db?
-        //TODO fix DOI's value changes from undefined to null?
-        return this.get('basicsDOI') != this.get('model.doi');
+        // If pending DOI and saved DOI are both falsy values, doi has not changed.
+        return (this.get('basicsDOI') || this.get('model.doi')) ? this.get('basicsDOI') !== this.get('model.doi') : false;
     }),
     basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', function() {
         // Are there any unsaved changes in the basics section?
