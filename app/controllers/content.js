@@ -68,7 +68,7 @@ export default Ember.Controller.extend(Analytics, {
             url: [window.location.href, 1024],          // required
             mini: ['true', 4],                          // required
             title: [this.get('node.title'), 200],      // optional
-            summary: [this.get('node.abstract'), 256], // optional
+            summary: [this.get('node.description'), 256], // optional
             source: ['Open Science Framework', 200]     // optional
         };
 
