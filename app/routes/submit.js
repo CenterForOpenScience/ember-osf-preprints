@@ -2,71 +2,20 @@ import Ember from 'ember';
 
 import CasAuthenticatedRouteMixin from 'ember-osf/mixins/cas-authenticated-route';
 import ResetScrollMixin from '../mixins/reset-scroll';
+import SetupSubmitControllerMixin from '../mixins/setup-submit-controller';
 import permissions from 'ember-osf/const/permissions';
-import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from '../mixins/analytics';
 
-export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedRouteMixin, {
+export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedRouteMixin, SetupSubmitControllerMixin, {
     currentUser: Ember.inject.service('currentUser'),
     panelActions: Ember.inject.service('panelActions'),
-    model(params) {
-        // Model is either empty preprint (Add mode) or loaded preprint (Edit mode)
-        if (this.get('router.url').indexOf('edit') !== -1) { //EDIT MODE - loads preprint
-            this.set('editMode', true);
-            return this.store.findRecord('preprint', params.preprint_id);
-        } else { // ADD MODE - Store the empty preprint to be created on the model hook for page. Node will be fetched internally during submission process.
-            this.set('editMode', false);
-            return this.store.createRecord('preprint', {
-                subjects: []
-            });
-        }
-    },
-    afterModel(preprint) {
-        // Loads node associated with preprint if in Edit Mode
-        if (this.get('editMode')) {
-            return preprint.get('node').then(node => {
-                this.set('node', node);
-                let userPermissions = this.get('node.currentUserPermissions') || [];
-                if (userPermissions.indexOf(permissions.ADMIN) === -1) {
-                    this.transitionTo('forbidden');
-                }
-            });
-        }
+    model() {
+        return this.store.createRecord('preprint', {
+            subjects: []
+        });
     },
     setupController(controller, model) {
-        if (controller.get('model.isLoaded'))
-            controller.clearFields();
-        controller.set('editMode', this.get('editMode'));
-
-        // Fetch values required to operate the page: user and userNodes
-        let userNodes = Ember.A();
-
-        this.get('store').findAll('preprint-provider')
-            .then((providers) => {
-                controller.set('providers', providers);
-            }
-        );
-
-        this.get('currentUser').load()
-            .then((user) => {
-                controller.set('user', user);
-                return user;
-            }).then((user) => loadAll(user, 'nodes', userNodes, {
-                'filter[preprint]': false
-            }).then(() => {
-                // TODO Hack: API does not support filtering current_user_permissions in the way we desire, so filter
-                // on front end for now until filtering support can be added to backend
-                let onlyAdminNodes = userNodes.filter((item) => item.get('currentUserPermissions').indexOf(permissions.ADMIN) !== -1);
-                controller.set('userNodes', onlyAdminNodes);
-                controller.set('userNodesLoaded', true);
-            }));
-
-        // If editMode, set these initial fields to pre-populate form with preprint/node data.
-        if (this.get('editMode')) {
-            loadEditModeDefaults(controller, model, this.get('node'));
-            this.get('panelActions').close('Upload');
-        }
-
+        this.setupSubmitController(controller, model);
         return this._super(...arguments);
     },
     actions: {
@@ -81,16 +30,3 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedR
         }
     }
 });
-
-// This function helps populate all the preprint fields in Edit mode.
-function loadEditModeDefaults(controller, model, node) {
-    controller.set('filePickerState', 'existing'); // In edit mode, dealing with existing project
-    controller.set('existingState', 'new'); // In edit mode, only option to change file is to upload a NEW file
-    controller.set('node', node);
-    controller.set('nodeTitle', node.get('title'));
-    controller.set('nodeLocked', true);
-    controller.set('titleValid', true);
-    model.get('primaryFile').then((file) => {
-        controller.set('selectedFile', file);
-    });
-}

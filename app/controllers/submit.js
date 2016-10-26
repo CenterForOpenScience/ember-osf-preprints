@@ -116,6 +116,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     uploadInProgress: false, // Set to true when upload step is underway,
     existingPreprints: Ember.A(), // Existing preprints on the current node
     abandonedPreprint: null, // Abandoned(draft) preprint on the current node
+    editMode: false, // Edit mode is false by default.
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -665,7 +666,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // If error, this is caught in the confirm-share-preprint component
             return model.save()
                 .then(() => node.save().then(() => {
-                    this.transitionToRoute('content', model);
+                    if (this.get('editMode')) {
+                        window.location = window.location.pathname; //TODO Ember way to do this?  In edit mode, already in content route.
+                    } else {
+                        this.transitionToRoute('content', model);
+                    }
                 }));
         },
     }
