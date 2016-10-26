@@ -13,6 +13,7 @@ export default OsfModel.extend({
     socialFacebook: DS.attr('string'),
     socialInstagram: DS.attr('string'),
     headerText: DS.attr('string'),
+    subjectsAcceptable: DS.attr(),
     // Relationships
     taxonomies: DS.hasMany('taxonomy'),
     preprints: DS.hasMany('preprint', { inverse: 'provider', async: true }),

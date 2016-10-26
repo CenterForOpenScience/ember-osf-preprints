@@ -6,11 +6,32 @@ import Analytics from '../mixins/analytics';
 export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     theme: Ember.inject.service(),
     model() {
-        // taxonomy for the model rather than all
-        // model = this.get('provider')
-        // model.get('taxonomies')
-        // this.store.get('provider.taxonomies', {filter: {parents: null}});
-        return this.store.query('taxonomy', { filter: { parents: 'null' }, page: { size: 20 } });
+        const taxonomies = this.store
+            .query('taxonomy', {
+                filter: {
+                    parents: 'null'
+                },
+                page: {
+                    size: 20
+                }
+            });
+
+        if (this.get('theme.isProvider')) {
+            const acceptableSubjects = this.get('theme.provider.subjectsAcceptable');
+
+            if (!acceptableSubjects.length)
+                return taxonomies;
+
+            const topLevelAcceptableSubjects = acceptableSubjects
+                .map(subject => subject[0][0]);
+
+            return taxonomies
+                .then(records => records
+                    .filter(item => topLevelAcceptableSubjects.includes(item.id))
+                );
+        }
+
+        return taxonomies;
     },
     actions: {
         search(q) {

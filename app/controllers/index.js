@@ -47,10 +47,8 @@ export default Ember.Controller.extend(Analytics, {
             contentType: 'application/json',
             crossDomain: true,
         })
-          .then(results => this.set('sharePreprintsTotal', results.hits.total))
-          .fail(() => {});
+          .then(results => this.set('sharePreprintsTotal', results.hits.total));
 
         this.set('currentDate', new Date());
     },
-
 });
