@@ -100,7 +100,7 @@ export default Ember.Controller.extend(Analytics, {
     }),
 
     getAuthors: Ember.observer('node', function() {
-        // Cannot be called until preprint has loaded!
+        // Cannot be called until node has loaded!
         const node = this.get('node');
         if (!node) return [];
 
