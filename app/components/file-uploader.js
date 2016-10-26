@@ -175,7 +175,7 @@ export default Ember.Component.extend({
             // Can only upload a new version of a preprint file once the preprint has been created.
             this.get('toast').error('This is not a version of the current preprint file.');
             this.send('formatDropzoneAfterPreUpload', false);
-            Dropzone.forElement('.dropzone').removeAllFiles(true);
+            if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
             this.set('file', null);
             this.set('fileVersion', this.get('osfFile.currentVersion'));
         },
@@ -209,7 +209,7 @@ export default Ember.Component.extend({
         },
         discardUploadChanges() {
             // Discards file upload changes.  Removes staged files from Dropzone, reverts visible file version.
-            Dropzone.forElement('.dropzone').removeAllFiles(true);
+            if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
             this.set('fileVersion', this.get('osfFile.currentVersion') || 1);
             this.attrs.discardUploadChanges();
         },
@@ -234,7 +234,7 @@ export default Ember.Component.extend({
                             if (this.get('nodeLocked')) { // Edit mode
                                 this.get('toast').info('Preprint file updated!');
                                 this.sendAction('finishUpload');
-                                Dropzone.forElement('.dropzone').removeAllFiles(true);
+                                if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
                             } else { // Add mode
                                 return this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint',  this.get('parentNode'));
                             }
