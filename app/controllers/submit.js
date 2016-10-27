@@ -170,7 +170,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             existingPreprints: Ember.A(),
             abandonedPreprint: null,
             editMode: false,
-            shareButtonDisabled: false
+            shareButtonDisabled: false,
+            // Basics and subjects fields need to be reset because the Add process overwrites the computed properties as reg properties
+            basicsTags: Ember.A(),
+            basicsAbstract: null,
+            basicsDOI: null,
+            subjectsList: Ember.A()
         }));
     },
 
