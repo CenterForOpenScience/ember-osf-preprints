@@ -413,11 +413,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
             // file from parent node to new component.
             var node = this.get('node');
+            var nodeDescription = node.get('description');
             node.addChild(this.get('nodeTitle'))
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
-                    this.set('basicsAbstract', this.get('node.description'));
+                    if (nodeDescription === '') {
+                        nodeDescription = null;
+                    }
+                    this.set('basicsAbstract', nodeDescription);
                     child.get('files')
                         .then((providers) => {
                             var osfstorage = providers.findBy('name', 'osfstorage');
