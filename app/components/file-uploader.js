@@ -131,6 +131,7 @@ export default Ember.Component.extend({
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
+                    this.set('basicsAbstract', this.get('node.description'));
                     this.send('upload');
                 })
                 .catch(() => {

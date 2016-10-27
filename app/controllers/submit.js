@@ -419,6 +419,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
+                    this.set('basicsAbstract', this.get('node.description'));
                     child.get('files')
                         .then((providers) => {
                             var osfstorage = providers.findBy('name', 'osfstorage');
