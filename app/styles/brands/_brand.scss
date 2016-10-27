@@ -74,6 +74,14 @@ $nav-height: 50px;
         color: $theme-color-4;
     }
 
+    .dropdown-menu {
+        color: white;
+    }
+
+    .dropdown-menu > li > a:hover {
+        color: $theme-color-4;
+    }
+
     .btn-primary {
         background-color: $theme-color-3;
         border-color: $theme-color-1;
