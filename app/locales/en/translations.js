@@ -50,8 +50,9 @@ export default {
     },
     discover: {
         search: {
-            heading: `Preprint Search`,
+            heading: `Preprint Archive Search`,
             paragraph: `powered by`,
+            partner: `Partner Repositories`,
             placeholder: `Search preprints...`
         },
         sort_by: `Sort by`,

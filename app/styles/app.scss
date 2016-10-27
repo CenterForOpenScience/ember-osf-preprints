@@ -1017,10 +1017,20 @@ label.title-label {
 
 }
 
+.discover-provider-logo,
 .content-provider-logo {
-    float: right;
     background: bottom center no-repeat;
     background-size: contain;
+}
+
+.content-provider-logo {
+    float: right;
     min-height: 120px;
     min-width: 240px;
+}
+
+.discover-provider-logo {
+    filter: invert(100%);
+    min-height: 80px;
+    min-width: 150px;
 }

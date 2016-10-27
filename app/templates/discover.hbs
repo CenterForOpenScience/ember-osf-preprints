@@ -26,6 +26,25 @@
             </div>
         </div>
         <div class="row m-v-md">
+            <div class="col-xs-8 col-xs-offset-2" style="text-align: center;">
+                {{#if (not theme.isProvider)}}
+                    <h3>{{t "discover.search.partner"}}</h3>
+                    <div class="row">
+                        {{#each model as |provider|}}
+                            <style>
+                                .logo-{{provider.id}} {
+                                    background-image: url('/preprints/assets/img/provider_logos/{{provider.id}}.png');
+                                }
+                            </style>
+                            <a href="/preprints/{{provider.id}}/discover">
+                                <div class="discover-provider-logo col-xs-4 logo-{{provider.id}}"></div>
+                            </a>
+                        {{/each}}
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+        <div class="row m-v-md">
             <div class="col-xs-6 col-xs-offset-6">
                 <span class="pull-right">
                     <div class="dropdown">

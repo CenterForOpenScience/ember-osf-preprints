@@ -24,8 +24,12 @@
                     <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
                 </div>
                 <div class="col-xs-2">
-                    <div class="content-provider-logo"
-                         style="background-image: url('/preprints/assets/img/provider_logos/{{model.provider.id}}.png');"
+                    <style>
+                        .provider-logo {
+                            background-image: url('/preprints/assets/img/provider_logos/{{model.provider.id}}.png');
+                        }
+                    </style>
+                    <div class="content-provider-logo provider-logo"
                          title="{{model.provider.name}}"
                     ></div>
                 </div>
