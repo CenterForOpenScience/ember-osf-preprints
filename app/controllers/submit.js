@@ -240,7 +240,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         var basicsAbstract = this.get('basicsAbstract');
         var nodeDescription = this.get('node.description');
         var changed = false;
-        if (basicsAbstract) {
+        if (basicsAbstract !== null) {
             changed = basicsAbstract.trim() !== nodeDescription;
         }
         return changed;
