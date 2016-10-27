@@ -69,6 +69,21 @@ $nav-height: 50px;
         }
     }
 
+    #preprint-form-subjects .subject,
+    #preprint-form-subjects ul li.selected,
+    #preprint-form-subjects ul li:active {
+        background-color: $theme-color-3;
+    }
+
+    #preprint-form-subjects .subject > b:after {
+        border-left-color: $theme-color-3;
+    }
+
+    #preprint-form-subjects .subject:hover,
+    #preprint-form-subjects ul li:hover {
+        background-color: $theme-color-1;
+    }
+
     a,
     .preprint-form-section header {
         color: $theme-color-4;
