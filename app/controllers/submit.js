@@ -117,6 +117,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     existingPreprints: Ember.A(), // Existing preprints on the current node
     abandonedPreprint: null, // Abandoned(draft) preprint on the current node
     editMode: false, // Edit mode is false by default.
+    shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -662,6 +663,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             let model = this.get('model');
             let node = this.get('node');
             this.set('savingPreprint', true);
+            this.toggleProperty('shareButtonDisabled');
             model.set('isPublished', true);
             node.set('public', true);
 
@@ -673,7 +675,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     } else {
                         this.transitionToRoute('content', model);
                     }
-                }));
+                }))
+                .catch(() => {
+                    this.toggleProperty('shareButtonDisabled');
+                    return this.get('editMode') ? this.get('toast').error('Error completing preprint.') : this.toast.error('Could not save preprint; please try again later');
+
+                });
         },
     }
 });
