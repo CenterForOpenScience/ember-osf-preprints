@@ -5,7 +5,7 @@
         <div class="container">{{!CONTAINER DIV}}
             <h1 id="preprintTitle" class="p-b-md">{{node.title}}</h1>
             {{#if isAdmin}}
-                <a type="button" class="pull-right btn btn-success" href={{concat model.links.html '?edit'}}  {{action "click" 'link' "Content - Edit Preprint" (concat model.links.html '?edit')}}>{{t "content.project_button.edit_preprint"}}</a>
+                <a type="button" class="pull-right btn btn-success m-h-lg" href={{concat model.links.html '?edit'}}  {{action "click" 'link' "Content - Edit Preprint" (concat model.links.html '?edit')}}>{{t "content.project_button.edit_preprint"}}</a>
             {{/if}}
             <h5 class="view-authors">
                 <ul class="comma-list">
