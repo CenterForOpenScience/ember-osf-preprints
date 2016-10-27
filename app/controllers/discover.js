@@ -263,12 +263,6 @@ export default Ember.Controller.extend(Analytics, {
         this.loadPage();
     }),
     otherProviders: [],
-    selectFilter(filterName, item) {
-        const filters = this.get(`activeFilters.${filterName}`);
-        const action = filters.includes(item) ? 'remove' : 'push';
-        filters[`${action}Object`](item);
-        this.notifyPropertyChange('activeFilters');
-    },
     actions: {
         search(val, event) {
             if (event &&
@@ -338,30 +332,19 @@ export default Ember.Controller.extend(Analytics, {
         },
 
         updateFilters(filterType, item) {
-            if (typeof item === 'object') {
-                item = item.text;
-            }
-
-            const items = this.get(`activeFilters.${filterType}`);
-            const hasItem = items.includes(item);
-
-            items[`${hasItem ? 'remove' : 'push'}Object`](item);
+            item = typeof item === 'object' ? item.text : item;
+            const filters = this.get(`activeFilters.${filterType}`);
+            const hasItem = filters.includes(item);
+            const action = hasItem ? 'remove' : 'push';
+            filters[`${action}Object`](item);
             this.notifyPropertyChange('activeFilters');
 
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'filter',
                     action: hasItem ? 'remove' : 'add',
-                    label: `Discover - ${item}`
+                    label: `Discover - ${filterType} - ${item}`
                 });
-        },
-
-        selectSubjectFilter(subject) {
-            this.selectFilter('subjects', typeof subject === 'object' ? subject.text : subject);
-        },
-
-        selectProvider(provider) {
-            this.selectFilter('providers', provider);
         },
     },
 });
