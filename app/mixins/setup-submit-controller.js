@@ -54,6 +54,6 @@ export default Ember.Mixin.create({
             controller.set('selectedFile', file);
         });
         this.get('panelActions').close('Upload');
-        this.get('panelActions').open('Update');
+        this.get('panelActions').open('Submit');
     }
 });

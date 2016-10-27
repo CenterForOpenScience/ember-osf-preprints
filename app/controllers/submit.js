@@ -388,6 +388,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
                 this.set('osfProviderLoaded', true);
                 this.set('file', null);
+                // Closes section, so all panels closed if Upload section revisited
+                this.get('panelActions').close('uploadNewFile');
                 this.send('next', this.get('_names.0'));
             });
         },

@@ -204,25 +204,21 @@
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
-
-                    {{#if editMode}}
-                        {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block" animate=true name='Update' allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode name='Update' showValidationIndicator=false}}
-                            {{#cp-panel-body}}
-                                <div>
-                                    <div class="text-center">
-                                        <p>
-                                            {{t "submit.body.update.paragraph"}}
-                                        </p>
-                                        <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'savePreprint'}}>{{t "global.complete"}}</button>
+                    {{#with _names.[4] as |name|}}
+                        {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header editMode=editMode name=(if editMode 'Update' name) showValidationIndicator=false}}
+                            {{#if editMode}}
+                                {{#cp-panel-body}}
+                                    <div>
+                                        <div class="text-center">
+                                            <p>
+                                                {{t "submit.body.update.paragraph"}}
+                                            </p>
+                                            <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'savePreprint'}}>{{t "global.complete"}}</button>
+                                        </div>
                                     </div>
-                                </div>
-                            {{/cp-panel-body}}
-                        {{/preprint-form-section}}
-                    {{else}}
-                        {{#with _names.[4] as |name|}}
-                            {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                                {{preprint-form-header editMode=editMode name=name showValidationIndicator=false}}
+                                {{/cp-panel-body}}
+                            {{else}}
                                 {{#cp-panel-body}}
                                     <div>
                                         <p>
@@ -244,9 +240,9 @@
                                         </div>
                                     </div>
                                 {{/cp-panel-body}}
-                            {{/preprint-form-section}}
-                        {{/with}}
-                    {{/if}}
+                            {{/if}}
+                        {{/preprint-form-section}}
+                    {{/with}}
                 {{/cp-panels}}
             </div>
         </div>
