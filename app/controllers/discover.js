@@ -263,6 +263,12 @@ export default Ember.Controller.extend(Analytics, {
         this.loadPage();
     }),
     otherProviders: [],
+    selectFilter(filterName, item) {
+        const filters = this.get(`activeFilters.${filterName}`);
+        const action = filters.includes(item) ? 'remove' : 'push';
+        filters[`${action}Object`](item);
+        this.notifyPropertyChange('activeFilters');
+    },
     actions: {
         search(val, event) {
             if (event &&
@@ -351,25 +357,11 @@ export default Ember.Controller.extend(Analytics, {
         },
 
         selectSubjectFilter(subject) {
-            if (typeof subject === 'object') {
-                subject = subject.text;
-            }
-            if (this.get('activeFilters.subjects').indexOf(subject) === -1) {
-                this.get('activeFilters.subjects').pushObject(subject);
-            } else {
-                this.get('activeFilters.subjects').removeObject(subject);
-            }
-            this.notifyPropertyChange('activeFilters');
+            this.selectFilter('subjects', typeof subject === 'object' ? subject.text : subject);
         },
 
         selectProvider(provider) {
-            let currentProviders = this.get('activeFilters.providers').slice();
-            if (currentProviders.indexOf(provider) !== -1) {
-                this.get('activeFilters.providers').removeObject(provider);
-            } else {
-                this.get('activeFilters.providers').pushObject(provider);
-            }
-            this.notifyPropertyChange('activeFilters');
+            this.selectFilter('providers', provider);
         },
     },
 });

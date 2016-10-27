@@ -101,7 +101,12 @@
                 </div>
                 <div class="osf-box p-md m-b-lg clearfix m-t-xl">
                     <p>{{t "discover.main.box.paragraph"}}</p>
-                    {{#link-to "submit" type="button" class="btn btn-success btn-lg" invokeAction=(action 'click' 'button' 'Discover - Add Preprint')}}{{t "discover.main.box.button"}}{{/link-to}}
+                    {{#link-to (if theme.isProvider "provider.submit" "submit")
+                               type="button" class="btn btn-success btn-lg"
+                               invokeAction=(action 'click' 'button' 'Discover - Add Preprint')
+                    }}
+                        {{t "discover.main.box.button"}}
+                    {{/link-to}}
                 </div>
             </div>
 
