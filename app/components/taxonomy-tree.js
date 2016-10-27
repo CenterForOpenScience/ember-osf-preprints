@@ -7,9 +7,11 @@ export default Ember.Component.extend(Analytics, {
     store: Ember.inject.service(),
     theme: Ember.inject.service(),
     _parseResults(results) {
-        if (this.get('flatSubjects').size) {
+        const flatSubjects = this.get('flatSubjects');
+
+        if (flatSubjects.size) {
             results = results
-                .filter(result => this.get('flatSubjects').has(result.id));
+                .filter(result => flatSubjects.has(result.id));
         }
 
         return results

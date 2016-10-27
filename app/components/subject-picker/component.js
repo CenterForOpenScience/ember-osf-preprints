@@ -10,6 +10,7 @@ function arrayStartsWith(arr, prefix) {
 
 export default Ember.Component.extend({
     store: Ember.inject.service(),
+    theme: Ember.inject.service(),
 
     // Array of arrays containing subject lineages
     selected: [],
@@ -60,18 +61,44 @@ export default Ember.Component.extend({
     selection2: null,
     selection3: null,
 
-    init() {
-        this._super(...arguments);
-        this.set('selected', []);
+    flatSubjects: Ember.computed('theme.provider.subjectsAcceptable', function() {
+        const acceptableSubjects = this.get('theme.provider.subjectsAcceptable') || [];
+        const flatSubjects = new Set();
 
+        for (const subjects of acceptableSubjects) {
+            for (const subject of subjects[0]) {
+                if (!flatSubjects.has(subject))
+                    flatSubjects.add(subject);
+            }
+        }
+
+        return flatSubjects;
+    }),
+
+    querySubjects(parents = 'null', tier = 0) {
         this.get('store').query('taxonomy', {
             filter: {
-                parents: 'null'
+                parents
             },
             page: {
                 size: 100
             }
-        }).then(results => this.set('_tier1', results));
+        }).then(results => {
+            const flatSubjects = this.get('flatSubjects');
+
+            if (flatSubjects.size) {
+                results = results
+                    .filter(result => flatSubjects.has(result.id));
+            }
+
+            this.set(`_tier${tier + 1}`, results);
+        });
+    },
+
+    init() {
+        this._super(...arguments);
+        this.set('selected', []);
+        this.querySubjects();
     },
 
     emitSave() {
@@ -146,14 +173,7 @@ export default Ember.Component.extend({
                 this.set(`_tier${i}`, null);
 
             // TODO: Fires a network request every time clicking here, instead of only when needed?
-            this.get('store').query('taxonomy', {
-                filter: {
-                    parents: selected.id
-                },
-                page: {
-                    size: 100
-                }
-            }).then(results => this.set(`_tier${tier + 1}`, results));
+            this.querySubjects(selected.id, tier);
         },
     }
 });
