@@ -9,6 +9,8 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedR
     currentUser: Ember.inject.service('currentUser'),
     panelActions: Ember.inject.service('panelActions'),
     model() {
+        // Store the empty preprint to be created on the model hook for page. Node will be fetched
+        //  internally during submission process.
         return this.store.createRecord('preprint', {
             subjects: []
         });

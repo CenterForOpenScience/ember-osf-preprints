@@ -2,7 +2,7 @@ import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
 
-// The submit controller/template is used to handle both Add and Edit modes for a preprint.  The setupSubmitController method contains
+// The submit controller/template is used to handle both Add and Edit modes for a preprint.  Contains
 // the setupController items necessary for both Add and Edit Modes.
 export default Ember.Mixin.create({
     panelActions: Ember.inject.service('panelActions'),

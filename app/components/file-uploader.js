@@ -2,34 +2,18 @@ import Ember from 'ember';
 import {State} from '../controllers/submit';
 
 /**
- * File uploader widget - handles all cases where uploading a new file as your preprint
+ * File uploader widget - handles all cases where uploading a new file as your preprint, or uploading a new version of your preprint.
  *
- *  Currently used for the following scenarios 1) Upload file to a new project 2) Upload file to a new component 3) Upload
- *  file to an existing node.
+ *  Currently used for the following ADD mode scenarios: 1) Upload file to a new project 2) Upload file to a new component 3) Upload
+ *  file to an existing node.  Also used in EDIT mode because your only option to change a preprint file is to upload a new version.
  *
  *  Contains dropzone-widget where you can drag and drop preprint file. 'file' will be set to the preuploaded file. 'node' will
  *  either become the newly created project or component, or the existing node.  After file is uploaded to the designated 'node',
  *  'osfFile' is set to the uploadedFile.
  *
- * Sample usage:
- * ```handlebars
- * {{file-uploader
- *       changeInitialState=changeInitialState (action)
- *       finishUpload=finishUpload (action)
- *       newNodeNewFile=true (if new node, new file instance)
- *       startState=startState ('start')
- *       nodeTitle=nodeTitle
- *       currentUser=currentUser (current logged-in user)
- *       osfFile=selectedFile
- *       hasFile=hasFile
- *       file=file
- *       contributors=contributors (if need to copy contributors to new component)
- *       node=node
- *       selectedNode=selectedNode
- *       convertOrCopy=convertOrCopy
- *       parentNode=parentNode
- *       convertProjectConfirmed=convertProjectConfirmed
- *}}
+ *  NOTE: file-uploader is used in two places in this application - on the submit page and inside the preprint-form-project-select component.
+ *  If new properties need to passed to this component, be sure to update in both places.
+ *
  * ```
  * @class file-uploader
  */
@@ -143,7 +127,7 @@ export default Ember.Component.extend({
         uploadFileToExistingNode() {
             // Upload case for using an existing node with a new file for the preprint.  Updates title of existing node and then uploads file to node.
             // Also applicable in edit mode.
-            if (this.get('nodeLocked')) {
+            if (this.get('nodeLocked')) { // Edit mode
                 this.set('uploadInProgress', true);
             }
             var node = this.get('node');
@@ -176,9 +160,9 @@ export default Ember.Component.extend({
             // Can only upload a new version of a preprint file once the preprint has been created.
             this.get('toast').error('This is not a version of the current preprint file.');
             this.send('formatDropzoneAfterPreUpload', false);
-            if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
             this.set('file', null);
             this.set('fileVersion', this.get('osfFile.currentVersion'));
+            if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
         },
         setPreUploadedFileAttributes(file, version) {
             // Sets preUploadedFile attributes.
@@ -196,7 +180,6 @@ export default Ember.Component.extend({
                     this.send('setPreUploadedFileAttributes', file, this.get('osfFile.currentVersion') + 1);
                 }
             } else { // Add mode
-                this.set('titleValid', false);
                 this.attrs.clearDownstreamFields('belowFile');
                 this.send('setPreUploadedFileAttributes', file, this.get('osfFile.currentVersion'));
             }
@@ -250,6 +233,7 @@ export default Ember.Component.extend({
                 this.set('file', null);
                 // Error uploading file. Clear downstream fields.
                 this.attrs.clearDownstreamFields('belowNode');
+                this.set('uploadInProgress', false);
                 this.get('toast').error(
                     file.xhr.status === 409 ?
                     'A file with that name already exists'

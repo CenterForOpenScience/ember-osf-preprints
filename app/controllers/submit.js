@@ -97,7 +97,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     selectedFile: null, // File that will be the preprint (already uploaded to node or selected from existing node)
     contributors: Ember.A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
     nodeTitle: null, // Preprint title
-    nodeLocked: false, // After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
+    nodeLocked: false, // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
@@ -166,22 +166,26 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             osfStorageProvider: null,
             titleValid: null,
             disciplineModifiedToggle: false,
-            uploadInProgress: false
+            uploadInProgress: false,
+            existingPreprints: Ember.A(),
+            abandonedPreprint: null,
+            editMode: false,
+            shareButtonDisabled: false
         }));
     },
 
     ///////////////////////////////////////
-    // Validation rules for form sections
+    // Validation rules and changed states for form sections
 
     // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
-    uploadValid: Ember.computed.alias('nodeLocked'),
+    uploadValid: Ember.computed.alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
-    // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand pendingBasicsValid definition.
+    // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
     basicsValid: Ember.computed.and('abstractValid', 'doiValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
-    // Must select at least one subject.
+    // Must select at least one subject (looking at pending subjects)
     disciplineValid: Ember.computed.notEmpty('subjectsList'),
     // Does node have a saved title?
     savedTitle: Ember.computed('node.title', function() {
@@ -203,7 +207,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     allSectionsValid: Ember.computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', function() {
         return this.get('savedTitle') && this.get('savedFile') && this.get('savedAbstract') && this.get('savedSubjects') && this.get('authorsValid');
     }),
-
     ////////////////////////////////////////////////////
     // Fields used in the "upload" section of the form.
     ////////////////////////////////////////////////////
@@ -240,7 +243,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     basicsTags: Ember.computed('node', function() {
         // Pending tags
         var node = this.get('node');
-        // TODO: This may need to provide a default value (list)? Via default or field transform?
         return node ? node.get('tags') : Ember.A();
     }),
     tagsChanged: Ember.computed('basicsTags', 'node.tags', function() {
@@ -324,7 +326,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions
-        // FIXME: Workaround for isAdmin variable not making sense until a node has been loaded
         let userPermissions = this.get('node.currentUserPermissions') || [];
         return userPermissions.indexOf(permissions.ADMIN) >= 0;
     }),
@@ -380,19 +381,16 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         lockNode() {
             // Locks node so that preprint location cannot be modified.  Occurs after upload step is complete.
+            // In editMode, nodeLocked is set to true.
             this.set('nodeLocked', true);
         },
         finishUpload() {
             // Locks node and advances to next form section.
             this.send('lockNode');
-            this.get('node.files').then((files) => {
-                this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
-                this.set('osfProviderLoaded', true);
-                this.set('file', null);
-                // Closes section, so all panels closed if Upload section revisited
-                this.get('panelActions').close('uploadNewFile');
-                this.send('next', this.get('_names.0'));
-            });
+            this.set('file', null);
+            // Closes section, so all panels closed if Upload section revisited
+            this.get('panelActions').close('uploadNewFile');
+            this.send('next', this.get('_names.0'));
         },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
@@ -482,7 +480,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.set('selectedFile', file);
         },
         discardUploadChanges() {
-            // Discards upload section changes in edit mode.  Restores displayed file to current preprint primaryFile
+            // Discards upload section changes.  Restores displayed file to current preprint primaryFile
             // and resets displayed title to current node title. (No requests sent, front-end only.)
             var currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
             this.set('file', null);
@@ -523,8 +521,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
           Basics section
          */
         discardBasics() {
-            // Discards changes to basic fields in Edit mode. (No requests sent, front-end only.)
-            this.set('basicsTags', this.get('node.tags'));
+            // Discards changes to basic fields. (No requests sent, front-end only.)
+            this.set('basicsTags', this.get('node.tags').slice(0));
             this.set('basicsAbstract', this.get('node.description'));
             this.set('basicsDOI', this.get('model.doi'));
         },
@@ -539,18 +537,26 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
             if (this.get('abstractChanged')) node.set('description', this.get('basicsAbstract'));
             if (this.get('tagsChanged')) node.set('tags', this.get('basicsTags'));
-            if (this.get('doiChanged')) {
-                model.set('doi', this.get('basicsDOI'));
-                if (model.get('doi') === '') {
-                    model.set('doi', null);
-                }
-            }
 
             node.save()
                 .then(() => {
-                    model.save().then(() => {
+                    if (this.get('doiChanged')) {
+                        model.set('doi', this.get('basicsDOI'));
+                        if (model.get('doi') === '') {
+                            model.set('doi', null);
+                        }
+                        model.save()
+                            .then(() => {
+                                this.send('next', this.get('_names.2'));
+                            })
+                            .catch(() => {
+                                model.set('doi', currentDOI);
+                                this.get('toast').error('Error saving DOI.');
+                            });
+                    } else {
                         this.send('next', this.get('_names.2'));
-                    });
+                    }
+
                 })
                 // If save fails, do not transition
                 .catch(() => {
@@ -589,16 +595,19 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
 
         discardSubjects() {
-            // Discards changes to subjects in Edit mode. (No requests sent, front-end only.)
+            // Discards changes to subjects. (No requests sent, front-end only.)
             this.set('subjectsList', this.get('model.subjects').slice(0));
         },
 
         saveSubjects() {
             // Saves subjects (disciplines) and then moves to next section.
             var model = this.get('model');
+            // Current subjects saved so UI can be restored in case of failure
             var currentSubjects = model.get('subjects').slice(0);
             var subjectMap = subjectIdMap(this.get('subjectsList'));
-            model.set('subjects', subjectMap);
+            if (this.get('disciplineChanged')) {
+                model.set('subjects', subjectMap);
+            }
             model.save()
                 .then(() => {
                     this.send('next', this.get('_names.1'));
@@ -607,6 +616,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     model.set('subjects', currentSubjects);
                     this.get('toast').error('Error saving discipline(s).');
                 });
+
         },
         /**
          * findContributors method.  Queries APIv2 users endpoint on any of a set of name fields.  Fetches specified page of results.

@@ -92,6 +92,7 @@ export default Ember.Controller.extend(Analytics, {
     activeFile: null,
 
     disciplineReduced: Ember.computed('model.subjects', function() {
+        // Preprint disciplines are displayed in collapsed form on content page
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
 

@@ -2,43 +2,16 @@ import Ember from 'ember';
 import Permissions from 'ember-osf/const/permissions';
 
 /**
- * Preprint form project select widget - handles all cases where the first step is to select an existing OSF project to contain
- * your preprint.
+ * Preprint form project select widget - handles all ADD mode cases where the first step is to select an existing OSF project to contain
+ * your preprint.  Also used in EDIT mode - as we keep the project locked after preprint has been published.  Therefore, you must use an existing project!
  *
  *  Uses the file-uploader component, hence the large number of properties for this component, that are passed along to the file-uploader.
  *  Cases not needing the file-uploader are where you are selecting an existing file on an existing node, or copying a file into
  *  a newly-created component - no file uploading needed.
  *
- * Sample usage:
- * ```handlebars
- *{{preprint-form-project-select
- *         changeInitialState=(action 'changeInitialState')
- *         finishUpload=(action 'finishUpload')
- *         existingNodeExistingFile=(action 'existingNodeExistingFile')
- *         createComponentCopyFile=(action "createComponentCopyFile")
- *         selectFile=(action "selectExistingFile")
- *         highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
- *         startState=_State.START
- *         nodeTitle=nodeTitle
- *         currentUser=user
- *         selectedFile=selectedFile
- *         hasFile=hasFile
- *         file=file
- *         node=node
- *         userNodes=userNodes
- *         selectedNode=node
- *         contributors=contributors
- *         fileSelect=true
- *         currentState=filePickerState
- *         convertProjectConfirmed=convertProjectConfirmed
- *         userNodesLoaded=userNodesLoaded
- *         parentNode=parentNode
- *         }}
- * ```
  * @class preprint-form-project-select
  */
 export default Ember.Component.extend({
-    panelActions: Ember.inject.service('panelActions'),
     userNodes: Ember.A(),
     selectedNode: null,
     isAdmin: Ember.computed('selectedNode', function() {
