@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import ResetScrollMixin from '../mixins/reset-scroll';
 import Analytics from '../mixins/analytics';
-import config from '../config/environment';
+import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
 
 export default Ember.Route.extend(Analytics, ResetScrollMixin, {

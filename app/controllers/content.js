@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
-import config from '../config/environment';
+import config from 'ember-get-config';
 import Analytics from '../mixins/analytics';
 
 /**
