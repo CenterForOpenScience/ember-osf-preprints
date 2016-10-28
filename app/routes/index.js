@@ -6,32 +6,39 @@ import Analytics from '../mixins/analytics';
 export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     theme: Ember.inject.service(),
     model() {
-        const taxonomies = this.store
-            .query('taxonomy', {
-                filter: {
-                    parents: 'null'
-                },
-                page: {
-                    size: 20
+        const hash = {
+            taxonomies: this.store
+                .query('taxonomy', {
+                    filter: {
+                        parents: 'null'
+                    },
+                    page: {
+                        size: 20
+                    }
                 }
-            });
+            ),
+            brandedProviders: this
+                .get('store')
+                .findAll('preprint-provider', { reload: true })
+                .then(result => result
+                    .filter(item => item.id !== 'osf')
+                )
+        };
 
-        if (this.get('theme.isProvider')) {
-            const acceptableSubjects = this.get('theme.provider.subjectsAcceptable');
+        const acceptableSubjects = this.get('theme.provider.subjectsAcceptable');
 
-            if (!acceptableSubjects.length)
-                return taxonomies;
+        if (!this.get('theme.isProvider') || !acceptableSubjects.length)
+            return Ember.RSVP.hash(hash);
 
-            const topLevelAcceptableSubjects = acceptableSubjects
-                .map(subject => subject[0][0]);
+        const topLevelAcceptableSubjects = acceptableSubjects
+            .map(subject => subject[0][0]);
 
-            return taxonomies
-                .then(records => records
-                    .filter(item => topLevelAcceptableSubjects.includes(item.id))
-                );
-        }
+        hash.taxonomies = hash.taxonomies
+            .then(records => records
+                .filter(item => topLevelAcceptableSubjects.includes(item.id))
+            );
 
-        return taxonomies;
+        return Ember.RSVP.hash(hash);
     },
     actions: {
         search(q) {

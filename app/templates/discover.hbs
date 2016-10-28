@@ -36,7 +36,10 @@
                                     background-image: url('/preprints/assets/img/provider_logos/{{provider.id}}.png');
                                 }
                             </style>
-                            <a href="/preprints/{{provider.id}}/discover">
+                            <a href="/preprints/{{provider.id}}/discover"
+                               title={{provider.name}}
+                               onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
+                            >
                                 <div class="discover-provider-logo col-xs-4 logo-{{provider.id}}"></div>
                             </a>
                         {{/each}}

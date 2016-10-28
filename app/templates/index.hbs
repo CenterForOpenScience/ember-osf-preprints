@@ -40,7 +40,7 @@
                 <div class="col-xs-12">
                     <h2>{{t "index.subjects.heading"}}</h2>
                     <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
-                        {{taxonomy-top-list list=model}}
+                        {{taxonomy-top-list list=model.taxonomies}}
                     </div> {{!END SUBJECTS LIST}}
                 </div>
             </div>{{!END ROW}}
@@ -59,9 +59,16 @@
                     </div>
                 </div>
                 <div class="row p-v-md">{{!BRANDED ROW}}
-                    <div class="col-sm-4"> <div class=" provider-logo provider-engrxiv"></div></div>
-                    <div class="col-sm-4"> <div class="provider-logo provider-socarxiv"></div></div>
-                    <div class="col-sm-4"> <div class=" provider-logo provider-psyarxiv"></div></div>
+                    {{#each model.brandedProviders as |provider|}}
+                        <div class="col-sm-4">
+                            <a href="/preprints/{{provider.id}}"
+                               title={{provider.name}}
+                               onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
+                            >
+                                <div class="provider-logo provider-{{provider.id}}"></div>
+                            </a>
+                        </div>
+                    {{/each}}
                 </div>
                 <div class="row p-v-md">
                     <div class="col-md-12 text-center">
