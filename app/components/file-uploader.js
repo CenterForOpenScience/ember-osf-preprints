@@ -12,7 +12,7 @@ import {State} from '../controllers/submit';
  *  'osfFile' is set to the uploadedFile.
  *
  *  NOTE: file-uploader is used in two places in this application - on the submit page and inside the preprint-form-project-select component.
- *  If new properties need to passed to this component, be sure to update in both places.
+ *  If new properties need to be passed to this component, be sure to update in both places.
  *
  * ```
  * @class file-uploader
@@ -26,6 +26,7 @@ export default Ember.Component.extend({
     node: null,
     callback: null,
     fileVersion: Ember.computed('osfFile', function() {
+        // Helps communicate to user that there may be a pending, unsaved version
         return this.get('osfFile.currentVersion') || 1;
     }),
 
