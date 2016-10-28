@@ -69,10 +69,6 @@ export default Ember.Component.extend({
         }).then(results => this.set('_tier1', results));
     },
 
-    emitSave() {
-        this.sendAction('save', this.get('selected'));
-    },
-
     actions: {
         deselect(subject) {
             let index;
@@ -101,8 +97,7 @@ export default Ember.Component.extend({
                 this.set(`_tier${i}`, null);
                 this.set(`selection${i}`, null);
             }
-            // TODO: No need for autosave here- preprint isn't saved until the end
-            Ember.run.debounce(this, 'emitSave', 500);
+            this.sendAction('save', this.get('selected'));
         },
         select(selected, tier) {
             tier = parseInt(tier);
@@ -131,8 +126,7 @@ export default Ember.Component.extend({
                     this.get('selected').pushObject(selection);
             }
 
-            // TODO: No need for autosave here- preprint isn't saved until the end
-            Ember.run.debounce(this, 'emitSave', 500);
+            this.sendAction('save', this.get('selected'));
 
             if (tier === 3) return;
 

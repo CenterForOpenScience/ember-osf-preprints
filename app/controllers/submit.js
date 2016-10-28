@@ -616,16 +616,17 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             var subjectMap = subjectIdMap(this.get('subjectsList'));
             if (this.get('disciplineChanged')) {
                 model.set('subjects', subjectMap);
+                model.save()
+                    .then(() => {
+                        this.send('next', this.get('_names.1'));
+                    })
+                    .catch(() => {
+                        model.set('subjects', currentSubjects);
+                        this.get('toast').error('Error saving discipline(s).');
+                    });
+            } else {
+                this.send('next', this.get('_names.1'));
             }
-            model.save()
-                .then(() => {
-                    this.send('next', this.get('_names.1'));
-                })
-                .catch(() => {
-                    model.set('subjects', currentSubjects);
-                    this.get('toast').error('Error saving discipline(s).');
-                });
-
         },
         /**
          * findContributors method.  Queries APIv2 users endpoint on any of a set of name fields.  Fetches specified page of results.
