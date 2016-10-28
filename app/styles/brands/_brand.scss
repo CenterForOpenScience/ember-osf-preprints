@@ -120,4 +120,10 @@ $nav-height: 50px;
         background-color: $theme-color-3;
         color: $theme-color-2;
     }
+
+    .preprint-advisory {
+        background-color: $theme-color-1;
+        color: $theme-color-2;
+        min-height: 200px;
+    }
 }
