@@ -70,7 +70,7 @@ function disciplineArraysEqual(a, b) {
 
 function subjectIdMap(subjectArray) {
     // Maps array of arrays of disciplines into array of arrays of discipline ids.
-    return subjectArray.slice(0).map(subjectBlock => subjectBlock.map(subject => subject.id));
+    return subjectArray.map(subjectBlock => subjectBlock.map(subject => subject.id));
 }
 
 /**
@@ -278,11 +278,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     ////////////////////////////////////////////////////
     subjectsList: Ember.computed('model.subjects.@each', function() {
         // Pending subjects
-        return this.get('model.subjects') ? this.get('model.subjects').slice(0) : Ember.A();
+        return this.get('model.subjects') ? Ember.$.extend(true, [], this.get('model.subjects')) : Ember.A();
     }),
     disciplineReduced: Ember.computed('model.subjects', function() {
         // Flattened subject list
-        return this.get('model.subjects').slice(0).reduce((acc, val) => acc.concat(val), []).uniqBy('id');
+        return Ember.$.extend(true, [], this.get('model.subjects')).reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
     disciplineChanged: Ember.computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle',  function() {
         // Are there any unsaved changes in the discipline section?
@@ -605,14 +605,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
         discardSubjects() {
             // Discards changes to subjects. (No requests sent, front-end only.)
-            this.set('subjectsList', this.get('model.subjects').slice(0));
+            this.set('subjectsList', Ember.$.extend(true, [], this.get('model.subjects')));
         },
 
         saveSubjects() {
             // Saves subjects (disciplines) and then moves to next section.
             var model = this.get('model');
             // Current subjects saved so UI can be restored in case of failure
-            var currentSubjects = model.get('subjects').slice(0);
+            var currentSubjects = Ember.$.extend(true, [], this.get('model.subjects'));
             var subjectMap = subjectIdMap(this.get('subjectsList'));
             if (this.get('disciplineChanged')) {
                 model.set('subjects', subjectMap);
