@@ -181,6 +181,10 @@ export default {
             dropzone_message: `Drop preprint file here to upload`,
             title_placeholder: `Enter preprint title`
         },
+        'preprint-footer-branded': {
+            support: `Support`,
+            contact: `Contact`
+        },
         'preprint-form-authors': {
             search: {
                 placeholder: `Search by name`
