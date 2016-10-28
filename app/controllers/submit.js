@@ -688,7 +688,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             model.set('isPublished', true);
             node.set('public', true);
 
-            // If error, this is caught in the confirm-share-preprint component
             return model.save()
                 .then(() => node.save().then(() => {
                     if (this.get('editMode')) {
