@@ -100,7 +100,7 @@
         <div class="container">
             <div class="row">
                 {{#if theme.isProvider}}
-                    {{{theme.provider.advisoryBoard}}}
+                    {{safe-markup theme.provider.advisoryBoard}}
                 {{else}}
                     <div class="col-xs-12">
                         <h2>{{t "index.advisory.heading"}}</h2>
