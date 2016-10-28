@@ -48,7 +48,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             if (this.get('editMode')) {
                 let userPermissions = this.get('node.currentUserPermissions') || [];
                 if (userPermissions.indexOf(permissions.ADMIN) === -1) {
-                    this.transitionTo('forbidden'); // Non-admin trying to access edit form.
+                    this.replaceWith('forbidden'); // Non-admin trying to access edit form.
                 }
             }
 
