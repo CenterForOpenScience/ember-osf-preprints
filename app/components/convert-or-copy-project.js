@@ -4,7 +4,7 @@ import Ember from 'ember';
  * Convert Or Copy Widget - very simple, just presents decision, do you want to convert this project or copy file to a new component.
  *
  * Will set convertOrCopy to 'convert' or 'copy'.  If convert, will set node title as current node title and titleValid to
- * true. If 'copy', nodeTitle will be set equal to null, and titleValid to false.  Converting project requires the user confirm their
+ * true. If 'copy', nodeTitle will be set equal to null, and titleValid to false.  Converting a project requires the user confirm their
  * decision in an additional step.
  *
  * Sample usage:

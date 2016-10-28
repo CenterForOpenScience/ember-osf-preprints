@@ -110,12 +110,12 @@ export default Ember.Component.extend({
             // Upload case for using a new component and a new file for the preprint.  Creates component of parent node
             // and then uploads file to newly created component.
             var node = this.get('node');
-            var nodeDescription = this.get('node.description');
             node
                 .addChild(this.get('nodeTitle'))
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
+                    var nodeDescription = this.get('node.description');
                     if (nodeDescription === '') {
                         nodeDescription = null;
                     }
