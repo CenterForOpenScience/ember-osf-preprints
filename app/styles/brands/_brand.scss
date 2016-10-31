@@ -97,18 +97,16 @@ $nav-height: 50px;
         color: $theme-color-4;
     }
 
-    .btn-primary {
+    .subject-item > .btn-primary {
         background-color: $theme-color-3;
         border-color: $theme-color-1;
     }
 
-    .btn-primary:hover {
+    .subject-item > .btn-primary:hover {
         background-color: $theme-color-1;
         border-color: $theme-color-3;
     }
 
-    #preprint-form-upload .btn-big,
-    .preprint-submit-header,
     .preprint-search-header,
     .provider-filter {
         background: $theme-color-1;
