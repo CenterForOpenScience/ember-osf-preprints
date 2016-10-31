@@ -304,7 +304,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         const node = this.get('node');
         if (!node) return;
 
-
         node.get('preprints').then((preprints) => {
             this.set('existingPreprints', preprints);
             if (preprints.toArray().length > 0) { // If node already has a preprint
