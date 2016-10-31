@@ -110,13 +110,13 @@ export default Ember.Component.extend({
         createComponentAndUploadFile() {
             // Upload case for using a new component and a new file for the preprint.  Creates component of parent node
             // and then uploads file to newly created component.
-            var node = this.get('node');
+            let node = this.get('node');
             node
                 .addChild(this.get('nodeTitle'))
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
-                    var nodeDescription = this.get('node.description');
+                    let nodeDescription = this.get('node.description');
                     if (nodeDescription === '') {
                         nodeDescription = null;
                     }
@@ -135,8 +135,8 @@ export default Ember.Component.extend({
             if (this.get('nodeLocked')) { // Edit mode
                 this.set('uploadInProgress', true);
             }
-            var node = this.get('node');
-            var currentTitle = node.get('title');
+            let node = this.get('node');
+            let currentTitle = node.get('title');
             if (node.get('title') !== this.get('nodeTitle')) {
                 node.set('title', this.get('nodeTitle'));
                 node.save()

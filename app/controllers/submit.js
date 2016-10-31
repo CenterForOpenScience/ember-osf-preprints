@@ -59,9 +59,9 @@ function disciplineArraysEqual(a, b) {
     if (a == null || b == null) return false;
     if (a.length !== b.length) return false;
 
-    for (var i = 0; i < a.length; ++i) {
+    for (let i = 0; i < a.length; ++i) {
         if (a[i].length !== b[i].length) return false;
-        for (var j = 0; j < a[i].length; ++j) {
+        for (let j = 0; j < a[i].length; ++j) {
             if (a[i][j] !== b[i][j]) return false;
         }
     }
@@ -121,7 +121,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
-        var node = this.get('node');
+        let node = this.get('node');
         if (node) {
             return node.get('parent.id') ? false : true;
         } else {
@@ -232,14 +232,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     ////////////////////////////////////////////////////
     basicsAbstract:  Ember.computed('node.description', function() {
         // Pending abstract
-        var node = this.get('node');
+        let node = this.get('node');
         return node ? node.get('description') : null;
     }),
     abstractChanged: Ember.computed('basicsAbstract', 'node.description', function() {
         // Does the pending abstract differ from the saved abstract in the db?
-        var basicsAbstract = this.get('basicsAbstract');
-        var nodeDescription = this.get('node.description');
-        var changed = false;
+        let basicsAbstract = this.get('basicsAbstract');
+        let nodeDescription = this.get('node.description');
+        let changed = false;
         if (basicsAbstract !== null) {
             changed = basicsAbstract.trim() !== nodeDescription;
         }
@@ -247,14 +247,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
     basicsTags: Ember.computed('node', function() {
         // Pending tags
-        var node = this.get('node');
+        let node = this.get('node');
         return node ? node.get('tags') : Ember.A();
     }),
     tagsChanged: Ember.computed('basicsTags', 'node.tags', function() {
         // Does the list of pending tags differ from the saved tags in the db?
-        var basicsTags = this.get('basicsTags');
-        var nodeTags = this.get('node.tags');
-        var changed = false;
+        let basicsTags = this.get('basicsTags');
+        let nodeTags = this.get('node.tags');
+        let changed = false;
         if (basicsTags && nodeTags) {
             changed = !(basicsTags.length === nodeTags.length && basicsTags.every((v, i)=> v === nodeTags[i]));
         }
@@ -312,7 +312,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         node.get('preprints').then((preprints) => {
             this.set('existingPreprints', preprints);
             if (preprints.toArray().length > 0) { // If node already has a preprint
-                var preprint = preprints.toArray()[0]; // TODO once branded is finished, this will change
+                let preprint = preprints.toArray()[0]; // TODO once branded is finished, this will change
                 if (!(preprint.get('isPublished'))) { // Preprint exists in abandoned state.
                     this.set('abandonedPreprint', preprint);
                 }
@@ -358,7 +358,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         changesSaved(currentPanelName) {
             // Temporarily changes panel save state to true.  Used for flashing 'Changes Saved' in UI.
-            var currentPanelSaveState = currentPanelName.toLowerCase() + 'SaveState';
+            let currentPanelSaveState = currentPanelName.toLowerCase() + 'SaveState';
             this.set(currentPanelSaveState, true);
             setTimeout(() => {
                 this.set(currentPanelSaveState, false);
@@ -399,9 +399,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
-            var node = this.get('node');
+            let node = this.get('node');
             if (node.get('title') !== this.get('nodeTitle')) {
-                var currentTitle = node.get('title');
+                let currentTitle = node.get('title');
                 node.set('title', this.get('nodeTitle'));
                 node.save()
                     .then(() => this.get('abandonedPreprint') ? this.send('resumeAbandonedPreprint') : this.send('startPreprint'))
@@ -417,19 +417,19 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         createComponentCopyFile() {
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
             // file from parent node to new component.
-            var node = this.get('node');
+            let node = this.get('node');
             node.addChild(this.get('nodeTitle'))
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
-                    var nodeDescription = this.get('node.description');
+                    let nodeDescription = this.get('node.description');
                     if (nodeDescription === '') {
                         nodeDescription = null;
                     }
                     this.set('basicsAbstract', nodeDescription);
                     child.get('files')
                         .then((providers) => {
-                            var osfstorage = providers.findBy('name', 'osfstorage');
+                            let osfstorage = providers.findBy('name', 'osfstorage');
                             this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}})
                                 .then((copiedFile) => {
                                     this.set('selectedFile', copiedFile);
@@ -448,7 +448,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         resumeAbandonedPreprint() {
             // You can only have one preprint per provider. For now, we delete the abandoned preprint so another preprint can be created.
-            var preprintRecord = this.store.peekRecord('preprint', this.get('abandonedPreprint').id);
+            let preprintRecord = this.store.peekRecord('preprint', this.get('abandonedPreprint').id);
             preprintRecord.destroyRecord()
                 .then(() => {
                     this.send('startPreprint');
@@ -491,7 +491,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         discardUploadChanges() {
             // Discards upload section changes.  Restores displayed file to current preprint primaryFile
             // and resets displayed title to current node title. (No requests sent, front-end only.)
-            var currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
+            let currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
             this.set('file', null);
             this.set('selectedFile', currentFile);
             this.set('nodeTitle', this.get('node.title'));
@@ -538,11 +538,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         saveBasics() {
             // Saves the description/tags on the node and the DOI on the preprint, then advances to next panel
             let node = this.get('node');
-            var model = this.get('model');
+            let model = this.get('model');
             // Saves off current server-state basics fields, so UI can be restored in case of failure
-            var currentAbstract = node.get('description');
-            var currentTags = node.get('tags').slice(0);
-            var currentDOI = model.get('doi');
+            let currentAbstract = node.get('description');
+            let currentTags = node.get('tags').slice(0);
+            let currentDOI = model.get('doi');
 
             if (this.get('abstractChanged')) node.set('description', this.get('basicsAbstract'));
             if (this.get('tagsChanged')) node.set('tags', this.get('basicsTags'));
@@ -578,7 +578,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
         addTag(tag) {
             // Custom addATag method that appends tag to list instead of auto-saving
-            var tags = this.get('basicsTags').slice(0);
+            let tags = this.get('basicsTags').slice(0);
             Ember.A(tags);
             tags.pushObject(tag);
             this.set('basicsTags', tags);
@@ -587,7 +587,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
         removeTag(tag) {
             // Custom removeATag method that removes tag from list instead of auto-saving
-            var tags = this.get('basicsTags').slice(0);
+            let tags = this.get('basicsTags').slice(0);
             tags.splice(tags.indexOf(tag), 1);
             this.set('basicsTags', tags);
             return tags;
@@ -610,10 +610,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
         saveSubjects() {
             // Saves subjects (disciplines) and then moves to next section.
-            var model = this.get('model');
+            let model = this.get('model');
             // Current subjects saved so UI can be restored in case of failure
-            var currentSubjects = Ember.$.extend(true, [], this.get('model.subjects'));
-            var subjectMap = subjectIdMap(this.get('subjectsList'));
+            let currentSubjects = Ember.$.extend(true, [], this.get('model.subjects'));
+            let subjectMap = subjectIdMap(this.get('subjectsList'));
             if (this.get('disciplineChanged')) {
                 model.set('subjects', subjectMap);
                 model.save()
@@ -660,10 +660,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         */
         highlightSuccessOrFailure(elementId, context, status) {
             Ember.run.next(Ember.Object.create({ elementId: elementId, context: context }), function() {
-                var elementId = this.elementId;
-                var _this = this.context;
+                let elementId = this.elementId;
+                let _this = this.context;
 
-                var highlightClass =  status === 'success' ? 'successHighlight' : 'errorHighlight';
+                let highlightClass =  status === 'success' ? 'successHighlight' : 'errorHighlight';
 
                 _this.$('#' + elementId).addClass(highlightClass);
 
