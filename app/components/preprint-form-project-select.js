@@ -16,7 +16,7 @@ export default Ember.Component.extend({
     selectedNode: null,
     isAdmin: Ember.computed('selectedNode', function() {
         if (this.get('selectedNode')) {
-            return this.get('selectedNode.currentUserPermissions').indexOf(Permissions.ADMIN) !== -1;
+            return (this.get('selectedNode.currentUserPermissions') || []).includes(Permissions.ADMIN);
         } else {
             return null;
         }
@@ -48,8 +48,7 @@ export default Ember.Component.extend({
             this.set('existingState', newState);
             if (newState === this.get('_existingState').EXISTINGFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'selectExistingFile');
-            }
-            if (newState === this.get('_existingState').NEWFILE) {
+            } else if (newState === this.get('_existingState').NEWFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'uploadNewFile');
             }
         },

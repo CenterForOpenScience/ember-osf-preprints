@@ -157,8 +157,21 @@ export default {
             update: {
                 paragraph: `Edits to this preprint will update both the preprint and the OSF project and will become publicly accessible via OSF Preprints.`
             },
-            save_continue: `Save and continue`
-        }
+            save_continue: `Save and continue`,
+        },
+        could_not_update_title: `Error updating title. Please try again.`,
+        error_copying_file: `Error copying file; please try again.`,
+        error_accessing_parent_files: `Error accessing parent files. Please try again.`,
+        could_not_create_component: `Could not create component. Please try again.`,
+        abandoned_preprint_error: `Error with abandoned preprint.`,
+        preprint_file_uploaded: `Preprint file uploaded!`,
+        error_initiating_preprint: `Could not initiate preprint. Please try again.`,
+        doi_error: `Error saving DOI`,
+        basics_error: `Error saving basics fields.`,
+        disciplines_error: `Error saving discipline(s).`,
+        search_contributors_error: `Could not perform search query.`,
+        error_completing_preprint: `Error completing preprint.`,
+        error_saving_preprint: `Could not save preprint; please try again later`,
     },
     components: {
         'confirm-restart-submit-preprint': {
@@ -190,7 +203,16 @@ export default {
         'file-uploader': {
             dropzone_message: `Drop preprint file here to upload`,
             title_placeholder: `Enter preprint title`,
-            update_version: `Update preprint file version.  File must have the same name as the original.`
+            update_version: `Update preprint file version.  File must have the same name as the original.`,
+            could_not_create_project: `Could not create project. Please try again.`,
+            could_not_create_component: `Could not create component. Please try again.`,
+            could_not_update_title: `Could not update title. Please try again.`,
+            version_error: `This is not a version of the current preprint file.`,
+            preprint_file_updated: `Preprint file updated!`,
+            preprint_file_error: `Could not set preprint file. Please try again.`,
+            file_exists_error: `A file with that name already exists`,
+            upload_error: `Upload Failed` ,
+            dropzone_text_override: `Click or drag another preprint file to replace`,
         },
         'preprint-form-authors': {
             search: {

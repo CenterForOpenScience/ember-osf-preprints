@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import {State} from '../controllers/submit';
+import translations from '../locales/en/translations';
 
 /**
  * File uploader widget - handles all cases where uploading a new file as your preprint, or uploading a new version of your preprint.
@@ -103,7 +104,7 @@ export default Ember.Component.extend({
                 })
                 .catch(() => {
                     this.set('uploadInProgress', false);
-                    this.get('toast').error('Could not create project. Please try again.');
+                    this.get('toast').error(translations.components['file-uploader'].could_not_create_project);
                 });
         },
 
@@ -116,16 +117,12 @@ export default Ember.Component.extend({
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
-                    let nodeDescription = this.get('node.description');
-                    if (nodeDescription === '') {
-                        nodeDescription = null;
-                    }
-                    this.set('basicsAbstract', nodeDescription);
+                    this.set('basicsAbstract', this.get('node.description') || null);
                     this.send('upload');
                 })
                 .catch(() => {
                     this.set('uploadInProgress', false);
-                    this.get('toast').error('Could not create component. Please try again.');
+                    this.get('toast').error(translations.components['file-uploader'].could_not_create_component);
                 });
         },
 
@@ -146,7 +143,7 @@ export default Ember.Component.extend({
                 .catch(() => {
                     node.set('title', currentTitle);
                     this.set('uploadInProgress', false);
-                    this.get('toast').error('Could not update title. Please try again.');
+                    this.get('toast').error(translations.components['file-uploader'].could_not_update_title);
                 });
             } else {
                 this.send('upload');
@@ -163,7 +160,7 @@ export default Ember.Component.extend({
         },
         mustModifyCurrentPreprintFile() {
             // Can only upload a new version of a preprint file once the preprint has been created.
-            this.get('toast').error('This is not a version of the current preprint file.');
+            this.get('toast').error(translations.components['file-uploader'].version_error);
             this.send('formatDropzoneAfterPreUpload', false);
             this.set('file', null);
             this.set('fileVersion', this.get('osfFile.currentVersion'));
@@ -218,20 +215,20 @@ export default Ember.Component.extend({
                 let resp = JSON.parse(file.xhr.response);
                 this.get('store')
                     .findRecord('file', resp.data.id.split('/')[1])
-                        .then(file => {
-                            this.set('osfFile', file);
-                            if (this.get('nodeLocked')) { // Edit mode
-                                this.get('toast').info('Preprint file updated!');
-                                this.sendAction('finishUpload');
-                                if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
-                            } else { // Add mode
-                                return this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint',  this.get('parentNode'));
-                            }
-                        })
-                        .catch(() => {
-                            this.get('toast').error('Could not set preprint file. Please try again.');
-                            this.set('uploadInProgress', false);
-                        });
+                    .then(file => {
+                        this.set('osfFile', file);
+                        if (this.get('nodeLocked')) { // Edit mode
+                            this.get('toast').info(translations.components['file-uploader'].preprint_file_updated);
+                            this.sendAction('finishUpload');
+                            if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
+                        } else { // Add mode
+                            return this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint',  this.get('parentNode'));
+                        }
+                    })
+                    .catch(() => {
+                        this.get('toast').error(translations.components['file-uploader'].preprint_file_error);
+                        this.set('uploadInProgress', false);
+                    });
             } else {
                 //File upload failure
                 dropzone.removeAllFiles();
@@ -241,15 +238,15 @@ export default Ember.Component.extend({
                 this.set('uploadInProgress', false);
                 this.get('toast').error(
                     file.xhr.status === 409 ?
-                    'A file with that name already exists'
-                    : 'Upload Failed');
+                    translations.components['file-uploader'].file_exists_error
+                    : translations.components['file-uploader'].upload_error);
             }
         },
         formatDropzoneAfterPreUpload(success) {
             // Replaces dropzone message, highlights green or red, depending on preupload success.
             if (success) {
                 this.$('.dz-default.dz-message').before(this.$('.dz-preview.dz-file-preview'));
-                this.$('.dz-message span').contents().replaceWith('Click or drag another preprint file to replace');
+                this.$('.dz-message span').contents().replaceWith(translations.components['file-uploader'].dropzone_text_override);
                 this.$('.dropzone').addClass('successHighlightGreenGray');
 
                 setTimeout(() => {

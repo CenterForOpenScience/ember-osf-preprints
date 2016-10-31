@@ -2,6 +2,7 @@ import Ember from 'ember';
 import config from 'ember-get-config';
 
 import { validator, buildValidations } from 'ember-cp-validations';
+import translations from '../locales/en/translations';
 
 import permissions from 'ember-osf/const/permissions';
 import NodeActionsMixin from 'ember-osf/mixins/node-actions';
@@ -124,9 +125,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         let node = this.get('node');
         if (node) {
             return node.get('parent.id') ? false : true;
-        } else {
-            return null;
         }
+        return null;
     }),
 
     hasFile: Ember.computed('file', 'selectedFile', function() {
@@ -194,15 +194,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     disciplineValid: Ember.computed.notEmpty('subjectsList'),
     // Does node have a saved title?
     savedTitle: Ember.computed('node.title', function() {
-        return this.get('node.title') !== null;
+        return !!this.get('node.title');
     }),
     // Does preprint have a saved primaryFile?
     savedFile: Ember.computed('model.primaryFile', function() {
-        return this.get('model.primaryFile') !== null;
+        return !!this.get('model.primaryFile');
     }),
     // Does node have a saved description?
     savedAbstract: Ember.computed('node.description', function() {
-        return this.get('node.description') !== null && this.get('node.description') !== '';
+        return !!this.get('node.description');
     }),
     // Does preprint have saved subjects?
     savedSubjects: Ember.computed('model.subjects.@each', function() {
@@ -238,12 +238,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     abstractChanged: Ember.computed('basicsAbstract', 'node.description', function() {
         // Does the pending abstract differ from the saved abstract in the db?
         let basicsAbstract = this.get('basicsAbstract');
-        let nodeDescription = this.get('node.description');
-        let changed = false;
-        if (basicsAbstract !== null) {
-            changed = basicsAbstract.trim() !== nodeDescription;
-        }
-        return changed;
+        return basicsAbstract && basicsAbstract.trim() !== this.get('node.description');
     }),
     basicsTags: Ember.computed('node', function() {
         // Pending tags
@@ -294,7 +289,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         // and combines into one array
 
         // Cannot be called until a project has been selected!
-        if (!this.get('node')) return [];
+        if (!this.get('node')) return;
 
         let node = this.get('node');
         let contributors = Ember.A();
@@ -306,8 +301,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         // Returns any existing preprints stored on the current node
 
         // Cannot be called until a project has been selected!
-        if (!this.get('node')) return [];
-        let node = this.get('node');
+        const node = this.get('node');
+        if (!node) return;
+
 
         node.get('preprints').then((preprints) => {
             this.set('existingPreprints', preprints);
@@ -331,8 +327,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions
-        let userPermissions = this.get('node.currentUserPermissions') || [];
-        return userPermissions.indexOf(permissions.ADMIN) >= 0;
+        return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
 
     canEdit: Ember.computed('isAdmin', 'node', function() {
@@ -407,7 +402,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     .then(() => this.get('abandonedPreprint') ? this.send('resumeAbandonedPreprint') : this.send('startPreprint'))
                     .catch(() => {
                         node.set('title', currentTitle);
-                        this.get('toast').error('Error updating title. Please try again.');
+                        this.get('toast').error(translations.submit.could_not_update_title);
                     });
 
             } else {
@@ -422,11 +417,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
-                    let nodeDescription = this.get('node.description');
-                    if (nodeDescription === '') {
-                        nodeDescription = null;
-                    }
-                    this.set('basicsAbstract', nodeDescription);
+                    this.set('basicsAbstract', this.get('node.description') || null);
                     child.get('files')
                         .then((providers) => {
                             let osfstorage = providers.findBy('name', 'osfstorage');
@@ -435,14 +426,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                                     this.set('selectedFile', copiedFile);
                                     this.send('startPreprint', this.get('parentNode'));
                                 })
-                                .catch(() => this.get('toast').error('Error copying file; please try again.'));
+                                .catch(() => this.get('toast').error(translations.submit.error_copying_file));
                         })
                         .catch(() => {
-                            this.get('toast').error('Error accessing parent files. Please try again.');
+                            this.get('toast').error(translations.submit.error_accessing_parent_files);
                         });
                 })
                 .catch(() => {
-                    this.get('toast').error('Could not create component. Please try again.');
+                    this.get('toast').error(translations.submit.could_not_create_component);
                 });
 
         },
@@ -454,7 +445,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     this.send('startPreprint');
                 })
                 .catch(() => {
-                    this.get('toast').error('Error with abandoned preprint. Please try again.');
+                    this.get('toast').error(translations.submit.abandoned_preprint_error);
                 });
         },
         startPreprint(parentNode) {
@@ -472,7 +463,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     this.set('filePickerState', State.EXISTING); // Sets upload form state to existing project (now that project has been created)
                     this.set('existingState', existingState.NEWFILE); // Sets file state to new file, for edit mode.
                     this.set('file', null);
-                    this.get('toast').info('Preprint file uploaded!');
+                    this.get('toast').info(translations.submit.preprint_file_uploaded);
                     this.send('finishUpload');
                 })
                 .catch(() => {
@@ -481,7 +472,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                         // If user tries to initiate preprint again, a separate component will be created under the parentNode.
                         this.set('node', parentNode);
                     }
-                    this.get('toast').error('Could not initiate preprint. Please try again.');
+                    this.get('toast').error(translations.submit.error_initiating_preprint);
                 });
         },
         selectExistingFile(file) {
@@ -560,7 +551,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                             })
                             .catch(() => {
                                 model.set('doi', currentDOI);
-                                this.get('toast').error('Error saving DOI.');
+                                this.get('toast').error(translations.submit.doi_error);
                             });
                     } else {
                         this.send('next', this.get('_names.2'));
@@ -572,7 +563,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     node.set('description', currentAbstract);
                     node.set('tags', currentTags);
                     model.set('doi', currentDOI);
-                    this.get('toast').error('Error saving basics fields.');
+                    this.get('toast').error(translations.submit.basics_error);
+
                 });
         },
 
@@ -622,7 +614,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     })
                     .catch(() => {
                         model.set('subjects', currentSubjects);
-                        this.get('toast').error('Error saving discipline(s).');
+                        this.get('toast').error(translations.submit.disciplines_error);
                     });
             } else {
                 this.send('next', this.get('_names.1'));
@@ -646,7 +638,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 this.set('searchResults', contributors);
                 return contributors;
             }).catch(() => {
-                this.get('toast').error('Could not perform search query.');
+                this.get('toast').error(translations.submit.search_contributors_error);
                 this.highlightSuccessOrFailure('author-search-box', this, 'error');
             });
         },
@@ -698,7 +690,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 }))
                 .catch(() => {
                     this.toggleProperty('shareButtonDisabled');
-                    return this.get('editMode') ? this.get('toast').error('Error completing preprint.') : this.toast.error('Could not save preprint; please try again later');
+                    return this.get('editMode') ? this.get('toast').error(translations.submit.error_completing_preprint) : this.toast.error(translations.submit.error_saving_preprint);
 
                 });
         },

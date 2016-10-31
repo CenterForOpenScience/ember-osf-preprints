@@ -31,7 +31,7 @@ export default Ember.Mixin.create({
             }).then(() => {
                 // TODO Hack: API does not support filtering current_user_permissions in the way we desire, so filter
                 // on front end for now until filtering support can be added to backend
-                let onlyAdminNodes = userNodes.filter((item) => item.get('currentUserPermissions').indexOf(permissions.ADMIN) !== -1);
+                let onlyAdminNodes = userNodes.filter((item) => item.get('currentUserPermissions').includes(permissions.ADMIN));
                 controller.set('userNodes', onlyAdminNodes);
                 controller.set('userNodesLoaded', true);
             }));

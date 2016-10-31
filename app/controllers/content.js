@@ -43,8 +43,7 @@ export default Ember.Controller.extend(Analytics, {
     expandedAuthors: true,
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
-        let userPermissions = this.get('node.currentUserPermissions') || [];
-        return userPermissions.indexOf(permissions.ADMIN) >= 0;
+        return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
     twitterHref: Ember.computed('node', function() {
         const queryParams = {

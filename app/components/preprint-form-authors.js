@@ -19,12 +19,7 @@ export default CpPanelBodyComponent.extend({
     // In Add mode, contributors are emailed on creation of preprint. In Edit mode,
     // contributors are emailed as soon as they are added to preprint.
     sendEmail: Ember.computed('editMode', function() {
-        let editMode = this.get('editMode');
-        let sendEmail = false;
-        if (editMode) {
-            sendEmail = 'preprint';
-        }
-        return sendEmail;
+        return this.get('editMode') ? 'preprint' : false;
     }),
     numParentContributors: Ember.computed('parentNode', function() {
         if (this.get('parentNode')) {

@@ -229,10 +229,10 @@
                                         <div class="text-center">
                                             {{#unless allSectionsValid}}
                                                 <p class="m-t-md"> <strong>{{t "submit.body.submit.invalid.description"}}</strong></p>
-                                                <p class="text-danger"> {{if (or (not savedTitle) (not savedFile))  (t "submit.body.submit.invalid.upload")}}</p>
-                                                <p class="text-danger"> {{if (not savedSubjects) (t "submit.body.submit.invalid.discipline")}}</p>
-                                                <p class="text-danger"> {{if (not savedAbstract)(t "submit.body.submit.invalid.basics")}}</p>
-                                                <p class="text-danger"> {{if (not authorsValid) (t "global.authors")}}</p>
+                                                <p class="text-danger"> {{unless (and savedTitle savedFile) (t "submit.body.submit.invalid.upload")}}</p>
+                                                <p class="text-danger"> {{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
+                                                <p class="text-danger"> {{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
+                                                <p class="text-danger"> {{unless authorsValid (t "global.authors")}}</p>
                                             {{/unless}}
                                             <p> </p>
                                             <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>{{t "global.share"}}</button>
