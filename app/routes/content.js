@@ -19,7 +19,6 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     },
     actions: {
         error(error, transition) {
-            window.history.replaceState({}, 'preprints', '/preprints/' + transition.params.content.preprint_id);
             this.intermediateTransitionTo('page-not-found');
         }
     },
