@@ -28,6 +28,11 @@
                 {{#if model.isPreprintOrphan}}
                     <p class="m-t-md text-danger"> {{t "content.orphan_preprint"}} </p>
                 {{else}}
+                    {{#if (not node.public)}}
+                        <div class="alert alert-danger m-r-md" role="alert">
+                            {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{node.title}} </a> {{t "content.public"}}.
+                        </div>
+                    {{/if}}
                     {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
                     <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
                         <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
