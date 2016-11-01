@@ -18,7 +18,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
         return this._super(...arguments);
     },
     actions: {
-        error(error, transition) {
+        error() {
             this.intermediateTransitionTo('page-not-found');
         }
     },
