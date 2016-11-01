@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import {State} from '../controllers/submit';
-import translations from '../locales/en/translations';
 
 /**
  * File uploader widget - handles all cases where uploading a new file as your preprint, or uploading a new version of your preprint.
@@ -20,6 +19,7 @@ import translations from '../locales/en/translations';
  */
 export default Ember.Component.extend({
     State,
+    i18n: Ember.inject.service(),
     store: Ember.inject.service(),
     toast: Ember.inject.service(),
 
@@ -104,7 +104,7 @@ export default Ember.Component.extend({
                 })
                 .catch(() => {
                     this.set('uploadInProgress', false);
-                    this.get('toast').error(translations.components['file-uploader'].could_not_create_project);
+                    this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_project'));
                 });
         },
 
@@ -122,7 +122,7 @@ export default Ember.Component.extend({
                 })
                 .catch(() => {
                     this.set('uploadInProgress', false);
-                    this.get('toast').error(translations.components['file-uploader'].could_not_create_component);
+                    this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_component'));
                 });
         },
 
@@ -143,7 +143,7 @@ export default Ember.Component.extend({
                 .catch(() => {
                     node.set('title', currentTitle);
                     this.set('uploadInProgress', false);
-                    this.get('toast').error(translations.components['file-uploader'].could_not_update_title);
+                    this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
                 });
             } else {
                 this.send('upload');
@@ -160,7 +160,7 @@ export default Ember.Component.extend({
         },
         mustModifyCurrentPreprintFile() {
             // Can only upload a new version of a preprint file once the preprint has been created.
-            this.get('toast').error(translations.components['file-uploader'].version_error);
+            this.get('toast').error(this.get('i18n').t('components.file-uploader.version_error'));
             this.send('formatDropzoneAfterPreUpload', false);
             this.set('file', null);
             this.set('fileVersion', this.get('osfFile.currentVersion'));
@@ -218,7 +218,7 @@ export default Ember.Component.extend({
                     .then(file => {
                         this.set('osfFile', file);
                         if (this.get('nodeLocked')) { // Edit mode
-                            this.get('toast').info(translations.components['file-uploader'].preprint_file_updated);
+                            this.get('toast').info(this.get('i18n').t('components.file-uploader.preprint_file_updated'));
                             this.sendAction('finishUpload');
                             if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
                         } else { // Add mode
@@ -226,7 +226,7 @@ export default Ember.Component.extend({
                         }
                     })
                     .catch(() => {
-                        this.get('toast').error(translations.components['file-uploader'].preprint_file_error);
+                        this.get('toast').error(this.get('i18n').t('components.file-uploader.preprint_file_error'));
                         this.set('uploadInProgress', false);
                     });
             } else {
@@ -238,15 +238,15 @@ export default Ember.Component.extend({
                 this.set('uploadInProgress', false);
                 this.get('toast').error(
                     file.xhr.status === 409 ?
-                    translations.components['file-uploader'].file_exists_error
-                    : translations.components['file-uploader'].upload_error);
+                    this.get('i18n').t('components.file-uploader.file_exists_error')
+                    : this.get('i18n').t('components.file-uploader.upload_error'));
             }
         },
         formatDropzoneAfterPreUpload(success) {
             // Replaces dropzone message, highlights green or red, depending on preupload success.
             if (success) {
                 this.$('.dz-default.dz-message').before(this.$('.dz-preview.dz-file-preview'));
-                this.$('.dz-message span').contents().replaceWith(translations.components['file-uploader'].dropzone_text_override);
+                this.$('.dz-message span').contents().replaceWith(this.get('i18n').t('components.file-uploader.dropzone_text_override').string);
                 this.$('.dropzone').addClass('successHighlightGreenGray');
 
                 setTimeout(() => {

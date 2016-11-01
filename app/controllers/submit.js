@@ -2,7 +2,6 @@ import Ember from 'ember';
 import config from 'ember-get-config';
 
 import { validator, buildValidations } from 'ember-cp-validations';
-import translations from '../locales/en/translations';
 
 import permissions from 'ember-osf/const/permissions';
 import NodeActionsMixin from 'ember-osf/mixins/node-actions';
@@ -78,6 +77,7 @@ function subjectIdMap(subjectArray) {
  * "Add preprint" page definitions
  */
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
+    i18n: Ember.inject.service(),
     fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
@@ -401,7 +401,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     .then(() => this.get('abandonedPreprint') ? this.send('resumeAbandonedPreprint') : this.send('startPreprint'))
                     .catch(() => {
                         node.set('title', currentTitle);
-                        this.get('toast').error(translations.submit.could_not_update_title);
+                        this.get('toast').error(this.get('i18n').t('submit.could_not_update_title'));
                     });
 
             } else {
@@ -425,14 +425,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                                     this.set('selectedFile', copiedFile);
                                     this.send('startPreprint', this.get('parentNode'));
                                 })
-                                .catch(() => this.get('toast').error(translations.submit.error_copying_file));
+                                .catch(() => this.get('toast').error(this.get('i18n').t('submit.error_copying_file')));
                         })
                         .catch(() => {
-                            this.get('toast').error(translations.submit.error_accessing_parent_files);
+                            this.get('toast').error(this.get('i18n').t('submit.error_accessing_parent_files'));
                         });
                 })
                 .catch(() => {
-                    this.get('toast').error(translations.submit.could_not_create_component);
+                    this.get('toast').error(this.get('i18n').t('submit.could_not_create_component'));
                 });
 
         },
@@ -444,7 +444,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     this.send('startPreprint');
                 })
                 .catch(() => {
-                    this.get('toast').error(translations.submit.abandoned_preprint_error);
+                    this.get('toast').error(this.get('i18n').t('submit.abandoned_preprint_error'));
                 });
         },
         startPreprint(parentNode) {
@@ -462,7 +462,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     this.set('filePickerState', State.EXISTING); // Sets upload form state to existing project (now that project has been created)
                     this.set('existingState', existingState.NEWFILE); // Sets file state to new file, for edit mode.
                     this.set('file', null);
-                    this.get('toast').info(translations.submit.preprint_file_uploaded);
+                    this.get('toast').info(this.get('i18n').t('submit.preprint_file_uploaded'));
                     this.send('finishUpload');
                 })
                 .catch(() => {
@@ -471,7 +471,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                         // If user tries to initiate preprint again, a separate component will be created under the parentNode.
                         this.set('node', parentNode);
                     }
-                    this.get('toast').error(translations.submit.error_initiating_preprint);
+                    this.get('toast').error(this.get('i18n').t('submit.error_initiating_preprint'));
                 });
         },
         selectExistingFile(file) {
@@ -550,7 +550,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                             })
                             .catch(() => {
                                 model.set('doi', currentDOI);
-                                this.get('toast').error(translations.submit.doi_error);
+                                this.get('toast').error(this.get('i18n').t('submit.doi_error'));
                             });
                     } else {
                         this.send('next', this.get('_names.2'));
@@ -562,7 +562,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     node.set('description', currentAbstract);
                     node.set('tags', currentTags);
                     model.set('doi', currentDOI);
-                    this.get('toast').error(translations.submit.basics_error);
+                    this.get('toast').error(this.get('i18n').t('submit.basics_error'));
 
                 });
         },
@@ -613,7 +613,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     })
                     .catch(() => {
                         model.set('subjects', currentSubjects);
-                        this.get('toast').error(translations.submit.disciplines_error);
+                        this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
                     });
             } else {
                 this.send('next', this.get('_names.1'));
@@ -637,7 +637,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 this.set('searchResults', contributors);
                 return contributors;
             }).catch(() => {
-                this.get('toast').error(translations.submit.search_contributors_error);
+                this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
                 this.highlightSuccessOrFailure('author-search-box', this, 'error');
             });
         },
@@ -689,7 +689,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 }))
                 .catch(() => {
                     this.toggleProperty('shareButtonDisabled');
-                    return this.get('editMode') ? this.get('toast').error(translations.submit.error_completing_preprint) : this.toast.error(translations.submit.error_saving_preprint);
+                    return this.get('editMode') ? this.get('toast').error(this.get('i18n').t('submit.error_completing_preprint')) : this.toast.error(this.get('i18n').t('submit.error_saving_preprint'));
 
                 });
         },
