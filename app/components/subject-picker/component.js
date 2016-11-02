@@ -75,7 +75,8 @@ export default Ember.Component.extend({
     },
 
     emitSave() {
-        this.sendAction('save', this.get('selected').reduce((acc, val) => acc.concat(val), []).uniq());
+        this.set('disciplineReduced', this.get('selected').reduce((acc, val) => acc.concat(val), []).uniqBy('id'));
+        this.sendAction('save', this.get('selected'));
     },
 
     actions: {

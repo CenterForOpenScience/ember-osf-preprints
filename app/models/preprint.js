@@ -20,19 +20,14 @@ export default OsfModel.extend({
     // TODO: May be a relationship in the future pending APIv2 changes
     subjects: DS.attr(),
     dateCreated: DS.attr('date'),
+    datePublished: DS.attr('date'),
     dateModified: DS.attr('date'),
-    abstract: DS.attr('string'),
-    tags: DS.attr(),
     doi: DS.attr('string'),
+    isPublished: DS.attr('boolean'),
+    isPreprintOrphan: DS.attr('boolean'),
 
     // Relationships
+    node: DS.belongsTo('node', { inverse: null, async: true}),
     primaryFile: DS.belongsTo('file', { inverse: null }),
-    files: DS.hasMany('file-providers', { inverse: null }),
-    providers: DS.hasMany('preprint-provider', { inverse: 'preprints', async: true }),
-
-    contributors: DS.hasMany('contributors', {
-        allowBulkUpdate: true,
-        allowBulkRemove: true,
-        inverse: null
-    })
+    provider: DS.belongsTo('preprint-provider', { inverse: 'preprints', async: true }),
 });

@@ -77,7 +77,7 @@ module.exports = function(defaults) {
         babel: {
             optional: ['es6.spec.symbols'],
             includePolyfill: true
-        }
+        },
     });
 
     // Use `app.import` to add additional libraries to the generated

@@ -6,7 +6,7 @@ module.exports = function(environment) {
     var ENV = {
         modulePrefix: 'preprint-service',
         environment: environment,
-        rootURL: '/preprints/',
+        rootURL: '/',
         locationType: 'auto',
         authorizationType: authorizationType,
         sentryDSN: 'http://test@localhost/80' || process.env.SENTRY_DSN,
