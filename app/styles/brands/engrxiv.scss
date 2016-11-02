@@ -1,11 +1,10 @@
 @import 'brand';
 
 @include brand(
-    black,
+    #637074,
     white,
-    #3f3f3f,
-    grey,
-    white,
+    #222F38,
+    #AAB9CF,
     black,
     invert(100%),
     '/preprints/assets/img/provider_logos/engrxiv.png'

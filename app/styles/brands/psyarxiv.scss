@@ -1,12 +1,11 @@
 @import 'brand';
 
 @include brand(
-    #a92f2b,
+    #a9a9a9,
     white,
-    #462a2a,
-    #a90000,
-    #462a2a,
-    white,
-    none,
+    #ff383f,
+    #caebf2,
+    black,
+    invert(100%),
     '/preprints/assets/img/provider_logos/psyarxiv.png'
 );

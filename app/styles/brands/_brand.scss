@@ -5,8 +5,7 @@ $nav-height: 50px;
     $theme-color-2,
     $theme-color-3,
     $theme-color-4,
-    $navbar-background-color,
-    $navbar-color,
+    $theme-color-5,
     $theme-nav-filter,
     $logo
 ) {
@@ -17,6 +16,10 @@ $nav-height: 50px;
         .preprint-brand {
             height: 140px;
         }
+    }
+
+    .preprint-header a:not(.btn) {
+        display: none;
     }
 
     .navbar-image {
@@ -31,7 +34,7 @@ $nav-height: 50px;
         transform: translateY(-12px);
     }
 
-    .navbar-image {
+    a:hover > .navbar-image {
         filter: $theme-nav-filter;
     }
 
@@ -42,17 +45,18 @@ $nav-height: 50px;
 
     .preprint-navbar {
         top: 0;
-        background-color: $navbar-background-color;
-        color: $navbar-color;
+        background-color: $theme-color-3;
+        color: $theme-color-2;
 
         a {
-            color: $navbar-color
+            color: $theme-color-2;
         }
 
         .navbar-brand:hover,
         .nav > li > a.active,
         .nav > li > a:hover {
             background-color: $theme-color-4;
+            color: $theme-color-5;
         }
 
         .nav-user-dropdown {
@@ -86,7 +90,7 @@ $nav-height: 50px;
 
     a,
     .preprint-form-section header {
-        color: $theme-color-4;
+        color: $theme-color-3;
     }
 
     .dropdown-menu {
@@ -94,7 +98,7 @@ $nav-height: 50px;
     }
 
     .dropdown-menu > li > a:hover {
-        color: $theme-color-4;
+        color: $theme-color-1;
     }
 
     .subject-item > .btn-primary {
