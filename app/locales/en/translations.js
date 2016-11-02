@@ -45,7 +45,10 @@ export default {
             paragraph: `The project for this paper is available on the Open Science Framework.`,
             button: `Visit project`,
             edit_preprint:  `Edit preprint`
-        }
+        },
+        orphan_preprint: `The user has removed this file.`,
+        private_preprint_warning: `This Preprint is private. Make it discoverable by making`,
+        public: `public`
     },
     discover: {
         search: {
