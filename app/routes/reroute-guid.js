@@ -7,6 +7,8 @@ export default Ember.Route.extend({
 
         if (slug.length === 5) {
             window.location.href = `${window.location.origin}/${slug}`;
+        } else {
+            this.transitionTo('page-not-found');
         }
     }
 });
