@@ -26,7 +26,7 @@ Router.map(function() {
     this.route('submit', {path: 'preprints/submit'});
     this.route('discover', {path: 'preprints/discover'});
     this.route('content', { path: '/:preprint_id' });
-    this.route('page-not-found', { path: 'preprints/*bad_url'});
+    this.route('reroute-guid', { path: 'preprints/*bad_url'});
     this.route('page-not-found', {path: 'preprints/page-not-found'});
 });
 
