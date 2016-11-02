@@ -11,6 +11,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     },
     setupController(controller, model) {
         controller.set('activeFile', model.get('primaryFile'));
+        controller.set('node', this.get('node'));
         Ember.run.scheduleOnce('afterRender', this, function() {
             MathJax.Hub.Queue(['Typeset', MathJax.Hub, [Ember.$('.abstract')[0], Ember.$('#preprintTitle')[0]]]);  // jshint ignore:line
         });
@@ -22,50 +23,55 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
             this.intermediateTransitionTo('page-not-found');
         }
     },
-    afterModel(resolvedModel) {
-        const ogp = [
-            ['fb:app_id', config.FB_APP_ID],
-            ['og:title', resolvedModel.get('title')],
-            ['og:image', '//osf.io/static/img/circle_logo.png'],
-            ['og:image:type', 'image/png'],
-            ['og:url', window.location.href],
-            ['og:description', resolvedModel.get('abstract')],
-            ['og:site_name', 'Open Science Framework'],
-            ['og:type', 'article'],
-            ['article:published_time', new Date(resolvedModel.get('dateCreated')).toISOString()],
-            ['article:modified_time', new Date(resolvedModel.get('dateModified')).toISOString()]
-        ];
+    afterModel(preprint) {
+        return preprint.get('node').then(node => {
+            this.set('node', node);
 
-        const tags = [
-            ...resolvedModel.get('subjects').map(subject => subject.text),
-            ...resolvedModel.get('tags')
-        ];
+            const ogp = [
+                ['fb:app_id', config.FB_APP_ID],
+                ['og:title', node.get('title')],
+                ['og:image', '//osf.io/static/img/circle_logo.png'],
+                ['og:image:type', 'image/png'],
+                ['og:url', window.location.href],
+                ['og:description', node.get('description')],
+                ['og:site_name', 'Open Science Framework'],
+                ['og:type', 'article'],
+                ['article:published_time', new Date(preprint.get('dateCreated')).toISOString()],
+                ['article:modified_time', new Date(node.get('dateModified')).toISOString()]
+            ];
 
-        for (let tag of tags)
-            ogp.push(['article:tag', tag]);
+            const tags = [
+                ...preprint.get('subjects').map(subjectBlock => subjectBlock.map(subject => subject.text)),
+                ...node.get('tags')
+            ];
 
-        let contributors = Ember.A();
+            for (let tag of tags)
+                ogp.push(['article:tag', tag]);
 
-        loadAll(resolvedModel, 'contributors', contributors).then(() => {
-            contributors.forEach(contributor => {
-                ogp.push(
-                    ['og:type', 'article:author'],
-                    ['profile:first_name', contributor.get('users.givenName')],
-                    ['profile:last_name', contributor.get('users.familyName')]
-                );
-            });
+            let contributors = Ember.A();
 
-            this.set('headTags', ogp.map(item => (
-                {
-                    type: 'meta',
-                    attrs: {
-                        property: item[0],
-                        content: item[1]
+            loadAll(node, 'contributors', contributors).then(() => {
+                contributors.forEach(contributor => {
+                    ogp.push(
+                        ['og:type', 'article:author'],
+                        ['profile:first_name', contributor.get('users.givenName')],
+                        ['profile:last_name', contributor.get('users.familyName')]
+                    );
+                });
+
+                this.set('headTags', ogp.map(item => (
+                    {
+                        type: 'meta',
+                        attrs: {
+                            property: item[0],
+                            content: item[1]
+                        }
                     }
-                }
-            )));
+                )));
 
-            this.get('headTagsService').collectHeadTags();
+                this.get('headTagsService').collectHeadTags();
+            });
         });
+
     }
 });

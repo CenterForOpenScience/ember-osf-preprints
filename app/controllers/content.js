@@ -40,10 +40,10 @@ function queryStringify(queryParams) {
 export default Ember.Controller.extend(Analytics, {
     fullScreenMFR: false,
     expandedAuthors: true,
-    twitterHref: Ember.computed('model', function() {
+    twitterHref: Ember.computed('node', function() {
         const queryParams = {
             url: window.location.href,
-            text: this.get('model.title'),
+            text: this.get('node.title'),
             via: 'OSFramework'
         };
 
@@ -63,20 +63,20 @@ export default Ember.Controller.extend(Analytics, {
         return `https://www.facebook.com/dialog/share?${queryStringify(queryParams)}`;
     }),
     // https://developer.linkedin.com/docs/share-on-linkedin
-    linkedinHref: Ember.computed('model', function() {
+    linkedinHref: Ember.computed('node', function() {
         const queryParams = {
             url: [window.location.href, 1024],          // required
             mini: ['true', 4],                          // required
-            title: [this.get('model.title'), 200],      // optional
-            summary: [this.get('model.abstract'), 256], // optional
+            title: [this.get('node.title'), 200],      // optional
+            summary: [this.get('node.description'), 256], // optional
             source: ['Open Science Framework', 200]     // optional
         };
 
         return `https://www.linkedin.com/shareArticle?${queryStringify(queryParams)}`;
     }),
-    emailHref: Ember.computed('model', function() {
+    emailHref: Ember.computed('node', function() {
         const queryParams = {
-            subject: this.get('model.title'),
+            subject: this.get('node.title'),
             body: window.location.href
         };
 
@@ -85,17 +85,21 @@ export default Ember.Controller.extend(Analytics, {
     // The currently selected file (defaults to primary)
     activeFile: null,
 
-    hasTag: Ember.computed('model.tags', function() {
-        return this.get('model.tags').length;
+    disciplineReduced: Ember.computed('model.subjects', function() {
+        return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
 
-    getAuthors: Ember.observer('model', function() {
-        // Cannot be called until preprint has loaded!
-        const model = this.get('model');
-        if (!model) return [];
+    hasTag: Ember.computed('node.tags', function() {
+        return this.get('node.tags').length;
+    }),
+
+    getAuthors: Ember.observer('node', function() {
+        // Cannot be called until node has loaded!
+        const node = this.get('node');
+        if (!node) return [];
 
         const contributors = Ember.A();
-        loadAll(model, 'contributors', contributors).then(() =>
+        loadAll(node, 'contributors', contributors).then(() =>
             this.set('authors', contributors)
         );
     }),

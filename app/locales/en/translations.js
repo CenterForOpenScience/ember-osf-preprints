@@ -42,7 +42,10 @@ export default {
         project_button: {
             paragraph: `The project for this paper is available on the Open Science Framework.`,
             button: `Visit project`
-        }
+        },
+        orphan_preprint: `The user has removed this file.`,
+        private_preprint_warning: `This Preprint is private. Make it discoverable by making`,
+        public: `public`
     },
     discover: {
         search: {
@@ -154,11 +157,11 @@ export default {
             body: `Once this preprint is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.`
         },
         'convert-or-copy': {
-            organize_language_project: `You can organize your preprint by storing the file in this project or in its own new component.  If you select ‘Make a new component’, 
-            the preprint file will be stored in a new component inside this project.  If you select ‘Use the current project’, the preprint file will be stored in this project. 
+            organize_language_project: `You can organize your preprint by storing the file in this project or in its own new component.  If you select ‘Make a new component’,
+            the preprint file will be stored in a new component inside this project.  If you select ‘Use the current project’, the preprint file will be stored in this project.
             If you are unsure, select ‘Make a new component’.`,
-            organize_language_component: `You can organize your preprint by storing the file in this component or in its own new component.  If you select ‘Make a new component’, 
-            the preprint file will be stored in a new component inside this component.  If you select ‘Use the current component’, the preprint file will be stored in this component. 
+            organize_language_component: `You can organize your preprint by storing the file in this component or in its own new component.  If you select ‘Make a new component’,
+            the preprint file will be stored in a new component inside this component.  If you select ‘Use the current component’, the preprint file will be stored in this component.
             If you are unsure, select ‘Make a new component’.`,
             copy: `Make a new component`,
             convert_project: `Use the current project`,
