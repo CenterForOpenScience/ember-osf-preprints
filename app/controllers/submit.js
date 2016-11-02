@@ -238,7 +238,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     abstractChanged: Ember.computed('basicsAbstract', 'node.description', function() {
         // Does the pending abstract differ from the saved abstract in the db?
         let basicsAbstract = this.get('basicsAbstract');
-        return basicsAbstract && basicsAbstract.trim() !== this.get('node.description');
+        return basicsAbstract !== null && basicsAbstract.trim() !== this.get('node.description');
     }),
     basicsTags: Ember.computed('node', function() {
         // Pending tags
