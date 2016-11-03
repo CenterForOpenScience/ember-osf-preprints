@@ -28,7 +28,7 @@
         {{#if preprintNode}}
             <p><em class="m-r-md"> {{t "components.preprint-form-header.location"}}: </em> {{get-ancestor-descriptor preprintNode}} {{preprintNode.title}}</p>
         {{/if}}
-        <p><em class="m-r-md"> {{t "components.preprint-form-header.file"}}: </em> {{preprintFile}} </p>
+        <p><em class="m-r-md"> {{t "components.preprint-form-header.file"}}: </em> {{preprintFile.name}} <em>(Version: {{preprintFile.currentVersion}})</em>  </p>
         <p><em class="m-r-md"> {{t "components.preprint-form-header.title"}}: </em> {{preprintTitle}} </p>
     </div>
 {{/if}}
