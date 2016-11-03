@@ -73,6 +73,17 @@ function subjectIdMap(subjectArray) {
     return subjectArray.map(subjectBlock => subjectBlock.map(subject => subject.id));
 }
 
+function doiRegexExec(doi) {
+    //Strips url out of inputted doi, if any.  For example, user input this DOI: https://dx.doi.org/10.12345/hello. Returns 10.12345/hello.
+    const doiRegex = /\b(10\.\d{4,}(?:\.\d+)*\/\S+(?:(?!["&\'<>])\S))\b/;
+    if (doi) {
+        const doiOnly = doiRegex.exec(doi);
+        return doiOnly !== null ? doiOnly[0] : null;
+    }
+    return doi;
+
+}
+
 /**
  * "Add preprint" page definitions
  */
@@ -262,7 +273,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     doiChanged: Ember.computed('model.doi', 'basicsDOI', function() {
         // Does the pending DOI differ from the saved DOI in the db?
         // If pending DOI and saved DOI are both falsy values, doi has not changed.
-        return (this.get('basicsDOI') || this.get('model.doi')) ? this.get('basicsDOI') !== this.get('model.doi') : false;
+        return doiRegexExec(this.get('basicsDOI') || this.get('model.doi')) ? doiRegexExec(this.get('basicsDOI')) !== this.get('model.doi') : false;
     }),
     basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', function() {
         // Are there any unsaved changes in the basics section?
@@ -540,7 +551,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             node.save()
                 .then(() => {
                     if (this.get('doiChanged')) {
-                        model.set('doi', this.get('basicsDOI'));
+                        model.set('doi', doiRegexExec(this.get('basicsDOI')));
                         if (model.get('doi') === '') {
                             model.set('doi', null);
                         }
