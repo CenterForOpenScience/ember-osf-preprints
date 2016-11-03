@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import config from './config/environment';
+import config from 'ember-get-config';
 
 const Router = Ember.Router.extend({
     location: config.locationType,
@@ -31,8 +31,9 @@ Router.map(function() {
         this.route('discover');
         this.route('submit');
     });
-    this.route('page-not-found', { path: 'preprints/*bad_url'});
+    this.route('reroute-guid', { path: 'preprints/*bad_url'});
     this.route('page-not-found', {path: 'preprints/page-not-found'});
+    this.route('forbidden');
 });
 
 export default Router;

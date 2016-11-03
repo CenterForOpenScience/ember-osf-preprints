@@ -2,6 +2,7 @@ import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from '../mixins/analytics';
+import permissions from 'ember-osf/const/permissions';
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -38,8 +39,13 @@ function queryStringify(queryParams) {
 }
 
 export default Ember.Controller.extend(Analytics, {
+    theme: Ember.inject.service(),
     fullScreenMFR: false,
     expandedAuthors: true,
+    isAdmin: Ember.computed('node', function() {
+        // True if the current user has admin permissions for the node that contains the preprint
+        return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
+    }),
     twitterHref: Ember.computed('node', function() {
         const queryParams = {
             url: window.location.href,
@@ -86,6 +92,7 @@ export default Ember.Controller.extend(Analytics, {
     activeFile: null,
 
     disciplineReduced: Ember.computed('model.subjects', function() {
+        // Preprint disciplines are displayed in collapsed form on content page
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
 

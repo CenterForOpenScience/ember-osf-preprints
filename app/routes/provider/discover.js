@@ -2,7 +2,7 @@ import route from '../discover';
 
 route.reopen({
     controllerName: 'discover',
-    renderTemplate: function(controller, model) {
+    renderTemplate(controller, model) {
         this.render('discover', {
             controller,
             model

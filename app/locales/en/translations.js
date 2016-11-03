@@ -3,7 +3,9 @@ const preprints = `Preprints`;
 export default {
     global: {
         share: `Share`,
+        complete: `Complete`,
         cancel: `Cancel`,
+        discard: `Discard changes`,
         back: `Back`,
         prev: `Prev`,
         next: `Next`,
@@ -44,9 +46,12 @@ export default {
         disciplines: `Disciplines`,
         project_button: {
             paragraph: `The project for this paper is available on the Open Science Framework.`,
-            button: `Visit project`
+            button: `Visit project`,
+            edit_preprint:  `Edit preprint`
         },
-        orphan_preprint: `The user has removed this file.`
+        orphan_preprint: `The user has removed this file.`,
+        private_preprint_warning: `This Preprint is private. Make it discoverable by making`,
+        public: `public`
     },
     discover: {
         search: {
@@ -117,10 +122,19 @@ export default {
         },
         go_to: `Go to OSF Preprints`
     },
+    'page-forbidden': {
+        heading: `Forbidden`,
+        paragraph: {
+            line1: `User has restricted access to this page. If this should not have occurred and the issue persists, please report it to `,
+        },
+        go_to: `Go to OSF Preprints`
+    },
     submit: {
-        heading: `Add Preprint`,
+        add_heading: `Add Preprint`,
+        edit_heading: `Edit Preprint`,
         body: {
-            p: `Follow these five easy steps to add your preprint to the OSF preprint repository.`,
+            p_add: `Follow these five easy steps to add your preprint to the OSF preprint repository.`,
+            p_edit: `Edit your preprint sections below.`,
             file: `Preprint file`,
             title: `Preprint title`,
             subjects_description: `Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.`,
@@ -137,18 +151,35 @@ export default {
                 }
             },
             authors: {
-                paragraph: `Add preprint authors and order them appropriately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the preprint.`
+                paragraph: `Add preprint authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the preprint.`
             },
             submit: {
                 paragraph: `When you share this preprint, it will become publicly accessible via OSF Preprints. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
                 invalid: {
                     description: `The following section(s) must be completed before sharing this preprint.`,
                     discipline: `Discipline`,
-                    basics: `Basics`
+                    basics: `Basics`,
+                    upload: `Upload`
                 }
             },
-            save_continue: `Save and continue`
-        }
+            update: {
+                paragraph: `Edits to this preprint will update both the preprint and the OSF project and will become publicly accessible via OSF Preprints.`
+            },
+            save_continue: `Save and continue`,
+        },
+        could_not_update_title: `Error updating title. Please try again.`,
+        error_copying_file: `Error copying file; please try again.`,
+        error_accessing_parent_files: `Error accessing parent files. Please try again.`,
+        could_not_create_component: `Could not create component. Please try again.`,
+        abandoned_preprint_error: `Error with abandoned preprint.`,
+        preprint_file_uploaded: `Preprint file uploaded!`,
+        error_initiating_preprint: `Could not initiate preprint. Please try again.`,
+        doi_error: `Error saving DOI`,
+        basics_error: `Error saving basics fields.`,
+        disciplines_error: `Error saving discipline(s).`,
+        search_contributors_error: `Could not perform search query.`,
+        error_completing_preprint: `Error completing preprint.`,
+        error_saving_preprint: `Could not save preprint; please try again later`,
     },
     components: {
         'confirm-restart-submit-preprint': {
@@ -160,11 +191,11 @@ export default {
             body: `Once this preprint is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.`
         },
         'convert-or-copy': {
-            organize_language_project: `You can organize your preprint by storing the file in this project or in its own new component.  If you select ‘Make a new component’, 
-            the preprint file will be stored in a new component inside this project.  If you select ‘Use the current project’, the preprint file will be stored in this project. 
+            organize_language_project: `You can organize your preprint by storing the file in this project or in its own new component.  If you select ‘Make a new component’,
+            the preprint file will be stored in a new component inside this project.  If you select ‘Use the current project’, the preprint file will be stored in this project.
             If you are unsure, select ‘Make a new component’.`,
-            organize_language_component: `You can organize your preprint by storing the file in this component or in its own new component.  If you select ‘Make a new component’, 
-            the preprint file will be stored in a new component inside this component.  If you select ‘Use the current component’, the preprint file will be stored in this component. 
+            organize_language_component: `You can organize your preprint by storing the file in this component or in its own new component.  If you select ‘Make a new component’,
+            the preprint file will be stored in a new component inside this component.  If you select ‘Use the current component’, the preprint file will be stored in this component.
             If you are unsure, select ‘Make a new component’.`,
             copy: `Make a new component`,
             convert_project: `Use the current project`,
@@ -179,7 +210,17 @@ export default {
         },
         'file-uploader': {
             dropzone_message: `Drop preprint file here to upload`,
-            title_placeholder: `Enter preprint title`
+            title_placeholder: `Enter preprint title`,
+            update_version: `Update preprint file version.  File must have the same name as the original.`,
+            could_not_create_project: `Could not create project. Please try again.`,
+            could_not_create_component: `Could not create component. Please try again.`,
+            could_not_update_title: `Could not update title. Please try again.`,
+            version_error: `This is not a version of the current preprint file.`,
+            preprint_file_updated: `Preprint file updated!`,
+            preprint_file_error: `Could not set preprint file. Please try again.`,
+            file_exists_error: `A file with that name already exists`,
+            upload_error: `Upload Failed` ,
+            dropzone_text_override: `Click or drag another preprint file to replace`,
         },
         'preprint-footer-branded': {
             support: `Support`,
@@ -216,6 +257,7 @@ export default {
             changes_saved: `Changes Saved!`,
             file: `Preprint file`,
             title: `Preprint title`,
+            location: `Preprint location`,
             click_edit: `Click to Edit`,
             name: {
                 Upload: 'Upload',
@@ -223,10 +265,14 @@ export default {
                 Basics: 'Basics',
                 Authors: 'Authors',
                 Submit: 'Submit',
+                Update: 'Update',
                 choose_project: 'Choose Project',
                 choose_file: 'Choose File',
                 organize: 'Organize',
-                finalize_upload: 'Finalize Upload'
+                finalize_upload: 'Finalize Upload',
+                location_of_preprint: 'Preprint Location',
+                title_of_preprint: 'Preprint Title',
+                preprint_file: 'Preprint File'
             }
         },
         'preprint-form-project-select': {
@@ -237,7 +283,8 @@ export default {
             edit_preprint_title_project: `Edit preprint title (will also become the name of the project)`,
             edit_preprint_title_component: `Edit preprint title (will also become the name of the component)`,
             initiate_preprint_process: `You have selected and organized your preprint file. Clicking "Save and continue" will immediately make changes to your OSF project.`,
-            admin_only: `You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.`
+            edit_organize_section: `Edits to this preprint will update both the preprint and the OSF project.`,
+            admin_only: `You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.`,
         },
         'preprint-form-section': {
             // Nothing to translate

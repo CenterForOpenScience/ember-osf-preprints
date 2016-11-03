@@ -24,8 +24,19 @@
                     <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
                 </div>
                 <div class="col-xs-2">
+                    {{#if isAdmin}}
+                    {{! TODO This link will need to be updated for phase 2 of branding }}
+                        <a type="button"
+                           class="btn btn-success"
+                           href={{concat (if theme.isProvider (concat '/preprints/' theme.id)) '/' model.id '?edit'}}
+                           onbeforeclick={{action "click" 'link' "Content - Edit Preprint"}}
+                        >
+                            {{t "content.project_button.edit_preprint"}}
+                        </a>
+                    {{/if}}
                     <style>
                         .provider-logo {
+                            margin-top: 12px;
                             background-image: url('/preprints/assets/img/provider_logos/{{model.provider.id}}.png');
                         }
                     </style>
@@ -39,16 +50,16 @@
     <div id="view-page" class="container">{{!CONTAINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
             <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}
-                {{#if model.isPreprintOrphan}}
-                    <p class="m-t-md text-danger"> {{t "content.orphan_preprint"}} </p>
-                {{else}}
-                    {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
-                    <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
-                        <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
-                    </button>
+                {{#if (not node.public)}}
+                    <div class="alert alert-danger m-r-md" role="alert">
+                        {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{node.title}} </a> {{t "content.public"}}.
+                    </div>
                 {{/if}}
+                {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
+                <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
+                    <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
+                </button>
             </div> {{!END LEFT COL DIV}}
-
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
                     {{#liquid-spacer growDuration=250 growWidth=false}}

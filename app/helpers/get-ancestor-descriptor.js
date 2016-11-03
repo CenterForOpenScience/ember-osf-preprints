@@ -35,7 +35,7 @@ export function getAncestorDescriptor(params/*, hash*/) {
                 rootDescriptor = 'Private / ' + node.get('parent.title') + ' / ';
             }
         } else {
-            rootDescriptor = 'Private / ';
+            rootDescriptor = '';
         }
     }
 
