@@ -28,15 +28,21 @@
     <div id="view-page" class="container">{{!CONTAINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
             <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}
-                {{#if (not node.public)}}
+                {{#if model.isPreprintOrphan}}
                     <div class="alert alert-danger m-r-md" role="alert">
-                        {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{node.title}} </a> {{t "content.public"}}.
+                        {{t "content.orphan_preprint"}}
                     </div>
+                {{else}}
+                    {{#if (not node.public)}}
+                        <div class="alert alert-danger m-r-md" role="alert">
+                            {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{node.title}} </a> {{t "content.public"}}.
+                        </div>
+                    {{/if}}
+                    {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
+                    <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
+                        <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
+                    </button>
                 {{/if}}
-                {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
-                <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
-                    <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
-                </button>
             </div> {{!END LEFT COL DIV}}
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
