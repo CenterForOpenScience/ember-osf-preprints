@@ -62,12 +62,15 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     // Hard redirect instead of transition, in anticipation of Phase 2 where providers will have their own domains.
                     const {origin, pathname, search} = window.location;
 
-                    window.location.href = [
+                    const url = [
                         origin,
                         'preprints',
                         providerId,
                         `${pathname.replace(/^\/(preprints\/)?/, '')}${search}`
                     ].join('/');
+
+                    window.history.replaceState({}, document.title, url);
+                    window.location.replace(url);
                 });
         }
 
