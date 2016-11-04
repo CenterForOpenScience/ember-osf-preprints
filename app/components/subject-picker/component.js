@@ -58,38 +58,26 @@ export default Ember.Component.extend({
     selection2: null,
     selection3: null,
 
-    flatSubjects: Ember.computed('theme.provider.subjectsAcceptable', function() {
-        const acceptableSubjects = this.get('theme.provider.subjectsAcceptable') || [];
-        const flatSubjects = new Set();
-
-        for (const subjects of acceptableSubjects) {
-            for (const subject of subjects[0]) {
-                if (!flatSubjects.has(subject))
-                    flatSubjects.add(subject);
-            }
-        }
-
-        return flatSubjects;
-    }),
-
     querySubjects(parents = 'null', tier = 0) {
-        this.get('store').query('taxonomy', {
-            filter: {
-                parents
-            },
-            page: {
-                size: 100
-            }
-        }).then(results => {
-            const flatSubjects = this.get('flatSubjects');
+        this.get('store')
+            .query('taxonomy', {
+                filter: {
+                    parents
+                },
+                page: {
+                    size: 100
+                }
+            })
+            .then(results => {
+                const flatSubjects = this.get('theme.flatSubjects');
 
-            if (flatSubjects.size) {
-                results = results
-                    .filter(result => flatSubjects.has(result.id));
-            }
+                if (flatSubjects.size) {
+                    results = results
+                        .filter(result => flatSubjects.has(result.id));
+                }
 
-            this.set(`_tier${tier + 1}`, results);
-        });
+                this.set(`_tier${tier + 1}`, results);
+            });
     },
 
     init() {

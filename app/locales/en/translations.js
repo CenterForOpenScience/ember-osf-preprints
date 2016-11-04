@@ -223,6 +223,9 @@ export default {
             dropzone_text_override: `Click or drag another preprint file to replace`,
         },
         'preprint-footer-branded': {
+            twitter: 'Twitter',
+            facebook: 'Facebook',
+            instagram: 'Instagram',
             support: `Support`,
             contact: `Contact`
         },

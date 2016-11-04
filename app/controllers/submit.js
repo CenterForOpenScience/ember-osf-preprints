@@ -77,6 +77,7 @@ function subjectIdMap(subjectArray) {
  * "Add preprint" page definitions
  */
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
+    i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
     fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),

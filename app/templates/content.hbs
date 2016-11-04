@@ -28,7 +28,7 @@
                     {{! TODO This link will need to be updated for phase 2 of branding }}
                         <a type="button"
                            class="btn btn-success"
-                           href={{concat (if theme.isProvider (concat '/preprints/' theme.id)) '/' model.id '?edit'}}
+                           href={{concat (if theme.isProvider (concat '/preprints/' theme.id)) '/' model.id '/?edit'}}
                            onbeforeclick={{action "click" 'link' "Content - Edit Preprint"}}
                         >
                             {{t "content.project_button.edit_preprint"}}
