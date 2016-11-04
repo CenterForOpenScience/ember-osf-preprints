@@ -25,8 +25,43 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
         this.render(this.get('editMode') ? 'submit' : 'content');
     },
     model(params) {
-        if (params.edit) this.set('editMode', true);
-        return this.store.findRecord('preprint', params.preprint_id);
+        if (params.edit)
+            this.set('editMode', true);
+
+        const findPreprint = this
+            .store
+            .findRecord('preprint', params.preprint_id);
+
+        // If we're already on a branded page, stay there.
+        if (this.get('theme.isProvider'))
+            return findPreprint;
+
+        // If we're on the OSF
+        return findPreprint
+            .then(preprint => Promise
+                .all([
+                    preprint,
+                    preprint.get('provider')
+                ])
+            )
+            .then(([preprint, provider]) => {
+                const providerId = provider.get('id');
+
+                // If we're on the OSF and the provider is OSF, stay on OSF
+                if (providerId === 'osf')
+                    return preprint;
+
+                // Otherwise, redirect to the branded page
+                // Hard redirect instead of transition, in anticipation of Phase 2 where providers will have their own domains.
+                const {origin, pathname, search} = window.location;
+
+                window.location.href = [
+                    origin,
+                    'preprints',
+                    providerId,
+                    `${pathname.replace(/^\/(preprints\/)?/, '')}${search}`
+                ].join('/');
+            });
     },
     setupController(controller, model) {
         if (this.get('editMode')) {
