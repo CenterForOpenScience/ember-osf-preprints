@@ -28,40 +28,9 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
         if (params.edit)
             this.set('editMode', true);
 
-        const findPreprint = this
+        return this
             .store
             .findRecord('preprint', params.preprint_id);
-
-        // If we're already on a branded page, stay there.
-        if (this.get('theme.isProvider'))
-            return findPreprint;
-
-        // If we're on the OSF
-        return findPreprint
-            .then(preprint => Promise
-                .all([
-                    preprint,
-                    preprint.get('provider')
-                ])
-            )
-            .then(([preprint, provider]) => {
-                const providerId = provider.get('id');
-
-                // If we're on the OSF and the provider is OSF, stay on OSF
-                if (providerId === 'osf')
-                    return preprint;
-
-                // Otherwise, redirect to the branded page
-                // Hard redirect instead of transition, in anticipation of Phase 2 where providers will have their own domains.
-                const {origin, pathname, search} = window.location;
-
-                window.location.href = [
-                    origin,
-                    'preprints',
-                    providerId,
-                    `${pathname.replace(/^\/(preprints\/)?/, '')}${search}`
-                ].join('/');
-            });
     },
     setupController(controller, model) {
         if (this.get('editMode')) {
@@ -79,6 +48,29 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
         return this._super(...arguments);
     },
     afterModel(preprint) {
+        // If we're already on a branded page, stay there.
+        if (!this.get('theme.isProvider')) {
+            preprint.get('provider')
+                .then(provider => {
+                    const providerId = provider.get('id');
+
+                    // If we're on the OSF and the provider is OSF, stay on OSF
+                    if (providerId === 'osf')
+                        return;
+
+                    // Otherwise, redirect to the branded page
+                    // Hard redirect instead of transition, in anticipation of Phase 2 where providers will have their own domains.
+                    const {origin, pathname, search} = window.location;
+
+                    window.location.href = [
+                        origin,
+                        'preprints',
+                        providerId,
+                        `${pathname.replace(/^\/(preprints\/)?/, '')}${search}`
+                    ].join('/');
+                });
+        }
+
         return preprint.get('node').then(node => {
             this.set('node', node);
             if (this.get('editMode')) {
