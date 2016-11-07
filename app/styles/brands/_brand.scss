@@ -34,10 +34,6 @@ $nav-height: 50px;
         transform: translateY(-12px);
     }
 
-    a:hover > .navbar-image {
-        filter: $theme-nav-filter;
-    }
-
     .navbar-image,
     .preprint-brand {
         background-image: url($logo);
@@ -53,10 +49,14 @@ $nav-height: 50px;
         }
 
         .navbar-brand:hover,
+        .nav > li > a:hover {
+            background-color: $theme-color-3;
+            opacity: 0.75;
+        }
+
         .nav > li.open,
         .nav > li.open > a,
         .nav > li > a.active,
-        .nav > li > a:hover,
         .nav > li.open > a:hover,
         .nav > li.open > a:focus:not(.active):hover,
         .nav > li > a:focus:not(.active):hover {
