@@ -48,31 +48,35 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
         return this._super(...arguments);
     },
     afterModel(preprint) {
-        // If we're already on a branded page, stay there.
-        if (!this.get('theme.isProvider')) {
-            preprint.get('provider')
-                .then(provider => {
-                    const providerId = provider.get('id');
+        // Redirect if necessary
+        preprint.get('provider')
+            .then(provider => {
+                const providerId = provider.get('id');
+                const themeId = this.get('theme.id');
+                const isOSF = providerId === 'osf';
 
-                    // If we're on the OSF and the provider is OSF, stay on OSF
-                    if (providerId === 'osf')
-                        return;
+                // If we're on the proper branded site, stay there.
+                if ((!themeId && isOSF) || themeId === providerId)
+                    return;
 
-                    // Otherwise, redirect to the branded page
-                    // Hard redirect instead of transition, in anticipation of Phase 2 where providers will have their own domains.
-                    const {origin, pathname, search} = window.location;
+                // Otherwise, redirect to the branded page
+                // Hard redirect instead of transition, in anticipation of Phase 2 where providers will have their own domains.
+                const {origin, search} = window.location;
 
-                    const url = [
-                        origin,
-                        'preprints',
-                        providerId,
-                        `${pathname.replace(/^\/(preprints\/)?/, '')}${search}`
-                    ].join('/');
+                const urlParts = [
+                    origin
+                ];
 
-                    window.history.replaceState({}, document.title, url);
-                    window.location.replace(url);
-                });
-        }
+                if (!isOSF)
+                    urlParts.push('preprints', providerId);
+
+                urlParts.push(`${preprint.get('id')}${search}`);
+
+                const url = urlParts.join('/');
+
+                window.history.replaceState({}, document.title, url);
+                window.location.replace(url);
+            });
 
         return preprint.get('node').then(node => {
             this.set('node', node);
