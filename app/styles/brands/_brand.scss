@@ -16,10 +16,10 @@ $nav-height: 50px;
         .preprint-brand {
             height: 140px;
         }
-    }
 
-    .preprint-header a:not(.btn) {
-        display: none;
+        a:not(.btn) {
+            color: $theme-color-2;
+        }
     }
 
     .navbar-image {
