@@ -133,6 +133,11 @@ $nav-height: 50px;
         background-color: $theme-color-1;
         color: $theme-color-2;
         min-height: 200px;
+
+        a {
+            color: $theme-color-4;
+            font-weight: bold;
+        }
     }
 
     #view-page .header-row {
