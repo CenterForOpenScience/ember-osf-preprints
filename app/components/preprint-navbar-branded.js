@@ -3,4 +3,5 @@ import OSFAgnosticAuthControllerMixin from 'ember-osf/mixins/osf-agnostic-auth-c
 import Analytics from '../mixins/analytics';
 
 export default Ember.Component.extend(OSFAgnosticAuthControllerMixin, Analytics, {
+    theme: Ember.inject.service(),
 });
