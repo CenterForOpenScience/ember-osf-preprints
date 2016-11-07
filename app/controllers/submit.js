@@ -452,7 +452,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Initiates preprint.  Occurs in Upload section of Add Preprint form when pressing 'Save and continue'.  Creates a preprint with
             // primaryFile, node, and provider fields populated.
             let model = this.get('model');
-            let provider = this.get('store').peekRecord('preprint-provider', config.PREPRINTS.provider);
+
+            const provider = this.get('store')
+                .peekRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider);
 
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
@@ -669,15 +671,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         savePreprint() {
             // Finalizes saving of preprint.  Publishes preprint and turns node public.
             const model = this.get('model');
-            const provider = this.get('store')
-                .peekRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider);
             const node = this.get('node');
 
             this.set('savingPreprint', true);
             this.toggleProperty('shareButtonDisabled');
-            model.set('primaryFile', this.get('selectedFile'));
-            model.set('node', node);
-            model.set('provider', provider);
             model.set('isPublished', true);
             node.set('public', true);
 

@@ -23,26 +23,22 @@
                     </h5>
                     <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
                 </div>
-                <div class="col-xs-2">
+                <div class="col-xs-2 text-center">
                     {{#if isAdmin}}
                     {{! TODO This link will need to be updated for phase 2 of branding }}
                         <a type="button"
-                           class="btn btn-success"
+                           class="btn btn-success edit-btn"
                            href={{concat (if theme.isProvider (concat '/preprints/' theme.id)) '/' model.id '/?edit'}}
                            onbeforeclick={{action "click" 'link' "Content - Edit Preprint"}}
                         >
                             {{t "content.project_button.edit_preprint"}}
                         </a>
                     {{/if}}
-                    <style>
-                        .provider-logo {
-                            margin-top: 12px;
-                            background-image: url('/preprints/assets/img/provider_logos/{{model.provider.id}}.png');
-                        }
-                    </style>
-                    <div class="content-provider-logo provider-logo"
+                    <img class="provider"
+                         src="/preprints/assets/img/provider_logos/{{model.provider.id}}.png"
+                         alt="{{model.provider.name}}"
                          title="{{model.provider.name}}"
-                    ></div>
+                    >
                 </div>
             </div>
         </div> {{!END CONTAINER DIV}}
