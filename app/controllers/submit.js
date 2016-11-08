@@ -100,6 +100,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     contributors: Ember.A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
     nodeTitle: null, // Preprint title
     nodeLocked: false, // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
+    fileLocked: false, // True if published preprint by another provider exists on the node
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
@@ -117,9 +118,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     disciplineModifiedToggle: false, // Helps determine if discipline has changed
     uploadInProgress: false, // Set to true when upload step is underway,
     existingPreprints: Ember.A(), // Existing preprints on the current node
-    abandonedPreprint: null, // Abandoned(draft) preprint on the current node
     editMode: false, // Edit mode is false by default.
     shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
+
+    currentProvider: Ember.computed('theme', function() {
+        // Current theme
+        return this.get('theme.id') || config.PREPRINTS.provider;
+    }),
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -130,6 +135,20 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return null;
     }),
 
+    abandonedPreprint: Ember.computed('node.preprints', function() {
+        // Abandoned(draft) preprint on the current node for the currentProvider
+        const currentProvider = this.get('currentProvider');
+        const node = this.get('node');
+        if (node) {
+            for (const preprint of node.get('preprints').toArray()) {
+                var preprintProvider = this.send('getPreprintProvider', preprint);
+                if (!(preprint.get('isPublished')) && currentProvider === preprintProvider) {
+                    return preprint;
+                }
+            }
+        }
+        return null;
+    }),
     hasFile: Ember.computed('file', 'selectedFile', function() {
         // True if file has either been preuploaded, or already uploaded file has been selected.
         return this.get('file') !== null || this.get('selectedFile') !== null;
@@ -298,26 +317,24 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
              this.set('contributors', contributors));
     }),
 
-    getNodePreprints: Ember.observer('node', function() {
-        // Returns any existing preprints stored on the current node
-
-        // Cannot be called until a project has been selected!
+    getExistingPreprintProperties: Ember.observer('node', function() {
+        // If selected node already has published preprints, selectedFile needs to be the primaryFile.  Each node only gets one preprint file.
         const node = this.get('node');
-        if (!node) return;
+        if (!this.get('node')) return;
 
-        node.get('preprints').then((preprints) => {
-            this.set('existingPreprints', preprints);
-            let currentProvider = this.get('theme.id') || config.PREPRINTS.provider;
-
-            if (preprints.toArray().length > 0) { // If node already has a preprint
-                for (const preprint of preprints.toArray()) {
-                    var preprintProvider = preprint.get('links.relationships.provider.links.related.href').split('preprint_providers/')[1].replace('/', '');
-                    if (!(preprint.get('isPublished')) && currentProvider === preprintProvider) {
-                        this.set('abandonedPreprint', preprint);
-                    }
+        const currentProvider = this.get('currentProvider');
+        if (node) {
+            this.set('nodeTitle', node.get('title'));
+            this.set('titleValid', true);
+            for (const preprint of node.get('preprints').toArray()) {
+                const preprintProvider = this.send('getPreprintProvider', preprint);
+                if (preprint.get('isPublished') && currentProvider !== preprintProvider) {
+                    preprint.get('primaryFile').then((file) => {
+                        this.set('selectedFile', file);
+                    });
                 }
             }
-        });
+        }
     }),
 
     getParentContributors: Ember.observer('parentNode', function() {
@@ -387,6 +404,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Locks node so that preprint location cannot be modified.  Occurs after upload step is complete.
             // In editMode, nodeLocked is set to true.
             this.set('nodeLocked', true);
+        },
+        getPreprintProvider(preprint) {
+            return preprint.get('links.relationships.provider.links.related.href').split('preprint_providers/')[1].replace('/', '');
         },
         finishUpload() {
             // Locks node and advances to next form section.

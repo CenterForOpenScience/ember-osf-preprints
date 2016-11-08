@@ -20,16 +20,22 @@ export default Ember.Component.extend({
     actions: {
         nodeSelected(node) {
             // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded, file-browser component can be loaded.
-            this.attrs.clearDownstreamFields('belowNode');
             this.set('selectedNode', node);
-            this.set('osfProviderLoaded', false);
-            this.send('changeExistingState', this.get('_existingState').CHOOSE);
-            this.get('selectedNode.files').then((files) => {
-                this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
-                this.set('osfProviderLoaded', true);
-            });
-            this.attrs.nextUploadSection('chooseProject', 'chooseFile');
-
+            this.send('checkOtherPreprints', node);
+            if (this.get('fileLocked')) { // Node contains published preprints from other providers
+                this.set('nodeTitle', node.get('title'));
+                this.set('titleValid', true);
+                this.send('changeExistingState', this.get('_existingState').NEWFILE);
+            } else {
+                this.attrs.clearDownstreamFields('belowNode');
+                this.set('osfProviderLoaded', false);
+                this.send('changeExistingState', this.get('_existingState').CHOOSE);
+                this.get('selectedNode.files').then((files) => {
+                    this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
+                    this.set('osfProviderLoaded', true);
+                });
+                this.attrs.nextUploadSection('chooseProject', 'chooseFile');
+            }
         },
         selectFile(file) {
             // Select existing file from file-browser
@@ -48,6 +54,20 @@ export default Ember.Component.extend({
                 this.attrs.nextUploadSection('chooseFile', 'uploadNewFile');
             }
         },
+        checkOtherPreprints(node) {
+            // Checks node for published preprints from other providers. If they exist, set fileLocked to true.
+            let preprints = node.get('preprints').toArray();
+            let currentProvider = this.get('currentProvider');
+
+            if (preprints.toArray().length > 0) { // If node already has a preprint
+                for (const preprint of preprints.toArray()) {
+                    var preprintProvider = this.attrs.getPreprintProvider(preprint);
+                    if (preprint.get('isPublished') && currentProvider !== preprintProvider) {
+                        this.set('fileLocked', true);
+                    }
+                }
+            }
+        }
     },
 
     /**

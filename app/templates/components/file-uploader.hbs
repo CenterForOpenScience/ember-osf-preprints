@@ -19,9 +19,9 @@
     </div>
 {{else}}
     {{#preprint-form-section class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}  {{!UPLOAD NEW FILE SECTION}}
-        {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false}}
+        {{preprint-form-header name=(if (or fileLocked nodeLocked) 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false}}
         {{#preprint-form-body}}
-            {{#if nodeLocked}}
+            {{#if (or fileLocked nodeLocked)}}
                 <p class='text-muted m-v-sm text-smaller'> {{t "components.file-uploader.update_version"}}</p>
             {{else}}
                 <div class="m-t-sm">
@@ -50,7 +50,7 @@
     {{/preprint-form-section}}
 
     {{#if (and selectedNode (or hasFile osfFile)) use='crossFade'}}
-        {{#if nodeLocked}}
+        {{#if (or fileLocked nodeLocked)}}
             {{#preprint-form-section class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}} {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
                 {{preprint-form-header nodeTitle=nodeTitle name='title_of_preprint' showValidationIndicator=false}}
                 {{#preprint-form-body}}
