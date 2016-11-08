@@ -8,6 +8,7 @@ import Analytics from '../mixins/analytics';
 export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedRouteMixin, SetupSubmitControllerMixin, {
     currentUser: Ember.inject.service('currentUser'),
     panelActions: Ember.inject.service('panelActions'),
+    theme: Ember.inject.service('theme'),
     model() {
         // Store the empty preprint to be created on the model hook for page. Node will be fetched
         //  internally during submission process.

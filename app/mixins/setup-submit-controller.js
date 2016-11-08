@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
 
@@ -6,12 +7,12 @@ import permissions from 'ember-osf/const/permissions';
 // the setupController items necessary for both Add and Edit Modes.
 export default Ember.Mixin.create({
     panelActions: Ember.inject.service('panelActions'),
-
     setupSubmitController(controller, model) {
         //setupController method that will be run for both Add and Edit modes for submit form.
         if (controller.get('model.isLoaded'))
             controller.clearFields();
         controller.set('editMode', this.get('editMode'));
+        var currentProvider = this.get('theme.id') || config.PREPRINTS.provider;
 
         // Fetch values required to operate the page: user and userNodes
         let userNodes = Ember.A();
@@ -27,11 +28,22 @@ export default Ember.Mixin.create({
                 controller.set('user', user);
                 return user;
             }).then((user) => loadAll(user, 'nodes', userNodes, {
-                'filter[preprint]': false
+                embed: 'preprints'
             }).then(() => {
+                // Can only have one published preprint per provider per node.
+                let noProviderConflict = userNodes.filter((item) => {
+                    var eligible = true;
+                    item.get('preprints').toArray().forEach((preprint) => {
+                        var isPublished = preprint.get('isPublished');
+                        // Extracting preprint provider from provider url
+                        var preprintProvider = preprint.get('links.relationships.provider.links.related.href').split('preprint_providers/')[1].replace('/', '');
+                        if (isPublished && currentProvider === preprintProvider) eligible = false;
+                    });
+                    return eligible;
+                });
                 // TODO Hack: API does not support filtering current_user_permissions in the way we desire, so filter
                 // on front end for now until filtering support can be added to backend
-                let onlyAdminNodes = userNodes.filter((item) => item.get('currentUserPermissions').includes(permissions.ADMIN));
+                let onlyAdminNodes = noProviderConflict.filter((item) => item.get('currentUserPermissions').includes(permissions.ADMIN));
                 controller.set('userNodes', onlyAdminNodes);
                 controller.set('userNodesLoaded', true);
             }));
