@@ -43,6 +43,9 @@ module.exports = function(defaults) {
             importBootstrapCSS: false
         },
         // Needed for branded themes
+        fingerprint: {
+            customHash: config.ASSET_SUFFIX,
+        },
         outputPaths: {
             app: {
                 css

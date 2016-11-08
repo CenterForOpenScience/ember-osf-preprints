@@ -70,7 +70,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 if (!isOSF)
                     urlParts.push('preprints', providerId);
 
-                urlParts.push(`${preprint.get('id')}${search}`);
+                urlParts.push(preprint.get('id'), search);
 
                 const url = urlParts.join('/');
 
