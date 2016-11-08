@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from 'ember-get-config';
 
 export default Ember.Service.extend({
     id: null,
@@ -8,7 +9,8 @@ export default Ember.Service.extend({
     isProvider: Ember.computed.bool('id'),
 
     stylesheet: Ember.computed('id', function() {
-        return `/preprints/assets/css/${this.get('id').toLowerCase()}.css`;
+        const suffix = config.ASSET_SUFFIX ? `-${config.ASSET_SUFFIX}` : '';
+        return `/preprints/assets/css/${this.get('id').toLowerCase()}${suffix}.css`;
     }),
 
     flatSubjects: Ember.computed('provider.subjectsAcceptable', function() {
