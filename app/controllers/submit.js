@@ -73,6 +73,18 @@ function subjectIdMap(subjectArray) {
     return subjectArray.map(subjectBlock => subjectBlock.map(subject => subject.id));
 }
 
+function doiRegexExec(doi) {
+    //Strips url out of inputted doi, if any.  For example, user input this DOI: https://dx.doi.org/10.12345/hello. Returns 10.12345/hello.
+    // If doi invalid, returns doi.
+    const doiRegex = /\b(10\.\d{4,}(?:\.\d+)*\/\S+(?:(?!["&\'<>])\S))\b/;
+    if (doi) {
+        const doiOnly = doiRegex.exec(doi);
+        return doiOnly !== null ? doiOnly[0] : doi;
+    }
+    return doi;
+
+}
+
 /**
  * "Add preprint" page definitions
  */
@@ -263,7 +275,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     doiChanged: Ember.computed('model.doi', 'basicsDOI', function() {
         // Does the pending DOI differ from the saved DOI in the db?
         // If pending DOI and saved DOI are both falsy values, doi has not changed.
-        return (this.get('basicsDOI') || this.get('model.doi')) ? this.get('basicsDOI') !== this.get('model.doi') : false;
+        const basicsDOI = doiRegexExec(this.get('basicsDOI'));
+        const modelDOI = this.get('model.doi');
+        return (basicsDOI || modelDOI) && basicsDOI !== modelDOI;
     }),
     basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', function() {
         // Are there any unsaved changes in the basics section?
@@ -528,6 +542,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.set('basicsAbstract', this.get('node.description'));
             this.set('basicsDOI', this.get('model.doi'));
         },
+        stripDOI() {
+            // Replaces the inputted doi link with just the doi itself
+            let basicsDOI = this.get('basicsDOI');
+            this.set('basicsDOI', doiRegexExec(basicsDOI));
+        },
         saveBasics() {
             // Saves the description/tags on the node and the DOI on the preprint, then advances to next panel
             let node = this.get('node');
@@ -543,10 +562,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             node.save()
                 .then(() => {
                     if (this.get('doiChanged')) {
-                        model.set('doi', this.get('basicsDOI'));
-                        if (model.get('doi') === '') {
-                            model.set('doi', null);
-                        }
+                        model.set('doi', this.get('basicsDOI') || null);
                         model.save()
                             .then(() => {
                                 this.send('next', this.get('_names.2'));

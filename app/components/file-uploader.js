@@ -217,8 +217,10 @@ export default Ember.Component.extend({
                     .findRecord('file', resp.data.id.split('/')[1])
                     .then(file => {
                         this.set('osfFile', file);
+                        // Set current version - will revert if user uploaded a new version of the same file
+                        this.set('fileVersion', resp.data.attributes.extra.version);
                         if (this.get('nodeLocked')) { // Edit mode
-                            this.get('toast').info(this.get('i18n').t('components.file-uploader.preprint_file_updated'));
+                            if (this.get('osfFile.currentVersion') !== resp.data.attributes.extra.version) this.get('toast').info(this.get('i18n').t('components.file-uploader.preprint_file_updated'));
                             this.sendAction('finishUpload');
                             if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
                         } else { // Add mode
