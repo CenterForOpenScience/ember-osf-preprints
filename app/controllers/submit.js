@@ -307,10 +307,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
         node.get('preprints').then((preprints) => {
             this.set('existingPreprints', preprints);
+            let currentProvider = this.get('theme.id') || config.PREPRINTS.provider;
+
             if (preprints.toArray().length > 0) { // If node already has a preprint
-                let preprint = preprints.toArray()[0]; // TODO once branded is finished, this will change
-                if (!(preprint.get('isPublished'))) { // Preprint exists in abandoned state.
-                    this.set('abandonedPreprint', preprint);
+                for (const preprint of preprints.toArray()) {
+                    var preprintProvider = preprint.get('links.relationships.provider.links.related.href').split('preprint_providers/')[1].replace('/', '');
+                    if (!(preprint.get('isPublished')) && currentProvider === preprintProvider) {
+                        this.set('abandonedPreprint', preprint);
+                    }
                 }
             }
         });
