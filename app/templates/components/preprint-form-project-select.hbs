@@ -1,35 +1,42 @@
 {{#cp-panels accordion=true}}
-    {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}}
-        {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
-        {{#preprint-form-body}}
-
-            {{#if (not userNodesLoaded)}}
-                <div class="ball-pulse text-center">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            {{else}}
-                {{#if userNodes}}
-                    <div class="m-t-sm">
-                        {{#power-select options=userNodes placeholder="Click to select" searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
-                            {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
-                        {{/power-select}}
+    {{#if nodeLocked}}
+        {{#preprint-form-section class="upload-section-block" allowOpen=false name='locationOfPreprint' open=false}} {{!PROJECT LOCKED (EDIT MODE)}}
+            {{preprint-form-header id='locked-section' name='location_of_preprint' node=node selectedNode=selectedNode showValidationIndicator=false}}
+            {{#preprint-form-body}}
+            {{/preprint-form-body}}
+        {{/preprint-form-section}}
+    {{else}}
+        {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}} {{!CHOOSE PROJECT SECTION}}
+            {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
+            {{#preprint-form-body}}
+                {{#if (not userNodesLoaded)}}
+                    <div class="ball-pulse text-center">
+                        <div></div>
+                        <div></div>
+                        <div></div>
                     </div>
                 {{else}}
-                    <p class="m-t-md text-danger"> {{t "components.preprint-form-project-select.no_valid_existing_nodes"}} </p>
+                    {{#if userNodes}}
+                        <div class="m-t-sm">
+                            {{#power-select options=userNodes placeholder="Click to select" searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
+                                {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
+                            {{/power-select}}
+                        </div>
+                    {{else}}
+                        <p class="m-t-md text-danger"> {{t "components.preprint-form-project-select.no_valid_existing_nodes"}} </p>
+                    {{/if}}
                 {{/if}}
-            {{/if}}
-            <p class="text-muted text-smaller m-t-xs">
-                {{t "components.preprint-form-project-select.existing_project_selector"}}
-            </p>
-        {{/preprint-form-body}}
-    {{/preprint-form-section}}
+                <p class="text-muted text-smaller m-t-xs">
+                    {{t "components.preprint-form-project-select.existing_project_selector"}}
+                </p>
+            {{/preprint-form-body}}
+        {{/preprint-form-section}}
+    {{/if}}
     {{#if selectedNode}}
         {{#if isAdmin}}
-            {{#if (and fileSelect (eq existingState _existingState.CHOOSE))}}
+            {{#if (and fileSelect (eq existingState _existingState.CHOOSE))}} {{!FILE DECISION SECTION - UPLOAD OR CHOOSE EXISTING}}
                 {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseFile' open=false}}
-                    {{preprint-form-header name='choose_file' showValidationIndicator=false}}
+                    {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false}}
                     {{#preprint-form-body}}
                         <form class="form">
                             <div class="toggle-button">
@@ -51,8 +58,8 @@
             {{#if (eq existingState _existingState.EXISTINGFILE)}}
                 <div>
                     {{#if osfProviderLoaded}}
-                        {{#preprint-form-section class="upload-section-block" allowOpen=true name='selectExistingFile' open=false}}
-                            {{preprint-form-header name='choose_file' selectedFile=selectedFile showValidationIndicator=false}}
+                        {{#preprint-form-section class="upload-section-block" allowOpen=true name='selectExistingFile' open=false}} {{!CHOOSE EXISTING FILE SECTION}}
+                            {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false}}
                             {{#preprint-form-body}}
                                 <div class="m-t-sm">
                                     <form class="form">
@@ -69,19 +76,19 @@
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                         {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-                            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
+                            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}} {{!ORGANIZE DECISION SECTION}}
                                 {{preprint-form-header isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy name='organize' showValidationIndicator=false}}
                                 {{#preprint-form-body}}
                                     {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields nodeTitle=nodeTitle node=node isTopLevelNode=isTopLevelNode titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
                             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
-                                {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
+                                {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}} {{!FINALIZE UPLOAD SECTION - EXISTING FILE}}
                                     {{preprint-form-header nodeTitle=nodeTitle name='finalize_upload' showValidationIndicator=false}}
                                     {{#preprint-form-body}}
                                         {{#if (eq convertOrCopy 'convert')}}
                                             {{#if convertProjectConfirmed}}
-                                                <label class="text-muted title-label">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
+                                                <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                                             {{/if}}
                                         {{/if}}
                                         {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
@@ -102,6 +109,7 @@
                     changeExistingState = (action "changeExistingState")
                     isTopLevelNode=isTopLevelNode
                     finishUpload=finishUpload
+                    startPreprint=startPreprint
                     startState=startState
                     nodeTitle=nodeTitle
                     currentUser=currentUser
@@ -118,6 +126,14 @@
                     _existingState=_existingState
                     isTopLevelNode=isTopLevelNode
                     clearDownstreamFields=clearDownstreamFields
+                    nodeLocked=nodeLocked
+                    titleValid=titleValid
+                    uploadChanged=uploadChanged
+                    discardUploadChanges=discardUploadChanges
+                    uploadInProgress=uploadInProgress
+                    abandonedPreprint=abandonedPreprint
+                    resumeAbandonedPreprint=resumeAbandonedPreprint
+                    basicsAbstract=basicsAbstract
                 }}
             {{/if}}
         {{else}}
@@ -129,6 +145,8 @@
         {{/if}}
     {{/if}}
 {{/cp-panels}}
- <div class="p-t-xs">
-     <button class="btn btn-default" {{action changeInitialState startState}}>{{t "global.back"}}</button>
- </div>
+{{#unless nodeLocked}}
+    <div class="p-t-xs">
+        <button class="btn btn-default" {{action changeInitialState startState}}>{{t "global.back"}}</button>
+    </div>
+{{/unless}}

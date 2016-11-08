@@ -1,10 +1,13 @@
-{{title 'OSF Preprints' separator=' | '}}
-
-{{osf-navbar signupUrl=signupUrl loginAction=(action 'login') hideSearch=true}}
-{{preprint-navbar}}
+{{#unless theme.isProvider}}
+    {{title 'OSF Preprints' separator=' | '}}
+    {{osf-navbar signupUrl=signupUrl loginAction=(action 'login') hideSearch=true}}
+    {{preprint-navbar}}
+{{/unless}}
 
 {{outlet}}
 
-{{osf-footer}}
-{{osf-copyright class='text-center'}}
-{{osf-mode-footer}}
+{{#unless theme.isProvider}}
+    {{osf-footer}}
+    {{osf-copyright class='text-center'}}
+    {{osf-mode-footer}}
+{{/unless}}

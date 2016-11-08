@@ -1,0 +1,11 @@
+@import 'brand';
+
+@include brand(
+    #637074,
+    white,
+    #222F38,
+    #AAB9CF,
+    black,
+    invert(100%),
+    '/preprints/assets/img/provider_logos/engrxiv.png'
+);

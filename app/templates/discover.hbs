@@ -4,8 +4,15 @@
     <div class="container">
         <div class="row m-v-md ">
             <div class="col-xs-12 text-center">
-                <h1>{{t "discover.search.heading"}}</h1>
-                <p class="lead">{{t "discover.search.paragraph"}} <a href="https://share.osf.io/" class="share-logo" title="SHARE" {{action 'click' 'link' 'Discover - Share Logo' 'https://share.osf.io/'}}></a></p>
+                {{#if theme.isProvider}}
+                    <div class="col-xs-6 text-right">
+                        <div class="preprint-brand" style="height: 140px; background-position-x: right;"></div>
+                    </div>
+                {{/if}}
+                <div class={{if theme.isProvider 'col-xs-6 text-left'}}>
+                    <h1>{{t "discover.search.heading"}}</h1>
+                    <p class="lead">{{t "discover.search.paragraph"}} <a href="https://share.osf.io/" class="share-logo" title="SHARE" {{action 'click' 'link' 'Discover - Share Logo' 'https://share.osf.io/'}}></a></p>
+                </div>
             </div>
         </div>
         <div class="row m-t-md m-b-lg">
@@ -16,6 +23,28 @@
                         <button class="btn btn-default" type="button" {{action "search" this}}>{{t "global.search"}}</button>
                     </span>
                 </div>
+            </div>
+        </div>
+        <div class="row m-v-md">
+            <div class="col-xs-8 col-xs-offset-2" style="text-align: center;">
+                {{#if (not theme.isProvider)}}
+                    <h3>{{t "discover.search.partner"}}</h3>
+                    <div class="row">
+                        {{#each model as |provider|}}
+                            <style>
+                                .logo-{{provider.id}} {
+                                    background-image: url('/preprints/assets/img/provider_logos/{{provider.id}}.png');
+                                }
+                            </style>
+                            <a href="/preprints/{{provider.id}}/discover"
+                               title={{provider.name}}
+                               onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
+                            >
+                                <div class="discover-provider-logo col-xs-4 logo-{{provider.id}}"></div>
+                            </a>
+                        {{/each}}
+                    </div>
+                {{/if}}
             </div>
         </div>
         <div class="row m-v-md">
@@ -57,7 +86,12 @@
                         </div>
                         <div id="activeFiltersList">
                             {{#each activeFilters.providers as |filter|}}
-                                <span class='preprint-filter provider-filter'>{{filter-replace filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'updateFilters' 'providers' filter)}}</span></span>
+                                <span class='preprint-filter provider-filter'>
+                                    {{filter-replace filter}}
+                                    {{#unless theme.isProvider}}
+                                        <span class='pointer'>{{fa-icon 'times-circle' click=(action 'updateFilters' 'providers' filter)}}</span>
+                                    {{/unless}}
+                                </span>
                             {{/each}}
                             {{#each activeFilters.subjects as |filter|}}
                                 <span class='preprint-filter subject-filter'>{{filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'updateFilters' 'subjects' filter)}}</span></span>
@@ -72,13 +106,15 @@
                         {{#each otherProviders as |item|}}
                             <li>
                                 <label>
-                                    <input type="checkbox" checked="{{if (if-filter item.key activeFilters.providers) 'checked'}}" onclick={{action 'selectProvider' item.key}}>
+                                    <input type="checkbox" checked="{{if (if-filter item.key activeFilters.providers) 'checked'}}" onclick={{action 'updateFilters' 'providers' item.key}} disabled={{theme.isProvider}}>
                                     {{filter-replace item.key}}
-                                    <small>({{item.doc_count}})</small>
+                                    <small>({{number-format item.doc_count}})</small>
                                 </label>
                             </li>
                         {{/each}}
-
+                        {{#if theme.isProvider}}
+                            <a href="/preprints/discover" onbeforeclick={{action 'click' 'link' 'Discover - Other Preprint Repositories'}}>{{t "discover.main.otherRepositories"}}</a>
+                        {{/if}}
                     </ul>
                 </div>
                 <div class="m-t-lg">
@@ -87,7 +123,12 @@
                 </div>
                 <div class="osf-box p-md m-b-lg clearfix m-t-xl">
                     <p>{{t "discover.main.box.paragraph"}}</p>
-                    {{#link-to "submit" type="button" class="btn btn-success btn-lg" invokeAction=(action 'click' 'button' 'Discover - Add Preprint')}}{{t "discover.main.box.button"}}{{/link-to}}
+                    {{#link-to (if theme.isProvider "provider.submit" "submit")
+                               type="button" class="btn btn-success btn-lg"
+                               invokeAction=(action 'click' 'button' 'Discover - Add Preprint')
+                    }}
+                        {{t "discover.main.box.button"}}
+                    {{/link-to}}
                 </div>
             </div>
 

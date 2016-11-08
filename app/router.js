@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import config from './config/environment';
+import config from 'ember-get-config';
 
 const Router = Ember.Router.extend({
     location: config.locationType,
@@ -26,8 +26,14 @@ Router.map(function() {
     this.route('submit', {path: 'preprints/submit'});
     this.route('discover', {path: 'preprints/discover'});
     this.route('content', { path: '/:preprint_id' });
+    this.route('provider', {path: 'preprints/:slug'}, function() {
+        this.route('content', { path: '/:preprint_id'});
+        this.route('discover');
+        this.route('submit');
+    });
     this.route('reroute-guid', { path: 'preprints/*bad_url'});
     this.route('page-not-found', {path: 'preprints/page-not-found'});
+    this.route('forbidden');
 });
 
 export default Router;

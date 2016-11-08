@@ -5,14 +5,12 @@ function arrayEquals(arr1, arr2) {
 }
 
 function arrayStartsWith(arr, prefix) {
-    return prefix.reduce((acc, val, i) => acc && val === arr[i], true);
+    return prefix.reduce((acc, val, i) => acc && val && arr[i] && val.id === arr[i].id, true);
 }
 
 export default Ember.Component.extend({
     store: Ember.inject.service(),
-
-    // Array of arrays containing subject lineages
-    selected: [],
+    theme: Ember.inject.service(),
 
     // Store the lists of subjects
     _tier1: null,
@@ -60,23 +58,32 @@ export default Ember.Component.extend({
     selection2: null,
     selection3: null,
 
+    querySubjects(parents = 'null', tier = 0) {
+        this.get('store')
+            .query('taxonomy', {
+                filter: {
+                    parents
+                },
+                page: {
+                    size: 100
+                }
+            })
+            .then(results => {
+                const flatSubjects = this.get('theme.flatSubjects');
+
+                if (flatSubjects.size) {
+                    results = results
+                        .filter(result => flatSubjects.has(result.id));
+                }
+
+                this.set(`_tier${tier + 1}`, results);
+            });
+    },
+
     init() {
         this._super(...arguments);
         this.set('selected', []);
-
-        this.get('store').query('taxonomy', {
-            filter: {
-                parents: 'null'
-            },
-            page: {
-                size: 100
-            }
-        }).then(results => this.set('_tier1', results));
-    },
-
-    emitSave() {
-        this.set('disciplineReduced', this.get('selected').reduce((acc, val) => acc.concat(val), []).uniqBy('id'));
-        this.sendAction('save', this.get('selected'));
+        this.querySubjects();
     },
 
     actions: {
@@ -107,8 +114,7 @@ export default Ember.Component.extend({
                 this.set(`_tier${i}`, null);
                 this.set(`selection${i}`, null);
             }
-            // TODO: No need for autosave here- preprint isn't saved until the end
-            Ember.run.debounce(this, 'emitSave', 500);
+            this.sendAction('save', this.get('selected'));
         },
         select(selected, tier) {
             tier = parseInt(tier);
@@ -137,8 +143,7 @@ export default Ember.Component.extend({
                     this.get('selected').pushObject(selection);
             }
 
-            // TODO: No need for autosave here- preprint isn't saved until the end
-            Ember.run.debounce(this, 'emitSave', 500);
+            this.sendAction('save', this.get('selected'));
 
             if (tier === 3) return;
 
@@ -146,14 +151,7 @@ export default Ember.Component.extend({
                 this.set(`_tier${i}`, null);
 
             // TODO: Fires a network request every time clicking here, instead of only when needed?
-            this.get('store').query('taxonomy', {
-                filter: {
-                    parents: selected.id
-                },
-                page: {
-                    size: 100
-                }
-            }).then(results => this.set(`_tier${tier + 1}`, results));
+            this.querySubjects(selected.id, tier);
         },
     }
 });

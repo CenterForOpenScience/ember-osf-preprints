@@ -1,0 +1,146 @@
+$nav-height: 50px;
+
+@mixin brand(
+    $theme-color-1,
+    $theme-color-2,
+    $theme-color-3,
+    $theme-color-4,
+    $theme-color-5,
+    $theme-nav-filter,
+    $logo
+) {
+    .preprint-header {
+        background-image: none;
+        background-color: $theme-color-1;
+
+        .preprint-brand {
+            height: 140px;
+        }
+
+        a:not(.btn) {
+            color: $theme-color-2;
+        }
+    }
+
+    .navbar-image {
+        float: left;
+        clear: both;
+        text-align: center;
+        background: top center no-repeat;
+        background-size: contain;
+        height: $nav-height;
+        min-width: 120px;
+        display: block;
+        transform: translateY(-12px);
+    }
+
+    .navbar-image,
+    .preprint-brand {
+        background-image: url($logo);
+    }
+
+    .preprint-navbar {
+        top: 0;
+        background-color: $theme-color-3;
+        color: $theme-color-2;
+
+        a {
+            color: $theme-color-2;
+        }
+
+        .navbar-brand:hover,
+        .nav > li > a:hover {
+            background-color: $theme-color-3;
+            opacity: 0.75;
+        }
+
+        .nav > li.open,
+        .nav > li.open > a,
+        .nav > li > a.active,
+        .nav > li.open > a:hover,
+        .nav > li.open > a:focus:not(.active):hover,
+        .nav > li > a:focus:not(.active):hover {
+            background-color: $theme-color-4;
+            color: $theme-color-5;
+        }
+
+        .nav-user-dropdown {
+            height: $nav-height;
+        }
+
+        .dropdown > a {
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+
+        .sign-in {
+            padding-top: 8px;
+        }
+    }
+
+    #preprint-form-subjects .subject,
+    #preprint-form-subjects ul li.selected,
+    #preprint-form-subjects ul li:active {
+        background-color: $theme-color-3;
+    }
+
+    #preprint-form-subjects .subject > b:after {
+        border-left-color: $theme-color-3;
+    }
+
+    #preprint-form-subjects .subject:hover,
+    #preprint-form-subjects ul li:hover {
+        background-color: $theme-color-1;
+    }
+
+    a,
+    .preprint-form-section header {
+        color: $theme-color-3;
+    }
+
+    .dropdown-menu {
+        color: white;
+    }
+
+    .dropdown-menu > li > a:hover {
+        color: $theme-color-1;
+    }
+
+    .subject-item > .btn-primary {
+        background-color: $theme-color-3;
+        border-color: $theme-color-1;
+    }
+
+    .subject-item > .btn-primary:hover {
+        background-color: $theme-color-1;
+        border-color: $theme-color-3;
+    }
+
+    .preprint-submit-header,
+    .preprint-search-header,
+    .provider-filter {
+        background: $theme-color-1;
+        color: $theme-color-2;
+    }
+
+    .subject-filter,
+    .subject-filter .fa {
+        background-color: $theme-color-3;
+        color: $theme-color-2;
+    }
+
+    .preprint-advisory {
+        background-color: $theme-color-1;
+        color: $theme-color-2;
+        min-height: 200px;
+
+        a {
+            color: $theme-color-4;
+            font-weight: bold;
+        }
+    }
+
+    #view-page .header-row {
+        padding-top: 40px;
+    }
+}

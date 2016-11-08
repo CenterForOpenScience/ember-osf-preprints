@@ -3,43 +3,60 @@
 <div id="view-page">
     <div class="p-t-xl m-t-xl p-b-md m-b-md dark-overlay-header-background header-row">{{!HEADER ROW}}
         <div class="container">{{!CONTAINER DIV}}
-            <h1 id="preprintTitle" class="p-b-md">{{node.title}}</h1>
-            <h5 class="view-authors">
-                <ul class="comma-list">
-                    {{#if authors}}
-                        {{#each authors as |author index| ~}}
-                            {{#if author.bibliographic}}
-                                <li><a href={{author.users.profileURL}} {{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.givenName}} {{author.users.familyName}}</a></li>
+            <div class="row">
+                <div class="col-xs-10">
+                    <h1 id="preprintTitle" class="p-b-md">{{node.title}}</h1>
+                    <h5 class="view-authors">
+                        <ul class="comma-list">
+                            {{#if authors}}
+                                {{#each authors as |author index| ~}}
+                                    {{#if author.bibliographic}}
+                                        <li><a href={{author.users.profileURL}} {{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.givenName}} {{author.users.familyName}}</a></li>
+                                    {{/if}}
+                                {{~/each}}
+                            {{else}}
+                                <div>
+                                    {{fa-icon 'spinner' pulse=true size=2}}
+                                </div>
                             {{/if}}
-                        {{~/each}}
-                    {{else}}
-                        <div>
-                            {{fa-icon 'spinner' pulse=true size=2}}
-                        </div>
+                        </ul>
+                    </h5>
+                    <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
+                </div>
+                <div class="col-xs-2 text-center">
+                    {{#if isAdmin}}
+                    {{! TODO This link will need to be updated for phase 2 of branding }}
+                        <a type="button"
+                           class="btn btn-success edit-btn"
+                           href={{concat (if theme.isProvider (concat '/preprints/' theme.id)) '/' model.id '/?edit'}}
+                           onbeforeclick={{action "click" 'link' "Content - Edit Preprint"}}
+                        >
+                            {{t "content.project_button.edit_preprint"}}
+                        </a>
                     {{/if}}
-                </ul>
-            </h5>
-            <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
+                    <br>
+                    <img class="provider"
+                         src="/preprints/assets/img/provider_logos/{{model.provider.id}}.png"
+                         alt="{{model.provider.name}}"
+                         title="{{model.provider.name}}"
+                    >
+                </div>
+            </div>
         </div> {{!END CONTAINER DIV}}
     </div> {{!END HEADER ROW}}
     <div id="view-page" class="container">{{!CONTAINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
             <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}
-                {{#if model.isPreprintOrphan}}
-                    <p class="m-t-md text-danger"> {{t "content.orphan_preprint"}} </p>
-                {{else}}
-                    {{#if (not node.public)}}
-                        <div class="alert alert-danger m-r-md" role="alert">
-                            {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{node.title}} </a> {{t "content.public"}}.
-                        </div>
-                    {{/if}}
-                    {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
-                    <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
-                        <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
-                    </button>
+                {{#if (not node.public)}}
+                    <div class="alert alert-danger m-r-md" role="alert">
+                        {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{node.title}} </a> {{t "content.public"}}.
+                    </div>
                 {{/if}}
+                {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
+                <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
+                    <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
+                </button>
             </div> {{!END LEFT COL DIV}}
-
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
                     {{#liquid-spacer growDuration=250 growWidth=false}}
