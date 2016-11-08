@@ -16,7 +16,7 @@ export default Ember.Route.extend({
             this.set('theme.id', slug);
         } else {
             this.set('theme.id', null);
-            this.transitionTo('content', slug);
+            this.intermediateTransitionTo('reroute-guid', slug);
         }
     },
 
