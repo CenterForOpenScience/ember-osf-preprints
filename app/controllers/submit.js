@@ -519,7 +519,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     this.set('existingState', existingState.NEWFILE); // Sets file state to new file, for edit mode.
                     this.set('file', null);
                     this.get('toast').info(this.get('i18n')
-                        .t(`submit.${this.get('fileLocked') ? 'preprint_initiated' : 'preprint_file_upload'}`)
+                        .t(`submit.${this.get('fileLocked') ? 'preprint_initiated' : 'preprint_file_uploaded'}`)
                     );
                     this.send('finishUpload');
                 })

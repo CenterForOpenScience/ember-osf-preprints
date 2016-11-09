@@ -140,6 +140,13 @@
                             {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=node.tags abstract=node.description name=name valid=(not basicsChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class="row">
+                                    {{#if fileLocked}}
+                                        <div class="col-md-12">
+                                            <div class="alert alert-danger m-v-sm" role="alert">
+                                                {{if isTopLevelNode (t "submit.body.basics.other_preprints_project_basics_warning") (t "submit.body.basics.other_preprints_project_basics_warning")}}
+                                            </div>
+                                        </div>
+                                    {{/if}}
                                     <div class="col-md-6">
                                         <div>
                                             <label>{{t "submit.body.basics.doi.label"}}:</label>
@@ -177,6 +184,11 @@
                         {{#preprint-form-section id='preprint-form-authors' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
+                                {{#if fileLocked}}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{if isTopLevelNode (t "submit.body.authors.other_preprints_project_authors_warning") (t "submit.body.authors.other_preprints_component_authors_warning")}}
+                                    </div>
+                                {{/if}}
                                 <p class="text-smaller">
                                     {{t "submit.body.authors.paragraph"}}
                                 </p>

@@ -23,7 +23,7 @@
         {{#preprint-form-body}}
             {{#if fileLocked}}
                 <div class="alert alert-danger m-v-sm" role="alert">
-                    {{if isTopLevelNode (t "components.file-uploader.otherPreprintsProjectFileWarning") (t "components.file-uploader.otherPreprintsComponentFileWarning")}}
+                    {{if isTopLevelNode (t "components.file-uploader.other_preprints_project_file_warning") (t "components.file-uploader.other_preprints_component_file_warning")}}
                 </div>
             {{/if}}
             {{#if (or fileLocked nodeLocked)}}
@@ -61,7 +61,7 @@
                 {{#preprint-form-body}}
                     {{#if fileLocked}}
                         <div class="alert alert-danger m-v-sm" role="alert">
-                            {{if isTopLevelNode (t "components.file-uploader.otherPreprintsProjectTitleWarning") (t "components.file-uploader.otherPreprintsComponentTitleWarning")}}
+                            {{if isTopLevelNode (t "components.file-uploader.other_preprints_project_title_warning") (t "components.file-uploader.other_preprints_component_title_warning")}}
                         </div>
                     {{/if}}
                     <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
