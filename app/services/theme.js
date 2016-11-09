@@ -14,18 +14,4 @@ export default Ember.Service.extend({
         const suffix = config.ASSET_SUFFIX ? `-${config.ASSET_SUFFIX}` : '';
         return `/preprints/assets/css/${this.get('id').toLowerCase()}${suffix}.css`;
     }),
-
-    flatSubjects: Ember.computed('provider.subjectsAcceptable', function() {
-        const acceptableSubjects = this.get('provider.subjectsAcceptable') || [];
-        const flatSubjects = new Set();
-
-        for (const subjects of acceptableSubjects) {
-            for (const subject of subjects[0]) {
-                if (!flatSubjects.has(subject))
-                    flatSubjects.add(subject);
-            }
-        }
-
-        return flatSubjects;
-    }),
 });
