@@ -509,10 +509,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         discardUploadChanges() {
             // Discards upload section changes.  Restores displayed file to current preprint primaryFile
             // and resets displayed title to current node title. (No requests sent, front-end only.)
-            if (this.get('fileLocked')) {
+            if (!this.get('fileLocked')) { // Cannot modify selectedFile if fileLocked.
                 let currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
                 this.set('selectedFile', currentFile);
-
             }
             this.set('file', null);
             this.set('nodeTitle', this.get('node.title'));
