@@ -65,7 +65,7 @@ export default Ember.Component.extend({
         upload() {
             // Uploads file to node
             if (this.get('file') === null) { // No new file to upload.
-                (this.get('fileLocked')) ? this.sendAction('existingNodeExistingFile') : this.sendAction('finishUpload');
+                (this.get('fileLocked') && !(this.get('nodeLocked'))) ? this.sendAction('existingNodeExistingFile') : this.sendAction('finishUpload');
             } else {
                 return this.get('node.files').then(files => {
                     if (this.get('fileLocked') || this.get('nodeLocked')) { // Edit mode, fetch URL for uploading new version
