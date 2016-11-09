@@ -17,7 +17,7 @@
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile.name isValidationActive=(uploadValidationActive editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged)}}
+                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isValidationActive=(uploadValidationActive editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged)}}
                             {{#preprint-form-body}}
                                 {{#liquid-bind filePickerState class='translate' as |currentState|}}
                                     <div class={{currentState}}>
@@ -143,7 +143,9 @@
                                     <div class="col-md-6">
                                         <div>
                                             <label>{{t "submit.body.basics.doi.label"}}:</label>
-                                            {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI}}
+                                            <form onchange={{action 'stripDOI'}}>
+                                                {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI}}
+                                            </form>
                                         </div>
                                         <div class="clearfix">
                                             <label>{{t "submit.body.basics.keywords.label"}}:</label>

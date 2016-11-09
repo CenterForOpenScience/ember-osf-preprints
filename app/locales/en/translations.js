@@ -154,7 +154,7 @@ export default {
                 paragraph: `Add preprint authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the preprint.`
             },
             submit: {
-                paragraph: `When you share this preprint, it will become publicly accessible via OSF Preprints. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
+                paragraph: `When you share this preprint, it will become publicly accessible via OSF Preprints. You will be unable to delete the preprint file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
                 invalid: {
                     description: `The following section(s) must be completed before sharing this preprint.`,
                     discipline: `Discipline`,
@@ -290,7 +290,7 @@ export default {
             select_existing_file: `Select existing file as preprint`,
             edit_preprint_title_project: `Edit preprint title (will also become the name of the project)`,
             edit_preprint_title_component: `Edit preprint title (will also become the name of the component)`,
-            initiate_preprint_process: `You have selected and organized your preprint file. Clicking "Save and continue" will immediately make changes to your OSF project.`,
+            initiate_preprint_process: `You have selected and organized your preprint file. Clicking "Save and continue" will immediately make changes to your OSF project. You will not be able to delete your Preprint file, but you will be able to update or modify it.`,
             initiate_preprint_process_file_locked: `There are already preprint(s) on this OSF project for other providers. Clicking 'Save and continue' will initiate the preprint process for this provider. Some changes to this preprint will be reflected across all preprints stored on the project.`,
             edit_organize_section: `Edits to this preprint will update both the preprint and the OSF project.`,
             admin_only: `You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.`,

@@ -157,19 +157,26 @@ ul.comma-list {
         background-size: contain;
         background-repeat: no-repeat;
     }
-    .provider-socarxiv {
-        background-image: url('img/provider_logos/socarxiv.png');
-        background-position: center;
-    }
-    .provider-engrxiv {
-        background-image: url('img/provider_logos/engrxiv.png');
-        background-position: center;
-    }
-    .provider-psyarxiv {
-        background-image: url('img/provider_logos/psyarxiv.png');
-        background-position: center;
-    }
 }
+
+.provider-osf {
+    background-image: url('/preprints/assets/img/provider_logos/osf.png');
+    background-position: center;
+}
+
+.provider-socarxiv {
+    background-image: url('/preprints/assets/img/provider_logos/socarxiv.png');
+    background-position: center;
+}
+.provider-engrxiv {
+    background-image: url('/preprints/assets/img/provider_logos/engrxiv.png');
+    background-position: center;
+}
+.provider-psyarxiv {
+    background-image: url('/preprints/assets/img/provider_logos/psyarxiv.png');
+    background-position: center;
+}
+
 .preprint-advisory  {
     background-color: #f3f5f7;
     border-bottom: 1px solid #e0e6ea;
@@ -207,10 +214,16 @@ ul.comma-list {
     .share-logo {
         width: 46px;
         height: 22px;
-        background-image: url("img/share-logo-icon.png");
+        background: url('img/share-logo-icon.png') no-repeat;
         display: inline-block;
         background-size: contain;
         vertical-align: middle;
+    }
+
+    .share-logo-white {
+        width: 48px;
+        height: 30px;
+        background-image: url('img/share-logo-white.png');
     }
 }
 .preprint-search-main {
@@ -1034,14 +1047,15 @@ label.title-label {
 
 .discover-provider-logo,
 .content-provider-logo {
-    background: bottom center no-repeat;
+    background-position-x: center;
+    background-position-y: bottom;
+    background-repeat: no-repeat;
     background-size: contain;
 }
 
 .content-provider-logo {
-    float: right;
-    min-height: 120px;
-    min-width: 240px;
+    min-height: 80px;
+    min-width: 120px;
 }
 
 .discover-provider-logo {
@@ -1052,9 +1066,4 @@ label.title-label {
 
 .edit-btn {
     margin-bottom: 20px;
-}
-
-img.provider {
-    max-height: 80px;
-    max-width: 160px;
 }
