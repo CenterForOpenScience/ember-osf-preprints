@@ -73,6 +73,10 @@ function subjectIdMap(subjectArray) {
     return subjectArray.map(subjectBlock => subjectBlock.map(subject => subject.id));
 }
 
+function getPreprintProvider(preprint) {
+    return preprint.get('links.relationships.provider.links.related.href').split('preprint_providers/')[1].replace('/', '');
+}
+
 /**
  * "Add preprint/Edit Preprint" page definitions
  *
@@ -142,13 +146,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return null;
     }),
 
-    abandonedPreprint: Ember.computed('node.preprints', function() {
+    abandonedPreprint: Ember.computed('node', function() {
         // Abandoned(draft) preprint on the current node for the currentProvider
         const currentProvider = this.get('currentProvider');
         const node = this.get('node');
         if (node) {
             for (const preprint of node.get('preprints').toArray()) {
-                var preprintProvider = this.send('getPreprintProvider', preprint);
+                var preprintProvider = getPreprintProvider(preprint);
                 if (!(preprint.get('isPublished')) && currentProvider === preprintProvider) {
                     return preprint;
                 }
@@ -340,7 +344,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.set('nodeTitle', this.get('node.title'));
             this.set('titleValid', true);
             for (const preprint of node.get('preprints').toArray()) {
-                const preprintProvider = this.send('getPreprintProvider', preprint);
+                const preprintProvider = getPreprintProvider(preprint);
                 if (preprint.get('isPublished') && currentProvider !== preprintProvider) {
                     preprint.get('primaryFile').then((file) => {
                         this.set('selectedFile', file);
@@ -418,9 +422,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Locks node so that preprint location cannot be modified.  Occurs after upload step is complete.
             // In editMode, nodeLocked is set to true.
             this.set('nodeLocked', true);
-        },
-        getPreprintProvider(preprint) {
-            return preprint.get('links.relationships.provider.links.related.href').split('preprint_providers/')[1].replace('/', '');
         },
         finishUpload() {
             // Locks node and advances to next form section.

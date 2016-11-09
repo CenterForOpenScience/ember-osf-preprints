@@ -61,7 +61,7 @@ export default Ember.Component.extend({
 
             if (preprints.toArray().length > 0) { // If node already has a preprint
                 for (const preprint of preprints.toArray()) {
-                    var preprintProvider = this.attrs.getPreprintProvider(preprint);
+                    var preprintProvider = this.getPreprintProvider(preprint);
                     if (preprint.get('isPublished') && currentProvider !== preprintProvider) {
                         this.set('fileLocked', true);
                     }
@@ -75,4 +75,7 @@ export default Ember.Component.extend({
      * @property {boolean} fileSelect
      */
     fileSelect: false,
+    getPreprintProvider(preprint) {
+        return preprint.get('links.relationships.provider.links.related.href').split('preprint_providers/')[1].replace('/', '');
+    },
 });
