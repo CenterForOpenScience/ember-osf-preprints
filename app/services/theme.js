@@ -6,7 +6,9 @@ export default Ember.Service.extend({
 
     provider: null,
 
-    isProvider: Ember.computed.bool('id'),
+    isProvider: Ember.computed('id', function() {
+        return this.get('id') !== 'osf';
+    }),
 
     stylesheet: Ember.computed('id', function() {
         const suffix = config.ASSET_SUFFIX ? `-${config.ASSET_SUFFIX}` : '';
