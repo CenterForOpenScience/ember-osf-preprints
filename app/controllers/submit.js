@@ -507,7 +507,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             let model = this.get('model');
 
             const provider = this.get('store')
-                .peekRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider);
+                .peekRecord('preprint-provider', this.get('currentProvider'));
 
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
