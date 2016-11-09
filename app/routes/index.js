@@ -4,41 +4,28 @@ import ResetScrollMixin from '../mixins/reset-scroll';
 import Analytics from '../mixins/analytics';
 
 export default Ember.Route.extend(Analytics, ResetScrollMixin, {
+    // store: Ember.inject.service(),
     theme: Ember.inject.service(),
     model() {
-        const hash = {
-            taxonomies: this.store
-                .query('taxonomy', {
-                    filter: {
-                        parents: 'null'
-                    },
-                    page: {
-                        size: 20
-                    }
-                }
-            ),
+        return Ember.RSVP.hash({
+            taxonomies: this.get('theme.provider')
+                .then(provider => provider
+                    .query('taxonomies', {
+                        filter: {
+                            parents: 'null'
+                        },
+                        page: {
+                            size: 20
+                        }
+                    })
+                ),
             brandedProviders: this
-                .get('store')
+                .store
                 .findAll('preprint-provider', { reload: true })
                 .then(result => result
                     .filter(item => item.id !== 'osf')
                 )
-        };
-
-        const acceptableSubjects = this.get('theme.provider.subjectsAcceptable');
-
-        if (!this.get('theme.isProvider') || !acceptableSubjects.length)
-            return Ember.RSVP.hash(hash);
-
-        const topLevelAcceptableSubjects = acceptableSubjects
-            .map(subject => subject[0][0]);
-
-        hash.taxonomies = hash.taxonomies
-            .then(records => records
-                .filter(item => topLevelAcceptableSubjects.includes(item.id))
-            );
-
-        return Ember.RSVP.hash(hash);
+        });
     },
     actions: {
         search(q) {

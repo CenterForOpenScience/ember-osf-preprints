@@ -1,60 +1,43 @@
 import Ember from 'ember';
 import Analytics from '../mixins/analytics';
 
-var pageSize = 150;
+const pageSize = 150;
 
 export default Ember.Component.extend(Analytics, {
-    store: Ember.inject.service(),
     theme: Ember.inject.service(),
-    _parseResults(results) {
-        const flatSubjects = this.get('flatSubjects');
-
-        if (flatSubjects.size) {
-            results = results
-                .filter(result => flatSubjects.has(result.id));
-        }
-
-        return results
-            .map(result => ({
-                id: result.id,
-                text: result.get('text'),
-                children: [],
-                showChildren: false,
-                childCount: result.get('child_count')
-            }))
-            .sort((prev, next) => {
-                if (prev.text > next.text) {
-                    return 1;
-                } else if (prev.text < next.text) {
-                    return -1;
-                }
-                return 0;
-            });
+    _getTaxonomies(parents = 'null') {
+        return this
+            .get('theme.provider')
+            .then(provider => provider
+                .query('taxonomies', {
+                    filter: { parents },
+                    page: { size: pageSize }
+                })
+            )
+            .then(results => results
+                .map(result => ({
+                    id: result.id,
+                    text: result.get('text'),
+                    children: [],
+                    showChildren: false,
+                    childCount: result.get('child_count')
+                }))
+                .sort((prev, next) => {
+                    if (prev.text > next.text) {
+                        return 1;
+                    } else if (prev.text < next.text) {
+                        return -1;
+                    }
+                    return 0;
+                })
+            );
     },
-    flatSubjects: Ember.computed('theme.provider.subjectsAcceptable', function() {
-        const acceptableSubjects = this.get('theme.provider.subjectsAcceptable') || [];
-        const flatSubjects = new Set();
-
-        for (const subjects of acceptableSubjects) {
-            for (const subject of subjects[0]) {
-                if (!flatSubjects.has(subject))
-                    flatSubjects.add(subject);
-            }
-        }
-
-        return flatSubjects;
-    }),
-
     init() {
         this._super(...arguments);
 
-        this.get('store')
-            .query('taxonomy', {
-                filter: { parents: 'null' },
-                page: { size: pageSize }
-            })
+        this._getTaxonomies()
             .then(results => this
-                .set('topLevelItem', this._parseResults(results))
+                .set('topLevelItem', results)
             );
     },
     actions: {
@@ -81,13 +64,9 @@ export default Ember.Component.extend(Analytics, {
                 return;
             }
 
-            this.get('store')
-                .query('taxonomy', {
-                    filter: { parents: item.id },
-                    page: { size: pageSize }
-                })
+            this._getTaxonomies(item.id)
                 .then(results => {
-                    Ember.set(item, 'children', this._parseResults(results));
+                    Ember.set(item, 'children', results);
                     Ember.set(item, 'showChildren', true);
                 }
             );

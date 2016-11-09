@@ -214,10 +214,16 @@ ul.comma-list {
     .share-logo {
         width: 46px;
         height: 22px;
-        background-image: url("img/share-logo-icon.png");
+        background: url('img/share-logo-icon.png') no-repeat;
         display: inline-block;
         background-size: contain;
         vertical-align: middle;
+    }
+
+    .share-logo-white {
+        width: 48px;
+        height: 30px;
+        background-image: url('img/share-logo-white.png');
     }
 }
 .preprint-search-main {
