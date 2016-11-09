@@ -1,6 +1,6 @@
-<div class="text-center">
-    <span>{{model.name}}:</span>
-    <div style="display: inline;">
+<div class="text-center branded-footer">
+    <div>
+        <span>{{model.name}}:</span>
         <span>
             <a href="mailto:{{if model.emailSupport model.emailSupport (concat 'support+' model.id '@osf.io')}}"
                onbeforeclick={{action 'click' 'link' 'Branded Footer - Support'}}
@@ -16,14 +16,15 @@
                 {{t "components.preprint-footer-branded.contact"}}
             </a>
         </span>
+        <span> | </span>
     </div>
-    <div style="display: inline; margin-left: 8px;">
+    <div class="social">
         {{#if model.socialTwitter}}
             <a href="https://twitter.com/{{model.socialTwitter}}"
                aria-label={{t "components.preprint-footer-branded.twitter"}}
                onbeforeclick={{action 'click' 'link' 'Branded Footer - Twitter'}}
             >
-                <i class="fa fa-twitter"></i>
+                <i class="fa fa-2x fa-twitter"></i>
             </a>
         {{/if}}
         {{#if model.socialFacebook}}
@@ -31,7 +32,7 @@
                aria-label={{t "components.preprint-footer-branded.facebook"}}
                onbeforeclick={{action 'click' 'link' 'Branded Footer - Facebook'}}
             >
-                <i class="fa fa-facebook"></i>
+                <i class="fa fa-2x fa-facebook"></i>
             </a>
         {{/if}}
         {{#if model.socialInstagram}}
@@ -39,7 +40,7 @@
                aria-label={{t "components.preprint-footer-branded.instagram"}}
                onbeforeclick={{action 'click' 'link' 'Branded Footer - Instagram'}}
             >
-                <i class="fa fa-instagram"></i>
+                <i class="fa fa-2x fa-instagram"></i>
             </a>
         {{/if}}
     </div>
