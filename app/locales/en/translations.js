@@ -172,6 +172,7 @@ export default {
         error_accessing_parent_files: `Error accessing parent files. Please try again.`,
         could_not_create_component: `Could not create component. Please try again.`,
         abandoned_preprint_error: `Error with abandoned preprint.`,
+        preprint_initiated: `Preprint initiated!`,
         preprint_file_uploaded: `Preprint file uploaded!`,
         error_initiating_preprint: `Could not initiate preprint. Please try again.`,
         doi_error: `Error saving DOI`,
@@ -221,6 +222,10 @@ export default {
             file_exists_error: `A file with that name already exists`,
             upload_error: `Upload Failed` ,
             dropzone_text_override: `Click or drag another preprint file to replace`,
+            otherPreprintsProjectFileWarning: `You must use the preprint file already stored on this project. Any changes to the preprint file will persist across all preprint(s) on the project.`,
+            otherPreprintsComponentFileWarning: `You must use the preprint file already stored on this component. Any changes to the preprint file will persist across all preprint(s) on the component.`,
+            otherPreprintsProjectTitleWarning: `Editing the title will change the title across all preprint(s) in this project.`,
+            otherPreprintsComponentTitleWarning: `Editing the title will change the title across all preprint(s) in this component.`
         },
         'preprint-footer-branded': {
             twitter: 'Twitter',
@@ -286,6 +291,7 @@ export default {
             edit_preprint_title_project: `Edit preprint title (will also become the name of the project)`,
             edit_preprint_title_component: `Edit preprint title (will also become the name of the component)`,
             initiate_preprint_process: `You have selected and organized your preprint file. Clicking "Save and continue" will immediately make changes to your OSF project.`,
+            initiate_preprint_process_file_locked: `There are already preprint(s) on this OSF project for other providers. Clicking 'Save and continue' will initiate the preprint process for this provider. Some changes to this preprint will be reflected across all preprints stored on the project.`,
             edit_organize_section: `Edits to this preprint will update both the preprint and the OSF project.`,
             admin_only: `You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.`,
         },

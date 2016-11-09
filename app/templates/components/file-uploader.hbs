@@ -21,6 +21,11 @@
     {{#preprint-form-section class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}  {{!UPLOAD NEW FILE SECTION}}
         {{preprint-form-header name=(if (or fileLocked nodeLocked) 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false}}
         {{#preprint-form-body}}
+            {{#if fileLocked}}
+                <div class="alert alert-danger m-v-sm" role="alert">
+                    {{if isTopLevelNode (t "components.file-uploader.otherPreprintsProjectFileWarning") (t "components.file-uploader.otherPreprintsComponentFileWarning")}}
+                </div>
+            {{/if}}
             {{#if (or fileLocked nodeLocked)}}
                 <p class='text-muted m-v-sm text-smaller'> {{t "components.file-uploader.update_version"}}</p>
             {{else}}
@@ -51,15 +56,24 @@
 
     {{#if (and selectedNode (or hasFile osfFile)) use='crossFade'}}
         {{#if (or fileLocked nodeLocked)}}
-            {{#preprint-form-section class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}} {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
+            {{#preprint-form-section class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}} {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION OR FILELOCKED-ADD MODE}}
                 {{preprint-form-header nodeTitle=nodeTitle name='title_of_preprint' showValidationIndicator=false}}
                 {{#preprint-form-body}}
+                    {{#if fileLocked}}
+                        <div class="alert alert-danger m-v-sm" role="alert">
+                            {{if isTopLevelNode (t "components.file-uploader.otherPreprintsProjectTitleWarning") (t "components.file-uploader.otherPreprintsComponentTitleWarning")}}
+                        </div>
+                    {{/if}}
                     <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                     {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
             <div class="m-v-md text-center">
-                <p>{{t "components.preprint-form-project-select.edit_organize_section"}}  </p>
+                {{#if (and fileLocked (not nodeLocked))}}
+                    <p> {{t "components.preprint-form-project-select.initiate_preprint_process_file_locked"}} </p>
+                {{else}}
+                    <p>{{t "components.preprint-form-project-select.edit_organize_section"}}  </p>
+                {{/if}}
                 <button {{action "discardUploadChanges"}} class="btn btn-default" disabled={{unless uploadChanged true}} >{{t "global.discard"}}</button>
                 <button class="btn btn-primary" disabled={{not (and hasFile titleValid)}} {{action 'uploadFileToExistingNode'}}>Save and continue</button>
             </div>
