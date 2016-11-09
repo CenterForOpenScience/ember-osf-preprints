@@ -1067,3 +1067,21 @@ label.title-label {
 .edit-btn {
     margin-bottom: 20px;
 }
+
+.branded-footer {
+    margin: 14px 0;
+    line-height: 28px;
+
+    div {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .social > a {
+        margin: 0 4px;
+    }
+
+    .social > a:hover {
+        text-decoration: none;
+    }
+}
