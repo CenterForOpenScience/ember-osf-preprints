@@ -23,9 +23,8 @@ export default Ember.Component.extend({
             this.set('selectedNode', node);
             this.send('checkOtherPreprints', node);
             if (this.get('fileLocked')) { // Node contains published preprints from other providers
-                this.set('nodeTitle', node.get('title'));
-                this.set('titleValid', true);
                 this.send('changeExistingState', this.get('_existingState').NEWFILE);
+                this.attrs.nextUploadSection('chooseProject', 'uploadNewFile');
             } else {
                 this.attrs.clearDownstreamFields('belowNode');
                 this.set('osfProviderLoaded', false);
@@ -56,6 +55,7 @@ export default Ember.Component.extend({
         },
         checkOtherPreprints(node) {
             // Checks node for published preprints from other providers. If they exist, set fileLocked to true.
+            this.set('fileLocked', false);
             let preprints = node.get('preprints').toArray();
             let currentProvider = this.get('currentProvider');
 

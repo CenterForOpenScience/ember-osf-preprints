@@ -100,7 +100,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     contributors: Ember.A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
     nodeTitle: null, // Preprint title
     nodeLocked: false, // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
-    fileLocked: false, // True if published preprint by another provider exists on the node
+    fileLocked: false, // IMPORTANT PROPERTY. True if published preprint by another provider exists on the node. Means user creating new preprint can't change file.
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
@@ -324,7 +324,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
         const currentProvider = this.get('currentProvider');
         if (node) {
-            this.set('nodeTitle', node.get('title'));
+            this.set('nodeTitle', this.get('node.title'));
             this.set('titleValid', true);
             for (const preprint of node.get('preprints').toArray()) {
                 const preprintProvider = this.send('getPreprintProvider', preprint);
@@ -391,6 +391,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         changeInitialState(newState) {
             // Sets filePickerState to start, new, or existing - this is the initial decision on the form.
             this.set('filePickerState', newState);
+            this.set('fileLocked', false);
             this.send('clearDownstreamFields', 'allUpload');
             if (newState === this.get('_State').EXISTING) {
                 this.get('panelActions').open('chooseProject');
@@ -508,15 +509,18 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         discardUploadChanges() {
             // Discards upload section changes.  Restores displayed file to current preprint primaryFile
             // and resets displayed title to current node title. (No requests sent, front-end only.)
-            let currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
+            if (this.get('fileLocked')) {
+                let currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
+                this.set('selectedFile', currentFile);
+
+            }
             this.set('file', null);
-            this.set('selectedFile', currentFile);
             this.set('nodeTitle', this.get('node.title'));
             this.set('titleValid', true);
         },
         clearDownstreamFields(section) {
             //If user goes back and changes a section inside Upload, all fields downstream of that section need to clear.
-            if (!this.get('nodeLocked')) { // Only clear downstream fields in Add mode!
+            if (!this.get('nodeLocked') && !(this.get('fileLocked'))) { // Only clear downstream fields in Add mode! If file or node locked, do not clear.
                 switch (section) {
                     case 'allUpload':
                         this.set('node', null);
