@@ -31,13 +31,17 @@ export default Ember.Mixin.create({
                 embed: 'preprints'
             }).then(() => {
                 // Can only have one published preprint per provider per node.
+                const node = this.get('node');
                 let noProviderConflict = userNodes.filter((item) => {
                     var eligible = true;
                     item.get('preprints').toArray().forEach((preprint) => {
                         var isPublished = preprint.get('isPublished');
                         // Extracting preprint provider from provider url
-                        var preprintProvider = preprint.get('links.relationships.provider.links.related.href').split('preprint_providers/')[1].replace('/', '');
+                        var preprintProvider = this.getPreprintProvider(preprint);
                         if (isPublished && currentProvider === preprintProvider) eligible = false;
+                        if (node && item.id === node.id) { // If editMode, determine if fileLocked should be true (there are other published preprints on the node)
+                            if (isPublished && currentProvider !== preprintProvider) controller.set('fileLocked', true);
+                        }
                     });
                     return eligible;
                 });
@@ -67,5 +71,8 @@ export default Ember.Mixin.create({
         });
         this.get('panelActions').close('Upload');
         this.get('panelActions').open('Submit');
+    },
+    getPreprintProvider(preprint) {
+        return preprint.get('links.relationships.provider.links.related.href').split('preprint_providers/')[1].replace('/', '');
     }
 });
