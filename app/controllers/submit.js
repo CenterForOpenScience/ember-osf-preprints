@@ -74,7 +74,14 @@ function subjectIdMap(subjectArray) {
 }
 
 /**
- * "Add preprint" page definitions
+ * "Add preprint/Edit Preprint" page definitions
+ *
+ * Important properties are fileLocked, nodeLocked, and editMode.  These 3 properties determine what options are available in the Add/Edit forms.  Use
+ * caution when modifying!
+ *
+ * editMode is true when a user is editing an existing published preprint.
+ * nodeLocked is true once a preprint has been initiated. This occurs after upload step in Add Mode. Is always true in Edit Mode.
+ * fileLocked is true in Add Mode if published preprints exist from other providers on the current node.  This flag adds more restrictions to Add Mode.
  */
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
     i18n: Ember.inject.service(),
@@ -101,6 +108,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     nodeTitle: null, // Preprint title
     nodeLocked: false, // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
     fileLocked: false, // IMPORTANT PROPERTY. True if published preprint by another provider exists on the node. Means user creating new preprint can't change file.
+    editMode: false, // IMPORTANT PROPERTY Always false in Add Mode. Always true in Edit Mode.
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
@@ -118,7 +126,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     disciplineModifiedToggle: false, // Helps determine if discipline has changed
     uploadInProgress: false, // Set to true when upload step is underway,
     existingPreprints: Ember.A(), // Existing preprints on the current node
-    editMode: false, // Edit mode is false by default.
     shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
 
     currentProvider: Ember.computed('theme', function() {
@@ -172,6 +179,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             contributors: Ember.A(),
             nodeTitle: null,
             nodeLocked: false, // Will be set to true if edit?
+            fileLocked: false,
             searchResults: [],
             savingPreprint: false,
             showModalSharePreprint: false,
@@ -237,7 +245,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     ////////////////////////////////////////////////////
     preprintFileChanged: Ember.computed('model.primaryFile', 'selectedFile', 'file', function() {
         // Does the pending primaryFile differ from the primary file already saved?
-        return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('file') !== null;
+        if (this.get('fileLocked') && !(this.get('nodeLocked'))) { // New preprint has yet to be initiated but file is locked, so only check if new pending version.
+            return this.get('file') !== null;
+        } else {
+            return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('file') !== null;
+        }
+
     }),
     titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
         // Does the pending title differ from the title already saved?
