@@ -4,4 +4,6 @@ import Analytics from '../mixins/analytics';
 
 export default Ember.Component.extend(OSFAgnosticAuthControllerMixin, Analytics, {
     theme: Ember.inject.service(),
+    tagName: 'nav',
+    classNames: ['navbar', 'branded-navbar', 'preprint-navbar']
 });
