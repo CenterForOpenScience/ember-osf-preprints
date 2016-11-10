@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.99.1",
+  "version": "0.100.0",
   "description": "Small description for preprint-service goes here",
   "private": true,
   "directories": {
