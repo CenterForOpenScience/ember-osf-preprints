@@ -10,11 +10,16 @@ export default CpPanelBodyComponent.extend({
     parentContributorsAdded: false,
     // Returns list of user ids associated with current node
     currentContributorIds: Ember.computed('contributors', function() {
-        var contribIds = [];
+        let contribIds = [];
         this.get('contributors').forEach((contrib) => {
             contribIds.push(contrib.get('userId'));
         });
         return contribIds;
+    }),
+    // In Add mode, contributors are emailed on creation of preprint. In Edit mode,
+    // contributors are emailed as soon as they are added to preprint.
+    sendEmail: Ember.computed('editMode', function() {
+        return this.get('editMode') ? 'preprint' : false;
     }),
     numParentContributors: Ember.computed('parentNode', function() {
         if (this.get('parentNode')) {
@@ -46,7 +51,7 @@ export default CpPanelBodyComponent.extend({
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
-            this.attrs.addContributor(user.id, 'write', true, false, undefined, undefined, true).then((res) => {
+            this.attrs.addContributor(user.id, 'write', true, this.get('sendEmail'), undefined, undefined, true).then((res) => {
                 this.toggleAuthorModification();
                 this.get('contributors').pushObject(res);
                 this.highlightSuccessOrFailure(res.id, this, 'success');
@@ -59,7 +64,7 @@ export default CpPanelBodyComponent.extend({
         // Adds all contributors from parent project to current component as long as they are not current contributors
         addContributorsFromParentProject() {
             this.set('parentContributorsAdded', true);
-            var contributorsToAdd = Ember.A();
+            let contributorsToAdd = Ember.A();
             this.get('parentContributors').toArray().forEach(contributor => {
                 if (this.get('currentContributorIds').indexOf(contributor.get('userId')) === -1) {
                     contributorsToAdd.push({
@@ -69,7 +74,7 @@ export default CpPanelBodyComponent.extend({
                     });
                 }
             });
-            this.attrs.addContributors(contributorsToAdd, false)
+            this.attrs.addContributors(contributorsToAdd, this.get('sendEmail'))
                 .then((contributors) => {
                     contributors.map((contrib) => {
                         this.get('contributors').pushObject(contrib);
@@ -84,7 +89,7 @@ export default CpPanelBodyComponent.extend({
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
             if (fullName && email) {
-                let res = this.attrs.addContributor(null, 'write', true, false, fullName, email, true);
+                let res = this.attrs.addContributor(null, 'write', true, this.get('sendEmail'), fullName, email, true);
                 res.then((contributor) => {
                     this.get('contributors').pushObject(contributor);
                     this.toggleAuthorModification();
@@ -104,7 +109,7 @@ export default CpPanelBodyComponent.extend({
         },
         // Requests a particular page of user results
         findContributors(page) {
-            var query = this.get('query');
+            let query = this.get('query');
             if (query) {
                 this.attrs.findContributors(query, page).then(() => {
                     this.set('addState', 'searchView');
@@ -169,9 +174,9 @@ export default CpPanelBodyComponent.extend({
         // Reorders contributors in UI then sends server request to reorder contributors. If request fails, reverts
         // contributor list in UI back to original.
         reorderItems(itemModels, draggedContrib) {
-            var originalOrder = this.get('contributors');
+            let originalOrder = this.get('contributors');
             this.set('contributors', itemModels);
-            var newIndex = itemModels.indexOf(draggedContrib);
+            let newIndex = itemModels.indexOf(draggedContrib);
             this.attrs.reorderContributors(draggedContrib, newIndex, itemModels).then(() => {
                 this.highlightSuccessOrFailure(draggedContrib.id, this, 'success');
             }, () => {

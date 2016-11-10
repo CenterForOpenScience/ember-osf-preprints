@@ -4,6 +4,9 @@
     <div class="p-t-xl m-t-xl p-b-md m-b-md dark-overlay-header-background header-row">{{!HEADER ROW}}
         <div class="container">{{!CONTAINER DIV}}
             <h1 id="preprintTitle" class="p-b-md">{{node.title}}</h1>
+            {{#if isAdmin}}
+                <a type="button" class="pull-right btn btn-success m-h-lg" href={{concat model.links.html '?edit'}}  {{action "click" 'link' "Content - Edit Preprint" (concat model.links.html '?edit')}}>{{t "content.project_button.edit_preprint"}}</a>
+            {{/if}}
             <h5 class="view-authors">
                 <ul class="comma-list">
                     {{#if authors}}
@@ -26,7 +29,9 @@
         <div class="row p-md"> {{!CONTENT ROW}}
             <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}
                 {{#if model.isPreprintOrphan}}
-                    <p class="m-t-md text-danger"> {{t "content.orphan_preprint"}} </p>
+                    <div class="alert alert-danger m-r-md" role="alert">
+                        {{t "content.orphan_preprint"}}
+                    </div>
                 {{else}}
                     {{#if (not node.public)}}
                         <div class="alert alert-danger m-r-md" role="alert">
@@ -39,7 +44,6 @@
                     </button>
                 {{/if}}
             </div> {{!END LEFT COL DIV}}
-
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
                     {{#liquid-spacer growDuration=250 growWidth=false}}
