@@ -300,10 +300,10 @@ export default Ember.Controller.extend(Analytics, {
         },
 
         clearFilters() {
-            if (!this.get('theme.isProvider'))
-                this.set('activeFilters',  { providers: [], subjects: [] });
-            else
-                this.set('activeFilters.subjects', []);
+            this.set('activeFilters', {
+                providers: this.get('theme.isProvider') ? this.get('activeFilters.providers') : [],
+                subjects: []
+            });
 
             Ember.get(this, 'metrics')
                 .trackEvent({

@@ -93,6 +93,10 @@ $nav-height: 50px;
         background-color: $theme-color-1;
     }
 
+    #preprint-form-subjects .subject:hover > b:after {
+        border-left-color: $theme-color-1;
+    }
+
     a,
     .preprint-form-section header {
         color: $theme-color-3;

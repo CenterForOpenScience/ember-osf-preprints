@@ -59,25 +59,20 @@ export default Ember.Component.extend({
     selection3: null,
 
     querySubjects(parents = 'null', tier = 0) {
-        this.get('store')
-            .query('taxonomy', {
-                filter: {
-                    parents
-                },
-                page: {
-                    size: 100
-                }
-            })
-            .then(results => {
-                const flatSubjects = this.get('theme.flatSubjects');
-
-                if (flatSubjects.size) {
-                    results = results
-                        .filter(result => flatSubjects.has(result.id));
-                }
-
-                this.set(`_tier${tier + 1}`, results);
-            });
+        this.get('theme.provider')
+            .then(provider => provider
+                .query('taxonomies', {
+                    filter: {
+                        parents
+                    },
+                    page: {
+                        size: 100
+                    }
+                })
+            )
+            .then(results => this
+                .set(`_tier${tier + 1}`, results.toArray())
+            );
     },
 
     init() {
