@@ -7,7 +7,15 @@
                 {{!TITLE}}
                 <div class="text-center m-t-lg col-xs-12">
                     <div class="preprint-brand"></div>
-                    <p class="lead">{{if theme.isProvider theme.provider.description (t "index.header.title.paragraph")}}</p>
+                    <p class="lead">
+                        <span>{{if theme.isProvider theme.provider.description (t "index.header.title.paragraph")}}</span>
+                        {{#if theme.isProvider}}
+                            <br>
+                            <small>
+                                <a href="https://osf.io/preprints/" onbeforeclick={{action "click" "link" "Index - Powered By"}}>{{t "index.header.powered_by"}}</a>
+                            </small>
+                        {{/if}}
+                    </p>
                 </div>
                 {{!SEARCH}}
                 <div class="preprint-search col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 m-v-lg" >

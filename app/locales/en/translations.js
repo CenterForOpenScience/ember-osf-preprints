@@ -1,4 +1,5 @@
 const preprints = `Preprints`;
+const brand = `OSF ${preprints}`;
 
 export default {
     global: {
@@ -15,7 +16,7 @@ export default {
         tags: `Tags`,
         search: `Search`,
         preprints,
-        brand: `OSF ${preprints}`,
+        brand,
         add_preprint: `Add a preprint`,
         title: `Title`,
         search_preprints: `Search preprints...`,
@@ -85,6 +86,7 @@ export default {
             title: {
                 paragraph: `The <span class="f-w-lg">open</span> preprint repository network`
             },
+            powered_by: `Powered by ${brand}`,
             search: `{{count}} searchable preprints`,
             as_of: `as of`,
             example: `See an example`

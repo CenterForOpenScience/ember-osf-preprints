@@ -7,7 +7,8 @@ $nav-height: 50px;
     $theme-color-4,
     $theme-color-5,
     $theme-nav-filter,
-    $logo
+    $logo,
+    $logo-square
 ) {
     .preprint-header {
         background-image: none;
@@ -26,15 +27,15 @@ $nav-height: 50px;
         float: left;
         clear: both;
         text-align: center;
-        background: top center no-repeat;
+        background: url($logo-square) center center no-repeat;
         background-size: contain;
-        height: $nav-height;
-        min-width: 120px;
-        display: block;
+        height: $nav-height - 2px;
+        width: $nav-height - 2px;
+        display: inline-block;
         transform: translateY(-12px);
+        margin-right: 16px;
     }
 
-    .navbar-image,
     .preprint-brand {
         background-image: url($logo);
     }
