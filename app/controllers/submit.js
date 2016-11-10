@@ -408,6 +408,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
             let node = this.get('node');
+            this.set('basicsAbstract', this.get('node.description') || null);
             if (node.get('title') !== this.get('nodeTitle')) {
                 let currentTitle = node.get('title');
                 node.set('title', this.get('nodeTitle'));
