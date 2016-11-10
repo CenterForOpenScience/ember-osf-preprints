@@ -74,6 +74,7 @@ function subjectIdMap(subjectArray) {
 }
 
 function getPreprintProvider(preprint) {
+    // Convenience method for pulling a provider from a preprint to avoid double embeds.
     return preprint.get('links.relationships.provider.links.related.href').split('preprint_providers/')[1].replace('/', '');
 }
 

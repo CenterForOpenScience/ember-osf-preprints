@@ -25,7 +25,7 @@ export default Ember.Component.extend({
             if (this.get('fileLocked')) { // Node contains published preprints from other providers
                 this.send('changeExistingState', this.get('_existingState').NEWFILE);
                 this.attrs.nextUploadSection('chooseProject', 'uploadNewFile');
-            } else {
+            } else { // Node contains no other published preprints, so no restrictions.
                 this.attrs.clearDownstreamFields('belowNode');
                 this.set('osfProviderLoaded', false);
                 this.send('changeExistingState', this.get('_existingState').CHOOSE);
