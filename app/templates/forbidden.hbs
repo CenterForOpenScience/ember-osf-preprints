@@ -5,11 +5,17 @@
         <div class="row">
             <div class="col-xs-12">
                 <h1>{{t "page-forbidden.heading"}}</h1>
-                <p>{{t "page-forbidden.paragraph.line1"}} <a href="mailto:support@osf.io" {{action "click" "link" "Page forbidden - Support" "mailto:support@osf.io"}}>support@osf.io</a></p>
-                {{#link-to "index" class="btn btn-primary m-t-md" }}{{t "page-forbidden.go_to"}}{{/link-to}} {{! invokeAction=(action "click" "link" "Page not found - Go to Index") TODO find out why this breaks }}
-
+                <p>
+                    <span>{{t "page-forbidden.paragraph.line1" brand=(if theme.isProvider (t "global.provider_brand" name=theme.provider.name) (t "global.brand"))}}</span>
+                    <a href="mailto:{{if theme.isProvider theme.provider.emailSupport "support@osf.io"}}"
+                       onbeforeclick={{action "click" "link" "Forbidden - Support"}}>
+                        {{if theme.isProvider theme.provider.emailSupport "support@osf.io"}}
+                    </a>
+                </p>
+                {{#link-to "index" class="btn btn-primary m-t-md" invokeAction=(action "click" "link" "Forbidden - Go to Index")}}
+                    {{t "page-forbidden.go_to" brand=(if theme.isProvider (t "global.provider_brand" name=theme.provider.name) (t "global.brand"))}}
+                {{/link-to}}
             </div>
         </div>
-
     </div>
 </div>

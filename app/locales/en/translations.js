@@ -17,6 +17,7 @@ export default {
         search: `Search`,
         preprints,
         brand,
+        provider_brand: `{{name}} ${preprints}`,
         add_preprint: `Add a preprint`,
         title: `Title`,
         search_preprints: `Search preprints...`,
@@ -119,17 +120,17 @@ export default {
     'page-not-found': {
         heading: `Page not found`,
         paragraph: {
-            line1: `The page you were looking for is not found on the OSF Preprint service.`,
+            line1: `The page you were looking for is not found on the {{brand}} service.`,
             line2: `If this should not have occurred and the issue persists, please report it to`
         },
-        go_to: `Go to OSF Preprints`
+        go_to: `Go to {{brand}}`
     },
     'page-forbidden': {
         heading: `Forbidden`,
         paragraph: {
             line1: `User has restricted access to this page. If this should not have occurred and the issue persists, please report it to `,
         },
-        go_to: `Go to OSF Preprints`
+        go_to: `Go to {{brand}}`
     },
     submit: {
         add_heading: `Add Preprint`,
