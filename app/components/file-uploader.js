@@ -133,6 +133,7 @@ export default Ember.Component.extend({
                 this.set('uploadInProgress', true);
             }
             let node = this.get('node');
+            this.set('basicsAbstract', this.get('node.description') || null);
             let currentTitle = node.get('title');
             if (node.get('title') !== this.get('nodeTitle')) {
                 node.set('title', this.get('nodeTitle'));
