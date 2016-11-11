@@ -163,6 +163,9 @@ ul.comma-list {
 .provider-osf {
     background-image: url('/preprints/assets/img/provider_logos/osf.png');
 }
+.provider-osf-dark {
+    background-image: url('/preprints/assets/img/provider_logos/osf-dark.png');
+}
 
 .provider-socarxiv {
     background-image: url('/preprints/assets/img/provider_logos/socarxiv.png');
@@ -329,6 +332,11 @@ ul.preprints-block-list {
     }
     .abstract {
         white-space: pre-line;
+    }
+    .project-box {
+        div {
+            min-height: 100px;
+        }
     }
 }
 

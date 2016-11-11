@@ -29,6 +29,7 @@ export default {
         convert_project: `The preprint will be organized in the current project`,
         convert_component: `The preprint will be organized in the current component`,
         copy_inside_project: `The preprint will be organized in a new component`,
+        open_science_framework: `Open Science Framework`,
     },
     application: {
         // Nothing to translate
@@ -47,7 +48,7 @@ export default {
         article_doi: `Article DOI`,
         disciplines: `Disciplines`,
         project_button: {
-            paragraph: `The project for this paper is available on the Open Science Framework.`,
+            paragraph: `The project for this paper is available on the OSF.`,
             button: `Visit project`,
             edit_preprint:  `Edit preprint`
         },
