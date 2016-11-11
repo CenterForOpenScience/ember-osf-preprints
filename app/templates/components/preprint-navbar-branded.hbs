@@ -1,20 +1,18 @@
-
-    <div class="container">
-        <div class="navbar-header">
-            {{#link-to "provider.index" class="navbar-brand" invokeAction=(action "click" "link" "Navbar - Brand")~}}
-                <span class="navbar-image"></span>
-                <span class="navbar-title">{{model.name}} {{t "global.preprints"}}</span>
-            {{~/link-to}}
-        </div>
-        <div id="preprint-navbar-links" class="navbar-collapse collapse navbar-right">
-            <ul class="nav navbar-nav">
-                {{#if session.isAuthenticated}}
-                    <li><a href="/myprojects/" class="" onbeforeclick={{action "click" "link" "Navbar - My OSF Projects"}}>{{t "components.preprint-navbar-branded.my_projects"}}</a></li>
-                {{/if}}
-                <li><a href={{concat '/preprints/' theme.id '/submit'}} onbeforeclick={{action "click" "link" "Navbar - Add preprint"}}>{{t "global.add_preprint"}}</a></li>
-                <li>{{#link-to "provider.discover" class="" invokeAction=(action "click" "link" "Navbar - Search")}}{{t "global.search"}}{{/link-to}}</li>
-                {{navbar-auth-dropdown loginAction=(action 'login') headline=(t "components.preprint-navbar-branded.headline")}}
-            </ul>
-        </div>
+<div class="container">
+    <div class="navbar-header">
+        {{#link-to "provider.index" theme.id class="navbar-brand" invokeAction=(action "click" "link" "Navbar - Brand")~}}
+            <span class="navbar-image"></span>
+            <span class="navbar-title">{{model.name}} {{t "global.preprints"}}</span>
+        {{~/link-to}}
     </div>
-
+    <div id="preprint-navbar-links" class="navbar-collapse collapse navbar-right">
+        <ul class="nav navbar-nav">
+            {{#if session.isAuthenticated}}
+                <li><a href="/myprojects/" class="" onbeforeclick={{action "click" "link" "Navbar - My OSF Projects"}}>{{t "components.preprint-navbar-branded.my_projects"}}</a></li>
+            {{/if}}
+            <li><a href={{concat '/preprints/' theme.id '/submit'}} onbeforeclick={{action "click" "link" "Navbar - Add preprint"}}>{{t "global.add_preprint"}}</a></li>
+            <li>{{#link-to "provider.discover" class="" invokeAction=(action "click" "link" "Navbar - Search")}}{{t "global.search"}}{{/link-to}}</li>
+            {{navbar-auth-dropdown loginAction=(action 'login') headline=(t "components.preprint-navbar-branded.headline")}}
+        </ul>
+    </div>
+</div>
