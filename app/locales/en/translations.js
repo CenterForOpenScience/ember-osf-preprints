@@ -17,6 +17,7 @@ export default {
         search: `Search`,
         preprints,
         brand,
+        brand_name: 'OSF',
         provider_brand: `{{name}} ${preprints}`,
         add_preprint: `Add a preprint`,
         title: `Title`,
@@ -137,8 +138,10 @@ export default {
         add_heading: `Add Preprint`,
         edit_heading: `Edit Preprint`,
         body: {
-            p_add: `Follow these five easy steps to add your preprint to the OSF preprint repository.`,
+            p_add: `Follow these five easy steps to add your preprint to the {{name}} preprint repository.`,
             p_edit: `Edit your preprint sections below.`,
+            upload: `Upload new preprint`,
+            connect: `Connect preprint to existing OSF project`,
             file: `Preprint file`,
             title: `Preprint title`,
             subjects_description: `Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.`,
@@ -158,7 +161,7 @@ export default {
                 paragraph: `Add preprint authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the preprint.`
             },
             submit: {
-                paragraph: `When you share this preprint, it will become publicly accessible via OSF Preprints. You will be unable to delete the preprint file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
+                paragraph: `When you share this preprint, it will become publicly accessible via {{name}} Preprints. You will be unable to delete the preprint file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
                 invalid: {
                     description: `The following section(s) must be completed before sharing this preprint.`,
                     discipline: `Discipline`,
@@ -167,7 +170,7 @@ export default {
                 }
             },
             update: {
-                paragraph: `Edits to this preprint will update both the preprint and the OSF project and will become publicly accessible via OSF Preprints.`
+                paragraph: `Edits to this preprint will update both the preprint and the OSF project and will become publicly accessible via {{name}} Preprints.`
             },
             save_continue: `Save and continue`,
         },
