@@ -227,12 +227,22 @@ export default Ember.Controller.extend(Analytics, {
             const val = filterMap[key];
             const filterList = facetFilters[key];
 
-            if (!filterList.length)
+            if (!filterList.length || (key === 'providers' && this.get('theme.isProvider')))
                 continue;
 
-            const terms = {};
-            terms[val] = filterList;
-            filter.push({terms});
+            filter.push({
+                terms: {
+                    [val]: filterList
+                }
+            });
+        }
+
+        if (this.get('theme.isProvider')) {
+            filter.push({
+                terms: {
+                    'sources.raw': [this.get('theme.provider.name')]
+                }
+            });
         }
 
         const sortByOption = this.get('chosenSortByOption');
