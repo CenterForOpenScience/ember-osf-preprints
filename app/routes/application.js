@@ -28,7 +28,7 @@ export default Ember.Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
             this.set('i18n.locale', locale);
 
         // TODO set this in phase 2 by domain via `window.location.hostname`
-        this.set('theme.id', 'osf');
-        this.set('theme.provider', this.store.findRecord('preprint-provider', 'osf'));
+        if (!this.get('theme.id'))
+            this.set('theme.id', 'osf');
     }
 });
