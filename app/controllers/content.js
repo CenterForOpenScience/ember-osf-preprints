@@ -16,7 +16,9 @@ import permissions from 'ember-osf/const/permissions';
 function queryStringify(queryParams) {
     const query = [];
 
-    for (let [param, value] of Object.entries(queryParams)) {
+    // TODO set up ember to transpile Object.entries
+    for (const param in queryParams) {
+        let value = queryParams[param];
         let maxLength = null;
 
         if (Array.isArray(value)) {
