@@ -222,7 +222,9 @@ export default Ember.Controller.extend(Analytics, {
             }
         ];
 
-        for (const [key, val] of Object.entries(filterMap)) {
+        // TODO set up ember to transpile Object.entries
+        for (const key in filterMap) {
+            const val = filterMap[key];
             const filterList = facetFilters[key];
 
             if (!filterList.length)
