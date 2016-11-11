@@ -1080,7 +1080,15 @@ nav.branded-navbar {
 }
 
 .branded-footer {
-    margin: 14px 0;
+    margin: 2.5em 0;
+
+    p {
+        margin: 0;
+    }
+}
+
+.branded-footer-links {
+    margin-bottom: 1em;
     line-height: 28px;
 
     div {
