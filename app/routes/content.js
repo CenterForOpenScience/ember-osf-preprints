@@ -30,7 +30,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
 
         return this
             .store
-            .findRecord('preprint', params.preprint_id);
+            .findRecord('preprint', params.preprint_id, { include: 'node' });
     },
     setupController(controller, model) {
         if (this.get('editMode')) {
