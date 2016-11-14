@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from 'ember-get-config';
 
 export default Ember.Route.extend({
     theme: Ember.inject.service(),
@@ -15,8 +16,13 @@ export default Ember.Route.extend({
         if (this.get('providers').includes(slug)) {
             this.set('theme.id', slug);
         } else {
-            this.set('theme.id', null);
-            this.transitionTo('reroute-guid', slug);
+            this.set('theme.id', config.PREPRINTS.provider);
+
+            if (slug.length === 5) {
+                this.transitionTo('content', slug);
+            } else {
+                this.transitionTo('page-not-found');
+            }
         }
     },
 
