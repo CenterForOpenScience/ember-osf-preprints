@@ -5,7 +5,6 @@ import Analytics from '../mixins/analytics';
 
 export default Ember.Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
     i18n: Ember.inject.service(),
-    theme: Ember.inject.service(),
     afterModel: function() {
         const availableLocales = this.get('i18n.locales').toArray();
         let locale;
@@ -26,9 +25,5 @@ export default Ember.Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
 
         if (locale)
             this.set('i18n.locale', locale);
-
-        // TODO set this in phase 2 by domain via `window.location.hostname`
-        if (!this.get('theme.id'))
-            this.set('theme.id', 'osf');
     }
 });

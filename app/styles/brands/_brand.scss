@@ -42,8 +42,12 @@ $nav-height: 50px;
 
     .preprint-navbar {
         top: 0;
-        background-color: $theme-color-3;
-        color: $theme-color-2;
+
+        &,
+        .nav > li > a.active {
+            background-color: $theme-color-3;
+            color: $theme-color-2;
+        }
 
         a {
             color: $theme-color-2;
@@ -57,7 +61,6 @@ $nav-height: 50px;
 
         .nav > li.open,
         .nav > li.open > a,
-        .nav > li > a.active,
         .nav > li.open > a:hover,
         .nav > li.open > a:focus:not(.active):hover,
         .nav > li > a:focus:not(.active):hover {

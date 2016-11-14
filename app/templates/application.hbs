@@ -8,7 +8,7 @@
     {{preprint-navbar-branded model=theme.provider}}
 {{else}}
     {{title 'OSF Preprints' separator=' | '}}
-    {{osf-navbar signupUrl=signupUrl loginAction=(action 'login') hideSearch=true}}
+    {{osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login') hideSearch=true}}
     {{preprint-navbar}}
 {{/if}}
 
