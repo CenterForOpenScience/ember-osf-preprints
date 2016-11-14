@@ -31,9 +31,8 @@ Router.map(function() {
         this.route('discover');
         this.route('submit');
     });
-    this.route('reroute-guid', {path: 'preprints/*bad_url'});
-    this.route('page-not-found', {path: 'preprints/page-not-found'});
     this.route('forbidden');
+    this.route('page-not-found', {path: 'preprints/page-not-found'});
 });
 
 export default Router;
