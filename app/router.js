@@ -33,6 +33,7 @@ Router.map(function() {
     });
     this.route('forbidden');
     this.route('page-not-found', {path: 'preprints/page-not-found'});
+    this.route('page-not-found', {path: '/*bad_url'});
 });
 
 export default Router;
