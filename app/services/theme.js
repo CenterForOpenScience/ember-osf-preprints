@@ -33,7 +33,8 @@ export default Ember.Service.extend({
 
     signupUrl: Ember.computed('id', function() {
         const query = Ember.$.param({
-            campaign: `${this.get('id')}-preprints`
+            campaign: `${this.get('id')}-preprints`,
+            next: window.location.href
         });
 
         return `${config.OSF.url}register?${query}`;
