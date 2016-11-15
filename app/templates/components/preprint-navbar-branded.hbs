@@ -12,7 +12,12 @@
             {{/if}}
             <li><a href={{concat '/preprints/' theme.id '/submit'}} onbeforeclick={{action "click" "link" "Navbar - Add preprint"}}>{{t "global.add_preprint"}}</a></li>
             <li>{{#link-to "provider.discover" class="" invokeAction=(action "click" "link" "Navbar - Search")}}{{t "global.search"}}{{/link-to}}</li>
-            {{navbar-auth-dropdown signupUrl=theme.signupUrl loginAction=(action 'login') headline=(t "components.preprint-navbar-branded.headline")}}
+            {{navbar-auth-dropdown
+                signupUrl=theme.signupUrl
+                loginAction=(action 'login')
+                headline=(t "components.preprint-navbar-branded.headline")
+                redirectUrl=theme.redirectUrl
+            }}
         </ul>
     </div>
 </div>

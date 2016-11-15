@@ -3,6 +3,8 @@ import config from 'ember-get-config';
 
 export default Ember.Service.extend({
     store: Ember.inject.service(),
+    session: Ember.inject.service(),
+
     id: config.PREPRINTS.provider,
 
     provider: Ember.computed('id', function() {
@@ -38,5 +40,9 @@ export default Ember.Service.extend({
         });
 
         return `${config.OSF.url}register?${query}`;
+    }),
+
+    redirectUrl: Ember.computed('isProvider', function() {
+        return this.get('isProvider') ? window.location.href : null;
     }),
 });
