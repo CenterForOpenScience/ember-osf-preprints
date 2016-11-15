@@ -33,8 +33,18 @@ module.exports = function(environment) {
         },
         PREPRINTS: {
             provider: 'osf',
-            // The name of the OSF campaign used to track signups
-            campaign: 'osf-preprints'
+
+            providers: [
+                {
+                    id: 'engrxiv'
+                },
+                {
+                    id: 'psyarxiv'
+                },
+                {
+                    id: 'socarxiv'
+                }
+            ],
         },
         i18n: {
             defaultLocale: 'en'
