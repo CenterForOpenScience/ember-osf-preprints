@@ -36,13 +36,16 @@ module.exports = function(environment) {
 
             providers: [
                 {
-                    id: 'engrxiv'
+                    id: 'engrxiv',
+                    domain: 'engrxiv.com',
                 },
                 {
-                    id: 'psyarxiv'
+                    id: 'psyarxiv',
+                    domain: 'psyarxiv.org',
                 },
                 {
-                    id: 'socarxiv'
+                    id: 'socarxiv',
+                    domain: 'socarxiv.org',
                 }
             ],
         },
