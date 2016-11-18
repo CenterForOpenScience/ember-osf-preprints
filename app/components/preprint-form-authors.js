@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
 import { permissionSelector } from 'ember-osf/const/permissions';
+import Analytics from '../mixins/analytics';
 
-export default CpPanelBodyComponent.extend({
+export default CpPanelBodyComponent.extend(Analytics, {
     valid: Ember.computed.alias('newContributorId'),
     authorModification: false,
     // Permissions labels for dropdown
@@ -51,6 +52,12 @@ export default CpPanelBodyComponent.extend({
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Add Author'
+                });
             this.attrs.addContributor(user.id, 'write', true, this.get('sendEmail'), undefined, undefined, true).then((res) => {
                 this.toggleAuthorModification();
                 this.get('contributors').pushObject(res);
@@ -63,6 +70,12 @@ export default CpPanelBodyComponent.extend({
         },
         // Adds all contributors from parent project to current component as long as they are not current contributors
         addContributorsFromParentProject() {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Bulk Add Contributors From Parent'
+                });
             this.set('parentContributorsAdded', true);
             let contributorsToAdd = Ember.A();
             this.get('parentContributors').toArray().forEach(contributor => {
@@ -122,6 +135,12 @@ export default CpPanelBodyComponent.extend({
         // Removes contributor then redraws contributor list view - removal of contributor may change
         // which additional update/remove requests are permitted.
         removeContributor(contrib) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Remove Author'
+                });
             this.attrs.removeContributor(contrib).then(() => {
                 this.toggleAuthorModification();
                 this.removedSelfAsAdmin(contrib, contrib.get('permission'));
@@ -135,6 +154,12 @@ export default CpPanelBodyComponent.extend({
         // Updates contributor then redraws contributor list view - updating contributor
         // permissions may change which additional update/remove requests are permitted.
         updatePermissions(contributor, permission) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'dropdown',
+                    action: 'select',
+                    label: 'Preprints - Submit - Change Author Permissions'
+                });
             this.attrs.editContributor(contributor, permission, '').then(() => {
                 this.toggleAuthorModification();
                 this.highlightSuccessOrFailure(contributor.id, this, 'success');
@@ -148,6 +173,12 @@ export default CpPanelBodyComponent.extend({
         // Updates contributor then redraws contributor list view - updating contributor
         // bibliographic info may change which additional update/remove requests are permitted.
         updateBibliographic(contributor, isBibliographic) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'checkbox',
+                    action: 'select',
+                    label: 'Preprints - Submit - Update Bibliographic Author'
+                });
             this.attrs.editContributor(contributor, '', isBibliographic).then(() => {
                 this.toggleAuthorModification();
                 this.highlightSuccessOrFailure(contributor.id, this, 'success');
@@ -159,6 +190,12 @@ export default CpPanelBodyComponent.extend({
         },
         // There are 3 view states on left side of Authors panel.  This switches to add unregistered contrib view.
         unregisteredView() {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Go to Add Author by Email Form'
+                });
             this.set('addState', 'unregisteredView');
         },
         // There are 3 view states on left side of Authors panel.  This switches to searching contributor results view.
@@ -169,11 +206,23 @@ export default CpPanelBodyComponent.extend({
         },
         // There are 3 view states on left side of Authors panel.  This switches to empty view and clears search results.
         resetfindContributorsView() {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Cancel Add Author By Email'
+                });
             this.set('addState', 'searchView');
         },
         // Reorders contributors in UI then sends server request to reorder contributors. If request fails, reverts
         // contributor list in UI back to original.
         reorderItems(itemModels, draggedContrib) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'div',
+                    action: 'drag',
+                    label: 'Preprints - Submit - Reorder Authors'
+                });
             let originalOrder = this.get('contributors');
             this.set('contributors', itemModels);
             let newIndex = itemModels.indexOf(draggedContrib);

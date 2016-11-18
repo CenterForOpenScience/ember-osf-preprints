@@ -1,11 +1,15 @@
 <form {{action (action addUnregisteredContributor fullName email) on="submit"}}>
     <div>
         <label>{{t "components.unregistered-contributor-form.full_name"}}</label>
-        {{validated-input model=this valuePath='fullName' placeholder=(t "components.unregistered-contributor-form.full_name") value=fullName}}
+        <form onchange={{action 'track' 'input' 'onchange' 'Preprints - Submit - Author Full Name Text Change'}}>
+            {{validated-input model=this valuePath='fullName' placeholder=(t "components.unregistered-contributor-form.full_name") value=fullName}}
+        </form>
     </div>
     <div>
         <label>{{t "components.unregistered-contributor-form.email"}}</label>
-        {{validated-input model=this valuePath='username' placeholder=(t "components.unregistered-contributor-form.email") value=email}}
+        <form onchange={{action 'track' 'input' 'onchange' 'Preprints - Submit - Author Email Text Change'}}>
+            {{validated-input model=this valuePath='username' placeholder=(t "components.unregistered-contributor-form.email") value=email}}
+        </form>
     </div>
     <p class="text-muted">{{t "components.unregistered-contributor-form.paragraph"}}</p>
     <div class="pull-right unregistered-submit">

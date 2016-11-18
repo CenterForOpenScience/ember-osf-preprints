@@ -357,6 +357,14 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$(currentPanelName === 'Upload' ? '.preprint-header-preview' : '.abstract')[0]]);  // jshint ignore:line
                 });
             }
+            if (currentPanelName === 'Authors') {
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: 'Preprints - Submit - Authors Next Button'
+                    });
+            }
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
             this.send('changesSaved', currentPanelName);
         },
@@ -646,7 +654,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'input',
-                    action: 'onchange',
+                    action: 'onchangep',
                     label: 'Preprints - Submit - Add Tag'
                 });
             let tags = this.get('basicsTags').slice(0);
@@ -726,6 +734,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
          * @return {User[]} Returns specified page of user records matching query
          */
         findContributors(query, page) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Search for Authors'
+                });
             return this.store.query('user', {
                 filter: {
                     'full_name,given_name,middle_names,family_name': query
