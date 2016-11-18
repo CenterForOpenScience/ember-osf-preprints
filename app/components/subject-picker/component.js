@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Analytics from '../../mixins/analytics';
 
 function arrayEquals(arr1, arr2) {
     return arr1.length === arr2.length && arr1.reduce((acc, val, i) => acc && val === arr2[i], true);
@@ -8,7 +9,7 @@ function arrayStartsWith(arr, prefix) {
     return prefix.reduce((acc, val, i) => acc && val && arr[i] && val.id === arr[i].id, true);
 }
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(Analytics, {
     store: Ember.inject.service(),
 
     // Store the lists of subjects
@@ -71,6 +72,12 @@ export default Ember.Component.extend({
 
     actions: {
         deselect(subject) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Discipline Remove'
+                });
             let index;
             if (subject.length === 1) {
                 index = 0;
@@ -100,6 +107,12 @@ export default Ember.Component.extend({
             this.sendAction('save', this.get('selected'));
         },
         select(selected, tier) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Discipline Add'
+                });
             tier = parseInt(tier);
             if (this.get(`selection${tier}`) === selected) return;
 

@@ -652,11 +652,23 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
         discardSubjects() {
             // Discards changes to subjects. (No requests sent, front-end only.)
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Discard Discipline Changes'
+                });
             this.set('subjectsList', Ember.$.extend(true, [], this.get('model.subjects')));
         },
 
         saveSubjects() {
             // Saves subjects (disciplines) and then moves to next section.
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Discipline Save and Continue'
+                });
             let model = this.get('model');
             // Current subjects saved so UI can be restored in case of failure
             let currentSubjects = Ember.$.extend(true, [], this.get('model.subjects'));
