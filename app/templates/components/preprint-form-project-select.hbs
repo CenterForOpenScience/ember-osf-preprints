@@ -91,7 +91,9 @@
                                                 <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                                             {{/if}}
                                         {{/if}}
-                                        {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                                        <form onchange={{action 'track' 'input' 'onchange' 'Preprints - Submit - Add title, Connect preprint to existing project'}}>
+                                            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                                        </form>
                                         <div class="text-center m-v-md">
                                             <p>{{t "components.preprint-form-project-select.initiate_preprint_process"}}  </p>
                                             <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>{{t "submit.body.save_continue"}}</button>

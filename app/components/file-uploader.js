@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import {State} from '../controllers/submit';
+import Analytics from '../mixins/analytics';
 
 /**
  * File uploader widget - handles all cases where uploading a new file as your preprint, or uploading a new version of your preprint.
@@ -17,7 +18,7 @@ import {State} from '../controllers/submit';
  * ```
  * @class file-uploader
  */
-export default Ember.Component.extend({
+export default Ember.Component.extend(Analytics, {
     State,
     i18n: Ember.inject.service(),
     store: Ember.inject.service(),
@@ -93,6 +94,12 @@ export default Ember.Component.extend({
         createProjectAndUploadFile() {
             // Upload case where user starting from scratch - new project/new file.  Creates project and then uploads file to newly
             // created project
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Save and Continue, New Node New File'
+                });
             this.get('store').createRecord('node', {
                 public: false,
                 category: 'project',
@@ -111,6 +118,12 @@ export default Ember.Component.extend({
         createComponentAndUploadFile() {
             // Upload case for using a new component and a new file for the preprint.  Creates component of parent node
             // and then uploads file to newly created component.
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Save and Continue, New Component New File'
+                });
             let node = this.get('node');
             node
                 .addChild(this.get('nodeTitle'))
@@ -129,6 +142,12 @@ export default Ember.Component.extend({
         uploadFileToExistingNode() {
             // Upload case for using an existing node with a new file for the preprint.  Updates title of existing node and then uploads file to node.
             // Also applicable in edit mode.
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Save and Continue, Existing Node New File'
+                });
             if (this.get('nodeLocked')) { // Edit mode
                 this.set('uploadInProgress', true);
             }
@@ -186,6 +205,7 @@ export default Ember.Component.extend({
                 this.attrs.clearDownstreamFields('belowFile');
                 this.send('setPreUploadedFileAttributes', file, this.get('osfFile.currentVersion'));
             }
+            this.send('preUploadMetrics');
             this.set('callback', Ember.RSVP.defer());
             // Delays so user can see that file has been preuploaded before
             // advancing to next panel
@@ -262,6 +282,21 @@ export default Ember.Component.extend({
                     this.$('.dropzone').removeClass('errorHighlight');
                 }, 1000);
             }
+        },
+        preUploadMetrics() {
+            let eventData = {
+                category: 'dropzone',
+                action: 'drop'
+            };
+
+            if (this.get('newNodeNewFile')) {
+                eventData.label = 'Preprints - Submit - Drop File, New Node';
+            } else {
+                eventData.label = 'Preprints - Submit - Drop File, Existing Node';
+            }
+            Ember.get(this, 'metrics')
+                .trackEvent(eventData);
+
         }
     }
 });

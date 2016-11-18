@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
+import Analytics from '../mixins/analytics';
 
 import { validator, buildValidations } from 'ember-cp-validations';
 
@@ -88,7 +89,7 @@ function doiRegexExec(doi) {
 /**
  * "Add preprint" page definitions
  */
-export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
+export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
     i18n: Ember.inject.service(),
     fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
@@ -384,12 +385,32 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Sets filePickerState to start, new, or existing - this is the initial decision on the form.
             this.set('filePickerState', newState);
             this.send('clearDownstreamFields', 'allUpload');
-            if (newState === this.get('_State').EXISTING) {
+            if (newState === this.get('_State').NEW) {
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: 'Preprints - Submit - Upload new preprint'
+                    });
+            } else if (newState === this.get('_State').EXISTING) {
                 this.get('panelActions').open('chooseProject');
                 this.get('panelActions').close('selectExistingFile');
                 this.get('panelActions').close('uploadNewFile');
                 this.get('panelActions').close('organize');
                 this.get('panelActions').close('finalizeUpload');
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: 'Preprints - Submit - Connect preprint to existing OSF Project'
+                    });
+            } else {
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: 'Preprints - Submit - Back Button, Upload Section'
+                    });
             }
         },
         lockNode() {
@@ -407,6 +428,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Save and Continue, Existing Node Existing File'
+                });
             let node = this.get('node');
             this.set('basicsAbstract', this.get('node.description') || null);
             if (node.get('title') !== this.get('nodeTitle')) {
@@ -427,6 +454,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
             // file from parent node to new component.
             let node = this.get('node');
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Save and Continue, New Component, Copy File'
+                });
             node.addChild(this.get('nodeTitle'))
                 .then(child => {
                     this.set('parentNode', node);
