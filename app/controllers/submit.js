@@ -780,10 +780,23 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
          */
         toggleSharePreprintModal() {
             // Toggles display of share preprint modal
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Open Share Preprint Modal'
+                });
             this.toggleProperty('showModalSharePreprint');
         },
         savePreprint() {
             // Finalizes saving of preprint.  Publishes preprint and turns node public.
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Share Preprint'
+                });
+
             let model = this.get('model');
             let node = this.get('node');
             this.set('savingPreprint', true);
