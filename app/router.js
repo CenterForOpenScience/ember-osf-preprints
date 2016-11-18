@@ -29,6 +29,8 @@ Router.map(function() {
         .providers
         .some(provider => hostname.includes(provider.domain));
 
+    this.route('page-not-found', {path: '/*bad_url'});
+
     if (isProviderDomain) {
         this.route('index');
         this.route('submit');
@@ -48,7 +50,6 @@ Router.map(function() {
 
     this.route('content', {path: '/:preprint_id'});
     this.route('forbidden');
-    this.route('page-not-found', {path: '/*bad_url'});
 });
 
 export default Router;

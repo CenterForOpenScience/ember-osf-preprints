@@ -17,14 +17,13 @@ export default Ember.Route.extend({
             if (slug.length === 5) {
                 this.transitionTo('content', slug);
             } else {
-                this.transitionTo('page-not-found');
+                this.replaceWith('page-not-found');
             }
         }
     },
 
     actions: {
         error(error) {
-
             // Manage your errors
             Ember.onerror(error);
 
