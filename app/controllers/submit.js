@@ -529,6 +529,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         discardUploadChanges() {
             // Discards upload section changes.  Restores displayed file to current preprint primaryFile
             // and resets displayed title to current node title. (No requests sent, front-end only.)
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Discard Upload Changes'
+                });
             let currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
             this.set('file', null);
             this.set('selectedFile', currentFile);

@@ -57,7 +57,9 @@
                 {{preprint-form-header nodeTitle=nodeTitle name='title_of_preprint' showValidationIndicator=false}}
                 {{#preprint-form-body}}
                     <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
-                    {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                    <form onchange={{action 'track' 'input' 'onchange' 'Preprints - Submit - Edit title'}}>
+                        {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                    </form>
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
             <div class="m-v-md text-center">
