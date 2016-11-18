@@ -575,16 +575,34 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
          */
         discardBasics() {
             // Discards changes to basic fields. (No requests sent, front-end only.)
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Discard Basics Changes'
+                });
             this.set('basicsTags', this.get('node.tags').slice(0));
             this.set('basicsAbstract', this.get('node.description'));
             this.set('basicsDOI', this.get('model.doi'));
         },
         stripDOI() {
             // Replaces the inputted doi link with just the doi itself
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'input',
+                    action: 'onchange',
+                    label: 'Preprints - Submit - DOI Text Change'
+                });
             let basicsDOI = this.get('basicsDOI');
             this.set('basicsDOI', doiRegexExec(basicsDOI));
         },
         saveBasics() {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Save and Continue Basics Section'
+                });
             // Saves the description/tags on the node and the DOI on the preprint, then advances to next panel
             let node = this.get('node');
             let model = this.get('model');
@@ -625,6 +643,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
         addTag(tag) {
             // Custom addATag method that appends tag to list instead of auto-saving
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'input',
+                    action: 'onchange',
+                    label: 'Preprints - Submit - Add Tag'
+                });
             let tags = this.get('basicsTags').slice(0);
             Ember.A(tags);
             tags.pushObject(tag);
@@ -634,6 +658,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
         removeTag(tag) {
             // Custom removeATag method that removes tag from list instead of auto-saving
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Remove Tag'
+                });
             let tags = this.get('basicsTags').slice(0);
             tags.splice(tags.indexOf(tag), 1);
             this.set('basicsTags', tags);
