@@ -49,7 +49,7 @@ export default Ember.Component.extend(Analytics, {
             this.attrs.nextUploadSection('selectExistingFile', 'organize');
             Ember.get(this, 'metrics')
                 .trackEvent({
-                    category: 'filebrowser',
+                    category: 'file browser',
                     action: 'select',
                     label: 'Preprints - Submit - Existing File Selected'
                 });
