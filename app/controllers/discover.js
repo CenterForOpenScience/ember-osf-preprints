@@ -257,9 +257,9 @@ export default Ember.Controller.extend(Analytics, {
 
             Ember.get(this, 'metrics')
                 .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: 'Discover - Search'
+                    category: `${event && event.type === 'keyup' ? 'input' : 'button'}`,
+                    action: `${event && event.type === 'keyup' ? 'onkeyup' : 'click'}`,
+                    label: 'Preprints - Discover - Search'
                 });
         },
 
@@ -284,7 +284,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Discover - Clear Filters'
+                    label: 'Preprints - Discover - Clear Filters'
                 });
         },
 
@@ -302,7 +302,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
-                    label: `Discover - ${copy}`
+                    label: `Preprints - Discover - Sort by: ${copy[index]}`
                 });
         },
 
@@ -321,7 +321,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'filter',
                     action: hasItem ? 'remove' : 'add',
-                    label: `Discover - ${item}`
+                    label: `Preprints - Discover - Filter ${item}`
                 });
         },
 
@@ -338,13 +338,22 @@ export default Ember.Controller.extend(Analytics, {
         },
 
         selectProvider(provider) {
+            let action;
             let currentProviders = this.get('activeFilters.providers').slice();
             if (currentProviders.indexOf(provider) !== -1) {
+                action = 'remove';
                 this.get('activeFilters.providers').removeObject(provider);
             } else {
+                action = 'add';
                 this.get('activeFilters.providers').pushObject(provider);
             }
             this.notifyPropertyChange('activeFilters');
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'filter',
+                    action,
+                    label: `Preprints - Discover - Provider ${provider}`
+                });
         },
     },
 });

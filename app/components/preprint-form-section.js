@@ -68,7 +68,7 @@ export default CpPanelComponent.extend(Analytics, {
                 // Crude mechanism to prevent opening a panel if conditions are not met
                 Ember.get(this, 'metrics')
                     .trackEvent({
-                        category: 'button',
+                        category: 'div',
                         action: 'click',
                         label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.name} section`
                     });

@@ -123,7 +123,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Content - MFR ${beforeState}`
+                    label: `Preprints - Content - MFR ${beforeState}`
                 });
         },
         // Unused
@@ -150,7 +150,7 @@ export default Ember.Controller.extend(Analytics, {
                 metrics.trackEvent({
                     category: network,
                     action,
-                    label: window.location.href
+                    label: `Preprints - Content - ${window.location.href}`
                 });
             }
 

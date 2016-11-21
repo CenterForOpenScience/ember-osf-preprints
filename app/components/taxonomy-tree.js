@@ -46,7 +46,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'tree',
                     action: item.showChildren ? 'contract' : 'expand',
-                    label: item.text
+                    label: `Preprints - Discover - ${item.text}`
                 });
 
             if (item.showChildren) {
