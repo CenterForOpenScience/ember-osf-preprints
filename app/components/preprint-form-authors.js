@@ -56,7 +56,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Add Author'
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Add Author`
                 });
             this.attrs.addContributor(user.id, 'write', true, this.get('sendEmail'), undefined, undefined, true).then((res) => {
                 this.toggleAuthorModification();
@@ -74,7 +74,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Bulk Add Contributors From Parent'
+                    label: `Preprints - Submit - Bulk Add Contributors From Parent`
                 });
             this.set('parentContributorsAdded', true);
             let contributorsToAdd = Ember.A();
@@ -139,7 +139,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Remove Author'
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Author`
                 });
             this.attrs.removeContributor(contrib).then(() => {
                 this.toggleAuthorModification();
@@ -158,7 +158,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
-                    label: 'Preprints - Submit - Change Author Permissions'
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Change Author Permissions`
                 });
             this.attrs.editContributor(contributor, permission, '').then(() => {
                 this.toggleAuthorModification();
@@ -177,7 +177,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'checkbox',
                     action: 'select',
-                    label: 'Preprints - Submit - Update Bibliographic Author'
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Update Bibliographic Author`
                 });
             this.attrs.editContributor(contributor, '', isBibliographic).then(() => {
                 this.toggleAuthorModification();
@@ -194,7 +194,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Go to Add Author by Email Form'
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Go to Add Author by Email Form`
                 });
             this.set('addState', 'unregisteredView');
         },
@@ -210,7 +210,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Cancel Add Author By Email'
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Cancel Add Author By Email`
                 });
             this.set('addState', 'searchView');
         },
@@ -221,7 +221,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'div',
                     action: 'drag',
-                    label: 'Preprints - Submit - Reorder Authors'
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Reorder Authors`
                 });
             let originalOrder = this.get('contributors');
             this.set('contributors', itemModels);

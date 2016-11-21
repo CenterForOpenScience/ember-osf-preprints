@@ -41,7 +41,7 @@ export default Ember.Component.extend(Validations, Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Add Author By Email'
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Add Author By Email`
                 });
             if (this.get('isFormValid')) {
                 this.attrs.addUnregisteredContributor(fullName, email);

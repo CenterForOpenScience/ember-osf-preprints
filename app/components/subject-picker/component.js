@@ -76,7 +76,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Discipline Remove'
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Remove`
                 });
             let index;
             if (subject.length === 1) {
@@ -111,7 +111,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Discipline Add'
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Add`
                 });
             tier = parseInt(tier);
             if (this.get(`selection${tier}`) === selected) return;

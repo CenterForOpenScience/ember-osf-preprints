@@ -70,7 +70,7 @@ export default CpPanelComponent.extend(Analytics, {
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: `Preprints - Submit - Click to edit, ${this.name} section`
+                        label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.name} section`
                     });
                 this._super(...arguments);
             } else {

@@ -146,7 +146,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - Submit - Save and Continue, ${this.get('nodeLocked') ? 'Save File/Title Edits' : 'Existing Node New File'}`
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('nodeLocked') ? 'Save File/Title Edits' : 'Existing Node New File'}`
                 });
             if (this.get('nodeLocked')) { // Edit mode
                 this.set('uploadInProgress', true);
@@ -293,7 +293,7 @@ export default Ember.Component.extend(Analytics, {
                 eventData.label = 'Preprints - Submit - Drop File, New Node';
             } else {
                 if (this.get('nodeLocked')) {
-                    eventData.label = 'Preprints - Submit - Drop File, New Version';
+                    eventData.label = `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Drop File, New Version`;
                 } else {
                     eventData.label = 'Preprints - Submit - Drop File, Existing Node';
                 }

@@ -1,13 +1,13 @@
 <form {{action (action addUnregisteredContributor fullName email) on="submit"}}>
     <div>
         <label>{{t "components.unregistered-contributor-form.full_name"}}</label>
-        <form onchange={{action 'track' 'input' 'onchange' 'Preprints - Submit - Author Full Name Text Change'}}>
+        <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Preprints - Edit - Author Full Name Text Change') (action 'track' 'input' 'onchange' 'Preprints - Submit - Author Full Name Text Change')}}>
             {{validated-input model=this valuePath='fullName' placeholder=(t "components.unregistered-contributor-form.full_name") value=fullName}}
         </form>
     </div>
     <div>
         <label>{{t "components.unregistered-contributor-form.email"}}</label>
-        <form onchange={{action 'track' 'input' 'onchange' 'Preprints - Submit - Author Email Text Change'}}>
+        <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Preprints - Edit - Author Email Text Change') (action 'track' 'input' 'onchange' 'Preprints - Submit - Author Email Text Change')}}>
             {{validated-input model=this valuePath='username' placeholder=(t "components.unregistered-contributor-form.email") value=email}}
         </form>
     </div>
