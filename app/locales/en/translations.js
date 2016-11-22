@@ -155,9 +155,13 @@ export default {
                 },
                 abstract: {
                     placeholder: `Add a brief summary of your preprint`
-                }
+                },
+                other_preprints_project_basics_warning: `Edits to the abstract and keywords will be reflected across all preprint(s) stored on this project`,
+                other_preprints_component_basics_warning: `Edits to the abstract and keywords will be reflected across all preprint(s) stored on this component.`
             },
             authors: {
+                other_preprints_project_authors_warning: `Edits to contributors will be reflected across all preprint(s) stored on this project.`,
+                other_preprints_component_authors_warning: `Edits to contributors will be reflected across all preprint(s) stored on this component.`,
                 paragraph: `Add preprint authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the preprint.`
             },
             submit: {
@@ -179,6 +183,7 @@ export default {
         error_accessing_parent_files: `Error accessing parent files. Please try again.`,
         could_not_create_component: `Could not create component. Please try again.`,
         abandoned_preprint_error: `Error with abandoned preprint.`,
+        preprint_initiated: `Preprint initiated!`,
         preprint_file_uploaded: `Preprint file uploaded!`,
         error_initiating_preprint: `Could not initiate preprint. Please try again.`,
         doi_error: `Error saving DOI`,
@@ -228,6 +233,10 @@ export default {
             file_exists_error: `A file with that name already exists`,
             upload_error: `Upload Failed` ,
             dropzone_text_override: `Click or drag another preprint file to replace`,
+            other_preprints_project_file_warning: `You must use the preprint file already stored on this project. Any changes to the preprint file will persist across all preprint(s) on the project.`,
+            other_preprints_component_file_warning: `You must use the preprint file already stored on this component. Any changes to the preprint file will persist across all preprint(s) on the component.`,
+            other_preprints_project_title_warning: `Editing the title will change the title across all preprint(s) in this project.`,
+            other_preprints_component_title_warning: `Editing the title will change the title across all preprint(s) in this component.`
         },
         'preprint-footer-branded': {
             twitter: 'Twitter',
@@ -293,6 +302,7 @@ export default {
             edit_preprint_title_project: `Edit preprint title (will also become the name of the project)`,
             edit_preprint_title_component: `Edit preprint title (will also become the name of the component)`,
             initiate_preprint_process: `You have selected and organized your preprint file. Clicking "Save and continue" will immediately make changes to your OSF project. You will not be able to delete your Preprint file, but you will be able to update or modify it.`,
+            initiate_preprint_process_file_locked: `There are already preprint(s) on this OSF project for other providers. Clicking 'Save and continue' will initiate the preprint process for this provider. Some changes to this preprint will be reflected across all preprints stored on the project.`,
             edit_organize_section: `Edits to this preprint will update both the preprint and the OSF project.`,
             admin_only: `You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.`,
         },

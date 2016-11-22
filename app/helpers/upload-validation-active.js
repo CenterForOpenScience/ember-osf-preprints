@@ -10,8 +10,8 @@ import Ember from 'ember';
  * @return {Boolean} uploadValidationActive Should validation be active on upload section (namely, should save button have a color?)
  */
 export function uploadValidationActive(params/*, hash*/) {
-    var [editMode, nodeLocked, hasOpened] = params;
-    return editMode ? nodeLocked && hasOpened : nodeLocked;
+    var [editMode, nodeLocked, hasOpened, fileLocked] = params;
+    return editMode ? nodeLocked && hasOpened : nodeLocked || fileLocked;
 }
 
 export default Ember.Helper.helper(uploadValidationActive);

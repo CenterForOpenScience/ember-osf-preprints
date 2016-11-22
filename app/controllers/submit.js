@@ -73,6 +73,11 @@ function subjectIdMap(subjectArray) {
     return subjectArray.map(subjectBlock => subjectBlock.map(subject => subject.id));
 }
 
+function getPreprintProvider(preprint) {
+    // Convenience method for pulling a provider from a preprint to avoid double embeds.
+    return preprint.get('links.relationships.provider.links.related.href').split('preprint_providers/')[1].replace('/', '');
+}
+
 function doiRegexExec(doi) {
     //Strips url out of inputted doi, if any.  For example, user input this DOI: https://dx.doi.org/10.12345/hello. Returns 10.12345/hello.
     // If doi invalid, returns doi.
@@ -86,7 +91,14 @@ function doiRegexExec(doi) {
 }
 
 /**
- * "Add preprint" page definitions
+ * "Add preprint/Edit Preprint" page definitions
+ *
+ * Important properties are fileLocked, nodeLocked, and editMode.  These 3 properties determine what options are available in the Add/Edit forms.  Use
+ * caution when modifying!
+ *
+ * editMode is true when a user is editing an existing published preprint.
+ * nodeLocked is true once a preprint has been initiated. This occurs after upload step in Add Mode. Is always true in Edit Mode.
+ * fileLocked is true in Add Mode if published preprints exist from other providers on the current node.  This flag adds more restrictions to Add Mode.
  */
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
     i18n: Ember.inject.service(),
@@ -112,6 +124,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     contributors: Ember.A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
     nodeTitle: null, // Preprint title
     nodeLocked: false, // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
+    fileLocked: false, // IMPORTANT PROPERTY. True if published preprint by another provider exists on the node. Means user creating new preprint can't change file.
+    editMode: false, // IMPORTANT PROPERTY Always false in Add Mode. Always true in Edit Mode.
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
@@ -129,9 +143,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     disciplineModifiedToggle: false, // Helps determine if discipline has changed
     uploadInProgress: false, // Set to true when upload step is underway,
     existingPreprints: Ember.A(), // Existing preprints on the current node
-    abandonedPreprint: null, // Abandoned(draft) preprint on the current node
-    editMode: false, // Edit mode is false by default.
     shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
+
+    currentProvider: Ember.computed('theme', function() {
+        // Current theme
+        return this.get('theme.id') || config.PREPRINTS.provider;
+    }),
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -142,6 +159,20 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return null;
     }),
 
+    abandonedPreprint: Ember.computed('node', function() {
+        // Abandoned(draft) preprint on the current node for the currentProvider
+        const currentProvider = this.get('currentProvider');
+        const node = this.get('node');
+        if (node) {
+            for (const preprint of node.get('preprints').toArray()) {
+                var preprintProvider = getPreprintProvider(preprint);
+                if (!(preprint.get('isPublished')) && currentProvider === preprintProvider) {
+                    return preprint;
+                }
+            }
+        }
+        return null;
+    }),
     hasFile: Ember.computed('file', 'selectedFile', function() {
         // True if file has either been preuploaded, or already uploaded file has been selected.
         return this.get('file') !== null || this.get('selectedFile') !== null;
@@ -165,6 +196,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             contributors: Ember.A(),
             nodeTitle: null,
             nodeLocked: false, // Will be set to true if edit?
+            fileLocked: false,
             searchResults: [],
             savingPreprint: false,
             showModalSharePreprint: false,
@@ -230,7 +262,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     ////////////////////////////////////////////////////
     preprintFileChanged: Ember.computed('model.primaryFile', 'selectedFile', 'file', function() {
         // Does the pending primaryFile differ from the primary file already saved?
-        return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('file') !== null;
+        if (this.get('fileLocked') && !(this.get('nodeLocked'))) { // New preprint has yet to be initiated but file is locked, so only check if new pending version.
+            return this.get('file') !== null;
+        } else {
+            return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('file') !== null;
+        }
+
     }),
     titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
         // Does the pending title differ from the title already saved?
@@ -312,22 +349,24 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
              this.set('contributors', contributors));
     }),
 
-    getNodePreprints: Ember.observer('node', function() {
-        // Returns any existing preprints stored on the current node
-
-        // Cannot be called until a project has been selected!
+    getExistingPreprintProperties: Ember.observer('node', function() {
+        // If selected node already has published preprints, selectedFile needs to be the primaryFile.  Each node only gets one preprint file.
         const node = this.get('node');
-        if (!node) return;
+        if (!this.get('node')) return;
 
-        node.get('preprints').then((preprints) => {
-            this.set('existingPreprints', preprints);
-            if (preprints.toArray().length > 0) { // If node already has a preprint
-                let preprint = preprints.toArray()[0]; // TODO once branded is finished, this will change
-                if (!(preprint.get('isPublished'))) { // Preprint exists in abandoned state.
-                    this.set('abandonedPreprint', preprint);
+        const currentProvider = this.get('currentProvider');
+        if (node) {
+            this.set('nodeTitle', this.get('node.title'));
+            this.set('titleValid', true);
+            for (const preprint of node.get('preprints').toArray()) {
+                const preprintProvider = getPreprintProvider(preprint);
+                if (preprint.get('isPublished') && currentProvider !== preprintProvider) {
+                    preprint.get('primaryFile').then((file) => {
+                        this.set('selectedFile', file);
+                    });
                 }
             }
-        });
+        }
     }),
 
     getParentContributors: Ember.observer('parentNode', function() {
@@ -384,6 +423,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         changeInitialState(newState) {
             // Sets filePickerState to start, new, or existing - this is the initial decision on the form.
             this.set('filePickerState', newState);
+            this.set('fileLocked', false);
             this.send('clearDownstreamFields', 'allUpload');
             if (newState === this.get('_State').EXISTING) {
                 this.get('panelActions').open('chooseProject');
@@ -469,7 +509,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             let model = this.get('model');
 
             const provider = this.get('store')
-                .peekRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider);
+                .peekRecord('preprint-provider', this.get('currentProvider'));
 
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
@@ -480,7 +520,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     this.set('filePickerState', State.EXISTING); // Sets upload form state to existing project (now that project has been created)
                     this.set('existingState', existingState.NEWFILE); // Sets file state to new file, for edit mode.
                     this.set('file', null);
-                    this.get('toast').info(this.get('i18n').t('submit.preprint_file_uploaded'));
+                    this.get('toast').info(this.get('i18n')
+                        .t(`submit.${this.get('fileLocked') ? 'preprint_initiated' : 'preprint_file_uploaded'}`)
+                    );
                     this.send('finishUpload');
                 })
                 .catch(() => {
@@ -499,15 +541,17 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         discardUploadChanges() {
             // Discards upload section changes.  Restores displayed file to current preprint primaryFile
             // and resets displayed title to current node title. (No requests sent, front-end only.)
-            let currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
+            if (!this.get('fileLocked')) { // Cannot modify selectedFile if fileLocked.
+                let currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
+                this.set('selectedFile', currentFile);
+            }
             this.set('file', null);
-            this.set('selectedFile', currentFile);
             this.set('nodeTitle', this.get('node.title'));
             this.set('titleValid', true);
         },
         clearDownstreamFields(section) {
             //If user goes back and changes a section inside Upload, all fields downstream of that section need to clear.
-            if (!this.get('nodeLocked')) { // Only clear downstream fields in Add mode!
+            if (!this.get('nodeLocked') && !(this.get('fileLocked'))) { // Only clear downstream fields in Add mode! If file or node locked, do not clear.
                 switch (section) {
                     case 'allUpload':
                         this.set('node', null);

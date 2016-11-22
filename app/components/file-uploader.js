@@ -65,10 +65,10 @@ export default Ember.Component.extend({
         upload() {
             // Uploads file to node
             if (this.get('file') === null) { // No new file to upload.
-                this.sendAction('finishUpload');
+                return this.get('fileLocked') && !(this.get('nodeLocked')) ? this.sendAction('existingNodeExistingFile') : this.sendAction('finishUpload');
             } else {
                 return this.get('node.files').then(files => {
-                    if (this.get('nodeLocked')) { // Edit mode, fetch URL for uploading new version
+                    if (this.get('fileLocked') || this.get('nodeLocked')) { // Edit mode, fetch URL for uploading new version
                         this.send('uploadNewVersionUrl', files);
                     } else { // Add mode, fetch URL for uploading new file
                         this.send('uploadNewFileUrl', files);
@@ -129,7 +129,7 @@ export default Ember.Component.extend({
         uploadFileToExistingNode() {
             // Upload case for using an existing node with a new file for the preprint.  Updates title of existing node and then uploads file to node.
             // Also applicable in edit mode.
-            if (this.get('nodeLocked')) { // Edit mode
+            if (this.get('fileLocked') || this.get('nodeLocked')) { // Edit mode
                 this.set('uploadInProgress', true);
             }
             let node = this.get('node');
@@ -176,7 +176,7 @@ export default Ember.Component.extend({
         preUpload(_, dropzone, file) {
             // preUpload or "stage" file. Has yet to be uploaded to node.
             this.set('uploadInProgress', false);
-            if (this.get('nodeLocked')) { // Edit mode
+            if (this.get('fileLocked') || this.get('nodeLocked')) { // Edit mode
                 if (file.name !== this.get('osfFile.name')) { // Invalid File - throw error.
                     this.send('mustModifyCurrentPreprintFile');
                 } else { // Valid file - can be staged.
