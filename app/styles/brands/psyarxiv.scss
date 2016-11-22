@@ -1,12 +1,14 @@
 @import 'brand';
 
 @include brand(
-    #a9a9a9,
-    white,
-    #ff383f,
-    #caebf2,
+    #efefef,
     black,
-    invert(100%),
-    '/preprints/assets/img/provider_logos/psyarxiv.png',
-    '/preprints/assets/img/provider_logos/psyarxiv-square.png'
+    #caebf2,
+    #ff383f,
+    black,
+    $logo-dir + 'psyarxiv-color.png',
+    $logo-dir + 'psyarxiv-square-color.png',
+    false,
+    true,
+    false
 );
