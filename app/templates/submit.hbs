@@ -134,6 +134,9 @@
                         {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=node.tags abstract=node.description name=name valid=(not basicsChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
+                                <div class='row'>
+                                    {{license-picker licenses=availableLicenses currentValues=basicsLicense howCategories=false editLicense=(action 'editLicense') allowDismiss=false autosave=true}}
+                                </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div>

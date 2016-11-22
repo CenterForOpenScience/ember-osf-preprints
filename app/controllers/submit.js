@@ -105,6 +105,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     userNodes: Ember.A(),
     userNodesLoaded: false,
 
+    availableLicenses: Ember.A(),
+
     // Information about the thing to be turned into a preprint
     node: null, // Project or component containing the preprint
     file: null, // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
@@ -279,6 +281,27 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         const modelDOI = this.get('model.doi');
         return (basicsDOI || modelDOI) && basicsDOI !== modelDOI;
     }),
+    basicsLicense: Ember.computed('model', function() {
+        let record = this.get('model.licenseRecord');
+        let license = this.get('model.license');
+        return {
+            year: record ? record.year : null,
+            copyrightHolders: record && record.copyright_holders ? record.copyright_holders.join(',') : null,
+            licenseType: license || null
+        }
+    }),
+    licenseChanged: Ember.computed('model.license', 'model.licenseRecord', 'model.license', function() {
+        let record = this.get('model.licenseRecord');
+        let license = this.get('model.license') || null;
+        let changed = false;
+        if (record) {
+            changed = (record.year != this.get('basicsLicense.year')) || (this.get('basicsLicense.copyrightHolders') !== record.copyrightHolders);
+        } else {
+            changed = (this.get('basicsLicense.year') !== null) || (this.get('basicsLicense.copyrightHolders') || []);
+        }
+        changed = changed || (this.get('basicsLicense.licenseType') !== license);
+        return changed;
+    }),
     basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', function() {
         // Are there any unsaved changes in the basics section?
         return this.get('tagsChanged') || this.get('abstractChanged') || this.get('doiChanged');
@@ -350,6 +373,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
 
     actions: {
+        editLicense(license) {
+            this.set('basicsLicense', license);
+        },
         next(currentPanelName) {
             // Open next panel
             if (currentPanelName === 'Upload' || currentPanelName === 'Basics') {
@@ -556,9 +582,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             let currentAbstract = node.get('description');
             let currentTags = node.get('tags').slice(0);
             let currentDOI = model.get('doi');
+            let currentLicenseType = model.get('license');
+            let currentLicenseRecord = model.get('licenseRecord');
 
             if (this.get('abstractChanged')) node.set('description', this.get('basicsAbstract'));
             if (this.get('tagsChanged')) node.set('tags', this.get('basicsTags'));
+            debugger;
 
             node.save()
                 .then(() => {
