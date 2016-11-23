@@ -590,7 +590,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
             if (this.get('abstractChanged')) node.set('description', this.get('basicsAbstract'));
             if (this.get('tagsChanged')) node.set('tags', this.get('basicsTags'));
-            debugger;
+
 
             node.save()
                 .then(() => {
@@ -598,12 +598,36 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                         model.set('doi', this.get('basicsDOI') || null);
                         model.save()
                             .then(() => {
-                                this.send('next', this.get('_names.2'));
+                                if (this.get('licenseChanged')) {
+                                    model.set('licenseRecord', {year: this.get('basicsLicense.year'), 'copyright_holders': this.get('basicsLicense.copyrightHolders')})
+                                    model.set('license', this.get('basicsLicense.license'));
+                                    model.save()
+                                        .then(() => {
+                                            this.send('next', this.get('_names.2'));
+                                        })
+                                        .catch(() => {
+                                            model.set('licenseRecord', currentLicenseRecord);
+                                            model.set('license', currentLicenseType);
+                                        })
+                                } else {
+                                    this.send('next', this.get('_names.2'));
+                                }
                             })
                             .catch(() => {
                                 model.set('doi', currentDOI);
                                 this.get('toast').error(this.get('i18n').t('submit.doi_error'));
                             });
+                    } else if (this.get('licenseChanged')) {
+                        model.set('licenseRecord', {year: this.get('basicsLicense.year'), 'copyright_holders': this.get('basicsLicense.copyrightHolders')})
+                        model.set('license', this.get('basicsLicense.license'));
+                        model.save()
+                            .then(() => {
+                                this.send('next', this.get('_names.2'));
+                            })
+                            .catch(() => {
+                                model.set('licenseRecord', currentLicenseRecord);
+                                model.set('license', currentLicenseType);
+                            })
                     } else {
                         this.send('next', this.get('_names.2'));
                     }
