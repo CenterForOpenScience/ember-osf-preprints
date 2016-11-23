@@ -201,8 +201,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     uploadValid: Ember.computed.alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
+    licenseValid: false,
     // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
-    basicsValid: Ember.computed.and('abstractValid', 'doiValid'),
+    basicsValid: Ember.computed.and('abstractValid', 'doiValid', 'licenseValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject (looking at pending subjects)
@@ -373,8 +374,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
 
     actions: {
-        editLicense(license) {
+        editLicense(license, validates) {
+            debugger;
             this.set('basicsLicense', license);
+            this.set('licenseValid', validates);
         },
         next(currentPanelName) {
             // Open next panel
