@@ -73,6 +73,11 @@
                     {{/if}}
 
                     <div class="p-t-xs">
+                        <h4 class="p-v-md  f-w-md">{{t "content.citations"}}</h4>
+                        {{citation-widget node=node}}
+                    </div>
+
+                    <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">{{t "content.disciplines"}}</h4>
                         {{#each disciplineReduced as |subject|}}
                             <span class='subject-preview'>{{subject.text}}</span>
