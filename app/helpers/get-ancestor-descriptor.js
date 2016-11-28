@@ -4,9 +4,9 @@ function fetchIdFromRelationshipLink(node, relationship) {
     // If id is not embedded in request, Private node ids can be accessed under initializedRelationships.
     // May still return undefined if parent, for example, does not exist.
     if (node) {
-        let relationships = node._internalModel._relationships.initializedRelationships[relationship];
-        if (relationships && relationships.link) {
-            return relationships.link.split('nodes')[1].replace(/\//g, '');
+        let initializedRelationship = node._internalModel._relationships.initializedRelationships[relationship];
+        if (initializedRelationship && initializedRelationship.link) {
+            return initializedRelationship.link.split('nodes')[1].replace(/\//g, '');
         }
     }
     return undefined;
