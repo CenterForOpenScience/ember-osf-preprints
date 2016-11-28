@@ -5,12 +5,18 @@ import Ember from 'ember';
 
 module('Unit | Helper | get ancestor descriptor');
 
-// Replace this with your real tests.
-test('it works', function(assert) {
+test('One, two, three, and four-level hierarchies', function(assert) {
     var root = Ember.Object.create({
         'id': '12345',
         'title': "Great-Grandparent",
-        'root': root
+        'root': root,
+        '_internalModel': {
+            '_relationships': {
+                'initializedRelationships': {
+
+                }
+            }
+        }
     });
 
     var grandparent = Ember.Object.create({
@@ -37,10 +43,10 @@ test('it works', function(assert) {
     assert.equal(describeNode, 'Great-Grandparent / ... / Parent / ');
 
     let describeParent = getAncestorDescriptor([parent]);
-    assert.equal(describeParent, 'Great-Grandparent / Grandparent /');
+    assert.equal(describeParent, 'Great-Grandparent / Grandparent / ');
 
     let describeGrandparent = getAncestorDescriptor([grandparent]);
-    assert.equal(describeGrandparent, 'Great-Grandparent');
+    assert.equal(describeGrandparent, 'Great-Grandparent / ');
 
     let describeGreatGrandparent = getAncestorDescriptor([root]);
     assert.equal(describeGreatGrandparent, '');
