@@ -57,7 +57,7 @@ ul.comma-list {
 }
 
 .preprint-brand {
-    background: url(img/preprints-logo.png) top center no-repeat;
+    background: url('img/preprints-logo.png') top center no-repeat;
     height: 70px;
     background-size: contain;
 }
@@ -230,12 +230,6 @@ ul.comma-list {
         background-size: contain;
         vertical-align: middle;
     }
-
-    .share-logo-white {
-        width: 48px;
-        height: 30px;
-        background-image: url('img/share-logo-white.png');
-    }
 }
 .preprint-search-main {
     background-color: #fbfbfb;
@@ -269,6 +263,7 @@ ul.comma-list {
     margin: 2px;
     padding: 0px 6px;
     line-height: 30px;
+    border: 1px solid #e3e3e3;
     border-radius: 2px;
     display: inline-block;
 }
@@ -1081,6 +1076,44 @@ label.title-label {
 
 .edit-btn {
     margin-bottom: 20px;
+}
+
+nav.preprint-navbar {
+    $nav-height: 50px;
+
+    top: 0;
+
+    .navbar-image {
+        float: left;
+        clear: both;
+        text-align: center;
+        background-position-x: center;
+        background-position-y: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        height: $nav-height - 2px;
+        width: $nav-height - 2px;
+        display: inline-block;
+        transform: translateY(-12px);
+        margin-right: 16px;
+    }
+
+    .nav-user-dropdown {
+        height: $nav-height;
+    }
+
+    .dropdown > a {
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+
+    .dropdown-menu {
+        color: white;
+    }
+
+    .sign-in {
+        padding-top: 8px;
+    }
 }
 
 nav.branded-navbar {

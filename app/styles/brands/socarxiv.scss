@@ -6,7 +6,9 @@
     #215264,
     #103749,
     white,
-    none,
-    '/preprints/assets/img/provider_logos/socarxiv.png',
-    '/preprints/assets/img/provider_logos/socarxiv-square.png'
+    $logo-dir + 'socarxiv.png',
+    $logo-dir + 'socarxiv-square.png',
+    true,
+    false,
+    true
 );
