@@ -27,15 +27,15 @@ export function getAncestorDescriptor(params/*, hash*/) {
     let nodeId = node.get('id');
     let rootId = node.get('root.id');
     let parentId = node.get('parent.id');
+    let parent = node.get('parent').content;
+    let parentParentId = parent ? parent.get('parent.id') : undefined;
 
     if (typeof rootId === 'undefined') rootId = fetchIdFromRelationshipLink(node, 'root');
     if (typeof parentId === 'undefined') parentId = fetchIdFromRelationshipLink(node, 'parent');
+    if (typeof parentParentId === 'undefined') parentParentId = fetchIdFromRelationshipLink(parent, 'parent');
 
     let parentTitle = fetchTitle(node, 'parent');
     let rootTitle = fetchTitle(node, 'root');
-
-    let parent = node.get('parent').content;
-    let parentParentId = fetchIdFromRelationshipLink(parent, 'parent');
 
     let rootDescriptor;
     if (rootId === nodeId) { // One level
