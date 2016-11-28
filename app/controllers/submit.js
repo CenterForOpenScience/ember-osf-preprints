@@ -90,6 +90,7 @@ function doiRegexExec(doi) {
  */
 export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
     i18n: Ember.inject.service(),
+    theme: Ember.inject.service(),
     fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
@@ -466,7 +467,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Initiates preprint.  Occurs in Upload section of Add Preprint form when pressing 'Save and continue'.  Creates a preprint with
             // primaryFile, node, and provider fields populated.
             let model = this.get('model');
-            let provider = this.get('store').peekRecord('preprint-provider', config.PREPRINTS.provider);
+
+            const provider = this.get('store')
+                .peekRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider);
 
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
@@ -667,17 +670,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         * @param {string} status "success" or "error"
         */
         highlightSuccessOrFailure(elementId, context, status) {
-            Ember.run.next(Ember.Object.create({ elementId: elementId, context: context }), function() {
-                let elementId = this.elementId;
-                let _this = this.context;
+            Ember.run.next(Ember.Object.create({ elementId, context }), function() {
+                const highlightClass = `${status === 'success' ? 'success' : 'error'}Highlight`;
 
-                let highlightClass =  status === 'success' ? 'successHighlight' : 'errorHighlight';
+                this.context.$('#' + this.elementId).addClass(highlightClass);
 
-                _this.$('#' + elementId).addClass(highlightClass);
-
-                setTimeout(() => {
-                    _this.$('#' + elementId).removeClass(highlightClass);
-                }, 2000);
+                setTimeout(() => this.context.$('#' + this.elementId).removeClass(highlightClass), 2000);
             });
         },
         /*
@@ -689,25 +687,32 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         savePreprint() {
             // Finalizes saving of preprint.  Publishes preprint and turns node public.
-            let model = this.get('model');
-            let node = this.get('node');
+            const model = this.get('model');
+            const node = this.get('node');
+
             this.set('savingPreprint', true);
             this.toggleProperty('shareButtonDisabled');
             model.set('isPublished', true);
             node.set('public', true);
 
             return model.save()
-                .then(() => node.save().then(() => {
+                .then(() => node.save())
+                .then(() => {
                     if (this.get('editMode')) {
                         window.location = window.location.pathname; //TODO Ember way to do this?  In edit mode, already in content route.
                     } else {
-                        this.transitionToRoute('content', model);
+                        this.transitionToRoute(
+                            `${this.get('theme.isProvider') ? 'provider.' : ''}content`,
+                            model
+                        );
                     }
-                }))
+                })
                 .catch(() => {
                     this.toggleProperty('shareButtonDisabled');
-                    return this.get('editMode') ? this.get('toast').error(this.get('i18n').t('submit.error_completing_preprint')) : this.toast.error(this.get('i18n').t('submit.error_saving_preprint'));
-
+                    return this.get('toast')
+                        .error(this.get('i18n')
+                            .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`)
+                        );
                 });
         },
     }

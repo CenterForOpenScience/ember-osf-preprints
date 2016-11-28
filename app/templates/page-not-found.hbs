@@ -5,11 +5,25 @@
         <div class="row">
             <div class="col-xs-12">
                 <h1>{{t "page-not-found.heading"}}</h1>
-                <p>{{t "page-not-found.paragraph.line1"}} <br> {{t "page-not-found.paragraph.line2"}} <a href="mailto:support@osf.io" {{action "click" "link" "Page not found - Support" "mailto:support@osf.io"}}>support@osf.io</a></p>
-                {{#link-to "index" class="btn btn-primary m-t-md" }}{{t "page-not-found.go_to"}}{{/link-to}} {{! invokeAction=(action "click" "link" "Page not found - Go to Index") TODO find out why this breaks }}
-
+                <p>
+                    <span>{{t "page-not-found.paragraph.line1" brand=(if theme.isProvider (t "global.provider_brand" name=theme.provider.name) (t "global.brand"))}}</span>
+                    <br>
+                    <span>{{t "page-not-found.paragraph.line2"}}</span>
+                    <a href="mailto:{{if theme.isProvider theme.provider.emailSupport "support@osf.io"}}"
+                       onbeforeclick={{action "click" "link" "Page not found - Support"}}>
+                        {{if theme.isProvider theme.provider.emailSupport "support@osf.io"}}
+                    </a>
+                </p>
+                {{#if theme.isProvider}}
+                    {{#link-to "provider.index" theme.id class="btn btn-primary m-t-md" invokeAction=(action "click" "link" "Page not found - Go to Index")}}
+                        {{t "page-not-found.go_to" brand=(t "global.provider_brand" name=theme.provider.name)}}
+                    {{/link-to}}
+                {{else}}
+                    {{#link-to "index" class="btn btn-primary m-t-md" invokeAction=(action "click" "link" "Page not found - Go to Index")}}
+                        {{t "page-not-found.go_to" brand=(t "global.brand")}}
+                    {{/link-to}}
+                {{/if}}
             </div>
         </div>
-
     </div>
 </div>

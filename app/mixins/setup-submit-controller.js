@@ -7,7 +7,7 @@ import permissions from 'ember-osf/const/permissions';
 export default Ember.Mixin.create({
     panelActions: Ember.inject.service('panelActions'),
 
-    setupSubmitController: function(controller, model) {
+    setupSubmitController(controller, model) {
         //setupController method that will be run for both Add and Edit modes for submit form.
         if (controller.get('model.isLoaded'))
             controller.clearFields();
@@ -43,7 +43,7 @@ export default Ember.Mixin.create({
 
     },
     // This function helps prepopulate all the preprint fields in Edit mode.
-    loadEditModeDefaults: function(controller, model, node) {
+    loadEditModeDefaults(controller, model, node) {
         controller.set('filePickerState', 'existing'); // In edit mode, dealing with existing project
         controller.set('existingState', 'new'); // In edit mode, only option to change file is to upload a NEW file
         controller.set('node', node);

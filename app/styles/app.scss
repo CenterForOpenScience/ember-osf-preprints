@@ -57,7 +57,7 @@ ul.comma-list {
 }
 
 .preprint-brand {
-    background: url(img/preprints-logo.png) top center no-repeat;
+    background: url('img/preprints-logo.png') top center no-repeat;
     height: 70px;
     background-size: contain;
 }
@@ -156,20 +156,38 @@ ul.comma-list {
         height: 120px;
         background-size: contain;
         background-repeat: no-repeat;
-    }
-    .provider-socarxiv {
-        background-image: url('img/provider_logos/socarxiv.png');
-        background-position: center;
-    }
-    .provider-engrxiv {
-        background-image: url('img/provider_logos/engrxiv.png');
-        background-position: center;
-    }
-    .provider-psyarxiv {
-        background-image: url('img/provider_logos/psyarxiv.png');
         background-position: center;
     }
 }
+
+.provider-osf {
+    background-image: url('/preprints/assets/img/provider_logos/osf.png');
+}
+.provider-osf-dark {
+    background-image: url('/preprints/assets/img/provider_logos/osf-dark.png');
+}
+
+.provider-socarxiv {
+    background-image: url('/preprints/assets/img/provider_logos/socarxiv.png');
+}
+.provider-socarxiv-dark {
+    background-image: url('/preprints/assets/img/provider_logos/socarxiv-dark.png');
+}
+
+.provider-engrxiv {
+    background-image: url('/preprints/assets/img/provider_logos/engrxiv.png');
+}
+.provider-engrxiv-dark {
+    background-image: url('/preprints/assets/img/provider_logos/engrxiv-dark.png');
+}
+
+.provider-psyarxiv {
+    background-image: url('/preprints/assets/img/provider_logos/psyarxiv.png');
+}
+.provider-psyarxiv-dark {
+    background-image: url('/preprints/assets/img/provider_logos/psyarxiv-dark.png');
+}
+
 .preprint-advisory  {
     background-color: #f3f5f7;
     border-bottom: 1px solid #e0e6ea;
@@ -207,7 +225,7 @@ ul.comma-list {
     .share-logo {
         width: 46px;
         height: 22px;
-        background-image: url("img/share-logo-icon.png");
+        background: url('img/share-logo-icon.png') no-repeat;
         display: inline-block;
         background-size: contain;
         vertical-align: middle;
@@ -245,6 +263,7 @@ ul.comma-list {
     margin: 2px;
     padding: 0px 6px;
     line-height: 30px;
+    border: 1px solid #e3e3e3;
     border-radius: 2px;
     display: inline-block;
 }
@@ -271,7 +290,7 @@ ul.preprints-block-list {
 /* VIEW page */
 
 .dark-overlay-header-background {
-    background: url("img/dark-overlay.png") top center;
+    background: #343333 url("img/dark-overlay.png") top center;
 }
 #view-page {
     background-color: #FCFCFC;
@@ -308,6 +327,11 @@ ul.preprints-block-list {
     }
     .abstract {
         white-space: pre-line;
+    }
+    .project-box {
+        div {
+            min-height: 100px;
+        }
     }
 }
 
@@ -1030,4 +1054,94 @@ label.title-label {
 
 .lock-span {
     display: inline-block;
+}
+
+.discover-provider-logo,
+.content-provider-logo {
+    background-position-x: center;
+    background-position-y: bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.content-provider-logo {
+    min-height: 80px;
+    min-width: 120px;
+}
+
+.discover-provider-logo {
+    min-height: 80px;
+    min-width: 150px;
+}
+
+.edit-btn {
+    margin-bottom: 20px;
+}
+
+nav.preprint-navbar {
+    $nav-height: 50px;
+
+    top: 0;
+
+    .navbar-image {
+        float: left;
+        clear: both;
+        text-align: center;
+        background-position-x: center;
+        background-position-y: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        height: $nav-height - 2px;
+        width: $nav-height - 2px;
+        display: inline-block;
+        transform: translateY(-12px);
+        margin-right: 16px;
+    }
+
+    .nav-user-dropdown {
+        height: $nav-height;
+    }
+
+    .dropdown > a {
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+
+    .dropdown-menu {
+        color: white;
+    }
+
+    .sign-in {
+        padding-top: 8px;
+    }
+}
+
+nav.branded-navbar {
+    box-shadow: 0 0 4px rgba(82, 81, 81, 0.7);
+}
+
+.branded-footer {
+    margin: 2.5em 0;
+
+    p {
+        margin: 0;
+    }
+}
+
+.branded-footer-links {
+    margin-bottom: 1em;
+    line-height: 28px;
+
+    div {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .social > a {
+        margin: 0 4px;
+    }
+
+    .social > a:hover {
+        text-decoration: none;
+    }
 }

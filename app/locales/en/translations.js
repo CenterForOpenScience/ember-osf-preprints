@@ -1,3 +1,6 @@
+const preprints = `Preprints`;
+const brand = `OSF ${preprints}`;
+
 export default {
     global: {
         share: `Share`,
@@ -12,7 +15,10 @@ export default {
         doi: `DOI`,
         tags: `Tags`,
         search: `Search`,
-        brand: `OSF Preprints`,
+        preprints,
+        brand,
+        brand_name: 'OSF',
+        provider_brand: `{{name}} ${preprints}`,
         add_preprint: `Add a preprint`,
         title: `Title`,
         search_preprints: `Search preprints...`,
@@ -24,6 +30,7 @@ export default {
         convert_project: `The preprint will be organized in the current project`,
         convert_component: `The preprint will be organized in the current component`,
         copy_inside_project: `The preprint will be organized in a new component`,
+        open_science_framework: `Open Science Framework`,
     },
     application: {
         // Nothing to translate
@@ -42,7 +49,7 @@ export default {
         article_doi: `Article DOI`,
         disciplines: `Disciplines`,
         project_button: {
-            paragraph: `The project for this paper is available on the Open Science Framework.`,
+            paragraph: `The project for this paper is available on the OSF.`,
             button: `Visit project`,
             edit_preprint:  `Edit preprint`
         },
@@ -52,8 +59,9 @@ export default {
     },
     discover: {
         search: {
-            heading: `Preprint Search`,
+            heading: `Preprint Archive Search`,
             paragraph: `powered by`,
+            partner: `Partner Repositories`,
             placeholder: `Search preprints...`
         },
         sort_by: `Sort by`,
@@ -72,7 +80,8 @@ export default {
             results: {
                 of: `of`,
                 no_results: `Try broadening your search terms`
-            }
+            },
+            otherRepositories: `Other preprint repositories`,
         }
     },
     index: {
@@ -80,6 +89,7 @@ export default {
             title: {
                 paragraph: `The <span class="f-w-lg">open</span> preprint repository network`
             },
+            powered_by: `Powered by ${brand}`,
             search: `{{count}} searchable preprints`,
             as_of: `as of`,
             example: `See an example`
@@ -112,24 +122,26 @@ export default {
     'page-not-found': {
         heading: `Page not found`,
         paragraph: {
-            line1: `The page you were looking for is not found on the OSF Preprint service.`,
+            line1: `The page you were looking for is not found on the {{brand}} service.`,
             line2: `If this should not have occurred and the issue persists, please report it to`
         },
-        go_to: `Go to OSF Preprints`
+        go_to: `Go to {{brand}}`
     },
     'page-forbidden': {
         heading: `Forbidden`,
         paragraph: {
             line1: `User has restricted access to this page. If this should not have occurred and the issue persists, please report it to `,
         },
-        go_to: `Go to OSF Preprints`
+        go_to: `Go to {{brand}}`
     },
     submit: {
         add_heading: `Add Preprint`,
         edit_heading: `Edit Preprint`,
         body: {
-            p_add: `Follow these five easy steps to add your preprint to the OSF preprint repository.`,
+            p_add: `Follow these five easy steps to add your preprint to the {{name}} preprint repository.`,
             p_edit: `Edit your preprint sections below.`,
+            upload: `Upload new preprint`,
+            connect: `Connect preprint to existing OSF project`,
             file: `Preprint file`,
             title: `Preprint title`,
             subjects_description: `Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.`,
@@ -149,7 +161,7 @@ export default {
                 paragraph: `Add preprint authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the preprint.`
             },
             submit: {
-                paragraph: `When you share this preprint, it will become publicly accessible via OSF Preprints. You will be unable to delete the preprint file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
+                paragraph: `When you share this preprint, it will become publicly accessible via {{name}} Preprints. You will be unable to delete the preprint file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
                 invalid: {
                     description: `The following section(s) must be completed before sharing this preprint.`,
                     discipline: `Discipline`,
@@ -158,7 +170,7 @@ export default {
                 }
             },
             update: {
-                paragraph: `Edits to this preprint will update both the preprint and the OSF project and will become publicly accessible via OSF Preprints.`
+                paragraph: `Edits to this preprint will update both the preprint and the OSF project and will become publicly accessible via {{name}} Preprints.`
             },
             save_continue: `Save and continue`,
         },
@@ -216,6 +228,13 @@ export default {
             file_exists_error: `A file with that name already exists`,
             upload_error: `Upload Failed` ,
             dropzone_text_override: `Click or drag another preprint file to replace`,
+        },
+        'preprint-footer-branded': {
+            twitter: 'Twitter',
+            facebook: 'Facebook',
+            instagram: 'Instagram',
+            support: `Support`,
+            contact: `Contact`
         },
         'preprint-form-authors': {
             search: {
@@ -282,6 +301,10 @@ export default {
         },
         'preprint-navbar': {
             toggle: `Toggle navigation`
+        },
+        'preprint-navbar-branded': {
+            my_projects: `My OSF Projects`,
+            headline: `On the OSF`,
         },
         'project-chooser': {
             file_upload_create: `Upload a file and create an OSF project`,

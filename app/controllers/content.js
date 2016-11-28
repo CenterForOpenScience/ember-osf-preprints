@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
-import config from '../config/environment';
+import config from 'ember-get-config';
 import Analytics from '../mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
 
@@ -16,7 +16,9 @@ import permissions from 'ember-osf/const/permissions';
 function queryStringify(queryParams) {
     const query = [];
 
-    for (let [param, value] of Object.entries(queryParams)) {
+    // TODO set up ember to transpile Object.entries
+    for (const param in queryParams) {
+        let value = queryParams[param];
         let maxLength = null;
 
         if (Array.isArray(value)) {
@@ -39,6 +41,7 @@ function queryStringify(queryParams) {
 }
 
 export default Ember.Controller.extend(Analytics, {
+    theme: Ember.inject.service(),
     fullScreenMFR: false,
     expandedAuthors: true,
     isAdmin: Ember.computed('node', function() {
@@ -96,7 +99,7 @@ export default Ember.Controller.extend(Analytics, {
     }),
 
     hasTag: Ember.computed('node.tags', function() {
-        return this.get('node.tags').length;
+        return (this.get('node.tags') || []).length;
     }),
 
     getAuthors: Ember.observer('node', function() {

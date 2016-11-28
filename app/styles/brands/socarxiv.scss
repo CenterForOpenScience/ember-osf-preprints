@@ -1,0 +1,14 @@
+@import 'brand';
+
+@include brand(
+    #e14b5a,
+    white,
+    #215264,
+    #103749,
+    white,
+    $logo-dir + 'socarxiv.png',
+    $logo-dir + 'socarxiv-square.png',
+    true,
+    false,
+    true
+);

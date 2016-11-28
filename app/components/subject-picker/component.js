@@ -10,6 +10,7 @@ function arrayStartsWith(arr, prefix) {
 
 export default Ember.Component.extend({
     store: Ember.inject.service(),
+    theme: Ember.inject.service(),
 
     // Store the lists of subjects
     _tier1: null,
@@ -57,16 +58,27 @@ export default Ember.Component.extend({
     selection2: null,
     selection3: null,
 
+    querySubjects(parents = 'null', tier = 0) {
+        this.get('theme.provider')
+            .then(provider => provider
+                .query('taxonomies', {
+                    filter: {
+                        parents
+                    },
+                    page: {
+                        size: 100
+                    }
+                })
+            )
+            .then(results => this
+                .set(`_tier${tier + 1}`, results.toArray())
+            );
+    },
+
     init() {
         this._super(...arguments);
-        this.get('store').query('taxonomy', {
-            filter: {
-                parents: 'null'
-            },
-            page: {
-                size: 100
-            }
-        }).then(results => this.set('_tier1', results));
+        this.set('selected', []);
+        this.querySubjects();
     },
 
     actions: {
@@ -134,14 +146,7 @@ export default Ember.Component.extend({
                 this.set(`_tier${i}`, null);
 
             // TODO: Fires a network request every time clicking here, instead of only when needed?
-            this.get('store').query('taxonomy', {
-                filter: {
-                    parents: selected.id
-                },
-                page: {
-                    size: 100
-                }
-            }).then(results => this.set(`_tier${tier + 1}`, results));
+            this.querySubjects(selected.id, tier);
         },
     }
 });

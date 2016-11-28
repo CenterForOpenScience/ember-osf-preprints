@@ -1,0 +1,14 @@
+@import 'brand';
+
+@include brand(
+    #efefef,
+    black,
+    #caebf2,
+    #ff383f,
+    black,
+    $logo-dir + 'psyarxiv-color.png',
+    $logo-dir + 'psyarxiv-square-color.png',
+    false,
+    true,
+    false
+);
