@@ -8,7 +8,7 @@ function fetchIdFromRelationshipLink(node, relationship) {
             return relationships.link.split('nodes')[1].replace(/\//g, '');
         }
     }
-   return undefined;
+    return undefined;
 }
 
 function fetchTitle(node, relationship) {
@@ -18,7 +18,6 @@ function fetchTitle(node, relationship) {
         title = 'Private';
     }
     return title;
-
 }
 
 export function getAncestorDescriptor(params/*, hash*/) {
@@ -26,7 +25,7 @@ export function getAncestorDescriptor(params/*, hash*/) {
     let node = params[0];
     let nodeId = node.get('id');
     let rootId = node.get('root.id');
-    let parentId = node.get('parent.id')
+    let parentId = node.get('parent.id');
 
     if (typeof rootId === 'undefined') rootId = fetchIdFromRelationshipLink(node, 'root');
     if (typeof parentId === 'undefined') parentId = fetchIdFromRelationshipLink(node, 'parent');
@@ -41,13 +40,12 @@ export function getAncestorDescriptor(params/*, hash*/) {
     if (rootId === nodeId) { // One level
         rootDescriptor = '';
     } else if (rootId === parentId) { // Two levels
-        rootDescriptor = parentTitle + ' / '
+        rootDescriptor = parentTitle + ' / ';
     } else if (rootId === parentParentId) { // Three levels
-        rootDescriptor = rootTitle + ' / ' + parentTitle + ' / '
+        rootDescriptor = rootTitle + ' / ' + parentTitle + ' / ';
     } else { // Four + levels
-        rootDescriptor = rootTitle + ' / ... / ' + parentTitle + ' / '
+        rootDescriptor = rootTitle + ' / ... / ' + parentTitle + ' / ';
     }
-
     return rootDescriptor;
 }
 
