@@ -27,7 +27,7 @@ export function getAncestorDescriptor(params/*, hash*/) {
     let nodeId = node.get('id');
     let rootId = node.get('root.id');
     let parentId = node.get('parent.id');
-    let parent = node.get('parent').content;
+    let parent = (node.get('parent') instanceof Ember.ObjectProxy) ? node.get('parent.content') : node.get('parent');
     let parentParentId = parent ? parent.get('parent.id') : undefined;
 
     if (typeof rootId === 'undefined') rootId = fetchIdFromRelationshipLink(node, 'root');
