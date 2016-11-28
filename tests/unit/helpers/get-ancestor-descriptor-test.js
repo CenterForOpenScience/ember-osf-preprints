@@ -8,20 +8,24 @@ module('Unit | Helper | get ancestor descriptor');
 test('One, two, three, and four-level hierarchies', function(assert) {
     var root = Ember.Object.create({
         'id': '12345',
-        'title': "Great-Grandparent",
-        'root': root,
+        'title': 'Great-Grandparent',
+        'root': Ember.Object.create({
+            'id': '12345',
+            'title': 'Great-Grandparent'
+        }),
         '_internalModel': {
             '_relationships': {
                 'initializedRelationships': {
 
                 }
             }
-        }
+        },
+        parent: null
     });
 
     var grandparent = Ember.Object.create({
         'id': '67890',
-        'title': "Grandparent",
+        'title': 'Grandparent',
         'parent': root,
         'root': root
     });
