@@ -596,8 +596,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     if (this.get('doiChanged')) {
                         model.set('doi', this.get('basicsDOI') || null);
                         if (this.get('licenseChanged')) {
-                            model.set('licenseRecord', {year: this.get('basicsLicense.year'), 'copyright_holders': this.get('basicsLicense.copyrightHolders')})
-                            model.set('license', this.get('basicsLicense.license'));
+                            model.set('licenseRecord', {year: this.get('basicsLicense.year'), 'copyright_holders': this.get('basicsLicense.copyrightHolders') ? this.get('basicsLicense.copyrightHolders').split(',') : []})
+                            model.set('license', this.get('basicsLicense.licenseType'));
                         }
                         model.save()
                             .then(() => {
@@ -610,8 +610,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                                 this.get('toast').error(this.get('i18n').t('submit.doi_error'));
                             });
                     } else if (this.get('licenseChanged')) {
-                        model.set('licenseRecord', {year: this.get('basicsLicense.year'), 'copyright_holders': this.get('basicsLicense.copyrightHolders')})
-                        model.set('license', this.get('basicsLicense.license'));
+                        model.set('licenseRecord', {year: this.get('basicsLicense.year'), 'copyright_holders': this.get('basicsLicense.copyrightHolders') ? this.get('basicsLicense.copyrightHolders').split(',') : []})
+                        model.set('license', this.get('basicsLicense.licenseType'));
                         model.save()
                             .then(() => {
                                 this.send('next', this.get('_names.2'));
