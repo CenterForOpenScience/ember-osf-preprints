@@ -26,6 +26,11 @@ module.exports = function(defaults) {
         css[`brands/${brand}`] = `/assets/css/${brand}.css`;
     }
 
+    const providerDomains = config
+        .PREPRINTS
+        .providers
+        .map(provider => provider.domain);
+
     // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
     var app = new EmberApp(defaults, {
         sourcemaps: {
@@ -71,6 +76,14 @@ module.exports = function(defaults) {
                 content: `
                     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
                     <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.7.1/ember.prod.js"></script>`
+            },
+            assets: {
+                enabled: true,
+                content: `
+                    <script>
+                        window.assetSuffix = '${config.ASSET_SUFFIX ? '-' + config.ASSET_SUFFIX : ''}';
+                        window.providerDomains = ${JSON.stringify(providerDomains)};
+                    </script>`
             }
         },
         postcssOptions: {

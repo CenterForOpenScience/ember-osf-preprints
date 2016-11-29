@@ -1,10 +1,27 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
 
+const {hostname} = window.location;
+
+const provider = config
+    .PREPRINTS
+    .providers
+    .find(p => hostname.includes(p.domain));
+
 const Router = Ember.Router.extend({
     location: config.locationType,
     rootURL: config.rootURL,
     metrics: Ember.inject.service(),
+    theme: Ember.inject.service(),
+
+    init() {
+        this._super(...arguments);
+
+        if (provider) {
+            this.set('theme.id', provider.id);
+            this.set('theme.isDomain', true);
+        }
+    },
 
     didTransition() {
         this._super(...arguments);
@@ -22,17 +39,10 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-    const {hostname} = window.location;
-
-    const isProviderDomain = config
-        .PREPRINTS
-        .providers
-        .some(provider => hostname.includes(provider.domain));
-
     this.route('page-not-found', {path: '/*bad_url'});
 
-    if (isProviderDomain) {
-        this.route('index');
+    if (provider) {
+        this.route('index', {path: '/'});
         this.route('submit');
         this.route('discover');
         this.route('page-not-found');

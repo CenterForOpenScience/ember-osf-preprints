@@ -50,5 +50,5 @@ export default Ember.Controller.extend(Analytics, {
           .then(results => this.set('sharePreprintsTotal', results.hits.total));
 
         this.set('currentDate', new Date());
-    },
+    }
 });

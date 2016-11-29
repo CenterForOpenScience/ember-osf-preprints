@@ -160,32 +160,34 @@ ul.comma-list {
     }
 }
 
+$logo-dir: 'img/provider_logos/';
+
 .provider-osf {
-    background-image: url('/preprints/assets/img/provider_logos/osf.png');
+    background-image: url($logo-dir + 'osf.png');
 }
 .provider-osf-dark {
-    background-image: url('/preprints/assets/img/provider_logos/osf-dark.png');
+    background-image: url($logo-dir + 'osf-dark.png');
 }
 
 .provider-socarxiv {
-    background-image: url('/preprints/assets/img/provider_logos/socarxiv.png');
+    background-image: url($logo-dir + 'socarxiv.png');
 }
 .provider-socarxiv-dark {
-    background-image: url('/preprints/assets/img/provider_logos/socarxiv-dark.png');
+    background-image: url($logo-dir + 'socarxiv-dark.png');
 }
 
 .provider-engrxiv {
-    background-image: url('/preprints/assets/img/provider_logos/engrxiv.png');
+    background-image: url($logo-dir + 'engrxiv.png');
 }
 .provider-engrxiv-dark {
-    background-image: url('/preprints/assets/img/provider_logos/engrxiv-dark.png');
+    background-image: url($logo-dir + 'engrxiv-dark.png');
 }
 
 .provider-psyarxiv {
-    background-image: url('/preprints/assets/img/provider_logos/psyarxiv.png');
+    background-image: url($logo-dir + 'psyarxiv.png');
 }
 .provider-psyarxiv-dark {
-    background-image: url('/preprints/assets/img/provider_logos/psyarxiv-dark.png');
+    background-image: url($logo-dir + 'psyarxiv-dark.png');
 }
 
 .preprint-advisory  {

@@ -5,6 +5,8 @@ export default Ember.Service.extend({
     store: Ember.inject.service(),
     session: Ember.inject.service(),
 
+    isDomain: false,
+
     id: config.PREPRINTS.provider,
 
     provider: Ember.computed('id', function() {
@@ -23,14 +25,37 @@ export default Ember.Service.extend({
         return id && id !== 'osf';
     }),
 
+    isSubRoute: Ember.computed('isProvider', 'isDomain', function() {
+        return this.get('isProvider') && !this.get('isDomain');
+    }),
+
+    pathPrefix: Ember.computed('isProvider', 'isDomain', 'id', function() {
+        let pathPrefix = '/';
+
+        if (!this.get('isDomain')) {
+            pathPrefix += 'preprints/';
+
+            if (this.get('isProvider')) {
+                pathPrefix += `${this.get('id')}/`;
+            }
+        }
+
+        return pathPrefix;
+    }),
+
+    routePrefix: Ember.computed('isSubRoute', function() {
+        return this.get('isSubRoute') ? 'provider.' : '';
+    }),
+
     stylesheet: Ember.computed('id', function() {
         const id = this.get('id');
 
         if (!id)
             return;
 
+        const prefix = this.get('isDomain') ? '' : '/preprints';
         const suffix = config.ASSET_SUFFIX ? `-${config.ASSET_SUFFIX}` : '';
-        return `/preprints/assets/css/${id}${suffix}.css`;
+        return `${prefix}/assets/css/${id}${suffix}.css`;
     }),
 
     signupUrl: Ember.computed('id', function() {

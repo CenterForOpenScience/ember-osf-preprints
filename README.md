@@ -30,6 +30,10 @@ For local development, this is designed to run alongside (and from within) the f
 to your `website/settings/local.py` file. Uncomment `'/preprints/': 'http://localhost:4200',` and restart your flask app.
 4. Visit your app at http://localhost:5000/preprints/
 
+### Provider Domains
+1. Run `sudo ./scripts/add-domains.js`. This will add the domains to your `/etc/hosts`.
+2. Visit your app at one of the provider domains with `https://local.<domain>:4200` (e.g. `http://local.socarxiv.org:4200`)
+
 If you encounter problems, make sure that your version of ember-osf is up to date. If login fails, try logging in from 
 any other OSF page, then returning to the preprints app.
 
