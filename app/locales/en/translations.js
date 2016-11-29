@@ -31,6 +31,7 @@ export default {
         convert_component: `The preprint will be organized in the current component`,
         copy_inside_project: `The preprint will be organized in a new component`,
         open_science_framework: `Open Science Framework`,
+        license: 'License',
     },
     application: {
         // Nothing to translate

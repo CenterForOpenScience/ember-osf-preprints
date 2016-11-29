@@ -61,6 +61,8 @@
                                                 abandonedPreprint=abandonedPreprint
                                                 resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
                                                 basicsAbstract=basicsAbstract
+                                                newNode=newNode
+                                                applyLicense=applyLicense
                                             }}
                                         {{else if (eq currentState _State.EXISTING)}}
                                             {{preprint-form-project-select
@@ -102,6 +104,8 @@
                                               abandonedPreprint=abandonedPreprint
                                               resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
                                               basicsAbstract=basicsAbstract
+                                              newNode=newNode
+                                              applyLicense=applyLicense
                                               }}
                                         {{/if}}
                                     </div>
@@ -132,7 +136,7 @@
 
                     {{#with _names.[2] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=node.tags abstract=node.description name=name valid=(not basicsChanged) isValidationActive=hasOpened}}
+                            {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=node.tags abstract=node.description name=name valid=(not basicsChanged) license=model.license isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class='row'>
                                     {{license-picker licenses=availableLicenses currentValues=basicsLicense howCategories=false editLicense=(action 'editLicense') allowDismiss=false autosave=true}}
@@ -156,6 +160,18 @@
                                             <span class="required">{{t "global.abstract"}}:</span>
                                         </label>
                                         {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4>{{if newNode 'Apply' 'Also apply'}} this license to my OSF Project.</h4>
+                                        {{#unless newNode}}
+                                            <p>Selecting a license for your preprint does not automatically apply the license to your OSF project.</p>
+                                        {{/unless}}
+                                    </div>
+                                    <div class="col-md-6" class='input-group pull-right' style="margin: 20px">
+                                            <input onchange={{action 'applyLicenseToggle' true}} type="radio" checked={{applyLicense}}> Yes
+                                            <input onchange={{action 'applyLicenseToggle' false}} type="radio" checked={{eq applyLicense false}}> No
                                     </div>
                                 </div>
                                 <div class="row">
