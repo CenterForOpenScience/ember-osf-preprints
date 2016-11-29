@@ -2,7 +2,10 @@ import { moduleFor, test } from 'ember-qunit';
 
 moduleFor('controller:resource-deleted', 'Unit | Controller | resource deleted', {
   // Specify the other units that are required for this test.
-  // needs: ['controller:foo']
+    needs: [
+        'service:metrics',
+        'service:theme'
+    ]
 });
 
 // Replace this with your real tests.
