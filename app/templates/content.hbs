@@ -89,7 +89,19 @@
 
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">{{t "global.license"}}</h4>
-                        <p class="p-v-md">{{model.license.name}}</p>
+                        <p class="p-v-md">
+                            {{model.license.name}}
+                            <span style='cursor: pointer'>
+                                {{#if showLicenseText }}
+                                    {{fa-icon 'caret-up' click=(action 'toggleLicenseText')}}
+                                {{else}}
+                                    {{fa-icon 'caret-down' click=(action 'toggleLicenseText')}}
+                                {{/if}}
+                            </span>
+                        </p>
+                        {{#if showLicenseText}}
+                            <pre class='license-text' style='border:none; width:100%; text-align:justify; max-height: 300px;'>{{fullLicenseText}}</pre>
+                        {{/if}}
                     </div>
 
                     <div class="p-t-xs">
