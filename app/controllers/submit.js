@@ -293,21 +293,21 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             licenseType: license || null
         }
     }),
-    licenseChanged: Ember.computed('model.license', 'model.licenseRecord', 'model.license', function() {
+    licenseChanged: Ember.computed('model.license', 'model.licenseRecord', 'basicsLicense.year', 'basicsLicense.copyrightHolders', 'basicsLicense.licenseType', function() {
         let record = this.get('model.licenseRecord');
         let license = this.get('model.license') || null;
         let changed = false;
         if (record) {
-            changed = (record.year != this.get('basicsLicense.year')) || (this.get('basicsLicense.copyrightHolders') !== record.copyrightHolders);
+            changed = (record.year != this.get('basicsLicense.year')) || (this.get('basicsLicense.copyrightHolders') !== record.copyright_holders.join(','));
         } else {
             changed = (this.get('basicsLicense.year') !== null) || (this.get('basicsLicense.copyrightHolders') || []);
         }
-        changed = changed || (this.get('basicsLicense.licenseType') !== license);
+        changed = changed || (this.get('basicsLicense.licenseType.name') !== license.get('name'));
         return changed;
     }),
-    basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', function() {
+    basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', function() {
         // Are there any unsaved changes in the basics section?
-        return this.get('tagsChanged') || this.get('abstractChanged') || this.get('doiChanged');
+        return this.get('tagsChanged') || this.get('abstractChanged') || this.get('doiChanged') || this.get('licenseChanged');
     }),
     ////////////////////////////////////////////////////
     // Fields used in the "discipline" section of the form.
@@ -584,6 +584,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.set('basicsTags', this.get('node.tags').slice(0));
             this.set('basicsAbstract', this.get('node.description'));
             this.set('basicsDOI', this.get('model.doi'));
+            let date = new Date()
+            this.set('basicsLicense', {
+                licenseType: this.get('model.license')|| this.get('availableLicenses').toArray()[0],
+                year: this.get('model.licenseRecord')['year'] || date.getUTCFullYear().toString(),
+                copyrightHolders: this.get('model.licenseRecord')['copyright_holders'].join(', ') || ''
+            });
         },
         stripDOI() {
             // Replaces the inputted doi link with just the doi itself
@@ -604,7 +610,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             let currentNodeLicenseRecord = node.get('nodeLicense');
             let newCopyrightHolders = ['']
             if (this.get('basicsLicense.copyrightHolders') && this.get('basicsLicense.copyrightHolders').length) {
-                debugger;
                 newCopyrightHolders = this.get('basicsLicense.copyrightHolders').split(',')
             }
 

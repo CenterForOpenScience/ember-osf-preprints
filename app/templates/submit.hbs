@@ -169,7 +169,7 @@
                                             <p>Selecting a license for your preprint does not automatically apply the license to your OSF project.</p>
                                         {{/unless}}
                                     </div>
-                                    <div class="col-md-6" class='input-group pull-right' style="margin: 20px">
+                                    <div class="col-md-3 col-md-offset-6" class='input-group' style="margin: 20px">
                                             <input onchange={{action 'applyLicenseToggle' true}} type="radio" checked={{applyLicense}}> Yes
                                             <input onchange={{action 'applyLicenseToggle' false}} type="radio" checked={{eq applyLicense false}}> No
                                     </div>
