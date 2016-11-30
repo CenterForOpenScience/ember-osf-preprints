@@ -7,8 +7,13 @@
     #ff383f,
     black,
     $logo-dir + 'psyarxiv-color.png',
-    $logo-dir + 'psyarxiv-square-color.png',
+    $logo-dir + 'psyarxiv-square-color-small.png',
     false,
     true,
     false
 );
+
+.preprint-advisory {
+    background: #ff383f;
+    color: white;
+}
