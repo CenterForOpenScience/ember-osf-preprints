@@ -135,23 +135,27 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
     },
     actions: {
         error(error, transition) {
-            const slug = transition.params[transition.targetName].preprint_id;
-
-            if (slug.length === 5) {
-                window.location.href = [
-                    window.location.origin,
-                    slug
-                ].join('/');
+            if (error && error.errors && Ember.isArray(error.errors) && error.errors[0].detail === 'The requested node is no longer available.') {
+                this.intermediateTransitionTo('resource-deleted'); // Node containing preprint has been deleted. 410 Gone.
             } else {
-                const path = ['', 'preprints'];
+                const slug = transition.params[transition.targetName].preprint_id;
 
-                if (this.get('theme.isProvider'))
-                    path.push(this.get('theme.id'));
+                if (slug.length === 5) {
+                    window.location.href = [
+                        window.location.origin,
+                        slug
+                    ].join('/');
+                } else {
+                    const path = ['', 'preprints'];
 
-                path.push(slug);
+                    if (this.get('theme.isProvider'))
+                        path.push(this.get('theme.id'));
 
-                window.history.replaceState({}, 'preprints', path.join('/'));
-                this.intermediateTransitionTo('page-not-found');
+                    path.push(slug);
+
+                    window.history.replaceState({}, 'preprints', path.join('/'));
+                    this.intermediateTransitionTo('page-not-found');
+                }
             }
         }
     }
