@@ -88,6 +88,23 @@
                     {{/if}}
 
                     <div class="p-t-xs">
+                        <h4 class="p-v-md f-w-md">{{t "global.license"}}</h4>
+                        <p class="p-v-md p-b-sm">
+                            {{model.license.name}}
+                            <span style='cursor: pointer'>
+                                {{#if showLicenseText }}
+                                    {{fa-icon 'caret-down' click=(action 'toggleLicenseText')}}
+                                {{else}}
+                                    {{fa-icon 'caret-right' click=(action 'toggleLicenseText')}}
+                                {{/if}}
+                            </span>
+                        </p>
+                        {{#if showLicenseText}}
+                            <pre class='license-text' style='font-size:75%; border:none; width:100%; text-align:justify; max-height: 300px;'>{{fullLicenseText}}</pre>
+                        {{/if}}
+                    </div>
+
+                    <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">{{t "content.disciplines"}}</h4>
                         {{#each disciplineReduced as |subject|}}
                             <span class='subject-preview'>{{subject.text}}</span>
