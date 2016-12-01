@@ -301,14 +301,17 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         };
     }),
     licenseChanged: Ember.computed('model.license', 'model.licenseRecord', 'basicsLicense.year', 'basicsLicense.copyrightHolders', 'basicsLicense.licenseType', function() {
-        let record = this.get('model.licenseRecord');
         let changed = false;
-        if (record) {
-            changed = (record.year !== this.get('basicsLicense.year')) || (this.get('basicsLicense.copyrightHolders') !== record.copyright_holders.join(','));
+        if (this.get('model.licenseRecord') || this.get('model.license.content')) {
+            changed = changed || (this.get('model.license.name') !== this.get('basicsLicense.licenseType.name'));
+            changed = changed || (this.get('model.licenseRecord').year !== this.get('basicsLicense.year'));
+            changed = changed || (this.get('model.licenseRecord.copyright_holders.length') ? this.get('model.licenseRecord.copyright_holders').join(',') : this.get('basicsLicense.copyrightHolders') !== '');
         } else {
-            changed = (this.get('basicsLicense.year') !== null) || (this.get('basicsLicense.copyrightHolders') || []);
+            changed = changed || ((this.get('availableLicenses').toArray().length ? this.get('availableLicenses').toArray()[0].get('name') : null) !== this.get('basicsLicense.licenseType.name'));
+            let date = new Date();
+            changed = changed || (date.getUTCFullYear().toString() !== this.get('basicsLicense.year'));
+            changed = changed || !(this.get('basicsLicense.copyrightHolders') === '' || !this.get('basicsLicense.copyrightHolders.length') || this.get('basicsLicense.copyrightHolders') === null);
         }
-        changed = changed || (this.get('basicsLicense.licenseType.name') !== this.get('model.license.name'));
         return changed;
     }),
     basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', function() {
@@ -625,9 +628,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
             if (this.get('abstractChanged')) node.set('description', this.get('basicsAbstract'));
             if (this.get('tagsChanged')) node.set('tags', this.get('basicsTags'));
-            if (this.get('licenseChanged') && this.get('applyLicense')) {
-                node.set('nodeLicense', {year: this.get('basicsLicense.year'), copyright_holders: newCopyrightHolders});
-                node.set('license', this.get('basicsLicense.licenseType'));
+
+            if (this.get('applyLicense')) {
+                if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || node.get('nodeLicense.copyrightHolders') !== newCopyrightHolders) {
+                    node.set('nodeLicense', {year: this.get('basicsLicense.year'), copyright_holders: newCopyrightHolders});
+                }
+                if (node.get('license.name') !== this.get('basicsLicense.licenseType.name')) {
+                    node.set('license', this.get('basicsLicense.licenseType'));
+                }
             }
 
             node.save()
