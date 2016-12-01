@@ -305,7 +305,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         if (this.get('model.licenseRecord') || this.get('model.license.content')) {
             changed = changed || (this.get('model.license.name') !== this.get('basicsLicense.licenseType.name'));
             changed = changed || (this.get('model.licenseRecord').year !== this.get('basicsLicense.year'));
-            changed = changed || (this.get('model.licenseRecord.copyright_holders.length') ? this.get('model.licenseRecord.copyright_holders').join(',') : this.get('basicsLicense.copyrightHolders') !== '');
+            changed = changed || ((this.get('model.licenseRecord.copyright_holders.length') ? this.get('model.licenseRecord.copyright_holders').join(',') : '') !== this.get('basicsLicense.copyrightHolders'));
         } else {
             changed = changed || ((this.get('availableLicenses').toArray().length ? this.get('availableLicenses').toArray()[0].get('name') : null) !== this.get('basicsLicense.licenseType.name'));
             let date = new Date();
