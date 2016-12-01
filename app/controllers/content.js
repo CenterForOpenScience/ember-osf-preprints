@@ -129,7 +129,7 @@ export default Ember.Controller.extend(Analytics, {
 
     actions: {
         toggleLicenseText() {
-            this.set('showLicenseText', !this.get('showLicenseText'));
+            this.toggleProperty('showLicenseText');
         },
         expandMFR() {
             // State of fullScreenMFR before the transition (what the user perceives as the action)

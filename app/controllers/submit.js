@@ -599,7 +599,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : false || date.getUTCFullYear().toString(),
                     copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(', ') : false || ''
                 });
-            })
+            });
         },
         stripDOI() {
             // Replaces the inputted doi link with just the doi itself
