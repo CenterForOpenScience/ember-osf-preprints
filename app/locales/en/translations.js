@@ -156,6 +156,10 @@ export default {
                 },
                 abstract: {
                     placeholder: `Add a brief summary of your preprint`
+                },
+                license: {
+                    apply_license_title: `Apply this license to my OSF Project.`,
+                    apply_license_text: `Selecting a license for your preprint does not automatically apply the license to your OSF project.`
                 }
             },
             authors: {

@@ -192,7 +192,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             basicsTags: Ember.A(),
             basicsAbstract: null,
             basicsDOI: null,
-            subjectsList: Ember.A()
+            basicsLicense: null,
+            subjectsList: Ember.A(),
+            availableLicenses: Ember.A(),
+            applyLicense: false,
+            newNode: false
         }));
     },
 
@@ -203,8 +207,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     uploadValid: Ember.computed.alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
+    // Must have year and copyrightHolders filled if those are required by the licenseType selected
     licenseValid: false,
-    // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
+    // Basics fields that are being validated are abstract, license and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
     basicsValid: Ember.computed.and('abstractValid', 'doiValid', 'licenseValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
@@ -285,6 +290,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         return (basicsDOI || modelDOI) && basicsDOI !== modelDOI;
     }),
     basicsLicense: Ember.computed('model', function() {
+        // This loads up the current license information if the preprint has one, otherwise initializes the
+        // license object with null values
         let record = this.get('model.licenseRecord');
         let license = this.get('model.license');
         return {
@@ -295,14 +302,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
     licenseChanged: Ember.computed('model.license', 'model.licenseRecord', 'basicsLicense.year', 'basicsLicense.copyrightHolders', 'basicsLicense.licenseType', function() {
         let record = this.get('model.licenseRecord');
-        let license = this.get('model.license') || null;
         let changed = false;
         if (record) {
             changed = (record.year !== this.get('basicsLicense.year')) || (this.get('basicsLicense.copyrightHolders') !== record.copyright_holders.join(','));
         } else {
             changed = (this.get('basicsLicense.year') !== null) || (this.get('basicsLicense.copyrightHolders') || []);
         }
-        changed = changed || (this.get('basicsLicense.licenseType.name') !== license.get('name'));
+        changed = changed || (this.get('basicsLicense.licenseType.name') !== this.get('model.license.name'));
         return changed;
     }),
     basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', function() {
@@ -377,6 +383,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
     actions: {
         editLicense(license, validates) {
+            // This gets called by the save method of the license-widget, which in autosave mode
+            // gets called everytime a change is observed in the widget.
             this.set('basicsLicense', license);
             this.set('licenseValid', validates);
         },
@@ -503,10 +511,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // primaryFile, node, and provider fields populated.
             let model = this.get('model');
             this.get('node.license').then(license => {
-                if (license === null) {
-                    this.set('applyLicense', true);
-                }
-                if (license.get('name').includes('No license')) {
+                //This is used to set the default applyLicense once a node is loaded, as if the node's
+                //license is not set or is of type No license, we want to set the default to make its license the same
+                //as the preprint license.
+                if (license === null || license && license.get('name').includes('No license')) {
                     this.set('applyLicense', true);
                 }
             });
@@ -585,11 +593,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.set('basicsAbstract', this.get('node.description'));
             this.set('basicsDOI', this.get('model.doi'));
             let date = new Date();
-            this.set('basicsLicense', {
-                licenseType: this.get('model.license') || this.get('availableLicenses').toArray()[0],
-                year: this.get('model.licenseRecord').year || date.getUTCFullYear().toString(),
-                copyrightHolders: this.get('model.licenseRecord').copyright_holders.join(', ') || ''
-            });
+            this.get('model.license').then(license => {
+                this.set('basicsLicense', {
+                    licenseType: license || this.get('availableLicenses').toArray()[0],
+                    year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : false || date.getUTCFullYear().toString(),
+                    copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(', ') : false || ''
+                });
+            })
         },
         stripDOI() {
             // Replaces the inputted doi link with just the doi itself
