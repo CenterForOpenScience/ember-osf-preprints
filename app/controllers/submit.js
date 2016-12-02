@@ -792,7 +792,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     node.set('license', this.get('basicsLicense.licenseType'));
                 }
             }
-            
+
             return model.save()
                 .then(() => node.save())
                 .then(() => {
