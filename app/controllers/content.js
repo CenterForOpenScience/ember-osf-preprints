@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
-import config from '../config/environment';
+import config from 'ember-get-config';
 import Analytics from '../mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
 
@@ -16,7 +16,9 @@ import permissions from 'ember-osf/const/permissions';
 function queryStringify(queryParams) {
     const query = [];
 
-    for (let [param, value] of Object.entries(queryParams)) {
+    // TODO set up ember to transpile Object.entries
+    for (const param in queryParams) {
+        let value = queryParams[param];
         let maxLength = null;
 
         if (Array.isArray(value)) {
@@ -39,8 +41,10 @@ function queryStringify(queryParams) {
 }
 
 export default Ember.Controller.extend(Analytics, {
+    theme: Ember.inject.service(),
     fullScreenMFR: false,
     expandedAuthors: true,
+    showLicenseText: false,
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
@@ -96,7 +100,7 @@ export default Ember.Controller.extend(Analytics, {
     }),
 
     hasTag: Ember.computed('node.tags', function() {
-        return this.get('node.tags').length;
+        return (this.get('node.tags') || []).length;
     }),
 
     getAuthors: Ember.observer('node', function() {
@@ -114,7 +118,19 @@ export default Ember.Controller.extend(Analytics, {
         return `https://dx.doi.org/${this.get('model.doi')}`;
     }),
 
+    fullLicenseText: Ember.computed('model.license', function() {
+        let text = this.get('model.license.text');
+        if (text) {
+            text = text.replace(/({{year}})/g, this.get('model.licenseRecord').year || '');
+            text = text.replace(/({{copyrightHolders}})/g, this.get('model.licenseRecord').copyright_holders ? this.get('model.licenseRecord').copyright_holders.join(',') : false || '');
+        }
+        return text;
+    }),
+
     actions: {
+        toggleLicenseText() {
+            this.toggleProperty('showLicenseText');
+        },
         expandMFR() {
             // State of fullScreenMFR before the transition (what the user perceives as the action)
             const beforeState = this.toggleProperty('fullScreenMFR') ? 'Expand' : 'Contract';

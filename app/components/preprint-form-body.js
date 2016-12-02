@@ -6,7 +6,7 @@ export default CpPanelBodyComponent.extend({
         if (this.$('textarea').length) {
             // Make textarea fill vertical height
             this.$().height('auto');
-            this.$('textarea').outerHeight(this.$().height() - this.$('span').height());
+            this.$('textarea').outerHeight(this.$().height() - this.$('span').height() - this.$('.col-xs-12').height());
             this.$().height('');
         }
     },

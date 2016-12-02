@@ -1,10 +1,23 @@
-{{title 'OSF Preprints' separator=' | '}}
-
-{{osf-navbar signupUrl=signupUrl loginAction=(action 'login') hideSearch=true}}
-{{preprint-navbar}}
+{{#if theme.isProvider}}
+    {{title (concat theme.provider.name ' Preprints') separator=' | '}}
+    {{#if theme.stylesheet}}
+        <style>
+            @import url('{{theme.stylesheet}}');
+        </style>
+    {{/if}}
+    {{preprint-navbar-branded model=theme.provider}}
+{{else}}
+    {{title 'OSF Preprints' separator=' | '}}
+    {{osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login') hideSearch=true}}
+    {{preprint-navbar}}
+{{/if}}
 
 {{outlet}}
 
-{{osf-footer}}
-{{osf-copyright class='text-center'}}
-{{osf-mode-footer}}
+{{#if theme.isProvider}}
+    {{preprint-footer-branded model=theme.provider}}
+{{else}}
+    {{osf-footer}}
+    {{osf-copyright class='text-center'}}
+    {{osf-mode-footer}}
+{{/if}}

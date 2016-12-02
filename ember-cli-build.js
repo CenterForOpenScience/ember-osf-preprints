@@ -1,5 +1,8 @@
 /*jshint node:true*/
 /* global require, module */
+'use strict';
+
+const fs = require('fs');
 var path = require('path');
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
@@ -8,6 +11,20 @@ const nonCdnEnvironments = ['development', 'test'];
 module.exports = function(defaults) {
     var config = require('./config/environment')(process.env.EMBER_ENV);
     const useCdn = (nonCdnEnvironments.indexOf(process.env.EMBER_ENV) === -1);
+
+    const css = {
+        'app': '/assets/preprint-service.css'
+    };
+
+    const brands = fs.readdirSync('./app/styles/brands');
+
+    for (let brand of brands) {
+        if (/^_/.test(brand))
+            continue;
+
+        brand = brand.replace(/\..*$/, '');
+        css[`brands/${brand}`] = `/assets/css/${brand}.css`;
+    }
 
     // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
     var app = new EmberApp(defaults, {
@@ -24,6 +41,15 @@ module.exports = function(defaults) {
         },
         'ember-bootstrap': {
             importBootstrapCSS: false
+        },
+        // Needed for branded themes
+        fingerprint: {
+            customHash: config.ASSET_SUFFIX,
+        },
+        outputPaths: {
+            app: {
+                css
+            }
         },
         sassOptions: {
             includePaths: [

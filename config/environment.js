@@ -26,15 +26,25 @@ module.exports = function(environment) {
         },
         SHARE: {
             baseUrl: process.env.SHARE_BASE_URL || 'https://staging-share.osf.io/',
-            searchUrl: process.env.SHARE_SEARCH_URL || 'https://staging-share.osf.io/api/v2/search/abstractcreativework/_search'
+            searchUrl: process.env.SHARE_SEARCH_URL || 'https://staging-share.osf.io/api/v2/search/creativeworks/_search'
         },
         moment: {
             outputFormat: 'YYYY-MM-DD hh:mm a'
         },
         PREPRINTS: {
             provider: 'osf',
-            // The name of the OSF campaign used to track signups
-            campaign: 'osf-preprints'
+
+            providers: [
+                {
+                    id: 'engrxiv'
+                },
+                {
+                    id: 'psyarxiv'
+                },
+                {
+                    id: 'socarxiv'
+                }
+            ],
         },
         i18n: {
             defaultLocale: 'en'
@@ -82,6 +92,7 @@ module.exports = function(environment) {
 
     if (environment === 'production') {
         ENV.sentryDSN = process.env.SENTRY_DSN || 'https://2f0a61d03b99480ea11e259edec18bd9@sentry.cos.io/45';
+        ENV.ASSET_SUFFIX = process.env.GIT_COMMIT || 'git_commit_env_not_set';
     }
 
     return ENV;
