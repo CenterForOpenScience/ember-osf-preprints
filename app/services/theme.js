@@ -5,7 +5,7 @@ export default Ember.Service.extend({
     store: Ember.inject.service(),
     session: Ember.inject.service(),
 
-    id: config.PREPRINTS.provider,
+    id: config.PREPRINTS.defaultProvider,
 
     provider: Ember.computed('id', function() {
         const id = this.get('id');
@@ -31,6 +31,18 @@ export default Ember.Service.extend({
 
         const suffix = config.ASSET_SUFFIX ? `-${config.ASSET_SUFFIX}` : '';
         return `/preprints/assets/css/${id}${suffix}.css`;
+    }),
+
+    logoSharing: Ember.computed('id', function() {
+        const id = this.get('id');
+
+        const logo = config.PREPRINTS.providers
+            .find(provider => provider.id === id)
+            .logoSharing;
+
+        logo.path = `/preprints${logo.path}`;
+
+        return logo;
     }),
 
     signupUrl: Ember.computed('id', function() {

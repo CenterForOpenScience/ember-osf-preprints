@@ -151,17 +151,22 @@ export default Ember.Controller.extend(Analytics, {
             this.set('activeFile', fileItem);
         },
         shareLink(href, network, action, label) {
-            window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
-
             const metrics = Ember.get(this, 'metrics');
 
-            if (network === 'email') {
+            metrics.trackEvent({
+                category: network,
+                action,
+                label: window.location.href
+            });
+
+            if (network.includes('email')) {
                 metrics.trackEvent({
                     category: 'link',
                     action,
                     label
                 });
             } else {
+                window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
                 // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
                 metrics.trackEvent({
                     category: network,
