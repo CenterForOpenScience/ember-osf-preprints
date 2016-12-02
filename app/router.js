@@ -35,6 +35,7 @@ Router.map(function() {
         this.route('page-not-found');
     });
     this.route('forbidden');
+    this.route('resource-deleted');
 });
 
 export default Router;

@@ -1,4 +1,4 @@
-$nav-height: 50px;
+$logo-dir: '../img/provider_logos/';
 
 @mixin brand(
     $theme-color-1,
@@ -6,13 +6,27 @@ $nav-height: 50px;
     $theme-color-3,
     $theme-color-4,
     $theme-color-5,
-    $theme-nav-filter,
     $logo,
-    $logo-square
+    $logo-square,
+    $use-white-share-logo,
+    $use-theme-color-logo,
+    $use-contrast-link-color
 ) {
+    @if ($use-contrast-link-color) {
+        a,
+        .preprint-form-section header {
+            color: $theme-color-3;
+        }
+    } @else {
+        .preprint-subjects {
+            background-color: white;
+        }
+    }
+
     .preprint-header {
         background-image: none;
         background-color: $theme-color-1;
+        color: $theme-color-2;
 
         .preprint-brand {
             height: 140px;
@@ -24,16 +38,7 @@ $nav-height: 50px;
     }
 
     .navbar-image {
-        float: left;
-        clear: both;
-        text-align: center;
-        background: url($logo-square) center center no-repeat;
-        background-size: contain;
-        height: $nav-height - 2px;
-        width: $nav-height - 2px;
-        display: inline-block;
-        transform: translateY(-12px);
-        margin-right: 16px;
+        background-image: url($logo-square);
     }
 
     .preprint-brand {
@@ -41,8 +46,6 @@ $nav-height: 50px;
     }
 
     .preprint-navbar {
-        top: 0;
-
         &,
         .nav > li > a.active {
             background-color: $theme-color-3;
@@ -51,6 +54,10 @@ $nav-height: 50px;
 
         a {
             color: $theme-color-2;
+        }
+
+        a.navbar-brand {
+            color: if($use-theme-color-logo, $theme-color-4, $theme-color-2);
         }
 
         .navbar-brand:hover,
@@ -67,47 +74,37 @@ $nav-height: 50px;
             background-color: $theme-color-4;
             color: $theme-color-5;
         }
+    }
 
-        .nav-user-dropdown {
-            height: $nav-height;
+    #preprint-form-subjects {
+        .subject,
+        .subject > .fa,
+        ul li.selected,
+        ul li:active {
+            background-color: $theme-color-3;
+            color: $theme-color-2;
         }
 
-        .dropdown > a {
-            padding-top: 12px;
-            padding-bottom: 12px;
+        .subject:hover,
+        .subject:hover > .fa,
+        ul li:hover {
+            background-color: $theme-color-1;
+            color: $theme-color-2;
         }
 
-        .sign-in {
-            padding-top: 8px;
+        .subject:hover > .fa {
+            opacity: 0.75;
         }
-    }
 
-    #preprint-form-subjects .subject,
-    #preprint-form-subjects ul li.selected,
-    #preprint-form-subjects ul li:active {
-        background-color: $theme-color-3;
-    }
+        .subject {
+            b:after {
+                border-left-color: $theme-color-3;
+            }
 
-    #preprint-form-subjects .subject > b:after {
-        border-left-color: $theme-color-3;
-    }
-
-    #preprint-form-subjects .subject:hover,
-    #preprint-form-subjects ul li:hover {
-        background-color: $theme-color-1;
-    }
-
-    #preprint-form-subjects .subject:hover > b:after {
-        border-left-color: $theme-color-1;
-    }
-
-    a,
-    .preprint-form-section header {
-        color: $theme-color-3;
-    }
-
-    .dropdown-menu {
-        color: white;
+            &:hover > b:after {
+                border-left-color: $theme-color-1;
+            }
+        }
     }
 
     .dropdown-menu > li > a:hover {
@@ -115,6 +112,7 @@ $nav-height: 50px;
     }
 
     .subject-item > .btn-primary {
+        color: $theme-color-2;
         background-color: $theme-color-3;
         border-color: $theme-color-1;
     }
@@ -122,6 +120,13 @@ $nav-height: 50px;
     .subject-item > .btn-primary:hover {
         background-color: $theme-color-1;
         border-color: $theme-color-3;
+    }
+
+    .preprint-filter {
+        &,
+        .fa {
+            color: $theme-color-2;
+        }
     }
 
     .preprint-403,
@@ -134,10 +139,11 @@ $nav-height: 50px;
         color: $theme-color-2;
     }
 
-    .subject-filter,
-    .subject-filter .fa {
-        background-color: $theme-color-3;
-        color: $theme-color-2;
+    .subject-filter {
+        &,
+        .fa {
+            background-color: $theme-color-3;
+        }
     }
 
     .preprint-403,
@@ -146,12 +152,22 @@ $nav-height: 50px;
         min-height: 200px;
 
         a:not(.btn) {
-            color: $theme-color-4;
+            @if ($use-contrast-link-color) {
+                color: $theme-color-4;
+            }
             font-weight: bold;
         }
     }
 
     #view-page .header-row {
         padding-top: 40px;
+    }
+
+    @if ($use-white-share-logo) {
+        .preprint-search-header .share-logo {
+            width: 48px;
+            height: 30px;
+            background-image: url('../img/share-logo-white.png');
+        }
     }
 }

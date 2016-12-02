@@ -135,6 +135,13 @@ export default {
         },
         go_to: `Go to {{brand}}`
     },
+    'resource-deleted': {
+        heading: `Resource deleted`,
+        paragraph: {
+            line1: `User has deleted this content. If this should not have occurred and the issue persists, please report it to  `,
+        },
+        go_to: `Go to {{brand}}`
+    },
     submit: {
         add_heading: `Add Preprint`,
         edit_heading: `Edit Preprint`,

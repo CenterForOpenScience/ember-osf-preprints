@@ -6,7 +6,9 @@
     #222F38,
     #AAB9CF,
     black,
-    invert(100%),
-    '/preprints/assets/img/provider_logos/engrxiv.png',
-    '/preprints/assets/img/provider_logos/engrxiv-square.png'
+    $logo-dir + 'engrxiv-small.png',
+    $logo-dir + 'engrxiv-square-small.png',
+    true,
+    false,
+    true
 );
