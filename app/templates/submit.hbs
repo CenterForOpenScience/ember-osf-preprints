@@ -142,8 +142,21 @@
                                     <div class='col-xs-12'>
                                         {{license-picker licenses=availableLicenses currentValues=basicsLicense showCategories=false editLicense=(action 'editLicense') allowDismiss=false autosave=true showBorder=false}}
                                         <br>
+                                        <div class="row">
+                                            <div class='col-xs-12'>
+                                                <label> {{t "submit.body.basics.license.apply_license_title"}} </label>
+                                                {{#if (or (not newNode) editMode)}}
+                                                    <p>{{t "submit.body.basics.license.apply_license_text"}}</p>
+                                                {{/if}}
+                                                <span style="margin: 5px">
+                                                    <input onchange={{action 'applyLicenseToggle' true}} type="radio" checked={{applyLicense}}> Yes
+                                                    <input onchange={{action 'applyLicenseToggle' false}} type="radio" checked={{not applyLicense}}> No
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <br>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div>
@@ -163,18 +176,6 @@
                                             <span class="required">{{t "global.abstract"}}:</span>
                                         </label>
                                         {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h4>{{t "submit.body.basics.license.apply_license_title"}}</h4>
-                                        {{#if (or (not newNode) editMode)}}
-                                            <p>{{t "submit.body.basics.license.apply_license_text"}}</p>
-                                        {{/if}}
-                                    </div>
-                                    <div class="col-md-3 col-md-offset-6" class='input-group' style="margin: 20px">
-                                        <input onchange={{action 'applyLicenseToggle' true}} type="radio" checked={{applyLicense}}> Yes
-                                        <input onchange={{action 'applyLicenseToggle' false}} type="radio" checked={{not applyLicense}}> No
                                     </div>
                                 </div>
                                 <div class="row">
