@@ -81,7 +81,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             loadAll(node, 'contributors', contributors).then(() => {
                 for (const contributor of contributors) {
                     const firstName = contributor.get('users.givenName');
-                    const lastname = contributor.get('users.familyName');
+                    const lastName = contributor.get('users.familyName');
 
                     if (!(firstName && lastName))
                         continue;
