@@ -80,6 +80,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
 
         return preprint.get('node').then(node => {
             this.set('node', node);
+
             if (this.get('editMode')) {
                 let userPermissions = this.get('node.currentUserPermissions') || [];
                 if (userPermissions.indexOf(permissions.ADMIN) === -1) {
@@ -87,14 +88,21 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 }
             }
 
+            const {origin} = window.location;
+            const image = this.get('theme.logoSharing');
+            const imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
+
             const ogp = [
                 ['fb:app_id', config.FB_APP_ID],
                 ['og:title', node.get('title')],
-                ['og:image', `${window.location.protocol}//osf.io/static/img/circle_logo.png`],
-                ['og:image:type', 'image/png'],
+                ['og:image', imageUrl],
+                ['og:image:secure_url', `${origin}${image.path}`], // We should always be on https in staging/prod
+                ['og:image:width', image.width.toString()],
+                ['og:image:height', image.height.toString()],
+                ['og:image:type', image.type],
                 ['og:url', window.location.href],
                 ['og:description', node.get('description')],
-                ['og:site_name', 'Open Science Framework'],
+                ['og:site_name', this.get('theme.provider.name')],
                 ['og:type', 'article'],
                 ['article:published_time', new Date(preprint.get('dateCreated')).toISOString()],
                 ['article:modified_time', new Date(node.get('dateModified')).toISOString()]
@@ -105,7 +113,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ...node.get('tags')
             ];
 
-            for (let tag of tags)
+            for (const tag of tags)
                 ogp.push(['article:tag', tag]);
 
             let contributors = Ember.A();
