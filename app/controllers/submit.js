@@ -632,7 +632,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 .then(() => {
                     if (this.get('doiChanged')) {
                         model.set('doi', this.get('basicsDOI') || null);
-                        if (this.get('licenseChanged')) {
+                        if (this.get('licenseChanged') || !this.get('model.license.name')) {
                             model.set('licenseRecord', {year: this.get('basicsLicense.year'), copyright_holders: newCopyrightHolders});
                             model.set('license', this.get('basicsLicense.licenseType'));
                         }
@@ -646,7 +646,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                                 model.set('doi', currentDOI);
                                 this.get('toast').error(this.get('i18n').t('submit.doi_error'));
                             });
-                    } else if (this.get('licenseChanged')) {
+                    } else if (this.get('licenseChanged') || !this.get('model.license.name')) {
                         model.set('licenseRecord', {year: this.get('basicsLicense.year'), copyright_holders: newCopyrightHolders});
                         model.set('license', this.get('basicsLicense.licenseType'));
                         model.save()
