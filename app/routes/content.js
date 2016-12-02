@@ -55,8 +55,11 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             const ogp = [
                 ['fb:app_id', config.FB_APP_ID],
                 ['og:title', node.get('title')],
-                ['og:image', '//osf.io/static/img/circle_logo.png'],
+                ['og:image', 'http://osf.io/static/img/circle_logo.png'],
+                ['og:image:secure_url', 'https://osf.io/static/img/circle_logo.png'],
                 ['og:image:type', 'image/png'],
+                ['og:image:width', '165'],
+                ['og:image:height', '165'],
                 ['og:url', window.location.href],
                 ['og:description', node.get('description')],
                 ['og:site_name', 'Open Science Framework'],
@@ -70,19 +73,25 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ...node.get('tags')
             ];
 
-            for (let tag of tags)
+            for (const tag of tags)
                 ogp.push(['article:tag', tag]);
 
             let contributors = Ember.A();
 
             loadAll(node, 'contributors', contributors).then(() => {
-                contributors.forEach(contributor => {
+                for (const contributor of contributors) {
+                    const firstName = contributor.get('users.givenName');
+                    const lastname = contributor.get('users.familyName');
+
+                    if (!(firstName && lastName))
+                        continue;
+
                     ogp.push(
                         ['og:type', 'article:author'],
-                        ['profile:first_name', contributor.get('users.givenName')],
-                        ['profile:last_name', contributor.get('users.familyName')]
+                        ['profile:first_name', firstName],
+                        ['profile:last_name', lastName]
                     );
-                });
+                }
 
                 this.set('headTags', ogp.map(item => (
                     {
