@@ -619,6 +619,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             let currentDOI = model.get('doi');
             let currentLicenseType = model.get('license');
             let currentLicenseRecord = model.get('licenseRecord');
+            let currentNodeLicenseType = node.get('license');
+            let currentNodeLicenseRecord = node.get('nodeLicense');
 
             let newCopyrightHolders = [''];
             if (this.get('basicsLicense.copyrightHolders') && this.get('basicsLicense.copyrightHolders').length) {
@@ -627,6 +629,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
             if (this.get('abstractChanged')) node.set('description', this.get('basicsAbstract'));
             if (this.get('tagsChanged')) node.set('tags', this.get('basicsTags'));
+
+            if (this.get('applyLicense')) {
+                if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || node.get('nodeLicense.copyrightHolders') !== newCopyrightHolders) {
+                    node.set('nodeLicense', {year: this.get('basicsLicense.year'), copyright_holders: newCopyrightHolders});
+                }
+                if (node.get('license.name') !== this.get('basicsLicense.licenseType.name')) {
+                    node.set('license', this.get('basicsLicense.licenseType'));
+                }
+            }
 
             node.save()
                 .then(() => {
@@ -667,6 +678,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     node.set('description', currentAbstract);
                     node.set('tags', currentTags);
                     model.set('doi', currentDOI);
+                    node.set('license', currentNodeLicenseType);
+                    node.set('nodeLicense', currentNodeLicenseRecord);
                     this.get('toast').error(this.get('i18n').t('submit.basics_error'));
 
                 });
@@ -779,19 +792,6 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.toggleProperty('shareButtonDisabled');
             model.set('isPublished', true);
             node.set('public', true);
-
-            if (this.get('applyLicense')) {
-                let newCopyrightHolders = [''];
-                if (this.get('basicsLicense.copyrightHolders') && this.get('basicsLicense.copyrightHolders').length) {
-                    newCopyrightHolders = this.get('basicsLicense.copyrightHolders').split(',');
-                }
-                if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || node.get('nodeLicense.copyrightHolders') !== newCopyrightHolders) {
-                    node.set('nodeLicense', {year: this.get('basicsLicense.year'), copyright_holders: newCopyrightHolders});
-                }
-                if (node.get('license.name') !== this.get('basicsLicense.licenseType.name')) {
-                    node.set('license', this.get('basicsLicense.licenseType'));
-                }
-            }
 
             return model.save()
                 .then(() => node.save())
