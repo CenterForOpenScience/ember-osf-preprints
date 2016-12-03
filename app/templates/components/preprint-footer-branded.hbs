@@ -1,0 +1,49 @@
+<div class="text-center branded-footer-links">
+    <div>
+        <span>{{model.name}}:</span>
+        <span>
+            <a href="mailto:{{if model.emailSupport model.emailSupport (concat 'support+' model.id '@osf.io')}}"
+               onbeforeclick={{action 'click' 'link' 'Branded Footer - Support'}}
+            >
+                {{t "components.preprint-footer-branded.support"}}
+            </a>
+        </span>
+        <span> | </span>
+        <span>
+            <a href="mailto:{{if model.emailContact model.emailContact (concat 'contact+' model.id '@osf.io')}}"
+               onbeforeclick={{action 'click' 'link' 'Branded Footer - Contact'}}
+            >
+                {{t "components.preprint-footer-branded.contact"}}
+            </a>
+        </span>
+        <span> | </span>
+    </div>
+    <div class="social">
+        {{#if model.socialTwitter}}
+            <a href="https://twitter.com/{{model.socialTwitter}}"
+               aria-label={{t "components.preprint-footer-branded.twitter"}}
+               onbeforeclick={{action 'click' 'link' 'Branded Footer - Twitter'}}
+            >
+                <i class="fa fa-2x fa-twitter"></i>
+            </a>
+        {{/if}}
+        {{#if model.socialFacebook}}
+            <a href="https://www.facebook.com/{{model.socialFacebook}}"
+               aria-label={{t "components.preprint-footer-branded.facebook"}}
+               onbeforeclick={{action 'click' 'link' 'Branded Footer - Facebook'}}
+            >
+                <i class="fa fa-2x fa-facebook"></i>
+            </a>
+        {{/if}}
+        {{#if model.socialInstagram}}
+            <a href="https://instagram.com/{{model.socialInstagram}}"
+               aria-label={{t "components.preprint-footer-branded.instagram"}}
+               onbeforeclick={{action 'click' 'link' 'Branded Footer - Instagram'}}
+            >
+                <i class="fa fa-2x fa-instagram"></i>
+            </a>
+        {{/if}}
+    </div>
+</div>
+
+{{osf-copyright class='text-center'}}
