@@ -44,6 +44,7 @@ export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(),
     fullScreenMFR: false,
     expandedAuthors: true,
+    showLicenseText: false,
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
@@ -117,7 +118,19 @@ export default Ember.Controller.extend(Analytics, {
         return `https://dx.doi.org/${this.get('model.doi')}`;
     }),
 
+    fullLicenseText: Ember.computed('model.license', function() {
+        let text = this.get('model.license.text');
+        if (text) {
+            text = text.replace(/({{year}})/g, this.get('model.licenseRecord').year || '');
+            text = text.replace(/({{copyrightHolders}})/g, this.get('model.licenseRecord').copyright_holders ? this.get('model.licenseRecord').copyright_holders.join(',') : false || '');
+        }
+        return text;
+    }),
+
     actions: {
+        toggleLicenseText() {
+            this.toggleProperty('showLicenseText');
+        },
         expandMFR() {
             // State of fullScreenMFR before the transition (what the user perceives as the action)
             const beforeState = this.toggleProperty('fullScreenMFR') ? 'Expand' : 'Contract';
@@ -138,17 +151,22 @@ export default Ember.Controller.extend(Analytics, {
             this.set('activeFile', fileItem);
         },
         shareLink(href, network, action, label) {
-            window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
-
             const metrics = Ember.get(this, 'metrics');
 
-            if (network === 'email') {
+            metrics.trackEvent({
+                category: network,
+                action,
+                label: window.location.href
+            });
+
+            if (network.includes('email')) {
                 metrics.trackEvent({
                     category: 'link',
                     action,
                     label
                 });
             } else {
+                window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
                 // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
                 metrics.trackEvent({
                     category: network,

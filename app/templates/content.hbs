@@ -64,13 +64,13 @@
                     {{#liquid-spacer growDuration=250 growWidth=false}}
                         <div class="p-sm osf-box-lt clearfix">{{!SHARE ROW}}
                             <div class="" id="download_project clearfix">
-                                <a class="btn btn-primary" href={{model.primaryFile.links.download}} onbeforeclick={{action 'click' 'link' 'Content - Download'}}>{{t "content.share.download_preprint"}}</a>
+                                <a class="btn btn-primary" href={{model.primaryFile.links.download}} onbeforeclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
                                 <span class="p-sm">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
                                 <span class="p-xs pull-right">
-                                    <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'tweet'}}>{{fa-icon 'twitter-square' size=2 }}</a>
-                                    <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref 'Facebook' 'share'}}>{{fa-icon 'facebook-square' size=2 }}</a>
-                                    <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref 'LinkedIn' 'share'}}>{{fa-icon 'linkedin-square' size=2 }}</a>
-                                    <a class="m-r-xs text-smaller" href={{emailHref}} onclick={{action 'shareLink' emailHref 'link' 'click' 'Content - email share'}}>{{fa-icon 'envelope' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'Preprints - Content - tweet'}}>{{fa-icon 'twitter-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref 'Facebook' 'Preprints - Content - share'}}>{{fa-icon 'facebook-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref 'LinkedIn' 'Preprints - Content - share'}}>{{fa-icon 'linkedin-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{emailHref}} onbeforeclick={{action 'shareLink' emailHref 'link' 'click' 'Preprints - Content - email'}}>{{fa-icon 'envelope' size=2 }}</a>
                                 </span>
                             </div>
                         </div>
@@ -84,6 +84,25 @@
                         <div class="p-t-xs">
                             <h4 class="p-v-md  f-w-md">{{t "content.article_doi"}}</h4>
                             <a href={{doiUrl}} {{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
+                        </div>
+                    {{/if}}
+
+                    {{#if model.license.name}}
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md f-w-md">{{t "global.license"}}</h4>
+                            <p class="p-v-md p-b-sm">
+                                {{model.license.name}}
+                                <span style='cursor: pointer'>
+                                    {{#if showLicenseText }}
+                                        {{fa-icon 'caret-down' click=(action 'toggleLicenseText')}}
+                                    {{else}}
+                                        {{fa-icon 'caret-right' click=(action 'toggleLicenseText')}}
+                                    {{/if}}
+                                </span>
+                            </p>
+                            {{#if showLicenseText}}
+                                <pre style='white-space: pre-wrap; font-size:75%; border:none; width:100%; text-align:justify; max-height: 300px;'>{{fullLicenseText}}</pre>
+                            {{/if}}
                         </div>
                     {{/if}}
 

@@ -4,25 +4,12 @@ import Analytics from '../mixins/analytics';
 
 import { elasticEscape } from '../utils/elastic-query';
 
-var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"type.raw": "preprint"}}]}},"aggregations": {"sources": {"terms": {"field": "sources.raw","size": 200}}}}';
+var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"types.raw": "preprint"}}]}},"aggregations": {"sources": {"terms": {"field": "sources.raw","size": 200}}}}';
 
 const filterMap = {
     providers: 'sources.raw',
-    subjects: 'subjects.raw'
+    subjects: 'subjects'
 };
-
-// Regex for checking url from osf repo website/static/js/profile.js
-var urlRule = '^(https?:\\/\\/)?' + // protocol
-           '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-           '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-           '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-           '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-           '(\\#[-a-z\\d_]*)?$';
-
-function isHyperLink(link) {
-    var urlexp = new RegExp(urlRule, 'i');
-    return urlexp.test(link);
-}
 
 export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(), // jshint ignore:line
@@ -172,23 +159,31 @@ export default Ember.Controller.extend(Analytics, {
                     hyperLinks: [// Links that are hyperlinks from hit._source.lists.links
                         {
                             type: 'share',
-                            url: config.SHARE.baseUrl + 'curate/preprint/' + hit._id
+                            url: config.SHARE.baseUrl + 'preprint/' + hit._id
                         }
                     ],
                     infoLinks: [] // Links that are not hyperlinks  hit._source.lists.links
                 });
 
-                hit._source.lists.links.forEach(function(linkItem) {
-                    if (isHyperLink(linkItem.url)) {
-                        result.hyperLinks.push(linkItem);
+                hit._source.identifiers.forEach(function(identifier) {
+                    if (identifier.startsWith('http://')) {
+                        result.hyperLinks.push({url: identifier});
                     } else {
-                        result.infoLinks.push(linkItem);
+                        const spl = identifier.split('://');
+                        const [type, uri, ..._] = spl; // jshint ignore:line
+                        result.infoLinks.push({type, uri});
                     }
                 });
 
-                result.contributors = result.lists.contributors.map(contributor => ({
-                    users: Object.keys(contributor).reduce((acc, key) => Ember.merge(acc, {[key.camelize()]: contributor[key]}), {})
-                }));
+                result.contributors = result.lists.contributors
+                  .sort((a, b) => (b.order_cited || -1) - (a.order_cited || -1))
+                  .map(contributor => ({
+                        users: Object.keys(contributor)
+                          .reduce(
+                              (acc, key) => Ember.merge(acc, {[key.camelize()]: contributor[key]}),
+                              {bibliographic: contributor.relation !== 'contributor'}
+                          )
+                    }));
 
                 // Temporary fix to handle half way migrated SHARE ES
                 // Only false will result in a false here.

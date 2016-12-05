@@ -31,6 +31,7 @@ export default {
         convert_component: `The preprint will be organized in the current component`,
         copy_inside_project: `The preprint will be organized in a new component`,
         open_science_framework: `Open Science Framework`,
+        license: 'License',
     },
     application: {
         // Nothing to translate
@@ -134,6 +135,13 @@ export default {
         },
         go_to: `Go to {{brand}}`
     },
+    'resource-deleted': {
+        heading: `Resource deleted`,
+        paragraph: {
+            line1: `User has deleted this content. If this should not have occurred and the issue persists, please report it to  `,
+        },
+        go_to: `Go to {{brand}}`
+    },
     submit: {
         add_heading: `Add Preprint`,
         edit_heading: `Edit Preprint`,
@@ -155,6 +163,10 @@ export default {
                 },
                 abstract: {
                     placeholder: `Add a brief summary of your preprint`
+                },
+                license: {
+                    apply_license_title: `Apply this license to my OSF Project.`,
+                    apply_license_text: `Selecting a license for your preprint does not automatically apply the license to your OSF project.`
                 }
             },
             authors: {
