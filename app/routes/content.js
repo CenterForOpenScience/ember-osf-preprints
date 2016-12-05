@@ -105,7 +105,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ['og:site_name', this.get('theme.provider.name')],
                 ['og:type', 'article'],
                 ['article:published_time', new Date(preprint.get('dateCreated')).toISOString()],
-                ['article:modified_time', new Date(node.get('dateModified')).toISOString()]
+                ['article:modified_time', new Date(preprint.get('dateModified')).toISOString()]
             ];
 
             const tags = [
