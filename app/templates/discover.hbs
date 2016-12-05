@@ -11,7 +11,7 @@
                 {{/if}}
                 <div class={{if theme.isProvider 'col-xs-6 text-left'}}>
                     <h1>{{t "discover.search.heading"}}</h1>
-                    <p class="lead">{{t "discover.search.paragraph"}} <a href="https://share.osf.io/" class="share-logo" title="SHARE" onclick={{action 'click' 'link' 'Discover - Share Logo' 'https://share.osf.io/'}}></a></p>
+                    <p class="lead">{{t "discover.search.paragraph"}} <a href="https://share.osf.io/" class="share-logo" title="SHARE" onclick={{action 'click' 'link' 'Preprints - Discover - Share Logo'}}></a></p>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                         {{#each model as |provider|}}
                             <a href="/preprints/{{provider.id}}/discover"
                                title={{provider.name}}
-                               onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
+                               onclick={{action 'click' 'link' (concat 'Preprints - Discover - Index ' provider.name)}}
                             >
                                 <div class="discover-provider-logo col-xs-4 provider-{{provider.id}}-dark"></div>
                             </a>

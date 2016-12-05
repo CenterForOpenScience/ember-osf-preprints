@@ -350,8 +350,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'filter',
                     action: hasItem ? 'remove' : 'add',
-                    label: `Preprints - Discover - Filter ${item}`
-                    // label: `Discover - ${filterType} - ${item}`
+                    label: `Preprints - Discover - ${filterType} ${item}`
                 });
         },
     },
