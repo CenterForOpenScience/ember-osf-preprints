@@ -16,11 +16,7 @@ export default Ember.Component.extend(Analytics, {
     userNodes: Ember.A(),
     selectedNode: null,
     isAdmin: Ember.computed('selectedNode', function() {
-        if (this.get('selectedNode')) {
-            return (this.get('selectedNode.currentUserPermissions') || []).includes(Permissions.ADMIN);
-        } else {
-            return null;
-        }
+        return this.get('selectedNode') ? (this.get('selectedNode.currentUserPermissions') || []).includes(Permissions.ADMIN) : false;
     }),
     actions: {
         nodeSelected(node) {

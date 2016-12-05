@@ -108,6 +108,8 @@ export default Ember.Component.extend(Analytics, {
                 .then(node => {
                     this.set('node', node);
                     this.send('upload');
+                    this.set('newNode', true);
+                    this.set('applyLicense', true);
                 })
                 .catch(() => {
                     this.set('uploadInProgress', false);
@@ -132,6 +134,8 @@ export default Ember.Component.extend(Analytics, {
                     this.set('node', child);
                     this.set('basicsAbstract', this.get('node.description') || null);
                     this.send('upload');
+                    this.set('newNode', true);
+                    this.set('applyLicense', true);
                 })
                 .catch(() => {
                     this.set('uploadInProgress', false);

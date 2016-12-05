@@ -1,0 +1,14 @@
+@import 'brand';
+
+@include brand(
+    #637074,
+    white,
+    #222F38,
+    #AAB9CF,
+    black,
+    $logo-dir + 'engrxiv-small.png',
+    $logo-dir + 'engrxiv-square-small.png',
+    true,
+    false,
+    true
+);

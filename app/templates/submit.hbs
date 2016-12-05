@@ -4,11 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-                {{#if editMode}}
-                    <h1>{{t "submit.edit_heading"}}</h1>
-                {{else}}
-                    <h1>{{t "submit.add_heading"}}</h1>
-                {{/if}}
+                <h1>{{t (if editMode "submit.edit_heading" "submit.add_heading")}}</h1>
             </div>
         </div>
 
@@ -18,7 +14,7 @@
     <div class="container">
         <div class="row m-t-lg">
             <div class="col-xs-12 col-md-10 col-md-offset-1 ">
-                <p>{{if editMode (t "submit.body.p_edit") (t "submit.body.p_add")}}</p>
+                <p>{{if editMode (t "submit.body.p_edit") (t "submit.body.p_add" name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}</p>
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
@@ -29,13 +25,12 @@
                                         {{#if (eq currentState _State.START)}}
                                             <div class="row">
                                                 <div class="col-xs-6">
-                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.NEW}}>Upload new preprint</button>
+                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.NEW}}>{{t "submit.body.upload"}}</button>
                                                 </div>
                                                 <div class="col-xs-6">
-                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.EXISTING}}>Connect preprint to existing OSF project</button>
+                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.EXISTING}}>{{t "submit.body.connect"}}</button>
                                                 </div>
                                             </div>
-
                                         {{else if (eq currentState _State.NEW)}}
                                             {{file-uploader
                                                 changeInitialState=(action 'changeInitialState')
@@ -67,6 +62,8 @@
                                                 resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
                                                 basicsAbstract=basicsAbstract
                                                 editMode=editMode
+                                                newNode=newNode
+                                                applyLicense=applyLicense
                                             }}
                                         {{else if (eq currentState _State.EXISTING)}}
                                             {{preprint-form-project-select
@@ -109,6 +106,8 @@
                                               resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
                                               basicsAbstract=basicsAbstract
                                               editMode=editMode
+                                              newNode=newNode
+                                              applyLicense=applyLicense
                                               }}
                                         {{/if}}
                                     </div>
@@ -139,8 +138,27 @@
 
                     {{#with _names.[2] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' editMode=editMode class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=node.tags abstract=node.description name=name valid=(not basicsChanged) isValidationActive=hasOpened}}
+                            {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=node.tags abstract=node.description name=name valid=(not basicsChanged) license=model.license isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
+                                <div class='row'>
+                                    <div class='col-xs-12'>
+                                        {{license-picker licenses=availableLicenses currentValues=basicsLicense showCategories=false editLicense=(action 'editLicense') allowDismiss=false autosave=true showBorder=false}}
+                                        <br>
+                                        <div class="row">
+                                            <div class='col-xs-12'>
+                                                <label> {{t "submit.body.basics.license.apply_license_title"}} </label>
+                                                {{#if (or (not newNode) editMode)}}
+                                                    <p>{{t "submit.body.basics.license.apply_license_text"}}</p>
+                                                {{/if}}
+                                                <span style="margin: 5px">
+                                                    <input onchange={{action 'applyLicenseToggle' true}} type="radio" checked={{applyLicense}}> Yes
+                                                    <input onchange={{action 'applyLicenseToggle' false}} type="radio" checked={{not applyLicense}}> No
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div>
@@ -220,7 +238,7 @@
                                     <div>
                                         <div class="text-center">
                                             <p>
-                                                {{t "submit.body.update.paragraph"}}
+                                                {{t "submit.body.update.paragraph" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
                                             </p>
                                             <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'savePreprint'}}>{{t "global.complete"}}</button>
                                         </div>
@@ -230,7 +248,7 @@
                                 {{#cp-panel-body}}
                                     <div>
                                         <p>
-                                            {{t "submit.body.submit.paragraph"}}
+                                            {{t "submit.body.submit.paragraph" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
                                         </p>
                                         <div class="text-center">
                                             {{#unless allSectionsValid}}
