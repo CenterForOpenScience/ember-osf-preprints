@@ -24,9 +24,26 @@ export default Ember.Controller.extend(Analytics, {
     },
 
     activeFilters: { providers: [], subjects: [] },
-    osfProviders: ['OSF', 'PsyArXiv', 'SocArXiv', 'engrXiv'],
 
-    whiteListedProviders: ['OSF', 'arXiv', 'bioRxiv', 'Cogprints', 'engrXiv', 'PeerJ', 'PsyArXiv', 'Research Papers in Economics', 'SocArXiv'],
+    osfProviders: [
+        'OSF',
+        'PsyArXiv',
+        'SocArXiv',
+        'engrXiv'
+    ],
+
+    whiteListedProviders: [
+        'OSF',
+        'arXiv',
+        'bioRxiv',
+        'Cogprints',
+        'engrXiv',
+        'PeerJ',
+        'PsyArXiv',
+        'Research Papers in Economics',
+        'SocArXiv'
+    ].map(item => item.toLowerCase()),
+
     page: 1,
     size: 10,
     numberOfResults: 0,
@@ -69,12 +86,12 @@ export default Ember.Controller.extend(Analytics, {
             const hits = results.aggregations.sources.buckets;
             const whiteList = this.get('whiteListedProviders');
             const providers = hits
-                .filter(hit => whiteList.includes(hit.key));
+                .filter(hit => whiteList.includes(hit.key.toLowerCase()));
 
             providers.push(
                 ...this.get('osfProviders')
                 .filter(key => !providers
-                    .find(hit => hit.key === key)
+                    .find(hit => hit.key.toLowerCase() === key.toLowerCase())
                 )
                 .map(key => ({
                     key,
