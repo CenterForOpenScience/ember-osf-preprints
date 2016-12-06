@@ -600,7 +600,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 this.set('basicsLicense', {
                     licenseType: license || this.get('availableLicenses').toArray()[0],
                     year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : false || date.getUTCFullYear().toString(),
-                    copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(',') : false || ''
+                    copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(',') : ''
                 });
             });
         },
