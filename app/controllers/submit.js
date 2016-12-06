@@ -599,7 +599,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.get('model.license').then(license => {
                 this.set('basicsLicense', {
                     licenseType: license || this.get('availableLicenses').toArray()[0],
-                    year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : false || date.getUTCFullYear().toString(),
+                    year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : date.getUTCFullYear().toString(),
                     copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(',') : ''
                 });
             });
