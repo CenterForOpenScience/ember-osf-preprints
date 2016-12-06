@@ -153,17 +153,11 @@ export default Ember.Controller.extend(Analytics, {
         shareLink(href, network, action, label) {
             const metrics = Ember.get(this, 'metrics');
 
-            metrics.trackEvent({
-                category: network,
-                action,
-                label: window.location.href
-            });
-
             if (network.includes('email')) {
                 metrics.trackEvent({
                     category: 'link',
                     action,
-                    label
+                    label: `Preprints - Content - Email ${window.location.href}`
                 });
             } else {
                 window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
