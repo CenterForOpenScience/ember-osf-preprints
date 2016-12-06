@@ -29,29 +29,20 @@ export default Ember.Component.extend(Analytics, {
 
     osfID: Ember.computed('result', function() {
         let re = /osf.io\/(\w+)\/$/;
-        let re2 = /osf.io\/preprints\/(\w+)\/$/;
         // NOTE / TODO : This will have to be removed later. Currently the only "true" preprints are solely from the OSF
         // socarxiv and the like sometimes get picked up by as part of OSF, which is technically true. This will prevent
         // broken links to things that aren't really preprints.
-        if (this.get('result.providers.length') !== 1) {
-            return false;
-        }
-        if (this.get('result.providers').find(provider => provider.name === 'OSF')) {
+        if (this.get('result.providers.length') === 1 && this.get('result.providers').find(provider => provider.name === 'OSF'))
             for (let i = 0; i < this.get('result.identifiers.length'); i++)
                 if (re.test(this.get('result.identifiers')[i]))
                     return re.exec(this.get('result.identifiers')[i])[1];
-        } else {
-            for (let i = 0; i < this.get('result.identifiers.length'); i++)
-                if (re2.test(this.get('result.identifiers')[i]))
-                    return re2.exec(this.get('result.identifiers')[i])[1];
-        }
         return false;
     }),
 
     hyperlink: Ember.computed('result', function() {
         let re = null;
         for (let i = 0; i < this.get('result.providers.length'); i++)
-            re = this.providerUrlRegex[this.get('result.providers')[i].name] || this.providerUrlRegex['OSF'];
+            re = this.providerUrlRegex[this.get('result.providers')[i].name] || this.providerUrlRegex.OSF;
 
         const identifiers = this.get('result.identifiers').filter(ident => ident.startsWith('http://'));
 
