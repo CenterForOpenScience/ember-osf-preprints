@@ -391,9 +391,21 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             // gets called everytime a change is observed in the widget.
             this.set('basicsLicense', license);
             this.set('licenseValid', validates);
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'dropdown',
+                    action: 'select',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`
+                });
         },
         applyLicenseToggle(apply) {
             this.set('applyLicense', apply);
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'radio-button',
+                    action: 'select',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Apply License: ${apply}`
+                });
         },
         next(currentPanelName) {
             // Open next panel
