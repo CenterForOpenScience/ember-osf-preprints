@@ -156,7 +156,7 @@ export default Ember.Controller.extend(Analytics, {
         chooseFile(fileItem) {
             this.set('activeFile', fileItem);
         },
-        shareLink(href, network, action, label) {
+        shareLink(href, network, action) {
             const metrics = Ember.get(this, 'metrics');
 
             if (network.includes('email')) {
