@@ -55,4 +55,13 @@ export default Ember.Component.extend({
      * @property {boolean} fileSelect
      */
     fileSelect: false,
+
+    titleMatcher(node, term) {
+        // Passed into power-select component for customized searching.
+        const nodeTitle = (node.get('title') || '').toLowerCase();
+        const rootTitle = (node.get('root.title') || '').toLowerCase();
+        const parentTitle = (node.get('parent.title') || '').toLowerCase();
+        const lowerTerm = term.toLowerCase();
+        return nodeTitle.includes(lowerTerm) || rootTitle.includes(lowerTerm) || parentTitle.includes(lowerTerm) ? 1 : -1;
+    }
 });
