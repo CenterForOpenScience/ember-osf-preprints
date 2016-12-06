@@ -42,10 +42,9 @@ export default Ember.Component.extend(Analytics, {
     hyperlink: Ember.computed('result', function() {
         let re = null;
         for (let i = 0; i < this.get('result.providers.length'); i++)
-            re = this.providerUrlRegex[this.get('result.providers')[i].name] || null;
+            re = this.providerUrlRegex[this.get('result.providers')[i].name] || this.providerUrlRegex['OSF'];
 
         const identifiers = this.get('result.identifiers').filter(ident => ident.startsWith('http://'));
-        if (!re) return identifiers[0];
 
         for (let j = 0; j < identifiers.length; j++)
             if (re.test(identifiers[j]))
