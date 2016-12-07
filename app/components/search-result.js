@@ -27,6 +27,14 @@ export default Ember.Component.extend(Analytics, {
         return result.description.slice();
     }),
 
+    contributors: Ember.computed('result', function() {
+        let result = this.get('result');
+        if (result.contributors) {
+            return result.contributors.reverse();
+        }
+        return;
+    }),
+
     osfID: Ember.computed('result', function() {
         let re = /osf.io\/(\w+)\/$/;
         // NOTE / TODO : This will have to be removed later. Currently the only "true" preprints are solely from the OSF
