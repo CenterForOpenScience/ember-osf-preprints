@@ -1078,7 +1078,11 @@ label.title-label {
         padding-top: 20px;
         text-align: left;
     }
+    .supplemental-downloads {
+        float: none !important;
+    }
 }
+
 .content-provider-logo {
     min-height: 80px;
     min-width: 120px;
