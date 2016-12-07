@@ -10,8 +10,17 @@ export default Ember.Route.extend({
 
     beforeModel(transition) {
         const {slug} = transition.params.provider;
+        const slugLower = (slug || '').toLowerCase();
 
-        if (this.get('providerIds').includes(slug)) {
+        if (this.get('providerIds').includes(slugLower)) {
+            if (slugLower !== slug) {
+                const {pathname} = window.location;
+                window.location.pathname = pathname.replace(
+                    new RegExp(`^/preprints/${slug}`),
+                    `/preprints/${slugLower}`
+                );
+            }
+
             this.set('theme.id', slug);
         } else {
             this.set('theme.id', config.PREPRINTS.defaultProvider);
