@@ -16,7 +16,7 @@ export default Ember.Route.extend({
             if (slugLower !== slug) {
                 const {pathname} = window.location;
                 window.location.pathname = pathname.replace(
-                    new RexExp(`^/preprints/${slug}`),
+                    new RegExp(`^/preprints/${slug}`),
                     `/preprints/${slugLower}`
                 );
             }
