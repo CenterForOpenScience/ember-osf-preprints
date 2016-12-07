@@ -28,10 +28,10 @@
                             <b class="file-selected-arrow">&#9660;</b>
                         {{/if}}
                         {{#if (eq preprint.primaryFile.id supplement.id)}}
-                            <i style="margin-top: -4px" class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
-                            <p style="font-size: 75%; margin-bottom: -10px">{{t "components.supplementary-file-browser.primary"}}</p>
+                            <i style="margin-top: -4px;" class="fa fa-file-text fa-2x p-b-xs preprint-image" aria-hidden="true"></i>
+                            <p class="hidden-xs" style="font-size: 75%; margin-bottom: -10px">{{t "components.supplementary-file-browser.primary"}}</p>
                         {{else}}
-                            <i class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
+                            <i style="color:gray" class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
                         {{/if}}
                     </label>
                 {{/if}}
