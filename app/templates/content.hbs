@@ -4,7 +4,7 @@
     <div class="p-t-xl m-t-xl p-b-md m-b-md dark-overlay-header-background header-row">{{!HEADER ROW}}
         <div class="container">{{!CONTAINER DIV}}
             <div class="row">
-                <div class="col-xs-10">
+                <div class="col-xs-12 col-sm-10">
                     <h1 id="preprintTitle" class="p-b-md">{{node.title}}</h1>
                     <h5 class="view-authors">
                         <ul class="comma-list">
@@ -23,7 +23,7 @@
                     </h5>
                     <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
                 </div>
-                <div class="col-xs-2 text-center">
+                <div class="col-xs-12 col-sm-2 edit-button-and-logo text-center">
                     {{#if isAdmin}}
                     {{! TODO This link will need to be updated for phase 2 of branding }}
                         <a type="button"
@@ -35,7 +35,7 @@
                         </a>
                     {{/if}}
                     <br>
-                    <div class="content-provider-logo provider-{{model.provider.id}}" title="{{model.provider.name}}"></div>
+                    <div class="content-provider-logo provider-{{model.provider.id}} hidden-xs" title="{{model.provider.name}}"></div>
                 </div>
             </div>
         </div> {{!END CONTAINER DIV}}

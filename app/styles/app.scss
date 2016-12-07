@@ -1073,6 +1073,12 @@ label.title-label {
     background-size: contain;
 }
 
+@media (max-width: 768px) {
+    .edit-button-and-logo {
+        padding-top: 20px;
+        text-align: left;
+    }
+}
 .content-provider-logo {
     min-height: 80px;
     min-width: 120px;
