@@ -25,6 +25,9 @@
                     </ul>
                 </div>
 
+                {{!Added on}}
+                <div class="m-t-sm"> <em> {{t "global.added_on"}}: {{moment-format result.date_published}} </em> </div>
+
                 {{#if result.subjects}}
                     <div class="m-t-sm">
                         {{#each result.subjects as |subject|}}
@@ -82,8 +85,6 @@
                             {{/each}}
                         </div>
                     {{/if}}
-                    {{!Added on}}
-                    <div class="m-t-sm"> {{t "global.added_on"}}: {{moment-format result.date_created}} </div>
                 {{/if}}
 
             </div>
