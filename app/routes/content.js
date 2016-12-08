@@ -143,8 +143,11 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
     },
     actions: {
         error(error, transition) {
-            if (error && error.errors && Ember.isArray(error.errors) && error.errors[0].detail === 'The requested node is no longer available.') {
-                this.intermediateTransitionTo('resource-deleted'); // Node containing preprint has been deleted. 410 Gone.
+            const detail = error && error.errors && Ember.isArray(error.errors) && error.errors[0].detail ? error.errors[0].detail : null;
+            if (detail && detail === 'The requested node is no longer available.') {
+                this.intermediateTransitionTo('resource-deleted'); // Node containing preprint has been deleted. APIv2 returned 410 Gone.
+            } else if (detail && (detail === 'You do not have permission to perform this action.' || detail === 'Authentication credentials were not provided.')) {
+                this.intermediateTransitionTo('page-not-found'); // API v2 returned 401 or 403.
             } else {
                 const slug = transition.params[transition.targetName].preprint_id;
 
