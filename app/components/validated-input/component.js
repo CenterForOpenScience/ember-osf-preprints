@@ -39,4 +39,14 @@ export default Ember.Component.extend({
         return (this.get('validation.isDirty') || this.get('didValidate')) && this.get('isValid') && !isEmpty(this.get('validation.warnings'));
     }),
 
+    keyPress(e) {
+        if (e.keyCode === 13 && !this.get('large')) {
+            this.send('pressSubmit');
+        }
+    },
+    actions: {
+        pressSubmit() {
+            this.sendAction('pressSubmit');
+        }
+    }
 });
