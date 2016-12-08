@@ -104,7 +104,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ['og:description', node.get('description')],
                 ['og:site_name', this.get('theme.provider.name')],
                 ['og:type', 'article'],
-                ['article:published_time', new Date(preprint.get('dateCreated')).toISOString()],
+                ['article:published_time', new Date(preprint.get('datePublished')).toISOString()],
                 ['article:modified_time', new Date(preprint.get('dateModified')).toISOString()]
             ];
 

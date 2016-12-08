@@ -21,7 +21,7 @@
                             {{/if}}
                         </ul>
                     </h5>
-                    <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
+                    <h6>{{t "global.added_on"}}: {{moment-format model.datePublished "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
                 </div>
                 <div class="col-xs-2 text-center">
                     {{#if isAdmin}}
