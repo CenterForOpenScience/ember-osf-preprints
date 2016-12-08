@@ -176,7 +176,7 @@ export default Ember.Controller.extend(Analytics, {
                 });
 
                 result.contributors = result.lists.contributors
-                  .sort((a, b) => (b.order_cited || -1) - (a.order_cited || -1))
+                  .sort((b, a) => (b.order_cited || -1) - (a.order_cited || -1))
                   .map(contributor => ({
                         users: Object.keys(contributor)
                           .reduce(
