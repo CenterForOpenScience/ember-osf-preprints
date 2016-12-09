@@ -76,7 +76,7 @@
         </div>
         <p class="drag-drop small"> {{t "components.preprint-form-authors.authors.order_instructions"}} </p>
         <div class="panel-body">
-            <table class="table author-table">
+            <table class="table author-table current-authors">
                 <tr>
                     <th> </th>
                     <th class="contrib-column-header"> {{t "components.preprint-form-authors.authors.name"}} </th>
@@ -113,14 +113,28 @@
                 {{#sortable-group tagName="tbody" onChange="reorderItems" as |group|}}
                     {{#each contributors as |contrib|}}
                         {{#sortable-item tagName="tr" model=contrib class="contributor-row" group=group spacing=1 handle=".handle" id=contrib.id}}
-                            <td class="text-nowrap">
+                            <td class="text-nowrap author-cols">
                                 <div class="form-group drag-drop-contrib">
                                     <span class="fa fa-bars sortable-bars handle small"></span>
                                     <img class="m-l-xs" src={{contrib.users.profileImage}} height=30 width=30>
+                                    <span class="visible-xs-inline"> {{!CONTRIBUTOR NAME - XS Screen}}
+                                        {{#if contrib.unregisteredContributor}}
+                                            {{contrib.unregisteredContributor}}
+                                        {{else}}
+                                            <a href={{contrib.users.links.html}}> {{contrib.users.fullName}} </a>
+                                        {{/if}}
+                                        <span class="pull-right remove-contributor-padding-xs">
+                                            {{#if (and (permissionToRemoveContributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors authorModification))}}
+                                                <button class="remove-contributor-xs" {{action 'removeContributor' contrib}}>
+                                                    <i class="fa fa-times"> </i>
+                                                </button>
+                                            {{/if}}
+                                        </span>
+                                    </span>
                                 </div>
                             </td>
                             <td>
-                                <div class="vert-align-contributor-name">
+                                <div class="vert-align-contributor-name hidden-xs">
                                     {{#if contrib.unregisteredContributor}}
                                         {{contrib.unregisteredContributor}}
                                     {{else}}
@@ -131,7 +145,8 @@
                             <td>
                                 <div class="form-group vert-align-enabled-permissions">
                                     {{#if (and (not (contributorIsCurrentUser contrib currentUser)) isAdmin (and canEdit (minAdmins contrib contributors authorModification)))}}
-                                        <select class="form-control" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
+                                        <span class="visible-xs-inline permission-label"><em> Permissions: </em></span>
+                                        <select class="text-smaller form-control permission-select" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
                                             {{#each permissionOptions as |option|}}
                                                 <option selected={{eq contrib.permission option.value}} value={{option.value}}>
                                                     {{option.text}}
@@ -140,18 +155,19 @@
                                         </select>
                                     {{else}}
                                         <div class="vert-align-disabled-permissions">
-                                            <span> {{permissionMap contrib.permission}} </span>
+                                            <span class="visible-xs-inline permission-label"> <em> Permissions: </em></span> <span class="text-smaller"> {{permissionMap contrib.permission}} </span>
                                         </div>
                                     {{/if}}
                                 </div>
                             </td>
                             <td class="bib-padding">
                                 <div class="form-group vert-align">
+                                    <span class="visible-xs-inline checkbox-padding"><em>In Citation:</em></span>
                                     <input disabled={{if (and isAdmin (and canEdit (minBibliographic contrib contributors authorModification))) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
                                 </div>
                             </td>
                             <td>
-                                <div class="form-group vert-align nudge-right">
+                                <div class="delete-contrib-button form-group vert-align nudge-right hidden-xs">
                                     {{#if (and (permissionToRemoveContributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors authorModification))}}
                                         <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm" > {{t "components.preprint-form-authors.remove"}} </button>
                                     {{else}}
