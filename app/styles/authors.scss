@@ -180,11 +180,6 @@ span.sortable-bars:hover {
         td {
            border-top: none !important;
         }
-
-        .contributor-row {
-           width: 100%;
-        }
-
         .author-cols {
             margin-top: 10px;
         }
@@ -201,7 +196,7 @@ span.sortable-bars:hover {
 
         .checkbox-padding {
             padding-right: 20px;
-            padding-left: 18px;
+            padding-left: 20px;
         }
 
         .permission-label {
@@ -227,7 +222,7 @@ span.sortable-bars:hover {
         .contributor-row {
             border-top: 1px solid #EEE !important;
             width: auto;
-            padding-left: 5px;
+            padding-left: 10px;
         }
         .delete-contrib-button {
             padding-bottom: 10px;
@@ -239,7 +234,7 @@ span.sortable-bars:hover {
             color: #D9534F;
         }
         .remove-contributor-padding-xs {
-            padding-right: 5px;
+            padding-right: 10px;
         }
     }
 }
