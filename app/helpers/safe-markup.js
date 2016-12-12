@@ -1,6 +1,12 @@
 import Ember from 'ember';
 
-export function safeMarkup(params/*, hash*/) {
+/**
+  * safeMarkup helper. Returns a string that will not be HTML escaped by Handlebars.
+  *
+  * @method safeMarkup
+  * @param {string} string
+  * @return {Object} Returns Handlebars.SafeString
+  */export function safeMarkup(params/*, hash*/) {
     return Ember.String.htmlSafe(params.join(''));
 }
 
