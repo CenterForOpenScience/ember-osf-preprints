@@ -23,7 +23,6 @@ export function minBibliographic(params/*, hash*/) {
     } else {
         return true;
     }
-
 }
 
 export default Ember.Helper.helper(minBibliographic);
