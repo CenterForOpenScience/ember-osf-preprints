@@ -10,7 +10,7 @@ import Ember from 'ember';
 export function isSectionEditable(params/*, hash*/) {
     let section = params[0];
     let uneditableSections = ['Submit', 'location_of_preprint', 'Update'];
-    return uneditableSections.indexOf(section) === -1;
+    return !(uneditableSections.includes(section));
 }
 
 export default Ember.Helper.helper(isSectionEditable);
