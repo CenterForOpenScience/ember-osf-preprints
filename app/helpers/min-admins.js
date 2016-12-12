@@ -11,8 +11,8 @@ import Ember from 'ember';
  * @return {Boolean} Does updating this contributor leave minimum number of admins?
  */
 export function minAdmins(params/*, hash*/) {
-    var [contrib, contributors] = params;
-    var registeredAdmins = 0;
+    let [contrib, contributors] = params;
+    let registeredAdmins = 0;
     contributors.forEach(function(contributor) {
         if (contributor.get('permission') === 'admin' && contributor.get('unregisteredContributor') === null) {
             registeredAdmins++;
