@@ -1,20 +1,24 @@
 import Ember from 'ember';
 
 /**
- * To be used within an {#if} block, to only displays an item if it matches a filter.
- *
- * @class ifFilter
- * @param params: 0 indicates the element, 1 indicates the filter, 2 for list intersection
- */
+  * ifFilter helper. To be used within an {#if} block, to only display an item if it matches a filter.
+  *
+  * @method ifFilter
+  * @param {String} element
+  * @param {Object} filter
+  * @param {String} list intersection ??
+  * @return {Boolean} Return if matches a filter.
+  */
 export function ifFilter(params) {
-    if (params[2]) {
-        let match = params[0].filter(each => params[1].indexOf(each) !== -1);
+    let [element, filter, intersection] = params;
+    if (intersection) {
+        let match = element.filter(each => filter.includes(each));
         return match.length;
     }
-    if ((typeof params[1] === 'object')) {
-        return params[1].indexOf(params[0]) !== -1;
+    if ((typeof filter === 'object')) {
+        return filter.includes(element);
     }
-    if ((typeof params[1] === 'undefined') || ((params[0].toLowerCase()).indexOf(params[1].toLowerCase()) !== -1)) {
+    if ((typeof filter === 'undefined') || ((element.toLowerCase()).includes(filter.toLowerCase()))) {
         return true;
     }
     return false;
