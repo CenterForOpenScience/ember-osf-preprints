@@ -1,7 +1,7 @@
-import { numberFormat } from 'preprint-service/helpers/number-format';
-import { module, test } from 'qunit';
+// import { numberFormat } from 'preprint-service/helpers/number-format';
+// import { module, test } from 'qunit';
 
-module('Unit | Helper | number format');
+// module('Unit | Helper | number format');
 
 // Works in Chrome but doesn't work in terminal
 // test('transforms 4 digit number', function(assert) {
