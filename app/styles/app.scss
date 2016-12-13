@@ -1076,7 +1076,6 @@ label.title-label {
 @media (max-width: 768px) {
     .edit-button-and-logo {
         padding-top: 20px;
-        text-align: left;
     }
     .supplemental-downloads {
         float: none !important;
@@ -1086,6 +1085,15 @@ label.title-label {
     }
     .share-row {
         margin-top: 20px;
+    }
+    #preprintTitle {
+        text-align: center;
+    }
+    .view-authors {
+        text-align: center;
+    }
+    .preprint-added-on {
+        text-align: center;
     }
 }
 
