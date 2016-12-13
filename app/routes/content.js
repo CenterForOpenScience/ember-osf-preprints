@@ -91,7 +91,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             const {origin} = window.location;
             const image = this.get('theme.logoSharing');
             const imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
-
+            const d = new Date(preprint.get('dateCreated'));
             const ogp = [
                 ['fb:app_id', config.FB_APP_ID],
                 ['og:title', node.get('title')],
@@ -104,8 +104,20 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ['og:description', node.get('description')],
                 ['og:site_name', this.get('theme.provider.name')],
                 ['og:type', 'article'],
-                ['article:published_time', new Date(preprint.get('dateCreated')).toISOString()],
-                ['article:modified_time', new Date(preprint.get('dateModified')).toISOString()]
+                ['article:published_time', d.toISOString()],
+                ['article:modified_time', new Date(preprint.get('dateModified')).toISOString()],
+                ['citation_title', node.get('title')],
+                ['citation_description', node.get('description')],
+                ['citation_public_url', window.loaction.href],
+                ['citation_publisher', preprint.get('provider.name')],
+                ['citation_publication_date', `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`],
+                ['citation_doi', preprint.get('doi')],
+                ['dc.title', node.get('title')],
+                ['dc.abstract', node.get('description')],
+                ['dc.identifier', window.loaction.href],
+                ['dc.publisher', preprint.get('provider.name')],
+                ['dc.identifier', preprint.get('doi')],
+                ['dc.license', preprint.get('license.name')]
             ];
 
             const tags = [
@@ -114,7 +126,11 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             ];
 
             for (const tag of tags)
-                ogp.push(['article:tag', tag]);
+                ogp.push(
+                    ['article:tag', tag],
+                    ['citation_keywords', tag],
+                    ['dc.subject', tag]
+                );
 
             let contributors = Ember.A();
 
@@ -123,8 +139,18 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     ogp.push(
                         ['og:type', 'article:author'],
                         ['profile:first_name', contributor.get('users.givenName')],
-                        ['profile:last_name', contributor.get('users.familyName')]
+                        ['profile:last_name', contributor.get('users.familyName')],
+                        ['citation_author', `${contributor.get('users.givenName')} ${contributor.get('users.familyName')}`],
+                        ['dc.creator', `${contributor.get('users.givenName')} ${contributor.get('users.familyName')}`]
                     );
+                    if (contributor.get('users.affiliatedInstitutions')) {
+                        contributor.get('users.affiliatedInstitutions').forEach(
+                            institution => ogp.push(['citation_author_institution', institution.get('name')])
+                        )
+                    }
+                    ogp.push(
+                        ['citation_author', `${contributor.get('users.givenName')} ${contributor.get('users.familyName')}`]
+                    )
                 });
 
                 this.set('headTags', ogp.map(item => (
