@@ -108,13 +108,13 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ['article:modified_time', new Date(preprint.get('dateModified')).toISOString()],
                 ['citation_title', node.get('title')],
                 ['citation_description', node.get('description')],
-                ['citation_public_url', window.loaction.href],
+                ['citation_public_url', window.location.href],
                 ['citation_publisher', preprint.get('provider.name')],
                 ['citation_publication_date', `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`],
                 ['citation_doi', preprint.get('doi')],
                 ['dc.title', node.get('title')],
                 ['dc.abstract', node.get('description')],
-                ['dc.identifier', window.loaction.href],
+                ['dc.identifier', window.location.href],
                 ['dc.publisher', preprint.get('provider.name')],
                 ['dc.identifier', preprint.get('doi')],
                 ['dc.license', preprint.get('license.name')]
@@ -146,11 +146,11 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     if (contributor.get('users.affiliatedInstitutions')) {
                         contributor.get('users.affiliatedInstitutions').forEach(
                             institution => ogp.push(['citation_author_institution', institution.get('name')])
-                        )
+                        );
                     }
                     ogp.push(
                         ['citation_author', `${contributor.get('users.givenName')} ${contributor.get('users.familyName')}`]
-                    )
+                    );
                 });
 
                 this.set('headTags', ogp.map(item => (
