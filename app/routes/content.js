@@ -163,17 +163,23 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                         ogp.push(
                             ['dc.license', license.get('name')]
                         );
-                        this.set('headTags', ogp.map(item => (
-                            {
-                                type: 'meta',
-                                attrs: {
-                                    property: item[0],
-                                    content: item[1]
-                                }
+                        preprint.get('primaryFile').then(file => {
+                            if (file.get('name').split('.').pop() === 'pdf') {
+                                    ogp.push(
+                                        ['citation_pdf_url', file.get('links').download]
+                                    )
                             }
-                        )));
-
-                        this.get('headTagsService').collectHeadTags();
+                            this.set('headTags', ogp.map(item => (
+                                {
+                                    type: 'meta',
+                                    attrs: {
+                                        property: item[0],
+                                        content: item[1]
+                                    }
+                                }
+                            )));
+                            this.get('headTagsService').collectHeadTags();
+                        })
                     });
                 });
             });
