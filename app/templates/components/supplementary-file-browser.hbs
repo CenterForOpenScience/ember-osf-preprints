@@ -23,7 +23,7 @@
                         <i class="fa fa-folder fa-2x p-b-xs" aria-hidden="true"></i>
                     </a>
                     <a href={{preprint.links.html}} class="visible-xs truncate">
-                        <i class="fa fa-folder p-b-xs"></i> {{supplement.name}}
+                        <i class="fa fa-folder p-b-xs p-r-sm"></i> {{supplement.name}}
                     </a>
                 {{else}}
                     <label class="hint--bottom col-xs-2 p-md box m-b-xl hidden-xs {{if (eq selectedFile supplement) 'selected'}}" aria-label={{supplement.name}} {{action 'changeFile' supplement}}>
@@ -38,7 +38,7 @@
                         {{/if}}
                     </label>
                     <a href={{preprint.links.html}} class="{{if (eq selectedFile supplement) 'selected'}} visible-xs truncate" {{action 'changeFile' supplement}}>
-                        <i class="fa fa-file-text p-b-xs"></i> {{if (eq preprint.primaryFile.id supplement.id) "Primary - "}} {{supplement.name}}
+                        <i class="fa fa-file-text p-b-xs p-r-sm"></i> <b><em>{{if (eq preprint.primaryFile.id supplement.id) "Primary  "}} </em></b> {{supplement.name}}
                     </a>
                 {{/if}}
             {{/each}}

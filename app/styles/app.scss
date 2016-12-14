@@ -1102,6 +1102,15 @@ label.title-label {
     }
     #preprint-file-view { // Supplementary file browser - mobile view
         section {
+            .selected{
+                background-color: #F3F5F5;
+            }
+            .preprint-image {
+                color: black;
+            }
+            a {
+                text-decoration: none;
+            }
             button {
                 line-height:12px;
                 position: absolute;
