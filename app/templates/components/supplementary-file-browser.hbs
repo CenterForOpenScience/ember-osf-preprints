@@ -19,11 +19,14 @@
         {{#liquid-bind (slice-array files startIndex endIndex) use=scrollAnim as |list|}}
             {{#each list as |supplement index|}}
                 {{#if (eq supplement.kind "folder")}}
-                    <a href={{preprint.links.html}} class="hint--bottom col-xs-2 p-md box m-b-xl" aria-label={{supplement.name}}>
+                    <a href={{preprint.links.html}} class="hint--bottom col-xs-2 p-md box m-b-xl hidden-xs" aria-label={{supplement.name}}>
                         <i class="fa fa-folder fa-2x p-b-xs" aria-hidden="true"></i>
                     </a>
+                    <a href={{preprint.links.html}} class="visible-xs">
+                        {{supplement.name}}
+                    </a>
                 {{else}}
-                    <label class="hint--bottom col-xs-2 p-md box m-b-xl {{if (eq selectedFile supplement) 'selected'}}" aria-label={{supplement.name}} {{action 'changeFile' supplement}}>
+                    <label class="hint--bottom col-xs-2 p-md box m-b-xl hidden-xs {{if (eq selectedFile supplement) 'selected'}}" aria-label={{supplement.name}} {{action 'changeFile' supplement}}>
                         {{#if (eq selectedFile supplement)}}
                             <b class="file-selected-arrow">&#9660;</b>
                         {{/if}}
@@ -34,17 +37,26 @@
                             <i style="color:gray" class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
                         {{/if}}
                     </label>
+                    <a href={{preprint.links.html}} class="{{if (eq selectedFile supplement) 'selected'}} visible-xs" {{action 'changeFile' supplement}}>
+                        {{supplement.name}}
+                    </a>
                 {{/if}}
             {{/each}}
         {{/liquid-bind}}
         {{#if hasPrev}}
-            <button id="leftArrow" class="show-more-button left" {{action 'prev'}}>
+            <button id="leftArrow" class="show-more-button left hidden-xs" {{action 'prev' 'Right'}}>
                 <i class="fa fa-caret-left"></i>
+            </button>
+            <button id="upArrow" class="show-more-button top visible-xs" {{action 'prev' 'Down'}}>
+                <i class="fa fa-caret-up"></i>
             </button>
         {{/if}}
         {{#if hasNext}}
-            <button id="rightArrow" class="show-more-button right" {{action 'next'}}>
+            <button id="rightArrow" class="show-more-button right hidden-xs" {{action 'next' 'Left'}}>
                 <i class="fa fa-caret-right"></i>
+            </button>
+            <button id="downArrow" class="show-more-button bottom visible-xs" {{action 'next' 'Up'}}>
+                <i class="fa fa-caret-down"></i>
             </button>
         {{/if}}
     </section>
