@@ -91,7 +91,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             const {origin} = window.location;
             const image = this.get('theme.logoSharing');
             const imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
-            const d = new Date(preprint.get('dateCreated'));
+            const dateCreated = new Date(preprint.get('dateCreated'));
             const ogp = [
                 ['fb:app_id', config.FB_APP_ID],
                 ['og:title', node.get('title')],
@@ -100,20 +100,20 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ['og:image:width', image.width.toString()],
                 ['og:image:height', image.height.toString()],
                 ['og:image:type', image.type],
-                ['og:url', window.location.href],
+                ['og:url', preprint.get('links.html')],
                 ['og:description', node.get('description')],
                 ['og:site_name', this.get('theme.provider.name')],
                 ['og:type', 'article'],
-                ['article:published_time', d.toISOString()],
+                ['article:published_time', dateCreated.toISOString()],
                 ['article:modified_time', new Date(preprint.get('dateModified')).toISOString()],
                 ['citation_title', node.get('title')],
                 ['citation_description', node.get('description')],
-                ['citation_public_url', window.location.href],
-                ['citation_publication_date', `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`],
+                ['citation_public_url', preprint.get('links.html')],
+                ['citation_publication_date', `${dateCreated.getFullYear()}/${dateCreated.getMonth() + 1}/${dateCreated.getDate()}`],
                 ['citation_doi', preprint.get('doi')],
                 ['dc.title', node.get('title')],
                 ['dc.abstract', node.get('description')],
-                ['dc.identifier', window.location.href],
+                ['dc.identifier', preprint.get('links.html')],
                 ['dc.identifier', preprint.get('doi')],
             ];
 
