@@ -37,8 +37,8 @@
                             <i style="color:gray" class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
                         {{/if}}
                     </label>
-                    <a href={{preprint.links.html}} class="{{if (eq selectedFile supplement) 'selected'}} visible-xs truncate" {{action 'changeFile' supplement}}>
-                        <i class="fa fa-file-text p-b-xs p-r-sm"></i> <b><em>{{if (eq preprint.primaryFile.id supplement.id) "Primary  "}} </em></b> {{supplement.name}}
+                    <a href={{preprint.links.html}} style="color:gray;" class="{{if (eq preprint.primaryFile.id supplement.id) 'preprint-file-link'}} {{if (eq selectedFile supplement) 'selected'}} visible-xs truncate" {{action 'changeFile' supplement}}>
+                        <i class="fa fa-file-text p-b-xs p-r-sm"></i> {{supplement.name}}
                     </a>
                 {{/if}}
             {{/each}}

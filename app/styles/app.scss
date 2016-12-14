@@ -1105,11 +1105,11 @@ label.title-label {
             .selected{
                 background-color: #F3F5F5;
             }
-            .preprint-image {
-                color: black;
-            }
             a {
                 text-decoration: none;
+            }
+            .preprint-file-link {
+                color: black !important;
             }
             button {
                 line-height:12px;
@@ -1136,7 +1136,7 @@ label.title-label {
         .osf-box {
             margin-top: 30px !important;
             height: 160px;
-            margin-bottom: 20px !important;
+            margin-bottom: 40px !important;
         }
     }
 }
