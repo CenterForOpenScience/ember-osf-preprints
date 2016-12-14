@@ -109,15 +109,12 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ['citation_title', node.get('title')],
                 ['citation_description', node.get('description')],
                 ['citation_public_url', window.location.href],
-                ['citation_publisher', preprint.get('provider.name')],
                 ['citation_publication_date', `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`],
                 ['citation_doi', preprint.get('doi')],
                 ['dc.title', node.get('title')],
                 ['dc.abstract', node.get('description')],
                 ['dc.identifier', window.location.href],
-                ['dc.publisher', preprint.get('provider.name')],
                 ['dc.identifier', preprint.get('doi')],
-                ['dc.license', preprint.get('license.name')]
             ];
 
             const tags = [
@@ -143,14 +140,6 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                         ['citation_author', `${contributor.get('users.givenName')} ${contributor.get('users.familyName')}`],
                         ['dc.creator', `${contributor.get('users.givenName')} ${contributor.get('users.familyName')}`]
                     );
-                    if (contributor.get('users.affiliatedInstitutions')) {
-                        contributor.get('users.affiliatedInstitutions').forEach(
-                            institution => ogp.push(['citation_author_institution', institution.get('name')])
-                        );
-                    }
-                    ogp.push(
-                        ['citation_author', `${contributor.get('users.givenName')} ${contributor.get('users.familyName')}`]
-                    );
                 });
 
                 this.set('headTags', ogp.map(item => (
@@ -164,6 +153,29 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 )));
 
                 this.get('headTagsService').collectHeadTags();
+
+                preprint.get('provider').then(provider => {
+                    ogp.push(
+                        ['citation_publisher', provider.get('name')], //PROMISE
+                        ['dc.publisher', provider.get('name')], //PROMISE
+                    );
+                    preprint.get('license').then(license => {
+                        ogp.push(
+                            ['dc.license', license.get('name')]
+                        );
+                        this.set('headTags', ogp.map(item => (
+                            {
+                                type: 'meta',
+                                attrs: {
+                                    property: item[0],
+                                    content: item[1]
+                                }
+                            }
+                        )));
+
+                        this.get('headTagsService').collectHeadTags();
+                    });
+                });
             });
         });
     },
