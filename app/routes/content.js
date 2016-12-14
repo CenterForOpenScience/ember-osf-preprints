@@ -156,8 +156,8 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
 
                 preprint.get('provider').then(provider => {
                     ogp.push(
-                        ['citation_publisher', provider.get('name')], //PROMISE
-                        ['dc.publisher', provider.get('name')], //PROMISE
+                        ['citation_publisher', provider.get('name')],
+                        ['dc.publisher', provider.get('name')]
                     );
                     preprint.get('license').then(license => {
                         ogp.push(
@@ -165,9 +165,9 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                         );
                         preprint.get('primaryFile').then(file => {
                             if (file.get('name').split('.').pop() === 'pdf') {
-                                    ogp.push(
-                                        ['citation_pdf_url', file.get('links').download]
-                                    )
+                                ogp.push(
+                                    ['citation_pdf_url', file.get('links').download]
+                                );
                             }
                             this.set('headTags', ogp.map(item => (
                                 {
@@ -179,7 +179,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                                 }
                             )));
                             this.get('headTagsService').collectHeadTags();
-                        })
+                        });
                     });
                 });
             });
