@@ -664,8 +664,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.get('model.license').then(license => {
                 this.set('basicsLicense', {
                     licenseType: license || this.get('availableLicenses').toArray()[0],
-                    year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : false || date.getUTCFullYear().toString(),
-                    copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(', ') : false || ''
+                    year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : date.getUTCFullYear().toString(),
+                    copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(',') : ''
                 });
             });
         },
@@ -699,9 +699,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             let currentNodeLicenseType = node.get('license');
             let currentNodeLicenseRecord = node.get('nodeLicense');
 
-            let newCopyrightHolders = [''];
+            let newCopyrightHolders = [];
             if (this.get('basicsLicense.copyrightHolders') && this.get('basicsLicense.copyrightHolders').length) {
-                newCopyrightHolders = this.get('basicsLicense.copyrightHolders').split(',');
+                newCopyrightHolders = this.get('basicsLicense.copyrightHolders').slice().split(',');
             }
 
             if (this.get('abstractChanged')) node.set('description', this.get('basicsAbstract'));
