@@ -50,7 +50,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
-                    label: 'next'
+                    label: 'Preprints - Content - Next'
                 });
 
             if (this.get('endIndex') > this.get('files.length')) return;
@@ -64,7 +64,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
-                    label: 'prev'
+                    label: 'Preprints - Content - Prev'
                 });
 
             if (this.get('startIndex') <= 0) return;
@@ -78,7 +78,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'select',
-                    label: 'file'
+                    label: 'Preprints - Content - File'
                 });
 
             this.set('selectedFile', file);

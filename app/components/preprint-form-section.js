@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
+import Analytics from '../mixins/analytics';
 
-export default CpPanelComponent.extend({
+export default CpPanelComponent.extend(Analytics, {
     tagName: 'section',
     classNames: ['preprint-form-section'],
     animate: false,
@@ -65,6 +66,12 @@ export default CpPanelComponent.extend({
         if (!this.get('isOpen')) {
             if (this.get('allowOpen')) {
                 // Crude mechanism to prevent opening a panel if conditions are not met
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'div',
+                        action: 'click',
+                        label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.name} section`
+                    });
                 this._super(...arguments);
             } else {
                 this.sendAction('errorAction', 'Please complete upload section before continuing');
