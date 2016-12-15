@@ -19,7 +19,7 @@
         {{#liquid-bind (slice-array files startIndex endIndex) use=scrollAnim as |list|}}
             {{#each list as |supplement index|}}
                 {{#if (eq supplement.kind "folder")}}
-                    <a href={{preprint.links.html}} class="hint--bottom col-xs-2 p-md box m-b-xl" aria-label={{supplement.name}}>
+                    <a href={{concat node.links.html 'files'}} target="_blank" class="hint--bottom col-xs-2 p-md box m-b-xl" aria-label={{supplement.name}}>
                         <i class="fa fa-folder fa-2x p-b-xs" aria-hidden="true"></i>
                     </a>
                 {{else}}
