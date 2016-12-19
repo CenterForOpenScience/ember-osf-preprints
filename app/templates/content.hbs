@@ -29,7 +29,7 @@
                         <a type="button"
                            class="btn btn-success edit-btn"
                            href={{concat (if theme.isProvider (concat '/preprints/' theme.id)) '/' model.id '/?edit'}}
-                           onbeforeclick={{action "click" 'link' "Content - Edit Preprint"}}
+                            onclick={{action "click" 'link' "Preprints - Content - Edit Preprint" (concat model.links.html '?edit')}}
                         >
                             {{t "content.project_button.edit_preprint"}}
                         </a>
@@ -64,13 +64,13 @@
                     {{#liquid-spacer growDuration=250 growWidth=false}}
                         <div class="p-sm osf-box-lt clearfix">{{!SHARE ROW}}
                             <div class="" id="download_project clearfix">
-                                <a class="btn btn-primary" href={{model.primaryFile.links.download}} onbeforeclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
+                                <a class="btn btn-primary" href={{model.primaryFile.links.download}} onclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
                                 <span class="p-sm">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
                                 <span class="p-xs pull-right">
-                                    <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'Preprints - Content - tweet'}}>{{fa-icon 'twitter-square' size=2 }}</a>
-                                    <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref 'Facebook' 'Preprints - Content - share'}}>{{fa-icon 'facebook-square' size=2 }}</a>
-                                    <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref 'LinkedIn' 'Preprints - Content - share'}}>{{fa-icon 'linkedin-square' size=2 }}</a>
-                                    <a class="m-r-xs text-smaller" href={{emailHref}} onbeforeclick={{action 'shareLink' emailHref 'link' 'click' 'Preprints - Content - email'}}>{{fa-icon 'envelope' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'tweet'}}>{{fa-icon 'twitter-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref 'Facebook' 'share'}}>{{fa-icon 'facebook-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref 'LinkedIn' 'share'}}>{{fa-icon 'linkedin-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{emailHref}} onclick={{action 'shareLink' emailHref 'email' 'link'}}>{{fa-icon 'envelope' size=2 }}</a>
                                 </span>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                         </div>
                         <div class="col-xs-6 text-left">
                             <p class="f-w-xs">{{t "content.project_button.paragraph"}}</p>
-                            <a type="button" class="btn btn-info" href={{node.links.html}} onbeforeclick={{action "click" "link" "Content - Visit Project"}}>{{t "content.project_button.button"}}</a>
+                            <a type="button" class="btn btn-info" href={{node.links.html}} onclick={{action "click" "link" "Preprints - Content - Visit Project"}}>{{t "content.project_button.button"}}</a>
                         </div>
                     </div>
                 </div> {{!END RIGHT SIDE COL}}
