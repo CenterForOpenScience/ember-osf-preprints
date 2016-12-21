@@ -1,11 +1,20 @@
 import { moduleFor, test } from 'ember-qunit';
 import Ember from 'ember';
+import DS from 'ember-data';
 
 //Stub panelActions service
 const panelActionsStub = Ember.Service.extend({
     open() {
         return;
+    },
+    toggle(name) {
+        const panel = panels[name];
+        return panel.get('isOpen') ? panel.set('isOpen', false) : panel.set('isOpen', true);
     }
+});
+
+let panels = Ember.Object.create({
+    'Discipline': Ember.Object.create({'isOpen': true}), 'Basics': Ember.Object.create({'isOpen': false})
 });
 
 moduleFor('controller:submit', 'Unit | Controller | submit', {
@@ -51,5 +60,89 @@ test('next opens next panel and flashes changes saved', function(assert) {
     assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
     // Test breaking down before Ember.run.later complete
     // ctrl.send('next', currentPanelName);
+});
+
+test('next opens next panel and flashes changes saved', function(assert) {
+    const ctrl = this.subject();
+    const currentPanelName = 'Discipline';
+    assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
+    // TODO Test breaking down before setTimeout  complete
+    // ctrl.send('next', currentPanelName);
+});
+
+test('nextUploadSection closes current panel and opens next panel', function(assert) {
+    // TODO not really testing anything except the stub
+    const ctrl = this.subject();
+    panels = Ember.Object.create({
+        'Discipline': Ember.Object.create({'isOpen': true}), 'Basics': Ember.Object.create({'isOpen': false})
+    });
+    ctrl.send('nextUploadSection', 'Discipline', 'Basics');
+    assert.equal(panels.get('Discipline.isOpen'), false);
+    assert.equal(panels.get('Basics.isOpen'), true);
+
+});
+
+// test('changesSaved temporarily changes currentPanelSaveState to true', function(assert) {
+//     // TODO
+// });
+
+// test('error', function(assert) {
+//     //TODO
+// })
+
+// test('changeInitialState', function(assert) {
+//     //TODO
+// })
+
+test('lockNode', function(assert) {
+    const ctrl = this.subject();
+    assert.equal(ctrl.get('nodeLocked'), false);
+    ctrl.send('lockNode');
+    assert.equal(ctrl.get('nodeLocked'), true);
+});
+
+// test('finishUpload', function(assert) {
+//     //TODO
+// })
+
+// test('existingNodeExistingFile', function(assert) {
+//     //TODO
+// })
+
+// test('createComponentCopyFile', function(assert) {
+//     //TODO
+// })
+
+// test('resumeAbandonedPreprint', function(assert) {
+//     //TODO
+// })
+
+// test('startPreprint', function(assert) {
+//     //TODO
+// })
+
+test('selectExistingFile', function(assert) {
+    const ctrl = this.subject();
+    assert.equal(ctrl.get('selectedFile'), null);
+    ctrl.send('selectExistingFile', 'my-file.jpg');
+    assert.equal(ctrl.get('selectedFile'), 'my-file.jpg');
+});
+
+test('discardUploadChanges', function(assert) {
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        store.createRecord('file', {
+            'id': '12345'
+        });
+    });
+
+    const ctrl = this.subject();
+    var file = store.modelFor('file');
+    assert.equal(ctrl.get('file'), null);
+    assert.equal(ctrl.get('selectedFile'), null);
+    assert.equal(ctrl.get('nodeTitle'), null);
+    assert.equal(ctrl.get('titleValid'), null);
+    ctrl.send('discardUploadChanges');
 
 });
