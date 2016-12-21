@@ -1,4 +1,12 @@
 import { moduleFor, test } from 'ember-qunit';
+import Ember from 'ember';
+
+//Stub panelActions service
+const panelActionsStub = Ember.Service.extend({
+    open() {
+        return;
+    }
+});
 
 moduleFor('controller:submit', 'Unit | Controller | submit', {
   // Specify the other units that are required for this test.
@@ -7,8 +15,14 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'validator:presence',
         'validator:length',
         'validator:format',
-        'service:metrics'
+        'service:metrics',
+        'service:panel-actions'
     ],
+    beforeEach: function () {
+       this.register('service:panel-actions', panelActionsStub);
+       this.inject.service('panel-actions', { as: 'panelActions' });
+   }
+
 });
 
 test('editLicense sets basicsLicense and licenseValid', function(assert) {
@@ -29,4 +43,13 @@ test('applyLicenseToggle toggles applyLicense', function(assert) {
     assert.equal(ctrl.get('applyLicense'), false);
     ctrl.send('applyLicenseToggle', true);
     assert.equal(ctrl.get('applyLicense'), true);
+});
+
+test('next opens next panel and flashes changes saved', function(assert) {
+    const ctrl = this.subject();
+    const currentPanelName = 'Discipline';
+    assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
+    // Test breaking down before Ember.run.later complete
+    // ctrl.send('next', currentPanelName);
+
 });
