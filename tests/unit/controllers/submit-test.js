@@ -1,6 +1,5 @@
 import { moduleFor, test } from 'ember-qunit';
 import Ember from 'ember';
-import DS from 'ember-data';
 
 //Stub panelActions service
 const panelActionsStub = Ember.Service.extend({
@@ -25,7 +24,19 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'validator:length',
         'validator:format',
         'service:metrics',
-        'service:panel-actions'
+        'service:panel-actions',
+        'model:file',
+        'model:file-version',
+        'model:comment',
+        'model:node',
+        'model:preprint',
+        'model:preprint-provider',
+        'model:institution',
+        'model:contributor',
+        'model:file-provider',
+        'model:registration',
+        'model:draft-registration',
+        'model:log'
     ],
     beforeEach: function () {
        this.register('service:panel-actions', panelActionsStub);
@@ -132,17 +143,26 @@ test('discardUploadChanges', function(assert) {
     this.inject.service('store');
     let store = this.store;
     Ember.run(() => {
-        store.createRecord('file', {
+        let file = store.createRecord('file', {
             'id': '12345'
         });
+        let preprint = store.createRecord('preprint', {
+            'primaryFile': file
+        });
+        let node = store.createRecord('node', {
+            title: 'hello'
+        });
+        const ctrl = this.subject();
+        ctrl.set('model', preprint);
+        ctrl.set('node', node);
+        assert.equal(ctrl.get('file'), null);
+        assert.equal(ctrl.get('selectedFile'), null);
+        assert.equal(ctrl.get('nodeTitle'), null);
+        assert.equal(ctrl.get('titleValid'), null);
+        ctrl.send('discardUploadChanges');
+        assert.equal(ctrl.get('file'), null);
+        assert.equal(ctrl.get('selectedFile.id'), file.id);
+        assert.equal(ctrl.get('nodeTitle'), 'hello');
+        assert.equal(ctrl.get('titleValid'), true);
     });
-
-    const ctrl = this.subject();
-    var file = store.modelFor('file');
-    assert.equal(ctrl.get('file'), null);
-    assert.equal(ctrl.get('selectedFile'), null);
-    assert.equal(ctrl.get('nodeTitle'), null);
-    assert.equal(ctrl.get('titleValid'), null);
-    ctrl.send('discardUploadChanges');
-
 });
