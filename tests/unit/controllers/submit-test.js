@@ -38,6 +38,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'model:draft-registration',
         'model:log',
         'model:user',
+        'model:license'
     ],
     beforeEach: function () {
        this.register('service:panel-actions', panelActionsStub);
@@ -549,4 +550,217 @@ test('uploadChanged computed property', function(assert) {
     ctrl.set('preprintFileChanged', false);
     ctrl.set('titleChanged', true);
     assert.equal(ctrl.get('uploadChanged'), true);
+});
+
+test('basicsAbstract computed property', function(assert) {
+    const ctrl = this.subject();
+    assert.equal(ctrl.get('basicsAbstract'), null);
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let node = store.createRecord('node', {
+            'description': 'A great abstract'
+        });
+        ctrl.set('node', node);
+        assert.equal(ctrl.get('basicsAbstract'), 'A great abstract');
+    });
+});
+
+test('abstractChanged computed property', function(assert) {
+    const ctrl = this.subject();
+    ctrl.set('basicsAbstract', 'Abstract with whitespace ');
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let node = store.createRecord('node', {
+            'description': 'A great abstract'
+        });
+        ctrl.set('node', node);
+        assert.equal(ctrl.get('abstractChanged'), true);
+        node.set('description', 'Abstract with whitespace');
+        assert.equal(ctrl.get('abstractChanged'), false);
+    });
+});
+
+test('basicsTags computed property', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let node = store.createRecord('node', {
+            'tags': ['firstTag', 'secondTag']
+        });
+        assert.equal(ctrl.get('basicsTags').length, 0);
+        ctrl.set('node', node);
+        assert.equal(ctrl.get('basicsTags').length, 2);
+    });
+});
+
+test('tagsChanged computed property', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let node = store.createRecord('node', {
+            'tags': ['firstTag', 'secondTag']
+        });
+        ctrl.set('node', node);
+        assert.equal(ctrl.get('tagsChanged'), false);
+        ctrl.set('basicsTags', ['changedTag']);
+        assert.equal(ctrl.get('tagsChanged'), true);
+    });
+});
+
+test('basicsDOI', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let preprint = store.createRecord('preprint', {
+            'doi': '10.1234/hello'
+        });
+        assert.equal(ctrl.get('basicsDOI'), null);
+        ctrl.set('model', preprint);
+        assert.equal(ctrl.get('basicsDOI'), '10.1234/hello');
+    });
+});
+
+test('doiChanged', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let preprint = store.createRecord('preprint', {
+            'doi': '10.1234/hello'
+        });
+        assert.equal(ctrl.get('doiChanged'), undefined);
+        ctrl.set('model', preprint);
+        assert.equal(ctrl.get('doiChanged'), false);
+        ctrl.set('basicsDOI', '10.1234/changed_doi');
+        assert.equal(ctrl.get('doiChanged'), true);
+    });
+});
+
+test('basicsLicense', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let license = store.createRecord('license', {
+            'name': 'No license'
+        });
+        let preprint = store.createRecord('preprint', {
+            license: license,
+            licenseRecord: {
+                'year': '2016',
+                'copyright_holders': ['Sally Ride']
+            },
+        });
+        ctrl.set('model', preprint);
+        assert.equal(ctrl.get('basicsLicense.year'), '2016');
+        assert.equal(ctrl.get('basicsLicense.copyrightHolders'), 'Sally Ride');
+        assert.equal(ctrl.get('basicsLicense.licenseType.name'), license.get('name'));
+    });
+});
+
+test('licenseChanged with model set', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let license = store.createRecord('license', {
+            'name': 'No license'
+        });
+        let preprint = store.createRecord('preprint', {
+            license: license,
+            licenseRecord: {
+                'year': '2016',
+                'copyright_holders': ['Sally Ride']
+            },
+        });
+        let basicsLicense = {
+            year: '2016' ,
+            copyrightHolders: 'Sally Ride',
+            licenseType: Ember.$.extend(true, {}, license)
+        };
+        ctrl.set('model', preprint);
+        assert.equal(ctrl.get('licenseChanged'), false);
+        basicsLicense.copyrightHolders = 'Kalpana Chawla';
+        ctrl.set('basicsLicense', Ember.$.extend(true, {}, basicsLicense));
+        assert.equal(ctrl.get('licenseChanged'), true);
+        ctrl.set('basicsLicense.copyrightHolders', 'Sally Ride');
+        assert.equal(ctrl.get('licenseChanged'), false);
+        ctrl.set('basicsLicense.year', '2017');
+        assert.equal(ctrl.get('licenseChanged'), true);
+        ctrl.set('basicsLicense.year', '2016');
+        assert.equal(ctrl.get('licenseChanged'), false);
+        // TODO add assertion for changing licenseType
+    });
+});
+
+test('licenseChanged with no model set', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let license = store.createRecord('license', {
+            'name': 'No license'
+        });
+        let basicsLicense = {
+            year: '2016' ,
+            copyrightHolders: 'Sally Ride',
+            licenseType: Ember.$.extend(true, {}, license)
+        };
+        // TODO is below assertion correct?
+        assert.equal(ctrl.get('licenseChanged'), true);
+        assert.equal(ctrl.get('basicsLicense.licenseType.name'), null);
+        ctrl.set('basicsLicense', basicsLicense);
+        assert.equal(ctrl.get('licenseChanged'), true);
+    });
+});
+
+test('basicsChanged computed property', function(assert) {
+    const ctrl = this.subject();
+    ctrl.set('tagsChanged', false);
+    ctrl.set('abstractChanged', false);
+    ctrl.set('doiChanged', false);
+    ctrl.set('licenseChanged', false);
+    assert.equal(ctrl.get('basicsChanged'), false);
+    ctrl.set('tagsChanged', true);
+    ctrl.set('abstractChanged', true);
+    ctrl.set('doiChanged', true);
+    ctrl.set('licenseChanged', true);
+    assert.equal(ctrl.get('basicsChanged'), true);
+});
+
+test('subjectsList', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let preprint = store.createRecord('preprint', {
+            'subjects': [['Subject First Level', 'Subject Second Level']]
+        });
+        assert.equal(ctrl.get('subjectsList').length, 0);
+        ctrl.set('model', preprint);
+        assert.equal(ctrl.get('subjectsList').length, 1);
+        assert.equal(ctrl.get('subjectsList')[0].length, 2);
+    });
+});
+
+test('disciplineReduced', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    let store = this.store;
+    let engineeringDisciplines = [[{id: '12345'},{'id':'56789'}], [{id: '12345'}], [{id: '12250'}] ];
+    Ember.run(() => {
+        let preprint = store.createRecord('preprint', {
+            'subjects': engineeringDisciplines
+        });
+        ctrl.set('model', preprint);
+        assert.equal(ctrl.get('disciplineReduced').length, 3);
+        assert.equal(ctrl.get('disciplineReduced')[0].id, '12345');
+        assert.equal(ctrl.get('disciplineReduced')[1].id, '56789');
+        assert.equal(ctrl.get('disciplineReduced')[2].id, '12250');
+    });
 });
