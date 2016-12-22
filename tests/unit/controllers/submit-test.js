@@ -764,3 +764,50 @@ test('disciplineReduced', function(assert) {
         assert.equal(ctrl.get('disciplineReduced')[2].id, '12250');
     });
 });
+
+test('disciplineChanged', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let preprint = store.createRecord('preprint', {
+            'subjects': [[{id: '12345'},{'id':'56789'}]]
+        });
+        ctrl.set('model', preprint);
+        assert.equal(ctrl.get('disciplineChanged'), false);
+        ctrl.set('subjectsList', [[{id: '12345'},{'id':'12250'}]]);
+        assert.equal(ctrl.get('disciplineChanged'), true);
+    });
+});
+
+test('isAdmin', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let node = store.createRecord('node', {
+            'currentUserPermissions': 'administrator'
+        });
+        let readNode = store.createRecord('node', {
+            'currentUserPermissions': 'read'
+        });
+        ctrl.set('node', node);
+        assert.equal(ctrl.get('isAdmin'), true);
+        ctrl.set('node', readNode);
+        assert.equal(ctrl.get('isAdmin'), false);
+    });
+});
+
+test('canEdit', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let node = store.createRecord('node', {
+            'currentUserPermissions': 'administrator',
+            'registration': true
+        });
+        ctrl.set('node', node);
+        assert.equal(ctrl.get('canEdit'), false);
+    });
+});
