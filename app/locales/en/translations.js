@@ -248,6 +248,11 @@ export default {
             support: `Support`,
             contact: `Contact`
         },
+        'permission-language':{
+            engrXiv: 'arXiv is a trademark of Cornell University, used under license. This license should not be understood to indicate endorsement of content on engrXiv by Cornell University or arXiv.',
+            SocArXiv: 'arXiv is a trademark of Cornell University, used under license.',
+            PsyArXiv: 'arXiv is a trademark of Cornell University, used under license. This license should not be understood to indicate endorsement of content on PsyArXiv by Cornell University or arXiv.'
+        },
         'preprint-form-authors': {
             search: {
                 placeholder: `Search by name`
