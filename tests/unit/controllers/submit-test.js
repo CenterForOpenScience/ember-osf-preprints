@@ -1,10 +1,12 @@
 import { moduleFor, test } from 'ember-qunit';
 import Ember from 'ember';
+// import wait from 'ember-test-helpers/wait';
 
 //Stub panelActions service
 const panelActionsStub = Ember.Service.extend({
-    open() {
-        return;
+    open(name) {
+        const panel = panels[name];
+        panel.set('isOpen', true);
     },
     toggle(name) {
         const panel = panels[name];
@@ -540,15 +542,19 @@ test('applyLicenseToggle toggles applyLicense', function(assert) {
     assert.equal(ctrl.get('applyLicense'), true);
 });
 
-test('next opens next panel and flashes changes saved', function(assert) {
-    const ctrl = this.subject();
-    const currentPanelName = 'Discipline';
-    assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
-    // TODO Test breaking down before Ember.run.later complete - "Calling set on destroyed object"
-    // Ember.run(() => {
-    //     ctrl.send('next', currentPanelName);
-    // });
-});
+// test('next opens next panel and flashes changes saved', function(assert) {
+//     const ctrl = this.subject();
+//     const currentPanelName = 'Discipline';
+//     panels = Ember.Object.create({
+//         'Discipline': Ember.Object.create({'isOpen': true}), 'Basics': Ember.Object.create({'isOpen': false})
+//     });
+//     assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
+//     return wait().then(() => {
+//         ctrl.send('next', currentPanelName);
+//         assert.equal(panels.get('Discipline.isOpen'), true);
+//         assert.equal(panels.get('Basics.isOpen'), true);
+//     });
+// });
 
 test('nextUploadSection closes current panel and opens next panel', function(assert) {
     // TODO not really testing anything except the stub
@@ -742,8 +748,25 @@ test('stripDOI', function(assert) {
 });
 
 // test('saveBasics', function(assert) {
-//     //TODO
-// })
+//     this.inject.service('store');
+//     let store = this.store;
+//     const ctrl = this.subject();
+//     Ember.run.later(() => {
+//         let node = store.createRecord('node', {
+//             title: 'hello',
+//             tags: ['tags'],
+//             description: 'This is an abstract.'
+//         });
+//         let preprint = store.createRecord('preprint', {
+//             primaryFile: 'Test file',
+//             'doi': '10.1234/test'
+//         });
+//         ctrl.set('node', node);
+//         ctrl.set('model', preprint);
+//         ctrl.send('saveBasics');
+//
+//     });
+// });
 
 test('addTag', function(assert) {
     const ctrl = this.subject();
