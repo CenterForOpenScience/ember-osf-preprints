@@ -403,7 +403,8 @@ test('licenseChanged with model set', function(assert) {
         assert.equal(ctrl.get('licenseChanged'), true);
         ctrl.set('basicsLicense.year', '2016');
         assert.equal(ctrl.get('licenseChanged'), false);
-        // TODO add assertion for changing licenseType
+        ctrl.set('basicsLicense.licenseType', store.createRecord('license', {'name': 'MIT License'}));
+        assert.equal(ctrl.get('licenseChanged'), true);
     });
 });
 
