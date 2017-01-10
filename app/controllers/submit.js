@@ -221,7 +221,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
     // Does preprint have a saved primaryFile?
     savedFile: Ember.computed('model.primaryFile', function() {
-        return !!this.get('model.primaryFile');
+        return !!this.get('model.primaryFile.content');
     }),
     // Does node have a saved description?
     savedAbstract: Ember.computed('node.description', function() {

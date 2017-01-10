@@ -143,24 +143,26 @@ test('savedTitle computed property', function(assert) {
     });
 });
 
-// test('savedFile computed property', function(assert) {
-//     this.inject.service('store');
-//     let store = this.store;
-//     const ctrl = this.subject();
-//     Ember.run(() => {
-//         let preprint = store.createRecord('preprint', {
-//             primaryFile: null
-//         });
-//         let preprintWithFile = store.createRecord('preprint', {
-//             primaryFile: 'Test file'
-//         });
-//         ctrl.set('model', preprint);
-//         // TODO failing because test return Ember.ObjectProxy
-//         assert.equal(ctrl.get('savedFile'), false);
-//         ctrl.set('model', preprintWithFile);
-//         assert.equal(ctrl.get('savedFile'), true);
-//     });
-// });
+test('savedFile computed property', function(assert) {
+    this.inject.service('store');
+    let store = this.store;
+    const ctrl = this.subject();
+    Ember.run(() => {
+        let file = store.createRecord('file', {
+            'id': '12345'
+        });
+        let preprint = store.createRecord('preprint', {
+            primaryFile: null
+        });
+        let preprintWithFile = store.createRecord('preprint', {
+            primaryFile: file
+        });
+        ctrl.set('model', preprint);
+        assert.equal(ctrl.get('savedFile'), false);
+        ctrl.set('model', preprintWithFile);
+        assert.equal(ctrl.get('savedFile'), true);
+    });
+});
 
 test('savedAbstract computed property', function(assert) {
     this.inject.service('store');
