@@ -25,6 +25,8 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'validator:format',
         'service:metrics',
         'service:panel-actions',
+        'service:toast',
+        'service:i18n',
         'model:file',
         'model:file-version',
         'model:comment',
@@ -38,7 +40,9 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'model:draft-registration',
         'model:log',
         'model:user',
-        'model:license'
+        'model:license',
+        'transform:links',
+        'transform:embed'
     ],
     beforeEach: function () {
        this.register('service:panel-actions', panelActionsStub);
@@ -48,300 +52,9 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
 });
 
 ///////////////////////////////////////////////////////////////////////////////
-// Test CONTROLLER ACTIONS > SUBMIT CONTROLLER
-test('editLicense sets basicsLicense and licenseValid', function(assert) {
-    const ctrl = this.subject();
-    assert.equal(ctrl.get('basicsLicense.copyrightHolders'), null);
-    assert.equal(ctrl.get('basicsLicense.licenseType'), null);
-    assert.equal(ctrl.get('basicsLicense.year'), null);
-    assert.equal(ctrl.get('licenseValid'), false);
-    // Trigger controller action
-    ctrl.send('editLicense', 'license', true);
-
-    assert.equal(ctrl.get('basicsLicense'), 'license');
-    assert.equal(ctrl.get('licenseValid'), true);
-});
-
-test('applyLicenseToggle toggles applyLicense', function(assert) {
-    const ctrl = this.subject();
-    assert.equal(ctrl.get('applyLicense'), false);
-    ctrl.send('applyLicenseToggle', true);
-    assert.equal(ctrl.get('applyLicense'), true);
-});
-
-test('next opens next panel and flashes changes saved', function(assert) {
-    const ctrl = this.subject();
-    const currentPanelName = 'Discipline';
-    assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
-    // Test breaking down before Ember.run.later complete
-    // ctrl.send('next', currentPanelName);
-});
-
-test('next opens next panel and flashes changes saved', function(assert) {
-    const ctrl = this.subject();
-    const currentPanelName = 'Discipline';
-    assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
-    // TODO Test breaking down before setTimeout  complete
-    // ctrl.send('next', currentPanelName);
-});
-
-test('nextUploadSection closes current panel and opens next panel', function(assert) {
-    // TODO not really testing anything except the stub
-    const ctrl = this.subject();
-    panels = Ember.Object.create({
-        'Discipline': Ember.Object.create({'isOpen': true}), 'Basics': Ember.Object.create({'isOpen': false})
-    });
-    ctrl.send('nextUploadSection', 'Discipline', 'Basics');
-    assert.equal(panels.get('Discipline.isOpen'), false);
-    assert.equal(panels.get('Basics.isOpen'), true);
-
-});
-
-// test('changesSaved temporarily changes currentPanelSaveState to true', function(assert) {
-//     // TODO
-// });
-
-// test('error', function(assert) {
-//     //TODO
-// })
-
-// test('changeInitialState', function(assert) {
-//     //TODO
-// })
-
-test('lockNode', function(assert) {
-    const ctrl = this.subject();
-    assert.equal(ctrl.get('nodeLocked'), false);
-    ctrl.send('lockNode');
-    assert.equal(ctrl.get('nodeLocked'), true);
-});
-
-// test('finishUpload', function(assert) {
-//     //TODO
-// })
-
-// test('existingNodeExistingFile', function(assert) {
-//     //TODO
-// })
-
-// test('createComponentCopyFile', function(assert) {
-//     //TODO
-// })
-
-// test('resumeAbandonedPreprint', function(assert) {
-//     //TODO
-// })
-
-// test('startPreprint', function(assert) {
-//     //TODO
-// })
-
-test('selectExistingFile', function(assert) {
-    const ctrl = this.subject();
-    assert.equal(ctrl.get('selectedFile'), null);
-    ctrl.send('selectExistingFile', 'my-file.jpg');
-    assert.equal(ctrl.get('selectedFile'), 'my-file.jpg');
-});
-
-test('discardUploadChanges', function(assert) {
-    // TODO Cannot read property 'pagination' of null
-    this.inject.service('store');
-    let store = this.store;
-    Ember.run(() => {
-        let file = store.createRecord('file', {
-            'id': '12345'
-        });
-        let preprint = store.createRecord('preprint', {
-            'primaryFile': file
-        });
-        let node = store.createRecord('node', {
-            title: 'hello'
-        });
-        const ctrl = this.subject();
-        ctrl.set('model', preprint);
-        ctrl.set('node', node);
-        assert.equal(ctrl.get('file'), null);
-        assert.equal(ctrl.get('selectedFile'), null);
-        assert.equal(ctrl.get('nodeTitle'), null);
-        assert.equal(ctrl.get('titleValid'), null);
-        ctrl.send('discardUploadChanges');
-        assert.equal(ctrl.get('file'), null);
-        assert.equal(ctrl.get('selectedFile.id'), file.id);
-        assert.equal(ctrl.get('nodeTitle'), 'hello');
-        assert.equal(ctrl.get('titleValid'), true);
-    });
-});
-
-test('clearDownstreamFields in entire upload section', function(assert) {
-    // TODO Cannot read property 'pagination' of null
-    this.inject.service('store');
-    let store = this.store;
-    const ctrl = this.subject();
-    Ember.run(() => {
-        let node = store.createRecord('node', {
-            title: 'hello'
-        });
-        ctrl.set('node', node);
-        ctrl.set('selectedFile', 'Test file');
-        ctrl.set('file', 'file');
-        ctrl.set('convertOrCopy', 'copy');
-        ctrl.set('nodeTitle', 'Test title');
-        ctrl.send('clearDownstreamFields', 'allUpload');
-        assert.equal(ctrl.get('node'), null);
-        assert.equal(ctrl.get('selectedFile'), null);
-        assert.equal(ctrl.get('file'), null);
-        assert.equal(ctrl.get('convertOrCopy'), null);
-        assert.equal(ctrl.get('nodeTitle'), null);
-    });
-});
-
-test('discardBasics', function(assert) {
-    // TODO Cannot read property 'pagination' of null
-    // assert.expect(4);
-    this.inject.service('store');
-    let store = this.store;
-    const ctrl = this.subject();
-    Ember.run(() => {
-        let node = store.createRecord('node', {
-            title: 'hello',
-            tags: ['first tag'],
-            description: 'The best abstract'
-        });
-
-        let preprint = store.createRecord('preprint', {
-            doi: '10.1234/test_doi',
-            licenseRecord: {
-                'year': '2016',
-                'copyright_holders': ['Amelia Earhart']
-            },
-            license: 'No License'
-        });
-
-        ctrl.set('node', node);
-        ctrl.set('model', preprint);
-        ctrl.set('basicsTags', ['second Tag']);
-        ctrl.set('basicsAbstract', 'Test abstract');
-        ctrl.set('basicsDOI', null);
-        ctrl.set('basicsLicense', 'Test license');
-        ctrl.send('discardBasics');
-        assert.equal(ctrl.get('basicsTags')[0], node.get('tags')[0]);
-        assert.equal(ctrl.get('basicsAbstract'), node.get('description'));
-        assert.equal(ctrl.get('basicsDOI'), preprint.get('doi'));
-        // TODO promise hasn't resolved so this is incorrect.
-        // assert.equal(ctrl.get('basicsLicense.year'), preprint.get('licenseRecord.year'));
-    });
-});
-
-test('stripDOI', function(assert) {
-    const ctrl = this.subject();
-    ctrl.set('basicsDOI', ' https://dx.doi.org/10.1234/hello ');
-    ctrl.send('stripDOI');
-    assert.equal(ctrl.get('basicsDOI'), '10.1234/hello');
-});
-
-// test('saveBasics', function(assert) {
-//     //TODO
-// })
-
-test('addTag', function(assert) {
-    const ctrl = this.subject();
-    ctrl.set('basicsTags', ['firstTag', 'secondTag']);
-    ctrl.send('addTag', 'thirdTag');
-    assert.equal(ctrl.get('basicsTags').length, 3);
-    assert.equal(ctrl.get('basicsTags')[2], 'thirdTag');
-});
-
-test('removeTag', function(assert) {
-    const ctrl = this.subject();
-    ctrl.set('basicsTags', ['firstTag', 'secondTag']);
-    ctrl.send('removeTag', 'secondTag');
-    assert.equal(ctrl.get('basicsTags').length, 1);
-    assert.equal(ctrl.get('basicsTags')[0], 'firstTag');
-});
-
-test('setSubjects', function(assert) {
-    const ctrl = this.subject();
-    assert.equal(ctrl.get('disciplineModifiedToggle'), false);
-    assert.equal(ctrl.get('subjectsList').length, 0);
-    ctrl.send('setSubjects', [['Test Subject Test Only']]);
-    assert.equal(ctrl.get('disciplineModifiedToggle'), true);
-    assert.equal(ctrl.get('subjectsList').length, 1);
-});
-
-// test('saveSubjects', function(assert) {
-//     //TODO
-// })
-
-// test('findContributors', function(assert) {
-//     //TODO
-// })
-
-// test('highlightSuccessOrFailure', function(assert) {
-//     //TODO
-// })
-
-test('toggleSharePreprintModal', function(assert) {
-    const ctrl = this.subject();
-    assert.equal(ctrl.get('showModalSharePreprint'), false);
-    ctrl.send('toggleSharePreprintModal');
-    assert.equal(ctrl.get('showModalSharePreprint'), true);
-});
-
-// test('savePreprint', function(assert) {
-//     //TODO
-// })
-
-test('submit controller property defaults - add mode', function(assert) {
-    const ctrl = this.subject();
-    assert.equal(ctrl.get('_State.START'), 'start');
-    assert.equal(ctrl.get('_State.NEW'), 'new');
-    assert.equal(ctrl.get('_State.EXISTING'), 'existing');
-    assert.equal(ctrl.get('filePickerState'), 'start');
-    assert.equal(ctrl.get('_existingState.CHOOSE'), 'choose');
-    assert.equal(ctrl.get('_existingState.EXISTINGFILE'), 'existing');
-    assert.equal(ctrl.get('_existingState.NEWFILE'), 'new');
-    assert.equal(ctrl.get('existingState'), 'choose');
-    assert.equal(ctrl.get('_names').length, 5);
-    assert.equal(ctrl.get('user'), null);
-    assert.equal(ctrl.get('userNodes').length, 0);
-    assert.equal(ctrl.get('userNodesLoaded'), false);
-    assert.equal(ctrl.get('availableLicenses').length, 0);
-    assert.equal(ctrl.get('applyLicense'), false);
-    assert.equal(ctrl.get('newNode'), false);
-    assert.equal(ctrl.get('node'), null);
-    assert.equal(ctrl.get('file'), null);
-    assert.equal(ctrl.get('selectedFile'), null);
-    assert.equal(ctrl.get('contributors').length, 0);
-    assert.equal(ctrl.get('nodeTitle'), null);
-    assert.equal(ctrl.get('nodeLocked'), false);
-    assert.equal(ctrl.get('searchResults').length, 0);
-    assert.equal(ctrl.get('savingPreprint'), false);
-    assert.equal(ctrl.get('showModalSharePreprint'), false);
-    assert.equal(ctrl.get('uploadSaveState'), false);
-    assert.equal(ctrl.get('disciplineSaveState'), false);
-    assert.equal(ctrl.get('basicsSaveState'), false);
-    assert.equal(ctrl.get('authorsSaveState'), false);
-    assert.equal(ctrl.get('parentNode'), null);
-    assert.equal(ctrl.get('parentContributors').length, 0);
-    assert.equal(ctrl.get('convertProjectConfirmed'), false);
-    assert.equal(ctrl.get('convertOrCopy'), null);
-    assert.equal(ctrl.get('osfStorageProvider'), null);
-    assert.equal(ctrl.get('osfProviderLoaded'), false);
-    assert.equal(ctrl.get('titleValid'), null);
-    assert.equal(ctrl.get('disciplineModifiedToggle'), false);
-    assert.equal(ctrl.get('uploadInProgress'), false);
-    assert.equal(ctrl.get('existingPreprints').length, 0);
-    assert.equal(ctrl.get('abandonedPreprint'), null);
-    assert.equal(ctrl.get('editMode'), false);
-    assert.equal(ctrl.get('shareButtonDisabled'), false);
-    assert.equal(ctrl.get('licenseValid'), false);
-});
-
-///////////////////////////////////////////////////////////////////////////////
 // Test COMPUTED PROPERTIES > SUBMIT CONTROLLER
 
 test('isTopLevelNode computed property', function(assert) {
-    // TODO Cannot read property 'pagination' of null
     this.inject.service('store');
     let store = this.store;
     const ctrl = this.subject();
@@ -349,7 +62,8 @@ test('isTopLevelNode computed property', function(assert) {
         let node = store.createRecord('node', {
             parent: store.createRecord('node', {
                 id: '12345'
-            })
+            }),
+            contributors: []
         });
         assert.equal(ctrl.get('isTopLevelNode'), null);
         ctrl.set('node', node);
@@ -358,7 +72,6 @@ test('isTopLevelNode computed property', function(assert) {
 });
 
 test('hasFile computed property', function(assert) {
-    // TODO Cannot read property 'pagination' of null
     const ctrl = this.subject();
     assert.equal(ctrl.get('hasFile'), false);
     ctrl.set('file', 'Test File');
@@ -370,14 +83,6 @@ test('uploadValid computed property', function(assert) {
     assert.equal(ctrl.get('uploadValid'), false);
     ctrl.set('nodeLocked', true);
     assert.equal(ctrl.get('uploadValid'), true);
-});
-
-test('abstractValid computed property', function(assert) {
-    const ctrl = this.subject();
-    ctrl.set('basicsAbstract', 'Short abstract');
-    assert.equal(ctrl.get('abstractValid'), false);
-    ctrl.set('basicsAbstract', 'Abstract of sufficient length');
-    assert.equal(ctrl.get('abstractValid'), true);
 });
 
 test('abstractValid computed property', function(assert) {
@@ -771,11 +476,11 @@ test('disciplineChanged', function(assert) {
     let store = this.store;
     Ember.run(() => {
         let preprint = store.createRecord('preprint', {
-            'subjects': [[{id: '12345'},{'id':'56789'}]]
+            'subjects': [[{id: '12345'},{id:'56789'}]]
         });
         ctrl.set('model', preprint);
         assert.equal(ctrl.get('disciplineChanged'), false);
-        ctrl.set('subjectsList', [[{id: '12345'},{'id':'12250'}]]);
+        ctrl.set('subjectsList', [[{id: '12345'},{id:'12250'}]]);
         assert.equal(ctrl.get('disciplineChanged'), true);
     });
 });
@@ -810,4 +515,331 @@ test('canEdit', function(assert) {
         ctrl.set('node', node);
         assert.equal(ctrl.get('canEdit'), false);
     });
+});
+
+///////////////////////////////////////////////////////////////////////////////
+// Test CONTROLLER ACTIONS > SUBMIT CONTROLLER
+test('editLicense sets basicsLicense and licenseValid', function(assert) {
+    const ctrl = this.subject();
+    assert.equal(ctrl.get('basicsLicense.copyrightHolders'), null);
+    assert.equal(ctrl.get('basicsLicense.licenseType'), null);
+    assert.equal(ctrl.get('basicsLicense.year'), null);
+    assert.equal(ctrl.get('licenseValid'), false);
+    // Trigger controller action
+    ctrl.send('editLicense', 'license', true);
+    assert.equal(ctrl.get('basicsLicense'), 'license');
+    assert.equal(ctrl.get('licenseValid'), true);
+});
+
+test('applyLicenseToggle toggles applyLicense', function(assert) {
+    const ctrl = this.subject();
+    assert.equal(ctrl.get('applyLicense'), false);
+    ctrl.send('applyLicenseToggle', true);
+    assert.equal(ctrl.get('applyLicense'), true);
+});
+
+test('next opens next panel and flashes changes saved', function(assert) {
+    const ctrl = this.subject();
+    const currentPanelName = 'Discipline';
+    assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
+    // TODO Test breaking down before Ember.run.later complete - "Calling set on destroyed object"
+    // Ember.run(() => {
+    //     ctrl.send('next', currentPanelName);
+    // });
+});
+
+test('nextUploadSection closes current panel and opens next panel', function(assert) {
+    // TODO not really testing anything except the stub
+    const ctrl = this.subject();
+    panels = Ember.Object.create({
+        'Discipline': Ember.Object.create({'isOpen': true}), 'Basics': Ember.Object.create({'isOpen': false})
+    });
+    ctrl.send('nextUploadSection', 'Discipline', 'Basics');
+    assert.equal(panels.get('Discipline.isOpen'), false);
+    assert.equal(panels.get('Basics.isOpen'), true);
+
+});
+
+test('changesSaved temporarily changes currentPanelSaveState to true', function(assert) {
+    // TODO changesSaved has a setTimeout which causes "calling set on destroyed object" to be thrown.
+    // How to wait until setTimeout has finished before breaking test down?
+    const ctrl = this.subject();
+    // let currentPanelName = 'Discipline';
+    assert.equal(ctrl.get('disciplineSaveState'), false);
+    // ctrl.send('changesSaved', currentPanelName);
+});
+
+test('error', function(assert) {
+    // TODO How to properly test this?  The error action creates an error
+    // toast message displaying the error message
+    const ctrl = this.subject();
+    let error = 'This is incorrect.';
+    ctrl.send('error', error);
+    assert.equal(error, error);
+});
+
+// test('changeInitialState', function(assert) {
+//     // TODO testing panel actions - third party
+// });
+
+test('lockNode', function(assert) {
+    const ctrl = this.subject();
+    assert.equal(ctrl.get('nodeLocked'), false);
+    ctrl.send('lockNode');
+    assert.equal(ctrl.get('nodeLocked'), true);
+});
+
+// test('finishUpload', function(assert) {
+//     //TODO finishUpload calls 'next' action. Haven't gotten 'next' working in tests yet
+// })
+
+// test('existingNodeExistingFile', function(assert) {
+//     // TODO Many actions get called by this action. Sending POST to localhost:7357/nodeTags
+//     // Getting Assertion Failed: You can only unload a record which is not inFlight
+//     this.inject.service('store');
+//     let store = this.store;
+//     const ctrl = this.subject();
+//     Ember.run(() => {
+//         let node = store.createRecord('node', {
+//             title: 'hello',
+//             tags: ['first tag'],
+//             description: 'The best abstract'
+//         });
+//         ctrl.set('nodeTitle', 'New title')
+//         ctrl.set('node', node);
+//         ctrl.send('existingNodeExistingFile');
+//         assert.equal(ctrl.get('node.title'), 'New title');
+//         assert.equal(ctrl.get('basicsAbstract'), node.get('description'));
+//     });
+// });
+
+// test('createComponentCopyFile', function(assert) {
+//     // TODO - same error with You can only unload a record which is not inFlight.
+//     // Assert that node has a child
+//     this.inject.service('store');
+//     let store = this.store;
+//     const ctrl = this.subject();
+//     Ember.run(() => {
+//         let node = store.createRecord('node', {
+//             title: 'hello',
+//             tags: ['first tag'],
+//             description: 'The best abstract'
+//         });
+//         ctrl.set('nodeTitle', 'New title');
+//         ctrl.set('node', node);
+//         ctrl.send('createComponentCopyFile');
+//     });
+// });
+
+// test('resumeAbandonedPreprint', function(assert) {
+//     //TODO class startPreprint, which haven't figured out how to test yet
+// });
+
+// test('startPreprint', function(assert) {
+//     //TODO
+// });
+
+test('selectExistingFile', function(assert) {
+    const ctrl = this.subject();
+    assert.equal(ctrl.get('selectedFile'), null);
+    ctrl.send('selectExistingFile', 'my-file.jpg');
+    assert.equal(ctrl.get('selectedFile'), 'my-file.jpg');
+});
+
+test('discardUploadChanges', function(assert) {
+    this.inject.service('store');
+    let store = this.store;
+    Ember.run(() => {
+        let file = store.createRecord('file', {
+            'id': '12345'
+        });
+        let preprint = store.createRecord('preprint', {
+            'primaryFile': file
+        });
+        let node = store.createRecord('node', {
+            title: 'hello'
+        });
+        const ctrl = this.subject();
+        ctrl.set('model', preprint);
+        ctrl.set('node', node);
+        assert.equal(ctrl.get('file'), null);
+        assert.equal(ctrl.get('selectedFile'), null);
+        assert.equal(ctrl.get('nodeTitle'), null);
+        assert.equal(ctrl.get('titleValid'), null);
+        ctrl.send('discardUploadChanges');
+        assert.equal(ctrl.get('file'), null);
+        assert.equal(ctrl.get('selectedFile.id'), file.id);
+        assert.equal(ctrl.get('nodeTitle'), 'hello');
+        assert.equal(ctrl.get('titleValid'), true);
+    });
+});
+
+test('clearDownstreamFields in entire upload section', function(assert) {
+    this.inject.service('store');
+    let store = this.store;
+    const ctrl = this.subject();
+    Ember.run(() => {
+        let node = store.createRecord('node', {
+            title: 'hello'
+        });
+        ctrl.set('node', node);
+        ctrl.set('selectedFile', 'Test file');
+        ctrl.set('file', 'file');
+        ctrl.set('convertOrCopy', 'copy');
+        ctrl.set('nodeTitle', 'Test title');
+        ctrl.send('clearDownstreamFields', 'allUpload');
+        assert.equal(ctrl.get('node'), null);
+        assert.equal(ctrl.get('selectedFile'), null);
+        assert.equal(ctrl.get('file'), null);
+        assert.equal(ctrl.get('convertOrCopy'), null);
+        assert.equal(ctrl.get('nodeTitle'), null);
+    });
+});
+
+test('discardBasics', function(assert) {
+    // assert.expect(4);
+    this.inject.service('store');
+    let store = this.store;
+    const ctrl = this.subject();
+    Ember.run(() => {
+        let node = store.createRecord('node', {
+            title: 'hello',
+            tags: ['first tag'],
+            description: 'The best abstract'
+        });
+
+        let preprint = store.createRecord('preprint', {
+            doi: '10.1234/test_doi',
+            licenseRecord: {
+                'year': '2016',
+                'copyright_holders': ['Amelia Earhart']
+            },
+            license: 'No License'
+        });
+
+        ctrl.set('node', node);
+        ctrl.set('model', preprint);
+        ctrl.set('basicsTags', ['second Tag']);
+        ctrl.set('basicsAbstract', 'Test abstract');
+        ctrl.set('basicsDOI', null);
+        ctrl.set('basicsLicense', 'Test license');
+        ctrl.send('discardBasics');
+        assert.equal(ctrl.get('basicsTags')[0], node.get('tags')[0]);
+        assert.equal(ctrl.get('basicsAbstract'), node.get('description'));
+        assert.equal(ctrl.get('basicsDOI'), preprint.get('doi'));
+        // TODO promise hasn't resolved so this is incorrect.
+        // assert.equal(ctrl.get('basicsLicense.year'), preprint.get('licenseRecord.year'));
+    });
+});
+
+test('stripDOI', function(assert) {
+    const ctrl = this.subject();
+    ctrl.set('basicsDOI', ' https://dx.doi.org/10.1234/hello ');
+    ctrl.send('stripDOI');
+    assert.equal(ctrl.get('basicsDOI'), '10.1234/hello');
+});
+
+// test('saveBasics', function(assert) {
+//     //TODO
+// })
+
+test('addTag', function(assert) {
+    const ctrl = this.subject();
+    ctrl.set('basicsTags', ['firstTag', 'secondTag']);
+    ctrl.send('addTag', 'thirdTag');
+    assert.equal(ctrl.get('basicsTags').length, 3);
+    assert.equal(ctrl.get('basicsTags')[2], 'thirdTag');
+});
+
+test('removeTag', function(assert) {
+    const ctrl = this.subject();
+    ctrl.set('basicsTags', ['firstTag', 'secondTag']);
+    ctrl.send('removeTag', 'secondTag');
+    assert.equal(ctrl.get('basicsTags').length, 1);
+    assert.equal(ctrl.get('basicsTags')[0], 'firstTag');
+});
+
+test('setSubjects', function(assert) {
+    const ctrl = this.subject();
+    assert.equal(ctrl.get('disciplineModifiedToggle'), false);
+    assert.equal(ctrl.get('subjectsList').length, 0);
+    ctrl.send('setSubjects', [['Test Subject Test Only']]);
+    assert.equal(ctrl.get('disciplineModifiedToggle'), true);
+    assert.equal(ctrl.get('subjectsList').length, 1);
+});
+
+// test('discardSubjects', function(assert) {
+//     //TODO
+// })
+
+// test('saveSubjects', function(assert) {
+//     //TODO
+// })
+
+// test('findContributors', function(assert) {
+//     //TODO
+// })
+
+// test('highlightSuccessOrFailure', function(assert) {
+//     //TODO
+// })
+
+///////////////////////////////////////////////////////////////////////////////
+// Test Submit Controller > Initial Defaults
+
+test('toggleSharePreprintModal', function(assert) {
+    const ctrl = this.subject();
+    assert.equal(ctrl.get('showModalSharePreprint'), false);
+    ctrl.send('toggleSharePreprintModal');
+    assert.equal(ctrl.get('showModalSharePreprint'), true);
+});
+
+// test('savePreprint', function(assert) {
+//     //TODO
+// })
+
+test('submit controller property defaults - add mode', function(assert) {
+    const ctrl = this.subject();
+    assert.equal(ctrl.get('_State.START'), 'start');
+    assert.equal(ctrl.get('_State.NEW'), 'new');
+    assert.equal(ctrl.get('_State.EXISTING'), 'existing');
+    assert.equal(ctrl.get('filePickerState'), 'start');
+    assert.equal(ctrl.get('_existingState.CHOOSE'), 'choose');
+    assert.equal(ctrl.get('_existingState.EXISTINGFILE'), 'existing');
+    assert.equal(ctrl.get('_existingState.NEWFILE'), 'new');
+    assert.equal(ctrl.get('existingState'), 'choose');
+    assert.equal(ctrl.get('_names').length, 5);
+    assert.equal(ctrl.get('user'), null);
+    assert.equal(ctrl.get('userNodes').length, 0);
+    assert.equal(ctrl.get('userNodesLoaded'), false);
+    assert.equal(ctrl.get('availableLicenses').length, 0);
+    assert.equal(ctrl.get('applyLicense'), false);
+    assert.equal(ctrl.get('newNode'), false);
+    assert.equal(ctrl.get('node'), null);
+    assert.equal(ctrl.get('file'), null);
+    assert.equal(ctrl.get('selectedFile'), null);
+    assert.equal(ctrl.get('contributors').length, 0);
+    assert.equal(ctrl.get('nodeTitle'), null);
+    assert.equal(ctrl.get('nodeLocked'), false);
+    assert.equal(ctrl.get('searchResults').length, 0);
+    assert.equal(ctrl.get('savingPreprint'), false);
+    assert.equal(ctrl.get('showModalSharePreprint'), false);
+    assert.equal(ctrl.get('uploadSaveState'), false);
+    assert.equal(ctrl.get('disciplineSaveState'), false);
+    assert.equal(ctrl.get('basicsSaveState'), false);
+    assert.equal(ctrl.get('authorsSaveState'), false);
+    assert.equal(ctrl.get('parentNode'), null);
+    assert.equal(ctrl.get('parentContributors').length, 0);
+    assert.equal(ctrl.get('convertProjectConfirmed'), false);
+    assert.equal(ctrl.get('convertOrCopy'), null);
+    assert.equal(ctrl.get('osfStorageProvider'), null);
+    assert.equal(ctrl.get('osfProviderLoaded'), false);
+    assert.equal(ctrl.get('titleValid'), null);
+    assert.equal(ctrl.get('disciplineModifiedToggle'), false);
+    assert.equal(ctrl.get('uploadInProgress'), false);
+    assert.equal(ctrl.get('existingPreprints').length, 0);
+    assert.equal(ctrl.get('abandonedPreprint'), null);
+    assert.equal(ctrl.get('editMode'), false);
+    assert.equal(ctrl.get('shareButtonDisabled'), false);
+    assert.equal(ctrl.get('licenseValid'), false);
 });
