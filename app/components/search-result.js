@@ -66,7 +66,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'result',
                     action: !this.showBody ? 'contract' : 'expand',
-                    label: this.result.title
+                    label: `Preprints - Discover - ${this.result.title}`
                 });
         },
         select(item) {

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Analytics from '../mixins/analytics';
 
 import {
   validator, buildValidations
@@ -30,12 +31,18 @@ const Validations = buildValidations({
     },
 });
 
-export default Ember.Component.extend(Validations, {
+export default Ember.Component.extend(Validations, Analytics, {
     fullName: null,
     username: null,
     isFormValid: Ember.computed.alias('validations.isValid'),
     actions: {
         addUnregistered(fullName, email) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Add Author By Email`
+                });
             if (this.get('isFormValid')) {
                 this.attrs.addUnregisteredContributor(fullName, email);
             }

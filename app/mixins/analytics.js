@@ -15,7 +15,17 @@ export default Ember.Mixin.create({
             if (url)
                 window.location.href = url;
 
-            return false;
+            return true;
+        },
+        track(category, action, label) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category,
+                    action,
+                    label
+                });
+            return true;
+
         }
     }
 });
