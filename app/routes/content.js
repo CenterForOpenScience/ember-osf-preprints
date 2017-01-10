@@ -91,7 +91,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             const {origin} = window.location;
             const image = this.get('theme.logoSharing');
             const imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
-            const dateCreated = new Date(preprint.get('dateCreated'));
+
             const ogp = [
                 ['fb:app_id', config.FB_APP_ID],
                 ['og:title', node.get('title')],
@@ -100,21 +100,12 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ['og:image:width', image.width.toString()],
                 ['og:image:height', image.height.toString()],
                 ['og:image:type', image.type],
-                ['og:url', preprint.get('links.html')],
+                ['og:url', window.location.href],
                 ['og:description', node.get('description')],
                 ['og:site_name', this.get('theme.provider.name')],
                 ['og:type', 'article'],
-                ['article:published_time', dateCreated.toISOString()],
-                ['article:modified_time', new Date(preprint.get('dateModified')).toISOString()],
-                ['citation_title', node.get('title')],
-                ['citation_description', node.get('description')],
-                ['citation_public_url', preprint.get('links.html')],
-                ['citation_publication_date', `${dateCreated.getFullYear()}/${dateCreated.getMonth() + 1}/${dateCreated.getDate()}`],
-                ['citation_doi', preprint.get('doi')],
-                ['dc.title', node.get('title')],
-                ['dc.abstract', node.get('description')],
-                ['dc.identifier', preprint.get('links.html')],
-                ['dc.identifier', preprint.get('doi')],
+                ['article:published_time', new Date(preprint.get('dateCreated')).toISOString()],
+                ['article:modified_time', new Date(preprint.get('dateModified')).toISOString()]
             ];
 
             const tags = [
@@ -123,11 +114,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             ];
 
             for (const tag of tags)
-                ogp.push(
-                    ['article:tag', tag],
-                    ['citation_keywords', tag],
-                    ['dc.subject', tag]
-                );
+                ogp.push(['article:tag', tag]);
 
             let contributors = Ember.A();
 
@@ -136,9 +123,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     ogp.push(
                         ['og:type', 'article:author'],
                         ['profile:first_name', contributor.get('users.givenName')],
-                        ['profile:last_name', contributor.get('users.familyName')],
-                        ['citation_author', `${contributor.get('users.givenName')} ${contributor.get('users.familyName')}`],
-                        ['dc.creator', `${contributor.get('users.givenName')} ${contributor.get('users.familyName')}`]
+                        ['profile:last_name', contributor.get('users.familyName')]
                     );
                 });
 
@@ -153,35 +138,6 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 )));
 
                 this.get('headTagsService').collectHeadTags();
-
-                preprint.get('provider').then(provider => {
-                    ogp.push(
-                        ['citation_publisher', provider.get('name')],
-                        ['dc.publisher', provider.get('name')]
-                    );
-                    preprint.get('license').then(license => {
-                        ogp.push(
-                            ['dc.license', license.get('name')]
-                        );
-                        preprint.get('primaryFile').then(file => {
-                            if (file.get('name').split('.').pop() === 'pdf') {
-                                ogp.push(
-                                    ['citation_pdf_url', file.get('links').download]
-                                );
-                            }
-                            this.set('headTags', ogp.map(item => (
-                                {
-                                    type: 'meta',
-                                    attrs: {
-                                        property: item[0],
-                                        content: item[1]
-                                    }
-                                }
-                            )));
-                            this.get('headTagsService').collectHeadTags();
-                        });
-                    });
-                });
             });
         });
     },
