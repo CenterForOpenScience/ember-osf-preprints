@@ -2,7 +2,7 @@ import { moduleFor, test } from 'ember-qunit';
 
 moduleFor('controller:content', 'Unit | Controller | content', {
   // Specify the other units that are required for this test.
-  needs: ['service:metrics']
+  needs: ['service:metrics', 'service:theme']
 });
 
 // Replace this with your real tests.
