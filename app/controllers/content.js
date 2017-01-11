@@ -129,7 +129,13 @@ export default Ember.Controller.extend(Analytics, {
 
     actions: {
         toggleLicenseText() {
-            this.toggleProperty('showLicenseText');
+            const licenseState = this.toggleProperty('showLicenseText') ? 'Expand' : 'Contract';
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Preprints - Content - License ${licenseState}`
+                });
         },
         expandMFR() {
             // State of fullScreenMFR before the transition (what the user perceives as the action)
@@ -139,7 +145,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Content - MFR ${beforeState}`
+                    label: `Preprints - Content - MFR ${beforeState}`
                 });
         },
         // Unused
@@ -150,20 +156,14 @@ export default Ember.Controller.extend(Analytics, {
         chooseFile(fileItem) {
             this.set('activeFile', fileItem);
         },
-        shareLink(href, network, action, label) {
+        shareLink(href, network, action) {
             const metrics = Ember.get(this, 'metrics');
-
-            metrics.trackEvent({
-                category: network,
-                action,
-                label: window.location.href
-            });
 
             if (network.includes('email')) {
                 metrics.trackEvent({
                     category: 'link',
                     action,
-                    label
+                    label: `Preprints - Content - Email ${window.location.href}`
                 });
             } else {
                 window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
@@ -171,7 +171,7 @@ export default Ember.Controller.extend(Analytics, {
                 metrics.trackEvent({
                     category: network,
                     action,
-                    label: window.location.href
+                    label: `Preprints - Content - ${window.location.href}`
                 });
             }
 

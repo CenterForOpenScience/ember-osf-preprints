@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.102.0",
+  "version": "0.103.0",
   "description": "Small description for preprint-service goes here",
   "private": true,
   "directories": {
@@ -20,7 +20,7 @@
     "node": ">= 0.10.0"
   },
   "author": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "autoprefixer": "^6.3.7",
     "broccoli-asset-rev": "^2.4.2",

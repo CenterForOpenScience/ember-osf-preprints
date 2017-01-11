@@ -29,7 +29,7 @@
                         <a type="button"
                            class="btn btn-success edit-btn"
                            href={{concat (if theme.isProvider (concat '/preprints/' theme.id)) '/' model.id '/?edit'}}
-                           onbeforeclick={{action "click" 'link' "Content - Edit Preprint"}}
+                            onclick={{action "click" 'link' "Preprints - Content - Edit Preprint" (concat model.links.html '?edit')}}
                         >
                             {{t "content.project_button.edit_preprint"}}
                         </a>
@@ -65,7 +65,7 @@
                         <div class="share-row p-sm osf-box-lt clearfix">{{!SHARE ROW}}
                             <div class="row" id="download_project clearfix">
                                 <div class="col-xs-12 col-lg-8">
-                                    <a class="btn btn-primary" href={{model.primaryFile.links.download}} onbeforeclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
+                                    <a class="btn btn-primary" href={{model.primaryFile.links.download}} onclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
                                     <span class="p-sm">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
                                 </div>
                                 <div class="col-xs-12 col-lg-4 social-div">
@@ -134,7 +134,7 @@
                         </div>
                         <div class="col-xs-6 text-left">
                             <p class="f-w-xs">{{t "content.project_button.paragraph"}}</p>
-                            <a type="button" class="btn btn-info" href={{node.links.html}} onbeforeclick={{action "click" "link" "Content - Visit Project"}}>{{t "content.project_button.button"}}</a>
+                            <a type="button" class="btn btn-info" href={{node.links.html}} onclick={{action "click" "link" "Preprints - Content - Visit Project"}}>{{t "content.project_button.button"}}</a>
                         </div>
                     </div>
                 </div> {{!END RIGHT SIDE COL}}
