@@ -6,6 +6,15 @@ import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
 
+// Error handling for API
+const handlers = new Map([
+    // format: ['Message detail', 'page']
+    ['Authentication credentials were not provided.', 'forbidden'], // 401
+    ['You do not have permission to perform this action.', 'forbidden'], // 403
+    ['Not found.', 'page-not-found'], // 404
+    ['The requested node is no longer available.', 'resource-deleted'] // 410
+]);
+
 export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
     theme: Ember.inject.service(),
     headTagsService: Ember.inject.service('head-tags'),
@@ -147,8 +156,12 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
     },
     actions: {
         error(error) {
-            if (error && error.errors && Ember.isArray(error.errors) && error.errors[0].detail === 'The requested node is no longer available.') {
-                this.intermediateTransitionTo('resource-deleted'); // Node containing preprint has been deleted. 410 Gone.
+            // Handle API Errors
+            if (error && error.errors && Ember.isArray(error.errors)) {
+                const {detail} = error.errors[0];
+                const page = handlers.get(detail) || 'page-not-found';
+
+                return this.intermediateTransitionTo(page);
             }
         }
     }
