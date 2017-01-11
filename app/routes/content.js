@@ -9,8 +9,8 @@ import permissions from 'ember-osf/const/permissions';
 // Error handling for API
 const handlers = new Map([
     // format: ['Message detail', 'page']
-    ['Authentication credentials were not provided.', 'forbidden'], // 401
-    ['You do not have permission to perform this action.', 'forbidden'], // 403
+    ['Authentication credentials were not provided.', 'page-not-found'], // 401
+    ['You do not have permission to perform this action.', 'page-not-found'], // 403
     ['Not found.', 'page-not-found'], // 404
     ['The requested node is no longer available.', 'resource-deleted'] // 410
 ]);
