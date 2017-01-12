@@ -275,7 +275,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     basicsTags: Ember.computed('node', function() {
         // Pending tags
         let node = this.get('node');
-        return node ? node.get('tags') : Ember.A();
+        let newTags = node.get('tags').slice(0).map(fixSpecialChar);
+        return node ? newTags : Ember.A();
     }),
     tagsChanged: Ember.computed('basicsTags', 'node.tags', function() {
         // Does the list of pending tags differ from the saved tags in the db?
@@ -283,7 +284,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         let nodeTags = this.get('node.tags');
         let changed = false;
         if (basicsTags && nodeTags) {
-            changed = !(basicsTags.length === nodeTags.length && basicsTags.every((v, i)=> v === nodeTags[i]));
+            changed = !(basicsTags.length === nodeTags.length && basicsTags.every((v, i)=> fixSpecialChar(v) === fixSpecialChar(nodeTags[i])));
         }
         return changed;
     }),
@@ -628,7 +629,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             this.set('nodeTitle', fixSpecialChar(this.get('node.title')));
             this.set('titleValid', true);
-            this.set('')
+
         },
         clearDownstreamFields(section) {
             //If user goes back and changes a section inside Upload, all fields downstream of that section need to clear.
@@ -705,7 +706,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             let model = this.get('model');
             // Saves off current server-state basics fields, so UI can be restored in case of failure
             let currentAbstract = fixSpecialChar(node.get('description'));
-            let currentTags = node.get('tags').slice(0);
+            let currentTags = node.get('tags').slice(0).map(fixSpecialChar);
             let currentDOI = model.get('doi');
             let currentLicenseType = model.get('license');
             let currentLicenseRecord = model.get('licenseRecord');
@@ -719,6 +720,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             if (this.get('abstractChanged')) node.set('description', fixSpecialChar(this.get('basicsAbstract')));
             if (this.get('tagsChanged')) node.set('tags', this.get('basicsTags'));
+
 
             if (this.get('applyLicense')) {
                 if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || node.get('nodeLicense.copyrightHolders') !== newCopyrightHolders) {
@@ -809,7 +811,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
         },
 
-        /*
+         /*
           Discipline section
          */
         setSubjects(subjects) {

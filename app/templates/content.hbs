@@ -116,7 +116,7 @@
                         <h4 class=" f-w-md p-v-md">{{t "global.tags"}}</h4>
                         {{#if hasTag}}
                             {{#each node.tags as |tag|}}
-                                <span class="badge">{{tag}}</span>
+                                <span class="badge">{{safe-markup tag}}</span>
                             {{/each}}
                         {{else}}
                             {{t "global.none"}}
