@@ -26,10 +26,10 @@
 {{#if (and (not isOpen) (eq name 'Upload'))}}
     <div class="m-t-md preprint-header-preview">
         {{#if preprintNode}}
-            <p><em class="m-r-md"> {{t "components.preprint-form-header.location"}}: </em> {{get-ancestor-descriptor preprintNode}} {{preprintNode.title}}</p>
+            <p><em class="m-r-md"> {{t "components.preprint-form-header.location"}}: </em> {{get-ancestor-descriptor preprintNode}} {{safe-markup preprintNode.title}}</p>
         {{/if}}
         <p><em class="m-r-md"> {{t "components.preprint-form-header.file"}}: </em> {{preprintFile.name}} <em>(Version: {{preprintFile.currentVersion}})</em>  </p>
-        <p><em class="m-r-md"> {{t "components.preprint-form-header.title"}}: </em> {{preprintTitle}} </p>
+        <p><em class="m-r-md"> {{t "components.preprint-form-header.title"}}: </em> {{safe-markup preprintTitle}} </p>
     </div>
 {{/if}}
 
@@ -52,7 +52,7 @@
                     {{/if}}
                 </p>
                 <em class="m-r-md"> {{t "global.abstract"}}: </em>
-                <p class="abstract">{{if abstract abstract (t "global.none")}} </p>
+                <p class="abstract">{{if abstract (safe-markup abstract) (t "global.none")}} </p>
             {{else if (eq name 'Discipline')}}
                 {{#if subjects}}
                     {{#each subjects as |subject|}}
@@ -78,13 +78,13 @@
 
         {{#if (eq name 'location_of_preprint')}}
             {{#if node}}
-                <p class='text-muted'> <span class='lock-span p-r-xs'><i class='fa fa-lock'></i></span> {{get-ancestor-descriptor node}} {{node.title}} </p>
+                <p class='text-muted'> <span class='lock-span p-r-xs'><i class='fa fa-lock'></i></span> {{get-ancestor-descriptor node}} {{safe-markup node.title}} </p>
             {{/if}}
         {{/if}}
 
         {{#if (eq name 'choose_project')}}
             {{#if selectedNode}}
-                <p> {{selectedNode.title}} </p>
+                <p> {{safe-markup selectedNode.title}} </p>
             {{/if}}
         {{/if}}
 
@@ -122,13 +122,13 @@
 
         {{#if (eq name 'finalize_upload')}}
             {{#if nodeTitle}}
-                 <p>{{t "components.preprint-form-header.title"}}: {{nodeTitle}} </p>
+                 <p>{{t "components.preprint-form-header.title"}}: {{safe-markup nodeTitle}} </p>
             {{/if}}
         {{/if}}
 
         {{#if (eq name 'title_of_preprint')}}
             {{#if nodeTitle}}
-                 <p> {{nodeTitle}} </p>
+                 <p> {{safe-markup nodeTitle}} </p>
             {{/if}}
         {{/if}}
 

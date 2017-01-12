@@ -1,1 +1,1 @@
-{{validated-input model=this valuePath='nodeTitle' placeholder=(t "components.file-uploader.title_placeholder") value=nodeTitle}}
+{{validated-input model=this valuePath=(safe-markup 'nodeTitle') placeholder=(t "components.file-uploader.title_placeholder") value=(safe-markup nodeTitle)}}

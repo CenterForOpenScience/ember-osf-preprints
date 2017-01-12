@@ -4,6 +4,15 @@ import permissions from 'ember-osf/const/permissions';
 
 // The submit controller/template is used to handle both Add and Edit modes for a preprint.  Contains
 // the setupController items necessary for both Add and Edit Modes.
+
+function fixSpecialChar(inputString){
+  if (inputString != null){
+   return inputString.replace(/&amp;/g,"&").replace(/&gt;/g,">").replace(/&lt;/g,"<");
+  }else{
+   return inputString;
+ }
+}
+
 export default Ember.Mixin.create({
     theme: Ember.inject.service(),
     panelActions: Ember.inject.service('panelActions'),
@@ -52,7 +61,7 @@ export default Ember.Mixin.create({
         controller.set('filePickerState', 'existing'); // In edit mode, dealing with existing project
         controller.set('existingState', 'new'); // In edit mode, only option to change file is to upload a NEW file
         controller.set('node', node);
-        controller.set('nodeTitle', node.get('title'));
+        controller.set('nodeTitle', fixSpecialChar(node.get('title')));
         controller.set('nodeLocked', true);
         controller.set('titleValid', true);
         model.get('primaryFile').then((file) => {
