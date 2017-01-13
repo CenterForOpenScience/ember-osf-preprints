@@ -6,6 +6,15 @@ import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
 
+// Error handling for API
+const handlers = new Map([
+    // format: ['Message detail', 'page']
+    ['Authentication credentials were not provided.', 'page-not-found'], // 401
+    ['You do not have permission to perform this action.', 'page-not-found'], // 403
+    ['Not found.', 'page-not-found'], // 404
+    ['The requested node is no longer available.', 'resource-deleted'] // 410
+]);
+
 export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
     theme: Ember.inject.service(),
     headTagsService: Ember.inject.service('head-tags'),
@@ -91,7 +100,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             const {origin} = window.location;
             const image = this.get('theme.logoSharing');
             const imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
-            const dateCreated = new Date(preprint.get('dateCreated'));
+
             const ogp = [
                 ['fb:app_id', config.FB_APP_ID],
                 ['og:title', node.get('title')],
@@ -100,22 +109,17 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ['og:image:width', image.width.toString()],
                 ['og:image:height', image.height.toString()],
                 ['og:image:type', image.type],
-                ['og:url', preprint.get('links.html')],
+                ['og:url', window.location.href],
                 ['og:description', node.get('description')],
                 ['og:site_name', this.get('theme.provider.name')],
                 ['og:type', 'article'],
-                ['article:published_time', dateCreated.toISOString()],
-                ['article:modified_time', new Date(preprint.get('dateModified')).toISOString()],
-                ['citation_title', node.get('title')],
-                ['citation_description', node.get('description')],
-                ['citation_public_url', preprint.get('links.html')],
-                ['citation_publication_date', `${dateCreated.getFullYear()}/${dateCreated.getMonth() + 1}/${dateCreated.getDate()}`],
-                ['citation_doi', preprint.get('doi')],
-                ['dc.title', node.get('title')],
-                ['dc.abstract', node.get('description')],
-                ['dc.identifier', preprint.get('links.html')],
-                ['dc.identifier', preprint.get('doi')],
+                ['article:published_time', new Date(preprint.get('dateCreated') || null).toISOString()]
             ];
+
+            const modified = preprint.get('dateModified') || preprint.get('dateCreated');
+
+            if (modified)
+                ogp.push(['article:modified_time', new Date(modified).toISOString()]);
 
             const tags = [
                 ...preprint.get('subjects').map(subjectBlock => subjectBlock.map(subject => subject.text)),
@@ -123,11 +127,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             ];
 
             for (const tag of tags)
-                ogp.push(
-                    ['article:tag', tag],
-                    ['citation_keywords', tag],
-                    ['dc.subject', tag]
-                );
+                ogp.push(['article:tag', tag]);
 
             let contributors = Ember.A();
 
@@ -136,9 +136,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     ogp.push(
                         ['og:type', 'article:author'],
                         ['profile:first_name', contributor.get('users.givenName')],
-                        ['profile:last_name', contributor.get('users.familyName')],
-                        ['citation_author', `${contributor.get('users.givenName')} ${contributor.get('users.familyName')}`],
-                        ['dc.creator', `${contributor.get('users.givenName')} ${contributor.get('users.familyName')}`]
+                        ['profile:last_name', contributor.get('users.familyName')]
                     );
                 });
 
@@ -153,61 +151,17 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 )));
 
                 this.get('headTagsService').collectHeadTags();
-
-                preprint.get('provider').then(provider => {
-                    ogp.push(
-                        ['citation_publisher', provider.get('name')],
-                        ['dc.publisher', provider.get('name')]
-                    );
-                    preprint.get('license').then(license => {
-                        ogp.push(
-                            ['dc.license', license.get('name')]
-                        );
-                        preprint.get('primaryFile').then(file => {
-                            if (file.get('name').split('.').pop() === 'pdf') {
-                                ogp.push(
-                                    ['citation_pdf_url', file.get('links').download]
-                                );
-                            }
-                            this.set('headTags', ogp.map(item => (
-                                {
-                                    type: 'meta',
-                                    attrs: {
-                                        property: item[0],
-                                        content: item[1]
-                                    }
-                                }
-                            )));
-                            this.get('headTagsService').collectHeadTags();
-                        });
-                    });
-                });
             });
         });
     },
     actions: {
-        error(error, transition) {
-            if (error && error.errors && Ember.isArray(error.errors) && error.errors[0].detail === 'The requested node is no longer available.') {
-                this.intermediateTransitionTo('resource-deleted'); // Node containing preprint has been deleted. 410 Gone.
-            } else {
-                const slug = transition.params[transition.targetName].preprint_id;
+        error(error) {
+            // Handle API Errors
+            if (error && error.errors && Ember.isArray(error.errors)) {
+                const {detail} = error.errors[0];
+                const page = handlers.get(detail) || 'page-not-found';
 
-                if (slug.length === 5) {
-                    window.location.href = [
-                        window.location.origin,
-                        slug
-                    ].join('/');
-                } else {
-                    const path = ['', 'preprints'];
-
-                    if (this.get('theme.isProvider'))
-                        path.push(this.get('theme.id'));
-
-                    path.push(slug);
-
-                    window.history.replaceState({}, 'preprints', path.join('/'));
-                    this.intermediateTransitionTo('page-not-found');
-                }
+                return this.intermediateTransitionTo(page);
             }
         }
     }
