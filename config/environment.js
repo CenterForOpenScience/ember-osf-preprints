@@ -55,7 +55,7 @@ module.exports = function(environment) {
                         height: 488
 
                     },
-                    permissionLanguage: 'permission_sentence2'
+                    permissionLanguage: 'arxiv_non_endorsement'
 
                 },
                 {
@@ -66,7 +66,7 @@ module.exports = function(environment) {
                         width: 1200,
                         height: 488
                     },
-                    permissionLanguage: 'permission_sentence2'
+                    permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'socarxiv',
@@ -76,7 +76,7 @@ module.exports = function(environment) {
                         width: 1200,
                         height: 488
                     },
-                    permissionLanguage: 'permission_sentence1'
+                    permissionLanguage: 'arxiv_trademark_license'
                 }
             ],
         },
