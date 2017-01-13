@@ -9,7 +9,7 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember test",
+    "test": "npm run check-style && ember test",
     "check-style": "./node_modules/jscs/bin/jscs ."
   },
   "repository": {

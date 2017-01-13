@@ -1,21 +1,21 @@
 ---
 language: node_js
 node_js:
-  - "4"
+  - "lts/boron"
 
 sudo: false
+dist: trusty
+
+env:
+  global:
+    - SUPPRESS_NO_CONFIG_WARNING=true
 
 cache:
+  yarn: true
   directories:
     - node_modules
+    - $HOME/.cache # includes bowers cache
 
-before_install:
-  - npm config set spin false
-  - npm install -g bower
-
-install:
-  - npm install
+before_script:
+  - yarn add global bower
   - bower install
-
-script:
-  - npm run check-style && npm test
