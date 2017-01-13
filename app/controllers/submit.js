@@ -253,7 +253,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     }),
     titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
         // Does the pending title differ from the title already saved?
-        return fixSpecialChar(this.get('node.title')) !== this.get('nodeTitle').toString();
+        if (this.get('nodeTitle')!=null) {
+          return fixSpecialChar(this.get('node.title')) !== this.get('nodeTitle').toString();
+        }else {
+          return fixSpecialChar(this.get('node.title')) !== this.get('nodeTitle');
+        }
+
     }),
     uploadChanged: Ember.computed('preprintFileChanged', 'titleChanged', function() {
         // Are there any unsaved changes in the upload section?
@@ -275,7 +280,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     basicsTags: Ember.computed('node', function() {
         // Pending tags
         let node = this.get('node');
-        let newTags = node.get('tags').slice(0).map(fixSpecialChar);
+        let newTags = null;
+        if (node!=null){
+          newTags = node.get('tags').slice(0).map(fixSpecialChar);
+        }
         return node ? newTags : Ember.A();
     }),
     tagsChanged: Ember.computed('basicsTags', 'node.tags', function() {
