@@ -40,6 +40,16 @@ function queryStringify(queryParams) {
     return query.join('&');
 }
 
+
+function fixSpecialChar(inputString){
+  console.log(inputString);
+  if (inputString != null){
+   return inputString.replace(/&amp;/g,"&").replace(/&gt;/g,">").replace(/&lt;/g,"<");
+  }else{
+   return inputString;
+ }
+}
+
 export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(),
     fullScreenMFR: false,
@@ -85,7 +95,7 @@ export default Ember.Controller.extend(Analytics, {
     }),
     emailHref: Ember.computed('node', function() {
         const queryParams = {
-            subject: this.get('node.title'),
+            subject: fixSpecialChar(this.get('node.title')),
             body: window.location.href
         };
 
