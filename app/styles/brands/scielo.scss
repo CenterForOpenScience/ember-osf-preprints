@@ -1,0 +1,14 @@
+@import 'brand';
+
+@include brand(
+    #FFFFFF,
+    white,
+    #6789D3,
+    #3F6AC8,
+    white,
+    $logo-dir + 'scielo-logo.png',
+    $logo-dir + 'scielo-logo.png',
+    true,
+    false,
+    true
+);
