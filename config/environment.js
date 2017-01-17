@@ -86,6 +86,15 @@ module.exports = function(environment) {
                         width: 1200,
                         height: 488
                     }
+                },
+                {
+                    id: 'agrixiv',
+                    logoSharing: {
+                        path: 'assets/img/provider_logos/agrixiv_banner.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    }
                 }
             ],
         },
