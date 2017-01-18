@@ -10,6 +10,9 @@ import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
 
 import loadAll from 'ember-osf/utils/load-relationship';
 
+import { fixSpecialChar } from '../utils/fix-special-char';
+
+
 // Enum of available upload states > New project or existing project?
 export const State = Object.freeze(Ember.Object.create({
     START: 'start',
@@ -74,13 +77,7 @@ function subjectIdMap(subjectArray) {
     return subjectArray.map(subjectBlock => subjectBlock.map(subject => subject.id));
 }
 
-function fixSpecialChar(inputString){
-  if (inputString != null){
-   return inputString.replace(/&amp;/g,"&").replace(/&gt;/g,">").replace(/&lt;/g,"<");
-  }else{
-   return inputString;
- }
-}
+
 
 function doiRegexExec(doi) {
     //Strips url out of inputted doi, if any.  For example, user input this DOI: https://dx.doi.org/10.12345/hello. Returns 10.12345/hello.
