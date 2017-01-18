@@ -4,7 +4,7 @@
  */
 
 export default function fixSpecialChar(inputString) {
-   return inputString ? inputString.replace(/&amp;/g,"&").replace(/&gt;/g,">").replace(/&lt;/g,"<") : '';
+   return inputString ? inputString.replace(/&amp;/g,"&") : '';
  }
 
 export { fixSpecialChar };

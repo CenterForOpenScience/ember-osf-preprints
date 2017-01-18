@@ -5,6 +5,6 @@ module('Unit | Utility | fix special char');
 
 // Replace this with your real tests.
 test('test special characters', function(assert) {
-  let result = fixSpecialChar('test special characters & >');
-  assert.equal(result,'test special characters & >');
+  let result = fixSpecialChar('test special characters &');
+  assert.equal(result,'test special characters &');
 });
