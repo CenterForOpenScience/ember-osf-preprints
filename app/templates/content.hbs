@@ -1,11 +1,11 @@
-{{title safe-markup node.title}}
+{{title node.title}}
 
 <div id="view-page">
     <div class="p-t-xl m-t-xl p-b-md m-b-md dark-overlay-header-background header-row">{{!HEADER ROW}}
         <div class="container">{{!CONTAINER DIV}}
             <div class="row">
                 <div class="col-xs-10">
-                    <h1 id="preprintTitle" class="p-b-md">{{safe-markup node.title}}</h1>
+                    <h1 id="preprintTitle" class="p-b-md">{{node.title}}</h1>
                     <h5 class="view-authors">
                         <ul class="comma-list">
                             {{#if authors}}
@@ -50,7 +50,7 @@
                 {{else}}
                     {{#if (not node.public)}}
                         <div class="alert alert-danger m-r-md" role="alert">
-                            {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{safe-markup node.title}} </a> {{t "content.public"}}.
+                            {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{node.title}} </a> {{t "content.public"}}.
                         </div>
                     {{/if}}
                     {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
@@ -77,7 +77,7 @@
                     {{/liquid-spacer}}
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md">{{t "global.abstract"}}</h4>
-                        <p class="abstract">{{safe-markup  node.description}}</p>
+                        <p class="abstract">{{node.description}}</p>
                     </div>
 
                     {{#if model.doi}}
@@ -116,7 +116,7 @@
                         <h4 class=" f-w-md p-v-md">{{t "global.tags"}}</h4>
                         {{#if hasTag}}
                             {{#each node.tags as |tag|}}
-                                <span class="badge">{{safe-markup tag}}</span>
+                                <span class="badge">{{tag}}</span>
                             {{/each}}
                         {{else}}
                             {{t "global.none"}}
