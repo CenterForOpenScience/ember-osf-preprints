@@ -58,9 +58,15 @@ There are a few scripts to run to populate your local preprint providers list, a
 Make use of the many generators for code, try `ember help generate` for more details
 
 ### Running Tests
+You can run tests either with ember installed on your machine or by using [Docker](https://docs.docker.com/engine/getstarted/step_one/)
 
+#### On your local machine
 * `ember test`
 * `ember test --server`
+
+#### With Docker
+* `docker build --tag preprints .`
+* `docker run preprints`
 
 ### Building
 
