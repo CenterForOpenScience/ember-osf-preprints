@@ -3,11 +3,8 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
 import { fixSpecialChar } from '../utils/fix-special-char';
 
-
 // The submit controller/template is used to handle both Add and Edit modes for a preprint.  Contains
 // the setupController items necessary for both Add and Edit Modes.
-
-
 
 export default Ember.Mixin.create({
     theme: Ember.inject.service(),

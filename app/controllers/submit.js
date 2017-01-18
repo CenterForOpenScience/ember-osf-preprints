@@ -12,7 +12,6 @@ import loadAll from 'ember-osf/utils/load-relationship';
 
 import { fixSpecialChar } from '../utils/fix-special-char';
 
-
 // Enum of available upload states > New project or existing project?
 export const State = Object.freeze(Ember.Object.create({
     START: 'start',
@@ -76,8 +75,6 @@ function subjectIdMap(subjectArray) {
     // Maps array of arrays of disciplines into array of arrays of discipline ids.
     return subjectArray.map(subjectBlock => subjectBlock.map(subject => subject.id));
 }
-
-
 
 function doiRegexExec(doi) {
     //Strips url out of inputted doi, if any.  For example, user input this DOI: https://dx.doi.org/10.12345/hello. Returns 10.12345/hello.
@@ -250,10 +247,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     }),
     titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
         // Does the pending title differ from the title already saved?
-        if (this.get('nodeTitle')!=null) {
-          return fixSpecialChar(this.get('node.title')) !== this.get('nodeTitle').toString();
-        }else {
-          return fixSpecialChar(this.get('node.title')) !== this.get('nodeTitle');
+        if (this.get('nodeTitle') != null) {
+            return fixSpecialChar(this.get('node.title')) !== this.get('nodeTitle').toString();
+        } else {
+            return fixSpecialChar(this.get('node.title')) !== this.get('nodeTitle');
         }
 
     }),
@@ -278,8 +275,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         // Pending tags
         let node = this.get('node');
         let newTags = null;
-        if (node!=null){
-          newTags = node.get('tags').slice(0).map(fixSpecialChar);
+        if (node != null) {
+            newTags = node.get('tags').slice(0).map(fixSpecialChar);
         }
         return node ? newTags : Ember.A();
     }),
@@ -393,7 +390,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         // True if the current user has admin permissions
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
-
 
     canEdit: Ember.computed('isAdmin', 'node', function() {
         // True if the current user is and admin and the node is not a registration.
@@ -726,7 +722,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             if (this.get('abstractChanged')) node.set('description', fixSpecialChar(this.get('basicsAbstract')));
             if (this.get('tagsChanged')) node.set('tags', this.get('basicsTags'));
 
-
             if (this.get('applyLicense')) {
                 if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || node.get('nodeLicense.copyrightHolders') !== newCopyrightHolders) {
                     node.set('nodeLicense', {year: this.get('basicsLicense.year'), copyright_holders: newCopyrightHolders});
@@ -738,7 +733,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             node.save()
                 .then(() => {
-                    this.set('node.description',fixSpecialChar(this.get('node.description')));
+                    this.set('node.description', fixSpecialChar(this.get('node.description')));
                     if (this.get('doiChanged')) {
                         model.set('doi', this.get('basicsDOI') || null);
                         if (this.get('licenseChanged') || !this.get('model.license.name')) {
@@ -747,7 +742,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                         }
                         model.save()
                             .then(() => {
-                                this.set('node.description',fixSpecialChar(this.get('node.description')));
+                                this.set('node.description', fixSpecialChar(this.get('node.description')));
                                 this.send('next', this.get('_names.2'));
                             })
                             .catch(() => {
@@ -761,7 +756,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                         model.set('license', this.get('basicsLicense.licenseType'));
                         model.save()
                             .then(() => {
-                                this.set('node.description',fixSpecialChar(this.get('node.description')));
+                                this.set('node.description', fixSpecialChar(this.get('node.description')));
                                 this.send('next', this.get('_names.2'));
                             })
                             .catch(() => {
@@ -816,9 +811,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
         },
 
-         /*
+        /*
           Discipline section
-         */
+        */
         setSubjects(subjects) {
             // Sets subjectsList with pending subjects. Does not save.
             this.toggleProperty('disciplineModifiedToggle'); // Need to observe if discipline in nested array has changed. Toggling this will force 'disciplineChanged' to be recalculated

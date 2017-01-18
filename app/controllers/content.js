@@ -41,9 +41,6 @@ function queryStringify(queryParams) {
     return query.join('&');
 }
 
-
-
-
 export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(),
     fullScreenMFR: false,
