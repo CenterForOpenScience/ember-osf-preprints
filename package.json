@@ -1,7 +1,7 @@
 {
   "name": "preprint-service",
   "version": "0.103.0",
-  "description": "Small description for preprint-service goes here",
+  "description": "Center for Open Science Preprint Service",
   "private": true,
   "directories": {
     "test": "tests"
@@ -9,15 +9,16 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "npm run check-style && ember test",
+    "test": "yarn run check-style && ember test",
     "check-style": "./node_modules/jscs/bin/jscs ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CenterForOpenScience/ember-preprints.git"
   },
+  "engineStrict": true,
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">=6"
   },
   "author": "",
   "license": "Apache-2.0",
