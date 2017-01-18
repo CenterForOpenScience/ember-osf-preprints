@@ -57,4 +57,4 @@ ARG BACKEND=local
 ENV BACKEND ${BACKEND}
 RUN ./node_modules/ember-cli/bin/ember build --env ${APP_ENV}
 
-CMD ["node"]
+CMD ["yarn", "test"]
