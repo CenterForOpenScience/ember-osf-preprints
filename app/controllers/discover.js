@@ -51,7 +51,7 @@ export default Ember.Controller.extend(Analytics, {
     subjectFilter: null,
     queryBody: {},
     providersPassed: false,
-
+    pageNumbers: [],
     sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
 
     treeSubjects: Ember.computed('activeFilters', function() {
@@ -210,12 +210,21 @@ export default Ember.Controller.extend(Analytics, {
             });
 
             this.set('loading', false);
+            this.loadPageNumbers();
             return this.set('results', results);
         });
     },
     maxPages: Ember.computed('numberOfResults', function() {
         return ((this.get('numberOfResults') / this.get('size')) | 0) + (this.get('numberOfResults') % 10 === 0 ? 0 : 1);
     }),
+    loadPageNumbers() {
+        let upperLimit = this.get('maxPages');
+        let tempArray = [];
+        for (var i = 1; i <= upperLimit; i++) {
+            tempArray.push(i);
+        }
+        this.set('pageNumbers', tempArray);
+    },
     getQueryBody() {
         const facetFilters = this.get('activeFilters');
 
@@ -300,7 +309,6 @@ export default Ember.Controller.extend(Analytics, {
 
             this.set('page', 1);
             this.loadPage();
-
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: `${event && event.type === 'keyup' ? 'input' : 'button'}`,
@@ -369,6 +377,12 @@ export default Ember.Controller.extend(Analytics, {
                     action: hasItem ? 'remove' : 'add',
                     label: `Preprints - Discover - ${filterType} ${item}`
                 });
+        },
+        selectPage(pageNumber) {
+            this.set('page',pageNumber);
+            this.loadPage();
+            //console.log(pageNumber);
+            //load new page
         },
     },
 });

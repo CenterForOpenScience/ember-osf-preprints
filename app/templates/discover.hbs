@@ -145,8 +145,13 @@
                                 {{/if}}
                             </div>
                             <div class="col-xs-2">
-                                <div style='text-align: center; margin-top:5px'>
-                                    {{page}} {{t "discover.main.results.of"}} {{maxPages}}
+                                <div style='text-align: center'>
+                                    {{#power-select options=pageNumbers selected=page onchange=(action "selectPage") as |pages|}}
+                                        {{pages}}
+                                    {{/power-select}}
+                                </div>
+                                <div style='text-align: center'>
+                                    {{t "discover.main.results.of"}} {{maxPages}}
                                 </div>
                             </div>
                             <div class="col-xs-5">
