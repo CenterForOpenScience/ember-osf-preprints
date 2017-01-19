@@ -78,7 +78,7 @@
                     {{#if result.tags}}
                         <div class="m-t-sm">
                             {{#each result.tags as |tag index|}}
-                                <span class="badge">{{tag}}</span>
+                                <span class="badge">{{fixSpecialChar tag}}</span>
                             {{/each}}
                         </div>
                     {{/if}}

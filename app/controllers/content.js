@@ -86,7 +86,7 @@ export default Ember.Controller.extend(Analytics, {
     }),
     emailHref: Ember.computed('node', function() {
         const queryParams = {
-            subject: fixSpecialChar(this.get('node.title')),
+            subject: this.get('node.title'),
             body: window.location.href
         };
 

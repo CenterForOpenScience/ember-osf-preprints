@@ -248,9 +248,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
         // Does the pending title differ from the title already saved?
         if (this.get('nodeTitle') != null) {
-            return fixSpecialChar(this.get('node.title')) !== this.get('nodeTitle').toString();
+            return this.get('node.title') !== this.get('nodeTitle').toString();
         } else {
-            return fixSpecialChar(this.get('node.title')) !== this.get('nodeTitle');
+            return this.get('node.title') !== this.get('nodeTitle');
         }
 
     }),
@@ -264,12 +264,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     basicsAbstract:  Ember.computed('node.description', function() {
         // Pending abstract
         let node = this.get('node');
-        return node ? fixSpecialChar(node.get('description')) : null;
+        return node ? node.get('description') : null;
     }),
     abstractChanged: Ember.computed('basicsAbstract', 'node.description', function() {
         // Does the pending abstract differ from the saved abstract in the db?
         let basicsAbstract = this.get('basicsAbstract');
-        return basicsAbstract !== null && basicsAbstract.trim() !== fixSpecialChar(this.get('node.description'));
+        return basicsAbstract !== null && basicsAbstract.trim() !== this.get('node.description');
     }),
     basicsTags: Ember.computed('node', function() {
         // Pending tags
@@ -511,15 +511,15 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     label: 'Preprints - Submit - Save and Continue, Existing Node Existing File'
                 });
             let node = this.get('node');
-            this.set('basicsAbstract', fixSpecialChar(this.get('node.description')) || null);
+            this.set('basicsAbstract', this.get('node.description') || null);
 
-            if (fixSpecialChar(node.get('title')) !== fixSpecialChar(this.get('nodeTitle'))) {
-                let currentTitle = fixSpecialChar(node.get('title'));
-                node.set('title', fixSpecialChar(this.get('nodeTitle')));
+            if (node.get('title') !== this.get('nodeTitle')) {
+                let currentTitle = node.get('title');
+                node.set('title', this.get('nodeTitle'));
                 node.save()
                     .then(() => this.get('abandonedPreprint') ? this.send('resumeAbandonedPreprint') : this.send('startPreprint'))
                     .catch(() => {
-                        node.set('title', fixSpecialChar(currentTitle));
+                        node.set('title', currentTitle);
                         this.get('toast').error(this.get('i18n').t('submit.could_not_update_title'));
                     });
 
@@ -537,12 +537,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     action: 'click',
                     label: 'Preprints - Submit - Save and Continue, New Component, Copy File'
                 });
-            node.addChild(fixSpecialChar(this.get('nodeTitle')))
+            node.addChild(this.get('nodeTitle'))
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
-                    this.set('basicsAbstract', fixSpecialChar(this.get('node.description')) || null);
-                    this.set('nodeTitle', fixSpecialChar(this.get('node.title')));
+                    this.set('basicsAbstract', this.get('node.description') || null);
+                    this.set('nodeTitle', this.get('node.title'));
                     child.get('files')
                         .then((providers) => {
                             let osfstorage = providers.findBy('name', 'osfstorage');
@@ -628,7 +628,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('file', null);
             this.set('selectedFile', currentFile);
 
-            this.set('nodeTitle', fixSpecialChar(this.get('node.title')));
+            this.set('nodeTitle', this.get('node.title'));
             this.set('titleValid', true);
 
         },
@@ -673,7 +673,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Basics Changes`
                 });
             this.set('basicsTags', this.get('node.tags').slice(0));
-            this.set('basicsAbstract', fixSpecialChar(this.get('node.description')));
+            this.set('basicsAbstract', this.get('node.description'));
             this.set('basicsDOI', this.get('model.doi'));
             let date = new Date();
             this.get('model.license').then(license => {
@@ -706,7 +706,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             let node = this.get('node');
             let model = this.get('model');
             // Saves off current server-state basics fields, so UI can be restored in case of failure
-            let currentAbstract = fixSpecialChar(node.get('description'));
+            let currentAbstract = node.get('description');
             let currentTags = node.get('tags').slice(0).map(fixSpecialChar);
             let currentDOI = model.get('doi');
             let currentLicenseType = model.get('license');
@@ -719,7 +719,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 newCopyrightHolders = this.get('basicsLicense.copyrightHolders').slice().split(',');
             }
 
-            if (this.get('abstractChanged')) node.set('description', fixSpecialChar(this.get('basicsAbstract')));
+            if (this.get('abstractChanged')) node.set('description', this.get('basicsAbstract'));
             if (this.get('tagsChanged')) node.set('tags', this.get('basicsTags'));
 
             if (this.get('applyLicense')) {
@@ -733,7 +733,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             node.save()
                 .then(() => {
-                    this.set('node.description', fixSpecialChar(this.get('node.description')));
+                    this.set('node.description', this.get('node.description'));
                     if (this.get('doiChanged')) {
                         model.set('doi', this.get('basicsDOI') || null);
                         if (this.get('licenseChanged') || !this.get('model.license.name')) {
@@ -742,7 +742,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                         }
                         model.save()
                             .then(() => {
-                                this.set('node.description', fixSpecialChar(this.get('node.description')));
+                                this.set('node.description', this.get('node.description'));
                                 this.send('next', this.get('_names.2'));
                             })
                             .catch(() => {
@@ -756,7 +756,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                         model.set('license', this.get('basicsLicense.licenseType'));
                         model.save()
                             .then(() => {
-                                this.set('node.description', fixSpecialChar(this.get('node.description')));
+                                this.set('node.description', this.get('node.description'));
                                 this.send('next', this.get('_names.2'));
                             })
                             .catch(() => {
@@ -770,7 +770,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 })
                 // If save fails, do not transition
                 .catch(() => {
-                    node.set('description', fixSpecialChar(currentAbstract));
+                    node.set('description', currentAbstract);
                     node.set('tags', currentTags);
                     model.set('doi', currentDOI);
                     node.set('license', currentNodeLicenseType);
