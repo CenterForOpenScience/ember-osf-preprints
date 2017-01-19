@@ -379,9 +379,8 @@ export default Ember.Controller.extend(Analytics, {
                 });
         },
         selectPage(pageNumber) {
-            this.set('page',pageNumber);
+            this.set('page', pageNumber);
             this.loadPage();
-            //console.log(pageNumber);
             //load new page
         },
     },
