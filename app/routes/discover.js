@@ -16,7 +16,8 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     },
     actions: {
         willTransition() {
-            this.controllerFor('discover').get('_clearFilters')();
+            let controller = this.controllerFor('discover');
+            controller._clearFilters();
         }
     }
 });

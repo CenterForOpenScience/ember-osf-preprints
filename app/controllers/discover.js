@@ -315,7 +315,7 @@ export default Ember.Controller.extend(Analytics, {
         },
 
         clearFilters() {
-            this.get('_clearFilters')();
+            this._clearFilters();
 
             Ember.get(this, 'metrics')
                 .trackEvent({
