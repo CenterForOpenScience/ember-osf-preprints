@@ -125,7 +125,7 @@
                                         {{/if}}
                                         <span class="pull-right remove-contributor-padding-xs">
                                             {{#if (and (permissionToRemoveContributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors authorModification))}}
-                                                <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label="Remove author from authors list">
+                                                <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
                                                     <i class="fa fa-times"> </i>
                                                 </button>
                                             {{/if}}

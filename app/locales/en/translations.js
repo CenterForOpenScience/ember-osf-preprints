@@ -269,7 +269,8 @@ export default {
                 citation: `Citation`,
                 in_citation: `In citation`,
                 citation_info: `Citation Information`,
-                parent_contributors: `Add contributors from parent project`
+                parent_contributors: `Add contributors from parent project`,
+                remove_author: `Remove author from authors list`
             },
             remove: `Remove`
         },
