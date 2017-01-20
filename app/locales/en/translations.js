@@ -267,6 +267,7 @@ export default {
                 permissions: `Permissions`,
                 permission_info: `Permission Information`,
                 citation: `Citation`,
+                in_citation: `In citation`,
                 citation_info: `Citation Information`,
                 parent_contributors: `Add contributors from parent project`
             },

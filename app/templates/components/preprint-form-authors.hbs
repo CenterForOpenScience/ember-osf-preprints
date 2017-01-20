@@ -125,7 +125,7 @@
                                         {{/if}}
                                         <span class="pull-right remove-contributor-padding-xs">
                                             {{#if (and (permissionToRemoveContributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors authorModification))}}
-                                                <button class="remove-contributor-xs" {{action 'removeContributor' contrib}}>
+                                                <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label="Remove author from authors list">
                                                     <i class="fa fa-times"> </i>
                                                 </button>
                                             {{/if}}
@@ -145,7 +145,7 @@
                             <td>
                                 <div class="form-group vert-align-enabled-permissions">
                                     {{#if (and (not (contributorIsCurrentUser contrib currentUser)) isAdmin (and canEdit (minAdmins contrib contributors authorModification)))}}
-                                        <span class="visible-xs-inline permission-label"><em> Permissions: </em></span>
+                                        <span class="visible-xs-inline permission-label"><em> {{t "components.preprint-form-authors.authors.permissions"}}: </em></span>
                                         <select class="text-smaller form-control permission-select" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
                                             {{#each permissionOptions as |option|}}
                                                 <option selected={{eq contrib.permission option.value}} value={{option.value}}>
@@ -155,14 +155,14 @@
                                         </select>
                                     {{else}}
                                         <div class="vert-align-disabled-permissions">
-                                            <span class="visible-xs-inline permission-label"> <em> Permissions: </em></span> <span class="text-smaller"> {{permissionMap contrib.permission}} </span>
+                                            <span class="visible-xs-inline permission-label"> <em> {{t "components.preprint-form-authors.authors.permissions"}}:  </em></span> <span class="text-smaller"> {{permissionMap contrib.permission}} </span>
                                         </div>
                                     {{/if}}
                                 </div>
                             </td>
                             <td class="bib-padding">
                                 <div class="form-group vert-align">
-                                    <span class="visible-xs-inline checkbox-padding"><em>In Citation:</em></span>
+                                    <span class="visible-xs-inline checkbox-padding"><em>{{t "components.preprint-form-authors.authors.in_citation"}}:</em></span>
                                     <input disabled={{if (and isAdmin (and canEdit (minBibliographic contrib contributors authorModification))) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
                                 </div>
                             </td>
