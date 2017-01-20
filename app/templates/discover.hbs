@@ -137,30 +137,8 @@
                         {{#each results as |result|}}
                             {{search-result result=result select=(action 'updateFilters' 'subjects')}}
                         {{/each}}
-
-                        <div class="row">
-                            <div class="col-xs-5">
-                                {{#if showPrev}}
-                                    <button type="button" class="btn btn-default" {{action "previous"}}>{{t "global.prev"}}</button>
-                                {{/if}}
-                            </div>
-                            <span>
-                                <div class="col-xs-1">
-                                    {{#power-select options=pageNumbers selected=page onchange=(action "selectPage") as |pages|}}
-                                        {{pages}}
-                                    {{/power-select}}
-                                </div>
-                                <div class="col-xs-1" style='text-align: left'>
-                                    {{t "discover.main.results.of"}} {{maxPages}}
-                                </div>
-                            </span>
-                            <div class="col-xs-5">
-                                <span class="pull-right">
-                                    {{#if showNext}}
-                                        <button type="button" class="btn btn-default" {{action "next"}}>{{t "global.next"}}</button>
-                                    {{/if}}
-                                </span>
-                            </div>
+                        <div class="pull-right text-right">
+                            {{page-controls page=page clampedPages=clampedPages loadPage=(action 'loadPage')}}
                         </div>
                     {{else}}
                         <div class="text-muted text-center">

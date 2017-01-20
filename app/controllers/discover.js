@@ -210,21 +210,22 @@ export default Ember.Controller.extend(Analytics, {
             });
 
             this.set('loading', false);
-            this.loadPageNumbers();
             return this.set('results', results);
         });
     },
+    totalPages: Ember.computed('numberOfResults', 'size', function() {
+        return Math.ceil(this.get('numberOfResults') / this.get('size'));
+    }),
+
     maxPages: Ember.computed('numberOfResults', function() {
         return ((this.get('numberOfResults') / this.get('size')) | 0) + (this.get('numberOfResults') % 10 === 0 ? 0 : 1);
     }),
-    loadPageNumbers() {
-        let upperLimit = this.get('maxPages');
-        let tempArray = [];
-        for (var i = 1; i <= upperLimit; i++) {
-            tempArray.push(i);
-        }
-        this.set('pageNumbers', tempArray);
-    },
+
+    clampedPages: Ember.computed('size', 'totalPages', function() {
+        let maxPages = Math.ceil(10000 / this.get('size'));
+        return this.get('totalPages') < maxPages ? this.get('totalPages') : maxPages;
+    }),
+
     getQueryBody() {
         const facetFilters = this.get('activeFilters');
 
@@ -309,6 +310,7 @@ export default Ember.Controller.extend(Analytics, {
 
             this.set('page', 1);
             this.loadPage();
+
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: `${event && event.type === 'keyup' ? 'input' : 'button'}`,
@@ -329,6 +331,11 @@ export default Ember.Controller.extend(Analytics, {
                 this.incrementProperty('page');
                 this.loadPage();
             }
+        },
+
+        loadPage(pageNumber) {
+            this.set('page', pageNumber);
+            this.loadPage();
         },
 
         clearFilters() {
@@ -378,10 +385,6 @@ export default Ember.Controller.extend(Analytics, {
                     label: `Preprints - Discover - ${filterType} ${item}`
                 });
         },
-        selectPage(pageNumber) {
-            this.set('page', pageNumber);
-            this.loadPage();
-            //load new page
-        },
+
     },
 });
