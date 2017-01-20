@@ -1,4 +1,28 @@
-FROM node:5
+FROM node:6
+
+RUN apt-get update \
+    && apt-get install -y \
+        git \
+        # watchman
+        build-essential \
+        automake \
+        autoconf \
+        python-dev \
+    && apt-get clean \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV WATCHMAN_VERSION 4.7.0
+RUN cd /tmp \
+    && git clone https://github.com/facebook/watchman.git \
+    && cd watchman \
+    && git checkout v$WATCHMAN_VERSION \
+    && ./autogen.sh \
+    && ./configure --enable-statedir=/tmp \
+    && make \
+    && make install \
+    && mv watchman /usr/local/bin/watchman \
+    && rm -Rf /tmp/watchman
 
 RUN mkdir -p /code
 WORKDIR /code

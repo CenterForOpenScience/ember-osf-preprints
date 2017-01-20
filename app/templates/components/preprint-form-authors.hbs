@@ -52,7 +52,7 @@
             {{#if (eq addState 'unregisteredView')}}
                 <h3> {{t "components.preprint-form-authors.add_email"}} </h3>
                 <div class="user-validation" id="add-unregistered-contributor-form">
-                    {{unregistered-contributor-form resetfindContributorsView=(action 'resetfindContributorsView') addUnregisteredContributor=(action 'addUnregisteredContributor')}}
+                    {{unregistered-contributor-form editMode=editMode resetfindContributorsView=(action 'resetfindContributorsView') addUnregisteredContributor=(action 'addUnregisteredContributor')}}
                 </div>
             {{/if}}
         {{/if}}
