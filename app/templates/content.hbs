@@ -64,7 +64,7 @@
                     {{#liquid-spacer growDuration=250 growWidth=false}}
                         <div class="p-sm osf-box-lt clearfix">{{!SHARE ROW}}
                             <div class="" id="download_project clearfix">
-                                <a class="btn btn-primary" href={{model.primaryFile.links.download}} onbeforeclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
+                                <a class="btn btn-primary" href='/{{model.primaryFile.guid}}/?action=download' onbeforeclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
                                 <span class="p-sm">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
                                 <span class="p-xs pull-right">
                                     <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'Preprints - Content - tweet'}}>{{fa-icon 'twitter-square' size=2 }}</a>
