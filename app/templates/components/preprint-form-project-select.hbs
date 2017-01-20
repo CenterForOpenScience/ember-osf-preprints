@@ -18,7 +18,7 @@
                 {{else}}
                     {{#if userNodes}}
                         <div class="m-t-sm">
-                            {{#power-select options=userNodes placeholder="Click to select" searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
+                            {{#power-select options=userNodes placeholder="Click to select" matcher=titleMatcher selected=selectedNode onchange=(action "nodeSelected") as |node|}}
                                 {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
                             {{/power-select}}
                         </div>

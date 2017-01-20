@@ -1,0 +1,17 @@
+<button class="btn btn-xs btn-default" disabled={{atFirstPage}} title='Previous Page' {{action 'prevPage'}}>
+    <i class="fa fa-angle-left"></i>
+</button>
+{{#each pageLinks as |pageNum|}}
+    {{#if pageNum}}
+        {{#if (eq page pageNum)}}
+            <span style='font-weight: bold; margin: 0 0.3em;'>{{pageNum}}</span>
+        {{else}}
+            <a href='#' style='margin: 0 0.3em' {{action 'loadPage' pageNum}}>{{pageNum}}</a>
+        {{/if}}
+    {{else}}
+        <i class="fa fa-fw fa-ellipsis-h"></i>
+    {{/if}}
+{{/each}}
+<button class="btn btn-xs btn-default" disabled={{atLastPage}} title='Next Page' {{action 'nextPage'}}>
+    <i class="fa fa-angle-right"></i>
+</button>
