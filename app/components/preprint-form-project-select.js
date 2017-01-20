@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Permissions from 'ember-osf/const/permissions';
 import Analytics from '../mixins/analytics';
+import {stripDiacritics} from 'ember-power-select/utils/group-utils';
 
 /**
  * Preprint form project select widget - handles all ADD mode cases where the first step is to select an existing OSF project to contain
@@ -81,4 +82,29 @@ export default Ember.Component.extend(Analytics, {
      * @property {boolean} fileSelect
      */
     fileSelect: false,
+
+    titleMatcher(node, term) {
+        // Passed into power-select component for customized searching.
+        // Returns results if match in node, root, or parent title
+        const fields = [
+            'title',
+            'root.title',
+            'parent.title'
+        ];
+
+        const sanitizedTerm = stripDiacritics(term).toLowerCase();
+
+        for (const field of fields) {
+            const fieldValue = node.get(field) || '';
+
+            if (!fieldValue) continue;
+
+            const sanitizedValue = stripDiacritics(fieldValue).toLowerCase();
+
+            if (sanitizedValue.includes(sanitizedTerm)) {
+                return 1;
+            }
+        }
+        return -1;
+    }
 });
