@@ -1,0 +1,14 @@
+@import 'brand';
+
+@include brand(
+    #3E7C18,                                // Color, theme color #1 (header backgrounds, hover backgrounds)
+    white,                                  // Color, theme color #2 (text color mostly, usually white or black)
+    #1D5314,                                // Color, theme color #3 (navbar color, preferably a dark color)
+    #51F150,                                // Color, theme color #4 (used in link colors)
+    black,                                  // Color, theme color #5 (text color that contrasts with #2, usually black or white)
+    $logo-dir + 'agrixiv_banner.png',        // String, path to the rectangular provider logo
+    $logo-dir + 'agrixiv_logo.png', // String, path to the square provider logo
+    true,                                   // Boolean, whether to use the white share logo or not
+    false,                                  // Boolean, whether to use theme color 4 or theme color 2 for the navbar link color
+    true                                    // Boolean, whether to use the contracts link color (theme color 4)
+);
