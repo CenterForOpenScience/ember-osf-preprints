@@ -12,13 +12,16 @@ This guide will help you get started if you're interested.
 You will need the following things properly installed on your computer.
 
 * [Git](http://git-scm.com/)
-* [Node.js](http://nodejs.org/) (with NPM)
+* [Node.js](http://nodejs.org/) (preferably via [nvm](https://github.com/creationix/nvm#install-script))
+* [Yarn](https://yarnpkg.com/)
 * [Bower](http://bower.io/)
 * [Ember CLI](http://ember-cli.com/)
 * [PhantomJS](http://phantomjs.org/)
 
 ## Installation
-* `npm install`
+
+* `git clone` this repository
+* `yarn install --pure-lockfile`
 * `bower install`
 
 ## Running / Development
@@ -55,9 +58,15 @@ There are a few scripts to run to populate your local preprint providers list, a
 Make use of the many generators for code, try `ember help generate` for more details
 
 ### Running Tests
+You can run tests either with ember installed on your machine or by using [Docker](https://docs.docker.com/engine/getstarted/step_one/)
 
+#### On your local machine
 * `ember test`
 * `ember test --server`
+
+#### With Docker
+* `docker build --tag preprints .`
+* `docker run preprints`
 
 ### Building
 
