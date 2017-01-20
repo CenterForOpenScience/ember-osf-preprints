@@ -16,11 +16,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     },
     actions: {
         willTransition() {
-            //Don't want to send clearFIlters action as that will trigger
-            //behavior specifc to the clearFIlters button.
-            let controller = this.controllerFor('discover');
-            controller.set('subjectFilter', '');
-            controller.set('providerFilter', '');
+            this.controllerFor('discover').get('_clearFilters')();
         }
     }
 });
