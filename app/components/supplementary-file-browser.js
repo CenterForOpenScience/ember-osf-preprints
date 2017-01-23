@@ -39,6 +39,13 @@ export default Ember.Component.extend(Analytics, {
             });
     }.observes('preprint'),
 
+    fileDownloadURL: Ember.computed('selectedFile', function() {
+        if (this.get('selectedFile.guid')) {
+            return `/${this.get('selectedFile.guid')}/?action=download`;
+        }
+        return `/project/${this.get('node.id')}/files/osfstorage${this.get('selectedFile.path')}/?action=download`;
+    }),
+
     init() {
         this._super(...arguments);
         this.__files();

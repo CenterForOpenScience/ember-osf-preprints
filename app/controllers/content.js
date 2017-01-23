@@ -45,6 +45,7 @@ export default Ember.Controller.extend(Analytics, {
     fullScreenMFR: false,
     expandedAuthors: true,
     showLicenseText: false,
+    fileDownloadURL: '',
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
@@ -125,6 +126,17 @@ export default Ember.Controller.extend(Analytics, {
             text = text.replace(/({{copyrightHolders}})/g, this.get('model.licenseRecord').copyright_holders ? this.get('model.licenseRecord').copyright_holders.join(',') : false || '');
         }
         return text;
+    }),
+
+    _fileDownloadURL: Ember.observer('model.primaryFile', function() {
+        this.get('model.primaryFile').then(file => {
+            if (file.get('guid')) {
+                this.set('fileDownloadURL', `/${file.get('guid')}/?action=download`);
+            } else {
+                // we can assume osfstorage since preprint files can onl be hosted there
+                this.set('fileDownloadURL', `/project/${this.get('node.id')}/files/osfstorage${file.get('path')}/?action=download`);
+            }
+        });
     }),
 
     actions: {
