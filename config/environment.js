@@ -121,6 +121,10 @@ module.exports = function(environment) {
     if (environment === 'production') {
         ENV.sentryDSN = process.env.SENTRY_DSN || 'https://2f0a61d03b99480ea11e259edec18bd9@sentry.cos.io/45';
         ENV.ASSET_SUFFIX = process.env.GIT_COMMIT || 'git_commit_env_not_set';
+    } else {
+        // Fallback to throwaway defaults if the environment variables are not set
+        ENV.metricsAdapters[0].config.id = ENV.metricsAdapters[0].config.id || 'UA-84580271-1';
+        ENV.FB_APP_ID = ENV.FB_APP_ID || '1039002926217080';
     }
 
     if (ENV.ASSET_SUFFIX) {

@@ -11,7 +11,7 @@ export default Ember.Component.extend({
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Index - Search'
+                    label: 'Preprints - Index - Search'
                 });
         }
     },
