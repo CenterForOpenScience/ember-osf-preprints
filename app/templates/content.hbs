@@ -91,6 +91,11 @@
                         </div>
                     {{/if}}
 
+                    <div class="p-t-xs">
+                        <h4 class="p-v-md f-w-md">{{t "content.citations"}}</h4>
+                        {{citation-widget node=model}}
+                    </div>
+
                     {{#if model.license.name}}
                         <div class="p-t-xs">
                             <h4 class="p-v-md f-w-md">{{t "global.license"}}</h4>

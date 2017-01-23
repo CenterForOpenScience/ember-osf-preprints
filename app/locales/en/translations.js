@@ -49,6 +49,7 @@ export default {
         },
         version: 'Version',
         article_doi: `Article DOI`,
+        citations: `Citations`,
         disciplines: `Disciplines`,
         project_button: {
             paragraph: `The project for this paper is available on the OSF.`,
