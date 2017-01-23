@@ -30,17 +30,13 @@ export default Ember.Component.extend(Analytics, {
                 this.set('provider', providers.findBy('name', 'osfstorage'));
                 return loadAll(this.get('provider'), 'files', this.get('files'), {'page[size]': 50});
             })
-            .then(() => {
-                let pf = this.get('files').findBy('id', this.get('preprint.primaryFile.id'));
-                if (pf) {
-                    this.get('files').removeObject(pf);
-                    this.set('primaryFile', pf);
-                }
-
+            .then(() => this.get('preprint').get('primaryFile'))
+            .then((pf) => {
+                this.get('files').removeObject(pf);
+                this.set('primaryFile', pf);
                 this.set('selectedFile', this.get('primaryFile'));
                 this.set('files', [this.get('primaryFile')].concat(this.get('files')));
             });
-
     }.observes('preprint'),
 
     init() {
@@ -49,31 +45,31 @@ export default Ember.Component.extend(Analytics, {
 
     },
     actions: {
-        next() {
+        next(direction) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
-                    label: 'next'
+                    label: 'Preprints - Content - Next'
                 });
 
             if (this.get('endIndex') > this.get('files.length')) return;
 
-            this.set('scrollAnim', 'toLeft');
+            this.set('scrollAnim', `to${direction}`);
             this.set('endIndex', this.get('endIndex') + 5);
             this.set('startIndex', this.get('startIndex') + 5);
         },
-        prev() {
+        prev(direction) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
-                    label: 'prev'
+                    label: 'Preprints - Content - Prev'
                 });
 
             if (this.get('startIndex') <= 0) return;
 
-            this.set('scrollAnim', 'toRight');
+            this.set('scrollAnim', `to${direction}`);
             this.set('endIndex', this.get('endIndex') - 5);
             this.set('startIndex', this.get('startIndex') - 5);
         },
@@ -82,7 +78,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'select',
-                    label: 'file'
+                    label: 'Preprints - Content - File'
                 });
 
             this.set('selectedFile', file);
