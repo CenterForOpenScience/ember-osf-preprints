@@ -1,5 +1,6 @@
 const preprints = `Preprints`;
 const brand = `OSF ${preprints}`;
+const arxiv_trademark_license = 'arXiv is a trademark of Cornell University, used under license.';
 
 export default {
     global: {
@@ -247,6 +248,10 @@ export default {
             instagram: 'Instagram',
             support: `Support`,
             contact: `Contact`
+        },
+        'permission-language':{
+            arxiv_trademark_license,
+            arxiv_non_endorsement: `${arxiv_trademark_license} This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.`
         },
         'preprint-form-authors': {
             search: {
