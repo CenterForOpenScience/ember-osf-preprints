@@ -3,7 +3,6 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from '../mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
-import { fixSpecialChar } from '../utils/fix-special-char';
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
