@@ -1,26 +1,29 @@
 #!/usr/bin/env node
 
-if (~process.argv.indexOf('--help') || ~process.argv.indexOf('-h'))
-    return console.info(`Usage: ${__filename.slice(__dirname.length + 1)} [-h|--help] [--dry]`);
+if (process.argv.includes('--help') || process.argv.includes('-h')) {
+    console.info(`Usage: ${__filename.slice(__dirname.length + 1)} [-h|--help] [--dry]`);
+    process.exit(0);
+}
 
-const isDry = ~process.argv.indexOf('--dry');
+const isDry = process.argv.includes('--dry');
 
 const fs = require('fs');
 const config = require('../config/environment')(process.env.EMBER_ENV);
 
-const providers = config.PREPRINTS.providers;
+const {providers} = config.PREPRINTS;
 const hostsFileName = '/etc/hosts';
 const hostIP = '127.0.0.1';
 const hostsFile = fs.readFileSync(hostsFileName, {encoding: 'utf8'});
 const sectionHeader = '## EMBER-PREPRINTS ##\n';
 const sectionFooter = '\n## /EMBER-PREPRINTS ##';
 const rgx = new RegExp(`(?:${sectionHeader})(.|\\s)*(?:${sectionFooter})`, 'm');
+const domainProviders = providers.filter(provider => provider.domain);
 
-const maxLength = providers
+const maxLength = domainProviders
     .map(provider => provider.domain)
     .reduce((a, b) => a.length > b.length ? a.length : b.length);
 
-const lines = providers
+const lines = domainProviders
     .map(provider => `${hostIP}\tlocal.${provider.domain}${' '.repeat(maxLength - provider.domain.length)}\t# ${provider.id}`)
     .join('\n');
 
@@ -29,7 +32,9 @@ const resultFile = rgx.test(hostsFile) ? hostsFile.replace(rgx, section) : `${ho
 
 console.info(`Resulting file:\n${resultFile}`);
 
-if (isDry)
+if (isDry) {
     console.log('!!! DRY RUN, File not written !!!');
-else
-    fs.writeFileSync(hostsFileName, resultFile, {encoding: 'utf8'});
+    process.exit(0);
+}
+
+fs.writeFileSync(hostsFileName, resultFile, {encoding: 'utf8'});
