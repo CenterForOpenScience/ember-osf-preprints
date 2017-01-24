@@ -1,5 +1,6 @@
 const preprints = `Preprints`;
 const brand = `OSF ${preprints}`;
+const arxiv_trademark_license = 'arXiv is a trademark of Cornell University, used under license.';
 
 export default {
     global: {
@@ -48,6 +49,7 @@ export default {
         },
         version: 'Version',
         article_doi: `Article DOI`,
+        citations: `Citations`,
         disciplines: `Disciplines`,
         project_button: {
             paragraph: `The project for this paper is available on the OSF.`,
@@ -248,6 +250,10 @@ export default {
             support: `Support`,
             contact: `Contact`
         },
+        'permission-language':{
+            arxiv_trademark_license,
+            arxiv_non_endorsement: `${arxiv_trademark_license} This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.`
+        },
         'preprint-form-authors': {
             search: {
                 placeholder: `Search by name`
@@ -299,7 +305,7 @@ export default {
         },
         'preprint-form-project-select': {
             existing_project_selector: `The list of projects appearing in the selector are projects and components for which you have admin access.  Registrations are not included here.`,
-            no_valid_existing_nodes: `You have no valid nodes that can be converted into a preprint.  Go back to upload a new preprint.`,
+            no_valid_existing_nodes: `You have no available projects that can be converted into a preprint.  Go back to upload a new preprint.`,
             upload_preprint: `Upload preprint`,
             select_existing_file: `Select existing file as preprint`,
             edit_preprint_title_project: `Edit preprint title (will also become the name of the project)`,

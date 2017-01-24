@@ -57,4 +57,12 @@ export default Ember.Service.extend({
     redirectUrl: Ember.computed('isProvider', function() {
         return this.get('isProvider') ? window.location.href : null;
     }),
+
+    permissionLanguage: Ember.computed('id', function() {
+        const id = this.get('id');
+
+        return config.PREPRINTS.providers
+            .find(provider => provider.id === id)
+            .permissionLanguage;
+    }),
 });

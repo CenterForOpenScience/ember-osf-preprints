@@ -24,9 +24,26 @@ export default Ember.Controller.extend(Analytics, {
     },
 
     activeFilters: { providers: [], subjects: [] },
-    osfProviders: ['OSF', 'PsyArXiv', 'SocArXiv', 'engrXiv'],
 
-    whiteListedProviders: ['OSF', 'arXiv', 'bioRxiv', 'Cogprints', 'engrXiv', 'PeerJ', 'PsyArXiv', 'Research Papers in Economics', 'SocArXiv'],
+    osfProviders: [
+        'OSF',
+        'PsyArXiv',
+        'SocArXiv',
+        'engrXiv'
+    ],
+
+    whiteListedProviders: [
+        'OSF',
+        'arXiv',
+        'bioRxiv',
+        'Cogprints',
+        'engrXiv',
+        'PeerJ',
+        'PsyArXiv',
+        'Research Papers in Economics',
+        'SocArXiv'
+    ].map(item => item.toLowerCase()),
+
     page: 1,
     size: 10,
     numberOfResults: 0,
@@ -69,12 +86,12 @@ export default Ember.Controller.extend(Analytics, {
             const hits = results.aggregations.sources.buckets;
             const whiteList = this.get('whiteListedProviders');
             const providers = hits
-                .filter(hit => whiteList.includes(hit.key));
+                .filter(hit => whiteList.includes(hit.key.toLowerCase()));
 
             providers.push(
                 ...this.get('osfProviders')
                 .filter(key => !providers
-                    .find(hit => hit.key === key)
+                    .find(hit => hit.key.toLowerCase() === key.toLowerCase())
                 )
                 .map(key => ({
                     key,
@@ -176,7 +193,7 @@ export default Ember.Controller.extend(Analytics, {
                 });
 
                 result.contributors = result.lists.contributors
-                  .sort((a, b) => (b.order_cited || -1) - (a.order_cited || -1))
+                  .sort((b, a) => (b.order_cited || -1) - (a.order_cited || -1))
                   .map(contributor => ({
                         users: Object.keys(contributor)
                           .reduce(
@@ -286,9 +303,9 @@ export default Ember.Controller.extend(Analytics, {
 
             Ember.get(this, 'metrics')
                 .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: 'Discover - Search'
+                    category: `${event && event.type === 'keyup' ? 'input' : 'button'}`,
+                    action: `${event && event.type === 'keyup' ? 'onkeyup' : 'click'}`,
+                    label: 'Preprints - Discover - Search'
                 });
         },
 
@@ -316,7 +333,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Discover - Clear Filters'
+                    label: 'Preprints - Discover - Clear Filters'
                 });
         },
 
@@ -334,7 +351,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
-                    label: `Discover - ${copy}`
+                    label: `Preprints - Discover - Sort by: ${copy[index]}`
                 });
         },
 
@@ -350,7 +367,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'filter',
                     action: hasItem ? 'remove' : 'add',
-                    label: `Discover - ${filterType} - ${item}`
+                    label: `Preprints - Discover - ${filterType} ${item}`
                 });
         },
     },

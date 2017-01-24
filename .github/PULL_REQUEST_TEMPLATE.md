@@ -5,6 +5,10 @@
      - For new features, select "develop" as the target branch
      - For release feature fixes, select the relevant release branch (release/X.Y.Z) as the target branch -->
 
+## Ticket
+
+https://openscience.atlassian.net/browse/EOSF- 
+
 ## Purpose
 
 <!-- Describe the purpose of your changes -->
@@ -18,6 +22,4 @@
 <!--Any possible side effects? -->
 
 
-## Ticket
 
-<!-- Link to JIRA ticket, if applicable e.g. https://openscience.atlassian.net/browse/PREP-1234 -->

@@ -41,11 +41,15 @@ export default Ember.Component.extend(Analytics, {
 
     hyperlink: Ember.computed('result', function() {
         let re = null;
-        for (let i = 0; i < this.get('result.providers.length'); i++)
-            re = this.providerUrlRegex[this.get('result.providers')[i].name] || null;
+        for (let i = 0; i < this.get('result.providers.length'); i++) {
+            //If the result has multiple providers, and one of them matches, use the first one found.
+            re = this.providerUrlRegex[this.get('result.providers')[i].name];
+            if (re) break;
+        }
+
+        re = re || this.providerUrlRegex.OSF;
 
         const identifiers = this.get('result.identifiers').filter(ident => ident.startsWith('http://'));
-        if (!re) return identifiers[0];
 
         for (let j = 0; j < identifiers.length; j++)
             if (re.test(identifiers[j]))
@@ -62,7 +66,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'result',
                     action: !this.showBody ? 'contract' : 'expand',
-                    label: this.result.title
+                    label: `Preprints - Discover - ${this.result.title}`
                 });
         },
         select(item) {
