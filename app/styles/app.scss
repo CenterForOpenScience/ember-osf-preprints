@@ -163,31 +163,31 @@ ul.comma-list {
 $logo-dir: 'img/provider_logos/';
 
 .provider-osf {
-    background-image: url($logo-dir + 'osf.png');
+    background-image: url($logo-dir + 'osf-small.png');
 }
 .provider-osf-dark {
-    background-image: url($logo-dir + 'osf-dark.png');
+    background-image: url($logo-dir + 'osf-dark-small.png');
 }
 
 .provider-socarxiv {
-    background-image: url($logo-dir + 'socarxiv.png');
+    background-image: url($logo-dir + 'socarxiv-small.png');
 }
 .provider-socarxiv-dark {
-    background-image: url($logo-dir + 'socarxiv-dark.png');
+    background-image: url($logo-dir + 'socarxiv-dark-small.png');
 }
 
 .provider-engrxiv {
-    background-image: url($logo-dir + 'engrxiv.png');
+    background-image: url($logo-dir + 'engrxiv-small.png');
 }
 .provider-engrxiv-dark {
-    background-image: url($logo-dir + 'engrxiv-dark.png');
+    background-image: url($logo-dir + 'engrxiv-dark-small.png');
 }
 
 .provider-psyarxiv {
-    background-image: url($logo-dir + 'psyarxiv.png');
+    background-image: url($logo-dir + 'psyarxiv-small.png');
 }
 .provider-psyarxiv-dark {
-    background-image: url($logo-dir + 'psyarxiv-dark.png');
+    background-image: url($logo-dir + 'psyarxiv-dark-small.png');
 }
 
 .preprint-advisory  {
@@ -427,6 +427,13 @@ ul.preprints-block-list {
 
 /* Forbidden page */
 .preprint-403 {
+    padding: 120px 0 120px 0;
+    background-color: #ecf2f3;
+    border-bottom: 1px solid #d6dbdc;
+}
+
+/* Gone page */
+.preprint-410 {
     padding: 120px 0 120px 0;
     background-color: #ecf2f3;
     border-bottom: 1px solid #d6dbdc;
@@ -807,7 +814,6 @@ hr {
 
 }
 
-
 //For Supplementary File Widget
 #preprint-file-view {
     section {
@@ -1066,6 +1072,84 @@ label.title-label {
     background-size: contain;
 }
 
+@media (max-width: 768px) {
+    .edit-button-and-logo {
+        padding-top: 20px;
+    }
+    .supplemental-downloads {
+        float: none !important;
+    }
+    .preprint-image {
+        margin-top: 0 !important;
+    }
+    .share-row {
+        margin-top: 20px;
+    }
+    #preprintTitle {
+        text-align: center;
+    }
+    .view-authors {
+        text-align: center;
+    }
+    .preprint-added-on {
+        text-align: center;
+    }
+    .truncate {
+        width: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    #preprint-file-view { // Supplementary file browser - mobile view
+        section {
+            .selected{
+                background-color: #F3F5F5;
+            }
+            a {
+                text-decoration: none;
+            }
+            .preprint-file-link {
+                color: black !important;
+            }
+            button {
+                line-height:12px;
+                position: absolute;
+                left: 0px;
+                &.bottom {
+                    bottom: -20px;
+                    top: initial !important;
+                }
+                &.top {
+                    bottom: 155px;
+                    top: initial !important;
+                }
+                width: 100%;
+                height: 20px;
+                i.fa-caret-down {
+                    line-height:inherit!important;
+                }
+                i.fa-caret-up {
+                    line-height:inherit!important;
+                }
+            }
+        }
+        .osf-box {
+            margin-top: 30px !important;
+            height: 160px;
+            margin-bottom: 40px !important;
+        }
+    }
+}
+
+.social-media-icons {
+    float: none !important;
+    white-space: nowrap;
+}
+.social-div {
+    margin-top: 10px;
+}
+
+
 .content-provider-logo {
     min-height: 80px;
     min-width: 120px;
@@ -1073,7 +1157,7 @@ label.title-label {
 
 .discover-provider-logo {
     min-height: 80px;
-    min-width: 150px;
+    min-width: 100px;
 }
 
 .edit-btn {
@@ -1129,6 +1213,12 @@ nav.branded-navbar {
         margin: 0;
     }
 }
+
+.permission-footer-language {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    line-height: 28px;
+  }
 
 .branded-footer-links {
     margin-bottom: 1em;

@@ -3,6 +3,7 @@ import { moduleForModel, test } from 'ember-qunit';
 moduleForModel('preprint-provider', 'Unit | Serializer | preprint provider', {
     // Specify the other units that are required for this test.
     needs: [
+        'model:license',
         'model:preprint',
         'model:taxonomy',
         'serializer:preprint',

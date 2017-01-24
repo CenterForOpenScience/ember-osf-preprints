@@ -17,8 +17,8 @@
                 <p>{{if editMode (t "submit.body.p_edit") (t "submit.body.p_add" name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}</p>
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
-                        {{#preprint-form-section id='preprint-form-upload' class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isValidationActive=(uploadValidationActive editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged)}}
+                        {{#preprint-form-section id='preprint-form-upload' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged)}}
                             {{#preprint-form-body}}
                                 {{#liquid-bind filePickerState class='translate' as |currentState|}}
                                     <div class={{currentState}}>
@@ -61,6 +61,9 @@
                                                 abandonedPreprint=abandonedPreprint
                                                 resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
                                                 basicsAbstract=basicsAbstract
+                                                editMode=editMode
+                                                newNode=newNode
+                                                applyLicense=applyLicense
                                             }}
                                         {{else if (eq currentState _State.EXISTING)}}
                                             {{preprint-form-project-select
@@ -102,6 +105,9 @@
                                               abandonedPreprint=abandonedPreprint
                                               resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
                                               basicsAbstract=basicsAbstract
+                                              editMode=editMode
+                                              newNode=newNode
+                                              applyLicense=applyLicense
                                               }}
                                         {{/if}}
                                     </div>
@@ -111,12 +117,12 @@
                     {{/with}}
 
                     {{#with _names.[1] as |name|}}
-                        {{#preprint-form-section id='preprint-form-subjects' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                        {{#preprint-form-section id='preprint-form-subjects' editMode=editMode class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="m-b-lg text-smaller">{{t "submit.body.subjects_description"}}</p>
 
-                                {{subject-picker selected=subjectsList disciplineModifiedToggle=disciplineModifiedToggle save=(action 'setSubjects')}}
+                                {{subject-picker editMode=editMode selected=subjectsList disciplineModifiedToggle=disciplineModifiedToggle save=(action 'setSubjects')}}
 
                                 <div class="row">
                                     <div class="col-md-12">
@@ -131,9 +137,28 @@
                     {{/with}}
 
                     {{#with _names.[2] as |name|}}
-                        {{#preprint-form-section id='preprint-form-basics' class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=node.tags abstract=node.description name=name valid=(not basicsChanged) isValidationActive=hasOpened}}
+                        {{#preprint-form-section id='preprint-form-basics' editMode=editMode class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=node.tags abstract=node.description name=name valid=(not basicsChanged) license=model.license isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
+                                <div class='row'>
+                                    <div class='col-xs-12'>
+                                        {{license-picker licenses=availableLicenses currentValues=basicsLicense showCategories=false editLicense=(action 'editLicense') allowDismiss=false autosave=true showBorder=false}}
+                                        <br>
+                                        <div class="row">
+                                            <div class='col-xs-12'>
+                                                <label> {{t "submit.body.basics.license.apply_license_title"}} </label>
+                                                {{#if (or (not newNode) editMode)}}
+                                                    <p>{{t "submit.body.basics.license.apply_license_text"}}</p>
+                                                {{/if}}
+                                                <span style="margin: 5px">
+                                                    <input onchange={{action 'applyLicenseToggle' true}} type="radio" checked={{applyLicense}}> Yes
+                                                    <input onchange={{action 'applyLicenseToggle' false}} type="radio" checked={{not applyLicense}}> No
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div>
@@ -152,7 +177,9 @@
                                         <label>
                                             <span class="required">{{t "global.abstract"}}:</span>
                                         </label>
-                                        {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
+                                        <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Preprints - Edit - Abstract Text Change') (action 'track' 'input' 'onchange' 'Preprints - Submit - Abstract Text Change')}}>
+                                            {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -169,7 +196,7 @@
                     {{/with}}
 
                     {{#with _names.[3] as |name|}}
-                        {{#preprint-form-section id='preprint-form-authors' class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                        {{#preprint-form-section id='preprint-form-authors' editMode=editMode class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="text-smaller">
@@ -204,7 +231,7 @@
                         {{/preprint-form-section}}
                     {{/with}}
                     {{#with _names.[4] as |name|}}
-                        {{#preprint-form-section id='preprint-form-submit' class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                        {{#preprint-form-section id='preprint-form-submit' editMode=editMode class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode name=(if editMode 'Update' name) showValidationIndicator=false}}
                             {{#if editMode}}
                                 {{#cp-panel-body}}

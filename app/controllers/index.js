@@ -11,7 +11,7 @@ export default Ember.Controller.extend(Analytics, {
         const filter = [
             {
                 term: {
-                    'type.raw': 'preprint'
+                    'types.raw': 'preprint'
                 }
             }
         ];

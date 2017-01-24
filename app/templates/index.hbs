@@ -32,12 +32,8 @@
             <div class="row">
                 <div class="text-center col-xs-12">
                     <p class="lead"> or </p>
-                    <a type="button" class="btn btn-success btn-lg" href={{concat theme.pathPrefix "submit"}} onbeforeclick={{action "click" "link" "Index - Add preprint"}}>{{t "global.add_preprint"}}</a>
-                    <div class="m-t-md">
-                        {{#link-to (concat theme.routePrefix "content") (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}
-                            {{t "index.header.example"}}
-                        {{/link-to}}
-                    </div>
+                    <a type="button" class="btn btn-success btn-lg" href={{concat '/preprints/' (if theme.isProvider (concat theme.id '/')) 'submit'}} onclick={{action "click" "link" "Preprints - Index - Add preprint"}}>{{t "global.add_preprint"}}</a>
+                    <div class="m-t-md">{{#link-to (if theme.isProvider "provider.content" "content") (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Preprints - Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
                 </div>
             </div>
         </div> {{!END CONTAINER}}
@@ -68,38 +64,38 @@
                         <p class="m-b-lg">{{t "index.services.top.paragraph"}}</p>
                     </div>
                 </div>
-                <div class="row p-v-md">{{!BRANDED ROW}}
-                    {{#each model.brandedProviders as |provider|}}
-                        <div class="col-sm-4">
-                            <a href="/preprints/{{provider.id}}"
-                               title={{provider.name}}
-                               onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
-                            >
-                                <div class="provider-logo provider-{{provider.id}}"></div>
-                            </a>
-                        </div>
-                    {{/each}}
-                </div>
-                <div class="row p-v-md">
-                    <div class="col-md-12 text-center">
-                        <p class="lead">
-                            {{t "index.services.bottom.p1"}}
-                            <div class="p-t-sm">
-                                {{t "index.services.bottom.div.line1"}}
-                                <a class="source_code_link" href="https://github.com/CenterForOpenScience/ember-preprints"
-                                    {{action "click" "link" "Index - GitHub Repo" "https://github.com/CenterForOpenScience/ember-preprints"}}>
-                                    {{t "index.services.bottom.div.linkText1"}}
-                                </a>
-                                {{t "index.services.bottom.div.line2"}}
-                                <a class="source_code_link" href="https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"
-                                    {{action "click" "link" "Index - GitHub Repo" "https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"}}>
-                                    {{t "index.services.bottom.div.linkText2"}}
-                                </a>
-                                {{t "index.services.bottom.div.line3"}}
-                            </div>
-                        </p>
-                        <a href="mailto:contact@osf.io" class="btn btn-info btn-lg" {{action "click" "link" "Index - Contact"}}>{{t "index.services.bottom.contact"}}</a>
+            </div>
+            <div class="row p-v-md">{{!BRANDED ROW}}
+                {{#each model.brandedProviders as |provider|}}
+                    <div class="col-sm-4">
+                        <a href="/preprints/{{provider.id}}"
+                           title={{provider.name}}
+                           onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
+                        >
+                            <div class="provider-logo provider-{{provider.id}}"></div>
+                        </a>
                     </div>
+                {{/each}}
+            </div>
+            <div class="row p-v-md">
+                <div class="col-md-12 text-center">
+                    <p class="lead">
+                        {{t "index.services.bottom.p1"}}
+                        <div class="p-t-sm">
+                            {{t "index.services.bottom.div.line1"}}
+                            <a class="source_code_link" href="https://github.com/CenterForOpenScience/ember-preprints"
+                                {{action "click" "link" "Preprints - Index - GitHub Repo" "https://github.com/CenterForOpenScience/ember-preprints"}}>
+                                {{t "index.services.bottom.div.linkText1"}}
+                            </a>
+                            {{t "index.services.bottom.div.line2"}}
+                            <a class="source_code_link" href="https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"
+                                {{action "click" "link" "Preprints - Index - Requirements and Roadmap" "https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"}}>
+                                {{t "index.services.bottom.div.linkText2"}}
+                            </a>
+                            {{t "index.services.bottom.div.line3"}}
+                        </div>
+                    </p>
+                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg" onclick={{action "click" "link" "Preprints - Index - Contact"}}>{{t "index.services.bottom.contact"}}</a>
                 </div>
             </div>
         </div>

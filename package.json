@@ -1,7 +1,7 @@
 {
   "name": "preprint-service",
-  "version": "0.100.0",
-  "description": "Small description for preprint-service goes here",
+  "version": "0.103.0",
+  "description": "Center for Open Science Preprint Service",
   "private": true,
   "directories": {
     "test": "tests"
@@ -9,25 +9,26 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember test",
+    "test": "yarn run check-style && ember test",
     "check-style": "./node_modules/jscs/bin/jscs ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CenterForOpenScience/ember-preprints.git"
   },
+  "engineStrict": true,
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">=6"
   },
   "author": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "autoprefixer": "^6.3.7",
     "broccoli-asset-rev": "^2.4.2",
     "ember-ajax": "^2.0.1",
     "ember-autosave": "2.0.1",
     "ember-bootstrap": "0.7.2",
-    "ember-cli": "^2.7.0",
+    "ember-cli": "^2.10.0",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-babel": "^5.1.6",
     "ember-cli-bootstrap-sassy": "0.5.3",
@@ -58,11 +59,11 @@
     "ember-link-action": "0.0.35",
     "ember-load-initializers": "^0.5.1",
     "ember-metrics": "0.6.3",
-    "ember-osf": "git+https://github.com/CenterForOpenScience/ember-osf.git#52f60fc7006b4c0b0bb837599af9cfc463543ab6",
+    "ember-osf": "git+https://github.com/CenterForOpenScience/ember-osf.git#ac254f87274044fb97d6a712efa5ff2433bd0537",
     "ember-page-title": "3.0.6",
     "ember-power-select": "1.0.0-beta.7",
     "ember-read-more": "0.0.13",
-    "ember-resolver": "^2.0.3",
+    "ember-resolver": "2.1.0",
     "ember-sortable": "1.8.2",
     "ember-toastr": "1.4.1",
     "ember-truth-helpers": "1.2.0",

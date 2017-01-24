@@ -37,6 +37,7 @@
     <div class="m-t-md preprint-header-preview">
         {{#if (or isValidationActive editMode)}}
             {{#if (eq name 'Basics')}}
+                <p><em class="m-r-md"> {{t "global.license"}}: </em> {{if license license.name (t "global.none")}} </p>
                 <p><em class="m-r-md"> {{t "global.doi"}}: </em> {{if doi doi (t "global.none")}} </p>
                 <p>
                     <em class="m-r-md"> {{t "global.tags"}}: </em>
@@ -132,7 +133,7 @@
         {{/if}}
 
 
-        {{#if (and (isSectionEditable name) (or editMode (or (not showValidationIndicator) isValidationActive)))}}
+        {{#if (and (is-section-editable name) (or editMode (or (not showValidationIndicator) isValidationActive)))}}
             <i class="text-smaller m-t-md">{{t "components.preprint-form-header.click_edit"}}</i>
         {{/if}}
     </div>

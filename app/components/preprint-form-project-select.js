@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import Permissions from 'ember-osf/const/permissions';
+import Analytics from '../mixins/analytics';
+import {stripDiacritics} from 'ember-power-select/utils/group-utils';
 
 /**
  * Preprint form project select widget - handles all ADD mode cases where the first step is to select an existing OSF project to contain
@@ -11,7 +13,7 @@ import Permissions from 'ember-osf/const/permissions';
  *
  * @class preprint-form-project-select
  */
-export default Ember.Component.extend({
+export default Ember.Component.extend(Analytics, {
     userNodes: Ember.A(),
     selectedNode: null,
     isAdmin: Ember.computed('selectedNode', function() {
@@ -29,6 +31,12 @@ export default Ember.Component.extend({
                 this.set('osfProviderLoaded', true);
             });
             this.attrs.nextUploadSection('chooseProject', 'chooseFile');
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'dropdown',
+                    action: 'select',
+                    label: 'Preprints - Submit - Choose Project'
+                });
 
         },
         selectFile(file) {
@@ -36,6 +44,12 @@ export default Ember.Component.extend({
             this.attrs.clearDownstreamFields('belowFile');
             this.attrs.selectFile(file);
             this.attrs.nextUploadSection('selectExistingFile', 'organize');
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'file browser',
+                    action: 'select',
+                    label: 'Preprints - Submit - Existing File Selected'
+                });
         },
         changeExistingState(newState) {
             // Toggles existingState between 'existing' or 'new', meaning user wants to select existing file from file browser
@@ -44,8 +58,21 @@ export default Ember.Component.extend({
             this.set('existingState', newState);
             if (newState === this.get('_existingState').EXISTINGFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'selectExistingFile');
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: 'Preprints - Submit - Choose Select Existing File as Preprint'
+                    });
+
             } else if (newState === this.get('_existingState').NEWFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'uploadNewFile');
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: 'Preprints - Submit - Choose Upload Preprint'
+                    });
             }
         },
     },
@@ -55,4 +82,29 @@ export default Ember.Component.extend({
      * @property {boolean} fileSelect
      */
     fileSelect: false,
+
+    titleMatcher(node, term) {
+        // Passed into power-select component for customized searching.
+        // Returns results if match in node, root, or parent title
+        const fields = [
+            'title',
+            'root.title',
+            'parent.title'
+        ];
+
+        const sanitizedTerm = stripDiacritics(term).toLowerCase();
+
+        for (const field of fields) {
+            const fieldValue = node.get(field) || '';
+
+            if (!fieldValue) continue;
+
+            const sanitizedValue = stripDiacritics(fieldValue).toLowerCase();
+
+            if (sanitizedValue.includes(sanitizedTerm)) {
+                return 1;
+            }
+        }
+        return -1;
+    }
 });

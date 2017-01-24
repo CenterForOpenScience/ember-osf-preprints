@@ -1,5 +1,6 @@
 const preprints = `Preprints`;
 const brand = `OSF ${preprints}`;
+const arxiv_trademark_license = 'arXiv is a trademark of Cornell University, used under license.';
 
 export default {
     global: {
@@ -31,6 +32,7 @@ export default {
         convert_component: `The preprint will be organized in the current component`,
         copy_inside_project: `The preprint will be organized in a new component`,
         open_science_framework: `Open Science Framework`,
+        license: 'License',
     },
     application: {
         // Nothing to translate
@@ -47,6 +49,7 @@ export default {
         },
         version: 'Version',
         article_doi: `Article DOI`,
+        citations: `Citations`,
         disciplines: `Disciplines`,
         project_button: {
             paragraph: `The project for this paper is available on the OSF.`,
@@ -134,6 +137,13 @@ export default {
         },
         go_to: `Go to {{brand}}`
     },
+    'resource-deleted': {
+        heading: `Resource deleted`,
+        paragraph: {
+            line1: `User has deleted this content. If this should not have occurred and the issue persists, please report it to  `,
+        },
+        go_to: `Go to {{brand}}`
+    },
     submit: {
         add_heading: `Add Preprint`,
         edit_heading: `Edit Preprint`,
@@ -155,6 +165,10 @@ export default {
                 },
                 abstract: {
                     placeholder: `Add a brief summary of your preprint`
+                },
+                license: {
+                    apply_license_title: `Apply this license to my OSF Project.`,
+                    apply_license_text: `Selecting a license for your preprint does not automatically apply the license to your OSF project.`
                 }
             },
             authors: {
@@ -236,6 +250,10 @@ export default {
             support: `Support`,
             contact: `Contact`
         },
+        'permission-language':{
+            arxiv_trademark_license,
+            arxiv_non_endorsement: `${arxiv_trademark_license} This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.`
+        },
         'preprint-form-authors': {
             search: {
                 placeholder: `Search by name`
@@ -287,7 +305,7 @@ export default {
         },
         'preprint-form-project-select': {
             existing_project_selector: `The list of projects appearing in the selector are projects and components for which you have admin access.  Registrations are not included here.`,
-            no_valid_existing_nodes: `You have no valid nodes that can be converted into a preprint.  Go back to upload a new preprint.`,
+            no_valid_existing_nodes: `You have no available projects that can be converted into a preprint.  Go back to upload a new preprint.`,
             upload_preprint: `Upload preprint`,
             select_existing_file: `Select existing file as preprint`,
             edit_preprint_title_project: `Edit preprint title (will also become the name of the project)`,

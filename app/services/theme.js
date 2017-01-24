@@ -6,8 +6,7 @@ export default Ember.Service.extend({
     session: Ember.inject.service(),
 
     isDomain: false,
-
-    id: config.PREPRINTS.provider,
+    id: config.PREPRINTS.defaultProvider,
 
     provider: Ember.computed('id', function() {
         const id = this.get('id');
@@ -58,6 +57,18 @@ export default Ember.Service.extend({
         return `${prefix}/assets/css/${id}${suffix}.css`;
     }),
 
+    logoSharing: Ember.computed('id', function() {
+        const id = this.get('id');
+
+        const logo = config.PREPRINTS.providers
+            .find(provider => provider.id === id)
+            .logoSharing;
+
+        logo.path = `/preprints${logo.path}`;
+
+        return logo;
+    }),
+
     signupUrl: Ember.computed('id', function() {
         const query = Ember.$.param({
             campaign: `${this.get('id')}-preprints`,
@@ -69,5 +80,13 @@ export default Ember.Service.extend({
 
     redirectUrl: Ember.computed('isProvider', function() {
         return this.get('isProvider') ? window.location.href : null;
+    }),
+
+    permissionLanguage: Ember.computed('id', function() {
+        const id = this.get('id');
+
+        return config.PREPRINTS.providers
+            .find(provider => provider.id === id)
+            .permissionLanguage;
     }),
 });

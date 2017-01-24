@@ -60,6 +60,7 @@ Router.map(function() {
 
     this.route('content', {path: '/:preprint_id'});
     this.route('forbidden');
+    this.route('resource-deleted');
 });
 
 export default Router;

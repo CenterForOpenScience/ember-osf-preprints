@@ -9,6 +9,7 @@ export default Ember.Component.extend(Analytics, {
         'Arts and Humanities': 'Fine Arts, History, Music, Philosophy, Religion',
         'Business': 'Accounting, Finance and Financial Management, Human Resource Management, Marketing, Taxation',
         'Education': 'Curriculum and Instruction, Educational Administration and Supervision, Educational Leadership, Higher Education, Liberal Studies',
+        'Engineering': 'Biomedical Engineering and Bioengineering, Chemical Engineering, Civil and Environmental Engineering, Electrical and Computer Engineering, Mechanical Engineering',
         'Law': 'Civil Law, Criminal Law, Legislation, State and Local Government Law, Supreme Court of the United States',
         'Life Sciences': 'Agriculture, Genetics and Genomics, Microbiology, Physiology, Zoology',
         'Medicine and Health Sciences': 'Anatomy, Diseases, Medical Sciences, Public Health, Veterinary Medicine',

@@ -33,24 +33,29 @@ export default Ember.Component.extend(Analytics, {
         // socarxiv and the like sometimes get picked up by as part of OSF, which is technically true. This will prevent
         // broken links to things that aren't really preprints.
         if (this.get('result.providers.length') === 1 && this.get('result.providers').find(provider => provider.name === 'OSF'))
-            for (let i = 0; i < this.get('result.lists.links.length'); i++)
-                if (re.test(this.get('result.lists.links')[i].url))
-                    return re.exec(this.get('result.lists.links')[i].url)[1];
+            for (let i = 0; i < this.get('result.identifiers.length'); i++)
+                if (re.test(this.get('result.identifiers')[i]))
+                    return re.exec(this.get('result.identifiers')[i])[1];
         return false;
     }),
 
     hyperlink: Ember.computed('result', function() {
-        var re = null;
-        for (let i = 0; i < this.get('result.providers.length'); i++)
-            re = this.providerUrlRegex[this.get('result.providers')[i].name] || null;
+        let re = null;
+        for (let i = 0; i < this.get('result.providers.length'); i++) {
+            //If the result has multiple providers, and one of them matches, use the first one found.
+            re = this.providerUrlRegex[this.get('result.providers')[i].name];
+            if (re) break;
+        }
 
-        if (!re) return this.get('result.lists.links.0.url');
+        re = re || this.providerUrlRegex.OSF;
 
-        for (let j = 0; j < this.get('result.lists.links.length'); j++)
-            if (re.test(this.get('result.lists.links')[j].url))
-                return this.get('result.lists.links')[j].url;
+        const identifiers = this.get('result.identifiers').filter(ident => ident.startsWith('http://'));
 
-        return this.get('result.lists.links.0.url');
+        for (let j = 0; j < identifiers.length; j++)
+            if (re.test(identifiers[j]))
+                return identifiers[j];
+
+        return identifiers[0];
     }),
 
     actions: {
@@ -61,7 +66,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'result',
                     action: !this.showBody ? 'contract' : 'expand',
-                    label: this.result.title
+                    label: `Preprints - Discover - ${this.result.title}`
                 });
         },
         select(item) {

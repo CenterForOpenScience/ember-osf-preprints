@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
+import Analytics from '../mixins/analytics';
 
 import { validator, buildValidations } from 'ember-cp-validations';
 
@@ -88,7 +89,7 @@ function doiRegexExec(doi) {
 /**
  * "Add preprint" page definitions
  */
-export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, TaggableMixin, {
+export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
     i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
     fileManager: Ember.inject.service(),
@@ -104,6 +105,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     user: null,
     userNodes: Ember.A(),
     userNodesLoaded: false,
+
+    availableLicenses: Ember.A(),
+    applyLicense: false,
+    newNode: false,
 
     // Information about the thing to be turned into a preprint
     node: null, // Project or component containing the preprint
@@ -188,7 +193,11 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             basicsTags: Ember.A(),
             basicsAbstract: null,
             basicsDOI: null,
-            subjectsList: Ember.A()
+            basicsLicense: null,
+            subjectsList: Ember.A(),
+            availableLicenses: Ember.A(),
+            applyLicense: false,
+            newNode: false
         }));
     },
 
@@ -199,8 +208,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     uploadValid: Ember.computed.alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
-    // Basics fields that are being validated are abstract and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
-    basicsValid: Ember.computed.and('abstractValid', 'doiValid'),
+    // Must have year and copyrightHolders filled if those are required by the licenseType selected
+    licenseValid: false,
+    // Basics fields that are being validated are abstract, license and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
+    basicsValid: Ember.computed.and('abstractValid', 'doiValid', 'licenseValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
     // Must select at least one subject (looking at pending subjects)
@@ -279,9 +290,34 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         const modelDOI = this.get('model.doi');
         return (basicsDOI || modelDOI) && basicsDOI !== modelDOI;
     }),
-    basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', function() {
+    basicsLicense: Ember.computed('model', function() {
+        // This loads up the current license information if the preprint has one, otherwise initializes the
+        // license object with null values
+        let record = this.get('model.licenseRecord');
+        let license = this.get('model.license');
+        return {
+            year: record ? record.year : null,
+            copyrightHolders: record && record.copyright_holders ? record.copyright_holders.join(',') : null,
+            licenseType: license || null
+        };
+    }),
+    licenseChanged: Ember.computed('model.license', 'model.licenseRecord', 'basicsLicense.year', 'basicsLicense.copyrightHolders', 'basicsLicense.licenseType', function() {
+        let changed = false;
+        if (this.get('model.licenseRecord') || this.get('model.license.content')) {
+            changed = changed || (this.get('model.license.name') !== this.get('basicsLicense.licenseType.name'));
+            changed = changed || (this.get('model.licenseRecord').year !== this.get('basicsLicense.year'));
+            changed = changed || ((this.get('model.licenseRecord.copyright_holders.length') ? this.get('model.licenseRecord.copyright_holders').join(',') : '') !== this.get('basicsLicense.copyrightHolders'));
+        } else {
+            changed = changed || ((this.get('availableLicenses').toArray().length ? this.get('availableLicenses').toArray()[0].get('name') : null) !== this.get('basicsLicense.licenseType.name'));
+            let date = new Date();
+            changed = changed || (date.getUTCFullYear().toString() !== this.get('basicsLicense.year'));
+            changed = changed || !(this.get('basicsLicense.copyrightHolders') === '' || !this.get('basicsLicense.copyrightHolders.length') || this.get('basicsLicense.copyrightHolders') === null);
+        }
+        return changed;
+    }),
+    basicsChanged: Ember.computed('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', function() {
         // Are there any unsaved changes in the basics section?
-        return this.get('tagsChanged') || this.get('abstractChanged') || this.get('doiChanged');
+        return this.get('tagsChanged') || this.get('abstractChanged') || this.get('doiChanged') || this.get('licenseChanged');
     }),
     ////////////////////////////////////////////////////
     // Fields used in the "discipline" section of the form.
@@ -350,12 +386,41 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     }),
 
     actions: {
+        editLicense(license, validates) {
+            // This gets called by the save method of the license-widget, which in autosave mode
+            // gets called everytime a change is observed in the widget.
+            this.set('basicsLicense', license);
+            this.set('licenseValid', validates);
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'dropdown',
+                    action: 'select',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`
+                });
+        },
+        applyLicenseToggle(apply) {
+            this.set('applyLicense', apply);
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'radio-button',
+                    action: 'select',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Apply License: ${apply}`
+                });
+        },
         next(currentPanelName) {
             // Open next panel
             if (currentPanelName === 'Upload' || currentPanelName === 'Basics') {
                 Ember.run.scheduleOnce('afterRender', this, function() {
                     MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$(currentPanelName === 'Upload' ? '.preprint-header-preview' : '.abstract')[0]]);  // jshint ignore:line
                 });
+            }
+            if (currentPanelName === 'Authors') {
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Authors Next Button`
+                    });
             }
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
             this.send('changesSaved', currentPanelName);
@@ -385,12 +450,32 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Sets filePickerState to start, new, or existing - this is the initial decision on the form.
             this.set('filePickerState', newState);
             this.send('clearDownstreamFields', 'allUpload');
-            if (newState === this.get('_State').EXISTING) {
+            if (newState === this.get('_State').NEW) {
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: 'Preprints - Submit - Upload new preprint'
+                    });
+            } else if (newState === this.get('_State').EXISTING) {
                 this.get('panelActions').open('chooseProject');
                 this.get('panelActions').close('selectExistingFile');
                 this.get('panelActions').close('uploadNewFile');
                 this.get('panelActions').close('organize');
                 this.get('panelActions').close('finalizeUpload');
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: 'Preprints - Submit - Connect preprint to existing OSF Project'
+                    });
+            } else {
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: 'Preprints - Submit - Back Button, Upload Section'
+                    });
             }
         },
         lockNode() {
@@ -408,6 +493,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Save and Continue, Existing Node Existing File'
+                });
             let node = this.get('node');
             this.set('basicsAbstract', this.get('node.description') || null);
             if (node.get('title') !== this.get('nodeTitle')) {
@@ -428,6 +519,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
             // file from parent node to new component.
             let node = this.get('node');
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Save and Continue, New Component, Copy File'
+                });
             node.addChild(this.get('nodeTitle'))
                 .then(child => {
                     this.set('parentNode', node);
@@ -440,6 +537,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                                 .then((copiedFile) => {
                                     this.set('selectedFile', copiedFile);
                                     this.send('startPreprint', this.get('parentNode'));
+                                    this.set('applyLicense', true);
+                                    this.set('newNode', true);
                                 })
                                 .catch(() => this.get('toast').error(this.get('i18n').t('submit.error_copying_file')));
                         })
@@ -467,7 +566,14 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             // Initiates preprint.  Occurs in Upload section of Add Preprint form when pressing 'Save and continue'.  Creates a preprint with
             // primaryFile, node, and provider fields populated.
             let model = this.get('model');
-
+            this.get('node.license').then(license => {
+                //This is used to set the default applyLicense once a node is loaded, as if the node's
+                //license is not set or is of type No license, we want to set the default to make its license the same
+                //as the preprint license.
+                if (license === null || license && license.get('name').includes('No license')) {
+                    this.set('applyLicense', true);
+                }
+            });
             const provider = this.get('store')
                 .peekRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider);
 
@@ -499,6 +605,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         discardUploadChanges() {
             // Discards upload section changes.  Restores displayed file to current preprint primaryFile
             // and resets displayed title to current node title. (No requests sent, front-end only.)
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Upload Changes`
+                });
             let currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
             this.set('file', null);
             this.set('selectedFile', currentFile);
@@ -539,16 +651,42 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
          */
         discardBasics() {
             // Discards changes to basic fields. (No requests sent, front-end only.)
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Basics Changes`
+                });
             this.set('basicsTags', this.get('node.tags').slice(0));
             this.set('basicsAbstract', this.get('node.description'));
             this.set('basicsDOI', this.get('model.doi'));
+            let date = new Date();
+            this.get('model.license').then(license => {
+                this.set('basicsLicense', {
+                    licenseType: license || this.get('availableLicenses').toArray()[0],
+                    year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : date.getUTCFullYear().toString(),
+                    copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(',') : ''
+                });
+            });
         },
         stripDOI() {
             // Replaces the inputted doi link with just the doi itself
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'input',
+                    action: 'onchange',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - DOI Text Change`
+                });
             let basicsDOI = this.get('basicsDOI');
             this.set('basicsDOI', doiRegexExec(basicsDOI));
         },
         saveBasics() {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue Basics Section`
+                });
             // Saves the description/tags on the node and the DOI on the preprint, then advances to next panel
             let node = this.get('node');
             let model = this.get('model');
@@ -556,21 +694,56 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             let currentAbstract = node.get('description');
             let currentTags = node.get('tags').slice(0);
             let currentDOI = model.get('doi');
+            let currentLicenseType = model.get('license');
+            let currentLicenseRecord = model.get('licenseRecord');
+            let currentNodeLicenseType = node.get('license');
+            let currentNodeLicenseRecord = node.get('nodeLicense');
+
+            let newCopyrightHolders = [];
+            if (this.get('basicsLicense.copyrightHolders') && this.get('basicsLicense.copyrightHolders').length) {
+                newCopyrightHolders = this.get('basicsLicense.copyrightHolders').slice().split(',');
+            }
 
             if (this.get('abstractChanged')) node.set('description', this.get('basicsAbstract'));
             if (this.get('tagsChanged')) node.set('tags', this.get('basicsTags'));
+
+            if (this.get('applyLicense')) {
+                if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || node.get('nodeLicense.copyrightHolders') !== newCopyrightHolders) {
+                    node.set('nodeLicense', {year: this.get('basicsLicense.year'), copyright_holders: newCopyrightHolders});
+                }
+                if (node.get('license.name') !== this.get('basicsLicense.licenseType.name')) {
+                    node.set('license', this.get('basicsLicense.licenseType'));
+                }
+            }
 
             node.save()
                 .then(() => {
                     if (this.get('doiChanged')) {
                         model.set('doi', this.get('basicsDOI') || null);
+                        if (this.get('licenseChanged') || !this.get('model.license.name')) {
+                            model.set('licenseRecord', {year: this.get('basicsLicense.year'), copyright_holders: newCopyrightHolders});
+                            model.set('license', this.get('basicsLicense.licenseType'));
+                        }
                         model.save()
                             .then(() => {
                                 this.send('next', this.get('_names.2'));
                             })
                             .catch(() => {
+                                model.set('licenseRecord', currentLicenseRecord);
+                                model.set('license', currentLicenseType);
                                 model.set('doi', currentDOI);
                                 this.get('toast').error(this.get('i18n').t('submit.doi_error'));
+                            });
+                    } else if (this.get('licenseChanged') || !this.get('model.license.name')) {
+                        model.set('licenseRecord', {year: this.get('basicsLicense.year'), copyright_holders: newCopyrightHolders});
+                        model.set('license', this.get('basicsLicense.licenseType'));
+                        model.save()
+                            .then(() => {
+                                this.send('next', this.get('_names.2'));
+                            })
+                            .catch(() => {
+                                model.set('licenseRecord', currentLicenseRecord);
+                                model.set('license', currentLicenseType);
                             });
                     } else {
                         this.send('next', this.get('_names.2'));
@@ -582,6 +755,8 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     node.set('description', currentAbstract);
                     node.set('tags', currentTags);
                     model.set('doi', currentDOI);
+                    node.set('license', currentNodeLicenseType);
+                    node.set('nodeLicense', currentNodeLicenseRecord);
                     this.get('toast').error(this.get('i18n').t('submit.basics_error'));
 
                 });
@@ -589,6 +764,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
         addTag(tag) {
             // Custom addATag method that appends tag to list instead of auto-saving
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'input',
+                    action: 'onchange',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Add Tag`
+                });
             let tags = this.get('basicsTags').slice(0);
             Ember.A(tags);
             tags.pushObject(tag);
@@ -598,6 +779,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
         removeTag(tag) {
             // Custom removeATag method that removes tag from list instead of auto-saving
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Tag`
+                });
             let tags = this.get('basicsTags').slice(0);
             tags.splice(tags.indexOf(tag), 1);
             this.set('basicsTags', tags);
@@ -616,11 +803,23 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
 
         discardSubjects() {
             // Discards changes to subjects. (No requests sent, front-end only.)
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Discipline Changes`
+                });
             this.set('subjectsList', Ember.$.extend(true, [], this.get('model.subjects')));
         },
 
         saveSubjects() {
             // Saves subjects (disciplines) and then moves to next section.
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`
+                });
             let model = this.get('model');
             // Current subjects saved so UI can be restored in case of failure
             let currentSubjects = Ember.$.extend(true, [], this.get('model.subjects'));
@@ -648,6 +847,12 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
          * @return {User[]} Returns specified page of user records matching query
          */
         findContributors(query, page) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Search for Authors`
+                });
             return this.store.query('user', {
                 filter: {
                     'full_name,given_name,middle_names,family_name': query
@@ -683,13 +888,25 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
          */
         toggleSharePreprintModal() {
             // Toggles display of share preprint modal
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Preprints - Submit - Open Share Preprint Modal'
+                });
             this.toggleProperty('showModalSharePreprint');
         },
         savePreprint() {
             // Finalizes saving of preprint.  Publishes preprint and turns node public.
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit - Complete Preprint Edits' : 'Submit - Share Preprint'}`
+                });
+
             const model = this.get('model');
             const node = this.get('node');
-
             this.set('savingPreprint', true);
             this.toggleProperty('shareButtonDisabled');
             model.set('isPublished', true);

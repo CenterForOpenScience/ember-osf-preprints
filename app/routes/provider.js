@@ -4,15 +4,26 @@ import config from 'ember-get-config';
 export default Ember.Route.extend({
     theme: Ember.inject.service(),
 
-    providerIds: config.PREPRINTS.providers.map(provider => provider.id),
+    providerIds: config.PREPRINTS.providers
+        .slice(1)
+        .map(provider => provider.id),
 
     beforeModel(transition) {
         const {slug} = transition.params.provider;
+        const slugLower = (slug || '').toLowerCase();
 
-        if (this.get('providerIds').includes(slug)) {
+        if (this.get('providerIds').includes(slugLower)) {
+            if (slugLower !== slug) {
+                const {pathname} = window.location;
+                window.location.pathname = pathname.replace(
+                    new RegExp(`^/preprints/${slug}`),
+                    `/preprints/${slugLower}`
+                );
+            }
+
             this.set('theme.id', slug);
         } else {
-            this.set('theme.id', config.PREPRINTS.provider);
+            this.set('theme.id', config.PREPRINTS.defaultProvider);
 
             if (slug.length === 5) {
                 this.transitionTo('content', slug);

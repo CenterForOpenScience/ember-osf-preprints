@@ -11,7 +11,7 @@
                 {{/if}}
                 <div class={{if theme.isProvider 'col-xs-6 text-left'}}>
                     <h1>{{t "discover.search.heading"}}</h1>
-                    <p class="lead">{{t "discover.search.paragraph"}} <a href="https://share.osf.io/" class="share-logo" title="SHARE" onbeforeclick={{action 'click' 'link' 'Discover - Share Logo'}}></a></p>
+                    <p class="lead">{{t "discover.search.paragraph"}} <a href="https://share.osf.io/" class="share-logo" title="SHARE" onclick={{action 'click' 'link' 'Preprints - Discover - Share Logo'}}></a></p>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                         {{#each model as |provider|}}
                             <a href="/preprints/{{provider.id}}/discover"
                                title={{provider.name}}
-                               onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
+                               onclick={{action 'click' 'link' (concat 'Preprints - Discover - Index ' provider.name)}}
                             >
                                 <div class="discover-provider-logo col-xs-4 provider-{{provider.id}}-dark"></div>
                             </a>
@@ -47,7 +47,7 @@
                 <span class="pull-right">
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="true" {{action 'click' 'button' 'Discover - Sort'}}>
+                            aria-haspopup="true" aria-expanded="true" {{action 'click' 'button' 'Preprints - Discover - Sort'}}>
                             {{t "discover.sort_by"}}: {{chosenSortByOption}}
                             <span class="caret"></span>
                         </button>
@@ -120,7 +120,7 @@
                     <p>{{t "discover.main.box.paragraph"}}</p>
                     {{#link-to (if theme.isSubRoute "provider.submit" "submit")
                                type="button" class="btn btn-success btn-lg"
-                               invokeAction=(action 'click' 'button' 'Discover - Add Preprint')
+                               invokeAction=(action 'click' 'button' 'Preprints - Discover - Add Preprint')
                     }}
                         {{t "discover.main.box.button"}}
                     {{/link-to}}

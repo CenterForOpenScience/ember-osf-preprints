@@ -26,26 +26,60 @@ module.exports = function(environment) {
         },
         SHARE: {
             baseUrl: process.env.SHARE_BASE_URL || 'https://staging-share.osf.io/',
-            searchUrl: process.env.SHARE_SEARCH_URL || 'https://staging-share.osf.io/api/v2/search/abstractcreativework/_search'
+            searchUrl: process.env.SHARE_SEARCH_URL || 'https://staging-share.osf.io/api/v2/search/creativeworks/_search'
         },
         moment: {
             outputFormat: 'YYYY-MM-DD hh:mm a'
         },
         PREPRINTS: {
-            provider: 'osf',
+            defaultProvider: 'osf',
 
+
+            // Logos are needed for open graph sharing meta tags (Facebook, LinkedIn, etc) and must be at least 200x200
             providers: [
+                {
+                    id: 'osf',
+                    logoSharing: {
+                        path: '/assets/img/provider_logos/osf-dark.png',
+                        type: 'image/png',
+                        width: 363,
+                        height: 242
+                    }
+                },
                 {
                     id: 'engrxiv',
                     domain: 'engrxiv.com',
-                },
-                {
-                    id: 'psyarxiv',
-                    domain: 'psyarxiv.org',
+                    logoSharing: {
+                        path: '/assets/img/provider_logos/engrxiv-sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
+
                 },
                 {
                     id: 'socarxiv',
                     domain: 'socarxiv.org',
+                    logoSharing: {
+                        path: '/assets/img/provider_logos/socarxiv-sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_trademark_license'
+                },
+                {
+                    id: 'psyarxiv',
+                    domain: 'psyarxiv.org',
+                    logoSharing: {
+                        path: '/assets/img/provider_logos/psyarxiv-sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
                 }
             ],
         },
@@ -96,6 +130,19 @@ module.exports = function(environment) {
     if (environment === 'production') {
         ENV.sentryDSN = process.env.SENTRY_DSN || 'https://2f0a61d03b99480ea11e259edec18bd9@sentry.cos.io/45';
         ENV.ASSET_SUFFIX = process.env.GIT_COMMIT || 'git_commit_env_not_set';
+    } else {
+        // Fallback to throwaway defaults if the environment variables are not set
+        ENV.metricsAdapters[0].config.id = ENV.metricsAdapters[0].config.id || 'UA-84580271-1';
+        ENV.FB_APP_ID = ENV.FB_APP_ID || '1039002926217080';
+    }
+
+    if (ENV.ASSET_SUFFIX) {
+        ENV.PREPRINTS.providers = ENV.PREPRINTS.providers.map(provider => {
+            provider.logoSharing.path = provider.logoSharing.path
+                .replace(/\..*$/, match => `-${ENV.ASSET_SUFFIX}${match}`);
+
+            return provider;
+        });
     }
 
     return ENV;
