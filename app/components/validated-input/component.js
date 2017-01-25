@@ -41,6 +41,7 @@ export default Ember.Component.extend({
 
     keyPress(e) {
         if (e.keyCode === 13 && !this.get('large')) {
+            e.preventDefault();
             this.send('pressSubmit');
         }
     },
