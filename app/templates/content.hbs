@@ -61,24 +61,22 @@
             </div> {{!END LEFT COL DIV}}
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
-                    {{#liquid-spacer growDuration=250 growWidth=false}}
-                        <div class="share-row p-sm osf-box-lt clearfix">{{!SHARE ROW}}
-                            <div class="row" id="download_project clearfix">
-                                <div class="col-xs-12 col-lg-8">
-                                    <a class="btn btn-primary" href={{model.primaryFile.links.download}} onclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
-                                    <span class="p-sm">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
-                                </div>
-                                <div class="col-xs-12 col-lg-4 social-div">
-                                    <span class="p-xs pull-right social-media-icons">
-                                        <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'Preprints - Content - tweet'}}>{{fa-icon 'twitter-square' size=2 }}</a>
-                                        <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref 'Facebook' 'Preprints - Content - share'}}>{{fa-icon 'facebook-square' size=2 }}</a>
-                                        <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref 'LinkedIn' 'Preprints - Content - share'}}>{{fa-icon 'linkedin-square' size=2 }}</a>
-                                        <a class="m-r-xs text-smaller" href={{emailHref}} onbeforeclick={{action 'shareLink' emailHref 'link' 'click' 'Preprints - Content - email'}}>{{fa-icon 'envelope' size=2 }}</a>
-                                    </span>
-                                </div>
+                    <div class="share-row p-sm osf-box-lt clearfix">{{!SHARE ROW}}
+                        <div class="row" id="download_project clearfix">
+                            <div class="col-xs-12 col-lg-8">
+                                <a class="btn btn-primary" href={{model.primaryFile.links.download}} onclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
+                                <span class="p-md">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
+                            </div>
+                            <div class="col-xs-12 col-lg-4 social-div">
+                                <span class="pull-right social-media-icons">
+                                    <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'Preprints - Content - tweet'}}>{{fa-icon 'twitter-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref 'Facebook' 'Preprints - Content - share'}}>{{fa-icon 'facebook-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref 'LinkedIn' 'Preprints - Content - share'}}>{{fa-icon 'linkedin-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{emailHref}} onbeforeclick={{action 'shareLink' emailHref 'link' 'click' 'Preprints - Content - email'}}>{{fa-icon 'envelope' size=2 }}</a>
+                                </span>
                             </div>
                         </div>
-                    {{/liquid-spacer}}
+                    </div>
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
                         <p class="abstract">{{node.description}}</p>
