@@ -35,7 +35,7 @@ export default {
         license: 'License',
     },
     application: {
-        // Nothing to translate
+        separator: ` | `
     },
     content: {
         header: {
@@ -122,27 +122,18 @@ export default {
             paragraph: `Our advisory group includes leaders in preprints and scholarly communication`
         }
     },
-    'page-not-found': {
+    // Error pages
+    'page-not-found': { // 404
         heading: `Page not found`,
-        paragraph: {
-            line1: `The page you were looking for is not found on the {{brand}} service.`,
-            line2: `If this should not have occurred and the issue persists, please report it to`
-        },
-        go_to: `Go to {{brand}}`
+        message: `The page you were looking for is not found on the {{brand}} service.`
     },
-    'page-forbidden': {
+    'page-forbidden': { // 403
         heading: `Forbidden`,
-        paragraph: {
-            line1: `User has restricted access to this page. If this should not have occurred and the issue persists, please report it to `,
-        },
-        go_to: `Go to {{brand}}`
+        message: `User has restricted access to this page.`
     },
-    'resource-deleted': {
+    'resource-deleted': { // 410
         heading: `Resource deleted`,
-        paragraph: {
-            line1: `User has deleted this content. If this should not have occurred and the issue persists, please report it to  `,
-        },
-        go_to: `Go to {{brand}}`
+        message: `User has deleted this content.`
     },
     submit: {
         add_heading: `Add Preprint`,
@@ -228,6 +219,10 @@ export default {
             header_convert_confirmation_component: `Your component details will be saved as you continue to work on this form.`,
             convert_confirmation_details_project: `Changes you make on this page are saved immediately.  Create a new component under this project to avoid overwriting its details.`,
             convert_confirmation_details_component: `Changes you make on this page are saved immediately.  Create a new component under this component to avoid overwriting its details.`
+        },
+        'error-page': {
+            email_message: `If this should not have occurred and the issue persists, please report it to`,
+            go_to: `Go to {{brand}}`
         },
         'file-uploader': {
             dropzone_message: `Drop preprint file here to upload`,

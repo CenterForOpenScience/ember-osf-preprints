@@ -42,10 +42,6 @@ export default Ember.Service.extend({
         return pathPrefix;
     }),
 
-    routePrefix: Ember.computed('isSubRoute', function() {
-        return this.get('isSubRoute') ? 'provider.' : '';
-    }),
-
     stylesheet: Ember.computed('id', function() {
         const id = this.get('id');
 

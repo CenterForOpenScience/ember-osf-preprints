@@ -1,27 +1,4 @@
-{{title 'Page not found'}}
-
-<div class="preprint-404">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h1>{{t "page-not-found.heading"}}</h1>
-                <p>
-                    <span>{{t "page-not-found.paragraph.line1" brand=(if theme.isProvider (t "global.provider_brand" name=theme.provider.name) (t "global.brand"))}}</span>
-                    <br>
-                    <span>{{t "page-not-found.paragraph.line2"}}</span>
-                    <a href="mailto:{{if theme.isProvider theme.provider.emailSupport "support@osf.io"}}"
-                       onbeforeclick={{action "click" "link" "Page not found - Support"}}>
-                        {{if theme.isProvider theme.provider.emailSupport "support@osf.io"}}
-                    </a>
-                </p>
-
-                {{#link-to (concat (if theme.isSubRoute "provider.") "index")
-                           slug=theme.id class="btn btn-primary m-t-md"
-                           invokeAction=(action "click" "link" "Page not found - Go to Index")
-                }}
-                    {{t "page-not-found.go_to" brand=(t (theme.isProvider "global.provider_brand" "global.brand") name=theme.provider.name)}}
-                {{/link-to}}
-            </div>
-        </div>
-    </div>
-</div>
+{{error-page
+    label='Page not found'
+    translateKey='page-not-found'
+}}

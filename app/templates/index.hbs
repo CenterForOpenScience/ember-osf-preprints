@@ -33,7 +33,7 @@
                 <div class="text-center col-xs-12">
                     <p class="lead"> or </p>
                     <a type="button" class="btn btn-success btn-lg" href={{concat '/preprints/' (if theme.isProvider (concat theme.id '/')) 'submit'}} onclick={{action "click" "link" "Preprints - Index - Add preprint"}}>{{t "global.add_preprint"}}</a>
-                    <div class="m-t-md">{{#link-to (if theme.isProvider "provider.content" "content") (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Preprints - Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
+                    <div class="m-t-md">{{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Preprints - Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
                 </div>
             </div>
         </div> {{!END CONTAINER}}
@@ -52,7 +52,6 @@
             </div>{{!END ROW}}
         </div> {{!END CONTAINER}}
     </div> {{!END SUBJECTS LIST}}
-
 
     {{#unless theme.isProvider}}
         {{!SERVICES}}
@@ -101,6 +100,7 @@
         </div>
     {{/unless}}
 
+
     {{!ADVISORY GROUP}}
     <div class="preprint-advisory p-v-md">
         <div class="container">
@@ -135,5 +135,4 @@
             </div>
         </div>
     </div>
-
 </div> {{!END INDEX}}
