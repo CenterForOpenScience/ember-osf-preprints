@@ -80,35 +80,28 @@
                         </div>
                     {{/liquid-spacer}}
                     <div class="p-t-xs">
-                        <h4 class="p-v-md f-w-md">{{t "global.abstract"}}</h4>
+                        <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
                         <p class="abstract">{{node.description}}</p>
                     </div>
 
                     {{#if model.doi}}
                         <div class="p-t-xs">
-                            <h4 class="p-v-md  f-w-md">{{t "content.article_doi"}}</h4>
+                            <h4 class="p-v-md f-w-md"><strong>{{t "content.article_doi"}}</strong></h4>
                             <a href={{doiUrl}} {{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
                         </div>
                     {{/if}}
 
-                    <div class="p-t-xs">
-                        <h4 class="p-v-md f-w-md">{{t "content.citations"}}</h4>
-                        {{citation-widget node=model}}
-                    </div>
-
                     {{#if model.license.name}}
                         <div class="p-t-xs">
-                            <h4 class="p-v-md f-w-md">{{t "global.license"}}</h4>
-                            <p class="p-v-md p-b-sm">
-                                {{model.license.name}}
-                                <span style='cursor: pointer'>
-                                    {{#if showLicenseText }}
-                                        {{fa-icon 'caret-down' click=(action 'toggleLicenseText')}}
-                                    {{else}}
-                                        {{fa-icon 'caret-right' click=(action 'toggleLicenseText')}}
-                                    {{/if}}
-                                </span>
-                            </p>
+                            <h4 class="p-v-md f-w-md"><strong>{{t "global.license"}}</strong></h4>
+                            {{model.license.name}}
+                            <span style='cursor: pointer'>
+                                {{#if showLicenseText }}
+                                    {{fa-icon 'caret-down' click=(action 'toggleLicenseText')}}
+                                {{else}}
+                                    {{fa-icon 'caret-right' click=(action 'toggleLicenseText')}}
+                                {{/if}}
+                            </span>
                             {{#if showLicenseText}}
                                 <pre style='white-space: pre-wrap; font-size:75%; border:none; width:100%; text-align:justify; max-height: 300px;'>{{fullLicenseText}}</pre>
                             {{/if}}
@@ -116,13 +109,13 @@
                     {{/if}}
 
                     <div class="p-t-xs">
-                        <h4 class="p-v-md f-w-md">{{t "content.disciplines"}}</h4>
+                        <h4 class="p-v-md f-w-md"><strong>{{t "content.disciplines"}}</strong></h4>
                         {{#each disciplineReduced as |subject|}}
                             <span class='subject-preview'>{{subject.text}}</span>
                         {{/each}}
                     </div>
-                    <div class="m-b-lg p-t-xs">
-                        <h4 class=" f-w-md p-v-md">{{t "global.tags"}}</h4>
+                    <div class="p-t-xs">
+                        <h4 class=" f-w-md p-v-md"><strong>{{t "global.tags"}}</strong></h4>
                         {{#if hasTag}}
                             {{#each node.tags as |tag|}}
                                 <span class="badge">{{tag}}</span>
@@ -131,6 +124,12 @@
                             {{t "global.none"}}
                         {{/if}}
                     </div>
+
+                    <div class="p-t-xs m-b-lg">
+                        <h4 class="p-v-md f-w-md"><strong>{{t "content.citations"}}</strong></h4>
+                        {{citation-widget node=model}}
+                    </div>
+
                     {{!PROJECT BUTTON}}
                     <div class="p-lg osf-box-lt row project-box">
                         <div class="col-xs-6 text-center">
