@@ -227,7 +227,7 @@ export default Ember.Controller.extend(Analytics, {
         const filter = [
             {
                 terms: {
-                    'type': [
+                    type: [
                         'preprint'
                     ]
                 }
@@ -252,7 +252,7 @@ export default Ember.Controller.extend(Analytics, {
         if (this.get('theme.isProvider')) {
             filter.push({
                 terms: {
-                    'sources': [this.get('theme.provider.name')]
+                    sources: [this.get('theme.provider.name')]
                 }
             });
         }
