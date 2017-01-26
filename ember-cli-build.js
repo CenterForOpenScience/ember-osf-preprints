@@ -29,6 +29,7 @@ module.exports = function(defaults) {
     const providerDomains = config
         .PREPRINTS
         .providers
+        .slice(1)
         .map(provider => provider.domain);
 
     // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js

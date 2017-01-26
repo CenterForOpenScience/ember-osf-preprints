@@ -31,10 +31,12 @@
 
     <script>
         (function() {
-            var hostname = window.location.hostname;
+            var origin = window.location.origin;
+
             window.isProviderDomain = window.providerDomains.some(function(domain) {
-                return ~hostname.indexOf(domain);
+                return ~origin.indexOf(domain);
             });
+
             var prefix = '/' + (window.isProviderDomain ? '' : 'preprints/') + 'assets/';
 
             [

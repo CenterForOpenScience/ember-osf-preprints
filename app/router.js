@@ -6,7 +6,16 @@ const {hostname} = window.location;
 const provider = config
     .PREPRINTS
     .providers
-    .find(p => hostname.includes(p.domain));
+    // Exclude OSF
+    .slice(1)
+    // Filter out providers without a domain
+    .filter(p => p.domain)
+    .find(p =>
+        // Check if the hostname includes: the domain, the domain with dashes instead of periods, or just the id
+        hostname.includes(p.domain) ||
+        hostname.includes(p.domain.replace(/\./g, '-')) ||
+        hostname.includes(p.id)
+    );
 
 const Router = Ember.Router.extend({
     location: config.locationType,
