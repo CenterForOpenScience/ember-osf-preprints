@@ -29,33 +29,6 @@
 
     {{content-for "assets"}}
 
-    <script>
-        (function() {
-            var origin = window.location.origin;
-
-            window.isProviderDomain = window.providerDomains.some(function(domain) {
-                return ~origin.indexOf(domain);
-            });
-
-            var prefix = '/' + (window.isProviderDomain ? '' : 'preprints/') + 'assets/';
-
-            [
-                'vendor',
-                'preprint-service'
-            ].forEach(function (name) {
-                var script = document.createElement('script');
-                script.src = prefix + name + window.assetSuffix + '.js';
-                script.async = false;
-                document.body.appendChild(script);
-
-                var link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = prefix + name + window.assetSuffix + '.css';
-                document.head.appendChild(link);
-            });
-        })();
-    </script>
-
     {{content-for "raven"}}
 
     {{content-for "body-footer"}}

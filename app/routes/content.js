@@ -5,6 +5,9 @@ import Analytics from '../mixins/analytics';
 import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
+import getRedirectUrl from '../utils/get-redirect-url';
+
+const providers = config.PREPRINTS.providers;
 
 // Error handling for API
 const handlers = new Map([
@@ -68,20 +71,28 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 if ((!themeId && isOSF) || themeId === providerId)
                     return;
 
+                // If we made it to this point, we're not on the the correct page
+                let url;
+
+                // If we're on a branded domain, we need to redirect to the
+                if (this.get('theme.isDomain')) {
+                    const {domain} = providers.find(p => p.id === providerId) || providers[0];
+                    url = getRedirectUrl(window.location, domain);
                 // Otherwise, redirect to the branded page
-                // Hard redirect instead of transition, in anticipation of Phase 2 where providers will have their own domains.
-                const {origin, search} = window.location;
+                } else {
+                    const {origin, search} = window.location;
 
-                const urlParts = [
-                    origin
-                ];
+                    const urlParts = [
+                        origin
+                    ];
 
-                if (!isOSF)
-                    urlParts.push('preprints', providerId);
+                    if (!isOSF)
+                        urlParts.push('preprints', providerId);
 
-                urlParts.push(preprint.get('id'), search);
+                    urlParts.push(preprint.get('id'), search);
 
-                const url = urlParts.join('/');
+                    url = urlParts.join('/');
+                }
 
                 window.history.replaceState({}, document.title, url);
                 window.location.replace(url);
@@ -91,8 +102,9 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             this.set('node', node);
 
             if (this.get('editMode')) {
-                let userPermissions = this.get('node.currentUserPermissions') || [];
-                if (userPermissions.indexOf(permissions.ADMIN) === -1) {
+                const userPermissions = this.get('node.currentUserPermissions') || [];
+
+                if (!userPermissions.includes(permissions.ADMIN)) {
                     this.replaceWith('forbidden'); // Non-admin trying to access edit form.
                 }
             }

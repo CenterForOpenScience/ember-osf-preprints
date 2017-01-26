@@ -82,8 +82,31 @@ module.exports = function(defaults) {
                 enabled: true,
                 content: `
                     <script>
-                        window.assetSuffix = '${config.ASSET_SUFFIX ? '-' + config.ASSET_SUFFIX : ''}';
-                        window.providerDomains = ${JSON.stringify(providerDomains)};
+                        window.assetSuffix = '${config.ASSET_SUFFIX ? '-' + config.ASSET_SUFFIX : ''}';                        
+                        (function(providerDomains) {
+                            var origin = window.location.origin;
+                        
+                            var isProviderDomain = providerDomains.some(function(domain) {
+                                return ~origin.indexOf(domain);
+                            });
+                        
+                            var prefix = '/' + (isProviderDomain ? '' : 'preprints/') + 'assets/';
+                        
+                            [
+                                'vendor',
+                                'preprint-service'
+                            ].forEach(function (name) {
+                                var script = document.createElement('script');
+                                script.src = prefix + name + window.assetSuffix + '.js';
+                                script.async = false;
+                                document.body.appendChild(script);
+                        
+                                var link = document.createElement('link');
+                                link.rel = 'stylesheet';
+                                link.href = prefix + name + window.assetSuffix + '.css';
+                                document.head.appendChild(link);
+                            });
+                        })(${JSON.stringify(providerDomains)});
                     </script>`
             }
         },
