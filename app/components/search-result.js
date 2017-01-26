@@ -27,6 +27,30 @@ export default Ember.Component.extend(Analytics, {
         return result.description.slice();
     }),
 
+    shortContributorList: Ember.computed('result', function() {
+        let nameArr = [];
+        let numNames = 0;
+        let filtered = this.get('result.contributors').filter(this.isBibliographic);
+        for (let i = 0; i < filtered.length; i++) {
+            nameArr[i] = filtered[i];
+            numNames++;
+            if(numNames === 6 || i === filtered.length - 1) {
+                if (numNames < filtered.length) 
+                    nameArr[i].originalLength = filtered.length;
+                return nameArr;
+            }
+        }
+    }),
+
+    isBibliographic: function(array) {
+        // Function to filter the Contributor list based on whether they have the bibliographic model property set to true.
+        if (array.users.bibliographic) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+
     osfID: Ember.computed('result', function() {
         let re = /osf.io\/(\w+)\/$/;
         // NOTE / TODO : This will have to be removed later. Currently the only "true" preprints are solely from the OSF

@@ -17,10 +17,8 @@
                 {{!Authors}}
                 <div>
                     <ul class="comma-list">
-                        {{#each result.contributors as |contributor index|}}
-                            {{#if contributor.users.bibliographic}}
-                                {{author-link contributor=contributor}}
-                            {{/if}}
+                        {{#each shortContributorList as |contributor index|}}
+                            {{author-link contributor=contributor}}{{#if contributor.originalLength}}...{{/if}}
                         {{/each}}
                     </ul>
                 </div>
