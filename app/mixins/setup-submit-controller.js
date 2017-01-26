@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
-import { fixSpecialChar } from '../utils/fix-special-char';
+import fixSpecialChar from 'ember-osf/utils/fix-special-char';
 
 // The submit controller/template is used to handle both Add and Edit modes for a preprint.  Contains
 // the setupController items necessary for both Add and Edit Modes.

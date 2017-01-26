@@ -10,7 +10,7 @@ import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
 
 import loadAll from 'ember-osf/utils/load-relationship';
 
-import { fixSpecialChar } from '../utils/fix-special-char';
+import fixSpecialChar from 'ember-osf/utils/fix-special-char';
 
 // Enum of available upload states > New project or existing project?
 export const State = Object.freeze(Ember.Object.create({
@@ -672,7 +672,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     action: 'click',
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Basics Changes`
                 });
-            this.set('basicsTags', this.get('node.tags').slice(0));
+            this.set('basicsTags', this.get('node.tags').slice(0).map(fixSpecialChar));
             this.set('basicsAbstract', this.get('node.description'));
             this.set('basicsDOI', this.get('model.doi'));
             let date = new Date();
