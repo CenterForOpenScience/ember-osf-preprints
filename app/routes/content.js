@@ -71,29 +71,31 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 if ((!themeId && isOSF) || themeId === providerId)
                     return;
 
-                // If we made it to this point, we're not on the the correct page
-                let url;
+                // Otherwise, find the correct provider and redirect
+                const configProvider = providers.find(p => p.id === providerId);
 
-                // If we're on a branded domain, we need to redirect to the
-                if (this.get('theme.isDomain')) {
-                    const {domain} = providers.find(p => p.id === providerId) || providers[0];
-                    url = getRedirectUrl(window.location, domain);
-                // Otherwise, redirect to the branded page
+                if (!configProvider)
+                    throw new Error('Provider is not configured properly. Check the Ember configuration.');
+
+                const {domain} = configProvider;
+                const {origin, search} = window.location;
+                const urlParts = [];
+
+                // Provider with a domain
+                if (this.get('theme.isDomain') || domain) {
+                    urlParts.push(getRedirectUrl(window.location, domain));
+                // Provider without a domain
                 } else {
-                    const {origin, search} = window.location;
-
-                    const urlParts = [
-                        origin
-                    ];
+                    urlParts.push(origin);
 
                     if (!isOSF)
                         urlParts.push('preprints', providerId);
 
-                    urlParts.push(preprint.get('id'), search);
-
-                    url = urlParts.join('/');
+                    urlParts.push(preprint.get('id'));
                 }
 
+                urlParts.push(search);
+                const url = urlParts.join('/');
                 window.history.replaceState({}, document.title, url);
                 window.location.replace(url);
             });
