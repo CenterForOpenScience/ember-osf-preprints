@@ -11,6 +11,7 @@
         <span> | </span>
         <span>
             <a href="mailto:{{if model.emailContact model.emailContact (concat 'contact+' model.id '@osf.io')}}"
+               onbeforeclick={{action 'click' 'link' 'Branded Footer - Contact'}}
             >
                 {{t "components.preprint-footer-branded.contact"}}
             </a>
