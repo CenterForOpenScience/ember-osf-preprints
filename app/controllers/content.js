@@ -156,26 +156,21 @@ export default Ember.Controller.extend(Analytics, {
         chooseFile(fileItem) {
             this.set('activeFile', fileItem);
         },
-        shareLink(href, network, action) {
-            const metrics = Ember.get(this, 'metrics');
+        shareLink(href, category, action, label) {
+          const metrics = Ember.get(this, 'metrics');
 
-            if (network.includes('email')) {
-                metrics.trackEvent({
-                    category: 'link',
-                    action,
-                    label: `Preprints - Content - Email ${window.location.href}`
-                });
-            } else {
-                window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
-                // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
-                metrics.trackEvent({
-                    category: network,
-                    action,
-                    label: `Preprints - Content - ${window.location.href}`
-                });
-            }
+        // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
+        metrics.trackEvent({
+            category,
+            action,
+            label
+        });
 
-            return false;
-        }
+        if (label.includes('email'))
+            return;
+
+        window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
+        return false;
+              }
     },
 });
