@@ -157,20 +157,20 @@ export default Ember.Controller.extend(Analytics, {
             this.set('activeFile', fileItem);
         },
         shareLink(href, category, action, label) {
-          const metrics = Ember.get(this, 'metrics');
+            const metrics = Ember.get(this, 'metrics');
 
-        // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
-        metrics.trackEvent({
-            category,
-            action,
-            label
-        });
+            // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
+            metrics.trackEvent({
+                category,
+                action,
+                label
+            });
 
-        if (label.includes('email'))
-            return;
+            if (label.includes('email'))
+               return;
 
-        window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
-        return false;
-              }
+            window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
+            return false;
+        }
     },
 });
