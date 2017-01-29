@@ -94,6 +94,7 @@ export default {
             },
             powered_by: `Powered by ${brand}`,
             search: `{{count}} searchable preprints`,
+            or: `or`,
             as_of: `as of`,
             example: `See an example`
         },
