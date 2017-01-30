@@ -42,6 +42,16 @@ export default Ember.Service.extend({
         return pathPrefix;
     }),
 
+    guidPathPrefix: Ember.computed('isProvider', 'isDomain', 'id', function() {
+        let pathPrefix = '/';
+
+        if (!this.get('isDomain') && this.get('isProvider')) {
+            pathPrefix += `preprints/${this.get('id')}/`;
+        }
+
+        return pathPrefix;
+    }),
+
     stylesheet: Ember.computed('id', function() {
         const id = this.get('id');
 
