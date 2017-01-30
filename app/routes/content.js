@@ -95,8 +95,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 }
 
                 urlParts.push(search);
-                const url = urlParts.join('/');
-                window.history.replaceState({}, document.title, url);
+                const url = urlParts.join('/').replace(/\/\/$/, '/');
                 window.location.replace(url);
             });
 
