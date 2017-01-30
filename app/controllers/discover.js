@@ -4,10 +4,10 @@ import Analytics from '../mixins/analytics';
 
 import { elasticEscape } from '../utils/elastic-query';
 
-var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"types.raw": "preprint"}}]}},"aggregations": {"sources": {"terms": {"field": "sources.raw","size": 200}}}}';
+var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"term": {"types": "preprint"}}]}},"aggregations": {"sources": {"terms": {"field": "sources","size": 200}}}}';
 
 const filterMap = {
-    providers: 'sources.raw',
+    providers: 'sources',
     subjects: 'subjects'
 };
 
@@ -227,7 +227,7 @@ export default Ember.Controller.extend(Analytics, {
         const filter = [
             {
                 terms: {
-                    'type.raw': [
+                    type: [
                         'preprint'
                     ]
                 }
@@ -252,7 +252,7 @@ export default Ember.Controller.extend(Analytics, {
         if (this.get('theme.isProvider')) {
             filter.push({
                 terms: {
-                    'sources.raw': [this.get('theme.provider.name')]
+                    sources: [this.get('theme.provider.name')]
                 }
             });
         }
