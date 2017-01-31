@@ -329,6 +329,8 @@ ul.preprints-block-list {
     }
     .abstract {
         white-space: pre-line;
+        max-height: 300px;
+        overflow-y: scroll;
     }
     .project-box {
         div {
