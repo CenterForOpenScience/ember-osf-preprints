@@ -8,7 +8,7 @@
                 <div class="text-center m-t-lg col-xs-12">
                     <div class="preprint-brand"></div>
                     <p class="lead">
-                        <span>{{if theme.isProvider theme.provider.description (t "index.header.title.paragraph")}}</span>
+                        <span>{{if theme.isProvider (safe-markup theme.provider.description) (t "index.header.title.paragraph")}}</span>
                         {{#if theme.isProvider}}
                             <br>
                             <small>
