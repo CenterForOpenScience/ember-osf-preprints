@@ -42,6 +42,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'model:draft-registration',
         'model:log',
         'model:user',
+        'model:citation',
         'model:license',
         'transform:links',
         'transform:embed'
