@@ -58,6 +58,7 @@
     "ember-i18n": "4.3.1",
     "ember-link-action": "0.0.35",
     "ember-load-initializers": "^0.5.1",
+    "ember-markdown-it": "0.0.5",
     "ember-metrics": "0.6.3",
     "ember-osf": "git+https://github.com/CenterForOpenScience/ember-osf.git#ac254f87274044fb97d6a712efa5ff2433bd0537",
     "ember-page-title": "3.0.6",
