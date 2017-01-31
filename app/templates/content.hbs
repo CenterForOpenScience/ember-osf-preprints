@@ -4,7 +4,7 @@
     <div class="p-t-xl m-t-xl p-b-md m-b-md dark-overlay-header-background header-row">{{!HEADER ROW}}
         <div class="container">{{!CONTAINER DIV}}
             <div class="row">
-                <div class="col-xs-10">
+                <div class="col-xs-12 col-sm-10">
                     <h1 id="preprintTitle" class="p-b-md">{{node.title}}</h1>
                     <h5 class="view-authors">
                         <ul class="comma-list">
@@ -21,21 +21,21 @@
                             {{/if}}
                         </ul>
                     </h5>
-                    <h6>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
+                    <h6 class='preprint-added-on'>{{t "global.added_on"}}: {{moment-format model.dateCreated "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
                 </div>
-                <div class="col-xs-2 text-center">
+                <div class="col-xs-12 col-sm-2 edit-button-and-logo text-center">
                     {{#if isAdmin}}
                     {{! TODO This link will need to be updated for phase 2 of branding }}
                         <a type="button"
                            class="btn btn-success edit-btn"
                            href={{concat (if theme.isProvider (concat '/preprints/' theme.id)) '/' model.id '/?edit'}}
-                           onbeforeclick={{action "click" 'link' "Content - Edit Preprint"}}
+                            onclick={{action "click" 'link' "Preprints - Content - Edit Preprint" (concat model.links.html '?edit')}}
                         >
                             {{t "content.project_button.edit_preprint"}}
                         </a>
                     {{/if}}
                     <br>
-                    <div class="content-provider-logo provider-{{model.provider.id}}" title="{{model.provider.name}}"></div>
+                    <div class="content-provider-logo provider-{{model.provider.id}} hidden-xs" title="{{model.provider.name}}"></div>
                 </div>
             </div>
         </div> {{!END CONTAINER DIV}}
@@ -54,19 +54,21 @@
                         </div>
                     {{/if}}
                     {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
-                    <button class="expand-mfr-carrot" {{action 'expandMFR'}}>
+                    <button class="expand-mfr-carrot hidden-xs hidden-sm" {{action 'expandMFR'}}>
                         <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                     </button>
                 {{/if}}
             </div> {{!END LEFT COL DIV}}
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
-                    {{#liquid-spacer growDuration=250 growWidth=false}}
-                        <div class="p-sm osf-box-lt clearfix">{{!SHARE ROW}}
-                            <div class="" id="download_project clearfix">
-                                <a class="btn btn-primary" href={{model.primaryFile.links.download}} onbeforeclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
-                                <span class="p-sm">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
-                                <span class="p-xs pull-right">
+                    <div class="share-row p-sm osf-box-lt clearfix">{{!SHARE ROW}}
+                        <div class="row" id="download_project clearfix">
+                            <div class="col-xs-12 col-lg-8">
+                                <a class="btn btn-primary" href={{model.primaryFile.links.download}} onclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
+                                <span class="p-md">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
+                            </div>
+                            <div class="col-xs-12 col-lg-4 social-div">
+                                <span class="pull-right social-media-icons">
                                     <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'Preprints - Content - tweet'}}>{{fa-icon 'twitter-square' size=2 }}</a>
                                     <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref 'Facebook' 'Preprints - Content - share'}}>{{fa-icon 'facebook-square' size=2 }}</a>
                                     <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref 'LinkedIn' 'Preprints - Content - share'}}>{{fa-icon 'linkedin-square' size=2 }}</a>
@@ -74,32 +76,30 @@
                                 </span>
                             </div>
                         </div>
-                    {{/liquid-spacer}}
+                    </div>
                     <div class="p-t-xs">
-                        <h4 class="p-v-md f-w-md">{{t "global.abstract"}}</h4>
+                        <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
                         <p class="abstract">{{node.description}}</p>
                     </div>
 
                     {{#if model.doi}}
                         <div class="p-t-xs">
-                            <h4 class="p-v-md  f-w-md">{{t "content.article_doi"}}</h4>
+                            <h4 class="p-v-md f-w-md"><strong>{{t "content.article_doi"}}</strong></h4>
                             <a href={{doiUrl}} {{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
                         </div>
                     {{/if}}
 
                     {{#if model.license.name}}
                         <div class="p-t-xs">
-                            <h4 class="p-v-md f-w-md">{{t "global.license"}}</h4>
-                            <p class="p-v-md p-b-sm">
-                                {{model.license.name}}
-                                <span style='cursor: pointer'>
-                                    {{#if showLicenseText }}
-                                        {{fa-icon 'caret-down' click=(action 'toggleLicenseText')}}
-                                    {{else}}
-                                        {{fa-icon 'caret-right' click=(action 'toggleLicenseText')}}
-                                    {{/if}}
-                                </span>
-                            </p>
+                            <h4 class="p-v-md f-w-md"><strong>{{t "global.license"}}</strong></h4>
+                            {{model.license.name}}
+                            <span style='cursor: pointer'>
+                                {{#if showLicenseText }}
+                                    {{fa-icon 'caret-down' click=(action 'toggleLicenseText')}}
+                                {{else}}
+                                    {{fa-icon 'caret-right' click=(action 'toggleLicenseText')}}
+                                {{/if}}
+                            </span>
                             {{#if showLicenseText}}
                                 <pre style='white-space: pre-wrap; font-size:75%; border:none; width:100%; text-align:justify; max-height: 300px;'>{{fullLicenseText}}</pre>
                             {{/if}}
@@ -107,13 +107,13 @@
                     {{/if}}
 
                     <div class="p-t-xs">
-                        <h4 class="p-v-md f-w-md">{{t "content.disciplines"}}</h4>
+                        <h4 class="p-v-md f-w-md"><strong>{{t "content.disciplines"}}</strong></h4>
                         {{#each disciplineReduced as |subject|}}
                             <span class='subject-preview'>{{subject.text}}</span>
                         {{/each}}
                     </div>
-                    <div class="m-b-lg p-t-xs">
-                        <h4 class=" f-w-md p-v-md">{{t "global.tags"}}</h4>
+                    <div class="p-t-xs">
+                        <h4 class=" f-w-md p-v-md"><strong>{{t "global.tags"}}</strong></h4>
                         {{#if hasTag}}
                             {{#each node.tags as |tag|}}
                                 <span class="badge">{{tag}}</span>
@@ -122,6 +122,12 @@
                             {{t "global.none"}}
                         {{/if}}
                     </div>
+
+                    <div class="p-t-xs m-b-lg">
+                        <h4 class="p-v-md f-w-md"><strong>{{t "content.citations"}}</strong></h4>
+                        {{citation-widget node=model}}
+                    </div>
+
                     {{!PROJECT BUTTON}}
                     <div class="p-lg osf-box-lt row project-box">
                         <div class="col-xs-6 text-center">
@@ -130,7 +136,7 @@
                         </div>
                         <div class="col-xs-6 text-left">
                             <p class="f-w-xs">{{t "content.project_button.paragraph"}}</p>
-                            <a type="button" class="btn btn-info" href={{node.links.html}} onbeforeclick={{action "click" "link" "Content - Visit Project"}}>{{t "content.project_button.button"}}</a>
+                            <a type="button" class="btn btn-info" href={{node.links.html}} onclick={{action "click" "link" "Preprints - Content - Visit Project"}}>{{t "content.project_button.button"}}</a>
                         </div>
                     </div>
                 </div> {{!END RIGHT SIDE COL}}
