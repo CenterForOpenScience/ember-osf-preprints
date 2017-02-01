@@ -34,8 +34,8 @@ export default Ember.Component.extend(Analytics, {
         for (let i = 0; i < filtered.length; i++) {
             nameArr[i] = filtered[i];
             numNames++;
-            if(numNames === 10 || i === filtered.length - 1) {
-                if (numNames < filtered.length) 
+            if (numNames === 10 || i === filtered.length - 1) {
+                if (numNames < filtered.length)
                     nameArr[i].originalLength = filtered.length;
                 return nameArr;
             }
