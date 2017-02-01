@@ -248,7 +248,10 @@
                                 {{#cp-panel-body}}
                                     <div>
                                         <p>
-                                            {{t "submit.body.submit.paragraph" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
+                                            {{t "submit.body.submit.paragraph.line1" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
+                                        </p>
+                                        <p>
+                                            {{t "submit.body.submit.paragraph.line2" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
                                         </p>
                                         <div class="text-center">
                                             {{#unless allSectionsValid}}
