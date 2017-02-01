@@ -79,7 +79,17 @@
                     </div>
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
-                        <p class="abstract">{{node.description}}</p>
+                        {{#if useShortenedDescription}}
+                            {{#if expandedAbstract}}
+                                <p class="abstract">{{node.description}}</p>
+                                <a href='#' {{action 'expandAbstract'}}>See less</a>
+                            {{else}}
+                                <p class="abstract">{{shortenedDescription}}</p>
+                                <a href='#' {{action 'expandAbstract'}}>See more</a>
+                            {{/if}}
+                        {{else}}
+                            <p class="abstract">{{node.description}}</p>
+                        {{/if}}
                     </div>
 
                     {{#if model.doi}}
