@@ -1,0 +1,14 @@
+@import 'brand';
+
+@include brand(
+    #1C4063,
+    white,
+    #F2F2F2,
+    #FF9933,
+    black,
+    $logo-dir + 'bitss-banner.png',
+    $logo-dir + 'bitss-logo.png',
+    true,
+    false,
+    true
+);

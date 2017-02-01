@@ -190,6 +190,13 @@ $logo-dir: 'img/provider_logos/';
     background-image: url($logo-dir + 'psyarxiv-dark-small.png');
 }
 
+.provider-bitss {
+    background-image: url($logo-dir + 'bitss-small.png');
+}
+.provider-bitss-dark {
+    background-image: url($logo-dir + 'bitss-banner.png');
+}
+
 .preprint-advisory  {
     background-color: #f3f5f7;
     border-bottom: 1px solid #e0e6ea;

@@ -77,6 +77,16 @@ module.exports = function(environment) {
                         height: 488
                     },
                     permissionLanguage: 'arxiv_trademark_license'
+                },
+                {
+                    id: 'bitss',
+                    logoSharing: { // T
+                        path: '/assets/img/provider_logos/bitss-small.png',
+                        type: 'image/png',
+                        width: 1500,
+                        height: 1500
+                    },
+                    permissionLanguage: 'provider_permission_language'
                 }
             ],
         },
