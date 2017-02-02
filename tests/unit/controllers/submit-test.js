@@ -1,4 +1,4 @@
-import { moduleFor, test } from 'ember-qunit';
+import { moduleFor, test, skip } from 'ember-qunit';
 import Ember from 'ember';
 // import wait from 'ember-test-helpers/wait';
 
@@ -544,19 +544,21 @@ test('applyLicenseToggle toggles applyLicense', function(assert) {
     assert.equal(ctrl.get('applyLicense'), true);
 });
 
-// test('next opens next panel and flashes changes saved', function(assert) {
-//     const ctrl = this.subject();
-//     const currentPanelName = 'Discipline';
-//     panels = Ember.Object.create({
-//         'Discipline': Ember.Object.create({'isOpen': true}), 'Basics': Ember.Object.create({'isOpen': false})
-//     });
-//     assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
-//     return wait().then(() => {
-//         ctrl.send('next', currentPanelName);
-//         assert.equal(panels.get('Discipline.isOpen'), true);
-//         assert.equal(panels.get('Basics.isOpen'), true);
-//     });
-// });
+skip('next opens next panel and flashes changes saved', function() {
+    test('next opens next panel and flashes changes saved', function(assert) {
+        const ctrl = this.subject();
+        const currentPanelName = 'Discipline';
+        panels = Ember.Object.create({
+            'Discipline': Ember.Object.create({'isOpen': true}), 'Basics': Ember.Object.create({'isOpen': false})
+        });
+        assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
+        return wait().then(() => {
+            ctrl.send('next', currentPanelName);
+            assert.equal(panels.get('Discipline.isOpen'), true);
+            assert.equal(panels.get('Basics.isOpen'), true);
+        });
+    });
+});
 
 test('nextUploadSection closes current panel and opens next panel', function(assert) {
     // TODO not really testing anything except the stub
@@ -570,13 +572,15 @@ test('nextUploadSection closes current panel and opens next panel', function(ass
 
 });
 
-test('changesSaved temporarily changes currentPanelSaveState to true', function(assert) {
-    // TODO changesSaved has a setTimeout which causes "calling set on destroyed object" to be thrown.
-    // How to wait until setTimeout has finished before breaking test down?
-    const ctrl = this.subject();
-    // let currentPanelName = 'Discipline';
-    assert.equal(ctrl.get('disciplineSaveState'), false);
-    // ctrl.send('changesSaved', currentPanelName);
+skip('changesSaved temporarily changes currentPanelSaveState to true', function() {
+    test('changesSaved temporarily changes currentPanelSaveState to true', function(assert) {
+        // TODO changesSaved has a setTimeout which causes "calling set on destroyed object" to be thrown.
+        // How to wait until setTimeout has finished before breaking test down?
+        const ctrl = this.subject();
+        let currentPanelName = 'Discipline';
+        assert.equal(ctrl.get('disciplineSaveState'), false);
+        ctrl.send('changesSaved', currentPanelName);
+    });
 });
 
 test('error', function(assert) {
@@ -588,9 +592,11 @@ test('error', function(assert) {
     assert.equal(error, error);
 });
 
-// test('changeInitialState', function(assert) {
-//     // TODO testing panel actions - third party
-// });
+skip('changeInitialState', function() {
+    // test('changeInitialState', function(assert) {
+    //     // TODO testing panel actions - third party
+    // });
+});
 
 test('lockNode', function(assert) {
     const ctrl = this.subject();
@@ -599,55 +605,67 @@ test('lockNode', function(assert) {
     assert.equal(ctrl.get('nodeLocked'), true);
 });
 
-// test('finishUpload', function(assert) {
-//     //TODO finishUpload calls 'next' action. Haven't gotten 'next' working in tests yet
-// })
+skip('finishUpload', function() {
+    // test('finishUpload', function(assert) {
+    //     //TODO finishUpload calls 'next' action. Haven't gotten 'next' working in tests yet
+    // })
+});
 
-// test('existingNodeExistingFile', function(assert) {
-//     // TODO Many actions get called by this action. Sending POST to localhost:7357/nodeTags
-//     // Getting Assertion Failed: You can only unload a record which is not inFlight
-//     this.inject.service('store');
-//     let store = this.store;
-//     const ctrl = this.subject();
-//     Ember.run(() => {
-//         let node = store.createRecord('node', {
-//             title: 'hello',
-//             tags: ['first tag'],
-//             description: 'The best abstract'
-//         });
-//         ctrl.set('nodeTitle', 'New title')
-//         ctrl.set('node', node);
-//         ctrl.send('existingNodeExistingFile');
-//         assert.equal(ctrl.get('node.title'), 'New title');
-//         assert.equal(ctrl.get('basicsAbstract'), node.get('description'));
-//     });
-// });
 
-// test('createComponentCopyFile', function(assert) {
-//     // TODO - same error with You can only unload a record which is not inFlight.
-//     // Assert that node has a child
-//     this.inject.service('store');
-//     let store = this.store;
-//     const ctrl = this.subject();
-//     Ember.run(() => {
-//         let node = store.createRecord('node', {
-//             title: 'hello',
-//             tags: ['first tag'],
-//             description: 'The best abstract'
-//         });
-//         ctrl.set('nodeTitle', 'New title');
-//         ctrl.set('node', node);
-//         ctrl.send('createComponentCopyFile');
-//     });
-// });
+skip('existingNodeExistingFile', function() {
+    // test('existingNodeExistingFile', function(assert) {
+    //     // TODO Many actions get called by this action. Sending POST to localhost:7357/nodeTags
+    //     // Getting Assertion Failed: You can only unload a record which is not inFlight
+    //     this.inject.service('store');
+    //     let store = this.store;
+    //     const ctrl = this.subject();
+    //     Ember.run(() => {
+    //         let node = store.createRecord('node', {
+    //             title: 'hello',
+    //             tags: ['first tag'],
+    //             description: 'The best abstract'
+    //         });
+    //         ctrl.set('nodeTitle', 'New title')
+    //         ctrl.set('node', node);
+    //         ctrl.send('existingNodeExistingFile');
+    //         assert.equal(ctrl.get('node.title'), 'New title');
+    //         assert.equal(ctrl.get('basicsAbstract'), node.get('description'));
+    //     });
+    // });
+});
 
-// test('resumeAbandonedPreprint', function(assert) {
-//     //TODO class startPreprint, which haven't figured out how to test yet
-// });
 
-// test('startPreprint', function(assert) {
-//     //TODO
-// });
+skip('createComponentCopyFile', function() {
+    // test('createComponentCopyFile', function(assert) {
+    //     // TODO - same error with You can only unload a record which is not inFlight.
+    //     // Assert that node has a child
+    //     this.inject.service('store');
+    //     let store = this.store;
+    //     const ctrl = this.subject();
+    //     Ember.run(() => {
+    //         let node = store.createRecord('node', {
+    //             title: 'hello',
+    //             tags: ['first tag'],
+    //             description: 'The best abstract'
+    //         });
+    //         ctrl.set('nodeTitle', 'New title');
+    //         ctrl.set('node', node);
+    //         ctrl.send('createComponentCopyFile');
+    //     });
+    // });
+});
+
+skip('resumeAbandonedPreprint', function() {
+    // test('resumeAbandonedPreprint', function(assert) {
+    //     //TODO class startPreprint, which haven't figured out how to test yet
+    // });
+});
+
+skip('startPreprint', function() {
+     // test('startPreprint', function(assert) {
+    //     //TODO
+    // });
+});
 
 test('selectExistingFile', function(assert) {
     const ctrl = this.subject();
@@ -749,26 +767,28 @@ test('stripDOI', function(assert) {
     assert.equal(ctrl.get('basicsDOI'), '10.1234/hello');
 });
 
-// test('saveBasics', function(assert) {
-//     this.inject.service('store');
-//     let store = this.store;
-//     const ctrl = this.subject();
-//     Ember.run.later(() => {
-//         let node = store.createRecord('node', {
-//             title: 'hello',
-//             tags: ['tags'],
-//             description: 'This is an abstract.'
-//         });
-//         let preprint = store.createRecord('preprint', {
-//             primaryFile: 'Test file',
-//             'doi': '10.1234/test'
-//         });
-//         ctrl.set('node', node);
-//         ctrl.set('model', preprint);
-//         ctrl.send('saveBasics');
-//
-//     });
-// });
+skip('saveBasics', function() {
+    // test('saveBasics', function(assert) {
+    //     this.inject.service('store');
+    //     let store = this.store;
+    //     const ctrl = this.subject();
+    //     Ember.run.later(() => {
+    //         let node = store.createRecord('node', {
+    //             title: 'hello',
+    //             tags: ['tags'],
+    //             description: 'This is an abstract.'
+    //         });
+    //         let preprint = store.createRecord('preprint', {
+    //             primaryFile: 'Test file',
+    //             'doi': '10.1234/test'
+    //         });
+    //         ctrl.set('node', node);
+    //         ctrl.set('model', preprint);
+    //         ctrl.send('saveBasics');
+    //
+    //     });
+    // });
+});
 
 test('addTag', function(assert) {
     const ctrl = this.subject();
@@ -795,21 +815,33 @@ test('setSubjects', function(assert) {
     assert.equal(ctrl.get('subjectsList').length, 1);
 });
 
-// test('discardSubjects', function(assert) {
-//     //TODO
-// })
 
-// test('saveSubjects', function(assert) {
-//     //TODO
-// })
+skip('discardSubjects', function() {
+    // test('discardSubjects', function(assert) {
+    //     //TODO
+    // })
+});
 
-// test('findContributors', function(assert) {
-//     //TODO
-// })
+skip('saveSubjects', function() {
+    // test('saveSubjects', function(assert) {
+    //     //TODO
+    // })
+});
 
-// test('highlightSuccessOrFailure', function(assert) {
-//     //TODO
-// })
+
+skip('findContributors', function() {
+    // test('findContributors', function(assert) {
+    //     //TODO
+    // })
+});
+
+
+skip('highlightSuccessOrFailure', function() {
+    // test('highlightSuccessOrFailure', function(assert) {
+    //     //TODO
+    // })
+});
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Test Submit Controller > Initial Defaults
@@ -821,9 +853,11 @@ test('toggleSharePreprintModal', function(assert) {
     assert.equal(ctrl.get('showModalSharePreprint'), true);
 });
 
-// test('savePreprint', function(assert) {
-//     //TODO
-// })
+skip('savePreprint', function() {
+    test('savePreprint', function() {
+        //TODO
+    });
+});
 
 test('submit controller property defaults - add mode', function(assert) {
     const ctrl = this.subject();
