@@ -31,7 +31,7 @@ export default Ember.Component.extend(Analytics, {
         let filtered = this.get('result.contributors').filter(item => !!item.users.bibliographic);
         let nameArr = filtered.slice(0, Math.min(10, filtered.length));
         if (nameArr.length < filtered.length)
-            nameArr[nameArr.length-1].originalLength = filtered.length;
+            nameArr[nameArr.length - 1].originalLength = filtered.length;
         return nameArr;
     }),
 
