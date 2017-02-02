@@ -46,7 +46,9 @@
                     {{t "global.no_results_found"}}
                 {{/if}}
                 {{#if (gt pages 1)}}
-                    {{osf-paginator totalSearchResults=totalSearchResults fetchResults=(action findContributors) query=query}}
+                    <div class="pull-right text-right">                        
+                        {{pagination-pager count=pages current=currentPage change=(action 'pageChanged')}}
+                    </div>
                 {{/if}}
             {{/if}}
             {{#if (eq addState 'unregisteredView')}}
