@@ -52,7 +52,7 @@
                     {{/if}}
                 </p>
                 <em class="m-r-md"> {{t "global.abstract"}}: </em>
-                <p class="abstract">{{if abstract abstract (t "global.none")}} </p>
+                <p class="abstract">{{if abstract (markdown-render abstract) (t "global.none")}} </p>
             {{else if (eq name 'Discipline')}}
                 {{#if subjects}}
                     {{#each subjects as |subject|}}
