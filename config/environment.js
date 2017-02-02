@@ -90,7 +90,7 @@ module.exports = function(environment) {
                 {
                     id: 'agrixiv',
                     logoSharing: {
-                        path: 'assets/img/provider_logos/agrixiv_banner.png',
+                        path: 'assets/img/provider_logos/agrixiv-banner.svg',
                         type: 'image/png',
                         width: 1200,
                         height: 488
