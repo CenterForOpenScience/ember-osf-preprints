@@ -129,12 +129,15 @@ export default Ember.Controller.extend(Analytics, {
     }),
 
     useShortenedDescription: Ember.computed('node.description', function() {
-        return this.get('node.description').length > 350;
+        return this.get('node.description') ? this.get('node.description').length > 350 : false;
     }),
 
-    shortenedDescription: Ember.computed('node.description', function() {
+    description: Ember.computed('node.description', 'expandedAbstract', function() {
         // Get a shortened version of the abstract, but doesnt cut in the middle of word by going
         // to the last space.
+        if (this.get('expandedAbstract')) {
+            return this.get('node.description');
+        }
         let text = this.get('node.description').slice(0, 350).split(' ');
         text.pop();
         return text.join(' ') + ' ...';

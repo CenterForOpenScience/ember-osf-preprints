@@ -80,13 +80,8 @@
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
                         {{#if useShortenedDescription}}
-                            {{#if expandedAbstract}}
-                                <p class="abstract">{{node.description}}</p>
-                                <a href='#' {{action 'expandAbstract'}}>See less</a>
-                            {{else}}
-                                <p class="abstract">{{shortenedDescription}}</p>
-                                <a href='#' {{action 'expandAbstract'}}>See more</a>
-                            {{/if}}
+                            <p class="abstract">{{description}}</p>
+                            <button class='btn-link' {{action 'expandAbstract'}}>{{if expandedAbstract 'See less' 'See more'}}</button>
                         {{else}}
                             <p class="abstract">{{node.description}}</p>
                         {{/if}}
