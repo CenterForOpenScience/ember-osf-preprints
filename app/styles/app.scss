@@ -190,6 +190,22 @@ $logo-dir: 'img/provider_logos/';
     background-image: url($logo-dir + 'psyarxiv-dark-small.png');
 }
 
+.provider-agrixiv {
+    background-image: url($logo-dir + 'agrixiv-small.svg');
+}
+
+.provider-agrixiv-dark {
+    background-image: url($logo-dir + 'agrixiv-banner.svg');
+}
+
+.provider-scielo {
+    background-image: url($logo-dir + 'scielo-small.png');
+}
+
+.provider-scielo-dark {
+    background-image: url($logo-dir + 'scielo-banner.png');
+}
+
 .preprint-advisory  {
     background-color: #f3f5f7;
     border-bottom: 1px solid #e0e6ea;
@@ -814,7 +830,6 @@ hr {
 
 }
 
-
 //For Supplementary File Widget
 #preprint-file-view {
     section {
@@ -1073,6 +1088,84 @@ label.title-label {
     background-size: contain;
 }
 
+@media (max-width: 768px) {
+    .edit-button-and-logo {
+        padding-top: 20px;
+    }
+    .supplemental-downloads {
+        float: none !important;
+    }
+    .preprint-image {
+        margin-top: 0 !important;
+    }
+    .share-row {
+        margin-top: 20px;
+    }
+    #preprintTitle {
+        text-align: center;
+    }
+    .view-authors {
+        text-align: center;
+    }
+    .preprint-added-on {
+        text-align: center;
+    }
+    .truncate {
+        width: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    #preprint-file-view { // Supplementary file browser - mobile view
+        section {
+            .selected{
+                background-color: #F3F5F5;
+            }
+            a {
+                text-decoration: none;
+            }
+            .preprint-file-link {
+                color: black !important;
+            }
+            button {
+                line-height:12px;
+                position: absolute;
+                left: 0px;
+                &.bottom {
+                    bottom: -20px;
+                    top: initial !important;
+                }
+                &.top {
+                    bottom: 155px;
+                    top: initial !important;
+                }
+                width: 100%;
+                height: 20px;
+                i.fa-caret-down {
+                    line-height:inherit!important;
+                }
+                i.fa-caret-up {
+                    line-height:inherit!important;
+                }
+            }
+        }
+        .osf-box {
+            margin-top: 30px !important;
+            height: 160px;
+            margin-bottom: 40px !important;
+        }
+    }
+}
+
+.social-media-icons {
+    float: none !important;
+    white-space: nowrap;
+}
+.social-div {
+    margin-top: 5px;
+}
+
+
 .content-provider-logo {
     min-height: 80px;
     min-width: 120px;
@@ -1080,7 +1173,7 @@ label.title-label {
 
 .discover-provider-logo {
     min-height: 80px;
-    min-width: 150px;
+    min-width: 100px;
 }
 
 .edit-btn {
