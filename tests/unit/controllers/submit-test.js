@@ -7,7 +7,8 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'validator:presence',
         'validator:length',
         'validator:format',
-        'service:metrics'
+        'service:metrics',
+        'service:theme'
     ],
 });
 
