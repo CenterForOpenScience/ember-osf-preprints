@@ -41,6 +41,14 @@ function queryStringify(queryParams) {
     return query.join('&');
 }
 
+/**
+ * @module ember-preprints
+ * @submodule controllers
+ */
+
+/**
+ * @class Content Controller
+ */
 export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(),
     fullScreenMFR: false,

@@ -15,6 +15,15 @@ const handlers = new Map([
     ['The requested node is no longer available.', 'resource-deleted'] // 410
 ]);
 
+/**
+ * @module ember-preprints
+ * @submodule routes
+ */
+
+/**
+ * Fetches current preprint. Redirects to preprint provider route if necessary.
+ * @class Content Route Handler
+ */
 export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
     theme: Ember.inject.service(),
     headTagsService: Ember.inject.service('head-tags'),

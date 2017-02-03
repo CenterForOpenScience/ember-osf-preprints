@@ -82,6 +82,14 @@ function doiRegexExec(doi) {
 
 }
 
+/**
+ * @module ember-preprints
+ * @submodule controllers
+ */
+
+/**
+ * @class Submit Controller
+ */
 export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
     i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
