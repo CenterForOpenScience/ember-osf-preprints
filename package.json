@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "ember build",
+    "docs": "yuidoc",
     "start": "ember server",
     "test": "yarn run check-style && ember test",
     "check-style": "./node_modules/jscs/bin/jscs ."
