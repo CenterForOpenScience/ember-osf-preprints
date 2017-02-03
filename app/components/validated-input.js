@@ -8,6 +8,10 @@ const {
   computed,
   defineProperty,
 } = Ember;
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Adapted from ember-cpi-validations/tests/dummy/app to make a form field with validation
@@ -21,7 +25,6 @@ const {
  * }}
  * ```
  * @class validated-input
- * @namespace component
  */
 export default Ember.Component.extend({
     classNames: ['validated-input'],

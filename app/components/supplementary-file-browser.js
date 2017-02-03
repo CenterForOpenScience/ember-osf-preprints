@@ -1,6 +1,10 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from '../mixins/analytics';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Displays supplemental preprint files
@@ -14,7 +18,6 @@ import Analytics from '../mixins/analytics';
  *      chooseFile=(action 'chooseFile')
  * }}
  * ```
- * @class supplementary-file-browser
  * @namespace component
  */
 export default Ember.Component.extend(Analytics, {

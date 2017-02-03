@@ -2,6 +2,10 @@ import Ember from 'ember';
 import Permissions from 'ember-osf/const/permissions';
 import Analytics from '../mixins/analytics';
 import {stripDiacritics} from 'ember-power-select/utils/group-utils';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Preprint form project select widget - handles all ADD mode cases where the first step is to select an existing OSF project to contain
@@ -56,7 +60,6 @@ import {stripDiacritics} from 'ember-power-select/utils/group-utils';
  *     applyLicense=applyLicense
  * }}
  *
- * @class preprint-form-project-select
  */
 export default Ember.Component.extend(Analytics, {
     userNodes: Ember.A(),

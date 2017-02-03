@@ -2,6 +2,10 @@ import Ember from 'ember';
 import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
 import { permissionSelector } from 'ember-osf/const/permissions';
 import Analytics from '../mixins/analytics';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Displays current preprint authors and their permissions/bibliographic information. Allows user to search for
@@ -30,7 +34,6 @@ import Analytics from '../mixins/analytics';
 }}
  * ```
  * @class preprint-form-authors
- * @namespace component
  */
 export default CpPanelBodyComponent.extend(Analytics, {
     valid: Ember.computed.alias('newContributorId'),

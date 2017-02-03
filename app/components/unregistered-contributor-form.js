@@ -29,6 +29,10 @@ const Validations = buildValidations({
        ]
     },
 });
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Allows user to add author to their preprint by name and email
@@ -42,7 +46,6 @@ const Validations = buildValidations({
  * }}
  * ```
  * @class unregistered-contributor-form
- * @namespace component
  */
 export default Ember.Component.extend(Validations, Analytics, {
     fullName: null,

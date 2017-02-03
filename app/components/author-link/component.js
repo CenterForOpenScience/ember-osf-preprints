@@ -1,6 +1,12 @@
 import Ember from 'ember';
 
 /**
+ * @module ember-preprints
+ * @submodule components
+ */
+
+/**
+ *
  * Creates a link to contributor name if link exists, otherwise just displays contributor name
  *
  * Sample usage:
@@ -10,7 +16,6 @@ import Ember from 'ember';
  *}}
  * ```
  * @class author-link
- * @namespace component
  */
 export default Ember.Component.extend({
     tagName: 'li',

@@ -1,5 +1,9 @@
 import Ember from 'ember';
 import Analytics from '../mixins/analytics';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Convert Or Copy Widget - very simple, just presents decision, do you want to convert this project or copy file to a new component.
@@ -19,7 +23,6 @@ import Analytics from '../mixins/analytics';
  *}}
  * ```
  * @class convert-or-copy-project
- * @namespace component
  */
 export default Ember.Component.extend(Analytics, {
     actions: {

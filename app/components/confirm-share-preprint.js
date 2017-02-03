@@ -1,5 +1,9 @@
 import Ember from 'ember';
 import Analytics from '../mixins/analytics';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Confirm share preprint modal - Requires user to confirm they wish to submit their preprint, thus making it public and searchable
@@ -13,7 +17,6 @@ import Analytics from '../mixins/analytics';
  *}}
  * ```
  * @class confirm-share-preprint
- * @namespace component
  */
 export default Ember.Component.extend(Analytics, {
     isOpen: false,

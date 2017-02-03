@@ -1,5 +1,9 @@
 import Ember from 'ember';
 import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-toggle';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Extends Ember Collapsible Panel's CpPanelToggleComponent.  Customizes the collapsible panel header.
@@ -15,7 +19,6 @@ import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-
  * }}
  * ```
  * @class preprint-form-header
- * @namespace component
  **/
 export default CpPanelToggleComponent.extend({
     tagName: 'header',

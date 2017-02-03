@@ -1,4 +1,8 @@
 import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Extends Ember Collapsible Panel's CpPanelBodyComponent.
@@ -10,7 +14,6 @@ import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-bo
  * {{/preprint-form-body}}
  * ```
  * @class preprint-form-body
- * @namespace component
  */
 export default CpPanelBodyComponent.extend({
     didInsertElement() {

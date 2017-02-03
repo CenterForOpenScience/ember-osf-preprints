@@ -1,5 +1,9 @@
 import Ember from 'ember';
 import Analytics from '../mixins/analytics';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Preprints footer - can have branding for a particular provider - use in application.hbs to drop footer onto every page
@@ -11,7 +15,6 @@ import Analytics from '../mixins/analytics';
  *}}
  * ```
  * @class preprint-footer-branded
- * @namespace component
  */
 export default Ember.Component.extend(Analytics, {
     theme: Ember.inject.service(),

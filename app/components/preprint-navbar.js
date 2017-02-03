@@ -1,5 +1,9 @@
 import Ember from 'ember';
 import Analytics from '../mixins/analytics';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Preprint navbar - use in application.hbs to drop navbar onto every page
@@ -10,7 +14,6 @@ import Analytics from '../mixins/analytics';
  *
  * ```
  * @class preprint-navbar
- * @namespace component
  */
 export default Ember.Component.extend(Analytics, {
 });

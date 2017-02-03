@@ -1,6 +1,10 @@
 import Ember from 'ember';
 import {State} from '../controllers/submit';
 import Analytics from '../mixins/analytics';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * File uploader widget - handles all cases where uploading a new file as your preprint, or uploading a new version of your preprint.
@@ -50,7 +54,6 @@ import Analytics from '../mixins/analytics';
  *   applyLicense=applyLicense
 }}
  * @class file-uploader
- * @namespace component
  */
 export default Ember.Component.extend(Analytics, {
     State,

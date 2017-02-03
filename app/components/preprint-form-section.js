@@ -1,6 +1,10 @@
 import Ember from 'ember';
 import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
 import Analytics from '../mixins/analytics';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Extends Ember Collapsible Panel's CpPanelComponent. Preprint-form-header and preprint-form-body components go inside.
@@ -14,7 +18,6 @@ import Analytics from '../mixins/analytics';
  * {{/preprint-form-section}}
  * ```
  * @class preprint-form-section
- * @namespace component
  **/
 
 export default CpPanelComponent.extend(Analytics, {

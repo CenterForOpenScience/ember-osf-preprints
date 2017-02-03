@@ -2,6 +2,10 @@ import Ember from 'ember';
 import Analytics from '../mixins/analytics';
 
 const pageSize = 150;
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Builds hierarchy of taxonomies for discover page
@@ -13,7 +17,6 @@ const pageSize = 150;
  *      subjects=treeSubjects}}
  * }}
  * ```
- * @class taxonomy-tree
  * @namespace component
  */
 export default Ember.Component.extend(Analytics, {
