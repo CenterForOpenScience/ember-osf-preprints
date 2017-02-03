@@ -87,6 +87,7 @@ module.exports = function(environment) {
                         height: 1500
                     },
                 },
+                {
                     id: 'scielo',
                     logoSharing: {
                         path: '/assets/img/provider_logos/scielo-logo.png',
