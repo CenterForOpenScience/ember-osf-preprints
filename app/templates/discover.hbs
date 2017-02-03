@@ -138,7 +138,7 @@
                             {{search-result result=result select=(action 'updateFilters' 'subjects')}}
                         {{/each}}
                         <div class="pull-right text-right">
-                            {{pagination-pager count=clampedPages current=page change=(action 'loadPage')}}
+                            {{pagination-pager count=clampedPages current=page change=(action 'setLoadPage')}}
                         </div>
                     {{else}}
                         <div class="text-muted text-center">

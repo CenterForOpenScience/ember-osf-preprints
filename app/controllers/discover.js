@@ -333,7 +333,7 @@ export default Ember.Controller.extend(Analytics, {
             }
         },
 
-        loadPage(pageNumber) {
+        setLoadPage(pageNumber) {
             this.set('page', pageNumber);
             this.loadPage();
         },
