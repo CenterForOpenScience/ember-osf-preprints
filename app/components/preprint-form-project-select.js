@@ -59,7 +59,7 @@ import {stripDiacritics} from 'ember-power-select/utils/group-utils';
  *     newNode=newNode
  *     applyLicense=applyLicense
  * }}
- *
+ * @class preprint-form-project-select
  */
 export default Ember.Component.extend(Analytics, {
     userNodes: Ember.A(),

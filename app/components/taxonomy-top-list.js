@@ -14,7 +14,7 @@ import Analytics from '../mixins/analytics';
  *     list=model.taxonomies
  * }}
  * ```
- * @namespace component
+ * @class taxonomy-top-list
  */
 export default Ember.Component.extend(Analytics, {
     theme: Ember.inject.service(),

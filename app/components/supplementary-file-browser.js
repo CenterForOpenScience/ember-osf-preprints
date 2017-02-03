@@ -18,7 +18,7 @@ import Analytics from '../mixins/analytics';
  *      chooseFile=(action 'chooseFile')
  * }}
  * ```
- * @namespace component
+ * @class supplementary-file-browser
  */
 export default Ember.Component.extend(Analytics, {
     elementId: 'preprint-file-view',

@@ -17,7 +17,7 @@ const pageSize = 150;
  *      subjects=treeSubjects}}
  * }}
  * ```
- * @namespace component
+ * @class taxonomy-tree
  */
 export default Ember.Component.extend(Analytics, {
     theme: Ember.inject.service(),
