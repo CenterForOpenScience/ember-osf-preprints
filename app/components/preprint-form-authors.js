@@ -236,16 +236,17 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 draggedContrib.rollbackAttributes();
             });
         },
-        // Action used by the pagination-pager compoent to the handle user-click event.
+        // Action used by the pagination-pager component to the handle user-click event.
         pageChanged(current) {
             let query = this.get('query');
             if (query) {
                 this.attrs.findContributors(query, current).then(() => {
                     this.set('addState', 'searchView');
-                    this.set('currentPage', current);
                 }, () => {
                     this.get('toast').error('Could not perform search query.');
                     this.highlightSuccessOrFailure('author-search-box', this, 'error');
+                }).then(() => {
+                   this.set('currentPage', current);
                 });
             }
         }
