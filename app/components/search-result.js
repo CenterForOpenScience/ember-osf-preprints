@@ -34,7 +34,7 @@ export default Ember.Component.extend(Analytics, {
     }),
 
     hasMoreContributors: Ember.computed('justContributors', 'shortContributors', function () {
-        return this.get('shortContributors').length < this.get('justContributors').length ;
+        return this.get('shortContributors').length < this.get('justContributors').length;
     }),
 
     osfID: Ember.computed('result', function() {
