@@ -142,7 +142,7 @@
                             {{#preprint-form-body}}
                                 <div class='row'>
                                     <div class='col-xs-12'>
-                                        {{license-picker licenses=availableLicenses currentValues=basicsLicense showCategories=false editLicense=(action 'editLicense') allowDismiss=false autosave=true showBorder=false}}
+                                        {{license-picker licenses=availableLicenses currentValues=basicsLicense showCategories=false editLicense=(action 'editLicense') allowDismiss=false autosave=true showBorder=false pressSubmit=(action 'saveBasics')}}
                                         <br>
                                         <div class="row">
                                             <div class='col-xs-12'>
@@ -163,8 +163,8 @@
                                     <div class="col-md-6">
                                         <div>
                                             <label>{{t "submit.body.basics.doi.label"}}:</label>
-                                            <form onchange={{action 'stripDOI'}}>
-                                                {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI}}
+                                            <form onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
+                                                {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
                                             </form>
                                         </div>
                                         <div class="clearfix">
@@ -248,7 +248,10 @@
                                 {{#cp-panel-body}}
                                     <div>
                                         <p>
-                                            {{t "submit.body.submit.paragraph" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
+                                            {{t "submit.body.submit.paragraph.line1" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
+                                        </p>
+                                        <p>
+                                            {{t "submit.body.submit.paragraph.line2" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
                                         </p>
                                         <div class="text-center">
                                             {{#unless allSectionsValid}}
