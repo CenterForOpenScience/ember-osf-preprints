@@ -1,9 +1,13 @@
 import Ember from 'ember';
+/**
+ * @module ember-preprints
+ * @submodule helpers
+ */
 
 /**
  * sliceArray - returns shallow copy of portion of array
  *
- * @method sliceArray
+ * @class sliceArray
  * @param {Array} array
  * @param {Integer} startIndex
  * @param {Integer} stopIndex

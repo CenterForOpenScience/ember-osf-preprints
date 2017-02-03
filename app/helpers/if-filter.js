@@ -1,9 +1,14 @@
 import Ember from 'ember';
 
 /**
+ * @module ember-preprints
+ * @submodule helpers
+ */
+
+/**
   * ifFilter helper. To be used within an {#if} block, to only display an item if it matches a filter.
   *
-  * @method ifFilter
+  * @class ifFilter
   * @param {String} element
   * @param {Object} filter
   * @param {String} list intersection ??

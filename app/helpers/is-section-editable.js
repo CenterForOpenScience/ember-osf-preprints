@@ -1,9 +1,14 @@
 import Ember from 'ember';
 
 /**
+ * @module ember-preprints
+ * @submodule helpers
+ */
+
+/**
  * isSectionEditable helper - determines if form section can be edited.
  *
- * @method isSectionEditable
+ * @class isSectionEditable
  * @param {String} section form section name
  * @return {Boolean} Is this section editable?
  */

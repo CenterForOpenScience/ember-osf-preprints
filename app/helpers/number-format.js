@@ -1,9 +1,13 @@
 import Ember from 'ember';
+/**
+ * @module ember-preprints
+ * @submodule helpers
+ */
 
 /**
   * numberFormat helper. Transforms 3500 into 3,500 for example, if in US English locale.
   *
-  * @method numberFormat.
+  * @class numberFormat.
   * @param {Integer} element
   * @return {String} Return formatted string.
   */

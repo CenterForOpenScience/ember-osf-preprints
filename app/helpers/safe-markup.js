@@ -1,10 +1,14 @@
 import Ember from 'ember';
+/**
+ * @module ember-preprints
+ * @submodule helpers
+ */
 
 /**
   * DO NOT USE THIS HELPER ON USER-ENTERED TEXT!!!
   * safeMarkup helper. Returns a string that will not be HTML escaped by Handlebars.
   *
-  * @method safe-markup
+  * @class safe-markup
   * @param {string} string
   * @return {Object} Returns Handlebars.SafeString
   */

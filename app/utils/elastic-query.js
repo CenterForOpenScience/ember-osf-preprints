@@ -2,7 +2,11 @@ import Ember from 'ember';
 
 /**
  * @module ember-preprints
- * @submodule utils
+ * @module utils
+ */
+
+/**
+ * @class elastic-escape
  */
 
 /**
