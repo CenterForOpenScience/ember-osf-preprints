@@ -28,11 +28,13 @@ export default Ember.Component.extend(Analytics, {
     }),
 
     shortContributorList: Ember.computed('result', function() {
-        let filtered = this.get('result.contributors').filter(item => !!item.users.bibliographic);
-        let nameArr = filtered.slice(0, Math.min(10, filtered.length));
-        if (nameArr.length < filtered.length)
-            nameArr[nameArr.length - 1].originalLength = filtered.length;
+        let filtered = this.set('justContributors', this.get('result.contributors').filter(item => !!item.users.bibliographic));
+        let nameArr = this.set('shortContributors', filtered.slice(0, Math.min(10, filtered.length)));
         return nameArr;
+    }),
+
+    hasMoreContributors: Ember.computed('justContributors', 'shortContributors', function () {
+        return this.get('shortContributors').length < this.get('justContributors').length ;
     }),
 
     osfID: Ember.computed('result', function() {
