@@ -243,10 +243,10 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 this.attrs.findContributors(query, current).then(() => {
                     this.set('addState', 'searchView');
                 }, () => {
-                    this.get('toast').error('Could not perform search query.');
-                    this.highlightSuccessOrFailure('author-search-box', this, 'error');
-                }).then(() => {
-                   this.set('currentPage', current);
+                        this.get('toast').error('Could not perform search query.');
+                        this.highlightSuccessOrFailure('author-search-box', this, 'error');
+                    }).then(() => {
+                    this.set('currentPage', current);
                 });
             }
         }
