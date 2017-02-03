@@ -1,26 +1,31 @@
 @import 'brand';
 
 @include brand(
-    #A3C3DF,
-    white,
+    #e4f3ff,
+    black,
     #1C4063,
-    #FF9933,
+    #05233B,
     black,
     $logo-dir + 'bitss-banner.png',
     $logo-dir + 'bitss-logo.png',
-    true,
     false,
+    true,
     true
 );
 
-// .branded-nav a {
-//     color: white;
-// }
+.navbar-title, .subject-item .btn, .subject-filter {
+    color: white;
+}
 
-// .branded-footer-links a {
-//     color: black;
-// }
-//
-// .copyright a {
-//     color: black;
-// }
+.branded-nav {
+    a {
+        color: white;
+    }
+    a.active {
+        color: white !important;
+    }
+}
+
+.subject-item .btn:hover {
+    color: black;
+}
