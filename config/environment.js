@@ -86,7 +86,23 @@ module.exports = function(environment) {
                         width: 1500,
                         height: 1500
                     },
-                    permissionLanguage: 'provider_permission_language'
+                },
+                    id: 'scielo',
+                    logoSharing: {
+                        path: '/assets/img/provider_logos/scielo-logo.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    }
+                },
+                {
+                    id: 'agrixiv',
+                    logoSharing: {
+                        path: 'assets/img/provider_logos/agrixiv-banner.svg',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    }
                 }
             ],
         },
