@@ -9,6 +9,21 @@ function arrayStartsWith(arr, prefix) {
     return prefix.reduce((acc, val, i) => acc && val && arr[i] && val.id === arr[i].id, true);
 }
 
+/**
+ * Add discipline when creating a preprint.
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{subject-picker
+ *      editMode=editMode
+ *      selected=subjectsList
+ *      disciplineModifiedToggle=disciplineModifiedToggle
+ *      save=(action 'setSubjects')
+ *}}
+ * ```
+ * @class subject-picker
+ * @namespace component
+ */
 export default Ember.Component.extend(Analytics, {
     store: Ember.inject.service(),
     theme: Ember.inject.service(),

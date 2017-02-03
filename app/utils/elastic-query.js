@@ -9,8 +9,9 @@ import Ember from 'ember';
  * Backslash-escape characters with special meaning to elasticsearch, to prevent queries from failing
  *   https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_reserved_characters
  *
+ * @method elasticEscape
  * @param {String} text
- * @returns {*}
+ * @return {*}
  */
 function elasticEscape(text) {
     if (Ember.$.type(text) === 'string') {

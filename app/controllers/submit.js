@@ -24,9 +24,7 @@ export const existingState = Object.freeze(Ember.Object.create({
     NEWFILE: 'new'
 }));
 
-/*****************************
-  Form data and validations
- *****************************/
+// Form data and validations
 const BasicsValidations = buildValidations({
     basicsAbstract: {
         description: 'Abstract',
@@ -52,9 +50,7 @@ const BasicsValidations = buildValidations({
     }
 });
 
-/*****************************
- Helper function to determine if discipline has changed (comparing list of lists)
- *****************************/
+// Helper function to determine if discipline has changed (comparing list of lists)
 function disciplineArraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;
@@ -86,9 +82,6 @@ function doiRegexExec(doi) {
 
 }
 
-/**
- * "Add preprint" page definitions
- */
 export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
     i18n: Ember.inject.service(),
     theme: Ember.inject.service(),

@@ -19,6 +19,7 @@ import Analytics from '../mixins/analytics';
  *}}
  * ```
  * @class convert-or-copy-project
+ * @namespace component
  */
 export default Ember.Component.extend(Analytics, {
     actions: {

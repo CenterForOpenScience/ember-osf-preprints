@@ -1,5 +1,17 @@
 import Ember from 'ember';
 
+/**
+ * Creates a link to contributor name if link exists, otherwise just displays contributor name
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{author-link
+ *      contributor=contributor
+ *}}
+ * ```
+ * @class author-link
+ * @namespace component
+ */
 export default Ember.Component.extend({
     tagName: 'li',
     contributor: null,

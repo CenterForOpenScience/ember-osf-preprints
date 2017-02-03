@@ -3,6 +3,19 @@ import Analytics from '../mixins/analytics';
 
 const pageSize = 150;
 
+/**
+ * Builds hierarchy of taxonomies for discover page
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{taxonomy-tree
+ *      select=(action 'updateFilters' 'subjects')
+ *      subjects=treeSubjects}}
+ * }}
+ * ```
+ * @class taxonomy-tree
+ * @namespace component
+ */
 export default Ember.Component.extend(Analytics, {
     theme: Ember.inject.service(),
     _getTaxonomies(parents = 'null') {

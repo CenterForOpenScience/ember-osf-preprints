@@ -1,6 +1,18 @@
 import Ember from 'ember';
 import Analytics from '../mixins/analytics';
 
+/**
+ * Displays top level disciplines for preprints index page
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{taxonomy-top-list
+ *     list=model.taxonomies
+ * }}
+ * ```
+ * @class taxonomy-top-list
+ * @namespace component
+ */
 export default Ember.Component.extend(Analytics, {
     theme: Ember.inject.service(),
     // jscs:disable disallowQuotedKeysInObjects

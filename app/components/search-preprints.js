@@ -1,5 +1,17 @@
 import Ember from 'ember';
 
+/**
+ * Search bar and search button
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{search-preprints
+ *  search="search"
+}}
+ * ```
+ * @class search-preprints
+ * @namespace component
+ */
 export default Ember.Component.extend({
     metrics: Ember.inject.service(),
     actions: {

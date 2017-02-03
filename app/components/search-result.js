@@ -1,6 +1,19 @@
 import Ember from 'ember';
 import Analytics from '../mixins/analytics';
 
+/**
+ * Displays share search results formatted for preprints
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{search-result
+ *  result=result
+ *  select=(action 'updateFilters' 'subjects')
+}}
+ * ```
+ * @class search-result
+ * @namespace component
+ */
 export default Ember.Component.extend(Analytics, {
     providerUrlRegex: {
         //'bioRxiv': '', doesnt currently have urls
