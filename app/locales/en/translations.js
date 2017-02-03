@@ -1,5 +1,6 @@
 const preprints = `Preprints`;
 const brand = `OSF ${preprints}`;
+const arxiv_trademark_license = 'arXiv is a trademark of Cornell University, used under license.';
 
 export default {
     global: {
@@ -48,6 +49,7 @@ export default {
         },
         version: 'Version',
         article_doi: `Article DOI`,
+        citations: `Citations`,
         disciplines: `Disciplines`,
         project_button: {
             paragraph: `The project for this paper is available on the OSF.`,
@@ -173,7 +175,10 @@ export default {
                 paragraph: `Add preprint authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the preprint.`
             },
             submit: {
-                paragraph: `When you share this preprint, it will become publicly accessible via {{name}} Preprints. You will be unable to delete the preprint file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
+                paragraph: {
+                    line1: `When you share this preprint, it will become publicly accessible via {{name}} Preprints. You will be unable to delete the preprint file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
+                    line2: `By clicking Share, you confirm that all Contributors agree with sharing this preprint, and that you have the right to share it.`
+                },
                 invalid: {
                     description: `The following section(s) must be completed before sharing this preprint.`,
                     discipline: `Discipline`,
@@ -248,6 +253,10 @@ export default {
             support: `Support`,
             contact: `Contact`
         },
+        'permission-language':{
+            arxiv_trademark_license,
+            arxiv_non_endorsement: `${arxiv_trademark_license} This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.`
+        },
         'preprint-form-authors': {
             search: {
                 placeholder: `Search by name`
@@ -267,8 +276,10 @@ export default {
                 permissions: `Permissions`,
                 permission_info: `Permission Information`,
                 citation: `Citation`,
+                in_citation: `In citation`,
                 citation_info: `Citation Information`,
-                parent_contributors: `Add contributors from parent project`
+                parent_contributors: `Add contributors from parent project`,
+                remove_author: `Remove author from authors list`
             },
             remove: `Remove`
         },

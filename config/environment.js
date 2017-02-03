@@ -34,6 +34,7 @@ module.exports = function(environment) {
         PREPRINTS: {
             defaultProvider: 'osf',
 
+
             // Logos are needed for open graph sharing meta tags (Facebook, LinkedIn, etc) and must be at least 200x200
             providers: [
                 {
@@ -52,7 +53,10 @@ module.exports = function(environment) {
                         type: 'image/png',
                         width: 1200,
                         height: 488
-                    }
+
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
+
                 },
                 {
                     id: 'psyarxiv',
@@ -61,12 +65,32 @@ module.exports = function(environment) {
                         type: 'image/png',
                         width: 1200,
                         height: 488
-                    }
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'socarxiv',
                     logoSharing: {
                         path: '/assets/img/provider_logos/socarxiv-sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_trademark_license'
+                },
+                {
+                    id: 'scielo',
+                    logoSharing: {
+                        path: '/assets/img/provider_logos/scielo-logo.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    }
+                },
+                {
+                    id: 'agrixiv',
+                    logoSharing: {
+                        path: 'assets/img/provider_logos/agrixiv-banner.svg',
                         type: 'image/png',
                         width: 1200,
                         height: 488

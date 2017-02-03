@@ -14,4 +14,10 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
             .findAll('preprint-provider', { reload: true })
             .then(result => result.filter(item => item.id !== 'osf'));
     },
+    actions: {
+        willTransition() {
+            let controller = this.controllerFor('discover');
+            controller._clearFilters();
+        }
+    }
 });

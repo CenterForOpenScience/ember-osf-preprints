@@ -45,7 +45,7 @@ export default Ember.Component.extend(Analytics, {
 
     },
     actions: {
-        next() {
+        next(direction) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'file browser',
@@ -55,11 +55,11 @@ export default Ember.Component.extend(Analytics, {
 
             if (this.get('endIndex') > this.get('files.length')) return;
 
-            this.set('scrollAnim', 'toLeft');
+            this.set('scrollAnim', `to${direction}`);
             this.set('endIndex', this.get('endIndex') + 5);
             this.set('startIndex', this.get('startIndex') + 5);
         },
-        prev() {
+        prev(direction) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'file browser',
@@ -69,7 +69,7 @@ export default Ember.Component.extend(Analytics, {
 
             if (this.get('startIndex') <= 0) return;
 
-            this.set('scrollAnim', 'toRight');
+            this.set('scrollAnim', `to${direction}`);
             this.set('endIndex', this.get('endIndex') - 5);
             this.set('startIndex', this.get('startIndex') - 5);
         },

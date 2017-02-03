@@ -18,7 +18,7 @@
                 {{else}}
                     {{#if userNodes}}
                         <div class="m-t-sm">
-                            {{#power-select options=userNodes placeholder="Click to select" searchField='title' selected=selectedNode onchange=(action "nodeSelected") as |node|}}
+                            {{#power-select options=userNodes placeholder="Click to select" matcher=titleMatcher selected=selectedNode onchange=(action "nodeSelected") as |node|}}
                                 {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
                             {{/power-select}}
                         </div>
@@ -92,7 +92,7 @@
                                             {{/if}}
                                         {{/if}}
                                         <form onchange={{action 'track' 'input' 'onchange' 'Preprints - Submit - Add title, Connect preprint to existing project'}}>
-                                            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                                            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name)}}
                                         </form>
                                         <div class="text-center m-v-md">
                                             <p>{{t "components.preprint-form-project-select.initiate_preprint_process"}}  </p>
