@@ -1,9 +1,4 @@
 {
-    "name": "Ember Preprints",
-    "description": "Center for Open Science Preprint Service",
-    "version": "0.0.1",
-    "url": "https://github.com/CenterForOpenScience/ember-preprints",
-    "logo": "https://cos.io/static/img/icons/cos_wide.png",
     "options": {
         "linkNatives": "true",
         "attributesEmit": "true",
