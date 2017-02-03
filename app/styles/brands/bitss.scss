@@ -1,9 +1,9 @@
 @import 'brand';
 
 @include brand(
-    #1C4063,
+    #A3C3DF,
     white,
-    #F2F2F2,
+    #1C4063,
     #FF9933,
     black,
     $logo-dir + 'bitss-banner.png',
@@ -12,3 +12,15 @@
     false,
     true
 );
+
+// .branded-nav a {
+//     color: white;
+// }
+
+// .branded-footer-links a {
+//     color: black;
+// }
+//
+// .copyright a {
+//     color: black;
+// }
