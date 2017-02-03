@@ -17,14 +17,20 @@ const hostsFile = fs.readFileSync(hostsFileName, {encoding: 'utf8'});
 const sectionHeader = '## EMBER-PREPRINTS ##\n';
 const sectionFooter = '\n## /EMBER-PREPRINTS ##';
 const rgx = new RegExp(`(?:${sectionHeader})(.|\\s)*(?:${sectionFooter})`, 'm');
-const domainProviders = providers.filter(provider => provider.domain);
+const domainProviders = providers
+    .slice(1)
+    .filter(provider => provider.domain)
+    .map(provider => {
+        provider.domain = provider.domain.replace(/:.*$/, '');
+        return provider;
+    });
 
 const maxLength = domainProviders
     .map(provider => provider.domain)
     .reduce((a, b) => a.length > b.length ? a.length : b.length);
 
 const lines = domainProviders
-    .map(provider => `${hostIP}\tlocal.${provider.domain}${' '.repeat(maxLength - provider.domain.length)}\t# ${provider.id}`)
+    .map(provider => `${hostIP}\t${provider.domain}${' '.repeat(maxLength - provider.domain.length)}\t# ${provider.id}`)
     .join('\n');
 
 const section = `${sectionHeader}${lines}${sectionFooter}`;
