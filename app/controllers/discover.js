@@ -221,7 +221,8 @@ export default Ember.Controller.extend(Analytics, {
         return ((this.get('numberOfResults') / this.get('size')) | 0) + (this.get('numberOfResults') % 10 === 0 ? 0 : 1);
     }),
 
-    clampedPages: Ember.computed('size', 'totalPages', function() {
+     // TODO update this property if a solution is found for the elastic search limitation.
+    numPages: Ember.computed('size', 'totalPages', function() {
         let maxPages = Math.ceil(10000 / this.get('size'));
         return this.get('totalPages') < maxPages ? this.get('totalPages') : maxPages;
     }),
