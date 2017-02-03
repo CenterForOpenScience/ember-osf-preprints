@@ -175,7 +175,10 @@ export default {
                 paragraph: `Add preprint authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the preprint.`
             },
             submit: {
-                paragraph: `When you share this preprint, it will become publicly accessible via {{name}} Preprints. You will be unable to delete the preprint file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
+                paragraph: {
+                    line1: `When you share this preprint, it will become publicly accessible via {{name}} Preprints. You will be unable to delete the preprint file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
+                    line2: `By clicking Share, you confirm that all Contributors agree with sharing this preprint, and that you have the right to share it.`
+                },
                 invalid: {
                     description: `The following section(s) must be completed before sharing this preprint.`,
                     discipline: `Discipline`,
