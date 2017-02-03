@@ -94,7 +94,8 @@ module.exports = function(environment) {
                         type: 'image/png',
                         width: 1200,
                         height: 488
-                    }
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
                 }
             ],
         },
