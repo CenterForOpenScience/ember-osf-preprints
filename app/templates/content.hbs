@@ -121,7 +121,7 @@
                         <h4 class=" f-w-md p-v-md"><strong>{{t "global.tags"}}</strong></h4>
                         {{#if hasTag}}
                             {{#each node.tags as |tag|}}
-                                <span class="badge">{{tag}}</span>
+                                <span class="badge">{{fix-special-char tag}}</span>
                             {{/each}}
                         {{else}}
                             {{t "global.none"}}
