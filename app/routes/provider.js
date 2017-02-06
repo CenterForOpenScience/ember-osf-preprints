@@ -1,6 +1,14 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
 
+/**
+ * @module ember-preprints
+ * @submodule routes
+ */
+
+/**
+ * @class Provider Route Handler
+ */
 export default Ember.Route.extend({
     theme: Ember.inject.service(),
 

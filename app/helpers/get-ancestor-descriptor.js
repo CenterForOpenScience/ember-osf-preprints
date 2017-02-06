@@ -44,6 +44,8 @@ export function getAncestorDescriptor(params/*, hash*/) {
         rootDescriptor = parentTitle + ' / ';
     } else if (rootId === parentParentId) { // Three levels
         rootDescriptor = rootTitle + ' / ' + parentTitle + ' / ';
+    } else if (parentParentId === undefined) { // Cannot deduce number of levels.
+        rootDescriptor = '... / ';
     } else { // Four + levels
         rootDescriptor = rootTitle + ' / ... / ' + parentTitle + ' / ';
     }

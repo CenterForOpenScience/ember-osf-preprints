@@ -1,9 +1,13 @@
 import Ember from 'ember';
+/**
+ * @module ember-preprints
+ * @submodule helpers
+ */
 
 /**
  * uploadValidationActive helper.
  *
- * @method uploadValidationActive
+ * @class uploadValidationActive
  * @param {Boolean} editMode Is submit form in edit mode?
  * @param {Boolean} nodeLocked Has node been locked? After upload section created in add mode or form in edit mode, node is locked.
  * @param {Boolean} hasOpened Has form section been opened?

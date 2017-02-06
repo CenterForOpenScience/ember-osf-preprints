@@ -1,11 +1,24 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
 
+/**
+ * @module ember-preprints
+ * @submodule services
+ */
+
+/**
+ * Detects preprint provider and allows you to inject that provider's theme into parts of your application
+ *
+ * @class theme
+ * @extends Ember.Service
+ */
 export default Ember.Service.extend({
     store: Ember.inject.service(),
     session: Ember.inject.service(),
 
     id: config.PREPRINTS.defaultProvider,
+
+    currentLocation: null,
 
     provider: Ember.computed('id', function() {
         const id = this.get('id');
@@ -54,8 +67,8 @@ export default Ember.Service.extend({
         return `${config.OSF.url}register?${query}`;
     }),
 
-    redirectUrl: Ember.computed('isProvider', function() {
-        return this.get('isProvider') ? window.location.href : null;
+    redirectUrl: Ember.computed('currentLocation', function() {
+        return this.get('currentLocation');
     }),
 
     permissionLanguage: Ember.computed('id', function() {
