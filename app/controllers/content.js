@@ -8,11 +8,12 @@ import KeenTracker from 'ember-osf/mixins/keen-tracker';
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
  *
+ * @method queryStringify
  * @param queryParams {!object}
  * @param queryParams.key {!array|!string}
  * @param queryParams.key[0] {!string}
  * @param queryParams.key[1] {int}
- * @returns {string}
+ * @return {string}
  */
 function queryStringify(queryParams) {
     const query = [];
@@ -41,12 +42,21 @@ function queryStringify(queryParams) {
     return query.join('&');
 }
 
+/**
+ * @module ember-preprints
+ * @submodule controllers
+ */
+
+/**
+ * @class Content Controller
+ */
 export default Ember.Controller.extend(Analytics, KeenTracker, {
     theme: Ember.inject.service(),
     fullScreenMFR: false,
     currentUser: Ember.inject.service(),
     expandedAuthors: true,
     showLicenseText: false,
+    expandedAbstract: false,
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
@@ -129,6 +139,21 @@ export default Ember.Controller.extend(Analytics, KeenTracker, {
         return text;
     }),
 
+    useShortenedDescription: Ember.computed('node.description', function() {
+        return this.get('node.description') ? this.get('node.description').length > 350 : false;
+    }),
+
+    description: Ember.computed('node.description', 'expandedAbstract', function() {
+        // Get a shortened version of the abstract, but doesnt cut in the middle of word by going
+        // to the last space.
+        if (this.get('expandedAbstract')) {
+            return this.get('node.description');
+        }
+        let text = this.get('node.description').slice(0, 350).split(' ');
+        text.pop();
+        return text.join(' ') + ' ...';
+    }),
+
     actions: {
         toggleLicenseText() {
             const licenseState = this.toggleProperty('showLicenseText') ? 'Expand' : 'Contract';
@@ -153,6 +178,9 @@ export default Ember.Controller.extend(Analytics, KeenTracker, {
         // Unused
         expandAuthors() {
             this.toggleProperty('expandedAuthors');
+        },
+        expandAbstract() {
+            this.toggleProperty('expandedAbstract');
         },
         // Metrics are handled in the component
         chooseFile(fileItem) {

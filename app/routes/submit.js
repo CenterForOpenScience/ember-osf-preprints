@@ -5,6 +5,15 @@ import ResetScrollMixin from '../mixins/reset-scroll';
 import SetupSubmitControllerMixin from '../mixins/setup-submit-controller';
 import Analytics from '../mixins/analytics';
 
+/**
+ * @module ember-preprints
+ * @submodule routes
+ */
+
+/**
+ * Creates a preprint record
+ * @class Submit Route Handler
+ */
 export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedRouteMixin, SetupSubmitControllerMixin, {
     currentUser: Ember.inject.service('currentUser'),
     panelActions: Ember.inject.service('panelActions'),
