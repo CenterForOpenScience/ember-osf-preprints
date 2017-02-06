@@ -274,12 +274,12 @@ export default CpPanelBodyComponent.extend(Analytics, {
             if (query) {
                 this.attrs.findContributors(query, current).then(() => {
                     this.set('addState', 'searchView');
-                }, () => {
+                    this.set('currentPage', current);
+                })
+                .catch(() => {
                         this.get('toast').error('Could not perform search query.');
                         this.highlightSuccessOrFailure('author-search-box', this, 'error');
-                    }).then(() => {
-                    this.set('currentPage', current);
-                });
+                    });
             }
         }
     },
