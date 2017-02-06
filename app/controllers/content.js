@@ -3,6 +3,7 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from '../mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
+import KeenTracker from 'ember-osf/mixins/keen-tracker';
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -40,9 +41,10 @@ function queryStringify(queryParams) {
     return query.join('&');
 }
 
-export default Ember.Controller.extend(Analytics, {
+export default Ember.Controller.extend(Analytics, KeenTracker, {
     theme: Ember.inject.service(),
     fullScreenMFR: false,
+    currentUser: Ember.inject.service(),
     expandedAuthors: true,
     showLicenseText: false,
     isAdmin: Ember.computed('node', function() {
@@ -176,6 +178,29 @@ export default Ember.Controller.extend(Analytics, {
             }
 
             return false;
+        },
+        // Sends Event to GA.  Only sends event to Keen if non-contributor.
+        dualTrackNonContributors(category, label, url) {
+            this.send('click', category, label, url); // Sends event to Google Analytics
+            const authors = this.get('authors');
+            let userIsContrib = false;
+            this.get('currentUser').load()
+                .then(user => {
+                    if (user) {
+                        const userId = user.id;
+                        authors.forEach((author) => {
+                           if (author.get('userId') === userId) {
+                               userIsContrib = true;
+                           }
+                        });
+                    }
+                    if (!userIsContrib) {
+                        this.send('keenClick', category, `Non-Contributor ${label}`, url);  // Sends event to Keen if logged in user is not a preprint author
+                    }
+                })
+                .catch(() => {
+                    this.send('keenClick', category, `${label} as Non-Contributor`, url); // Sends event to Keen for non-authenticated user
+                });
         }
     },
 });
