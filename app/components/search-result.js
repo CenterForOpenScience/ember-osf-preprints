@@ -27,14 +27,16 @@ export default Ember.Component.extend(Analytics, {
         return result.description.slice();
     }),
 
-    shortContributorList: Ember.computed('result', function() {
-        let filtered = this.set('justContributors', this.get('result.contributors').filter(item => !!item.users.bibliographic));
-        let nameArr = this.set('shortContributors', filtered.slice(0, Math.min(10, filtered.length)));
-        return nameArr;
+    justContributors: Ember.computed('result', function() {
+        return this.get('result.contributors').filter(item => !!item.users.bibliographic);
+    }),
+    
+    shortContributorList: Ember.computed('justContributors', function() {
+        return this.get('justContributors').slice(0, Math.min(10, this.get('justContributors').length));
     }),
 
-    hasMoreContributors: Ember.computed('justContributors', 'shortContributors', function () {
-        return this.get('shortContributors').length < this.get('justContributors').length;
+    hasMoreContributors: Ember.computed('justContributors', 'shortContributorList', function () {
+        return this.get('shortContributorList').length < this.get('justContributors').length;
     }),
 
     osfID: Ember.computed('result', function() {
