@@ -252,7 +252,8 @@ export default {
         },
         'permission-language':{
             arxiv_trademark_license,
-            arxiv_non_endorsement: `${arxiv_trademark_license} This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.`
+            arxiv_non_endorsement: `${arxiv_trademark_license} This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.`,
+            no_trademark: ``
         },
         'preprint-form-authors': {
             search: {

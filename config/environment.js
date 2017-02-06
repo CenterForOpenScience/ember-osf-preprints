@@ -44,7 +44,8 @@ module.exports = function(environment) {
                         type: 'image/png',
                         width: 363,
                         height: 242
-                    }
+                    },
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'engrxiv',
@@ -85,7 +86,8 @@ module.exports = function(environment) {
                         type: 'image/png',
                         width: 1200,
                         height: 488
-                    }
+                    },
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'agrixiv',
