@@ -1,0 +1,10 @@
+{
+    "options": {
+        "linkNatives": "true",
+        "attributesEmit": "true",
+        "paths": [
+            "app"
+        ],
+        "outdir": "docs/"
+    }
+}

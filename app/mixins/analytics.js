@@ -1,5 +1,15 @@
 import Ember from 'ember';
 
+/**
+ * @module ember-preprints
+ * @submodule mixins
+ */
+
+/**
+ * Google Analytics mixin. Provides actions that can be used in templates to track events.
+ *
+ * @class AnalyticsMixin
+ */
 export default Ember.Mixin.create({
     metrics: Ember.inject.service(),
     actions: {

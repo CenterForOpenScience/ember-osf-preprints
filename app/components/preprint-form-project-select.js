@@ -2,6 +2,10 @@ import Ember from 'ember';
 import Permissions from 'ember-osf/const/permissions';
 import Analytics from '../mixins/analytics';
 import {stripDiacritics} from 'ember-power-select/utils/group-utils';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Preprint form project select widget - handles all ADD mode cases where the first step is to select an existing OSF project to contain
@@ -11,6 +15,50 @@ import {stripDiacritics} from 'ember-power-select/utils/group-utils';
  *  Cases not needing the file-uploader are where you are selecting an existing file on an existing node, or copying a file into
  *  a newly-created component - no file uploading needed.
  *
+ * {{preprint-form-project-select
+ * ```handlebars
+ *      changeInitialState=(action 'changeInitialState')
+ *      finishUpload=(action 'finishUpload')
+ *     clearDownstreamFields=(action 'clearDownstreamFields')
+ *     nextUploadSection=(action 'nextUploadSection')
+ *     existingNodeExistingFile=(action 'existingNodeExistingFile')
+ *     createComponentCopyFile=(action "createComponentCopyFile")
+ *     selectFile=(action "selectExistingFile")
+ *     highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+ *     startPreprint=(action 'startPreprint')
+ *     discardUploadChanges=(action 'discardUploadChanges')
+ *     startState=_State.START
+ *     existingState=existingState
+ *     _existingState=_existingState
+ *     nodeTitle=nodeTitle
+ *     currentUser=user
+ *     selectedFile=selectedFile
+ *     hasFile=hasFile
+ *     file=file
+ *     node=node
+ *     userNodes=userNodes
+ *     selectedNode=node
+ *     contributors=contributors
+ *     fileSelect=true
+ *     currentState=filePickerState
+ *     parentNode=parentNode
+ *     convertProjectConfirmed=convertProjectConfirmed
+ *     userNodesLoaded=userNodesLoaded
+ *     convertOrCopy=convertOrCopy
+ *     isTopLevelNode=isTopLevelNode
+ *     nodeLocked=nodeLocked
+ *     osfStorageProvider=osfStorageProvider
+ *     osfProviderLoaded=osfProviderLoaded
+ *     titleValid=titleValid
+ *     uploadChanged=uploadChanged
+ *     uploadInProgress=uploadInProgress
+ *     abandonedPreprint=abandonedPreprint
+ *     resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
+ *     basicsAbstract=basicsAbstract
+ *     editMode=editMode
+ *     newNode=newNode
+ *     applyLicense=applyLicense
+ * }}
  * @class preprint-form-project-select
  */
 export default Ember.Component.extend(Analytics, {

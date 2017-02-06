@@ -7,11 +7,12 @@ import permissions from 'ember-osf/const/permissions';
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
  *
+ * @method queryStringify
  * @param queryParams {!object}
  * @param queryParams.key {!array|!string}
  * @param queryParams.key[0] {!string}
  * @param queryParams.key[1] {int}
- * @returns {string}
+ * @return {string}
  */
 function queryStringify(queryParams) {
     const query = [];
@@ -40,6 +41,14 @@ function queryStringify(queryParams) {
     return query.join('&');
 }
 
+/**
+ * @module ember-preprints
+ * @submodule controllers
+ */
+
+/**
+ * @class Content Controller
+ */
 export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(),
     fullScreenMFR: false,

@@ -37,3 +37,23 @@ test('can update bibliographic field on contributor if there is another bib cont
   let result = minBibliographic([contrib, contributors]);
    assert.equal(result, true);
 });
+
+test('cannot update bibliographic field if no other bibliographic contributors', function(assert) {
+   var contrib = Ember.Object.create({
+        'id': '12345',
+        'permission': 'admin',
+        'unregisteredContributor': null,
+        'bibliographic': true
+
+    });
+
+    var otherContrib = Ember.Object.create({
+        'id': 'abcde',
+        'permission': 'read',
+        'bibliographic': false
+    });
+    var contributors = [contrib, otherContrib];
+
+  let result = minBibliographic([contrib, contributors]);
+   assert.equal(result, false);
+});

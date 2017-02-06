@@ -68,3 +68,25 @@ test('can remove another contributor if you are admin', function(assert) {
     let result = permissionToRemoveContributor([contrib, currentUser, isAdmin, node]);
     assert.equal(result, true);
 });
+
+test('cannot remove contributor from registration', function(assert) {
+    // This scenario should never be happening.
+    var contrib = Ember.Object.create({
+        'userId': 'abcde',
+        'permission': 'admin',
+        'unregisteredContributor': null,
+        'bibliographic': true
+
+    });
+    var currentUser = Ember.Object.create({
+        id: '12345',
+        currentUserId: '12345'
+    });
+    var isAdmin = true;
+    var node = Ember.Object.create({
+        'registration': true
+    });
+
+    let result = permissionToRemoveContributor([contrib, currentUser, isAdmin, node]);
+    assert.equal(result, false);
+});

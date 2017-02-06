@@ -3,8 +3,12 @@ import { module, test } from 'qunit';
 
 module('Unit | Helper | filter replace');
 
-// Replace this with your real tests.
-test('it works', function(assert) {
-  let result = filterReplace([42]);
-  assert.ok(result);
+test('replace long provider name', function(assert) {
+  let result = filterReplace(['Open Science Framework']);
+  assert.equal(result, 'OSF');
+});
+
+test('return original filter if not in filters dictionary', function(assert) {
+  let result = filterReplace(['Engineering']);
+  assert.equal(result, 'Engineering');
 });
