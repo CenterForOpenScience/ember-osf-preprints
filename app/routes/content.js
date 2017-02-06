@@ -5,6 +5,7 @@ import Analytics from '../mixins/analytics';
 import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
+import KeenTracker from 'ember-osf/mixins/keen-tracker';
 
 // Error handling for API
 const handlers = new Map([
@@ -15,7 +16,7 @@ const handlers = new Map([
     ['The requested node is no longer available.', 'resource-deleted'] // 410
 ]);
 
-export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
+export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, KeenTracker, {
     theme: Ember.inject.service(),
     headTagsService: Ember.inject.service('head-tags'),
     currentUser: Ember.inject.service('currentUser'),
@@ -58,6 +59,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
     },
     afterModel(preprint) {
         // Redirect if necessary
+        this._super(...arguments);
         preprint.get('provider')
             .then(provider => {
                 const providerId = provider.get('id');
