@@ -38,13 +38,13 @@ test('it renders', function(assert) {
         provider: 'osf',
         files: providersQuery
     });
-
-
+    let dualTrackNonContributors = () => {};
 
     this.set('preprint', preprint);
     this.set('node', node);
+    this.set('dualTrackNonContributors', dualTrackNonContributors);
 
-    this.render(hbs`{{supplementary-file-browser node=node preprint=preprint}}`);
+    this.render(hbs`{{supplementary-file-browser node=node preprint=preprint dualTrackNonContributors=(action dualTrackNonContributors)}}`);
 
     assert.equal(this.$().text().trim().replace(/\s/g, ""), 'DownloadpreprintVersion:');
 
