@@ -43,6 +43,7 @@ const Router = Ember.Router.extend({
             const title = this.getWithDefault('currentRouteName', 'unknown');
 
             Ember.get(this, 'metrics').trackPage({ page, title });
+            this.set('theme.currentLocation', window.location.href);
         });
     }
 });

@@ -2,6 +2,14 @@ import Ember from 'ember';
 import config from 'ember-get-config';
 import Analytics from '../mixins/analytics';
 
+/**
+ * @module ember-preprints
+ * @submodule controllers
+ */
+
+/**
+ * @class Index Controller
+ */
 export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(),
     sharePreprintsTotal: null,

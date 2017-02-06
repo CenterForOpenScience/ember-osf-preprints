@@ -5,6 +5,14 @@ import getRedirectUrl from '../utils/get-redirect-url';
 const providers = config.PREPRINTS.providers.slice(1);
 const providerIds = providers.map(p => p.id);
 
+/**
+ * @module ember-preprints
+ * @submodule routes
+ */
+
+/**
+ * @class Provider Route Handler
+ */
 export default Ember.Route.extend({
     theme: Ember.inject.service(),
 

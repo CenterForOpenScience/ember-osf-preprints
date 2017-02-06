@@ -5,7 +5,6 @@ import Ember from 'ember';
 
 module('Unit | Helper | contributor is current user');
 
-// Replace this with your real tests.
 test('current user equals contributor', function(assert) {
     var contrib = Ember.Object.create({
         'userId': '12345',
@@ -18,7 +17,22 @@ test('current user equals contributor', function(assert) {
         id: '12345',
         currentUserId: '12345'
     });
-
     let result = contributorIsCurrentUser([contrib, currentUser]);
     assert.equal(result, true);
+});
+
+test('current user does not equal contributor', function(assert) {
+    var contrib = Ember.Object.create({
+        'userId': '12345',
+        'permission': 'admin',
+        'unregisteredContributor': null,
+        'bibliographic': true
+
+    });
+    var currentUser = Ember.Object.create({
+        id: 'abcde',
+        currentUserId: 'abcde'
+    });
+    let result = contributorIsCurrentUser([contrib, currentUser]);
+    assert.equal(result, false);
 });
