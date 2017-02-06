@@ -11,6 +11,14 @@ const filterMap = {
     subjects: 'subjects'
 };
 
+/**
+ * @module ember-preprints
+ * @submodule controllers
+ */
+
+/**
+ * @class Discover Controller
+ */
 export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(), // jshint ignore:line
     // TODO: either remove or add functionality to info icon on "Refine your search panel"

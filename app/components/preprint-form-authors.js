@@ -2,7 +2,39 @@ import Ember from 'ember';
 import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
 import { permissionSelector } from 'ember-osf/const/permissions';
 import Analytics from '../mixins/analytics';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
+/**
+ * Displays current preprint authors and their permissions/bibliographic information. Allows user to search for
+ * authors, add authors, edit authors permissions/bibliographic information, and remove authors.  Actions
+ * that are not allowed are disabled (for example, you cannot remove the sole bibliographic author).
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{preprint-form-authors
+ *    contributors=contributors
+ *    parentContributors=parentContributors
+ *    node=node
+ *    isAdmin=isAdmin
+ *    canEdit=canEdit
+ *    currentUser=user
+ *    addContributor=(action 'addContributor')
+ *    addContributors=(action 'addContributors')
+ *    findContributors=(action 'findContributors')
+ *    searchResults=searchResults
+ *    removeContributor=(action 'removeContributor')
+ *    editContributor=(action 'updateContributor')
+ *    reorderContributors=(action 'reorderContributors')
+ *    highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+ *    parentNode=parentNode
+ *    editMode=editMode
+}}
+ * ```
+ * @class preprint-form-authors
+ */
 export default CpPanelBodyComponent.extend(Analytics, {
     valid: Ember.computed.alias('newContributorId'),
     authorModification: false,
@@ -279,20 +311,17 @@ export default CpPanelBodyComponent.extend(Analytics, {
             'A registered administrator is a user who has both confirmed their account and has administrator privileges.'
         });
     },
-    /**
-    * If user removes their own admin permissions, many things on the page must become
-    * disabled.  Changing the isAdmin flag to false will remove many of the options
-    * on the page.
-    */
+
+    /* If user removes their own admin permissions, many things on the page must become
+    disabled.  Changing the isAdmin flag to false will remove many of the options
+    on the page. */
     removedSelfAsAdmin(contributor, permission) {
         if (this.get('currentUser').id === contributor.get('userId') && permission !== 'ADMIN') {
             this.set('isAdmin', false);
         }
     },
-    /**
-    * Toggling this property, authorModification, updates several items on the page - disabling elements, enabling
-    * others, depending on what requests are permitted
-    */
+    /* Toggling this property, authorModification, updates several items on the page - disabling elements, enabling
+    others, depending on what requests are permitted */
     toggleAuthorModification() {
         this.toggleProperty('authorModification');
     }

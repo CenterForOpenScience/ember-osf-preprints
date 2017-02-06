@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "ember build",
+    "docs": "yuidoc",
     "start": "ember server",
     "test": "yarn run check-style && ember test",
     "check-style": "./node_modules/jscs/bin/jscs ."
@@ -59,7 +60,7 @@
     "ember-link-action": "0.0.35",
     "ember-load-initializers": "^0.5.1",
     "ember-metrics": "0.6.3",
-    "ember-osf": "git+https://github.com/CenterForOpenScience/ember-osf.git#5faf162fc73e004ddb8170247af33de19ba3c759",
+    "ember-osf": "git+https://github.com/CenterForOpenScience/ember-osf.git#97a4f00dd86f360b561f3ee63b77297b3e6e0f1e",
     "ember-page-title": "3.0.6",
     "ember-power-select": "1.0.0-beta.7",
     "ember-read-more": "0.0.13",

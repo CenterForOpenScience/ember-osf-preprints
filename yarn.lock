@@ -2135,9 +2135,9 @@ ember-new-computed@^1.0.2:
   dependencies:
     ember-cli-babel "^5.1.5"
 
-"ember-osf@git+https://github.com/CenterForOpenScience/ember-osf.git#ac254f87274044fb97d6a712efa5ff2433bd0537":
+"ember-osf@git+https://github.com/CenterForOpenScience/ember-osf.git#97a4f00dd86f360b561f3ee63b77297b3e6e0f1e":
   version "0.1.0"
-  resolved "git+https://github.com/CenterForOpenScience/ember-osf.git#ac254f87274044fb97d6a712efa5ff2433bd0537"
+  resolved "git+https://github.com/CenterForOpenScience/ember-osf.git#97a4f00dd86f360b561f3ee63b77297b3e6e0f1e"
   dependencies:
     broccoli-funnel "^1.0.1"
     broccoli-merge-trees "^1.1.1"
