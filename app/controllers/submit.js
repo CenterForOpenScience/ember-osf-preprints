@@ -540,7 +540,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     this.set('parentNode', node);
                     this.set('node', child);
                     this.set('basicsAbstract', this.get('node.description') || null);
-                    this.set('nodeTitle', this.get('node.title'));
                     child.get('files')
                         .then((providers) => {
                             let osfstorage = providers.findBy('name', 'osfstorage');
@@ -737,7 +736,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             node.save()
                 .then(() => {
-                    this.set('node.description', this.get('node.description'));
                     if (this.get('doiChanged')) {
                         model.set('doi', this.get('basicsDOI') || null);
                         if (this.get('licenseChanged') || !this.get('model.license.name')) {
