@@ -249,11 +249,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
         // Does the pending title differ from the title already saved?
         if (this.get('nodeTitle') != null) {
-            return this.get('node.title') !== this.get('nodeTitle').toString();
-        } else {
             return this.get('node.title') !== this.get('nodeTitle');
         }
-
     }),
     uploadChanged: Ember.computed('preprintFileChanged', 'titleChanged', function() {
         // Are there any unsaved changes in the upload section?
@@ -714,7 +711,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             let model = this.get('model');
             // Saves off current server-state basics fields, so UI can be restored in case of failure
             let currentAbstract = node.get('description');
-            let currentTags = node.get('tags').slice(0).map(fixSpecialChar);
+            let currentTags = node.get('tags').slice(0);
             let currentDOI = model.get('doi');
             let currentLicenseType = model.get('license');
             let currentLicenseRecord = model.get('licenseRecord');
@@ -749,7 +746,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                         }
                         model.save()
                             .then(() => {
-                                this.set('node.description', this.get('node.description'));
                                 this.send('next', this.get('_names.2'));
                             })
                             .catch(() => {
@@ -763,7 +759,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                         model.set('license', this.get('basicsLicense.licenseType'));
                         model.save()
                             .then(() => {
-                                this.set('node.description', this.get('node.description'));
                                 this.send('next', this.get('_names.2'));
                             })
                             .catch(() => {
@@ -798,7 +793,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             let tags = this.get('basicsTags').slice(0);
             Ember.A(tags);
 
-            tags.pushObject(fixSpecialChar(tag));
+            tags.pushObject(tag);
             this.set('basicsTags', tags);
             return tags;
         },
