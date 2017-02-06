@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
-import fixSpecialChar from 'ember-osf/utils/fix-special-char';
 
 /**
  * @module ember-preprints
@@ -63,7 +62,7 @@ export default Ember.Mixin.create({
         controller.set('filePickerState', 'existing'); // In edit mode, dealing with existing project
         controller.set('existingState', 'new'); // In edit mode, only option to change file is to upload a NEW file
         controller.set('node', node);
-        controller.set('nodeTitle', fixSpecialChar(node.get('title')));
+        controller.set('nodeTitle', node.get('title'));
         controller.set('nodeLocked', true);
         controller.set('titleValid', true);
         model.get('primaryFile').then((file) => {
