@@ -93,6 +93,7 @@
       "config/environment.js",
       "bower_components",
       "node_modules",
+      "coverage",
       "dist",
       "docs",
       "tmp",
