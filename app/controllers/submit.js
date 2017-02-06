@@ -670,6 +670,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 });
             });
         },
+        preventDefault(e) {
+            e.preventDefault();
+        },
         stripDOI() {
             // Replaces the inputted doi link with just the doi itself
             Ember.get(this, 'metrics')
@@ -689,6 +692,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue Basics Section`
                 });
             // Saves the description/tags on the node and the DOI on the preprint, then advances to next panel
+            if (!this.get('basicsValid')) {
+                return;
+            }
             let node = this.get('node');
             let model = this.get('model');
             // Saves off current server-state basics fields, so UI can be restored in case of failure

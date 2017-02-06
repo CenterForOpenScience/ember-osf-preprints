@@ -45,7 +45,8 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'model:citation',
         'model:license',
         'transform:links',
-        'transform:embed'
+        'transform:embed',
+        'service:theme'
     ],
     beforeEach: function () {
        this.register('service:panel-actions', panelActionsStub);

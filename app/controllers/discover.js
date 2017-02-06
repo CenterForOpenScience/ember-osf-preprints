@@ -294,6 +294,14 @@ export default Ember.Controller.extend(Analytics, {
         this.set('page', 1);
         this.loadPage();
     }),
+
+    _clearFilters() {
+        this.set('activeFilters', {
+            providers: this.get('theme.isProvider') ? this.get('activeFilters.providers') : [],
+            subjects: []
+        });
+    },
+
     otherProviders: [],
     actions: {
         search(val, event) {
@@ -332,10 +340,7 @@ export default Ember.Controller.extend(Analytics, {
         },
 
         clearFilters() {
-            this.set('activeFilters', {
-                providers: this.get('theme.isProvider') ? this.get('activeFilters.providers') : [],
-                subjects: []
-            });
+            this._clearFilters();
 
             Ember.get(this, 'metrics')
                 .trackEvent({
