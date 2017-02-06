@@ -248,9 +248,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     }),
     titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
         // Does the pending title differ from the title already saved?
-        if (this.get('nodeTitle') != null) {
-            return this.get('node.title') !== this.get('nodeTitle');
-        }
+        return this.get('node.title') !== this.get('nodeTitle');
     }),
     uploadChanged: Ember.computed('preprintFileChanged', 'titleChanged', function() {
         // Are there any unsaved changes in the upload section?
