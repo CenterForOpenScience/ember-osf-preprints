@@ -44,6 +44,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'model:user',
         'model:citation',
         'model:license',
+        'model:wiki',
         'transform:links',
         'transform:embed',
         'service:theme'
