@@ -102,12 +102,18 @@
     {{/unless}}
 
     {{!ADVISORY GROUP}}
-    <div class="preprint-advisory p-v-md">
-        <div class="container">
-            <div class="row">
-                {{#if theme.isProvider}}
+    {{#if (and theme.isProvider theme.provider.advisoryBoard.length)}}
+        <div class="preprint-advisory p-v-md">
+            <div class="container">
+                <div class="row">
                     {{safe-markup theme.provider.advisoryBoard}}
-                {{else}}
+                </div>
+            </div>
+        </div>
+    {{else if (not theme.isProvider)}}
+        <div class="preprint-advisory p-v-md">
+            <div class="container">
+                <div class="row">
                     <div class="col-xs-12">
                         <h2>{{t "index.advisory.heading"}}</h2>
                         <p class="m-b-lg">{{t "index.advisory.paragraph"}}</p>
@@ -131,9 +137,9 @@
                             <li><b>Simine Vazire :</b> PsyArXiv, University of California, Davis</li>
                         </ul>
                     </div>
-                {{/if}}
+                </div>
             </div>
         </div>
-    </div>
+    {{/if}}
 
 </div> {{!END INDEX}}
