@@ -30,7 +30,7 @@ export default Ember.Component.extend(Analytics, {
     justContributors: Ember.computed('result', function() {
         return this.get('result.contributors').filter(item => !!item.users.bibliographic);
     }),
-    
+
     shortContributorList: Ember.computed('justContributors', function() {
         return this.get('justContributors').slice(0, Math.min(10, this.get('justContributors').length));
     }),
