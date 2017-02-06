@@ -230,6 +230,7 @@ export default Ember.Controller.extend(Analytics, {
     }),
 
     // TODO update this property if a solution is found for the elastic search limitation.
+    // Ticket: SHARE-595
     numPages: Ember.computed('size', 'totalPages', function() {
         let maxPages = Math.ceil(10000 / this.get('size'));
         return this.get('totalPages') < maxPages ? this.get('totalPages') : maxPages;
