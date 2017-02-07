@@ -44,7 +44,8 @@ module.exports = function(environment) {
                         type: 'image/png',
                         width: 363,
                         height: 242
-                    }
+                    },
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'engrxiv',
@@ -77,6 +78,26 @@ module.exports = function(environment) {
                         height: 488
                     },
                     permissionLanguage: 'arxiv_trademark_license'
+                },
+                {
+                    id: 'scielo',
+                    logoSharing: {
+                        path: '/assets/img/provider_logos/scielo-logo.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'agrixiv',
+                    logoSharing: {
+                        path: 'assets/img/provider_logos/agrixiv-banner.svg',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
                 }
             ],
         },
@@ -107,7 +128,7 @@ module.exports = function(environment) {
 
     if (environment === 'test') {
         // Testem prefers this...
-        // ENV.baseURL = '/';
+        ENV.baseURL = '/';
         ENV.locationType = 'none';
 
         // keep test console output quieter

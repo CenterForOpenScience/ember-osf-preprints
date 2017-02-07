@@ -1,11 +1,15 @@
 import Ember from 'ember';
 import { permissionSelector } from 'ember-osf/const/permissions';
+/**
+ * @module ember-preprints
+ * @submodule helpers
+ */
 
 /**
  * permissionMap helper.  Maps short form of the contributor's permissions
  * passed in params to the long form.
  *
- * @method permissionMap
+ * @class permissionMap
  * @param {String} permission Short form of permission
  * @return {String} permission Long form of permission
  */

@@ -24,9 +24,7 @@ export const existingState = Object.freeze(Ember.Object.create({
     NEWFILE: 'new'
 }));
 
-/*****************************
-  Form data and validations
- *****************************/
+// Form data and validations
 const BasicsValidations = buildValidations({
     basicsAbstract: {
         description: 'Abstract',
@@ -52,9 +50,7 @@ const BasicsValidations = buildValidations({
     }
 });
 
-/*****************************
- Helper function to determine if discipline has changed (comparing list of lists)
- *****************************/
+// Helper function to determine if discipline has changed (comparing list of lists)
 function disciplineArraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;
@@ -87,7 +83,12 @@ function doiRegexExec(doi) {
 }
 
 /**
- * "Add preprint" page definitions
+ * @module ember-preprints
+ * @submodule controllers
+ */
+
+/**
+ * @class Submit Controller
  */
 export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
     i18n: Ember.inject.service(),
@@ -222,7 +223,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     }),
     // Does preprint have a saved primaryFile?
     savedFile: Ember.computed('model.primaryFile', function() {
-        return !!this.get('model.primaryFile');
+        return !!this.get('model.primaryFile.content');
     }),
     // Does node have a saved description?
     savedAbstract: Ember.computed('node.description', function() {
@@ -669,6 +670,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 });
             });
         },
+        preventDefault(e) {
+            e.preventDefault();
+        },
         stripDOI() {
             // Replaces the inputted doi link with just the doi itself
             Ember.get(this, 'metrics')
@@ -688,6 +692,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue Basics Section`
                 });
             // Saves the description/tags on the node and the DOI on the preprint, then advances to next panel
+            if (!this.get('basicsValid')) {
+                return;
+            }
             let node = this.get('node');
             let model = this.get('model');
             // Saves off current server-state basics fields, so UI can be restored in case of failure
