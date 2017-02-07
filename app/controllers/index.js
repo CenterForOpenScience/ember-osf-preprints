@@ -63,6 +63,7 @@ export default Ember.Controller.extend(Analytics, {
 
     actions: {
         contactLink(href, category, action, label) {
+            console.log(label);
             const metrics = Ember.get(this, 'metrics');
 
             // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
@@ -75,7 +76,6 @@ export default Ember.Controller.extend(Analytics, {
             if (label.includes('email'))
               return;
 
-            window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
             return false;
         }
     }
