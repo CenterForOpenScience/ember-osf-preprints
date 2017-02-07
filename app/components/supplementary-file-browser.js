@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from '../mixins/analytics';
+import KeenTracker from 'ember-osf/mixins/keen-tracker';
+
 /**
  * @module ember-preprints
  * @submodule components
@@ -20,7 +22,7 @@ import Analytics from '../mixins/analytics';
  * ```
  * @class supplementary-file-browser
  */
-export default Ember.Component.extend(Analytics, {
+export default Ember.Component.extend(Analytics, KeenTracker, {
     elementId: 'preprint-file-view',
     endIndex: 6,
     startIndex: 0,
@@ -56,6 +58,22 @@ export default Ember.Component.extend(Analytics, {
                 this.set('files', [this.get('primaryFile')].concat(this.get('files')));
             });
     }.observes('preprint'),
+
+    selectedFileChanged: Ember.observer('selectedFile', function() {
+        const eventData = {
+            file_views: {
+                preprint: {
+                    type: 'preprint',
+                    id: this.get('preprint.id')
+                },
+                file: {
+                    id: this.get('selectedFile.id'),
+                    primaryFile: this.get('preprint.primaryFile.id') === this.get('selectedFile.id')
+                }
+            }
+        };
+        this.keenTrackEvent('preprint_file_views', eventData, this.get('node'));
+    }),
 
     init() {
         this._super(...arguments);
