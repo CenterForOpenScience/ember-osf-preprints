@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from '../mixins/analytics';
+import fileDownloadPath from '../utils/file-download-path';
 
 export default Ember.Component.extend(Analytics, {
     elementId: 'preprint-file-view',
@@ -40,10 +41,7 @@ export default Ember.Component.extend(Analytics, {
     }.observes('preprint'),
 
     fileDownloadURL: Ember.computed('selectedFile', function() {
-        if (this.get('selectedFile.guid')) {
-            return `/${this.get('selectedFile.guid')}/?action=download`;
-        }
-        return `/project/${this.get('node.id')}/files/osfstorage${this.get('selectedFile.path')}/?action=download`;
+        return fileDownloadPath(this.get('selectedFile'), this.get('node'));
     }),
 
     init() {

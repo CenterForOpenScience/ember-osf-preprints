@@ -3,6 +3,7 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from '../mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
+import fileDownloadPath from '../utils/file-download-path';
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -130,12 +131,7 @@ export default Ember.Controller.extend(Analytics, {
 
     _fileDownloadURL: Ember.observer('model.primaryFile', function() {
         this.get('model.primaryFile').then(file => {
-            if (file.get('guid')) {
-                this.set('fileDownloadURL', `/${file.get('guid')}/?action=download`);
-            } else {
-                // we can assume osfstorage since preprint files can onl be hosted there
-                this.set('fileDownloadURL', `/project/${this.get('node.id')}/files/osfstorage${file.get('path')}/?action=download`);
-            }
+            this.set('fileDownloadURL', fileDownloadPath(file, this.get('node')));
         });
     }),
 
