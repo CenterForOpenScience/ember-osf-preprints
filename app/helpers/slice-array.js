@@ -1,17 +1,21 @@
 import Ember from 'ember';
+/**
+ * @module ember-preprints
+ * @submodule helpers
+ */
 
 /**
- * userIsContributor - takes in a user and the list of all preprint contributors.
- * Returns true if the user is in the list of preprint contributors.
+ * sliceArray - returns shallow copy of portion of array
  *
- * @method userIsContributor
- * @param {Object} user User returned in search results.
- * @param {Array} contributors List of all contributors on the preprint.
- * @return {Boolean} Is the user a current contributor on the preprint?
+ * @class sliceArray
+ * @param {Array} array
+ * @param {Integer} startIndex
+ * @param {Integer} stopIndex
+ * @return {Array} sliced array
  */
-export function slice(params/*, hash*/) {
+export function sliceArray(params/*, hash*/) {
     var [array, start, finish] = params;
     return array.slice(start, finish);
 }
 
-export default Ember.Helper.helper(slice);
+export default Ember.Helper.helper(sliceArray);

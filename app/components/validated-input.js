@@ -8,7 +8,24 @@ const {
   computed,
   defineProperty,
 } = Ember;
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
+/**
+ * Adapted from ember-cpi-validations/tests/dummy/app to make a form field with validation
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{validated-input
+ *      model=this valuePath='nodeTitle'
+ *      placeholder=(t "components.file-uploader.title_placeholder")
+ *      value=nodeTitle
+ * }}
+ * ```
+ * @class validated-input
+ */
 export default Ember.Component.extend({
     classNames: ['validated-input'],
     classNameBindings: ['showErrorClass:has-error', 'isValid:has-success'],

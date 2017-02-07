@@ -5,6 +5,7 @@ const Router = Ember.Router.extend({
     location: config.locationType,
     rootURL: config.rootURL,
     metrics: Ember.inject.service(),
+    theme: Ember.inject.service(),
 
     didTransition() {
         this._super(...arguments);
@@ -17,6 +18,7 @@ const Router = Ember.Router.extend({
             const title = this.getWithDefault('currentRouteName', 'unknown');
 
             Ember.get(this, 'metrics').trackPage({ page, title });
+            this.set('theme.currentLocation', window.location.href);
         });
     }
 });

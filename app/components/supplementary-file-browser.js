@@ -3,6 +3,26 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from '../mixins/analytics';
 import fileDownloadPath from '../utils/file-download-path';
 
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
+
+
+/**
+ * Displays supplemental preprint files
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{supplementary-file-browser
+ *      preprint=model
+ *      node=node
+ *      projectURL=node.links.html
+ *      chooseFile=(action 'chooseFile')
+ * }}
+ * ```
+ * @class supplementary-file-browser
+ */
 export default Ember.Component.extend(Analytics, {
     elementId: 'preprint-file-view',
     endIndex: 6,
