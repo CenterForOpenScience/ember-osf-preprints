@@ -212,6 +212,26 @@ export default Ember.Controller.extend(Analytics, KeenTracker, {
             this.send('click', category, label, url); // Sends event to Google Analytics
             const authors = this.get('authors');
             let userIsContrib = false;
+
+            const eventData = {
+                download_info: {
+                    preprint: {
+                        type: 'preprint',
+                        id: this.get('model.id')
+                    },
+                    file: {
+                        id: this.get('activeFile.id'),
+                        primaryFile: this.get('model.primaryFile.id') === this.get('activeFile.id')
+                    }
+                },
+                interaction: {
+                    category: category,
+                    action: 'click',
+                    label: `${label} as Non-Contributor`,
+                    url: url
+                }
+            };
+
             this.get('currentUser').load()
                 .then(user => {
                     if (user) {
@@ -223,12 +243,16 @@ export default Ember.Controller.extend(Analytics, KeenTracker, {
                         });
                     }
                     if (!userIsContrib) {
-                        this.send('keenClick', category, `Non-Contributor ${label}`, url);  // Sends event to Keen if logged in user is not a preprint author
+                        this.keenTrackEvent('preprint_downloads', eventData, this.get('node'));  // Sends event to Keen if logged in user is not a preprint author
                     }
                 })
                 .catch(() => {
-                    this.send('keenClick', category, `${label} as Non-Contributor`, url); // Sends event to Keen for non-authenticated user
+                    this.keenTrackEvent('preprint_downloads', eventData, this.get('node')); // Sends event to Keen for non-authenticated user
                 });
         }
     },
 });
+
+
+
+
