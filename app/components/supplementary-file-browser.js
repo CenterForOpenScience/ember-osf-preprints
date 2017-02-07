@@ -8,7 +8,6 @@ import fileDownloadPath from '../utils/file-download-path';
  * @submodule components
  */
 
-
 /**
  * Displays supplemental preprint files
  *
