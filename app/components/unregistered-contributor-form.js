@@ -6,9 +6,8 @@ import {
 }
 from 'ember-cp-validations';
 
-/**
-* Validations for adding unregistered contributor form.  fullName must be present
-* and have three letters, and the username (email) must be present and of appropriate format.
+/* Validations for adding unregistered contributor form.  fullName must be present
+and have three letters, and the username (email) must be present and of appropriate format.
 */
 const Validations = buildValidations({
     fullName: {
@@ -30,7 +29,24 @@ const Validations = buildValidations({
        ]
     },
 });
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
+/**
+ * Allows user to add author to their preprint by name and email
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{unregistered-contributor-form
+ *      editMode=editMode
+ *      resetfindContributorsView=(action 'resetfindContributorsView')
+ *      addUnregisteredContributor=(action 'addUnregisteredContributor')
+ * }}
+ * ```
+ * @class unregistered-contributor-form
+ */
 export default Ember.Component.extend(Validations, Analytics, {
     fullName: null,
     username: null,

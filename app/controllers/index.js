@@ -2,6 +2,14 @@ import Ember from 'ember';
 import config from 'ember-get-config';
 import Analytics from '../mixins/analytics';
 
+/**
+ * @module ember-preprints
+ * @submodule controllers
+ */
+
+/**
+ * @class Index Controller
+ */
 export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(),
     sharePreprintsTotal: null,
@@ -11,7 +19,7 @@ export default Ember.Controller.extend(Analytics, {
         const filter = [
             {
                 term: {
-                    'types.raw': 'preprint'
+                    types: 'preprint'
                 }
             }
         ];
@@ -34,7 +42,8 @@ export default Ember.Controller.extend(Analytics, {
         if (this.get('theme.isProvider')) {
             filter.push({
                 term: {
-                    // TODO filter by name and use sources.raw (potential conflicts later), Needs API name to match SHARE source
+                    // TODO filter by name and use sources.raw (potential conflicts later), Needs API name to match SHARE source.
+                    // Update: .raw has been removed from type and source queries.
                     sources: this.get('theme.id')
                 }
             });

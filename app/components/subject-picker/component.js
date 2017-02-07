@@ -8,7 +8,25 @@ function arrayEquals(arr1, arr2) {
 function arrayStartsWith(arr, prefix) {
     return prefix.reduce((acc, val, i) => acc && val && arr[i] && val.id === arr[i].id, true);
 }
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
+/**
+ * Add discipline when creating a preprint.
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{subject-picker
+ *      editMode=editMode
+ *      selected=subjectsList
+ *      disciplineModifiedToggle=disciplineModifiedToggle
+ *      save=(action 'setSubjects')
+ *}}
+ * ```
+ * @class subject-picker
+ */
 export default Ember.Component.extend(Analytics, {
     store: Ember.inject.service(),
     theme: Ember.inject.service(),

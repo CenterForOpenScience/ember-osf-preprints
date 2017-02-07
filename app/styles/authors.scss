@@ -15,7 +15,11 @@
     margin-top: 0px;
     margin-bottom: 0px;
     color: gray;
+}
 
+.permission-select {
+    width: 110px;
+    display: inline;
 }
 .vert-align {
     padding-top: 4px;
@@ -161,4 +165,76 @@ span.sortable-bars:hover {
 
 .errorHighlight {
     animation: redHighlight 2s;
+}
+@media (max-width: 768px) { // Contributors section, XS screen
+    .current-authors {
+        table, td, tr {
+    		display: block;
+            width: 100% !important;
+    	}
+
+        th {
+            display: None;
+        }
+
+        td {
+           border-top: none !important;
+        }
+        .author-cols {
+            margin-top: 10px;
+        }
+
+        td:before {
+            white-space: nowrap;
+        }
+
+        .bib-padding {
+            text-align: left;
+            padding-bottom: 10px;
+            padding-right: 30px
+        }
+
+        .checkbox-padding {
+            padding-right: 20px;
+            padding-left: 20px;
+        }
+
+        .permission-label {
+            padding-right: 10px;
+            padding-left: 18px;
+        }
+
+        .vert-align-disabled-permissions {
+            padding-top: 0px;
+        }
+        .vert-align-enabled-permissions {
+            padding-top: 0px;
+        }
+        .drag-drop-contrib {
+            padding-top: 0px;
+        }
+        .vert-align {
+            padding-top: 0px;
+        }
+        .vert-align-contributor-name {
+            padding-top: 0px;
+        }
+        .contributor-row {
+            border-top: 1px solid #EEE !important;
+            width: auto;
+            padding-left: 10px;
+        }
+        .delete-contrib-button {
+            padding-bottom: 10px;
+        }
+        .remove-contributor-xs {
+            padding: 0;
+            border: none;
+            background: none;
+            color: #D9534F;
+        }
+        .remove-contributor-padding-xs {
+            padding-right: 10px;
+        }
+    }
 }
