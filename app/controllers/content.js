@@ -217,9 +217,9 @@ export default Ember.Controller.extend(Analytics, KeenTracker, {
                     if (user) {
                         const userId = user.id;
                         authors.forEach((author) => {
-                           if (author.get('userId') === userId) {
-                               userIsContrib = true;
-                           }
+                            if (author.get('userId') === userId) {
+                                userIsContrib = true;
+                            }
                         });
                     }
                     if (!userIsContrib) {
