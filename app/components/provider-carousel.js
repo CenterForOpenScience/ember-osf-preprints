@@ -14,8 +14,9 @@ import Analytics from '../mixins/analytics';
  * Sample usage:
  * ```handlebars
  * {{provider-carousel
- *  providers=providers
-}}
+ *      providers=providers
+ *      lightLogo=true
+ *}}
  * ```
  * @class provider-carousel
  */
