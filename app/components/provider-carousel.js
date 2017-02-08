@@ -32,5 +32,8 @@ export default Ember.Component.extend(Analytics, {
         return new Array(numSlides).fill().map((_, i) => {
             return this.get('providers').slice(i * itemsPerSlide, i * itemsPerSlide + itemsPerSlide);
         });
-    })
+    }),
+    didInsertElement: function () {
+        Ember.$('.carousel').carousel();
+    }
 });
