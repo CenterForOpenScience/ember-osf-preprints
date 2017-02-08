@@ -4,23 +4,22 @@
         {{#each slides as |slide index|}}
             <div class={{if (not index) "item active" "item"}}>
                 {{#each slide as |provider index|}}
-                     <div class={{if (not index) "col-sm-2 col-sm-offset-1" "col-sm-2"}}>
-                         {{#if lightLogo}}
+                    <div class={{if (not index) "col-sm-2 col-sm-offset-1" "col-sm-2"}}>
+                        {{#if lightLogo}}
                             <a href="/preprints/{{provider.id}}"
                                 title={{provider.name}}
                                 onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
-                            >
+                                >
                                 <div class="provider-logo provider-{{provider.id}}"></div>
                             </a>
-                         {{else}}
+                        {{else}}
                             <a href="/preprints/{{provider.id}}/discover"
                                 title={{provider.name}}
                                 onclick={{action 'click' 'link' (concat 'Preprints - Discover - Index ' provider.name)}}
                             >
                                 <div class="discover-provider-logo provider-{{provider.id}}-dark"></div>
                             </a>
-                         {{/if}}
-
+                        {{/if}}
                     </div>
                 {{/each}}
             </div>
