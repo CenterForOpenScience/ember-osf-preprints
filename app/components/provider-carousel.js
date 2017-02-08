@@ -28,14 +28,12 @@ export default Ember.Component.extend(Analytics, {
         return this.get('providers').length;
     }),
     numSlides: Ember.computed('numProviders', 'itemsPerSlide', function() {
-        return Math.ceil(this.get('numProviders')/this.get('itemsPerSlide'));
+        return Math.ceil(this.get('numProviders') / this.get('itemsPerSlide'));
     }),
     slides: Ember.computed('numSlides', 'providers', 'itemsPerSlide', function() {
         const numSlides = this.get('numSlides');
         const itemsPerSlide = this.get('itemsPerSlide');
-        return new Array(numSlides).fill().map((_, i) => {
-            return this.get('providers').slice(i * itemsPerSlide, i * itemsPerSlide + itemsPerSlide);
-        });
+        return new Array(numSlides).fill().map((_, i) => this.get('providers').slice(i * itemsPerSlide, i * itemsPerSlide + itemsPerSlide));
     }),
     setSlideItems: function() {
         // On xs screens, show one provider per slide. Otherwise, five.
