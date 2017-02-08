@@ -8,6 +8,8 @@ import Analytics from '../mixins/analytics';
 
 /**
  * Displays active preprint providers in a horizontal carousel with five providers per slide. Does not auto-advance.
+ * Handles display on two pages: index (lightLogo=true) and discover (lightLogo=false).  If using elsewhere, need to add more customization
+ * around how provider logos and links are built.
  *
  * Sample usage:
  * ```handlebars
@@ -20,6 +22,7 @@ import Analytics from '../mixins/analytics';
 export default Ember.Component.extend(Analytics, {
     providers: Ember.A(), // Pass in preprint providers
     itemsPerSlide: 5, // Default
+    lightLogo: true, // Light logos by default, for Index page.
     numProviders: Ember.computed('providers', function() {
         return this.get('providers').length;
     }),
