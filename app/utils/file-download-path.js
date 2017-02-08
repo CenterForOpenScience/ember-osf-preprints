@@ -5,7 +5,7 @@ export default function fileDownloadPath(file, node) {
         return;
     }
     if (file.get('guid')) {
-        return `${config.rootURL}${file.get('guid')}/?action=download`;
+        return `${config.OSF.url}${file.get('guid')}/?action=download`;
     }
-    return `${config.rootURL}project/${node.get('id')}/files/osfstorage${file.get('path')}/?action=download`;
+    return `${config.OSF.url}project/${node.get('id')}/files/osfstorage${file.get('path')}/?action=download`;
 }
