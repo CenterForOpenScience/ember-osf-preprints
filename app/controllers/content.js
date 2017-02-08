@@ -252,7 +252,3 @@ export default Ember.Controller.extend(Analytics, KeenTracker, {
         }
     },
 });
-
-
-
-
