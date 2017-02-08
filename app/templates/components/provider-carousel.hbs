@@ -1,0 +1,14 @@
+{{!Provider Carousel}}
+{{#each slides as |slide|}}
+    {{#each slide as |provider|}}
+        <div class="col-sm-4">
+            <a href="/preprints/{{provider.id}}"
+               title={{provider.name}}
+               onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
+            >
+                <div class="provider-logo provider-{{provider.id}}"></div>
+            </a>
+        </div>
+    {{/each}}
+{{/each}}
+

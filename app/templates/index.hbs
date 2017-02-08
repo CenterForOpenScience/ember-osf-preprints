@@ -66,16 +66,7 @@
                 </div>
             </div>
             <div class="row p-v-md">{{!BRANDED ROW}}
-                {{#each model.brandedProviders as |provider|}}
-                    <div class="col-sm-4">
-                        <a href="/preprints/{{provider.id}}"
-                           title={{provider.name}}
-                           onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
-                        >
-                            <div class="provider-logo provider-{{provider.id}}"></div>
-                        </a>
-                    </div>
-                {{/each}}
+                {{provider-carousel providers=model.brandedProviders}}  {{!CAROUSEL WITH PREPRINT PROVIDERS}}
             </div>
             <div class="row p-v-md">
                 <div class="col-md-12 text-center">
