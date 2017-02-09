@@ -102,6 +102,16 @@ ul.comma-list {
 /* INDEX page */
 /* Global to index */
 
+.carousel-control.left, .carousel-control.right {
+    background-image: none // Overrides bootstrap defaults for carousel background gradient
+}
+.icon-next.dark-control {
+    color: black;
+}
+
+.icon-prev.dark-control {
+    color: black;
+}
 
 /* Main header with search bar */
 .preprint-header{
