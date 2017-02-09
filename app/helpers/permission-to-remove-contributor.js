@@ -1,11 +1,15 @@
 import Ember from 'ember';
+/**
+ * @module ember-preprints
+ * @submodule helpers
+ */
 
 /**
  * permissionToRemoveContributor helper.  Checks to see if user has proper permissions
  * to remove contributor.  The user must be an admin and cannot remove herself.
  * The project cannot be a registration.
  *
- * @method permissionToRemoveContributor
+ * @class permissionToRemoveContributor
  * @param {Object} contributor Contributor you wish to remove.
  * @param {Object} currentUser Current logged in user.
  * @param {Boolean} isAdmin Whether current user is a preprint admin

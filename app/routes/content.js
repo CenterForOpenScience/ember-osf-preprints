@@ -15,6 +15,15 @@ const handlers = new Map([
     ['The requested node is no longer available.', 'resource-deleted'] // 410
 ]);
 
+/**
+ * @module ember-preprints
+ * @submodule routes
+ */
+
+/**
+ * Fetches current preprint. Redirects to preprint provider route if necessary.
+ * @class Content Route Handler
+ */
 export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
     theme: Ember.inject.service(),
     headTagsService: Ember.inject.service('head-tags'),
@@ -113,10 +122,10 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ['og:description', node.get('description')],
                 ['og:site_name', this.get('theme.provider.name')],
                 ['og:type', 'article'],
-                ['article:published_time', new Date(preprint.get('dateCreated') || null).toISOString()]
+                ['article:published_time', new Date(preprint.get('datePublished') || null).toISOString()]
             ];
 
-            const modified = preprint.get('dateModified') || preprint.get('dateCreated');
+            const modified = preprint.get('dateModified') || preprint.get('datePublished') || null;
 
             if (modified)
                 ogp.push(['article:modified_time', new Date(modified).toISOString()]);

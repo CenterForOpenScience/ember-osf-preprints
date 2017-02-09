@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="text-center col-xs-12">
                     <p class="lead"> or </p>
-                    <a type="button" class="btn btn-success btn-lg" href={{concat '/preprints/' (if theme.isProvider (concat theme.id '/')) 'submit'}} onclick={{action "click" "link" "Preprints - Index - Add preprint"}}>{{t "global.add_preprint"}}</a>
+                    <a type="button" class="btn btn-success btn-lg preprint-submit-button" href={{concat '/preprints/' (if theme.isProvider (concat theme.id '/')) 'submit'}} onclick={{action "click" "link" "Preprints - Index - Add preprint"}}>{{t "global.add_preprint"}}</a>
                     <div class="m-t-md">{{#link-to (if theme.isProvider "provider.content" "content") (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Preprints - Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
                 </div>
             </div>
@@ -66,16 +66,10 @@
                 </div>
             </div>
             <div class="row p-v-md">{{!BRANDED ROW}}
-                {{#each model.brandedProviders as |provider|}}
-                    <div class="col-sm-4">
-                        <a href="/preprints/{{provider.id}}"
-                           title={{provider.name}}
-                           onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
-                        >
-                            <div class="provider-logo provider-{{provider.id}}"></div>
-                        </a>
-                    </div>
-                {{/each}}
+                {{!CAROUSEL WITH PREPRINT PROVIDERS}}
+                {{provider-carousel
+                    providers=model.brandedProviders
+                }}
             </div>
             <div class="row p-v-md">
                 <div class="col-md-12 text-center">
@@ -102,12 +96,18 @@
     {{/unless}}
 
     {{!ADVISORY GROUP}}
-    <div class="preprint-advisory p-v-md">
-        <div class="container">
-            <div class="row">
-                {{#if theme.isProvider}}
+    {{#if (and theme.isProvider theme.provider.advisoryBoard.length)}}
+        <div class="preprint-advisory p-v-md">
+            <div class="container">
+                <div class="row">
                     {{safe-markup theme.provider.advisoryBoard}}
-                {{else}}
+                </div>
+            </div>
+        </div>
+    {{else if (not theme.isProvider)}}
+        <div class="preprint-advisory p-v-md">
+            <div class="container">
+                <div class="row">
                     <div class="col-xs-12">
                         <h2>{{t "index.advisory.heading"}}</h2>
                         <p class="m-b-lg">{{t "index.advisory.paragraph"}}</p>
@@ -131,9 +131,9 @@
                             <li><b>Simine Vazire :</b> PsyArXiv, University of California, Davis</li>
                         </ul>
                     </div>
-                {{/if}}
+                </div>
             </div>
         </div>
-    </div>
+    {{/if}}
 
 </div> {{!END INDEX}}
