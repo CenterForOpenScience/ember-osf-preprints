@@ -4,7 +4,7 @@
         {{#each slides as |slide index|}}
             <div class={{if (not index) "item active" "item"}}>
                 {{#each slide as |provider index|}}
-                    <div class={{if (not index) "col-sm-2 col-sm-offset-1" "col-sm-2"}}>
+                    <div class={{if (not index) (concat "col-sm-2 " columnOffset) "col-sm-2"}}>
                         {{#if lightLogo}}
                             <a href="/preprints/{{provider.id}}"
                                 title={{provider.name}}
@@ -25,14 +25,16 @@
             </div>
         {{/each}}
     </div>
-    <a class="left carousel-control" href="#providerCarousel" role="button" data-slide="prev">
-        <span class={{concat "icon-prev fa fa-angle-left" (if (not lightLogo) " dark-control")}}></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#providerCarousel" role="button" data-slide="next">
-        <span class={{concat "icon-next fa fa-angle-right" (if (not lightLogo) " dark-control")}}></span>
-        <span class="sr-only">Next</span>
-    </a>
+    {{#if (gt numProviders itemsPerSlide)}}
+        <a class="left carousel-control" href="#providerCarousel" role="button" data-slide="prev">
+            <span class={{concat "icon-prev fa fa-angle-left" (if (not lightLogo) " dark-control")}}></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#providerCarousel" role="button" data-slide="next">
+            <span class={{concat "icon-next fa fa-angle-right" (if (not lightLogo) " dark-control")}}></span>
+            <span class="sr-only">Next</span>
+        </a>
+    {{/if}}
 </div>
 
 
