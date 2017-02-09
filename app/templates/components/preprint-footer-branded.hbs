@@ -2,10 +2,9 @@
     <div>
         <span>{{model.name}}:</span>
         <span>
-            <a href="{{model.aboutLink}} "
+            <a href={{model.aboutLink}}
                aria-label={{t "components.preprint-footer-branded.about"}}
-               onbeforeclick={{action 'click' 'link' 'Branded Footer - About'}}
-               target="_blank"
+               onclick={{action 'click' 'link' 'Branded Footer - About' model.aboutLink}}
             >
                 {{t "components.preprint-footer-branded.about"}}
             </a>

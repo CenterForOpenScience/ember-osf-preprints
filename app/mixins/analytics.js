@@ -23,7 +23,7 @@ export default Ember.Mixin.create({
 
             // Needed for outbound links, see https://support.google.com/analytics/answer/1136920?hl=en
             if (url)
-                window.location.href = url;
+                window.open(url, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
 
             return true;
         },
