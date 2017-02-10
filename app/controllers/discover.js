@@ -62,7 +62,7 @@ export default Ember.Controller.extend(Analytics, {
 
     i18n: Ember.inject.service(),
 
-    sortByOptions: Ember.computed('i18n.locale', 'i18n.locales', function() {
+    sortByOptions: Ember.computed('i18n', function() {
         const i18n = this.get('i18n');
         return [i18n.t('discover.relevance'), i18n.t('discover.sort_oldest_newest'), i18n.t('discover.sort_newest_oldest')];
     }),
