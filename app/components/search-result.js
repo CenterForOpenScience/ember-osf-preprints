@@ -43,6 +43,18 @@ export default Ember.Component.extend(Analytics, {
         return result.description.slice();
     }),
 
+    justContributors: Ember.computed('result', function() {
+        return this.get('result.contributors').filter(item => !!item.users.bibliographic);
+    }),
+
+    shortContributorList: Ember.computed('justContributors', function() {
+        return this.get('justContributors').slice(0, Math.min(10, this.get('justContributors').length));
+    }),
+
+    hasMoreContributors: Ember.computed('justContributors', 'shortContributorList', function () {
+        return this.get('shortContributorList').length < this.get('justContributors').length;
+    }),
+
     osfID: Ember.computed('result', function() {
         let re = /osf.io\/(\w+)\/$/;
         // NOTE / TODO : This will have to be removed later. Currently the only "true" preprints are solely from the OSF
