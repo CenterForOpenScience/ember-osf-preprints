@@ -80,6 +80,15 @@ module.exports = function(environment) {
                     permissionLanguage: 'arxiv_trademark_license'
                 },
                 {
+                    id: 'bitss',
+                    logoSharing: { // T
+                        path: '/assets/img/provider_logos/bitss-small.png',
+                        type: 'image/png',
+                        width: 1500,
+                        height: 1500
+                    },
+                },
+                {
                     id: 'scielo',
                     logoSharing: {
                         path: '/assets/img/provider_logos/scielo-logo.png',

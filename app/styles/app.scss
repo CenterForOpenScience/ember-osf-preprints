@@ -200,6 +200,13 @@ $logo-dir: 'img/provider_logos/';
     background-image: url($logo-dir + 'psyarxiv-dark-small.png');
 }
 
+.provider-bitss {
+    background-image: url($logo-dir + 'bitss-small.png');
+}
+.provider-bitss-dark {
+    background-image: url($logo-dir + 'bitss-banner.png');
+}
+
 .provider-agrixiv {
     background-image: url($logo-dir + 'agrixiv-small.svg');
 }
