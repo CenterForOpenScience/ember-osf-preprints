@@ -3,6 +3,7 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from '../mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
+import fileDownloadPath from '../utils/file-download-path';
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -54,6 +55,7 @@ export default Ember.Controller.extend(Analytics, {
     fullScreenMFR: false,
     expandedAuthors: true,
     showLicenseText: false,
+    fileDownloadURL: '',
     expandedAbstract: false,
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
@@ -137,6 +139,12 @@ export default Ember.Controller.extend(Analytics, {
         return text;
     }),
 
+    _fileDownloadURL: Ember.observer('model.primaryFile', function() {
+        this.get('model.primaryFile').then(file => {
+            this.set('fileDownloadURL', fileDownloadPath(file, this.get('node')));
+        });
+    }),
+
     useShortenedDescription: Ember.computed('node.description', function() {
         return this.get('node.description') ? this.get('node.description').length > 350 : false;
     }),
@@ -184,25 +192,20 @@ export default Ember.Controller.extend(Analytics, {
         chooseFile(fileItem) {
             this.set('activeFile', fileItem);
         },
-        shareLink(href, network, action) {
+        shareLink(href, category, action, label) {
             const metrics = Ember.get(this, 'metrics');
 
-            if (network.includes('email')) {
-                metrics.trackEvent({
-                    category: 'link',
-                    action,
-                    label: `Preprints - Content - Email ${window.location.href}`
-                });
-            } else {
-                window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
-                // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
-                metrics.trackEvent({
-                    category: network,
-                    action,
-                    label: `Preprints - Content - ${window.location.href}`
-                });
-            }
+            // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
+            metrics.trackEvent({
+                category,
+                action,
+                label
+            });
 
+            if (label.includes('email'))
+               return;
+
+            window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
             return false;
         }
     },
