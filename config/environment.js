@@ -87,6 +87,7 @@ module.exports = function(environment) {
                         width: 1500,
                         height: 1500
                     },
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'scielo',
