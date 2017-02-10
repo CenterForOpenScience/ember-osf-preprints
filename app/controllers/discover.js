@@ -60,7 +60,13 @@ export default Ember.Controller.extend(Analytics, {
     queryBody: {},
     providersPassed: false,
 
-    sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
+    i18n: Ember.inject.service(),
+
+    sortByOptions: Ember.computed('i18n.locale', 'i18n.locales', function() {
+        const i18n = this.get('i18n');
+        return [i18n.t('discover.relevance'), i18n.t('discover.sort_oldest_newest'), i18n.t('discover.sort_newest_oldest')];
+    }),
+
 
     treeSubjects: Ember.computed('activeFilters', function() {
         return this.get('activeFilters.subjects').slice();
@@ -267,10 +273,10 @@ export default Ember.Controller.extend(Analytics, {
 
         const sortByOption = this.get('chosenSortByOption');
         const sort = {};
-
-        if (sortByOption === 'Upload date (oldest to newest)') {
+        const i18n = this.get('i18n');
+        if (sortByOption.toString() === i18n.t('discover.sort_oldest_newest').toString()) {
             sort.date_updated = 'asc';
-        } else if (sortByOption === 'Upload date (newest to oldest)') {
+        } else if (sortByOption.toString() === i18n.t('discover.sort_newest_oldest').toString()) {
             sort.date_updated = 'desc';
         }
 
