@@ -44,7 +44,7 @@
                     {{#if tags}}
                         <ul class="comma-list">
                             {{#each tags as |tag|~}}
-                                <li> {{~tag~}} </li>
+                                <li> {{~fix-special-char tag~}} </li>
                             {{~/each}}
                         </ul>
                     {{else}}
