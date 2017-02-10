@@ -67,7 +67,6 @@ export default Ember.Controller.extend(Analytics, {
         return [i18n.t('discover.relevance'), i18n.t('discover.sort_oldest_newest'), i18n.t('discover.sort_newest_oldest')];
     }),
 
-
     treeSubjects: Ember.computed('activeFilters', function() {
         return this.get('activeFilters.subjects').slice();
     }),
