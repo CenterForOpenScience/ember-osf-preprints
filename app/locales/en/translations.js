@@ -68,6 +68,10 @@ export default {
             placeholder: `Search preprints...`
         },
         sort_by: `Sort by`,
+        sort_newest_oldest: `Modified Date (newest to oldest)`,
+        sort_oldest_newest: `Modified Date (oldest to newest)`,
+        modified_on: `Modified on`,
+        relevance: `Relevance`,
         main: {
             active_filters: {
                 heading: `Active Filters`,
