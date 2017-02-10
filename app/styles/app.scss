@@ -735,69 +735,69 @@ hr {
 
 #preprint-form-subjects {
     .subject {
-        background-color: $brand-primary;
         display: inline-block;
         color: white;
         overflow: hidden;
         padding: 0 2rem;
         margin-right: 2rem;
         margin-bottom: 1rem;
-        border-radius: 2px;
-        transition: background-color 0.1s linear;
         &:hover {
-            background-color: lighten($brand-primary, 10%);
-            & > b:after {
+            & > .subject-container, & > .fa {
+                background-color: lighten($brand-primary, 10%);
+            }
+            & > .subject-container > b:after {
                 border-left-color: lighten($brand-primary, 10%);
             }
         }
-        & > b {
+        .subject-container {
+            background-color: $brand-primary;
             display: inline-block;
-            padding: 5px 12px ;
-            position: relative;
-            border-radius: 4px;
-            &%pseudo {
-                content: '';
-                display: block;
-                position: absolute;
-                width: 0;
-                height: 0;
-                left: 100%;
-                top: 50%;
-                margin-top: -5rem;
-                border: {
-                    style: solid;
-                    width: 5rem 0 5rem 3rem;
-                    color: transparent transparent transparent $brand-primary;
+            transition: background-color 0.1s linear;
+            margin-left: -10px;
+            padding-left: 10px;
+            & > b {
+                display: inline-block;
+                padding: 5px 15px ;
+                position: relative;
+                border-radius: 4px;
+                &%pseudo {
+                    content: '';
+                    position: absolute;
+                    width: 0;
+                    height: 0;
+                    left: 100%;
+                    top: 0;
+                    border: {
+                        style: solid;
+                        width: 15px 0 15px 12px;
+                        color: transparent transparent transparent $brand-primary;
+                    }
+                }
+                &:before {
+                    @extend %pseudo;
+                    margin-left: 1px;
+                    border-left-color: white;
+                    z-index: 1;
+                }
+                &:after {
+                    @extend %pseudo;
+                    transition: border-color 0.1s linear;
+                    z-index: 2;
                 }
             }
-            &:before {
-                @extend %pseudo;
-                margin-left: 1px;
-                border-left-color: white;
-                z-index: 1;
-            }
-            &:after {
-                @extend %pseudo;
-                transition: border-color 0.1s linear;
-                z-index: 2;
-            }
-            &:first-child {
-                padding-left: 0;
-            }
             &:last-of-type {
-                padding-right: 2rem;
-                &:before, &:after {
+                & > b::before, & > b::after {
                     display: none;
                 }
             }
-            & + b {
-                margin-left: 2rem;
-            }
         }
         & > .fa {
+            background-color: $brand-primary;
+            transition: background-color 0.1s linear;
             color: white;
             cursor: pointer;
-            transition: color 0.1s linear;
+            margin-left: -5px;
+            padding: 8px 15px 7px;
             &:hover {
                 color: lighten(red, 40%);
             }

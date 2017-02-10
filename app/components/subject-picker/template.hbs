@@ -2,7 +2,7 @@
     {{#each selected as |subject|}}
         <span class="subject">
             {{#each subject as |segment|}}
-                <b>{{segment.text}}</b>
+                <div class="subject-container"><b>{{segment.text}}</b></div>
             {{/each}}
             {{fa-icon 'times' click=(action 'deselect' subject)}}
         </span>
