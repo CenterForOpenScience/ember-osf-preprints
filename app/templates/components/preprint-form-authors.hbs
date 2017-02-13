@@ -121,7 +121,7 @@
                                         {{#if contrib.unregisteredContributor}}
                                             {{contrib.unregisteredContributor}}
                                         {{else}}
-                                            <a href={{contrib.users.links.html}}> {{contrib.users.fullName}} </a>
+                                            <a href={{contrib.users.links.html}} target="_blank"> {{contrib.users.fullName}} </a>
                                         {{/if}}
                                         <span class="pull-right remove-contributor-padding-xs">
                                             {{#if (and (permissionToRemoveContributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors authorModification))}}
@@ -138,7 +138,7 @@
                                     {{#if contrib.unregisteredContributor}}
                                         {{contrib.unregisteredContributor}}
                                     {{else}}
-                                        <a href={{contrib.users.links.html}}> {{contrib.users.fullName}} </a>
+                                        <a href={{contrib.users.links.html}} target="_blank"> {{contrib.users.fullName}} </a>
                                     {{/if}}
                                 </div>
                             </td>
