@@ -23,7 +23,7 @@
                             <tr id={{result.id}}>
                                 <td class="p-v-xs">
                                     <img class="m-l-xs" src={{result.links.profile_image}} height=30 width=30>
-                                    <a href={{result.links.html}}> {{result.fullName}} </a>
+                                    <a href={{result.links.html}} target="_blank"> {{result.fullName}} </a>
                                     {{#if (eq currentUser result)}}
                                         <span class="small"> {{t "components.preprint-form-authors.yourself"}} </span>
                                     {{/if}}
