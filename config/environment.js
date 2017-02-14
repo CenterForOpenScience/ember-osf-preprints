@@ -46,7 +46,8 @@ module.exports = function(environment) {
                         type: 'image/png',
                         width: 363,
                         height: 242
-                    }
+                    },
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'engrxiv',
@@ -84,13 +85,24 @@ module.exports = function(environment) {
                     permissionLanguage: 'arxiv_trademark_license'
                 },
                 {
+                    id: 'bitss',
+                    logoSharing: { // T
+                        path: '/assets/img/provider_logos/bitss-small.png',
+                        type: 'image/png',
+                        width: 1500,
+                        height: 1500
+                    },
+                    permissionLanguage: 'no_trademark'
+                },
+                {
                     id: 'scielo',
                     logoSharing: {
                         path: '/assets/img/provider_logos/scielo-logo.png',
                         type: 'image/png',
                         width: 1200,
                         height: 488
-                    }
+                    },
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'agrixiv',
@@ -99,7 +111,8 @@ module.exports = function(environment) {
                         type: 'image/png',
                         width: 1200,
                         height: 488
-                    }
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
                 }
             ],
         },

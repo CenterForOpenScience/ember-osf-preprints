@@ -10,6 +10,8 @@ import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
 
 import loadAll from 'ember-osf/utils/load-relationship';
 
+import fixSpecialChar from 'ember-osf/utils/fix-special-char';
+
 // Enum of available upload states > New project or existing project?
 export const State = Object.freeze(Ember.Object.create({
     START: 'start',
@@ -268,7 +270,11 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     basicsTags: Ember.computed('node', function() {
         // Pending tags
         let node = this.get('node');
-        return node ? node.get('tags') : Ember.A();
+        let newTags = null;
+        if (node != null) {
+            newTags = node.get('tags').slice(0).map(fixSpecialChar);
+        }
+        return node ? newTags : Ember.A();
     }),
     tagsChanged: Ember.computed('basicsTags', 'node.tags', function() {
         // Does the list of pending tags differ from the saved tags in the db?
@@ -276,7 +282,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         let nodeTags = this.get('node.tags');
         let changed = false;
         if (basicsTags && nodeTags) {
-            changed = !(basicsTags.length === nodeTags.length && basicsTags.every((v, i)=> v === nodeTags[i]));
+            changed = !(basicsTags.length === nodeTags.length && basicsTags.every((v, i)=> fixSpecialChar(v) === fixSpecialChar(nodeTags[i])));
         }
         return changed;
     }),
@@ -502,6 +508,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 });
             let node = this.get('node');
             this.set('basicsAbstract', this.get('node.description') || null);
+
             if (node.get('title') !== this.get('nodeTitle')) {
                 let currentTitle = node.get('title');
                 node.set('title', this.get('nodeTitle'));
@@ -615,8 +622,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             let currentFile = this.get('store').peekRecord('file', this.get('model.primaryFile.id'));
             this.set('file', null);
             this.set('selectedFile', currentFile);
+
             this.set('nodeTitle', this.get('node.title'));
             this.set('titleValid', true);
+
         },
         clearDownstreamFields(section) {
             //If user goes back and changes a section inside Upload, all fields downstream of that section need to clear.
@@ -658,7 +667,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     action: 'click',
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Basics Changes`
                 });
-            this.set('basicsTags', this.get('node.tags').slice(0));
+            this.set('basicsTags', this.get('node.tags').slice(0).map(fixSpecialChar));
             this.set('basicsAbstract', this.get('node.description'));
             this.set('basicsDOI', this.get('model.doi'));
             let date = new Date();
@@ -779,6 +788,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 });
             let tags = this.get('basicsTags').slice(0);
             Ember.A(tags);
+
             tags.pushObject(tag);
             this.set('basicsTags', tags);
             return tags;
@@ -801,7 +811,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
         /*
           Discipline section
-         */
+        */
         setSubjects(subjects) {
             // Sets subjectsList with pending subjects. Does not save.
             this.toggleProperty('disciplineModifiedToggle'); // Need to observe if discipline in nested array has changed. Toggling this will force 'disciplineChanged' to be recalculated

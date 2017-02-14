@@ -26,18 +26,15 @@
             </div>
         </div>
         <div class="row m-v-md">
-            <div class="col-xs-8 col-xs-offset-2" style="text-align: center;">
+            <div class="col-xs-10 col-xs-offset-1" style="text-align: center;">
                 {{#if (not theme.isProvider)}}
                     <h3>{{t "discover.search.partner"}}</h3>
                     <div class="row">
-                        {{#each model as |provider|}}
-                            <a href="/preprints/{{provider.id}}/discover"
-                               title={{provider.name}}
-                               onclick={{action 'click' 'link' (concat 'Preprints - Discover - Index ' provider.name)}}
-                            >
-                                <div class="discover-provider-logo col-xs-4 provider-{{provider.id}}-dark"></div>
-                            </a>
-                        {{/each}}
+                        {{!CAROUSEL WITH PREPRINT PROVIDERS}}
+                        {{provider-carousel
+                            providers=model
+                            lightLogo=false
+                        }}
                     </div>
                 {{/if}}
             </div>

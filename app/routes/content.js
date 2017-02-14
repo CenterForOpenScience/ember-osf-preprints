@@ -69,16 +69,21 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
         return this._super(...arguments);
     },
     afterModel(preprint) {
-        // Redirect if necessary
-        preprint.get('provider')
+        const {origin, search} = window.location;
+        let contributors = Ember.A();
+
+        return preprint.get('provider')
             .then(provider => {
                 const providerId = provider.get('id');
                 const themeId = this.get('theme.id');
                 const isOSF = providerId === 'osf';
 
-                // If we're on the proper branded site, stay there.
+                // If we're on the proper branded site, stay here.
                 if ((!themeId && isOSF) || themeId === providerId)
-                    return;
+                    return Promise.all([
+                        provider,
+                        preprint.get('node')
+                    ]);
 
                 // Otherwise, find the correct provider and redirect
                 const configProvider = providers.find(p => p.id === providerId);
@@ -106,75 +111,143 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 urlParts.push(search);
                 const url = urlParts.join('/').replace(/\/\/$/, '/');
                 window.location.replace(url);
-            });
 
-        return preprint.get('node').then(node => {
-            this.set('node', node);
+                return Promise.reject();
+            })
+            .then(([provider, node]) => {
+                this.set('node', node);
 
-            if (this.get('editMode')) {
-                const userPermissions = this.get('node.currentUserPermissions') || [];
+                if (this.get('editMode')) {
+                    const userPermissions = this.get('node.currentUserPermissions') || [];
 
-                if (!userPermissions.includes(permissions.ADMIN)) {
-                    this.replaceWith('forbidden'); // Non-admin trying to access edit form.
+                    if (!userPermissions.includes(permissions.ADMIN)) {
+                        this.replaceWith('forbidden'); // Non-admin trying to access edit form.
+                    }
                 }
-            }
 
-            const {origin} = window.location;
-            const image = this.get('theme.logoSharing');
-            const imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
+                return Promise.all([
+                    provider,
+                    node,
+                    preprint.get('license'),
+                    preprint.get('primaryFile'),
+                    loadAll(node, 'contributors', contributors)
+                ]);
+            })
+            .then(([provider, node, license, primaryFile]) => {
+                const title = node.get('title');
+                const description = node.get('description');
+                const doi = preprint.get('doi');
+                const image = this.get('theme.logoSharing');
+                const imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
+                const dateCreated = new Date(preprint.get('dateCreated') || null);
+                const dateModified = new Date(preprint.get('dateModified') || dateCreated);
+                const providerName = provider.get('name');
+                const canonicalUrl = preprint.get('links.html');
 
-            const ogp = [
-                ['fb:app_id', config.FB_APP_ID],
-                ['og:title', node.get('title')],
-                ['og:image', imageUrl],
-                ['og:image:secure_url', `${origin}${image.path}`], // We should always be on https in staging/prod
-                ['og:image:width', image.width.toString()],
-                ['og:image:height', image.height.toString()],
-                ['og:image:type', image.type],
-                ['og:url', window.location.href],
-                ['og:description', node.get('description')],
-                ['og:site_name', this.get('theme.provider.name')],
-                ['og:type', 'article'],
-                ['article:published_time', new Date(preprint.get('datePublished') || null).toISOString()]
-            ];
+                // NOTE: Ordering of meta tags matters for scrapers (Facebook, LinkedIn, Google, etc)
 
-            const modified = preprint.get('dateModified') || preprint.get('datePublished') || null;
+                // Open Graph Protocol
+                const openGraph = [
+                    ['fb:app_id', config.FB_APP_ID],
+                    ['og:title', title],
+                    ['og:image', imageUrl],
+                    ['og:image:secure_url', `${origin}${image.path}`], // We should always be on https in staging/prod
+                    ['og:image:width', image.width.toString()],
+                    ['og:image:height', image.height.toString()],
+                    ['og:image:type', image.type],
+                    ['og:url', canonicalUrl],
+                    ['og:description', description],
+                    ['og:site_name', providerName],
+                    ['og:type', 'article'],
+                    ['article:published_time', dateCreated.toISOString()],
+                    ['article:modified_time', dateModified.toISOString()]
+                ];
 
-            if (modified)
-                ogp.push(['article:modified_time', new Date(modified).toISOString()]);
+                // Highwire Press
+                const highwirePress = [
+                    ['citation_title', title],
+                    ['citation_description', description],
+                    ['citation_public_url', canonicalUrl],
+                    ['citation_publication_date', `${dateCreated.getFullYear()}/${dateCreated.getMonth() + 1}/${dateCreated.getDate()}`],
+                    ['citation_doi', doi]
+                ];
 
-            const tags = [
-                ...preprint.get('subjects').map(subjectBlock => subjectBlock.map(subject => subject.text)),
-                ...node.get('tags')
-            ];
+                // TODO map Eprints fields
+                // Eprints
+                const eprints = [];
 
-            for (const tag of tags)
-                ogp.push(['article:tag', tag]);
+                // TODO map BE Press fields
+                // BE Press
+                const bePress = [];
 
-            let contributors = Ember.A();
+                // TODO map PRISM fields
+                // PRISM
+                const prism = [];
 
-            loadAll(node, 'contributors', contributors).then(() => {
-                contributors.forEach(contributor => {
-                    ogp.push(
+                // Dublin Core
+                const dublinCore = [
+                    ['dc.title', title],
+                    ['dc.abstract', description],
+                    ['dc.identifier', canonicalUrl],
+                    ['dc.identifier', doi]
+                ];
+
+                const tags = [
+                    ...preprint.get('subjects').map(subjectBlock => subjectBlock.map(subject => subject.text)),
+                    ...node.get('tags')
+                ];
+
+                for (const tag of tags) {
+                    openGraph.push(['article:tag', tag]);
+                    highwirePress.push(['citation_keywords', tag]);
+                    dublinCore.push(['dc.subject', tag]);
+                }
+
+                for (const contributor of contributors) {
+                    const givenName = contributor.get('users.givenName');
+                    const familyName = contributor.get('users.familyName');
+                    const fullName = contributor.get('users.fullName');
+
+                    openGraph.push(
                         ['og:type', 'article:author'],
-                        ['profile:first_name', contributor.get('users.givenName')],
-                        ['profile:last_name', contributor.get('users.familyName')]
+                        ['profile:first_name', givenName],
+                        ['profile:last_name', familyName]
                     );
-                });
+                    highwirePress.push(['citation_author', fullName]);
+                    dublinCore.push(['dc.creator', fullName]);
+                }
 
-                this.set('headTags', ogp.map(item => (
-                    {
+                highwirePress.push(['citation_publisher', providerName]);
+                dublinCore.push(
+                    ['dc.publisher', providerName],
+                    ['dc.license', license.get('name')]
+                );
+
+                if (/\.pdf$/.test(primaryFile.get('name'))) {
+                    highwirePress.push(['citation_pdf_url', primaryFile.get('links').download]);
+                }
+
+                const headTags = [
+                    openGraph,
+                    highwirePress,
+                    eprints,
+                    bePress,
+                    prism,
+                    dublinCore
+                ]
+                    .reduce((a, b) => a.concat(b), [])
+                    .filter(item => item[1]) // Don't show tags with no content
+                    .map(item => ({
                         type: 'meta',
                         attrs: {
                             property: item[0],
                             content: item[1]
                         }
-                    }
-                )));
+                    }));
 
+                this.set('headTags', headTags);
                 this.get('headTagsService').collectHeadTags();
             });
-        });
     },
     actions: {
         error(error) {
