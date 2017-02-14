@@ -25,7 +25,7 @@ export default Ember.Mixin.create({
             if (url)
                 window.open(url, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
 
-            return true;
+            return false;
         },
         track(category, action, label) {
             Ember.get(this, 'metrics')
