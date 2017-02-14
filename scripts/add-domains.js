@@ -26,8 +26,8 @@ const domainProviders = providers
     });
 
 const maxLength = domainProviders
-    .map(provider => provider.domain)
-    .reduce((a, b) => a.length > b.length ? a.length : b.length);
+    .map(provider => provider.domain.length)
+    .reduce((acc, val) => acc < val ? val : acc, 0);
 
 const lines = domainProviders
     .map(provider => `${hostIP}\t${provider.domain}${' '.repeat(maxLength - provider.domain.length)}\t# ${provider.id}`)

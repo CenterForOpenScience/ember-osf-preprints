@@ -1,9 +1,9 @@
 /* jshint node: true */
 
 module.exports = function(environment) {
-    var authorizationType = 'cookie';
+    const authorizationType = 'cookie';
 
-    var ENV = {
+    const ENV = {
         modulePrefix: 'preprint-service',
         environment: environment,
         rootURL: '/',
@@ -86,6 +86,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'bitss',
+                    domain: 'bitss.org',
                     logoSharing: { // T
                         path: '/assets/img/provider_logos/bitss-small.png',
                         type: 'image/png',
@@ -96,6 +97,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'scielo',
+                    domain: 'scielo.org',
                     logoSharing: {
                         path: '/assets/img/provider_logos/scielo-logo.png',
                         type: 'image/png',
@@ -106,6 +108,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'agrixiv',
+                    domain: 'agrixiv.org',
                     logoSharing: {
                         path: 'assets/img/provider_logos/agrixiv-banner.svg',
                         type: 'image/png',
