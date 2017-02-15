@@ -70,11 +70,12 @@ export default Ember.Component.extend(Analytics, KeenTracker, {
                 },
                 file: {
                     id: this.get('selectedFile.id'),
-                    primaryFile: this.get('preprint.primaryFile.id') === this.get('selectedFile.id')
+                    primaryFile: this.get('preprint.primaryFile.id') === this.get('selectedFile.id'),
+                    version: this.get('selectedFile.currentVersion')
                 }
             }
         };
-        this.keenTrackEvent('preprint_file_views', eventData, this.get('node'));
+        this.keenTrackEvent('preprint-file-views', eventData, this.get('node'));
     }),
 
     fileDownloadURL: Ember.computed('selectedFile', function() {

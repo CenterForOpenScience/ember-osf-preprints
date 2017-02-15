@@ -224,7 +224,8 @@ export default Ember.Controller.extend(Analytics, KeenTracker, {
                     },
                     file: {
                         id: this.get('activeFile.id'),
-                        primaryFile: this.get('model.primaryFile.id') === this.get('activeFile.id')
+                        primaryFile: this.get('model.primaryFile.id') === this.get('activeFile.id'),
+                        version: this.get('model.primaryFile.currentVersion')
                     }
                 },
                 interaction: {
