@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
+import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from '../mixins/analytics';
 
 import { elasticEscape } from '../utils/elastic-query';
@@ -33,23 +34,14 @@ export default Ember.Controller.extend(Analytics, {
 
     activeFilters: { providers: [], subjects: [] },
 
-    osfProviders: [
-        'OSF',
-        'PsyArXiv',
-        'SocArXiv',
-        'engrXiv'
-    ],
+    osfProviders: [],
 
     whiteListedProviders: [
-        'OSF',
         'arXiv',
         'bioRxiv',
         'Cogprints',
-        'engrXiv',
         'PeerJ',
-        'PsyArXiv',
-        'Research Papers in Economics',
-        'SocArXiv'
+        'Research Papers in Economics'
     ].map(item => item.toLowerCase()),
 
     page: 1,
@@ -84,51 +76,76 @@ export default Ember.Controller.extend(Analytics, {
         this._super(...arguments);
         this.set('facetFilters', Ember.Object.create());
 
-        Ember.$.ajax({
-            type: 'POST',
-            url: this.get('searchUrl'),
-            data: getProvidersPayload,
-            contentType: 'application/json',
-            crossDomain: true,
-        }).then(results => {
-            const hits = results.aggregations.sources.buckets;
-            const whiteList = this.get('whiteListedProviders');
-            const providers = hits
-                .filter(hit => whiteList.includes(hit.key.toLowerCase()));
+        Promise.all([
+            // The providers list from the API
+            this.store
+                .findAll('preprint-provider')
+                .then(providers => {
+                    const providerNames = providers.map(provider => {
+                        const name = provider.get('name');
+                        // TODO Change this in populate_preprint_providers script to just OSF
+                        return name === 'Open Science Framework' ? 'OSF' : name;
+                    });
+                    this.set('osfProviders', providerNames);
 
-            providers.push(
-                ...this.get('osfProviders')
-                .filter(key => !providers
-                    .find(hit => hit.key.toLowerCase() === key.toLowerCase())
-                )
-                .map(key => ({
-                    key,
-                    doc_count: 0
-                }))
-            );
+                    return providerNames;
+                }),
+            // The providers list from SHARE
+            Ember.$
+                .ajax({
+                    type: 'POST',
+                    url: this.get('searchUrl'),
+                    data: getProvidersPayload,
+                    contentType: 'application/json',
+                    crossDomain: true,
+                })
+                .then(results => results.aggregations.sources.buckets)
+        ])
+            .then(([osfProviders, hits]) => {
+                // Get the whitelist and add the OSF Providers to it
+                const whiteList = this.get('whiteListedProviders')
+                    .concat(osfProviders
+                        .map(osfProvider => osfProvider.toLowerCase())
+                    );
+                // Filter out providers that are not on the whitelist
+                const providers = hits
+                    .filter(hit => whiteList.includes(hit.key.toLowerCase()));
 
-            providers
-                .sort((a, b) => a.key.toLowerCase() < b.key.toLowerCase() ? -1 : 1)
-                .unshift(
-                    ...providers.splice(
-                        providers.findIndex(item => item.key === 'OSF'),
-                        1
+                // Add the OSF Providers that are not in SHARE
+                providers.push(
+                    ...osfProviders
+                    .filter(osfProvider => !providers
+                        .find(hit => hit.key.toLowerCase() === osfProvider.toLowerCase())
                     )
+                    .map(key => ({
+                        key,
+                        doc_count: 0
+                    }))
                 );
 
-            if (!this.get('theme.isProvider')) {
-                this.set('otherProviders', providers);
-            } else {
-                const filtered = providers.filter(
-                    item => item.key.toLowerCase() === this.get('theme.id').toLowerCase()
-                );
+                // Sort the providers list add add OSF to the top
+                providers
+                    .sort((a, b) => a.key.toLowerCase() < b.key.toLowerCase() ? -1 : 1)
+                    .unshift(
+                        ...providers.splice(
+                            providers.findIndex(item => item.key === 'OSF'),
+                            1
+                        )
+                    );
 
-                this.set('otherProviders', filtered);
-                this.get('activeFilters.providers').pushObject(filtered[0].key);
-            }
+                if (!this.get('theme.isProvider')) {
+                    this.set('otherProviders', providers);
+                } else {
+                    const filtered = providers.filter(
+                        item => item.key.toLowerCase() === this.get('theme.id').toLowerCase()
+                    );
 
-            this.notifyPropertyChange('otherProviders');
-        });
+                    this.set('otherProviders', filtered);
+                    this.get('activeFilters.providers').pushObject(filtered[0].key);
+                }
+
+                this.notifyPropertyChange('otherProviders');
+            });
 
         this.loadPage();
     },
