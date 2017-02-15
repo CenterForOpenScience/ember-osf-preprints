@@ -246,11 +246,11 @@ export default Ember.Controller.extend(Analytics, KeenTracker, {
                         });
                     }
                     if (!userIsContrib) {
-                        this.keenTrackEvent('preprint_downloads', eventData, this.get('node'));  // Sends event to Keen if logged in user is not a preprint author
+                        this.keenTrackEvent('non-contributor-preprint-downloads', eventData, this.get('node'));  // Sends event to Keen if logged in user is not a preprint author
                     }
                 })
                 .catch(() => {
-                    this.keenTrackEvent('preprint_downloads', eventData, this.get('node')); // Sends event to Keen for non-authenticated user
+                    this.keenTrackEvent('non-contributor-preprint-downloads', eventData, this.get('node')); // Sends event to Keen for non-authenticated user
                 });
         }
     },
