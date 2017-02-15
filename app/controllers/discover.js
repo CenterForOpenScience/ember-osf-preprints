@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
-import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from '../mixins/analytics';
 
 import { elasticEscape } from '../utils/elastic-query';
