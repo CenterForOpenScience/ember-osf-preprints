@@ -70,7 +70,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
     },
     afterModel(preprint) {
         const {origin, search} = window.location;
-        let contributors = Ember.A();
+        const contributors = Ember.A();
 
         return preprint.get('provider')
             .then(provider => {
@@ -92,7 +92,6 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     throw new Error('Provider is not configured properly. Check the Ember configuration.');
 
                 const {domain} = configProvider;
-                const {origin, search} = window.location;
                 const urlParts = [];
 
                 // Provider with a domain
