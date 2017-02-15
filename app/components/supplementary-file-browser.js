@@ -3,6 +3,8 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from '../mixins/analytics';
 import KeenTracker from 'ember-osf/mixins/keen-tracker';
 
+import fileDownloadPath from '../utils/file-download-path';
+
 /**
  * @module ember-preprints
  * @submodule components
@@ -73,6 +75,10 @@ export default Ember.Component.extend(Analytics, KeenTracker, {
             }
         };
         this.keenTrackEvent('preprint_file_views', eventData, this.get('node'));
+    }),
+
+    fileDownloadURL: Ember.computed('selectedFile', function() {
+        return fileDownloadPath(this.get('selectedFile'), this.get('node'));
     }),
 
     init() {
