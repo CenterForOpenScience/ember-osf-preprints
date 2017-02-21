@@ -209,9 +209,10 @@ export default Ember.Controller.extend(Analytics, {
             window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
             return false;
         },
-        // Sends Event to GA.  Only sends event to Keen if non-contributor.
+        // Sends Event to GA/Keen as normal. Sends second event to Keen under "non-contributor-preprint-downloads" collection
+        // to track non contributor preprint downloads specifically.
         dualTrackNonContributors(category, label, url) {
-            this.send('click', category, label, url); // Sends event to Google Analytics
+            this.send('click', category, label, url); // Sends event to both Google Analytics and Keen.
             const authors = this.get('authors');
             let userIsContrib = false;
 
@@ -235,6 +236,12 @@ export default Ember.Controller.extend(Analytics, {
                 }
             };
 
+            const keenPayload =  {
+                collection: 'non-contributor-preprint-downloads',
+                eventData: eventData,
+                node: this.get('node'),
+            };
+
             this.get('currentUser').load()
                 .then(user => {
                     if (user) {
@@ -246,11 +253,11 @@ export default Ember.Controller.extend(Analytics, {
                         });
                     }
                     if (!userIsContrib) {
-                        this.keenTrackEvent('non-contributor-preprint-downloads', eventData, this.get('node'));  // Sends event to Keen if logged in user is not a preprint author
+                        Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor
                     }
                 })
                 .catch(() => {
-                    this.keenTrackEvent('non-contributor-preprint-downloads', eventData, this.get('node')); // Sends event to Keen for non-authenticated user
+                    Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen for non-authenticated user
                 });
         }
     },
