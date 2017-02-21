@@ -3,7 +3,6 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
-import KeenTracker from 'ember-osf/mixins/keen-tracker';
 import fileDownloadPath from '../utils/file-download-path';
 
 /**
@@ -51,7 +50,7 @@ function queryStringify(queryParams) {
 /**
  * @class Content Controller
  */
-export default Ember.Controller.extend(Analytics, KeenTracker, {
+export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(),
     fullScreenMFR: false,
     currentUser: Ember.inject.service(),

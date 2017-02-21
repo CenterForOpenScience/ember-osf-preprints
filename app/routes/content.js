@@ -5,7 +5,6 @@ import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
-import KeenTracker from 'ember-osf/mixins/keen-tracker';
 
 // Error handling for API
 const handlers = new Map([
@@ -25,7 +24,7 @@ const handlers = new Map([
  * Fetches current preprint. Redirects to preprint provider route if necessary.
  * @class Content Route Handler
  */
-export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, KeenTracker, {
+export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
     theme: Ember.inject.service(),
     headTagsService: Ember.inject.service('head-tags'),
     currentUser: Ember.inject.service('currentUser'),

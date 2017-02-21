@@ -23,7 +23,7 @@ import fileDownloadPath from '../utils/file-download-path';
  * ```
  * @class supplementary-file-browser
  */
-export default Ember.Component.extend(Analytics, KeenTracker, {
+export default Ember.Component.extend(Analytics, {
     elementId: 'preprint-file-view',
     endIndex: 6,
     startIndex: 0,
