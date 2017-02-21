@@ -74,7 +74,11 @@ export default Ember.Component.extend(Analytics, {
                 }
             }
         };
-        this.keenTrackEvent('preprint-file-views', eventData, this.get('node'));
+        Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', {
+            collection: 'preprint-file-views',
+            eventData: eventData,
+            node: this.get('node'),
+        });
     }),
 
     fileDownloadURL: Ember.computed('selectedFile', function() {
