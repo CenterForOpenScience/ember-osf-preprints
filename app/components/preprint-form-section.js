@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
-import Analytics from '../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
  * @submodule components

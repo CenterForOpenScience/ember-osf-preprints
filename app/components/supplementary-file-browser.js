@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
-import Analytics from '../mixins/analytics';
-import KeenTracker from 'ember-osf/mixins/keen-tracker';
+import Analytics from 'ember-osf/mixins/analytics';
 
 import fileDownloadPath from '../utils/file-download-path';
 

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Analytics from '../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
 
 import {
   validator, buildValidations

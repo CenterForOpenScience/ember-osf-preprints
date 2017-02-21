@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import Permissions from 'ember-osf/const/permissions';
-import Analytics from '../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
 import {stripDiacritics} from 'ember-power-select/utils/group-utils';
 /**
  * @module ember-preprints

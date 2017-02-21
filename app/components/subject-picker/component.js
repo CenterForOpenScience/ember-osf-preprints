@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Analytics from '../../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
 
 function arrayEquals(arr1, arr2) {
     return arr1.length === arr2.length && arr1.reduce((acc, val, i) => acc && val === arr2[i], true);
