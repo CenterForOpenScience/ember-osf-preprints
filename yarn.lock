@@ -2009,6 +2009,13 @@ ember-cp-validations@^2.9.4:
     exists-sync "0.0.3"
     walk-sync "^0.2.0"
 
+ember-data-factory-guy@^2.11.6:
+  version "2.11.6"
+  resolved "https://registry.yarnpkg.com/ember-data-factory-guy/-/ember-data-factory-guy-2.11.6.tgz#c4b2170f90ee7c3897c162f1fc5579a7e287919d"
+  dependencies:
+    broccoli-funnel "^1.0.1"
+    broccoli-merge-trees "^1.1.1"
+
 ember-data-has-many-query@0.1.7:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/ember-data-has-many-query/-/ember-data-has-many-query-0.1.7.tgz#f34cb7a3abf25c94a6265e2d072f3844e8f23c4d"
@@ -2135,9 +2142,9 @@ ember-new-computed@^1.0.2:
   dependencies:
     ember-cli-babel "^5.1.5"
 
-"ember-osf@git+https://github.com/pattisdr/ember-osf.git#c4e87ff18b3f9125b87fbd3ce05e2c41eebdc3b6":
+"ember-osf@git+https://github.com/CenterForOpenScience/ember-osf.git#97a4f00dd86f360b561f3ee63b77297b3e6e0f1e":
   version "0.1.0"
-  resolved "git+https://github.com/pattisdr/ember-osf.git#c4e87ff18b3f9125b87fbd3ce05e2c41eebdc3b6"
+  resolved "git+https://github.com/CenterForOpenScience/ember-osf.git#97a4f00dd86f360b561f3ee63b77297b3e6e0f1e"
   dependencies:
     broccoli-funnel "^1.0.1"
     broccoli-merge-trees "^1.1.1"
