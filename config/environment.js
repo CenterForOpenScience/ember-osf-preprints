@@ -4,16 +4,6 @@ module.exports = function(environment) {
     var authorizationType = 'cookie';
 
     var ENV = {
-        KEEN: {
-            private: {
-                projectId: 'process.env.PREPRINTS_PRIVATE_PROJECT_ID',
-                writeKey: 'process.env.PREPRINTS_PRIVATE_WRITE_KEY'
-            },
-            public: {
-                projectId: 'process.env.PREPRINTS_PUBLIC_PROJECT_ID',
-                writeKey: 'process.env.PREPRINTS_PUBLIC_WRITE_KEY'
-            }
-        },
         modulePrefix: 'preprint-service',
         environment: environment,
         rootURL: '/',
@@ -131,7 +121,22 @@ module.exports = function(environment) {
                 config: {
                     id: process.env.GOOGLE_ANALYTICS_ID
                 }
-            }
+            },
+            {
+                name: 'Keen',
+                environments: ['all'],
+                config: {
+                    private: {
+                        projectId: 'process.env.PREPRINTS_PRIVATE_PROJECT_ID',
+                        writeKey: 'process.env.PREPRINTS_PRIVATE_WRITE_KEY'
+                    },
+                    public: {
+                        projectId: 'process.env.PREPRINTS_PUBLIC_PROJECT_ID',
+                        writeKey: 'process.env.PREPRINTS_PUBLIC_WRITE_KEY'
+                    }
+                }
+            },
+
         ],
         FB_APP_ID: process.env.FB_APP_ID,
     };
