@@ -739,8 +739,10 @@ hr {
         color: white;
         overflow: hidden;
         padding: 0 2rem;
-        margin-right: 2rem;
-        margin-bottom: 1rem;
+        margin: {
+            right: 2rem;
+            bottom: 1rem;
+        }
         &:hover {
             & > .subject-container, & > .fa {
                 background-color: lighten($brand-primary, 10%);
@@ -789,20 +791,23 @@ hr {
                 & > b::before, & > b::after {
                     display: none;
                 }
-            }
-        }
-        & > .fa {
-            background-color: $brand-primary;
-            transition: background-color 0.1s linear;
-            color: white;
-            cursor: pointer;
-            margin-left: -5px;
-            padding: 8px 15px 7px;
-            &:hover {
-                color: lighten(red, 40%);
-            }
-            &:active {
-                color: lighten(red, 20%);
+                & > b > .cancel-subject {
+                    &:before {
+                        font: {
+                            family: FontAwesome;
+                            size: 11px;
+                        }
+                        cursor: pointer;
+                        content: "\f00d";
+                        padding-left: 5px;
+                    }
+                    &:hover {
+                        color: lighten(red, 40%);
+                    }
+                    &:active {
+                        color: lighten(red, 20%);
+                    }
+                }
             }
         }
     }
