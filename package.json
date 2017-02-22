@@ -72,10 +72,10 @@
     "jscs": "^3.0.7",
     "liquid-fire": "0.24.1",
     "loader.js": "^4.0.1",
+    "pagination-pager": "2.4.2",
     "phantomjs-prebuilt": "^2.1.11",
     "postcss": "^5.1.0"
   },
-  "dependencies": {},
   "bugs": {
     "url": "https://github.com/CenterForOpenScience/ember-preprints/issues"
   },

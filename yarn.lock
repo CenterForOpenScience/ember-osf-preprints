@@ -4598,6 +4598,10 @@ output-file-sync@^1.1.0:
     mkdirp "^0.5.1"
     object-assign "^4.1.0"
 
+pagination-pager@2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/pagination-pager/-/pagination-pager-2.4.2.tgz#01f6a5f101de867193fc1d1dc16fbab6cd02e49d"
+
 parse-glob@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/parse-glob/-/parse-glob-3.0.4.tgz#b2c376cfb11f35513badd173ef0bb6e3a388391c"
