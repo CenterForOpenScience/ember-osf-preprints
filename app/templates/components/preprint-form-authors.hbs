@@ -23,7 +23,7 @@
                             <tr id={{result.id}}>
                                 <td class="p-v-xs">
                                     <img class="m-l-xs" src={{result.links.profile_image}} height=30 width=30>
-                                    <a href={{result.links.html}}> {{result.fullName}} </a>
+                                    <a href={{result.links.html}} target="_blank"> {{result.fullName}} </a>
                                     {{#if (eq currentUser result)}}
                                         <span class="small"> {{t "components.preprint-form-authors.yourself"}} </span>
                                     {{/if}}
@@ -123,7 +123,7 @@
                                         {{#if contrib.unregisteredContributor}}
                                             {{contrib.unregisteredContributor}}
                                         {{else}}
-                                            <a href={{contrib.users.links.html}}> {{contrib.users.fullName}} </a>
+                                            <a href={{contrib.users.links.html}} target="_blank"> {{contrib.users.fullName}} </a>
                                         {{/if}}
                                         <span class="pull-right remove-contributor-padding-xs">
                                             {{#if (and (permissionToRemoveContributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors authorModification))}}
@@ -140,7 +140,7 @@
                                     {{#if contrib.unregisteredContributor}}
                                         {{contrib.unregisteredContributor}}
                                     {{else}}
-                                        <a href={{contrib.users.links.html}}> {{contrib.users.fullName}} </a>
+                                        <a href={{contrib.users.links.html}} target="_blank"> {{contrib.users.fullName}} </a>
                                     {{/if}}
                                 </div>
                             </td>
