@@ -10,8 +10,9 @@
     "build": "ember build",
     "docs": "yuidoc",
     "start": "ember server",
+    "check-style": "./node_modules/jscs/bin/jscs .",
     "test": "yarn run check-style && ember test",
-    "check-style": "./node_modules/jscs/bin/jscs ."
+    "test:cover": "COVERAGE=true yarn test"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "autoprefixer": "^6.3.7",
     "broccoli-asset-rev": "^2.4.2",
+    "coveralls": "2.11.16",
     "ember-ajax": "^2.0.1",
     "ember-autosave": "2.0.1",
     "ember-bootstrap": "0.7.2",
@@ -33,6 +35,7 @@
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-babel": "^5.1.6",
     "ember-cli-bootstrap-sassy": "0.5.3",
+    "ember-cli-code-coverage": "0.3.11",
     "ember-cli-dependency-checker": "^1.2.0",
     "ember-cli-dropzonejs": "0.7.0",
     "ember-cli-htmlbars": "^1.0.3",
@@ -90,6 +93,7 @@
       "config/environment.js",
       "bower_components",
       "node_modules",
+      "coverage",
       "dist",
       "docs",
       "tmp",
