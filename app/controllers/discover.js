@@ -59,7 +59,7 @@ export default Ember.Controller.extend(Analytics, {
     }),
 
     pageNumbers: [],
-    
+
     treeSubjects: Ember.computed('activeFilters', function() {
         return this.get('activeFilters.subjects').slice();
     }),
