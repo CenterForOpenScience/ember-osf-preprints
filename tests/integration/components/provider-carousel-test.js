@@ -9,8 +9,10 @@ test('it renders', function(assert) {
 
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
-
-  this.render(hbs`{{provider-carousel}}`);
+  this.set('providers', new Array(8));
+  this.render(hbs`{{provider-carousel
+      providers=providers
+  }}`);
 
   assert.equal(this.$().context.innerText, 'PreviousNext');
 });
