@@ -117,14 +117,14 @@ module.exports = function(environment) {
         metricsAdapters: [
             {
                 name: 'GoogleAnalytics',
-                environments: ['all'],
+                environments: ['production'],
                 config: {
                     id: process.env.GOOGLE_ANALYTICS_ID
                 }
             },
             {
                 name: 'Keen',
-                environments: ['all'],
+                environments: ['production'],
                 config: {
                     private: {
                         projectId: 'process.env.PREPRINTS_PRIVATE_PROJECT_ID',
