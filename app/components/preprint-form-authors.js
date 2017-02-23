@@ -38,6 +38,7 @@ import Analytics from 'ember-osf/mixins/analytics';
 export default CpPanelBodyComponent.extend(Analytics, {
     valid: Ember.computed.alias('newContributorId'),
     authorModification: false,
+    currentPage: 1,
     // Permissions labels for dropdown
     permissionOptions: permissionSelector,
     parentContributorsAdded: false,
@@ -266,6 +267,20 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 this.get('toast').error('Could not reorder contributors');
                 draggedContrib.rollbackAttributes();
             });
+        },
+        // Action used by the pagination-pager component to the handle user-click event.
+        pageChanged(current) {
+            let query = this.get('query');
+            if (query) {
+                this.attrs.findContributors(query, current).then(() => {
+                    this.set('addState', 'searchView');
+                    this.set('currentPage', current);
+                })
+                .catch(() => {
+                        this.get('toast').error('Could not perform search query.');
+                        this.highlightSuccessOrFailure('author-search-box', this, 'error');
+                    });
+            }
         }
     },
     // TODO find alternative to jquery selectors. Temporary popover content for authors page.

@@ -11,7 +11,11 @@
                             {{#if authors}}
                                 {{#each authors as |author index| ~}}
                                     {{#if author.bibliographic}}
-                                        <li><a href={{author.users.profileURL}} {{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.givenName}} {{author.users.familyName}}</a></li>
+                                        {{#if author.unregisteredContributor}}
+                                            <li>{{author.unregisteredContributor}}</li>
+                                        {{else}}
+                                            <li><a href={{author.users.profileURL}} {{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.givenName}} {{author.users.familyName}}</a></li>
+                                        {{/if}}
                                     {{/if}}
                                 {{~/each}}
                             {{else}}

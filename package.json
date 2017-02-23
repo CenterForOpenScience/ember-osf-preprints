@@ -10,8 +10,9 @@
     "build": "ember build",
     "docs": "yuidoc",
     "start": "ember server",
+    "check-style": "./node_modules/jscs/bin/jscs .",
     "test": "yarn run check-style && ember test",
-    "check-style": "./node_modules/jscs/bin/jscs ."
+    "test:cover": "COVERAGE=true yarn test"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "autoprefixer": "^6.3.7",
     "broccoli-asset-rev": "^2.4.2",
+    "coveralls": "2.11.16",
     "ember-ajax": "^2.0.1",
     "ember-autosave": "2.0.1",
     "ember-bootstrap": "0.7.2",
@@ -34,6 +36,7 @@
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-babel": "^5.1.6",
     "ember-cli-bootstrap-sassy": "0.5.3",
+    "ember-cli-code-coverage": "0.3.11",
     "ember-cli-dependency-checker": "^1.2.0",
     "ember-cli-dropzonejs": "0.7.0",
     "ember-cli-htmlbars": "^1.0.3",
@@ -61,7 +64,7 @@
     "ember-link-action": "0.0.35",
     "ember-load-initializers": "^0.5.1",
     "ember-metrics": "0.6.3",
-    "ember-osf": "git+https://github.com/pattisdr/ember-osf.git#ccf72736b13f00396de7f6fe52736ead070bf0e5",
+    "ember-osf": "0.2.1",
     "ember-page-title": "3.0.6",
     "ember-power-select": "1.0.0-beta.7",
     "ember-read-more": "0.0.13",
@@ -73,10 +76,10 @@
     "jscs": "^3.0.7",
     "liquid-fire": "0.24.1",
     "loader.js": "^4.0.1",
+    "pagination-pager": "2.4.2",
     "phantomjs-prebuilt": "^2.1.11",
     "postcss": "^5.1.0"
   },
-  "dependencies": {},
   "bugs": {
     "url": "https://github.com/CenterForOpenScience/ember-preprints/issues"
   },
@@ -91,6 +94,7 @@
       "config/environment.js",
       "bower_components",
       "node_modules",
+      "coverage",
       "dist",
       "docs",
       "tmp",

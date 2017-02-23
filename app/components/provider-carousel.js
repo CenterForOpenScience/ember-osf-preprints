@@ -36,6 +36,31 @@ export default Ember.Component.extend(Analytics, {
         const itemsPerSlide = this.get('itemsPerSlide');
         return new Array(numSlides).fill().map((_, i) => this.get('providers').slice(i * itemsPerSlide, i * itemsPerSlide + itemsPerSlide));
     }),
+    columnOffset: Ember.computed('numProviders', 'itemsPerSlide', function() {
+        // If only one slide of providers, center the provider logos by adding a column offset.
+        let offset = 'col-sm-offset-1';
+        const numProviders = this.get('numProviders');
+        if (numProviders <= this.get('itemsPerSlide')) {
+            switch (numProviders) {
+                case 1:
+                    offset = 'col-sm-offset-5';
+                    break;
+                case 2:
+                    offset = 'col-sm-offset-4';
+                    break;
+                case 3:
+                    offset = 'col-sm-offset-3';
+                    break;
+                case 4:
+                    offset = 'col-sm-offset-2';
+                    break;
+                case 5:
+                    offset = 'col-sm-offset-1';
+                    break;
+            }
+        }
+        return offset;
+    }),
     setSlideItems: function() {
         // On xs screens, show one provider per slide. Otherwise, five.
         if (window.innerWidth < 768) {
@@ -45,7 +70,6 @@ export default Ember.Component.extend(Analytics, {
         }
     },
     didInsertElement: function () {
-        // On xs screen, display one provider per slide
         Ember.$('.carousel').carousel();
     },
     init: function() {
