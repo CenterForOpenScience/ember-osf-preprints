@@ -29,6 +29,7 @@ export default Ember.Component.extend(Analytics, {
 
     scrollAnim: '',
     selectedFile: null,
+    versions: () => [],
 
     hasAdditionalFiles: function() {
         return this.get('files.length') > 1;
@@ -45,22 +46,48 @@ export default Ember.Component.extend(Analytics, {
     __files: function() {
         this.set('files', []);
         this.set('selectedFile', null);
-        this.get('node').get('files')
-            .then(providers => {
-                this.set('provider', providers.findBy('name', 'osfstorage'));
-                return loadAll(this.get('provider'), 'files', this.get('files'), {'page[size]': 50});
-            })
-            .then(() => this.get('preprint').get('primaryFile'))
-            .then((pf) => {
+
+        return Promise
+            .all([
+                this.get('node')
+                    .get('files')
+                    .then(providers => {
+                        this.set('provider', providers.findBy('name', 'osfstorage'));
+                        return loadAll(this.get('provider'), 'files', this.get('files'), {'page[size]': 50});
+                    }),
+                this.get('preprint.primaryFile')
+            ])
+            .then(([, pf]) => {
                 this.get('files').removeObject(pf);
                 this.set('primaryFile', pf);
-                this.set('selectedFile', this.get('primaryFile'));
-                this.set('files', [this.get('primaryFile')].concat(this.get('files')));
+                this.set('selectedFile', pf);
+                this.set('files', [pf, ...this.get('files')]);
             });
     }.observes('preprint'),
 
-    fileDownloadURL: Ember.computed('selectedFile', function() {
-        return fileDownloadPath(this.get('selectedFile'), this.get('node'));
+    selectedFileChanged: Ember.observer('selectedFile', function() {
+        const selectedFile = this.get('selectedFile');
+        this.set('versions', []);
+
+        if (!selectedFile)
+            return;
+
+        this.set('selectedVersion', selectedFile.get('currentVersion'));
+
+        return selectedFile
+            .query('versions', {sort: '-identifier'})
+            .then(versions => this.set('versions', versions));
+    }),
+
+    fileRenderURL: Ember.computed('selectedFile.links.download', 'selectedVersion', function() {
+        const downloadUrl = this.get('selectedFile.links.download');
+        const selectedVersion = this.get('selectedVersion');
+
+        return (downloadUrl && selectedVersion) ? `${downloadUrl}?version=${selectedVersion}` : null;
+    }),
+
+    fileDownloadURL: Ember.computed('selectedFile', 'selectedVersion', function() {
+        return fileDownloadPath(this.get('selectedFile'), this.get('node'), this.get('selectedVersion'));
     }),
 
     init() {
@@ -111,5 +138,15 @@ export default Ember.Component.extend(Analytics, {
                 this.sendAction('chooseFile', file);
             }
         },
+        changeVersion(version) {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'file browser',
+                    action: 'select',
+                    label: 'Preprints - Content - Version'
+                });
+
+            this.set('selectedVersion', version);
+        }
     },
 });

@@ -1,6 +1,8 @@
-{{#file-renderer download=selectedFile.links.download
-    width="99%" height="700"}}
-{{/file-renderer}}
+{{file-renderer
+    download=fileRenderURL
+    width="99%"
+    height="700"
+}}
 
 <div class="row">
     <div class="col-sm-8">
@@ -12,7 +14,16 @@
         {{else}}
             <a class="btn btn-default btn-sm" href={{fileDownloadURL}} onclick={{action 'click' 'link' 'Preprints - Content - Download Supplementary File'}}> {{t "content.share.download_file"}} </a>
         {{/if}}
-        <span class="p-sm"> {{t "content.version"}}: {{selectedFile.currentVersion}}</span>
+        <span class="p-sm">
+            <label for="version">{{t "content.version"}}:</label>
+            <select id="version" name="version" onchange={{action 'changeVersion' value='target.value'}}>
+                {{#each versions as |version|}}
+                    <option value="{{version.id}}" selected={{eq selectedVersion version.id}}>{{version.id}}</option>
+                {{else}}
+                    <option>{{selectedFile.currentVersion}}</option>
+                {{/each}}
+            </select>
+        </span>
     </div>
 </div>
 
