@@ -127,6 +127,8 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 const imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
                 const dateCreated = new Date(preprint.get('dateCreated') || null);
                 const dateModified = new Date(preprint.get('dateModified') || dateCreated);
+                if (!preprint.get('datePublished'))
+                    preprint.set('datePublished', dateCreated);
                 const providerName = provider.get('name');
                 const canonicalUrl = preprint.get('links.html');
 
@@ -204,11 +206,17 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 }
 
                 highwirePress.push(['citation_publisher', providerName]);
-                dublinCore.push(
-                    ['dc.publisher', providerName],
-                    ['dc.license', license.get('name')]
-                );
-
+                if (license) {
+                    dublinCore.push(
+                        ['dc.publisher', providerName],
+                        ['dc.license', license.get('name')]
+                    );
+                } else {
+                    dublinCore.push(
+                        ['dc.publisher', providerName],
+                        ['dc.license', 'No licence']
+                    );
+                }
                 if (/\.pdf$/.test(primaryFile.get('name'))) {
                     highwirePress.push(['citation_pdf_url', primaryFile.get('links').download]);
                 }
