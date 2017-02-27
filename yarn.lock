@@ -2056,6 +2056,10 @@ ember-export-application-global@^1.0.5:
   dependencies:
     ember-cli-babel "^5.1.10"
 
+ember-faker@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ember-faker/-/ember-faker-1.1.1.tgz#90ca83edef385d8f43bed3ceaed263b59f68773c"
+
 ember-font-awesome@2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ember-font-awesome/-/ember-font-awesome-2.1.1.tgz#5b271504ddd99eeb06262b5287d7e3a2b74461be"
