@@ -15,17 +15,17 @@ export default function(name, options = {}) {
         // FakeServer.start()
         let me = FactoryGuy.make('user');
         let provider = FactoryGuy.make('preprint-provider');
-        me.set('id', 'me');
-        provider.set('id', 'osf');
-        // let data = provider.serialize().data;
-        // data.id = 'osf';
-        // //Most routes will request osf provider on startup
-        // stubRequest('get', 'http://localhost:8000/v2/preprint_providers', (request) => {
-        //     request.ok({data: [data]});
-        // });
-        // stubRequest('get', 'http://localhost:8000/v2/preprint_providers/osf', (request) => {
-        //     request.ok({data: data});
-        // });
+        // me.set('id', 'me');
+        // provider.set('id', 'osf');
+        let data = provider.serialize().data;
+        data.id = 'osf';
+        //Most routes will request osf provider on startup
+        stubRequest('get', 'http://localhost:8000/v2/preprint_providers', (request) => {
+            request.ok({data: [data]});
+        });
+        stubRequest('get', 'http://localhost:8000/v2/preprint_providers/osf', (request) => {
+            request.ok({data: data});
+        });
         if (options.beforeEach) {
             return options.beforeEach.apply(this, arguments);
         }
