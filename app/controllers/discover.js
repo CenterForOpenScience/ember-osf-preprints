@@ -330,6 +330,10 @@ export default Ember.Controller.extend(Analytics, {
         });
     },
 
+    _clearQueryString() {
+        this.set('queryString', '');
+    },
+
     otherProviders: [],
     actions: {
         search(val, event) {
@@ -381,6 +385,10 @@ export default Ember.Controller.extend(Analytics, {
                     action: 'click',
                     label: 'Preprints - Discover - Clear Filters'
                 });
+        },
+
+        clearQueryString() {
+            this._clearQueryString();
         },
 
         sortBySelect(index) {
