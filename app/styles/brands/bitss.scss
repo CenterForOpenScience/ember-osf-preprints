@@ -29,3 +29,9 @@
 .subject-item .btn:hover {
     color: black;
 }
+
+#preprint-form-subjects .subject, #preprint-form-subjects .subject > .fa,
+#preprint-form-subjects ul li.selected:not(:hover),
+#preprint-form-subjects ul li:active {
+    color: white;
+}
