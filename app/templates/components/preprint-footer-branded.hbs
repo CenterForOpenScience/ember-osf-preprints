@@ -2,6 +2,16 @@
     <div>
         <span>{{model.name}}:</span>
         <span>
+            <a href={{model.aboutLink}}
+               aria-label={{t "components.preprint-footer-branded.about"}}
+               onclick={{action 'click' 'link' 'Branded Footer - About' model.aboutLink}}
+               target="_blank"
+            >
+                {{t "components.preprint-footer-branded.about"}}
+            </a>
+        </span>
+        <span> | </span>
+        <span>
             <a href="mailto:{{if model.emailSupport model.emailSupport (concat 'support+' model.id '@osf.io')}}"
                onbeforeclick={{action 'click' 'link' 'Branded Footer - Support'}}
             >

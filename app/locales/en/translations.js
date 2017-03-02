@@ -251,7 +251,8 @@ export default {
             facebook: 'Facebook',
             instagram: 'Instagram',
             support: `Support`,
-            contact: `Contact`
+            contact: `Contact`,
+            about: `About`
         },
         'permission-language':{
             arxiv_trademark_license,
