@@ -8,11 +8,13 @@
     {{preprint-navbar-branded model=theme.provider}}
 {{else}}
     {{title 'OSF Preprints' separator=' | '}}
-    {{osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login') hideSearch=true}}
-    {{preprint-navbar}}
+    {{new-osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login') currentService='PREPRINTS'}}
 {{/if}}
 
-{{outlet}}
+<div class="preprints-body">
+   {{outlet}}
+</div>
+
 
 {{#if theme.isProvider}}
     {{preprint-footer-branded model=theme.provider}}

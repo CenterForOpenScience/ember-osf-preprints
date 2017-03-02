@@ -6,6 +6,9 @@
 @import 'validated-input';
 @import 'hint';
 
+.preprints-body {
+    margin-top: -75px;
+}
 /* Override styles from ember-osf and osf */
 .footer {
     margin-top: 0;
