@@ -11,10 +11,7 @@
     {{osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login') currentService='PREPRINTS'}}
 {{/if}}
 
-<div class="preprints-body">
-    {{outlet}}
-</div>
-
+{{outlet}}
 
 {{#if theme.isProvider}}
     {{preprint-footer-branded model=theme.provider}}
