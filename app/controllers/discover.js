@@ -50,7 +50,7 @@ export default Ember.Controller.extend(Analytics, {
     subjectFilter: null,
     queryBody: {},
     providersPassed: false,
-
+    pageNumbers: [],
     sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
 
     treeSubjects: Ember.computed('activeFilters', function() {
@@ -237,9 +237,21 @@ export default Ember.Controller.extend(Analytics, {
             return this.set('results', results);
         });
     },
+    totalPages: Ember.computed('numberOfResults', 'size', function() {
+        return Math.ceil(this.get('numberOfResults') / this.get('size'));
+    }),
+
     maxPages: Ember.computed('numberOfResults', function() {
         return ((this.get('numberOfResults') / this.get('size')) | 0) + (this.get('numberOfResults') % 10 === 0 ? 0 : 1);
     }),
+
+    // TODO update this property if a solution is found for the elastic search limitation.
+    // Ticket: SHARE-595
+    numPages: Ember.computed('size', 'totalPages', function() {
+        let maxPages = Math.ceil(10000 / this.get('size'));
+        return this.get('totalPages') < maxPages ? this.get('totalPages') : maxPages;
+    }),
+
     getQueryBody() {
         const facetFilters = this.get('activeFilters');
 
@@ -355,6 +367,11 @@ export default Ember.Controller.extend(Analytics, {
             }
         },
 
+        setLoadPage(pageNumber) {
+            this.set('page', pageNumber);
+            this.loadPage();
+        },
+
         clearFilters() {
             this._clearFilters();
 
@@ -399,5 +416,6 @@ export default Ember.Controller.extend(Analytics, {
                     label: `Preprints - Discover - ${filterType} ${item}`
                 });
         },
+
     },
 });

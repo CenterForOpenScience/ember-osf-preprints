@@ -200,6 +200,13 @@ $logo-dir: 'img/provider_logos/';
     background-image: url($logo-dir + 'psyarxiv-dark-small.png');
 }
 
+.provider-bitss {
+    background-image: url($logo-dir + 'bitss-small.png');
+}
+.provider-bitss-dark {
+    background-image: url($logo-dir + 'bitss-dark-small.png');
+}
+
 .provider-agrixiv {
     background-image: url($logo-dir + 'agrixiv-small.svg');
 }
@@ -213,7 +220,7 @@ $logo-dir: 'img/provider_logos/';
 }
 
 .provider-scielo-dark {
-    background-image: url($logo-dir + 'scielo-banner.png');
+    background-image: url($logo-dir + 'scielo-dark-small.png');
 }
 
 .preprint-advisory  {
@@ -331,7 +338,7 @@ ul.preprints-block-list {
         padding-top: 90px;
     }
     .view-authors {
-        color: #337ab7;
+        color: white;
         a {
             color: #6dd1de;
         }

@@ -17,11 +17,10 @@
                 {{!Authors}}
                 <div>
                     <ul class="comma-list">
-                        {{#each result.contributors as |contributor index|}}
-                            {{#if contributor.users.bibliographic}}
-                                {{author-link contributor=contributor}}
-                            {{/if}}
-                        {{/each}}
+                        {{~#each shortContributorList as |contributor|}}
+                            {{author-link contributor=contributor}}
+                        {{~/each}}
+                        {{~if hasMoreContributors "..."}}
                     </ul>
                 </div>
 
@@ -81,7 +80,7 @@
                     {{#if result.tags}}
                         <div class="m-t-sm">
                             {{#each result.tags as |tag index|}}
-                                <span class="badge">{{tag}}</span>
+                                <span class="badge">{{fix-special-char tag}}</span>
                             {{/each}}
                         </div>
                     {{/if}}

@@ -1,0 +1,37 @@
+@import 'brand';
+
+@include brand(
+    #e4f3ff,
+    black,
+    #1C4063,
+    #05233B,
+    black,
+    $logo-dir + 'bitss-banner.png',
+    $logo-dir + 'bitss-logo.png',
+    false,
+    true,
+    true
+);
+
+.navbar-title, .subject-item .btn, .subject-filter {
+    color: white;
+}
+
+.branded-nav {
+    a {
+        color: white;
+    }
+    a.active {
+        color: white !important;
+    }
+}
+
+.subject-item .btn:hover {
+    color: black;
+}
+
+#preprint-form-subjects .subject, #preprint-form-subjects .subject > .fa,
+#preprint-form-subjects ul li.selected:not(:hover),
+#preprint-form-subjects ul li:active {
+    color: white;
+}
