@@ -8,11 +8,11 @@
     {{preprint-navbar-branded model=theme.provider}}
 {{else}}
     {{title 'OSF Preprints' separator=' | '}}
-    {{new-osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login') currentService='PREPRINTS'}}
+    {{osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login') currentService='PREPRINTS'}}
 {{/if}}
 
 <div class="preprints-body">
-   {{outlet}}
+    {{outlet}}
 </div>
 
 
