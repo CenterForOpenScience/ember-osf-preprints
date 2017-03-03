@@ -51,6 +51,7 @@ export default Ember.Controller.extend(Analytics, {
     queryBody: {},
     providersPassed: false,
     pageNumbers: [],
+    staticSortOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
     sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
 
     treeSubjects: Ember.computed('activeFilters', function() {
@@ -385,7 +386,7 @@ export default Ember.Controller.extend(Analytics, {
 
         sortBySelect(index) {
             // Selecting an option just swaps it with whichever option is first
-            let copy = this.get('sortByOptions').slice(0);
+            let copy = this.get('staticSortOptions').slice(0);
             let temp = copy[0];
             copy[0] = copy[index];
             copy[index] = temp;
@@ -397,7 +398,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
-                    label: `Preprints - Discover - Sort by: ${copy[index]}`
+                    label: `Preprints - Discover - Sort by: ${this.get('staticSortOptions')[index]}`
                 });
         },
 
