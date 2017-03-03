@@ -26,18 +26,15 @@
             </div>
         </div>
         <div class="row m-v-md">
-            <div class="col-xs-8 col-xs-offset-2" style="text-align: center;">
+            <div class="col-xs-10 col-xs-offset-1" style="text-align: center;">
                 {{#if (not theme.isProvider)}}
                     <h3>{{t "discover.search.partner"}}</h3>
                     <div class="row">
-                        {{#each model as |provider|}}
-                            <a href="/preprints/{{provider.id}}/discover"
-                               title={{provider.name}}
-                               onclick={{action 'click' 'link' (concat 'Preprints - Discover - Index ' provider.name)}}
-                            >
-                                <div class="discover-provider-logo col-xs-4 provider-{{provider.id}}-dark"></div>
-                            </a>
-                        {{/each}}
+                        {{!CAROUSEL WITH PREPRINT PROVIDERS}}
+                        {{provider-carousel
+                            providers=model
+                            lightLogo=false
+                        }}
                     </div>
                 {{/if}}
             </div>
@@ -137,25 +134,8 @@
                         {{#each results as |result|}}
                             {{search-result result=result select=(action 'updateFilters' 'subjects')}}
                         {{/each}}
-
-                        <div class="row">
-                            <div class="col-xs-5">
-                                {{#if showPrev}}
-                                    <button type="button" class="btn btn-default" {{action "previous"}}>{{t "global.prev"}}</button>
-                                {{/if}}
-                            </div>
-                            <div class="col-xs-2">
-                                <div style='text-align: center; margin-top:5px'>
-                                    {{page}} {{t "discover.main.results.of"}} {{maxPages}}
-                                </div>
-                            </div>
-                            <div class="col-xs-5">
-                                <span class="pull-right">
-                                    {{#if showNext}}
-                                        <button type="button" class="btn btn-default" {{action "next"}}>{{t "global.next"}}</button>
-                                    {{/if}}
-                                </span>
-                            </div>
+                        <div class="pull-right text-right">
+                            {{pagination-pager count=numPages current=page change=(action 'setLoadPage')}}
                         </div>
                     {{else}}
                         <div class="text-muted text-center">

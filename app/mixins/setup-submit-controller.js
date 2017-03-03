@@ -13,6 +13,7 @@ import permissions from 'ember-osf/const/permissions';
  *
  * @class SetupSubmitControllerMixin
  */
+
 export default Ember.Mixin.create({
     theme: Ember.inject.service(),
     panelActions: Ember.inject.service('panelActions'),
