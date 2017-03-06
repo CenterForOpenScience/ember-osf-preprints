@@ -127,12 +127,12 @@ module.exports = function(environment) {
                 environments: ['production'],
                 config: {
                     private: {
-                        projectId: 'process.env.PREPRINTS_PRIVATE_PROJECT_ID',
-                        writeKey: 'process.env.PREPRINTS_PRIVATE_WRITE_KEY'
+                        projectId: process.env.PREPRINTS_PRIVATE_PROJECT_ID,
+                        writeKey: process.env.PREPRINTS_PRIVATE_WRITE_KEY
                     },
                     public: {
-                        projectId: 'process.env.PREPRINTS_PUBLIC_PROJECT_ID',
-                        writeKey: 'process.env.PREPRINTS_PUBLIC_WRITE_KEY'
+                        projectId: process.env.PREPRINTS_PUBLIC_PROJECT_ID,
+                        writeKey: process.env.PREPRINTS_PUBLIC_WRITE_KEY
                     }
                 }
             },
