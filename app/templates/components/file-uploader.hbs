@@ -88,7 +88,7 @@
                         </form>
 
                         <div class="row text-center m-v-md">
-                            <p> {{t "components.preprint-form-project-select.initiate_preprint_process"}} </p>
+                            <p class="finalize-upload-language"> {{t "components.preprint-form-project-select.initiate_preprint_process"}} </p>
                             <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>Save and continue</button>
                         </div>
                     {{/preprint-form-body}}
