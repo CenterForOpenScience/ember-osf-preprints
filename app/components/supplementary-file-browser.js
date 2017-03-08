@@ -87,7 +87,7 @@ export default Ember.Component.extend(Analytics, {
     }),
 
     fileDownloadURL: Ember.computed('selectedFile', 'selectedVersion', function() {
-        return fileDownloadPath(this.get('selectedFile'), this.get('node'), this.get('selectedVersion'));
+        return fileDownloadPath(this.get('selectedFile'), this.get('node'));
     }),
 
     init() {
@@ -137,16 +137,6 @@ export default Ember.Component.extend(Analytics, {
             if (this.attrs.chooseFile) {
                 this.sendAction('chooseFile', file);
             }
-        },
-        changeVersion(version) {
-            Ember.get(this, 'metrics')
-                .trackEvent({
-                    category: 'file browser',
-                    action: 'select',
-                    label: 'Preprints - Content - Version'
-                });
-
-            this.set('selectedVersion', version);
         }
     },
 });
