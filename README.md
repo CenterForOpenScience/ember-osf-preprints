@@ -4,6 +4,8 @@
 
 `develop` Build Status: [![Build Status](https://travis-ci.org/CenterForOpenScience/ember-preprints.svg?branch=develop)](https://travis-ci.org/CenterForOpenScience/ember-preprints)
 
+[![Coverage Status](https://coveralls.io/repos/github/CenterForOpenScience/ember-preprints/badge.svg?branch=develop)](https://coveralls.io/github/CenterForOpenScience/ember-preprints?branch=develop)
+
 This is the codebase for OSF preprints.
 This guide will help you get started if you're interested.
 

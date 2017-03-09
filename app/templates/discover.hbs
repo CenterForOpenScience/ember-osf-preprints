@@ -134,25 +134,8 @@
                         {{#each results as |result|}}
                             {{search-result result=result select=(action 'updateFilters' 'subjects')}}
                         {{/each}}
-
-                        <div class="row">
-                            <div class="col-xs-5">
-                                {{#if showPrev}}
-                                    <button type="button" class="btn btn-default" {{action "previous"}}>{{t "global.prev"}}</button>
-                                {{/if}}
-                            </div>
-                            <div class="col-xs-2">
-                                <div style='text-align: center; margin-top:5px'>
-                                    {{page}} {{t "discover.main.results.of"}} {{maxPages}}
-                                </div>
-                            </div>
-                            <div class="col-xs-5">
-                                <span class="pull-right">
-                                    {{#if showNext}}
-                                        <button type="button" class="btn btn-default" {{action "next"}}>{{t "global.next"}}</button>
-                                    {{/if}}
-                                </span>
-                            </div>
+                        <div class="pull-right text-right">
+                            {{pagination-pager count=numPages current=page change=(action 'setLoadPage')}}
                         </div>
                     {{else}}
                         <div class="text-muted text-center">
