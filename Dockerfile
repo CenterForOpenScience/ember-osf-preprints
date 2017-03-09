@@ -36,6 +36,7 @@ RUN cd /tmp \
     && mv watchman /usr/local/bin/watchman \
     && rm -Rf /tmp/watchman
 
+RUN mkdir -p /ember-osf
 RUN mkdir -p /code
 WORKDIR /code
 
