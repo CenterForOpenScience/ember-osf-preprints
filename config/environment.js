@@ -51,7 +51,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'engrxiv',
-                    domain: 'engrxiv.com',
+                    domain: 'engrxiv.org',
                     logoSharing: {
                         path: '/assets/img/provider_logos/engrxiv-sharing.png',
                         type: 'image/png',
@@ -86,7 +86,6 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'bitss',
-                    domain: 'bitss.org',
                     logoSharing: { // T
                         path: '/assets/img/provider_logos/bitss-small.png',
                         type: 'image/png',
