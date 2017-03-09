@@ -33,8 +33,6 @@ module.exports = function(environment) {
         },
         PREPRINTS: {
             defaultProvider: 'osf',
-
-
             // Logos are needed for open graph sharing meta tags (Facebook, LinkedIn, etc) and must be at least 200x200
             providers: [
                 // OSF must be the first provider
@@ -60,7 +58,6 @@ module.exports = function(environment) {
 
                     },
                     permissionLanguage: 'arxiv_non_endorsement'
-
                 },
                 {
                     id: 'socarxiv',
@@ -75,7 +72,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'psyarxiv',
-                    domain: 'psyarxiv.org',
+                    // domain: 'psyarxiv.org', // Temporarily disabling until ready
                     logoSharing: {
                         path: '/assets/img/provider_logos/psyarxiv-sharing.png',
                         type: 'image/png',
@@ -86,7 +83,8 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'bitss',
-                    logoSharing: { // T
+                    // Does not use a provider domain
+                    logoSharing: {
                         path: '/assets/img/provider_logos/bitss-small.png',
                         type: 'image/png',
                         width: 1500,
@@ -96,7 +94,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'scielo',
-                    domain: 'scielo.org',
+                    // domain: 'scielo.org', // Temporarily disabling until ready
                     logoSharing: {
                         path: '/assets/img/provider_logos/scielo-logo.png',
                         type: 'image/png',
@@ -107,7 +105,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'agrixiv',
-                    domain: 'agrixiv.org',
+                    // domain: 'agrixiv.org', // Temporarily disabling until ready
                     logoSharing: {
                         path: 'assets/img/provider_logos/agrixiv-banner.svg',
                         type: 'image/png',
