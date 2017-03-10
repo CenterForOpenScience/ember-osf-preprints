@@ -105,7 +105,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'agrixiv',
-                    // domain: 'agrixiv.org', // Temporarily disabling until ready
+                    domain: 'agrixiv.org',
                     logoSharing: {
                         path: 'assets/img/provider_logos/agrixiv-banner.svg',
                         type: 'image/png',
