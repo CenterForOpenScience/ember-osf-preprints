@@ -1,6 +1,5 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'preprint-service/tests/helpers/module-for-acceptance';
-// import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 
 moduleForAcceptance('Acceptance | discover');
 
@@ -28,8 +27,3 @@ test('visit discover with queryParams', function(assert) {
         assert.equal(currentURL(), 'preprints/discover?provider=OSF&subject=Business');
     });
 });
-
-//
-// stubRequest('get', 'http://localhost:8000/v2/preprints' + url, (request) => {
-//     request.ok(preprint.serialize());
-// });

@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import FactoryGuy, { manualSetup } from 'ember-data-factory-guy';
@@ -16,17 +17,17 @@ test('renders links and non-links', function(assert) {
     // not a store instance of a contributor and its user(s).
     let contributor = {users: {identifiers: []}};
     contributor.users.name = contributorModel.get('users.fullName');
-    contributor = Ember.merge(contributor, contributorModel.serialize().data.attributes)
+    contributor = Ember.merge(contributor, contributorModel.serialize().data.attributes);
     this.set('contributor', contributor);
 
     this.render(hbs`{{author-link contributor=contributor}}`);
-    assert.ok(!this.$().has('a').length)
+    assert.ok(!this.$().has('a').length);
     assert.equal(this.$().text().trim(), contributorModel.get('users.fullName'));
 
     contributor.users.identifiers.push('https://staging.osf.io/cool');
     this.set('contributor', contributor);
 
     this.render(hbs`{{author-link contributor=contributor}}`);
-    assert.ok(this.$().has('a').length)
+    assert.ok(this.$().has('a').length);
     assert.equal(this.$().text().trim(), contributorModel.get('users.fullName'));
 });

@@ -79,14 +79,14 @@ test('description computed property', function(assert) {
         //Test cut at 350 characters
         let description = 'string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string str';
         let notExpanded = description.slice(0, 350) + '...';
-        node.set('description', description)
+        node.set('description', description);
         ctrl.notifyPropertyChange('description');
         assert.equal(ctrl.get('description'), notExpanded);
 
         //Test cut at less than 350 characters to not cut in middle of word
         description = 'string stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring';
         notExpanded = 'string ...';
-        node.set('description', description)
+        node.set('description', description);
         ctrl.notifyPropertyChange('description');
         assert.equal(ctrl.get('description'), notExpanded);
 
@@ -95,12 +95,12 @@ test('description computed property', function(assert) {
         ctrl.set('expandedAbstract', true);
 
         description = 'string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string str';
-        node.set('description', description)
+        node.set('description', description);
         ctrl.notifyPropertyChange('description');
         assert.equal(ctrl.get('description'), description);
 
         description = 'string stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring';
-        node.set('description', description)
+        node.set('description', description);
         ctrl.notifyPropertyChange('description');
         assert.equal(ctrl.get('description'), description);
     });
