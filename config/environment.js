@@ -131,6 +131,12 @@ module.exports = function(environment) {
         FB_APP_ID: process.env.FB_APP_ID,
     };
 
+    if (process.env.ENABLE_PROVIDER_DOMAINS !== 'true') {
+        for (const provider of ENV.PREPRINTS.providers) {
+            delete provider.domain;
+        }
+    }
+
     if (environment === 'development') {
         // ENV.APP.LOG_RESOLVER = true;
         // ENV.APP.LOG_ACTIVE_GENERATION = true;
