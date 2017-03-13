@@ -57,6 +57,9 @@ export default Ember.Controller.extend(Analytics, {
     showLicenseText: false,
     fileDownloadURL: '',
     expandedAbstract: false,
+    queryParams: {
+        chosenFile: 'file'
+    },
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
@@ -105,7 +108,14 @@ export default Ember.Controller.extend(Analytics, {
     }),
     // The currently selected file (defaults to primary)
     activeFile: null,
-
+    chosenFile: null,
+    // _chosenFile: Ember.observers('chosenFile', function() {
+    //     let fid = this.get('chosenFile');
+    //     if (fid) {
+    //         this.set('chosenFile', fid);
+    //     }
+    //
+    // }),
     disciplineReduced: Ember.computed('model.subjects', function() {
         // Preprint disciplines are displayed in collapsed form on content page
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
@@ -190,6 +200,7 @@ export default Ember.Controller.extend(Analytics, {
         },
         // Metrics are handled in the component
         chooseFile(fileItem) {
+            this.set('chosenFile', fileItem.get('id'));
             this.set('activeFile', fileItem);
         },
         shareLink(href, category, action, label) {
