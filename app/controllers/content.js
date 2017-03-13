@@ -56,7 +56,7 @@ export default Ember.Controller.extend(Analytics, {
     expandedAuthors: true,
     showLicenseText: false,
     fileDownloadURL: '',
-    expandedAbstract: false,
+    expandedAbstract: navigator.userAgent.includes('Prerender'),
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
@@ -145,19 +145,18 @@ export default Ember.Controller.extend(Analytics, {
         });
     }),
 
-    useShortenedDescription: Ember.computed('node.description', function() {
-        return this.get('node.description') ? this.get('node.description').length > 350 : false;
+    hasShortenedDescription: Ember.computed('node.description', function() {
+        const nodeDescription = this.get('node.description');
+
+        return nodeDescription && nodeDescription.length > 350;
     }),
 
     description: Ember.computed('node.description', 'expandedAbstract', function() {
         // Get a shortened version of the abstract, but doesnt cut in the middle of word by going
         // to the last space.
-        if (this.get('expandedAbstract')) {
-            return this.get('node.description');
-        }
-        let text = this.get('node.description').slice(0, 350).split(' ');
-        text.pop();
-        return text.join(' ') + ' ...';
+        return this.get('node.description')
+            .slice(0, 350)
+            .replace(/\s+\S*$/, '');
     }),
 
     actions: {
