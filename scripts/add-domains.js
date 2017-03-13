@@ -8,6 +8,8 @@ if (process.argv.includes('--help') || process.argv.includes('-h')) {
 const isDry = process.argv.includes('--dry');
 
 const fs = require('fs');
+
+process.env.ENABLE_PROVIDER_DOMAINS = 'true';
 const config = require('../config/environment')(process.env.EMBER_ENV);
 
 const {providers} = config.PREPRINTS;
