@@ -72,7 +72,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'psyarxiv',
-                    // domain: 'psyarxiv.org', // Temporarily disabling until ready
+                    domain: 'psyarxiv.com',
                     logoSharing: {
                         path: '/assets/img/provider_logos/psyarxiv-sharing.png',
                         type: 'image/png',
