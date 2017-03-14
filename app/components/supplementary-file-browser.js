@@ -113,12 +113,17 @@ export default Ember.Component.extend(Analytics, {
                     action: 'click',
                     label: 'Preprints - Content - Prev'
                 });
-
-            if (this.get('startIndex') <= 0) return;
+            let start = this.get('startIndex');
+            if (start <= 0) return;
 
             this.set('scrollAnim', `to${direction}`);
-            this.set('endIndex', this.get('endIndex') - 5);
-            this.set('startIndex', this.get('startIndex') - 5);
+            if ((start - 5) < 0) {
+                this.set('startIndex', 0);
+                this.set('endIndex', 6);
+            } else {
+                this.set('startIndex', start - 5);
+                this.set('endIndex', this.get('endIndex') - 5);
+            }
         },
         changeFile(file) {
             Ember.get(this, 'metrics')
