@@ -387,10 +387,6 @@ export default Ember.Controller.extend(Analytics, {
                 });
         },
 
-        clearQueryString() {
-            this._clearQueryString();
-        },
-
         sortBySelect(index) {
             // Selecting an option just swaps it with whichever option is first
             let copy = this.get('sortByOptions').slice(0);
