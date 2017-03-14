@@ -108,13 +108,7 @@ export default Ember.Controller.extend(Analytics, {
     // The currently selected file (defaults to primary)
     activeFile: null,
     chosenFile: null,
-    // _chosenFile: Ember.observers('chosenFile', function() {
-    //     let fid = this.get('chosenFile');
-    //     if (fid) {
-    //         this.set('chosenFile', fid);
-    //     }
-    //
-    // }),
+
     disciplineReduced: Ember.computed('model.subjects', function() {
         // Preprint disciplines are displayed in collapsed form on content page
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');

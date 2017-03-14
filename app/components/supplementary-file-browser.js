@@ -67,7 +67,7 @@ export default Ember.Component.extend(Analytics, {
         }
     }),
     _moveIfNeeded: Ember.observer('selectedFile', function() {
-        let index = this.get('files').indexOf(this.get('selectedFile'))
+        let index = this.get('files').indexOf(this.get('selectedFile'));
         if (index < 0) {
             return;
         }
