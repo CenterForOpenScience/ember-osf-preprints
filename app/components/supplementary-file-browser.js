@@ -59,25 +59,29 @@ export default Ember.Component.extend(Analytics, {
                 this.set('indexes', this.get('files').map(each => each.id));
             });
     }.observes('preprint'),
-
-    _chosenFile: Ember.observer('chosenFile', function() {
+    _chosenFile: Ember.observer('chosenFile', 'indexes', function() {
         let fid = this.get('chosenFile');
         let index = this.get('indexes').indexOf(fid);
         if (fid && index !== -1) {
             this.set('selectedFile', this.get('files')[index]);
-            Ember.run.once(() => {
-                let max = this.get('files').length - 6;
-                if (index > max) {
-                    this.set('startIndex', max);
-                    this.set('endIndex', this.get('files').length);
-                } else {
-                    this.set('startIndex', index);
-                    this.set('endIndex', index + 6);
-                }
-            });
         }
     }),
-
+    _moveIfNeeded: Ember.observer('selectedFile', function() {
+        let index = this.get('files').indexOf(this.get('selectedFile'))
+        if (index < 0) {
+            return;
+        }
+        if (index >= this.get('endIndex') || index < this.get('startIndex')) {
+            let max = this.get('files').length - 6;
+            if (index > max) {
+                this.set('startIndex', max);
+                this.set('endIndex', this.get('files').length);
+            } else {
+                this.set('startIndex', index);
+                this.set('endIndex', index + 6);
+            }
+        }
+    }),
     fileDownloadURL: Ember.computed('selectedFile', function() {
         return fileDownloadPath(this.get('selectedFile'), this.get('node'));
     }),
@@ -125,7 +129,6 @@ export default Ember.Component.extend(Analytics, {
                 });
 
             this.set('selectedFile', file);
-
             if (this.attrs.chooseFile) {
                 this.sendAction('chooseFile', file);
             }

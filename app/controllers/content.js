@@ -70,7 +70,6 @@ export default Ember.Controller.extend(Analytics, {
             text: this.get('node.title'),
             via: 'OSFramework'
         };
-
         return `https://twitter.com/intent/tweet?${queryStringify(queryParams)}`;
     }),
     /* TODO: Update this with new Facebook Share Dialog, but an App ID is required
