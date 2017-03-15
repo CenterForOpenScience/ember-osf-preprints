@@ -250,6 +250,7 @@ export default {
             twitter: 'Twitter',
             facebook: 'Facebook',
             instagram: 'Instagram',
+            blog: 'Blog',
             support: `Support`,
             contact: `Contact`
         },
