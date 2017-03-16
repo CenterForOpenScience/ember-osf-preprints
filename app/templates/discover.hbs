@@ -48,9 +48,9 @@
                             {{t "discover.sort_by"}}: {{chosenSortByOption}}
                             <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="sortBy">
+                        <ul class="dropdown-menu" aria-labelledby="sortBy" id="sortByOptionList">
                             {{#each staticSortOptions as |option index|}}
-                                <li style="cursor: pointer; cursor: hand"><a {{action "sortBySelect" index}}>{{option}}</a></li>
+                                <li class="listOption"><a {{action "sortBySelect" index}}>{{option}}</a></li>
                             {{/each}}
                         </ul>
                     </div>
