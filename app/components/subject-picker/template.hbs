@@ -2,7 +2,7 @@
     {{#each selected as |subject|}}
         <span class="subject">
             {{#each subject as |segment|}}
-                <div class="subject-container"><b>{{segment.text}} <span class="cancel-subject" {{action 'deselect' subject}}></span></b></div>
+                <div class="subject-container"><b class="subject-container-text">{{segment.text}} <button class="cancel-subject" aria-label="Remove subject" title="Remove" {{action 'deselect' subject}}><i class="fa fa-close"></i></button></b></div>
             {{/each}}
         </span>
     {{/each}}
