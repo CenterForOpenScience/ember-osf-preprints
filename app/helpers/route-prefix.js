@@ -1,5 +1,15 @@
 import Ember from 'ember';
 
+/**
+ * @module ember-preprints
+ * @submodule helpers
+ */
+
+/**
+ * Needed for link-to for branded routing to get the correct route path
+ *
+ * @class route-prefix
+ */
 export default Ember.Helper.extend({
     theme: Ember.inject.service(),
 
