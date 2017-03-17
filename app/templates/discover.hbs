@@ -49,7 +49,7 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="sortBy" id="sortByOptionList">
-                            {{#each staticSortOptions as |option index|}}
+                            {{#each sortByOptions as |option index|}}
                                 <li class="listOption"><a {{action "sortBySelect" index}}>{{option}}</a></li>
                             {{/each}}
                         </ul>

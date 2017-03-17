@@ -51,15 +51,15 @@ export default Ember.Controller.extend(Analytics, {
     queryBody: {},
     providersPassed: false,
     pageNumbers: [],
-    staticSortOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
     sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
+    selectedSortByOption: '',
 
     treeSubjects: Ember.computed('activeFilters', function() {
         return this.get('activeFilters.subjects').slice();
     }),
-    // chosenOption is always the first element in the list
-    chosenSortByOption: Ember.computed('sortByOptions', function() {
-        return this.get('sortByOptions')[0];
+    // chosenSortByOption is going to be the last selected element, or if it's a new page then it's the first in the list
+    chosenSortByOption: Ember.computed('selectedSortByOption', function() {
+        return this.get('selectedSortByOption') === '' ? this.get('sortByOptions')[0] : this.get('selectedSortByOption');
     }),
 
     showActiveFilters: true, //should always have a provider, don't want to mix osfProviders and non-osf
@@ -294,12 +294,11 @@ export default Ember.Controller.extend(Analytics, {
             });
         }
 
-        const sortByOption = this.get('chosenSortByOption');
         const sort = {};
 
-        if (sortByOption === 'Upload date (oldest to newest)') {
+        if (this.get('selectedSortByOption') === 'Upload date (oldest to newest)') {
             sort.date_updated = 'asc';
-        } else if (sortByOption === 'Upload date (newest to oldest)') {
+        } else if (this.get('selectedSortByOption') === 'Upload date (newest to oldest)') {
             sort.date_updated = 'desc';
         }
 
@@ -385,12 +384,8 @@ export default Ember.Controller.extend(Analytics, {
         },
 
         sortBySelect(index) {
-            // Selecting an option just swaps it with whichever option is first
-            let copy = this.get('staticSortOptions').slice(0);
-            let temp = copy[0];
-            copy[0] = copy[index];
-            copy[index] = temp;
-            this.set('sortByOptions', copy);
+            // sets the variable for the selected option and reloads the page
+            this.set('selectedSortByOption', this.get('sortByOptions')[index]);
             this.set('page', 1);
             this.loadPage();
 
@@ -398,7 +393,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
-                    label: `Preprints - Discover - Sort by: ${this.get('staticSortOptions')[index]}`
+                    label: `Preprints - Discover - Sort by: ${this.get('sortByOptions')[index]}`
                 });
         },
 
