@@ -113,6 +113,15 @@ ul.comma-list {
     color: black;
 }
 
+@media (max-width: 768px) {
+    #providerCarousel {
+        .carousel-control .icon-next, .carousel-control .icon-prev {
+            margin-top: -30px;
+            font-size: 50px;
+        }
+    }
+}
+
 /* Main header with search bar */
 .preprint-header{
     background:#214661 url('img/preprints-bg.jpg') top center ;
