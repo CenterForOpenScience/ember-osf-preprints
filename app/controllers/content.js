@@ -56,7 +56,10 @@ export default Ember.Controller.extend(Analytics, {
     expandedAuthors: true,
     showLicenseText: false,
     fileDownloadURL: '',
-    expandedAbstract: false,
+    expandedAbstract: navigator.userAgent.includes('Prerender'),
+    queryParams: {
+        chosenFile: 'file'
+    },
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
@@ -67,7 +70,6 @@ export default Ember.Controller.extend(Analytics, {
             text: this.get('node.title'),
             via: 'OSFramework'
         };
-
         return `https://twitter.com/intent/tweet?${queryStringify(queryParams)}`;
     }),
     /* TODO: Update this with new Facebook Share Dialog, but an App ID is required
@@ -105,6 +107,7 @@ export default Ember.Controller.extend(Analytics, {
     }),
     // The currently selected file (defaults to primary)
     activeFile: null,
+    chosenFile: null,
 
     disciplineReduced: Ember.computed('model.subjects', function() {
         // Preprint disciplines are displayed in collapsed form on content page
@@ -145,19 +148,18 @@ export default Ember.Controller.extend(Analytics, {
         });
     }),
 
-    useShortenedDescription: Ember.computed('node.description', function() {
-        return this.get('node.description') ? this.get('node.description').length > 350 : false;
+    hasShortenedDescription: Ember.computed('node.description', function() {
+        const nodeDescription = this.get('node.description');
+
+        return nodeDescription && nodeDescription.length > 350;
     }),
 
     description: Ember.computed('node.description', 'expandedAbstract', function() {
         // Get a shortened version of the abstract, but doesnt cut in the middle of word by going
         // to the last space.
-        if (this.get('expandedAbstract')) {
-            return this.get('node.description');
-        }
-        let text = this.get('node.description').slice(0, 350).split(' ');
-        text.pop();
-        return text.join(' ') + ' ...';
+        return this.get('node.description')
+            .slice(0, 350)
+            .replace(/\s+\S*$/, '');
     }),
 
     actions: {
@@ -190,6 +192,7 @@ export default Ember.Controller.extend(Analytics, {
         },
         // Metrics are handled in the component
         chooseFile(fileItem) {
+            this.set('chosenFile', fileItem.get('id'));
             this.set('activeFile', fileItem);
         },
         shareLink(href, category, action, label) {

@@ -57,7 +57,7 @@
                             {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{node.title}} </a> {{t "content.public"}}.
                         </div>
                     {{/if}}
-                    {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
+                    {{supplementary-file-browser chosenFile=chosenFile preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
                     <button class="expand-mfr-carrot hidden-xs hidden-sm" {{action 'expandMFR'}}>
                         <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                     </button>
@@ -83,12 +83,8 @@
                     </div>
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
-                        {{#if useShortenedDescription}}
-                            <p class="abstract">{{description}}</p>
-                            <button class='btn-link' {{action 'expandAbstract'}}>{{if expandedAbstract 'See less' 'See more'}}</button>
-                        {{else}}
-                            <p class="abstract">{{node.description}}</p>
-                        {{/if}}
+                        <p class="abstract {{unless expandedAbstract 'abstract-truncated'}}">{{if expandedAbstract node.description description}}</p>
+                        <button class='btn-link' hidden={{not hasShortenedDescription}} {{action 'expandAbstract'}}>{{t (if expandedAbstract 'content.see_less' 'content.see_more')}}</button>
                     </div>
 
                     {{#if model.doi}}

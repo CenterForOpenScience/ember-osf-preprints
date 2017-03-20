@@ -330,6 +330,10 @@ export default Ember.Controller.extend(Analytics, {
         });
     },
 
+    _clearQueryString() {
+        this.set('queryString', '');
+    },
+
     otherProviders: [],
     actions: {
         search(val, event) {

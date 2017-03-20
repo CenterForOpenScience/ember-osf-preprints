@@ -113,6 +113,15 @@ ul.comma-list {
     color: black;
 }
 
+@media (max-width: 768px) {
+    #providerCarousel {
+        .carousel-control .icon-next, .carousel-control .icon-prev {
+            margin-top: -30px;
+            font-size: 50px;
+        }
+    }
+}
+
 /* Main header with search bar */
 .preprint-header{
     background:#214661 url('img/preprints-bg.jpg') top center ;
@@ -362,6 +371,9 @@ ul.preprints-block-list {
     }
     .abstract {
         white-space: pre-line;
+    }
+    .abstract-truncated:after {
+        content: ' \2026';
     }
     .project-box {
         div {
@@ -695,6 +707,7 @@ hr {
         }
         &.cp-is-open {
             opacity: 1;
+            padding: 15px;
         }
     }
     // THESE STYLES ARE INTERFERING WITH MY STYLES.
@@ -1103,6 +1116,10 @@ label.title-label {
     background-position-y: bottom;
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+.supplemental-downloads {
+    text-align: right;
 }
 
 @media (max-width: 768px) {
