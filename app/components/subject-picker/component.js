@@ -8,6 +8,25 @@ function arrayEquals(arr1, arr2) {
 function arrayStartsWith(arr, prefix) {
     return prefix.reduce((acc, val, i) => acc && val && arr[i] && val.id === arr[i].id, true);
 }
+
+const Column = Ember.Object.extend({
+    sortDefinition: ['text:asc'],
+    filterText: '',
+    selection: null,
+    subjects: [],
+    subjectsFiltered: Ember.computed('subjects.[]', 'filterText', function() {
+        const filterTextLowerCase = this.get('filterText').toLowerCase();
+        const subjects = this.get('subjects');
+
+        if (!filterTextLowerCase) {
+            return subjects;
+        }
+
+        return subjects.filter(item => item.get('text').toLowerCase().includes(filterTextLowerCase));
+    }),
+    subjectsSorted: Ember.computed.sort('subjectsFiltered', 'sortDefinition')
+});
+
 /**
  * @module ember-preprints
  * @submodule components
@@ -31,53 +50,11 @@ export default Ember.Component.extend(Analytics, {
     store: Ember.inject.service(),
     theme: Ember.inject.service(),
 
-    // Store the lists of subjects
-    _tier1: null,
-    _tier2: null,
-    _tier3: null,
-
-    // Filter the list of subjects if appropriate
-    tier1FilterText: '',
-    tier2FilterText: '',
-    tier3FilterText: '',
-
-    tierSorting: ['text:asc'],
-    tier1Filtered: Ember.computed('tier1FilterText', '_tier1.[]', function() {
-        let items = this.get('_tier1') || [];
-        let filterText = this.get('tier1FilterText').toLowerCase();
-        if (filterText) {
-            return items.filter(item => item.get('text').toLowerCase().includes(filterText));
-        }
-        return items;
-    }),
-    tier1Sorted: Ember.computed.sort('tier1Filtered', 'tierSorting'),
-
-    tier2Filtered: Ember.computed('tier2FilterText', '_tier2.[]', function() {
-        let items = this.get('_tier2') || [];
-        let filterText = this.get('tier2FilterText').toLowerCase();
-        if (filterText) {
-            return items.filter(item => item.get('text').toLowerCase().includes(filterText));
-        }
-        return items;
-    }),
-    tier2Sorted: Ember.computed.sort('tier2Filtered', 'tierSorting'),
-
-    tier3Filtered: Ember.computed('tier3FilterText', '_tier3.[]', function() {
-        let items = this.get('_tier3') || [];
-        let filterText = this.get('tier3FilterText').toLowerCase();
-        if (filterText) {
-            return items.filter(item => item.get('text').toLowerCase().includes(filterText));
-        }
-        return items;
-    }),
-    tier3Sorted: Ember.computed.sort('tier3Filtered', 'tierSorting'),
-
-    // Currently selected subjects
-    selection1: null,
-    selection2: null,
-    selection3: null,
+    columns: Ember.A(new Array(3).fill(null).map(() => Column.create())),
 
     querySubjects(parents = 'null', tier = 0) {
+        const column = this.get('columns').objectAt(tier);
+
         this.get('theme.provider')
             .then(provider => provider
                 .query('taxonomies', {
@@ -89,9 +66,10 @@ export default Ember.Component.extend(Analytics, {
                     }
                 })
             )
-            .then(results => this
-                .set(`_tier${tier + 1}`, results.toArray())
-            );
+            .then(results => {
+                // this.set(`_tier${tier + 1}`, results.toArray());
+                column.set('subjects', results ? results.toArray() : []);
+            });
     },
 
     init() {
@@ -101,83 +79,87 @@ export default Ember.Component.extend(Analytics, {
     },
 
     actions: {
-        deselect(subject) {
+        deselect(subject, index) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Remove`
                 });
-            let index;
-            if (subject.length === 1) {
-                index = 0;
-            } else {
-                let parent = subject.slice(0, -1);
-                index = this.get('selected').findIndex(item => item !== subject && arrayStartsWith(item, parent));
+
+            const allSelections = this.get('selected');
+            const lastSegmentIndex = subject.length - 1;
+            const lastSegment = subject.objectAt(lastSegmentIndex);
+            const column = this.get('columns').objectAt(lastSegmentIndex);
+
+            if (column.get('selection') && column.get('selection.text') === lastSegment.get('text')) {
+                column.set('selection', null);
             }
 
-            let wipe = 4; // Tiers to clear
-            if (index === -1) {
-                if (this.get(`selection${subject.length}`) === subject[subject.length - 1])
-                    wipe = subject.length + 1;
-                subject.removeAt(subject.length - 1);
-            } else {
-                this.get('selected').removeAt(this.get('selected').indexOf(subject));
-                for (let i = 2; i < 4; i++) {
-                    if (this.get(`selection${i}`) !== subject[i - 1]) continue;
-                    wipe = i;
-                    break;
-                }
-            }
+            allSelections.removeAt(index);
 
-            for (let i = wipe; i < 4; i++) {
-                this.set(`_tier${i}`, null);
-                this.set(`selection${i}`, null);
-            }
-            this.sendAction('save', this.get('selected'));
+            this.sendAction('save', allSelections);
         },
-        select(selected, tier) {
+        select(selected, tierString) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Add`
                 });
-            tier = parseInt(tier);
-            if (this.get(`selection${tier}`) === selected) return;
 
-            this.set(`selection${tier}`, selected);
+            const tier = parseInt(tierString);
+            const columns = this.get('columns');
+            const column = columns.objectAt(tier);
 
-            // Inserting the subject lol
-            let index = -1;
-            let selection = [...Array(tier).keys()].map(index => this.get(`selection${index + 1}`));
-
-            // An existing tag has this prefix, and this is the lowest level of the taxonomy, so no need to fetch child results
-            if (!(tier !== 3 && this.get('selected').findIndex(item => arrayStartsWith(item, selection)) !== -1)) {
-                for (let i = 0; i < selection.length; i++) {
-                    let sub = selection.slice(0, i + 1);
-                    // "deep" equals
-                    index = this.get('selected').findIndex(item => arrayEquals(item, sub));  // jshint ignore:line
-
-                    if (index === -1) continue;
-
-                    this.get('selected')[index].pushObjects(selection.slice(i + 1));
-                    break;
-                }
-
-                if (index === -1)
-                    this.get('selected').pushObject(selection);
+            // Bail out if the subject is already selected
+            if (column.get('selection') === selected) {
+                return;
             }
 
-            this.sendAction('save', this.get('selected'));
+            column.set('selection', selected);
 
-            if (tier === 3) return;
+            const totalColumns = columns.length;
+            const nextTier = tier + 1;
+            const allSelections = this.get('selected');
 
-            for (let i = tier + 1; i < 4; i++)
-                this.set(`_tier${i}`, null);
+            const currentSelection = columns
+                .slice(0, nextTier)
+                .map(column => column.get('selection'));
+
+            // An existing tag has this prefix, and this is the lowest level of the taxonomy, so no need to fetch child results
+            if (nextTier === totalColumns || !allSelections.some(item => arrayStartsWith(item, currentSelection))) {
+                let existingParent;
+
+                for (let i = 1; i <= currentSelection.length; i++) {
+                    const sub = currentSelection.slice(0, i);
+                    existingParent = allSelections.find(item => arrayEquals(item, sub)); // jshint ignore:line
+
+                    // The parent exists, append the subject to it
+                    if (existingParent) {
+                        existingParent.pushObjects(currentSelection.slice(i));
+                        break;
+                    }
+                }
+
+                if (!existingParent) {
+                    allSelections.pushObject(currentSelection);
+                }
+            }
+
+            this.sendAction('save', allSelections);
+
+            // Bail out if we're at the last column.
+            if (nextTier === totalColumns) {
+                return;
+            }
+
+            for (let i = nextTier; i < totalColumns; i++) {
+                columns.objectAt(i).set('subjects', null);
+            }
 
             // TODO: Fires a network request every time clicking here, instead of only when needed?
-            this.querySubjects(selected.id, tier);
+            this.querySubjects(selected.id, nextTier);
         },
     }
 });
