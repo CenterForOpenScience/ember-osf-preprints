@@ -47,6 +47,8 @@ export default {
             download_file: `Download file`,
             download_preprint: `Download preprint`
         },
+        see_more: 'See more',
+        see_less: 'See less',
         version: 'Version',
         article_doi: `Article DOI`,
         citations: `Citations`,

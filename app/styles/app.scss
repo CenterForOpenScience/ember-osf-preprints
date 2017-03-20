@@ -372,6 +372,9 @@ ul.preprints-block-list {
     .abstract {
         white-space: pre-line;
     }
+    .abstract-truncated:after {
+        content: ' \2026';
+    }
     .project-box {
         div {
             min-height: 100px;
