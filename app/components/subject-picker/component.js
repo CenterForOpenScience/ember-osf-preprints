@@ -66,10 +66,7 @@ export default Ember.Component.extend(Analytics, {
                     }
                 })
             )
-            .then(results => {
-                // this.set(`_tier${tier + 1}`, results.toArray());
-                column.set('subjects', results ? results.toArray() : []);
-            });
+            .then(results => column.set('subjects', results ? results.toArray() : []));
     },
 
     init() {
@@ -79,7 +76,7 @@ export default Ember.Component.extend(Analytics, {
     },
 
     actions: {
-        deselect(subject, index) {
+        deselect(index) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
@@ -88,11 +85,14 @@ export default Ember.Component.extend(Analytics, {
                 });
 
             const allSelections = this.get('selected');
-            const lastSegmentIndex = subject.length - 1;
-            const lastSegment = subject.objectAt(lastSegmentIndex);
-            const column = this.get('columns').objectAt(lastSegmentIndex);
+            const columns = this.get('columns');
 
-            if (column.get('selection') && column.get('selection.text') === lastSegment.get('text')) {
+            columns.objectAt(0).set('selection', null);
+
+            for (let i = 1; i < columns.length; i++) {
+                const column = columns.objectAt(i);
+
+                column.set('subjects', null);
                 column.set('selection', null);
             }
 
@@ -100,7 +100,7 @@ export default Ember.Component.extend(Analytics, {
 
             this.sendAction('save', allSelections);
         },
-        select(selected, tierString) {
+        select(selected, tier) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
@@ -108,7 +108,6 @@ export default Ember.Component.extend(Analytics, {
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Add`
                 });
 
-            const tier = parseInt(tierString);
             const columns = this.get('columns');
             const column = columns.objectAt(tier);
 
