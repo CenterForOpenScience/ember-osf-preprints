@@ -56,9 +56,32 @@ export default Ember.Component.extend(Analytics, {
                 this.set('primaryFile', pf);
                 this.set('selectedFile', this.get('primaryFile'));
                 this.set('files', [this.get('primaryFile')].concat(this.get('files')));
+                this.set('indexes', this.get('files').map(each => each.id));
             });
     }.observes('preprint'),
-
+    _chosenFile: Ember.observer('chosenFile', 'indexes', function() {
+        let fid = this.get('chosenFile');
+        let index = this.get('indexes').indexOf(fid);
+        if (fid && index !== -1) {
+            this.set('selectedFile', this.get('files')[index]);
+        }
+    }),
+    _moveIfNeeded: Ember.observer('selectedFile', function() {
+        let index = this.get('files').indexOf(this.get('selectedFile'));
+        if (index < 0) {
+            return;
+        }
+        if (index >= this.get('endIndex') || index < this.get('startIndex')) {
+            let max = this.get('files').length - 6;
+            if (index > max) {
+                this.set('startIndex', max);
+                this.set('endIndex', this.get('files').length);
+            } else {
+                this.set('startIndex', index);
+                this.set('endIndex', index + 6);
+            }
+        }
+    }),
     fileDownloadURL: Ember.computed('selectedFile', function() {
         return fileDownloadPath(this.get('selectedFile'), this.get('node'));
     }),
@@ -90,12 +113,17 @@ export default Ember.Component.extend(Analytics, {
                     action: 'click',
                     label: 'Preprints - Content - Prev'
                 });
-
-            if (this.get('startIndex') <= 0) return;
+            let start = this.get('startIndex');
+            if (start <= 0) return;
 
             this.set('scrollAnim', `to${direction}`);
-            this.set('endIndex', this.get('endIndex') - 5);
-            this.set('startIndex', this.get('startIndex') - 5);
+            if ((start - 5) < 0) {
+                this.set('startIndex', 0);
+                this.set('endIndex', 6);
+            } else {
+                this.set('startIndex', start - 5);
+                this.set('endIndex', this.get('endIndex') - 5);
+            }
         },
         changeFile(file) {
             Ember.get(this, 'metrics')
@@ -106,7 +134,6 @@ export default Ember.Component.extend(Analytics, {
                 });
 
             this.set('selectedFile', file);
-
             if (this.attrs.chooseFile) {
                 this.sendAction('chooseFile', file);
             }
