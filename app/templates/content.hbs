@@ -83,8 +83,12 @@
                     </div>
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
-                        <p class="abstract {{unless expandedAbstract 'abstract-truncated'}}">{{if expandedAbstract node.description description}}</p>
-                        <button class='btn-link' hidden={{not hasShortenedDescription}} {{action 'expandAbstract'}}>{{t (if expandedAbstract 'content.see_less' 'content.see_more')}}</button>
+                        <p class="abstract {{if useShortenedDescription 'abstract-truncated'}}">
+                            {{~if useShortenedDescription description node.description~}}
+                        </p>
+                        <button class='btn-link' hidden={{not hasShortenedDescription}} {{action 'expandAbstract'}}>
+                            {{~t (if expandedAbstract 'content.see_less' 'content.see_more')~}}
+                        </button>
                     </div>
 
                     {{#if model.doi}}
