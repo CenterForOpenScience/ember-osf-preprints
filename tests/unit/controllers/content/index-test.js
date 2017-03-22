@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('controller:content', 'Unit | Controller | content', {
+moduleFor('controller:content/index', 'Unit | Controller | content/index', {
   // Specify the other units that are required for this test.
   needs: ['service:metrics', 'service:theme']
 });
