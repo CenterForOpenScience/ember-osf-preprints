@@ -17,21 +17,21 @@ export default function(name, options = {}) {
         const url = config.OSF.apiUrl;
         const provider = FactoryGuy.build('preprint-provider');
         stubRequest('get', url + '/v2/users/me', (request) => {
-            request.unauthorized({}); // send empty response back
+            request.unauthorized({});
         });
         stubRequest('get', url + '/v2/preprint_providers', (request) => {
             request.ok({data: [{
                 attributes: provider,
                 type: "preprint_providers",
                 id: "osf"
-            }]}); // send empty response back
+            }]});
         });
         stubRequest('get', url + '/v2/preprint_providers/osf', (request) => {
             request.ok({data: {
                 attributes: provider,
                 type: "preprint_providers",
                 id: "osf"
-            }}); // send empty response back
+            }});
         });
         if (options.beforeEach) {
             return options.beforeEach.apply(this, arguments);
