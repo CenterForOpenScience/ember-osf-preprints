@@ -50,16 +50,23 @@ export default Ember.Controller.extend(Analytics, {
     subjectFilter: null,
     queryBody: {},
     providersPassed: false,
+
+    i18n: Ember.inject.service(),
+
+    sortByOptions: Ember.computed('i18n.locale', function() {
+        const i18n = this.get('i18n');
+        return [i18n.t('discover.relevance'), i18n.t('discover.sort_oldest_newest'), i18n.t('discover.sort_newest_oldest')];
+    }),
+
     pageNumbers: [],
-    sortByOptions: ['Relevance', 'Upload date (oldest to newest)', 'Upload date (newest to oldest)'],
-    selectedSortByOption: '',
+    sortByOption: '',
 
     treeSubjects: Ember.computed('activeFilters', function() {
         return this.get('activeFilters.subjects').slice();
     }),
     // chosenSortByOption is going to be the last selected element, or if it's a new page then it's the first in the list
-    chosenSortByOption: Ember.computed('selectedSortByOption', function() {
-        return this.get('selectedSortByOption') === '' ? this.get('sortByOptions')[0] : this.get('selectedSortByOption');
+    chosenSortByOption: Ember.computed('sortByOption', function() {
+        return this.get('sortByOption') === '' ? this.get('sortByOptions')[0] : this.get('sortByOption');
     }),
 
     showActiveFilters: true, //should always have a provider, don't want to mix osfProviders and non-osf
@@ -295,10 +302,11 @@ export default Ember.Controller.extend(Analytics, {
         }
 
         const sort = {};
+        const i18n = this.get('i18n');
 
-        if (this.get('selectedSortByOption') === 'Upload date (oldest to newest)') {
+        if (this.get('sortByOption').toString() === i18n.t('discover.sort_oldest_newest').toString()) {
             sort.date_updated = 'asc';
-        } else if (this.get('selectedSortByOption') === 'Upload date (newest to oldest)') {
+        } else if (this.get('sortByOption').toString() === i18n.t('discover.sort_newest_oldest').toString()) {
             sort.date_updated = 'desc';
         }
 
@@ -328,6 +336,10 @@ export default Ember.Controller.extend(Analytics, {
             providers: this.get('theme.isProvider') ? this.get('activeFilters.providers') : [],
             subjects: []
         });
+    },
+
+    _clearQueryString() {
+        this.set('queryString', '');
     },
 
     otherProviders: [],
@@ -385,7 +397,7 @@ export default Ember.Controller.extend(Analytics, {
 
         sortBySelect(index) {
             // sets the variable for the selected option and reloads the page
-            this.set('selectedSortByOption', this.get('sortByOptions')[index]);
+            this.set('sortByOption', this.get('sortByOptions')[index]);
             this.set('page', 1);
             this.loadPage();
 

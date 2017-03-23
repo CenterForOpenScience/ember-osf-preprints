@@ -3,10 +3,10 @@
 {{/file-renderer}}
 
 <div class="row">
-    <div class="col-sm-8">
+    <div class="col-sm-6">
         <p class="f-w-lg p-b-md">{{selectedFile.name}}</p>
     </div>
-    <div class="col-sm-4 text-nowrap supplemental-downloads">
+    <div class="col-sm-6 text-nowrap supplemental-downloads">
         {{#if (eq selectedFile.id preprint.primaryFile.id)}}
             <a class="btn btn-default btn-sm" href={{fileDownloadURL}} onclick={{action 'click' 'link' 'Preprints - Content - Download'}}> {{t "content.share.download_preprint"}}</a>
         {{else}}

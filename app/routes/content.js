@@ -206,23 +206,22 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 }
 
                 highwirePress.push(['citation_publisher', providerName]);
-                if (license) {
-                    dublinCore.push(
-                        ['dc.publisher', providerName],
-                        ['dc.license', license.get('name')]
-                    );
-                } else {
-                    dublinCore.push(
-                        ['dc.publisher', providerName],
-                        ['dc.license', 'No licence']
-                    );
-                }
+                dublinCore.push(
+                    ['dc.publisher', providerName],
+                    ['dc.license', license ? license.get('name') : 'No license']
+                );
+
                 if (/\.pdf$/.test(primaryFile.get('name'))) {
                     highwirePress.push(['citation_pdf_url', primaryFile.get('links').download]);
                 }
 
-                const headTags = [
-                    openGraph,
+                const openGraphTags = openGraph
+                    .map(([property, content]) => ({
+                        property,
+                        content
+                    }));
+
+                const googleScholarTags = [
                     highwirePress,
                     eprints,
                     bePress,
@@ -230,13 +229,19 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     dublinCore
                 ]
                     .reduce((a, b) => a.concat(b), [])
-                    .filter(item => item[1]) // Don't show tags with no content
-                    .map(item => ({
+                    .map(([name, content]) => ({
+                        name,
+                        content
+                    }));
+
+                const headTags = [
+                    ...openGraphTags,
+                    ...googleScholarTags
+                ]
+                    .filter(({content}) => content) // Only show tags with content
+                    .map(attrs => ({
                         type: 'meta',
-                        attrs: {
-                            property: item[0],
-                            content: item[1]
-                        }
+                        attrs
                     }));
 
                 this.set('headTags', headTags);

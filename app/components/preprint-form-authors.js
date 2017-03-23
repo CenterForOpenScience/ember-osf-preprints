@@ -36,6 +36,7 @@ import Analytics from '../mixins/analytics';
  * @class preprint-form-authors
  */
 export default CpPanelBodyComponent.extend(Analytics, {
+    i18n: Ember.inject.service(),
     valid: Ember.computed.alias('newContributorId'),
     authorModification: false,
     currentPage: 1,
@@ -94,9 +95,10 @@ export default CpPanelBodyComponent.extend(Analytics, {
             this.attrs.addContributor(user.id, 'write', true, this.get('sendEmail'), undefined, undefined, true).then((res) => {
                 this.toggleAuthorModification();
                 this.get('contributors').pushObject(res);
+                this.get('toast').success(this.get('i18n').t('submit.preprint_author_added'));
                 this.highlightSuccessOrFailure(res.id, this, 'success');
             }, () => {
-                this.get('toast').error('Could not add contributor.');
+                this.get('toast').error(this.get('i18n').t('submit.error_adding_author'));
                 this.highlightSuccessOrFailure(user.id, this, 'error');
                 user.rollbackAttributes();
             });
@@ -142,12 +144,13 @@ export default CpPanelBodyComponent.extend(Analytics, {
                     this.set('addState', 'searchView');
                     this.set('fullName', '');
                     this.set('email', '');
+                    this.get('toast').success(this.get('i18n').t('submit.preprint_unregistered_author_added'));
                     this.highlightSuccessOrFailure(contributor.id, this, 'success');
                 }, (error) => {
                     if (error.errors[0] && error.errors[0].detail && error.errors[0].detail.indexOf('is already a contributor') > -1) {
                         this.get('toast').error(error.errors[0].detail);
                     } else {
-                        this.get('toast').error('Could not add unregistered contributor.');
+                        this.get('toast').error(this.get('i18n').t('submit.error_adding_unregistered_author'));
                     }
                     this.highlightSuccessOrFailure('add-unregistered-contributor-form', this, 'error');
                 });
@@ -178,8 +181,9 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 this.toggleAuthorModification();
                 this.removedSelfAsAdmin(contrib, contrib.get('permission'));
                 this.get('contributors').removeObject(contrib);
+                this.get('toast').success(this.get('i18n').t('submit.preprint_author_removed'));
             }, () => {
-                this.get('toast').error('Could not remove author');
+                this.get('toast').error(this.get('i18n').t('submit.error_adding_author'));
                 this.highlightSuccessOrFailure(contrib.id, this, 'error');
                 contrib.rollbackAttributes();
             });
