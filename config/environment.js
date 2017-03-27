@@ -5,6 +5,7 @@ module.exports = function(environment) {
 
     var ENV = {
         modulePrefix: 'preprint-service',
+        appName: 'Preprints',
         environment: environment,
         rootURL: '/',
         locationType: 'auto',
