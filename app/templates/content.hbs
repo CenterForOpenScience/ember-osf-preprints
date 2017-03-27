@@ -57,7 +57,7 @@
                             {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{node.title}} </a> {{t "content.public"}}.
                         </div>
                     {{/if}}
-                    {{supplementary-file-browser preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile') dualTrackNonContributors=(action 'dualTrackNonContributors')}}
+                    {{supplementary-file-browser chosenFile=chosenFile preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile') dualTrackNonContributors=(action 'dualTrackNonContributors')}}
                     <button class="expand-mfr-carrot hidden-xs hidden-sm" {{action 'expandMFR'}}>
                         <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                     </button>
@@ -66,10 +66,10 @@
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
                     <div class="share-row p-sm osf-box-lt clearfix">{{!SHARE ROW}}
-                        <div class="row" id="download_project clearfix">
-                            <div class="col-xs-12 col-lg-8">
-                                <a class="btn btn-primary" href={{fileDownloadURL}} onclick={{action 'dualTrackNonContributors' 'link' 'Preprints - Content - Download' model.primaryFile.links.download}}>{{t "content.share.download_preprint"}}</a>
-                                <span class="p-md">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
+                        <div class="row clearfix">
+                            <div class="col-xs-12 col-lg-8 download_project">
+                                <a class="btn btn-primary" href={{fileDownloadURL}} onclick={{action 'dualTrackNonContributors' 'link' 'Content - Download' model.primaryFile.links.download}}>{{t "content.share.download_preprint"}}</a>
+                                <span class="p-sm" id="downloadCount">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
                             </div>
                             <div class="col-xs-12 col-lg-4 social-div">
                                 <span class="p-xs pull-right social-media-icons">
@@ -83,12 +83,12 @@
                     </div>
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
-                        {{#if useShortenedDescription}}
-                            <p class="abstract">{{description}}</p>
-                            <button class='btn-link' {{action 'expandAbstract'}}>{{if expandedAbstract 'See less' 'See more'}}</button>
-                        {{else}}
-                            <p class="abstract">{{node.description}}</p>
-                        {{/if}}
+                        <p class="abstract {{if useShortenedDescription 'abstract-truncated'}}">
+                            {{~if useShortenedDescription description node.description~}}
+                        </p>
+                        <button class='btn-link' hidden={{not hasShortenedDescription}} {{action 'expandAbstract'}}>
+                            {{~t (if expandedAbstract 'content.see_less' 'content.see_more')~}}
+                        </button>
                     </div>
 
                     {{#if model.doi}}
