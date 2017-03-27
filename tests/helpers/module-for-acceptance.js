@@ -16,23 +16,25 @@ export default function(name, options = {}) {
         manualSetup(this.application.__container__);
         const url = config.OSF.apiUrl;
         const provider = FactoryGuy.build('preprint-provider');
+
         stubRequest('get', url + '/v2/users/me', (request) => {
             request.unauthorized({});
         });
         stubRequest('get', url + '/v2/preprint_providers', (request) => {
             request.ok({data: [{
-                attributes: provider,
+                attributes: provider.data.attributes,
                 type: "preprint_providers",
                 id: "osf"
             }]});
         });
         stubRequest('get', url + '/v2/preprint_providers/osf', (request) => {
             request.ok({data: {
-                attributes: provider,
+                attributes: provider.data.attributes,
                 type: "preprint_providers",
                 id: "osf"
             }});
         });
+
         if (options.beforeEach) {
             return options.beforeEach.apply(this, arguments);
         }
