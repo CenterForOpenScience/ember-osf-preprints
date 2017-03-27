@@ -125,13 +125,6 @@ test('authorsValid computed property', function(assert) {
     assert.equal(ctrl.get('authorsValid'), true);
 });
 
-test('disciplineValid computed property', function(assert) {
-    const ctrl = this.subject();
-    assert.equal(ctrl.get('disciplineValid'), false);
-    ctrl.set('subjectsList', [['Test Subject']]);
-    assert.equal(ctrl.get('disciplineValid'), true);
-});
-
 test('savedTitle computed property', function(assert) {
     this.inject.service('store');
     let store = this.store;
@@ -478,21 +471,6 @@ test('disciplineReduced', function(assert) {
     });
 });
 
-test('disciplineChanged', function(assert) {
-    const ctrl = this.subject();
-    this.inject.service('store');
-    let store = this.store;
-    Ember.run(() => {
-        let preprint = store.createRecord('preprint', {
-            'subjects': [[{id: '12345'},{id:'56789'}]]
-        });
-        ctrl.set('model', preprint);
-        assert.equal(ctrl.get('disciplineChanged'), false);
-        ctrl.set('subjectsList', [[{id: '12345'},{id:'12250'}]]);
-        assert.equal(ctrl.get('disciplineChanged'), true);
-    });
-});
-
 test('isAdmin', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
@@ -808,29 +786,6 @@ test('removeTag', function(assert) {
     assert.equal(ctrl.get('basicsTags')[0], 'firstTag');
 });
 
-test('setSubjects', function(assert) {
-    const ctrl = this.subject();
-    assert.equal(ctrl.get('disciplineModifiedToggle'), false);
-    assert.equal(ctrl.get('subjectsList').length, 0);
-    ctrl.send('setSubjects', [['Test Subject Test Only']]);
-    assert.equal(ctrl.get('disciplineModifiedToggle'), true);
-    assert.equal(ctrl.get('subjectsList').length, 1);
-});
-
-
-skip('discardSubjects', function() {
-    // test('discardSubjects', function(assert) {
-    //     //TODO
-    // })
-});
-
-skip('saveSubjects', function() {
-    // test('saveSubjects', function(assert) {
-    //     //TODO
-    // })
-});
-
-
 skip('findContributors', function() {
     // test('findContributors', function(assert) {
     //     //TODO
@@ -898,7 +853,6 @@ test('submit controller property defaults - add mode', function(assert) {
     assert.equal(ctrl.get('osfStorageProvider'), null);
     assert.equal(ctrl.get('osfProviderLoaded'), false);
     assert.equal(ctrl.get('titleValid'), null);
-    assert.equal(ctrl.get('disciplineModifiedToggle'), false);
     assert.equal(ctrl.get('uploadInProgress'), false);
     assert.equal(ctrl.get('existingPreprints').length, 0);
     assert.equal(ctrl.get('abandonedPreprint'), null);

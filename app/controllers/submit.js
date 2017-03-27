@@ -52,21 +52,6 @@ const BasicsValidations = buildValidations({
     }
 });
 
-// Helper function to determine if discipline has changed (comparing list of lists)
-function disciplineArraysEqual(a, b) {
-    if (a === b) return true;
-    if (a == null || b == null) return false;
-    if (a.length !== b.length) return false;
-
-    for (let i = 0; i < a.length; ++i) {
-        if (a[i].length !== b[i].length) return false;
-        for (let j = 0; j < a[i].length; ++j) {
-            if (a[i][j] !== b[i][j]) return false;
-        }
-    }
-    return true;
-}
-
 function subjectIdMap(subjectArray) {
     // Maps array of arrays of disciplines into array of arrays of discipline ids.
     return subjectArray.map(subjectBlock => subjectBlock.map(subject => subject.id));
@@ -134,7 +119,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     osfStorageProvider: null, // Preprint node's osfStorage object
     osfProviderLoaded: false, // Preprint node's osfStorageProvider is loaded.
     titleValid: null,  // If node's pending title is valid.
-    disciplineModifiedToggle: false, // Helps determine if discipline has changed
     uploadInProgress: false, // Set to true when upload step is underway,
     existingPreprints: Ember.A(), // Existing preprints on the current node
     abandonedPreprint: null, // Abandoned(draft) preprint on the current node
@@ -186,7 +170,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             convertOrCopy: null,
             osfStorageProvider: null,
             titleValid: null,
-            disciplineModifiedToggle: false,
             uploadInProgress: false,
             existingPreprints: Ember.A(),
             abandonedPreprint: null,
@@ -217,8 +200,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     basicsValid: Ember.computed.and('abstractValid', 'doiValid', 'licenseValid'),
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
-    // Must select at least one subject (looking at pending subjects)
-    disciplineValid: Ember.computed.notEmpty('subjectsList'),
     // Does node have a saved title?
     savedTitle: Ember.computed('node.title', function() {
         return !!this.get('node.title');
@@ -336,10 +317,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     disciplineReduced: Ember.computed('model.subjects', function() {
         // Flattened subject list
         return Ember.$.extend(true, [], this.get('model.subjects')).reduce((acc, val) => acc.concat(val), []).uniqBy('id');
-    }),
-    disciplineChanged: Ember.computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle',  function() {
-        // Are there any unsaved changes in the discipline section?
-        return !(disciplineArraysEqual(subjectIdMap(this.get('model.subjects')), subjectIdMap(this.get('subjectsList'))));
     }),
 
     getContributors: Ember.observer('node', function() {
@@ -812,48 +789,25 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         /*
           Discipline section
         */
-        setSubjects(subjects) {
-            // Sets subjectsList with pending subjects. Does not save.
-            this.toggleProperty('disciplineModifiedToggle'); // Need to observe if discipline in nested array has changed. Toggling this will force 'disciplineChanged' to be recalculated
-            this.set('subjectsList', subjects);
-        },
 
-        discardSubjects() {
-            // Discards changes to subjects. (No requests sent, front-end only.)
-            Ember.get(this, 'metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Discipline Changes`
-                });
-            this.set('subjectsList', Ember.$.extend(true, [], this.get('model.subjects')));
-        },
+        // Saves subjects (disciplines) and then moves to next section.
+        saveSubjects(hasChanged) {
+            const sendNext = () => this.send('next', this.get('_names.1'));
 
-        saveSubjects() {
-            // Saves subjects (disciplines) and then moves to next section.
-            Ember.get(this, 'metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`
-                });
-            let model = this.get('model');
-            // Current subjects saved so UI can be restored in case of failure
-            let currentSubjects = Ember.$.extend(true, [], this.get('model.subjects'));
-            let subjectMap = subjectIdMap(this.get('subjectsList'));
-            if (this.get('disciplineChanged')) {
-                model.set('subjects', subjectMap);
-                model.save()
-                    .then(() => {
-                        this.send('next', this.get('_names.1'));
-                    })
-                    .catch(() => {
-                        model.set('subjects', currentSubjects);
-                        this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
-                    });
-            } else {
-                this.send('next', this.get('_names.1'));
+            if (!hasChanged) {
+                return sendNext();
             }
+
+            const model = this.get('model');
+
+            model.set('subjects', subjectIdMap(this.get('subjectsList')));
+            model.save()
+                .then(sendNext)
+                .catch(() => {
+                    // Current subjects saved so UI can be restored in case of failure
+                    model.set('subjects', Ember.$.extend(true, [], this.get('model.subjects')));
+                    this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
+                });
         },
         /**
          * findContributors method.  Queries APIv2 users endpoint on any of a set of name fields.  Fetches specified page of results.

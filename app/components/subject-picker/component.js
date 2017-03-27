@@ -39,9 +39,9 @@ const Column = Ember.Object.extend({
  * ```handlebars
  * {{subject-picker
  *      editMode=editMode
- *      selected=subjectsList
- *      disciplineModifiedToggle=disciplineModifiedToggle
- *      save=(action 'setSubjects')
+ *      initialSubjects=subjectsList
+ *      currentSubjects=subjectsListReflected
+ *      saveSubjects=(action 'setSubjects')
  *}}
  * ```
  * @class subject-picker
@@ -51,6 +51,8 @@ export default Ember.Component.extend(Analytics, {
     theme: Ember.inject.service(),
 
     columns: Ember.A(new Array(3).fill(null).map(() => Column.create())),
+
+    initialSubjects: () => [],
 
     querySubjects(parents = 'null', tier = 0) {
         const column = this.get('columns').objectAt(tier);
@@ -71,8 +73,24 @@ export default Ember.Component.extend(Analytics, {
 
     init() {
         this._super(...arguments);
-        this.set('selected', []);
+        this.set('currentSubjects', []);
+        this.set('hasChanged', false);
         this.querySubjects();
+    },
+
+    isValid: Ember.computed.notEmpty('currentSubjects'),
+
+    resetColumnSelections() {
+        const columns = this.get('columns');
+
+        columns.objectAt(0).set('selection', null);
+
+        for (let i = 1; i < columns.length; i++) {
+            const column = columns.objectAt(i);
+
+            column.set('subjects', null);
+            column.set('selection', null);
+        }
     },
 
     actions: {
@@ -84,21 +102,12 @@ export default Ember.Component.extend(Analytics, {
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Remove`
                 });
 
-            const allSelections = this.get('selected');
-            const columns = this.get('columns');
+            const allSelections = this.get('currentSubjects');
 
-            columns.objectAt(0).set('selection', null);
-
-            for (let i = 1; i < columns.length; i++) {
-                const column = columns.objectAt(i);
-
-                column.set('subjects', null);
-                column.set('selection', null);
-            }
+            this.set('hasChanged', true);
+            this.resetColumnSelections();
 
             allSelections.removeAt(index);
-
-            this.sendAction('save', allSelections);
         },
         select(selected, tier) {
             Ember.get(this, 'metrics')
@@ -108,6 +117,7 @@ export default Ember.Component.extend(Analytics, {
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Add`
                 });
 
+            this.set('hasChanged', true);
             const columns = this.get('columns');
             const column = columns.objectAt(tier);
 
@@ -120,7 +130,7 @@ export default Ember.Component.extend(Analytics, {
 
             const totalColumns = columns.length;
             const nextTier = tier + 1;
-            const allSelections = this.get('selected');
+            const allSelections = this.get('currentSubjects');
 
             const currentSelection = columns
                 .slice(0, nextTier)
@@ -146,8 +156,6 @@ export default Ember.Component.extend(Analytics, {
                 }
             }
 
-            this.sendAction('save', allSelections);
-
             // Bail out if we're at the last column.
             if (nextTier === totalColumns) {
                 return;
@@ -160,5 +168,28 @@ export default Ember.Component.extend(Analytics, {
             // TODO: Fires a network request every time clicking here, instead of only when needed?
             this.querySubjects(selected.id, nextTier);
         },
+        discard() {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Discipline Changes`
+                });
+
+            this.resetColumnSelections();
+
+            this.set('currentSubjects', Ember.$.extend(true, [], this.get('initialSubjects')));
+            this.set('hasChanged', false);
+        },
+        save() {
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`
+                });
+
+            this.sendAction('saveSubjects', this.get('hasChanged'));
+        }
     }
 });

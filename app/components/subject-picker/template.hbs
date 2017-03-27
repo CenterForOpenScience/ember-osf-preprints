@@ -1,5 +1,5 @@
 <div class="row">
-    {{#each selected as |subject index|}}
+    {{#each currentSubjects as |subject index|}}
         <span class="subject">
             {{#each subject as |segment|}}
                 <b>{{segment.text}}</b>
@@ -22,4 +22,13 @@
             </ul>
         </div>
     {{/each}}
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-right">
+            <button {{action 'discard'}} class="btn btn-default" disabled={{not hasChanged}}>{{t "global.discard"}}</button>
+            <button {{action 'save'}} class="btn btn-primary" disabled={{not isValid}}>{{t "submit.body.save_continue"}}</button>
+        </div>
+    </div>
 </div>

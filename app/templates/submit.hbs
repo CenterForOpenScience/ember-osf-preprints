@@ -122,16 +122,13 @@
                             {{#preprint-form-body}}
                                 <p class="m-b-lg text-smaller">{{t "submit.body.subjects_description"}}</p>
 
-                                {{subject-picker editMode=editMode selected=subjectsList disciplineModifiedToggle=disciplineModifiedToggle save=(action 'setSubjects')}}
+                                {{subject-picker
+                                    editMode=editMode
+                                    initialSubjects=model.subjects
+                                    currentSubjects=subjectsList
+                                    saveSubjects=(action 'saveSubjects')
+                                }}
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="pull-right">
-                                            <button {{action 'discardSubjects'}} class="btn btn-default" disabled={{unless disciplineChanged true}} >{{t "global.discard"}}</button>
-                                            <button {{action 'saveSubjects'}} class="btn btn-primary" disabled={{unless disciplineValid true}} >{{t "submit.body.save_continue"}}</button>
-                                        </div>
-                                    </div>
-                                </div>
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
