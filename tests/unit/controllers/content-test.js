@@ -33,7 +33,7 @@ test('fullLicenseText computed property', function(assert) {
         copyright_holders: ['Henrique', 'Someone Else']
     });
     ctrl.notifyPropertyChange('model.license');
-    assert.equal(ctrl.get('fullLicenseText'), 'On 2001, for Henrique,Someone Else');
+    assert.equal(ctrl.get('fullLicenseText'), 'On 2001, for Henrique, Someone Else');
 
     preprint.set('licenseRecord',  {
         year: '',
