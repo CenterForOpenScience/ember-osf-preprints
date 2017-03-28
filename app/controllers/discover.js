@@ -73,6 +73,7 @@ export default Ember.Controller.extend(Analytics, {
 
     init() {
         this._super(...arguments);
+        Ember.run(() => {
         this.set('facetFilters', Ember.Object.create());
 
         Promise.all([
@@ -147,6 +148,7 @@ export default Ember.Controller.extend(Analytics, {
             });
 
         this.loadPage();
+        });
     },
     subjectChanged: Ember.observer('subjectFilter', function() {
         Ember.run.once(() => {
@@ -232,9 +234,10 @@ export default Ember.Controller.extend(Analytics, {
 
                 return result;
             });
-
-            this.set('loading', false);
-            return this.set('results', results);
+            return Ember.run(() => {
+                this.set('loading', false);
+                return this.set('results', results);
+            });
         });
     },
     totalPages: Ember.computed('numberOfResults', 'size', function() {
