@@ -119,7 +119,7 @@ module.exports = function(environment) {
                 name: 'GoogleAnalytics',
                 environments: [process.env.KEEN_ENVIRONMENT] || ['production'],
                 config: {
-                    id: process.env.PREPRINTS_GOOGLE_ANALYTICS_ID
+                    id: process.env.GOOGLE_ANALYTICS_ID
                 }
             },
             {
