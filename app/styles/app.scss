@@ -733,78 +733,77 @@ hr {
     }
 }
 
-#preprint-form-subjects {
-    .subject {
-        display: inline-block;
-        color: white;
-        overflow: hidden;
-        padding: 0 2rem;
-        margin-bottom: 1rem;
-        &:hover {
-            .subject-container {
-                background-color: lighten($brand-primary, 10%);
-                .subject-container-text:after {
-                    border-left-color: lighten($brand-primary, 10%);
-                }
-            }
-        }
+.right-arrow {
+    border-top: 14px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 15px solid white;
+    position: absolute;
+    display: inline;
+    &:before {
+        content: '';
+        border-top: 14px solid transparent;
+        border-bottom: 15px solid transparent;
+        border-left: 15px solid $brand-primary;
+        position: absolute;
+        margin-left: -16px;
+        margin-top: -14px;
+        transition: border-color 0.1s linear;
+    }
+}
+
+.subject {
+    display: inline-block;
+    color: white;
+    overflow: hidden;
+    padding: 0 .5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    &:hover {
         .subject-container {
-            background-color: $brand-primary;
-            display: inline-block;
-            transition: background-color 0.1s linear;
-            margin-left: -10px;
-            padding-left: 10px;
-            .subject-container-text {
-                display: inline-block;
-                padding: 5px 15px ;
-                position: relative;
-                .cancel-subject {
-                    background: none;
-                    border: none;
-                    padding: 0;
-                    visibility: hidden;
-                    margin-left: -10px;
-                    &:hover {
-                        color: lighten(red, 40%);
-                    }
-                    &:active {
-                        color: lighten(red, 20%);
-                    }
-                }
-                &%pseudo {
-                    content: '';
-                    position: absolute;
-                    left: 100%;
-                    top: 0;
-                    border: {
-                        style: solid;
-                        width: 15px 0 15px 12px;
-                        color: transparent transparent transparent $brand-primary;
-                    }
-                }
-                &:before {
-                    @extend %pseudo;
-                    margin-left: 1px;
-                    border-left-color: white;
-                    z-index: 1;
-                }
-                &:after {
-                    @extend %pseudo;
-                    transition: border-color 0.1s linear;
-                    z-index: 2;
-                }
-            }
-            &:last-of-type {
-                .subject-container-text > .cancel-subject {
-                    visibility: visible;
-                    margin-left: 5px;
-                }
-                .subject-container-text:before, .subject-container-text:after {
-                    display: none;
-                }
-            }
+            background-color: lighten($brand-primary, 10%);
+        }
+        .right-arrow:before {
+            border-left-color: lighten($brand-primary, 10%);
         }
     }
+    .right-arrow:last-of-type {
+        display: none;
+    }
+}
+
+.subject-container {
+    background-color: $brand-primary;
+    display: inline-block;
+    transition: background-color 0.1s linear;
+    margin-left: -10px;
+    padding-left: 10px;
+    &:last-of-type {
+        .cancel-subject {
+            visibility: visible;
+            margin-left: 10px;
+        }
+    }
+}
+
+.subject-container-text {
+    display: inline-block;
+    padding: 5px 15px ;
+}
+
+.cancel-subject {
+    background: none;
+    border: none;
+    padding: 0;
+    visibility: hidden;
+    &:hover {
+        color: lighten(red, 40%);
+    }
+    &:active {
+        color: lighten(red, 20%);
+    }
+}
+
+#preprint-form-subjects {
     ul {
         height: 30rem;
         list-style: none;
