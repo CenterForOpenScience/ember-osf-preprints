@@ -340,27 +340,10 @@ ul.preprints-block-list {
     padding-left: 0;
 }
 
-#sortBy {
-    min-width: 291px;
-    width: 100%;
+.listOption:hover {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.8) !important;
 }
-
-#sortByOptionList {
-    background-color: #EFEFEF;
-    min-width: 291px;
-    .listOption {
-        cursor: pointer;
-        a {
-            text-decoration: none;
-            color: black;
-        }
-        a:hover {
-            background-image: none;
-            background-color: #D9D9D9;
-        }
-    }
-}
-
 /* VIEW page */
 
 .dark-overlay-header-background {

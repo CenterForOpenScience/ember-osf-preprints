@@ -66,7 +66,7 @@ export default Ember.Controller.extend(Analytics, {
     }),
     // chosenSortByOption is going to be the last selected element, or if it's a new page then it's the first in the list
     chosenSortByOption: Ember.computed('sortByOption', function() {
-        return this.get('sortByOption') === '' ? this.get('sortByOptions')[0] : this.get('sortByOption');
+        return this.get('sortByOption') || this.get('sortByOptions')[0];
     }),
 
     showActiveFilters: true, //should always have a provider, don't want to mix osfProviders and non-osf
@@ -303,10 +303,11 @@ export default Ember.Controller.extend(Analytics, {
 
         const sort = {};
         const i18n = this.get('i18n');
+        const sortByOption = this.get('sortByOption').toString();
 
-        if (this.get('sortByOption').toString() === i18n.t('discover.sort_oldest_newest').toString()) {
+        if (sortByOption.toString() === i18n.t('discover.sort_oldest_newest').toString()) {
             sort.date_updated = 'asc';
-        } else if (this.get('sortByOption').toString() === i18n.t('discover.sort_newest_oldest').toString()) {
+        } else if (sortByOption.toString() === i18n.t('discover.sort_newest_oldest').toString()) {
             sort.date_updated = 'desc';
         }
 
