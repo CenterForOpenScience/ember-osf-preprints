@@ -74,8 +74,19 @@ export default Ember.Component.extend(Analytics, {
 
         this.set('selectedVersion', selectedFile.get('currentVersion'));
 
+        const downloadUrl = selectedFile.get('links.download');
+        const filename = selectedFile.get('name');
+
         return selectedFile
             .query('versions', {sort: '-identifier'})
+            .then(versions => versions
+                .map(version => {
+                    const dateFormatted = encodeURIComponent(version.get('dateCreated').toISOString());
+                    const displayName = filename.replace(/(\.\w+)?$/, ext => `-${dateFormatted}${ext}`);
+                    version.set('downloadUrl', `${downloadUrl}?version=${version.id}&displayName=${displayName}`);
+                    return version;
+                })
+            )
             .then(versions => this.set('versions', versions));
     }),
 

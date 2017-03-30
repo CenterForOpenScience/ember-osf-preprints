@@ -17,7 +17,7 @@
             <ul class="dropdown-menu" aria-labelledby="previousVersionsDropdown">
                 {{#each versions as |version|}}
                     <li>
-                        <a href="{{concat fileDownloadURL '&version=' version.id}}" onclick={{action 'click' 'link' 'Preprints - Content - Download Previous Version'}}>
+                        <a href="{{version.downloadUrl}}" onclick={{action 'click' 'link' 'Preprints - Content - Download Previous Version'}}>
                             {{t "content.version"}} {{version.id}}, {{moment-format version.dateCreated "MM/DD/YYYY HH:mm:SS"}}
                         </a>
                     </li>
