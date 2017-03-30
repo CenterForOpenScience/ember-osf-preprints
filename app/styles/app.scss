@@ -113,6 +113,25 @@ ul.comma-list {
     color: black;
 }
 
+#downloadCount {
+    display: inline-block;
+}
+
+@media (max-width: 991px) {
+    .download_project, .social-div {
+        width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    #providerCarousel {
+        .carousel-control .icon-next, .carousel-control .icon-prev {
+            margin-top: -30px;
+            font-size: 50px;
+        }
+    }
+}
+
 /* Main header with search bar */
 .preprint-header{
     background:#214661 url('img/preprints-bg.jpg') top center ;
@@ -204,7 +223,7 @@ $logo-dir: 'img/provider_logos/';
     background-image: url($logo-dir + 'bitss-small.png');
 }
 .provider-bitss-dark {
-    background-image: url($logo-dir + 'bitss-banner.png');
+    background-image: url($logo-dir + 'bitss-dark-small.png');
 }
 
 .provider-agrixiv {
@@ -220,7 +239,7 @@ $logo-dir: 'img/provider_logos/';
 }
 
 .provider-scielo-dark {
-    background-image: url($logo-dir + 'scielo-banner.png');
+    background-image: url($logo-dir + 'scielo-dark-small.png');
 }
 
 .preprint-advisory  {
@@ -362,6 +381,9 @@ ul.preprints-block-list {
     }
     .abstract {
         white-space: pre-line;
+    }
+    .abstract-truncated:after {
+        content: ' \2026';
     }
     .project-box {
         div {
@@ -695,6 +717,7 @@ hr {
         }
         &.cp-is-open {
             opacity: 1;
+            padding: 15px;
         }
     }
     // THESE STYLES ARE INTERFERING WITH MY STYLES.
@@ -1105,6 +1128,10 @@ label.title-label {
     background-size: contain;
 }
 
+.supplemental-downloads {
+    text-align: right;
+}
+
 @media (max-width: 768px) {
     .edit-button-and-logo {
         padding-top: 20px;
@@ -1178,6 +1205,7 @@ label.title-label {
     float: none !important;
     white-space: nowrap;
 }
+
 .social-div {
     margin-top: 5px;
 }
@@ -1269,4 +1297,9 @@ nav.branded-navbar {
     .social > a:hover {
         text-decoration: none;
     }
+}
+
+.alert-maintenance {
+    margin-top: 104px;
+    margin-bottom: 0;
 }

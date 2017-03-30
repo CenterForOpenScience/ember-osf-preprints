@@ -47,6 +47,8 @@ export default {
             download_file: `Download file`,
             download_preprint: `Download preprint`
         },
+        see_more: 'See more',
+        see_less: 'See less',
         version: 'Version',
         article_doi: `Article DOI`,
         citations: `Citations`,
@@ -68,6 +70,10 @@ export default {
             placeholder: `Search preprints...`
         },
         sort_by: `Sort by`,
+        sort_newest_oldest: `Modified Date (newest to oldest)`,
+        sort_oldest_newest: `Modified Date (oldest to newest)`,
+        modified_on: `Modified on`,
+        relevance: `Relevance`,
         main: {
             active_filters: {
                 heading: `Active Filters`,
@@ -197,6 +203,11 @@ export default {
         could_not_create_component: `Could not create component. Please try again.`,
         abandoned_preprint_error: `Error with abandoned preprint.`,
         preprint_file_uploaded: `Preprint file uploaded!`,
+        preprint_author_added: `Preprint author added!`,
+        preprint_author_removed: `Preprint author removed!`,
+        preprint_unregistered_author_added: `Preprint unregistered author added!`,
+        error_adding_author: `Could not add author. Please try again.`,
+        error_adding_unregistered_author: `Could not add unregistered author. Please try again.`,
         error_initiating_preprint: `Could not initiate preprint. Please try again.`,
         doi_error: `Error saving DOI`,
         basics_error: `Error saving basics fields.`,
