@@ -305,9 +305,9 @@ export default Ember.Controller.extend(Analytics, {
         const i18n = this.get('i18n');
         const sortByOption = this.get('sortByOption').toString();
 
-        if (sortByOption.toString() === i18n.t('discover.sort_oldest_newest').toString()) {
+        if (sortByOption === i18n.t('discover.sort_oldest_newest').toString()) {
             sort.date_updated = 'asc';
-        } else if (sortByOption.toString() === i18n.t('discover.sort_newest_oldest').toString()) {
+        } else if (sortByOption === i18n.t('discover.sort_newest_oldest').toString()) {
             sort.date_updated = 'desc';
         }
 
