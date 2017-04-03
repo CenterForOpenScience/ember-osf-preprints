@@ -114,9 +114,7 @@ export default Ember.Controller.extend(Analytics, {
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
 
-    hasTag: Ember.computed('node.tags', function() {
-        return (this.get('node.tags') || []).length;
-    }),
+    hasTag: Ember.computed.bool('node.tags.length'),
 
     getAuthors: Ember.observer('node', function() {
         // Cannot be called until node has loaded!
