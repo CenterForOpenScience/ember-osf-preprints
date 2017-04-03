@@ -22,7 +22,8 @@ export default Ember.Mixin.create({
                 });
 
             // Needed for outbound links, see https://support.google.com/analytics/answer/1136920?hl=en
-            if (url)
+            // Also prevents mouse events from being attacehd to the window location
+            if (url && typeof url !== 'object')
                 window.location.href = url;
 
             return true;

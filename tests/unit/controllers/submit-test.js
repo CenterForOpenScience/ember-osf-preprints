@@ -27,6 +27,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'validator:format',
         'service:metrics',
         'service:panel-actions',
+        'service:theme',
         'service:toast',
         'service:i18n',
         'model:file',
@@ -46,8 +47,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'model:license',
         'model:wiki',
         'transform:links',
-        'transform:embed',
-        'service:theme'
+        'transform:embed'
     ],
     beforeEach: function () {
        this.register('service:panel-actions', panelActionsStub);

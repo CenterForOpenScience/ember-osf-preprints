@@ -113,6 +113,25 @@ ul.comma-list {
     color: black;
 }
 
+#downloadCount {
+    display: inline-block;
+}
+
+@media (max-width: 991px) {
+    .download_project, .social-div {
+        width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    #providerCarousel {
+        .carousel-control .icon-next, .carousel-control .icon-prev {
+            margin-top: -30px;
+            font-size: 50px;
+        }
+    }
+}
+
 /* Main header with search bar */
 .preprint-header{
     background:#214661 url('img/preprints-bg.jpg') top center ;
@@ -363,6 +382,9 @@ ul.preprints-block-list {
     .abstract {
         white-space: pre-line;
     }
+    .abstract-truncated:after {
+        content: ' \2026';
+    }
     .project-box {
         div {
             min-height: 100px;
@@ -450,23 +472,7 @@ ul.preprints-block-list {
     background-color: #b9cdd6;
 }
 
-
-/* Not found page */
-.preprint-404 {
-    padding: 120px 0 120px 0;
-    background-color: #ecf2f3;
-    border-bottom: 1px solid #d6dbdc;
-}
-
-/* Forbidden page */
-.preprint-403 {
-    padding: 120px 0 120px 0;
-    background-color: #ecf2f3;
-    border-bottom: 1px solid #d6dbdc;
-}
-
-/* Gone page */
-.preprint-410 {
+.preprint-error-page {
     padding: 120px 0 120px 0;
     background-color: #ecf2f3;
     border-bottom: 1px solid #d6dbdc;
@@ -695,6 +701,7 @@ hr {
         }
         &.cp-is-open {
             opacity: 1;
+            padding: 15px;
         }
     }
     // THESE STYLES ARE INTERFERING WITH MY STYLES.
@@ -1105,6 +1112,10 @@ label.title-label {
     background-size: contain;
 }
 
+.supplemental-downloads {
+    text-align: right;
+}
+
 @media (max-width: 768px) {
     .edit-button-and-logo {
         padding-top: 20px;
@@ -1178,6 +1189,7 @@ label.title-label {
     float: none !important;
     white-space: nowrap;
 }
+
 .social-div {
     margin-top: 5px;
 }
@@ -1269,4 +1281,9 @@ nav.branded-navbar {
     .social > a:hover {
         text-decoration: none;
     }
+}
+
+.alert-maintenance {
+    margin-top: 104px;
+    margin-bottom: 0;
 }

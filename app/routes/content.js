@@ -5,6 +5,9 @@ import Analytics from '../mixins/analytics';
 import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
+import getRedirectUrl from '../utils/get-redirect-url';
+
+const providers = config.PREPRINTS.providers;
 
 // Error handling for API
 const handlers = new Map([
@@ -67,7 +70,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
     },
     afterModel(preprint) {
         const {origin, search} = window.location;
-        let contributors = Ember.A();
+        const contributors = Ember.A();
 
         return preprint.get('provider')
             .then(provider => {
@@ -82,20 +85,30 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                         preprint.get('node')
                     ]);
 
-                // Otherwise, redirect to the proper branded site.
-                // Hard redirect instead of transition, in anticipation of Phase 2 where providers will have their own domains.
-                const urlParts = [
-                    origin
-                ];
+                // Otherwise, find the correct provider and redirect
+                const configProvider = providers.find(p => p.id === providerId);
 
-                if (!isOSF)
-                    urlParts.push('preprints', providerId);
+                if (!configProvider)
+                    throw new Error('Provider is not configured properly. Check the Ember configuration.');
 
-                urlParts.push(preprint.get('id'), search);
+                const {domain} = configProvider;
+                const urlParts = [];
 
-                const url = urlParts.join('/');
+                // Provider with a domain
+                if (this.get('theme.isDomain') || domain) {
+                    urlParts.push(getRedirectUrl(window.location, domain));
+                // Provider without a domain
+                } else {
+                    urlParts.push(origin);
 
-                window.history.replaceState({}, document.title, url);
+                    if (!isOSF)
+                        urlParts.push('preprints', providerId);
+
+                    urlParts.push(preprint.get('id'));
+                }
+
+                urlParts.push(search);
+                const url = urlParts.join('/').replace(/\/\/$/, '/');
                 window.location.replace(url);
 
                 return Promise.reject();
@@ -206,23 +219,22 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 }
 
                 highwirePress.push(['citation_publisher', providerName]);
-                if (license) {
-                    dublinCore.push(
-                        ['dc.publisher', providerName],
-                        ['dc.license', license.get('name')]
-                    );
-                } else {
-                    dublinCore.push(
-                        ['dc.publisher', providerName],
-                        ['dc.license', 'No licence']
-                    );
-                }
+                dublinCore.push(
+                    ['dc.publisher', providerName],
+                    ['dc.license', license ? license.get('name') : 'No license']
+                );
+
                 if (/\.pdf$/.test(primaryFile.get('name'))) {
                     highwirePress.push(['citation_pdf_url', primaryFile.get('links').download]);
                 }
 
-                const headTags = [
-                    openGraph,
+                const openGraphTags = openGraph
+                    .map(([property, content]) => ({
+                        property,
+                        content
+                    }));
+
+                const googleScholarTags = [
                     highwirePress,
                     eprints,
                     bePress,
@@ -230,13 +242,19 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     dublinCore
                 ]
                     .reduce((a, b) => a.concat(b), [])
-                    .filter(item => item[1]) // Don't show tags with no content
-                    .map(item => ({
+                    .map(([name, content]) => ({
+                        name,
+                        content
+                    }));
+
+                const headTags = [
+                    ...openGraphTags,
+                    ...googleScholarTags
+                ]
+                    .filter(({content}) => content) // Only show tags with content
+                    .map(attrs => ({
                         type: 'meta',
-                        attrs: {
-                            property: item[0],
-                            content: item[1]
-                        }
+                        attrs
                     }));
 
                 this.set('headTags', headTags);

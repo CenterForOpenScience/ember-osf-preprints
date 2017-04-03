@@ -936,7 +936,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                         window.location = window.location.pathname; //TODO Ember way to do this?  In edit mode, already in content route.
                     } else {
                         this.transitionToRoute(
-                            `${this.get('theme.isProvider') ? 'provider.' : ''}content`,
+                            `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
                             model
                         );
                     }
