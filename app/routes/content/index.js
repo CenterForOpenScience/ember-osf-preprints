@@ -5,6 +5,9 @@ import Analytics from '../../mixins/analytics';
 import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
+import getRedirectUrl from '../../utils/get-redirect-url';
+
+const {PREPRINTS: {providers}} = config;
 
 // Error handling for API
 const handlers = new Map([
@@ -40,7 +43,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
     },
 
     afterModel(preprint) {
-        const {origin, search} = window.location;
+        const {location: {origin}} = window;
         let contributors = Ember.A();
 
         return preprint.get('provider')
@@ -56,20 +59,31 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                         preprint.get('node')
                     ]);
 
-                // Otherwise, redirect to the proper branded site.
-                // Hard redirect instead of transition, in anticipation of Phase 2 where providers will have their own domains.
-                const urlParts = [
-                    origin
-                ];
+                // Otherwise, find the correct provider and redirect
+                const configProvider = providers.find(p => p.id === providerId);
 
-                if (!isOSF)
-                    urlParts.push('preprints', providerId);
+                if (!configProvider)
+                    throw new Error('Provider is not configured properly. Check the Ember configuration.');
 
-                urlParts.push(preprint.get('id'), search);
+                const {domain} = configProvider;
+                const urlParts = [];
 
-                const url = urlParts.join('/');
+                // Provider with a domain
+                if (this.get('theme.isDomain') || domain) {
+                    urlParts.push(getRedirectUrl(window.location, domain));
+                // Provider without a domain
+                } else {
+                    urlParts.push(origin);
 
-                window.history.replaceState({}, document.title, url);
+                    if (!isOSF)
+                        urlParts.push('preprints', providerId);
+
+                    urlParts.push(preprint.get('id'));
+                }
+
+                const url = urlParts.join('/').replace(/\/\/$/, '/');
+
+                console.log(url);
                 window.location.replace(url);
 
                 return Promise.reject();

@@ -933,7 +933,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .then(() => node.save())
                 .then(() => {
                     this.transitionToRoute(
-                        `${this.get('theme.isProvider') ? 'provider.' : ''}content`,
+                        `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
                         model
                     );
                 })
