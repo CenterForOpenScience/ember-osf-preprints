@@ -1,5 +1,5 @@
-/*jshint node:true*/
-/* global require, module */
+/* eslint-env node */
+
 'use strict';
 
 const fs = require('fs');
