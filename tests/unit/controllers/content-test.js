@@ -1,5 +1,5 @@
 import {moduleFor, test} from 'ember-qunit';
-
+import Ember from 'ember';
 import config from 'ember-get-config';
 
 moduleFor('controller:content', 'Unit | Controller | content', {
@@ -194,6 +194,91 @@ test('doiUrl computed property', function (assert) {
     });
 });
 
+test('fullLicenseText computed property', function (assert) {
+    this.inject.service('store');
+
+    const store = this.store;
+    const ctrl = this.subject();
+
+    Ember.run(() => {
+        const license = store.createRecord('license', {
+            text: 'The year is {{year}} and the copyright holders are {{copyrightHolders}}.'
+        });
+
+        const model = store.createRecord('preprint', {
+            license,
+            licenseRecord: {
+                year: '2000',
+                copyright_holders: [
+                    'Annie Anderson',
+                    'Bobby Buckner',
+                    'Charlie Carson'
+                ]
+            }
+        });
+
+        ctrl.setProperties({model});
+
+        assert.strictEqual(
+            ctrl.get('fullLicenseText'),
+            'The year is 2000 and the copyright holders are Annie Anderson, Bobby Buckner, Charlie Carson.'
+        );
+    });
+
+    Ember.run(() => {
+        const license = store.createRecord('license', {
+            text: 'The year is {{year}}.'
+        });
+
+        const model = store.createRecord('preprint', {
+            license,
+            licenseRecord: {
+                year: '2000'
+            }
+        });
+
+        ctrl.setProperties({model});
+
+        assert.strictEqual(
+            ctrl.get('fullLicenseText'),
+            'The year is 2000.'
+        );
+    });
+});
+
+test('hasShortenedDescription computed property', function (assert) {
+    this.inject.service('store');
+
+    const store = this.store;
+    const ctrl = this.subject();
+
+    Ember.run(() => {
+        const node = store.createRecord('node', {
+            description: 'Lorem ipsum'
+        });
+
+        ctrl.setProperties({node});
+
+        assert.strictEqual(
+            ctrl.get('hasShortenedDescription'),
+            false
+        );
+    });
+
+    Ember.run(() => {
+        const node = store.createRecord('node', {
+            description: 'Lorem ipsum'.repeat(35)
+        });
+
+        ctrl.setProperties({node});
+
+        assert.strictEqual(
+            ctrl.get('hasShortenedDescription'),
+            true
+        );
+    });
+});
+
 test('useShortenedDescription computed property', function (assert) {
     const ctrl = this.subject();
 
@@ -214,4 +299,25 @@ test('useShortenedDescription computed property', function (assert) {
     }
 });
 
+test('description computed property', function (assert) {
+    this.inject.service('store');
 
+    const store = this.store;
+    const ctrl = this.subject();
+
+    Ember.run(() => {
+        const input = 'Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem menandri consequat, tantas dictas quodsi nec eu. Ornatus forensibus vituperatoribus id vix.';
+        const expected ='Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem';
+
+        const node = store.createRecord('node', {
+            description: input
+        });
+
+        ctrl.setProperties({node});
+
+        assert.strictEqual(
+            ctrl.get('description'),
+            expected
+        );
+    });
+});

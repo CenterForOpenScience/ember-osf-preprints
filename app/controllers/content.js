@@ -131,13 +131,13 @@ export default Ember.Controller.extend(Analytics, {
         return `https://dx.doi.org/${this.get('model.doi')}`;
     }),
 
-    fullLicenseText: Ember.computed('model.license', function() {
-        let text = this.get('model.license.text');
-        if (text) {
-            text = text.replace(/({{year}})/g, this.get('model.licenseRecord').year || '');
-            text = text.replace(/({{copyrightHolders}})/g, this.get('model.licenseRecord').copyright_holders ? this.get('model.licenseRecord').copyright_holders.join(',') : false || '');
-        }
-        return text;
+    fullLicenseText: Ember.computed('model.license.text', 'model.licenseRecord', function() {
+        const text = this.get('model.license.text') || '';
+        const {year = '', copyright_holders = []} = this.get('model.licenseRecord');
+
+        return text
+            .replace(/({{year}})/g, year)
+            .replace(/({{copyrightHolders}})/g, copyright_holders.join(', '));
     }),
 
     _fileDownloadURL: Ember.observer('model.primaryFile', function() {
