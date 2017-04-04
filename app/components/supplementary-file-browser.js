@@ -59,13 +59,14 @@ export default Ember.Component.extend(Analytics, {
             ])
             .then(([, pf]) => {
                 this.get('files').removeObject(pf);
-                this.set('primaryFile', pf);
-                this.set('selectedFile', pf);
-
                 const files = [pf, ...this.get('files')];
 
-                this.set('files', files);
-                this.set('indexes', files.map(each => each.id));
+                this.setProperties({
+                    primaryFile: pf,
+                    selectedFile: pf,
+                    files: files,
+                    indexes: files.map(each => each.id),
+                });
             });
     }.observes('preprint'),
 
