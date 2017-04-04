@@ -83,7 +83,6 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
 
                 const url = urlParts.join('/').replace(/\/\/$/, '/');
 
-                console.log(url);
                 window.location.replace(url);
 
                 return Promise.reject();

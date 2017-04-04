@@ -51,10 +51,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
 
                 // If we're on the proper branded site, stay here.
                 if ((!themeId && isOSF) || themeId === providerId)
-                    return Promise.all([
-                        provider,
-                        preprint.get('node')
-                    ]);
+                    return preprint.get('node');
 
                 // Otherwise, find the correct provider and redirect
                 const configProvider = providers.find(p => p.id === providerId);
@@ -83,7 +80,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
 
                 return Promise.reject();
             })
-            .then(([provider, node]) => {
+            .then(node => {
                 this.set('node', node);
 
                 const userPermissions = this.get('node.currentUserPermissions') || [];
