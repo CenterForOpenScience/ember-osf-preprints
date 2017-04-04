@@ -340,7 +340,10 @@ ul.preprints-block-list {
     padding-left: 0;
 }
 
-
+.listOption:hover {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.8) !important;
+}
 /* VIEW page */
 
 .dark-overlay-header-background {

@@ -1,10 +1,11 @@
-/* jshint node: true */
+/* eslint-env node */
 
 module.exports = function(environment) {
     const authorizationType = 'cookie';
 
     const ENV = {
         modulePrefix: 'preprint-service',
+        appName: 'Preprints',
         environment: environment,
         rootURL: '/',
         locationType: 'auto',
