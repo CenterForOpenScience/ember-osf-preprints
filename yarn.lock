@@ -2161,7 +2161,7 @@ ember-new-computed@^1.0.2:
   dependencies:
     ember-cli-babel "^5.1.5"
 
-"ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop":
+"ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#e05c78af6c9d59790dbae398c4660ac45bf84def":
   version "0.3.0"
   resolved "https://github.com/CenterForOpenScience/ember-osf.git#e05c78af6c9d59790dbae398c4660ac45bf84def"
   dependencies:
