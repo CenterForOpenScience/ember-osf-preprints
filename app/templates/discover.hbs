@@ -48,9 +48,9 @@
                             {{t "discover.sort_by"}}: {{chosenSortByOption}}
                             <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="sortBy">
+                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sortBy">
                             {{#each sortByOptions as |option index|}}
-                                <li style="cursor: pointer; cursor: hand"><a {{action "sortBySelect" index}}>{{option}}</a></li>
+                                <li><a class="listOption" {{action "sortBySelect" index}}>{{option}}</a></li>
                             {{/each}}
                         </ul>
                     </div>
@@ -115,7 +115,7 @@
                 </div>
                 <div class="osf-box p-md m-b-lg clearfix m-t-xl">
                     <p>{{t "discover.main.box.paragraph"}}</p>
-                    {{#link-to (if theme.isProvider "provider.submit" "submit")
+                    {{#link-to (if theme.isSubRoute "provider.submit" "submit")
                                type="button" class="btn btn-success btn-lg"
                                invokeAction=(action 'click' 'button' 'Preprints - Discover - Add Preprint')
                     }}

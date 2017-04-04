@@ -27,6 +27,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'validator:format',
         'service:metrics',
         'service:panel-actions',
+        'service:theme',
         'service:toast',
         'service:i18n',
         'model:file',
@@ -46,8 +47,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'model:license',
         'model:wiki',
         'transform:links',
-        'transform:embed',
-        'service:theme'
+        'transform:embed'
     ],
     beforeEach: function () {
        this.register('service:panel-actions', panelActionsStub);
@@ -546,20 +546,23 @@ test('applyLicenseToggle toggles applyLicense', function(assert) {
     assert.equal(ctrl.get('applyLicense'), true);
 });
 
-skip('next opens next panel and flashes changes saved', function() {
-    test('next opens next panel and flashes changes saved', function(assert) {
-        const ctrl = this.subject();
-        const currentPanelName = 'Discipline';
-        panels = Ember.Object.create({
-            'Discipline': Ember.Object.create({'isOpen': true}), 'Basics': Ember.Object.create({'isOpen': false})
-        });
-        assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
-        return wait().then(() => {
-            ctrl.send('next', currentPanelName);
-            assert.equal(panels.get('Discipline.isOpen'), true);
-            assert.equal(panels.get('Basics.isOpen'), true);
-        });
+skip('next opens next panel and flashes changes saved', function(assert) {
+    assert.expect(3);
+    // TODO fix: Error: Assertion Failed: calling set on destroyed object:
+
+    const ctrl = this.subject();
+    const currentPanelName = 'Discipline';
+
+    panels = Ember.Object.create({
+        'Discipline': Ember.Object.create({'isOpen': true}), 'Basics': Ember.Object.create({'isOpen': false})
     });
+
+    assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
+
+    ctrl.send('next', currentPanelName);
+
+    assert.equal(panels.get('Discipline.isOpen'), true);
+    assert.equal(panels.get('Basics.isOpen'), true);
 });
 
 test('nextUploadSection closes current panel and opens next panel', function(assert) {
