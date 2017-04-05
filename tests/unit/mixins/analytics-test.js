@@ -11,15 +11,15 @@ moduleFor('mixin:analytics', {
 test("Google Analytics mixin", function(assert) {
     let analyticsObject = Ember.Controller.extend(Analytics);
     this.registry.register('test:subject', analyticsObject);
-    const subject = this.container.lookup('test:subject');
-    assert.ok(subject);
-    const checkActions = (subject.get('actions.click') && subject.get('actions.track'));
+    const analyticsTest = this.container.lookup('test:subject');
+    assert.ok(analyticsTest);
+    const checkActions = (analyticsTest.get('actions.click') && analyticsTest.get('actions.track'));
     if (checkActions) {
         assert.ok(true);
     } else {
         assert.ok(false);
     }
-    const checkMetrics = (subject.get('metrics'));
+    const checkMetrics = (analyticsTest.get('metrics'));
     if (checkMetrics) {
         assert.ok(true);
     } else {
