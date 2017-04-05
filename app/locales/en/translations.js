@@ -99,8 +99,8 @@ export default {
                 paragraph: `The <span class="f-w-lg">open</span> preprint repository network`
             },
             powered_by: `Powered by ${brand}`,
-            search: `{{count}} searchable preprints`,
             or: `or`,
+            shareTotalText: `searchable preprints`,
             as_of: `as of`,
             example: `See an example`
         },
@@ -365,7 +365,7 @@ export default {
         'taxonomy-top-list': {
             // Nothing to translate
         },
-        'taxonomy-tree': {
+        'search-facet-taxonomy': {
             // Nothing to translate
         },
         'unregistered-contributor-form': {

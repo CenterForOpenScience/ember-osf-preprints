@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
-import Analytics from '../../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
 import fileDownloadPath from '../../utils/file-download-path';
 
@@ -173,7 +173,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - Content - License ${licenseState}`
+                    label: `Content - License ${licenseState}`
                 });
         },
         expandMFR() {
@@ -184,7 +184,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - Content - MFR ${beforeState}`
+                    label: `Content - MFR ${beforeState}`
                 });
         },
         // Unused
@@ -199,14 +199,15 @@ export default Ember.Controller.extend(Analytics, {
             this.set('chosenFile', fileItem.get('id'));
             this.set('activeFile', fileItem);
         },
-        shareLink(href, category, action, label) {
+        shareLink(href, category, action, label, extra) {
             const metrics = Ember.get(this, 'metrics');
 
             // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
             metrics.trackEvent({
                 category,
                 action,
-                label
+                label,
+                extra
             });
 
             if (label.includes('email'))

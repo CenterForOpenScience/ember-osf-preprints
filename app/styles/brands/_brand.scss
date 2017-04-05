@@ -29,7 +29,7 @@ $logo-dir: '../img/provider_logos/';
         color: $theme-color-2;
         padding-top: 100px;
 
-        .preprint-brand {
+        .provider-brand {
             height: 140px;
         }
 
@@ -42,7 +42,7 @@ $logo-dir: '../img/provider_logos/';
         background-image: url($logo-square);
     }
 
-    .preprint-brand {
+    .provider-brand {
         background-image: url($logo);
     }
 
@@ -133,7 +133,7 @@ $logo-dir: '../img/provider_logos/';
     .preprint-error-page,
     .preprint-advisory,
     .preprint-submit-header,
-    .preprint-search-header,
+    .search-header,
     .provider-filter {
         background: $theme-color-1;
         color: $theme-color-2;
@@ -163,7 +163,7 @@ $logo-dir: '../img/provider_logos/';
     }
 
     @if ($use-white-share-logo) {
-        .preprint-search-header .share-logo {
+        .search-header .share-logo {
             width: 48px;
             height: 30px;
             background-image: url('../img/share-logo-white.png');

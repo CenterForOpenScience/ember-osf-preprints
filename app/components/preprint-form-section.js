@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
-import Analytics from '../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
  * @submodule components
@@ -88,7 +88,7 @@ export default CpPanelComponent.extend(Analytics, {
                     .trackEvent({
                         category: 'div',
                         action: 'click',
-                        label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.name} section`
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.name} section`
                     });
                 this._super(...arguments);
             } else {

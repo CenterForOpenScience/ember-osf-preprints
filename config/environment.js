@@ -123,11 +123,26 @@ module.exports = function(environment) {
         metricsAdapters: [
             {
                 name: 'GoogleAnalytics',
-                environments: ['all'],
+                environments: [process.env.KEEN_ENVIRONMENT] || ['production'],
                 config: {
                     id: process.env.GOOGLE_ANALYTICS_ID
                 }
-            }
+            },
+            {
+                name: 'Keen',
+                environments: [process.env.KEEN_ENVIRONMENT] || ['production'],
+                config: {
+                    private: {
+                        projectId: process.env.PREPRINTS_PRIVATE_PROJECT_ID,
+                        writeKey: process.env.PREPRINTS_PRIVATE_WRITE_KEY
+                    },
+                    public: {
+                        projectId: process.env.PREPRINTS_PUBLIC_PROJECT_ID,
+                        writeKey: process.env.PREPRINTS_PUBLIC_WRITE_KEY
+                    }
+                }
+            },
+
         ],
         FB_APP_ID: process.env.FB_APP_ID,
     };
@@ -163,6 +178,8 @@ module.exports = function(environment) {
         // TODO: Provide mocks for all components with manual AJAX calls in the future.
         ENV.SHARE.baseUrl = '/nowhere';
         ENV.SHARE.searchUrl = '/nowhere';
+        ENV.OSF = {};
+        ENV.OSF.shareSearchUrl = '/nowhere';
 
         ENV.metricsAdapters[0].config.cookieDomain = 'none'
     }
