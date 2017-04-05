@@ -1,0 +1,14 @@
+<button type="button" class="close" data-dismiss="alert" aria-label="Close" {{action 'dismiss'}}>
+    <span aria-hidden="true">&times;</span>
+</button>
+<strong>Notice:</strong>
+<span>
+    The site will undergo maintenance between
+    <strong>
+        <time>{{moment-format maintenance.start 'lll'}}</time>
+        and
+        <time>{{moment-format maintenance.end 'lll'}}</time>
+    </strong>
+    ({{moment-format maintenance.start 'ZZ'}} UTC).
+    Thank you for your patience.
+</span>

@@ -31,9 +31,9 @@
             </div> {{!END ROW}}
             <div class="row">
                 <div class="text-center col-xs-12">
-                    <p class="lead"> or </p>
-                    <a type="button" class="btn btn-success btn-lg preprint-submit-button" href={{concat '/preprints/' (if theme.isProvider (concat theme.id '/')) 'submit'}} onclick={{action "click" "link" "Preprints - Index - Add preprint"}}>{{t "global.add_preprint"}}</a>
-                    <div class="m-t-md">{{#link-to (if theme.isProvider "provider.content" "content") (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Preprints - Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
+                    <p class="lead">{{t 'index.header.or'}}</p>
+                    <a type="button" class="btn btn-success btn-lg preprint-submit-button" href={{concat theme.pathPrefix 'submit'}} onclick={{action "click" "link" "Preprints - Index - Add preprint"}}>{{t "global.add_preprint"}}</a>
+                    <div class="m-t-md">{{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Preprints - Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
                 </div>
             </div>
         </div> {{!END CONTAINER}}
@@ -52,7 +52,6 @@
             </div>{{!END ROW}}
         </div> {{!END CONTAINER}}
     </div> {{!END SUBJECTS LIST}}
-
 
     {{#unless theme.isProvider}}
         {{!SERVICES}}
@@ -95,19 +94,14 @@
         </div>
     {{/unless}}
 
+
     {{!ADVISORY GROUP}}
-    {{#if (and theme.isProvider theme.provider.advisoryBoard.length)}}
-        <div class="preprint-advisory p-v-md">
-            <div class="container">
-                <div class="row">
+    <div class="preprint-advisory p-v-md">
+        <div class="container">
+            <div class="row">
+                {{#if (and theme.isProvider theme.provider.advisoryBoard.length)}}
                     {{safe-markup theme.provider.advisoryBoard}}
-                </div>
-            </div>
-        </div>
-    {{else if (not theme.isProvider)}}
-        <div class="preprint-advisory p-v-md">
-            <div class="container">
-                <div class="row">
+                {{else if (not theme.isProvider)}}
                     <div class="col-xs-12">
                         <h2>{{t "index.advisory.heading"}}</h2>
                         <p class="m-b-lg">{{t "index.advisory.paragraph"}}</p>
@@ -131,9 +125,8 @@
                             <li><b>Judy Ruttenberg :</b> SHARE, Association of Research Libraries</li>
                         </ul>
                     </div>
-                </div>
+                {{/if}}
             </div>
         </div>
-    {{/if}}
-
+    </div>
 </div> {{!END INDEX}}

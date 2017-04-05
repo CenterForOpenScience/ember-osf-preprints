@@ -59,13 +59,14 @@ export default Ember.Controller.extend(Analytics, {
     }),
 
     pageNumbers: [],
+    sortByOption: '',
 
     treeSubjects: Ember.computed('activeFilters', function() {
         return this.get('activeFilters.subjects').slice();
     }),
-    // chosenOption is always the first element in the list
-    chosenSortByOption: Ember.computed('sortByOptions', function() {
-        return this.get('sortByOptions')[0];
+    // chosenSortByOption is going to be the last selected element, or if it's a new page then it's the first in the list
+    chosenSortByOption: Ember.computed('sortByOption', function() {
+        return this.get('sortByOption') || this.get('sortByOptions')[0];
     }),
 
     showActiveFilters: true, //should always have a provider, don't want to mix osfProviders and non-osf
@@ -218,7 +219,7 @@ export default Ember.Controller.extend(Analytics, {
                         result.hyperLinks.push({url: identifier});
                     } else {
                         const spl = identifier.split('://');
-                        const [type, uri, ..._] = spl; // jshint ignore:line
+                        const [type, uri] = spl;
                         result.infoLinks.push({type, uri});
                     }
                 });
@@ -300,13 +301,13 @@ export default Ember.Controller.extend(Analytics, {
             });
         }
 
-        const sortByOption = this.get('chosenSortByOption');
         const sort = {};
-
         const i18n = this.get('i18n');
-        if (sortByOption.toString() === i18n.t('discover.sort_oldest_newest').toString()) {
+        const sortByOption = this.get('sortByOption').toString();
+
+        if (sortByOption === i18n.t('discover.sort_oldest_newest').toString()) {
             sort.date_updated = 'asc';
-        } else if (sortByOption.toString() === i18n.t('discover.sort_newest_oldest').toString()) {
+        } else if (sortByOption === i18n.t('discover.sort_newest_oldest').toString()) {
             sort.date_updated = 'desc';
         }
 
@@ -396,12 +397,8 @@ export default Ember.Controller.extend(Analytics, {
         },
 
         sortBySelect(index) {
-            // Selecting an option just swaps it with whichever option is first
-            let copy = this.get('sortByOptions').slice(0);
-            let temp = copy[0];
-            copy[0] = copy[index];
-            copy[index] = temp;
-            this.set('sortByOptions', copy);
+            // sets the variable for the selected option and reloads the page
+            this.set('sortByOption', this.get('sortByOptions')[index]);
             this.set('page', 1);
             this.loadPage();
 
@@ -409,7 +406,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
-                    label: `Preprints - Discover - Sort by: ${copy[index]}`
+                    label: `Preprints - Discover - Sort by: ${this.get('sortByOptions')[index]}`
                 });
         },
 

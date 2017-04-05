@@ -40,7 +40,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
         search(q) {
             let route = 'discover';
 
-            if (this.get('theme.isProvider'))
+            if (this.get('theme.isSubRoute'))
                 route = `provider.${route}`;
 
             this.transitionTo(route, { queryParams: { queryString: q } });

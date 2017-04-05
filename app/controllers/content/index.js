@@ -3,7 +3,7 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
-import fileDownloadPath from '../utils/file-download-path';
+import fileDownloadPath from '../../utils/file-download-path';
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
