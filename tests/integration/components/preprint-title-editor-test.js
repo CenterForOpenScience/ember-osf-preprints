@@ -2,45 +2,34 @@ import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 
 moduleForComponent('preprint-title-editor', 'Integration | Component | preprint title editor', {
-    integration: true,
-    beforeEach: function() {
-        this.set('titleValid', null);
-    }
+    integration: true
 });
 
-//having issues actually getting titleValid to keep track of state
-const componentRoot = `preprint-title-editor
-    titlePlaceholder='placeholder'
-    titleValid=titleValid`;
-
-function component() {
+function component(componentArgs) {
     return Ember.HTMLBars.compile(
         `{{preprint-title-editor
-            titlePlaceholder='placeholder'
-            titleValid=titleValid
-            ${[...arguments].join(' ')}
+            ${componentArgs}
         }}`
-    )
+    );
 }
 
-test('renders valid title', function(assert) {
-    let component = Ember.HTMLBars.compile(`{{${componentRoot} nodeTitle='This is a valid title'}}`);
-    this.render(component);
+//TODO: tests based on error messages, as isValid is not triggering properly
+//cursory glance at ember-cpi-validations seem to indicate trouble with testing
 
-    assert.ok(this.get('titleValid'));
-    assert.ok(this.$('.valid-input').length);
+test('renders valid title', function(assert) {
+    this.render(component('nodeTitle="This is a valid title"'));
+    assert.ok(!this.$('.error').length);
 });
 
 test('renders no title', function(assert) {
-    let component = Ember.HTMLBars.compile(`{{${componentRoot}}}`);
-    this.render(component);
-    assert.ok(!this.get('titleValid'));
-    assert.ok(this.$('.warning').length);
+    this.set('title', 'Valid Title');
+    this.render(component('nodeTitle=title'));
+    //Need to go from actual input to no input to trigger validation
+    this.set('title', '');
+    assert.ok(this.$('.error').length);
 });
 
 test('renders invalid title', function(assert) {
-    let component = Ember.HTMLBars.compile(`{{${componentRoot} nodeTitle=${'Title is too long'.repeat(250)}}}`);
-    this.render(component);
-    assert.ok(!this.get('titleValid'));
+    this.render(component(`nodeTitle='${'Title is too long'.repeat(250)}'`));
     assert.ok(this.$('.error').length);
 });
