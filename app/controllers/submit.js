@@ -398,12 +398,13 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             // gets called everytime a change is observed in the widget.
             this.set('basicsLicense', license);
             this.set('licenseValid', validates);
-            Ember.get(this, 'metrics')
-                .trackEvent({
-                    category: 'dropdown',
-                    action: 'select',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`
-                });
+            // TODO: Noticed that this fires every time the Submit page loads.  The Ember-OSF license-widget might need some changes.
+            // Ember.get(this, 'metrics')
+            //     .trackEvent({
+            //         category: 'dropdown',
+            //         action: 'select',
+            //         label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`
+            //     });
         },
         applyLicenseToggle(apply) {
             this.set('applyLicense', apply);
