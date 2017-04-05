@@ -2,7 +2,7 @@ import {moduleFor, test} from 'ember-qunit';
 import Ember from 'ember';
 import config from 'ember-get-config';
 
-moduleFor('controller:content', 'Unit | Controller | content', {
+moduleFor('controller:content/index', 'Unit | Controller | content/index', {
     needs: [
         'model:file',
         'model:file-version',
