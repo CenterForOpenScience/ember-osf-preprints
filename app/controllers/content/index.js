@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import DS from 'ember-data';
 import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from '../../mixins/analytics';
@@ -53,9 +54,7 @@ function queryStringify(queryParams) {
 export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(),
     fullScreenMFR: false,
-    expandedAuthors: true,
     showLicenseText: false,
-    fileDownloadURL: '',
     expandedAbstract: navigator.userAgent.includes('Prerender'),
     queryParams: {
         chosenFile: 'file'
@@ -116,15 +115,19 @@ export default Ember.Controller.extend(Analytics, {
 
     hasTag: Ember.computed.bool('node.tags.length'),
 
-    getAuthors: Ember.observer('node', function() {
+    authors: Ember.computed('node', function() {
         // Cannot be called until node has loaded!
         const node = this.get('node');
-        if (!node) return [];
+
+        if (!node)
+            return [];
 
         const contributors = Ember.A();
-        loadAll(node, 'contributors', contributors).then(() =>
-            this.set('authors', contributors)
-        );
+
+        return DS.PromiseArray.create({
+            promise: loadAll(node, 'contributors', contributors)
+                .then(() => contributors)
+        });
     }),
 
     doiUrl: Ember.computed('model.doi', function() {
@@ -140,9 +143,10 @@ export default Ember.Controller.extend(Analytics, {
             .replace(/({{copyrightHolders}})/g, copyright_holders.join(', '));
     }),
 
-    _fileDownloadURL: Ember.observer('model.primaryFile', function() {
-        this.get('model.primaryFile').then(file => {
-            this.set('fileDownloadURL', fileDownloadPath(file, this.get('node')));
+    fileDownloadURL: Ember.computed('model.primaryFile', 'node', function() {
+        return DS.PromiseObject.create({
+            promise: this.get('model.primaryFile')
+                .then(file => fileDownloadPath(file, this.get('node')))
         });
     }),
 
@@ -185,17 +189,15 @@ export default Ember.Controller.extend(Analytics, {
                     label: `Preprints - Content - MFR ${beforeState}`
                 });
         },
-        // Unused
-        expandAuthors() {
-            this.toggleProperty('expandedAuthors');
-        },
         expandAbstract() {
             this.toggleProperty('expandedAbstract');
         },
         // Metrics are handled in the component
         chooseFile(fileItem) {
-            this.set('chosenFile', fileItem.get('id'));
-            this.set('activeFile', fileItem);
+            this.setProperties({
+                chosenFile: fileItem.get('id'),
+                activeFile: fileItem
+            });
         },
         shareLink(href, category, action, label) {
             const metrics = Ember.get(this, 'metrics');

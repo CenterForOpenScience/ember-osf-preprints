@@ -30,9 +30,7 @@ test('Initial properties', function (assert) {
 
     const expected = {
         fullScreenMFR: false,
-        expandedAuthors: true,
         showLicenseText: false,
-        fileDownloadURL: '',
         activeFile: null,
         chosenFile: null,
     };
@@ -174,6 +172,30 @@ test('hasTag computed property', function (assert) {
     });
 });
 
+test('authors computed property', function (assert) {
+    assert.expect(1);
+    this.inject.service('store');
+
+    const store = this.store;
+    const ctrl = this.subject();
+
+    Ember.run(() => {
+        const node = store.createRecord('node', {
+            id: 'abc12'
+        });
+
+        ctrl.setProperties({
+            node
+        });
+
+        // TODO figure out how to test with at least one contributor
+        ctrl.get('authors')
+            .then(authors => {
+                assert.strictEqual(authors.length, 0);
+            });
+    });
+});
+
 test('doiUrl computed property', function (assert) {
     this.inject.service('store');
 
@@ -243,6 +265,57 @@ test('fullLicenseText computed property', function (assert) {
             ctrl.get('fullLicenseText'),
             'The year is 2000.'
         );
+    });
+});
+
+test('fileDownloadURL computed property', function (assert) {
+    // Note: testing of the file download url string value should be done in the file-download-path util test
+    this.inject.service('store');
+
+    const store = this.store;
+    const ctrl = this.subject();
+
+    // Without a node should be null
+    Ember.run(() => {
+        const primaryFile = store.createRecord('file', {
+            guid: 'abc12',
+            path: '/test_path'
+        });
+
+        const model = store.createRecord('preprint', {
+            primaryFile
+        });
+
+        ctrl.setProperties({
+            model
+        });
+
+        ctrl.get('fileDownloadURL')
+            .then(url => assert.notOk(url));
+    });
+
+    // With file and node
+    Ember.run(() => {
+        const primaryFile = store.createRecord('file', {
+            guid: 'abc12',
+            path: '/test_path'
+        });
+
+        const model = store.createRecord('preprint', {
+            primaryFile
+        });
+
+        const node = store.createRecord('node', {
+            id: 'def34'
+        });
+
+        ctrl.setProperties({
+            model,
+            node
+        });
+
+        ctrl.get('fileDownloadURL')
+            .then(url => assert.ok(url));
     });
 });
 
@@ -321,3 +394,55 @@ test('description computed property', function (assert) {
         );
     });
 });
+
+test('toggleLicenseText action', function (assert) {
+    const ctrl = this.subject();
+    const initialValue = ctrl.get('showLicenseText');
+
+    ctrl.send('toggleLicenseText');
+    assert.strictEqual(ctrl.get('showLicenseText'), !initialValue);
+
+    ctrl.send('toggleLicenseText');
+    assert.strictEqual(ctrl.get('showLicenseText'), initialValue);
+});
+
+test('expandMFR action', function (assert) {
+    const ctrl = this.subject();
+    const initialValue = ctrl.get('fullScreenMFR');
+
+    ctrl.send('expandMFR');
+    assert.strictEqual(ctrl.get('fullScreenMFR'), !initialValue);
+
+    ctrl.send('expandMFR');
+    assert.strictEqual(ctrl.get('fullScreenMFR'), initialValue);
+});
+
+test('expandAbstract action', function (assert) {
+    const ctrl = this.subject();
+    const initialValue = ctrl.get('expandedAbstract');
+
+    ctrl.send('expandAbstract');
+    assert.strictEqual(ctrl.get('expandedAbstract'), !initialValue);
+
+    ctrl.send('expandAbstract');
+    assert.strictEqual(ctrl.get('expandedAbstract'), initialValue);
+});
+
+test('chooseFile action', function (assert) {
+    this.inject.service('store');
+
+    const store = this.store;
+    const ctrl = this.subject();
+
+    Ember.run(() => {
+        const fileItem = store.createRecord('file', {
+            id: 'test1'
+        });
+
+        ctrl.send('chooseFile', fileItem);
+        assert.strictEqual(ctrl.get('chosenFile'), 'test1');
+        assert.strictEqual(ctrl.get('activeFile'), fileItem);
+    });
+});
+
+// Don't try to test shareLink, since it includes a window.open call. No good way to test that.
