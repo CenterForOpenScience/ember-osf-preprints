@@ -4,9 +4,11 @@ import { module, test } from 'qunit';
 
 module('Unit | Mixin | reset scroll');
 
-// Replace this with your real tests.
-test('it works', function(assert) {
-  let ResetScrollObject = Ember.Object.extend(ResetScrollMixin);
-  let subject = ResetScrollObject.create();
-  assert.ok(subject);
+test('ResetScrollMixin mixin scrolls back to the top on every new route', function(assert) {
+    let routeObject = Ember.Route.extend(ResetScrollMixin);
+    let routeTest = routeObject.create();
+    assert.equal(ResetScrollMixin.detect(routeTest), true);
+    assert.equal(routeTest.get('scrollTopValue'), null);
+    routeTest.activate();
+    assert.equal(routeTest.get('scrollTopValue'), 0);
 });
