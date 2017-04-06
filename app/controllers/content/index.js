@@ -137,7 +137,7 @@ export default Ember.Controller.extend(Analytics, {
         let text = this.get('model.license.text');
         if (text) {
             text = text.replace(/({{year}})/g, this.get('model.licenseRecord').year || '');
-            text = text.replace(/({{copyrightHolders}})/g, this.get('model.licenseRecord').copyright_holders ? this.get('model.licenseRecord').copyright_holders.join(',') : false || '');
+            text = text.replace(/({{copyrightHolders}})/g, this.get('model.licenseRecord').copyright_holders ? this.get('model.licenseRecord').copyright_holders.join(', ') : false || '');
         }
         return text;
     }),

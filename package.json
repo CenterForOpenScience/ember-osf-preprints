@@ -76,6 +76,8 @@
     "ember-truth-helpers": "1.2.0",
     "ember-welcome-page": "^1.0.1",
     "eslint": "^3.18.0",
+    "faker": "^4.1.0",
+    "jscs": "^3.0.7",
     "liquid-fire": "0.24.1",
     "loader.js": "^4.0.1",
     "pagination-pager": "2.4.2",

@@ -304,7 +304,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         let license = this.get('model.license');
         return {
             year: record ? record.year : null,
-            copyrightHolders: record && record.copyright_holders ? record.copyright_holders.join(',') : null,
+            copyrightHolders: record && record.copyright_holders ? record.copyright_holders.join(', ') : null,
             licenseType: license || null
         };
     }),
@@ -313,7 +313,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         if (this.get('model.licenseRecord') || this.get('model.license.content')) {
             changed = changed || (this.get('model.license.name') !== this.get('basicsLicense.licenseType.name'));
             changed = changed || (this.get('model.licenseRecord').year !== this.get('basicsLicense.year'));
-            changed = changed || ((this.get('model.licenseRecord.copyright_holders.length') ? this.get('model.licenseRecord.copyright_holders').join(',') : '') !== this.get('basicsLicense.copyrightHolders'));
+            changed = changed || ((this.get('model.licenseRecord.copyright_holders.length') ? this.get('model.licenseRecord.copyright_holders').join(', ') : '') !== this.get('basicsLicense.copyrightHolders'));
         } else {
             changed = changed || ((this.get('availableLicenses').toArray().length ? this.get('availableLicenses').toArray()[0].get('name') : null) !== this.get('basicsLicense.licenseType.name'));
             let date = new Date();
@@ -675,7 +675,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 this.set('basicsLicense', {
                     licenseType: license || this.get('availableLicenses').toArray()[0],
                     year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : date.getUTCFullYear().toString(),
-                    copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(',') : ''
+                    copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(', ') : ''
                 });
             });
         },
@@ -717,7 +717,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             let newCopyrightHolders = [];
             if (this.get('basicsLicense.copyrightHolders') && this.get('basicsLicense.copyrightHolders').length) {
-                newCopyrightHolders = this.get('basicsLicense.copyrightHolders').slice().split(',');
+                newCopyrightHolders = this.get('basicsLicense.copyrightHolders').slice().split(', ');
             }
 
             if (this.get('abstractChanged')) node.set('description', this.get('basicsAbstract'));

@@ -20,87 +20,86 @@ test('it exists', function(assert) {
     assert.ok(controller);
 });
 
-test('fullLicenseText computed property', function(assert) {
+test('fullLicenseText computed property with multiple copyright holders and year', function(assert) {
     let ctrl = this.subject();
     let preprint = FactoryGuy.make('preprint');
     let license = preprint.get('license');
-    ctrl.set('model', preprint);
-    license.set('text', 'On {{year}}, for {{copyrightHolders}}');
-
-    preprint.set('licenseRecord',  {
-        year: '2001',
-        copyright_holders: ['Henrique', 'Someone Else']
+    Ember.run(() => {
+        ctrl.set('model', preprint);
+        license.set('text', 'On {{year}}, for {{copyrightHolders}}');
+        preprint.set('licenseRecord',  {
+            year: '2001',
+            copyright_holders: ['Henrique', 'Someone Else']
+        });
+        assert.equal(ctrl.get('fullLicenseText'), 'On 2001, for Henrique, Someone Else');
     });
-    ctrl.notifyPropertyChange('model.license');
-    assert.equal(ctrl.get('fullLicenseText'), 'On 2001, for Henrique,Someone Else');
+});
 
-    preprint.set('licenseRecord',  {
-        year: '',
-        copyright_holders: []
-    });
-    ctrl.notifyPropertyChange('model.license');
-    assert.equal(ctrl.get('fullLicenseText'), 'On , for ');
+test('fullLicenseText computed property with no copyright holders or year', function(assert) {
+    let ctrl = this.subject();
+    let preprint = FactoryGuy.make('preprint');
+    let license = preprint.get('license');
+    Ember.run(() => {
+        ctrl.set('model', preprint);
+        license.set('text', 'On {{year}}, for {{copyrightHolders}}');
+        preprint.set('licenseRecord',  {
+            year: '',
+            copyright_holders: []
+        });
 
-    preprint.set('licenseRecord',  {
-        year: '{{year}}',
-        copyright_holders: ['{{copyrightHolders}}']
+        assert.equal(ctrl.get('fullLicenseText'), 'On , for ');
     });
-    ctrl.notifyPropertyChange('model.license');
-    assert.equal(ctrl.get('fullLicenseText'), 'On {{year}}, for {{copyrightHolders}}');
+});
+test('fullLicenseText computed property with {{}} for copyrightHolders', function(assert) {
+    let ctrl = this.subject();
+    let preprint = FactoryGuy.make('preprint');
+    let license = preprint.get('license');
+    Ember.run(() => {
+        ctrl.set('model', preprint);
+        license.set('text', 'On {{year}}, for {{copyrightHolders}}');
+        preprint.set('licenseRecord',  {
+            year: '{{year}}',
+            copyright_holders: ['{{copyrightHolders}}']
+        });
+
+        assert.equal(ctrl.get('fullLicenseText'), 'On {{year}}, for {{copyrightHolders}}');
+    });
 });
 
 test('useShortenedDescription computed property', function(assert) {
     let ctrl = this.subject();
     let node = FactoryGuy.make('node');
-    ctrl.set('node', node);
     Ember.run(() => {
+        ctrl.set('node', node);
+
         node.set('description', 'string'.repeat(100).slice(0, 351));
-        ctrl.notifyPropertyChange('node.description');
         assert.ok(ctrl.get('useShortenedDescription'));
 
         node.set('description', 'string'.repeat(100).slice(0, 350));
-        ctrl.notifyPropertyChange('node.description');
         assert.ok(!ctrl.get('useShortenedDescription'));
 
         node.set('description', 'string'.repeat(100).slice(0, 349));
-        ctrl.notifyPropertyChange('node.description');
         assert.ok(!ctrl.get('useShortenedDescription'));
     });
 });
 
 test('description computed property', function(assert) {
+    let ctrl = this.subject();
+    let node = FactoryGuy.make('node');
     Ember.run(() => {
-        let ctrl = this.subject();
-        let node = FactoryGuy.make('node');
         ctrl.set('node', node);
         ctrl.set('expandedAbstract', false);
 
         //Test cut at 350 characters
         let description = 'string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string str';
-        let notExpanded = description.slice(0, 350) + '...';
-        node.set('description', description)
-        ctrl.notifyPropertyChange('description');
-        assert.equal(ctrl.get('description'), notExpanded);
+        let notExpanded = description.slice(0, 350);
+        node.set('description', description);
+        assert.equal(ctrl.get('description'), notExpanded.trim());
 
         //Test cut at less than 350 characters to not cut in middle of word
         description = 'string stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring';
-        notExpanded = 'string ...';
-        node.set('description', description)
-        ctrl.notifyPropertyChange('description');
-        assert.equal(ctrl.get('description'), notExpanded);
-
-        //Test less than 350 doesn't use description (uses node.description)
-
-        ctrl.set('expandedAbstract', true);
-
-        description = 'string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string string str';
-        node.set('description', description)
-        ctrl.notifyPropertyChange('description');
-        assert.equal(ctrl.get('description'), description);
-
-        description = 'string stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring';
-        node.set('description', description)
-        ctrl.notifyPropertyChange('description');
-        assert.equal(ctrl.get('description'), description);
+        notExpanded = 'string ';
+        node.set('description', description);
+        assert.equal(ctrl.get('description'), notExpanded.trim());
     });
 });
