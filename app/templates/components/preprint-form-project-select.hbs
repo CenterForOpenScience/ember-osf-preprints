@@ -95,7 +95,7 @@
                                             {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name)}}
                                         </form>
                                         <div class="text-center m-v-md">
-                                            <p>{{t "components.preprint-form-project-select.initiate_preprint_process"}}  </p>
+                                            <p> {{t "components.preprint-form-project-select.initiate_preprint_process"}} </p>
                                             <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>{{t "submit.body.save_continue"}}</button>
                                         </div>
                                     {{/preprint-form-body}}

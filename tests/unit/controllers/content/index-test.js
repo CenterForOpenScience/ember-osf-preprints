@@ -2,8 +2,7 @@ import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
 import FactoryGuy, { manualSetup } from 'ember-data-factory-guy';
 
-
-moduleFor('controller:content', 'Unit | Controller | content', {
+moduleFor('controller:content/index', 'Unit | Controller | content', {
     needs: ['service:metrics', 'service:theme', 'model:file', 'model:preprint',
             'model:preprint-provider', 'model:node', 'model:license',
             'model:user', 'model:citation', 'model:draft-registration',
