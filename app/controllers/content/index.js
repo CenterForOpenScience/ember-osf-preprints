@@ -218,7 +218,7 @@ export default Ember.Controller.extend(Analytics, {
         },
         // Sends Event to GA/Keen as normal. Sends second event to Keen under "non-contributor-preprint-downloads" collection
         // to track non contributor preprint downloads specifically.
-        dualTrackNonContributors(category, label, url) {
+        dualTrackNonContributors(category, label, url, primary) {
             this.send('click', category, label, url); // Sends event to both Google Analytics and Keen.
             const authors = this.get('authors');
             let userIsContrib = false;
@@ -230,9 +230,9 @@ export default Ember.Controller.extend(Analytics, {
                         id: this.get('model.id')
                     },
                     file: {
-                        id: this.get('activeFile.id'),
-                        primaryFile: this.get('model.primaryFile.id') === this.get('activeFile.id'),
-                        version: this.get('model.primaryFile.currentVersion')
+                        id: primary ? this.get('model.primaryFile.id') : this.get('activeFile.id'),
+                        primaryFile: primary,
+                        version: primary ? this.get('model.primaryFile.currentVersion') : this.get('activeFile.currentVersion')
                     }
                 },
                 interaction: {
