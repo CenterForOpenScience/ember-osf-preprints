@@ -1,27 +1,4 @@
-{{title 'Resource Deleted'}}
-
-<div class="preprint-410">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h1>{{t "resource-deleted.heading"}} </h1>
-                <p>
-                    <span>{{t "resource-deleted.paragraph.line1"}}</span>
-                    <a href="mailto:{{if theme.isProvider theme.provider.emailSupport "support@osf.io"}}"
-                       onbeforeclick={{action "click" "link" "Resource Deleted - Support"}}>
-                        {{if (and theme.isProvider theme.provider.emailSupport) theme.provider.emailSupport "support@osf.io"}}
-                    </a>
-                </p>
-                {{#if theme.isProvider}}
-                    {{#link-to "provider.index" theme.id class="btn btn-primary m-t-md" invokeAction=(action "click" "link" "Resource Deleted - Go to Index")}}
-                        {{t "resource-deleted.go_to" brand=(t "global.provider_brand" name=theme.provider.name)}}
-                    {{/link-to}}
-                {{else}}
-                    {{#link-to "index" class="btn btn-primary m-t-md" invokeAction=(action "click" "link" "Resource Deleted - Go to Index")}}
-                        {{t "resource-deleted.go_to" brand=(t "global.brand")}}
-                    {{/link-to}}
-                {{/if}}
-            </div>
-        </div>
-    </div>
-</div>
+{{error-page
+    label='Resource Deleted'
+    translateKey='resource-deleted'
+}}
