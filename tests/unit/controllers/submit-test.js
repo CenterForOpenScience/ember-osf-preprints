@@ -2,20 +2,25 @@ import { moduleFor, test, skip } from 'ember-qunit';
 import Ember from 'ember';
 // import wait from 'ember-test-helpers/wait';
 
+let panels = Ember.Object.create({
+    Discipline: Ember.Object.create({'isOpen': true}),
+    Basics: Ember.Object.create({'isOpen': false})
+});
+
 //Stub panelActions service
 const panelActionsStub = Ember.Service.extend({
     open(name) {
         const panel = panels[name];
         panel.set('isOpen', true);
     },
+    close(name) {
+        const panel = panels[name];
+        panel.set('isOpen', false);
+    },
     toggle(name) {
         const panel = panels[name];
         return panel.get('isOpen') ? panel.set('isOpen', false) : panel.set('isOpen', true);
     }
-});
-
-let panels = Ember.Object.create({
-    'Discipline': Ember.Object.create({'isOpen': true}), 'Basics': Ember.Object.create({'isOpen': false})
 });
 
 moduleFor('controller:submit', 'Unit | Controller | submit', {
@@ -70,7 +75,7 @@ test('isTopLevelNode computed property', function(assert) {
             }),
             contributors: []
         });
-        assert.equal(ctrl.get('isTopLevelNode'), null);
+        assert.equal(ctrl.get('isTopLevelNode'), true);
         ctrl.set('node', node);
         assert.equal(ctrl.get('isTopLevelNode'), false);
     });
@@ -78,10 +83,12 @@ test('isTopLevelNode computed property', function(assert) {
 
 test('hasFile computed property', function(assert) {
     const ctrl = this.subject();
-    assert.equal(ctrl.get('hasFile'), false);
+    assert.notOk(ctrl.get('hasFile'));
     ctrl.set('file', 'Test File');
-    assert.equal(ctrl.get('hasFile'), true);
+    assert.ok(ctrl.get('hasFile'));
 });
+
+// TODO clearFields function
 
 test('uploadValid computed property', function(assert) {
     const ctrl = this.subject();
@@ -105,6 +112,8 @@ test('doiValid computed property', function(assert) {
     ctrl.set('basicsDOI', '10.1234/hello');
     assert.equal(ctrl.get('doiValid'), true);
 });
+
+// TODO licenseValid
 
 test('basicsValid computed property', function(assert) {
     const ctrl = this.subject();
@@ -145,6 +154,7 @@ test('savedTitle computed property', function(assert) {
         assert.equal(ctrl.get('savedTitle'), false);
         ctrl.set('node', nodeWithTitle);
         assert.equal(ctrl.get('savedTitle'), true);
+        Ember.run.cancelTimers();
     });
 });
 
@@ -166,6 +176,7 @@ test('savedFile computed property', function(assert) {
         assert.equal(ctrl.get('savedFile'), false);
         ctrl.set('model', preprintWithFile);
         assert.equal(ctrl.get('savedFile'), true);
+        Ember.run.cancelTimers();
     });
 });
 
@@ -182,6 +193,7 @@ test('savedAbstract computed property', function(assert) {
         assert.equal(ctrl.get('savedAbstract'), false);
         ctrl.set('node', nodeWithDescription);
         assert.equal(ctrl.get('savedAbstract'), true);
+        Ember.run.cancelTimers();
     });
 });
 
@@ -200,6 +212,7 @@ test('savedSubjects computed property', function(assert) {
         assert.equal(ctrl.get('savedSubjects'), false);
         ctrl.set('model', modelWithSubjects);
         assert.equal(ctrl.get('savedSubjects'), true);
+        Ember.run.cancelTimers();
     });
 });
 
@@ -207,9 +220,13 @@ test('allSectionsValid computed property', function(assert) {
     const ctrl = this.subject();
     assert.equal(ctrl.get('allSectionsValid'), false);
     ctrl.set('savedTitle', true);
+    assert.equal(ctrl.get('allSectionsValid'), false);
     ctrl.set('savedFile', true);
+    assert.equal(ctrl.get('allSectionsValid'), false);
     ctrl.set('savedAbstract', true);
+    assert.equal(ctrl.get('allSectionsValid'), false);
     ctrl.set('savedSubjects', true);
+    assert.equal(ctrl.get('allSectionsValid'), false);
     ctrl.set('authorsValid', true);
     assert.equal(ctrl.get('allSectionsValid'), true);
 });
@@ -275,6 +292,7 @@ test('basicsAbstract computed property', function(assert) {
         });
         ctrl.set('node', node);
         assert.equal(ctrl.get('basicsAbstract'), 'A great abstract');
+        Ember.run.cancelTimers();
     });
 });
 
@@ -546,23 +564,27 @@ test('applyLicenseToggle toggles applyLicense', function(assert) {
     assert.equal(ctrl.get('applyLicense'), true);
 });
 
-skip('next opens next panel and flashes changes saved', function(assert) {
+test('next opens next panel and flashes changes saved', function(assert) {
     assert.expect(3);
     // TODO fix: Error: Assertion Failed: calling set on destroyed object:
 
     const ctrl = this.subject();
     const currentPanelName = 'Discipline';
 
-    panels = Ember.Object.create({
-        'Discipline': Ember.Object.create({'isOpen': true}), 'Basics': Ember.Object.create({'isOpen': false})
+    Ember.run(() => {
+        panels = Ember.Object.create({
+            'Discipline': Ember.Object.create({'isOpen': true}),
+            'Basics': Ember.Object.create({'isOpen': false})
+        });
+
+        assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
+
+        ctrl.send('next', currentPanelName);
+        Ember.run.cancelTimers();
+
+        assert.equal(panels.get('Discipline.isOpen'), true);
+        assert.equal(panels.get('Basics.isOpen'), true);
     });
-
-    assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
-
-    ctrl.send('next', currentPanelName);
-
-    assert.equal(panels.get('Discipline.isOpen'), true);
-    assert.equal(panels.get('Basics.isOpen'), true);
 });
 
 test('nextUploadSection closes current panel and opens next panel', function(assert) {
@@ -577,24 +599,25 @@ test('nextUploadSection closes current panel and opens next panel', function(ass
 
 });
 
-skip('changesSaved temporarily changes currentPanelSaveState to true', function() {
-    test('changesSaved temporarily changes currentPanelSaveState to true', function(assert) {
-        // TODO changesSaved has a setTimeout which causes "calling set on destroyed object" to be thrown.
-        // How to wait until setTimeout has finished before breaking test down?
-        const ctrl = this.subject();
-        let currentPanelName = 'Discipline';
-        assert.equal(ctrl.get('disciplineSaveState'), false);
-        ctrl.send('changesSaved', currentPanelName);
-    });
-});
+// test('changesSaved temporarily changes currentPanelSaveState to true', function(assert) {
+//     assert.expect(2);
+//
+//     const ctrl = this.subject();
+//     let currentPanelName = 'Discipline';
+//     assert.equal(ctrl.get('disciplineSaveState'), false);
+//
+//     return Ember.run(() => {
+//         ctrl.send('changesSaved', currentPanelName);
+//
+//         Ember.run.next(ctrl, () => {
+//             assert.equal(ctrl.get('disciplineSaveState'), true);
+//         });
+//     });
+// });
 
-test('error', function(assert) {
-    // TODO How to properly test this?  The error action creates an error
-    // toast message displaying the error message
+test('error action exists', function(assert) {
     const ctrl = this.subject();
-    let error = 'This is incorrect.';
-    ctrl.send('error', error);
-    assert.equal(error, error);
+    assert.ok(ctrl.actions.error);
 });
 
 skip('changeInitialState', function() {
@@ -603,11 +626,16 @@ skip('changeInitialState', function() {
     // });
 });
 
-test('lockNode', function(assert) {
+test('finishUpload', function(assert) {
     const ctrl = this.subject();
     assert.equal(ctrl.get('nodeLocked'), false);
-    ctrl.send('lockNode');
-    assert.equal(ctrl.get('nodeLocked'), true);
+
+    Ember.run(() => {
+        ctrl.send('finishUpload');
+        assert.equal(ctrl.get('nodeLocked'), true);
+        assert.equal(ctrl.get('file'), null);
+        Ember.run.cancelTimers();
+    });
 });
 
 skip('finishUpload', function() {
@@ -707,20 +735,106 @@ test('discardUploadChanges', function(assert) {
     });
 });
 
-test('clearDownstreamFields in entire upload section', function(assert) {
+test('clearDownstreamFields action - belowConvertOrCopy', function(assert) {
     this.inject.service('store');
-    let store = this.store;
+
+    const store = this.store;
     const ctrl = this.subject();
+
     Ember.run(() => {
-        let node = store.createRecord('node', {
+        const node = store.createRecord('node', {
             title: 'hello'
         });
+
         ctrl.set('node', node);
         ctrl.set('selectedFile', 'Test file');
         ctrl.set('file', 'file');
         ctrl.set('convertOrCopy', 'copy');
         ctrl.set('nodeTitle', 'Test title');
+
+        ctrl.send('clearDownstreamFields', 'belowConvertOrCopy');
+
+        assert.equal(ctrl.get('node'), node);
+        assert.equal(ctrl.get('selectedFile'), 'Test file');
+        assert.equal(ctrl.get('file'), 'file');
+        assert.equal(ctrl.get('convertOrCopy'), 'copy');
+        assert.equal(ctrl.get('nodeTitle'), null);
+    });
+});
+
+test('clearDownstreamFields action - belowFile', function(assert) {
+    this.inject.service('store');
+
+    const store = this.store;
+    const ctrl = this.subject();
+
+    Ember.run(() => {
+        const node = store.createRecord('node', {
+            title: 'hello'
+        });
+
+        ctrl.set('node', node);
+        ctrl.set('selectedFile', 'Test file');
+        ctrl.set('file', 'file');
+        ctrl.set('convertOrCopy', 'copy');
+        ctrl.set('nodeTitle', 'Test title');
+
+        ctrl.send('clearDownstreamFields', 'belowFile');
+
+        assert.equal(ctrl.get('node'), node);
+        assert.equal(ctrl.get('selectedFile'), 'Test file');
+        assert.equal(ctrl.get('file'), 'file');
+        assert.equal(ctrl.get('convertOrCopy'), null);
+        assert.equal(ctrl.get('nodeTitle'), null);
+    });
+});
+
+test('clearDownstreamFields action - belowNode', function(assert) {
+    this.inject.service('store');
+
+    const store = this.store;
+    const ctrl = this.subject();
+
+    Ember.run(() => {
+        const node = store.createRecord('node', {
+            title: 'hello'
+        });
+
+        ctrl.set('node', node);
+        ctrl.set('selectedFile', 'Test file');
+        ctrl.set('file', 'file');
+        ctrl.set('convertOrCopy', 'copy');
+        ctrl.set('nodeTitle', 'Test title');
+
+        ctrl.send('clearDownstreamFields', 'belowNode');
+
+        assert.equal(ctrl.get('node'), node);
+        assert.equal(ctrl.get('selectedFile'), null);
+        assert.equal(ctrl.get('file'), null);
+        assert.equal(ctrl.get('convertOrCopy'), null);
+        assert.equal(ctrl.get('nodeTitle'), null);
+    });
+});
+
+test('clearDownstreamFields action - allUpload', function(assert) {
+    this.inject.service('store');
+
+    const store = this.store;
+    const ctrl = this.subject();
+
+    Ember.run(() => {
+        const node = store.createRecord('node', {
+            title: 'hello'
+        });
+
+        ctrl.set('node', node);
+        ctrl.set('selectedFile', 'Test file');
+        ctrl.set('file', 'file');
+        ctrl.set('convertOrCopy', 'copy');
+        ctrl.set('nodeTitle', 'Test title');
+
         ctrl.send('clearDownstreamFields', 'allUpload');
+
         assert.equal(ctrl.get('node'), null);
         assert.equal(ctrl.get('selectedFile'), null);
         assert.equal(ctrl.get('file'), null);
@@ -772,28 +886,26 @@ test('stripDOI', function(assert) {
     assert.equal(ctrl.get('basicsDOI'), '10.1234/hello');
 });
 
-skip('saveBasics', function() {
-    // test('saveBasics', function(assert) {
-    //     this.inject.service('store');
-    //     let store = this.store;
-    //     const ctrl = this.subject();
-    //     Ember.run.later(() => {
-    //         let node = store.createRecord('node', {
-    //             title: 'hello',
-    //             tags: ['tags'],
-    //             description: 'This is an abstract.'
-    //         });
-    //         let preprint = store.createRecord('preprint', {
-    //             primaryFile: 'Test file',
-    //             'doi': '10.1234/test'
-    //         });
-    //         ctrl.set('node', node);
-    //         ctrl.set('model', preprint);
-    //         ctrl.send('saveBasics');
-    //
-    //     });
-    // });
-});
+// test('saveBasics', function(assert) {
+//     this.inject.service('store');
+//     let store = this.store;
+//     const ctrl = this.subject();
+//     Ember.run(() => {
+//         let node = store.createRecord('node', {
+//             title: 'hello',
+//             tags: ['tags'],
+//             description: 'This is an abstract.'
+//         });
+//         let preprint = store.createRecord('preprint', {
+//             primaryFile: 'Test file',
+//             'doi': '10.1234/test'
+//         });
+//         ctrl.set('node', node);
+//         ctrl.set('model', preprint);
+//         ctrl.send('saveBasics');
+//         Ember.run.cancelTimers();
+//     });
+// });
 
 test('addTag', function(assert) {
     const ctrl = this.subject();
