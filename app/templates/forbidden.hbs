@@ -1,27 +1,4 @@
-{{title 'Forbidden'}}
-
-<div class="preprint-403">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h1>{{t "page-forbidden.heading"}}</h1>
-                <p>
-                    <span>{{t "page-forbidden.paragraph.line1" brand=(if theme.isProvider (t "global.provider_brand" name=theme.provider.name) (t "global.brand"))}}</span>
-                    <a href="mailto:{{if theme.isProvider theme.provider.emailSupport "support@osf.io"}}"
-                       onbeforeclick={{action "click" "link" "Forbidden - Support"}}>
-                        {{if theme.isProvider theme.provider.emailSupport "support@osf.io"}}
-                    </a>
-                </p>
-                {{#if theme.isProvider}}
-                    {{#link-to "provider.index" theme.id class="btn btn-primary m-t-md" invokeAction=(action "click" "link" "Forbidden - Go to Index")}}
-                        {{t "page-not-found.go_to" brand=(t "global.provider_brand" name=theme.provider.name)}}
-                    {{/link-to}}
-                {{else}}
-                    {{#link-to "index" class="btn btn-primary m-t-md" invokeAction=(action "click" "link" "Forbidden - Go to Index")}}
-                        {{t "page-not-found.go_to" brand=(t "global.brand")}}
-                    {{/link-to}}
-                {{/if}}
-            </div>
-        </div>
-    </div>
-</div>
+{{error-page
+    label='Forbidden'
+    translateKey='page-forbidden'
+}}

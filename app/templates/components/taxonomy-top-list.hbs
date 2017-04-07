@@ -2,7 +2,7 @@
     <div class="subject row m-b-sm">
         {{#each pair as |subject|}}
             <div class="col-xs-12 col-sm-6 subject-item hint--bottom hint--large" data-hint={{concat subject.text ' categories'}} aria-label={{concat subject.text ' categories'}} id={{subject.id}}>
-                {{#link-to (if theme.isProvider 'provider.discover' 'discover') (query-params subjectFilter=subject.text) class='btn btn-primary p-sm' invokeAction=(action "click" "link" (concat 'Preprints - Index - Browse ' subject.text))}}
+                {{#link-to (route-prefix 'discover') (query-params subjectFilter=subject.text) class='btn btn-primary p-sm' invokeAction=(action "click" "link" (concat 'Preprints - Index - Browse ' subject.text))}}
                     {{subject.text}}
                 {{/link-to}}
             </div>
