@@ -270,14 +270,17 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     }),
 
     // Does the list of pending tags differ from the saved tags in the db?
-    tagsChanged: Ember.computed('basicsTags', 'node.tags', function() {
-        let basicsTags = this.get('basicsTags');
-        let nodeTags = this.get('node.tags');
-        let changed = false;
-        if (basicsTags && nodeTags) {
-            changed = !(basicsTags.length === nodeTags.length && basicsTags.every((v, i)=> fixSpecialChar(v) === fixSpecialChar(nodeTags[i])));
-        }
-        return changed;
+    tagsChanged: Ember.computed('basicsTags.@each', 'node.tags', function() {
+        const basicsTags = this.get('basicsTags');
+        const nodeTags = this.get('node.tags');
+
+        return basicsTags && nodeTags &&
+            (
+                basicsTags.length !== nodeTags.length ||
+                basicsTags.some(
+                    (v, i) => fixSpecialChar(v) !== fixSpecialChar(nodeTags[i])
+                )
+            );
     }),
 
     basicsDOI: Ember.computed.or('model.doi'),
@@ -504,22 +507,31 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     action: 'click',
                     label: 'Preprints - Submit - Save and Continue, Existing Node Existing File'
                 });
-            let node = this.get('node');
+
+            const node = this.get('node');
+            const currentTitle = node.get('title');
+            const nodeTitle = this.get('nodeTitle');
+
             this.set('basicsAbstract', this.get('node.description') || null);
 
-            if (node.get('title') !== this.get('nodeTitle')) {
-                let currentTitle = node.get('title');
-                node.set('title', this.get('nodeTitle'));
-                node.save()
-                    .then(() => this.get('abandonedPreprint') ? this.send('resumeAbandonedPreprint') : this.send('startPreprint'))
-                    .catch(() => {
-                        node.set('title', currentTitle);
-                        this.get('toast').error(this.get('i18n').t('submit.could_not_update_title'));
-                    });
+            // Ember.run(() => {
+            return Promise.resolve()
+                .then(() => {
+                    if (currentTitle === nodeTitle) {
+                        return;
+                    }
 
-            } else {
-                return this.get('abandonedPreprint') ? this.send('resumeAbandonedPreprint') : this.send('startPreprint');
-            }
+                    node.set('title', nodeTitle);
+                    return node.save();
+                })
+                //.then(() => this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint'))
+                .catch(() => {
+                    node.set('title', currentTitle);
+                    this.get('toast').error(
+                        this.get('i18n').t('submit.could_not_update_title')
+                    );
+                });
+            // });
         },
         createComponentCopyFile() {
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
@@ -709,20 +721,15 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             const model = this.get('model');
             // Saves off current server-state basics fields, so UI can be restored in case of failure
             const currentAbstract = node.get('description');
-            const currentTags = node.get('tags').slice(0);
+            const currentTags = node.get('tags').slice();
             const currentDOI = model.get('doi');
             const currentLicenseType = model.get('license');
             const currentLicenseRecord = model.get('licenseRecord');
             const currentNodeLicenseType = node.get('license');
             const currentNodeLicenseRecord = node.get('nodeLicense');
-
-            const newCopyrightHolders = [];
-
-            const copyrightHolders = this.get('basicsLicense.copyrightHolders');
-
-            if (copyrightHolders && copyrightHolders.length) {
-                newCopyrightHolders.concat(copyrightHolders.slice().split(','));
-            }
+            const copyrightHolders = this.get('basicsLicense.copyrightHolders')
+                .split(',')
+                .map(item => item.trim());
 
             if (this.get('abstractChanged'))
                 node.set('description', this.get('basicsAbstract'));
@@ -731,10 +738,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 node.set('tags', this.get('basicsTags'));
 
             if (this.get('applyLicense')) {
-                if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || node.get('nodeLicense.copyrightHolders') !== newCopyrightHolders) {
+                if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || node.get('nodeLicense.copyrightHolders').join() !== copyrightHolders.join()) {
                     node.set('nodeLicense', {
                         year: this.get('basicsLicense.year'),
-                        copyright_holders: newCopyrightHolders
+                        copyright_holders: copyrightHolders
                     });
                 }
 
@@ -751,7 +758,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 model.setProperties({
                     licenseRecord: {
                         year: this.get('basicsLicense.year'),
-                        copyright_holders: newCopyrightHolders
+                        copyright_holders: copyrightHolders
                     },
                     license: this.get('basicsLicense.licenseType')
                 });
@@ -788,35 +795,29 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 });
         },
 
+        // Custom addATag method that appends tag to list instead of auto-saving
         addTag(tag) {
-            // Custom addATag method that appends tag to list instead of auto-saving
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'input',
                     action: 'onchange',
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Add Tag`
                 });
-            let tags = this.get('basicsTags').slice(0);
-            Ember.A(tags);
 
-            tags.pushObject(tag);
-            this.set('basicsTags', tags);
-            return tags;
+            this.get('basicsTags').pushObject(tag);
         },
 
+        // Custom removeATag method that removes tag from list instead of auto-saving
         removeTag(tag) {
-            // Custom removeATag method that removes tag from list instead of auto-saving
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Tag`
                 });
-            let tags = this.get('basicsTags').slice(0);
-            tags.splice(tags.indexOf(tag), 1);
-            this.set('basicsTags', tags);
-            return tags;
 
+            const tags = this.get('basicsTags');
+            tags.removeAt(tags.indexOf(tag));
         },
 
         /*
@@ -902,13 +903,11 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         * @param {string} status "success" or "error"
         */
         highlightSuccessOrFailure(elementId, context, status) {
-            Ember.run.next(Ember.Object.create({ elementId, context }), function() {
-                const highlightClass = `${status === 'success' ? 'success' : 'error'}Highlight`;
+            const highlightClass = `${status === 'success' ? 'success' : 'error'}Highlight`;
 
-                this.context.$('#' + this.elementId).addClass(highlightClass);
+            context.$('#' + elementId).addClass(highlightClass);
 
-                setTimeout(() => this.context.$('#' + this.elementId).removeClass(highlightClass), 2000);
-            });
+            Ember.run.later(() => context.$('#' + elementId).removeClass(highlightClass), 2000);
         },
         /*
           Submit tab actions
