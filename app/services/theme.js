@@ -16,10 +16,15 @@ export default Ember.Service.extend({
     store: Ember.inject.service(),
     session: Ember.inject.service(),
 
+    // If we're using a provider domain
+    isDomain: false,
+
+    // The id of the current provider
     id: config.PREPRINTS.defaultProvider,
 
     currentLocation: null,
 
+    // The provider object
     provider: Ember.computed('id', function() {
         const id = this.get('id');
 
@@ -31,21 +36,54 @@ export default Ember.Service.extend({
             .findRecord('preprint-provider', id);
     }),
 
+    // If we're using a branded provider
     isProvider: Ember.computed('id', function() {
-        const id = this.get('id');
-        return id && id !== 'osf';
+        return this.get('id') !== 'osf';
     }),
 
+    // If we're using a branded provider and not under a branded domain (e.g. /preprints/<provider>)
+    isSubRoute: Ember.computed('isProvider', 'isDomain', function() {
+        return this.get('isProvider') && !this.get('isDomain');
+    }),
+
+    pathPrefix: Ember.computed('isProvider', 'isDomain', 'id', function() {
+        let pathPrefix = '/';
+
+        if (!this.get('isDomain')) {
+            pathPrefix += 'preprints/';
+
+            if (this.get('isProvider')) {
+                pathPrefix += `${this.get('id')}/`;
+            }
+        }
+
+        return pathPrefix;
+    }),
+
+    // Needed for the content route
+    guidPathPrefix: Ember.computed('isSubRoute', 'id', function() {
+        let pathPrefix = '/';
+
+        if (this.get('isSubRoute')) {
+            pathPrefix += `preprints/${this.get('id')}/`;
+        }
+
+        return pathPrefix;
+    }),
+
+    // The URL for the branded stylesheet
     stylesheet: Ember.computed('id', function() {
         const id = this.get('id');
 
         if (!id)
             return;
 
+        const prefix = this.get('isDomain') ? '' : '/preprints';
         const suffix = config.ASSET_SUFFIX ? `-${config.ASSET_SUFFIX}` : '';
-        return `/preprints/assets/css/${id}${suffix}.css`;
+        return `${prefix}/assets/css/${id}${suffix}.css`;
     }),
 
+    // The logo object for social sharing
     logoSharing: Ember.computed('id', function() {
         const id = this.get('id');
 
@@ -58,6 +96,7 @@ export default Ember.Service.extend({
         return logo;
     }),
 
+    // The url to redirect users to sign up to
     signupUrl: Ember.computed('id', function() {
         const query = Ember.$.param({
             campaign: `${this.get('id')}-preprints`,
@@ -71,6 +110,7 @@ export default Ember.Service.extend({
         return this.get('currentLocation');
     }),
 
+    // The translation key for the provider's permission language
     permissionLanguage: Ember.computed('id', function() {
         const id = this.get('id');
 
