@@ -734,19 +734,19 @@ hr {
 }
 
 .right-arrow {
-    border-top: 14px solid transparent;
-    border-bottom: 15px solid transparent;
-    border-left: 15px solid white;
+    border-top: 1.5rem solid transparent;
+    border-bottom: 1.4rem solid transparent;
+    border-left: 1.5rem solid white;
     position: absolute;
     display: inline;
     &:before {
         content: '';
-        border-top: 14px solid transparent;
-        border-bottom: 15px solid transparent;
-        border-left: 15px solid $brand-primary;
+        border-top: 1.4rem solid transparent;
+        border-bottom: 1.3rem solid transparent;
+        border-left: 1.4rem solid $brand-primary;
         position: absolute;
-        margin-left: -16px;
-        margin-top: -14px;
+        margin-left: -1.5rem;
+        margin-top: -1.4rem;
         transition: border-color 0.1s linear;
     }
 }
