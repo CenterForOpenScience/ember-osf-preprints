@@ -1289,22 +1289,35 @@ nav.branded-navbar {
     }
 }
 
-.listOption.btn-link {
-    cursor: pointer;
-    color: white;
-    text-decoration: none;
-    &:hover{
-        color: rgba(255, 255, 255, 0.8) !important;
-        outline: none;
-        text-decoration: none;
-    }
-    &:focus, :active {
-        outline: none;
-        text-decoration: none;
-    }
-}
-
 .alert-maintenance {
     margin-top: 104px;
     margin-bottom: 0;
+}
+
+
+.listOption.btn-link {
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+        color: black;
+    }
+    &:focus {
+        color: black;
+        outline: none;
+    }
+}
+
+#provider-brand-background {
+    height: 140px;
+    background-position-x: right;
+}
+
+#sortByOptionList {
+    background-color: #EFEFEF;
+    min-width: 230px;
+    li {
+        &:hover {
+            background-color: #D9D9D9;
+        }
+    }
 }
