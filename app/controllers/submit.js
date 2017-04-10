@@ -886,14 +886,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             return model.save()
                 .then(() => node.save())
                 .then(() => {
-                    if (this.get('editMode')) {
-                        window.location = window.location.pathname; //TODO Ember way to do this?  In edit mode, already in content route.
-                    } else {
-                        this.transitionToRoute(
-                            `${this.get('theme.isProvider') ? 'provider.' : ''}content`,
-                            model
-                        );
-                    }
+                    this.transitionToRoute(
+                        `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
+                        model
+                    );
                 })
                 .catch(() => {
                     this.toggleProperty('shareButtonDisabled');
