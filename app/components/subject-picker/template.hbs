@@ -4,7 +4,7 @@
             {{#each subject as |segment|}}
                 <b>{{segment.text}}</b>
             {{/each}}
-            {{fa-icon 'times' click=(action 'deselect' index)}}
+            <i class="fa fa-times" {{action 'deselect' index}} role="button" aria-label="deselect"></i>
         </span>
     {{/each}}
 </div>
@@ -12,10 +12,10 @@
 <div class="row">
     {{#each columns as |column tier|}}
         <div class="col-md-4">
-            <ul style="overflow: scroll">
+            <ul style="overflow: scroll" role="listbox">
                 {{input value=column.filterText class="form-control" placeholder="Search"}}
                 {{#each column.subjectsSorted as |subject|}}
-                    <li {{action 'select' subject tier}} class={{if (eq subject column.selection) 'selected'}}>
+                    <li {{action 'select' subject tier}} class={{if (eq subject column.selection) 'selected'}} role="listitem">
                         {{subject.text}}
                     </li>
                 {{/each}}
