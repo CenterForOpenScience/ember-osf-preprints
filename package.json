@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.106.1",
+  "version": "0.107.0",
   "description": "Center for Open Science Preprint Service",
   "private": true,
   "directories": {
@@ -64,7 +64,7 @@
     "ember-link-action": "0.0.35",
     "ember-load-initializers": "^0.5.1",
     "ember-metrics": "0.6.3",
-    "ember-osf": "git+https://github.com/pattisdr/ember-osf.git#c55a6d96dedf7fa1b4bbc3df2f171631ede8c2de",
+    "ember-osf": "git+https://github.com/pattisdr/ember-osf.git#924752b4491772d1605e2d658ae5124b6000ae28",
     "ember-page-title": "3.0.6",
     "ember-power-select": "1.0.0-beta.7",
     "ember-read-more": "0.0.13",
