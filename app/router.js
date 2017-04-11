@@ -56,21 +56,27 @@ Router.map(function() {
         this.route('submit');
         this.route('discover');
         this.route('page-not-found');
+        this.route('forbidden');
+        this.route('resource-deleted');
     } else {
         this.route('index', {path: 'preprints'});
         this.route('submit', {path: 'preprints/submit'});
         this.route('discover', {path: 'preprints/discover'});
         this.route('provider', {path: 'preprints/:slug'}, function () {
-            this.route('content', {path: '/:preprint_id'});
+            this.route('content', {path: '/:preprint_id'}, function() {
+                this.route('edit');
+            });
             this.route('discover');
             this.route('submit');
         });
         this.route('page-not-found', {path: 'preprints/page-not-found'});
+        this.route('forbidden', {path: 'preprints/forbidden'});
+        this.route('resource-deleted', {path: 'preprints/resource-deleted'});
     }
 
-    this.route('content', {path: '/:preprint_id'});
-    this.route('forbidden');
-    this.route('resource-deleted');
+    this.route('content', {path: '/:preprint_id'}, function() {
+        this.route('edit');
+    });
 });
 
 export default Router;

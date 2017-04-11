@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+/* eslint-env node */
+/* eslint no-console: ["error", { allow: ["info", "warn"] }] */
+
 if (process.argv.includes('--help') || process.argv.includes('-h')) {
     console.info(`Usage: ${__filename.slice(__dirname.length + 1)} [-h|--help] [--dry]`);
     process.exit(0);
@@ -41,7 +44,7 @@ const resultFile = rgx.test(hostsFile) ? hostsFile.replace(rgx, section) : `${ho
 console.info(`Resulting file:\n${resultFile}`);
 
 if (isDry) {
-    console.log('!!! DRY RUN, File not written !!!');
+    console.warn('!!! DRY RUN, File not written !!!');
     process.exit(0);
 }
 

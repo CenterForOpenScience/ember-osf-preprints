@@ -61,10 +61,10 @@ export default Ember.Service.extend({
     }),
 
     // Needed for the content route
-    guidPathPrefix: Ember.computed('isProvider', 'isDomain', 'id', function() {
+    guidPathPrefix: Ember.computed('isSubRoute', 'id', function() {
         let pathPrefix = '/';
 
-        if (!this.get('isDomain') && this.get('isProvider')) {
+        if (this.get('isSubRoute')) {
             pathPrefix += `preprints/${this.get('id')}/`;
         }
 
