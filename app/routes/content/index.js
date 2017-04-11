@@ -12,6 +12,8 @@ const {
     OSF: {renderUrl}
 } = config;
 
+const exportUrl = renderUrl.replace(/render$/, 'export');
+
 // Error handling for API
 const handlers = new Map([
     // format: ['Message detail', 'page']
@@ -203,7 +205,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
 
                 highwirePress.push([
                     'citation_pdf_url',
-                    `${renderUrl}?url=${encodeURIComponent(`${primaryFile.get('links').download}?direct&mode=render`)}`
+                    `${exportUrl}?format=pdf&url=${encodeURIComponent(`${primaryFile.get('links').download}?direct`)}`
                 ]);
 
                 const openGraphTags = openGraph
