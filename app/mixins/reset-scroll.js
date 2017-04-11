@@ -12,10 +12,9 @@ import Ember from 'ember';
  * @class ResetScrollMixin
  */
 export default Ember.Mixin.create({
-    scrollTopValue: null,
+    scrollTarget: window,
     activate: function() {
         this._super();
-        window.scrollTo(0, 0);
-        this.set('scrollTopValue', Ember.$(window).scrollTop());
+        return this.get('scrollTarget').scrollTo(0, 0);
     }
 });

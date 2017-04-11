@@ -1,28 +1,34 @@
 import Ember from 'ember';
 import Analytics from 'preprint-service/mixins/analytics';
 import { moduleFor, test } from 'ember-qunit';
+const { getOwner } = Ember;
+
+const service = Ember.Service.extend({
+    props: null,
+    trackEvent(...args) {
+        this.set('props', [...args]);
+    }
+});
 
 moduleFor('mixin:analytics', {
-    needs: [
-        'service:metrics',
-    ],
+    subject(){
+        this.register('service:metrics', service);
+        this.inject.service('metrics');
+        const analyticsObject = Ember.Controller.extend(Analytics);
+        this.registry.register('test:subject', analyticsObject);
+        return getOwner(this).lookup('test:subject');
+    }
 });
 
 test("Google Analytics mixin", function(assert) {
-    let analyticsObject = Ember.Controller.extend(Analytics);
-    this.registry.register('test:subject', analyticsObject);
-    const analyticsTest = this.container.lookup('test:subject');
-    assert.ok(analyticsTest);
-    const checkActions = (analyticsTest.get('actions.click') && analyticsTest.get('actions.track'));
-    if (checkActions) {
-        assert.ok(true);
-    } else {
-        assert.ok(false);
-    }
-    const checkMetrics = (analyticsTest.get('metrics'));
-    if (checkMetrics) {
-        assert.ok(true);
-    } else {
-        assert.ok(false);
-    }
+
+    const subject = this.subject();
+    assert.ok(Analytics.detect(subject));
+
+    Ember.run(() => {
+        subject.send('click', 'test category', 'test label');
+        assert.ok(subject.get('metrics.props'));
+        subject.send('track', 'test category', 'test label');
+        assert.ok(subject.get('metrics.props'));
+    });
 });
