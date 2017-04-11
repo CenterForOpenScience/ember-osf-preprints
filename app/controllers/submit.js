@@ -399,6 +399,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('basicsLicense', license);
             this.set('licenseValid', validates);
             // TODO: Noticed that this fires every time the Submit page loads.  The Ember-OSF license-widget might need some changes.
+            // TODO: Uncomment once this is fixed.
             // Ember.get(this, 'metrics')
             //     .trackEvent({
             //         category: 'dropdown',
