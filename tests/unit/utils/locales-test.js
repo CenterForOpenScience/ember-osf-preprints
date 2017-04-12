@@ -24,7 +24,7 @@ function flattenObject(ob) {
 		}
 	}
 	return toReturn;
-};
+}
 
 // Replace this with your real tests.
 test('spanish contains all terms', function(assert) {

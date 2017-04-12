@@ -34,7 +34,7 @@ export default {
         license: 'Licencia',
     },
     application: {
-        // Nothing to translate
+        separator: ' | '
     },
     content: {
         header: {
@@ -46,8 +46,11 @@ export default {
             download_file: `Descargar archivo`,
             download_preprint: `Descargar preprint`
         },
+        see_more: 'ver más',
+        see_less: 'ver menos',
         version: 'Versión',
         article_doi: `DOI del artículo`,
+        citations: 'Citas',
         disciplines: `Disciplinas`,
         project_button: {
             paragraph: `El proyecto para este artículo está disponible en el OSF.`,
@@ -66,6 +69,10 @@ export default {
             placeholder: `Buscar preprints...`
         },
         sort_by: `Ordenar por`,
+        sort_newest_oldest: `Fecha modificada (reciente al más antiguo)`,
+        sort_oldest_newest: `Fecha modificada (antiguo al más reciente)`,
+        modified_on: `Modificada por`,
+        relevance: `Pertinencia`,
         main: {
             active_filters: {
                 heading: `Activar Filtros`,
@@ -93,7 +100,8 @@ export default {
             powered_by: `Utilizando ${brand}`,
             search: `{{count}} preprints que pueden ser buscados`,
             as_of: `al día de`,
-            example: `Ver un ejemplo`
+            example: `Ver un ejemplo`,
+            or: `o`,
         },
         subjects: {
             heading: `Ver un catálogo <small>por tema</small>`
@@ -122,24 +130,17 @@ export default {
     },
     'page-not-found': {
         heading: `Página no encontrada`,
-        paragraph: {
-            line1: `La página que Ud. está buscando no se encuentra en el servicio de {{brand}}.`,
-            line2: `Si ésto no debería haber ocurrido y el problema persiste, por favor reportarlo a`
-        },
+        message: `La página que Ud. está buscando no se encuentra en el servicio de {{brand}}.`,
         go_to: `Ir a {{brand}}`
     },
     'page-forbidden': {
         heading: `No permitido`,
-        paragraph: {
-            line1: `El/La usuario/a ha restringido el acceso a esta página. Si ésto no debería haber ocurrido y el problema persiste, por favor reportarlo a `,
-        },
+        message: `El/La usuario/a ha restringido el acceso a esta página.`,
         go_to: `Ir a {{brand}}`
     },
     'resource-deleted': {
         heading: `Recurso borrado`,
-        paragraph: {
-            line1: `El/La usuario/a ha borrado este contenido. Si ésto no debería haber ocurrido y el problema persiste, por favor reportarlo a `,
-        },
+        message: `El/La usuario/a ha borrado este contenido.`,
         go_to: `Ir a {{brand}}`
     },
     submit: {
@@ -173,7 +174,10 @@ export default {
                 paragraph: `Agregar autores del preprint y ordenarlos de manera apropiada. Todos los cambios a los autores son grabados de manera inmediata. Buscar encuentra autores que ya tienen cuentas de OSF accounts already. Usuarios sin registro puede ser agregados e invitados a unirse al preprint.`
             },
             submit: {
-                paragraph: `Cuando Ud. comparta este preprint, estará disponible de manera inmediata vía {{name}} Preprints. No podrá borrar el archivo del preprint, pero puede actualizar o modificarlo. También create un proyecto OSF en caso de que quiera agregar contenido a su preprint como material suplementari, apendices, datos, o protocols. Si postear este preprint es su primera vez en el OSF, Ud. recibirá un email presentandole la OSF.`,
+                paragraph: {
+                    line1: `Cuando Ud. comparta este preprint, estará disponible de manera inmediata vía {{name}} Preprints. No podrá borrar el archivo del preprint, pero puede actualizar o modificarlo. También create un proyecto OSF en caso de que quiera agregar contenido a su preprint como material suplementari, apendices, datos, o protocols. Si postear este preprint es su primera vez en el OSF, Ud. recibirá un email presentandole la OSF.`,
+                    line2: `Haciendo clic en Compartir, Ud. confirma que todos colaboradores están de acuerdo en compartir esta preprint, y que tiene el derecho a compartirla. `,
+                },
                 invalid: {
                     description: `Las siguientes seccion(es) deben ser completadas antes de compartir su preprint.`,
                     discipline: `Disciplina`,
@@ -192,6 +196,11 @@ export default {
         could_not_create_component: `No pudo crearse un componente. Por favor, trate de nuevo.`,
         abandoned_preprint_error: `Error al abandonar el preprint.`,
         preprint_file_uploaded: `Archivo preprint cargado!`,
+        preprint_author_added: `Autor de preprint añadido/a!`,
+        preprint_author_removed: `Autor de preprint eliminado/a!`,
+        preprint_unregistered_author_added: `Autor de preprint no registrado/a añadido/a!`,
+        error_adding_author: `No puedo añadir autor. Por favor, trate de nuevo.`,
+        error_adding_unregistered_author: `No puedo añadir autor no registrado/a. Por favor, trate de nuevo.`,
         error_initiating_preprint: `No puedo inicializar el preprint. Por favor, trate de nuevo.`,
         doi_error: `Error al grabar el DOI`,
         basics_error: `Error al grabar campos básicos.`,
@@ -213,7 +222,7 @@ export default {
             organize_language_project: `Ud. puede organizar su preprint preprint almacenando el archivo en este proyecto o en su propio componente nuevo.  Si selecciona ‘Crear un componente nuevo’,
             el archivo del preprint será guardado en un componente nuevo dentro de este proyecto.  Si selecciona ‘Usar el proyecto actual’, el archivo del preprint será guardado en este proyecto.
             Si no está seguro, seleccione ‘Crear un componente nuevo’.`,
-            organize_language_componentl: `Ud. puede organizar su preprint guardándo el archivo en este componente o en su propio componente nuevo.  Si selecciona ‘Crear un nuevo componente’,
+            organize_language_component: `Ud. puede organizar su preprint guardándo el archivo en este componente o en su propio componente nuevo.  Si selecciona ‘Crear un nuevo componente’,
             el archivo del preprint será guardado en un nuevo componente dentro de este proyecto.  Si selecciona ‘Usar el componente actual’, el archivo del preprint será guardado en este componente.
             Si no está seguro, seleccione ‘Crear un componente nuevo’.`,
             copy: `Crear un componente nuevo`,
@@ -334,6 +343,10 @@ export default {
         'search-result': {
             // Nothing to translate
         },
+        'error-page': {
+            email_message: `Si ésto no debería haber ocurrido y el problema persiste, por favor reportarlo a`,
+            go_to: `Ir a {{brand}}`
+        },
         'share-popup': {
             tweet: `Tuitear`,
             post_facebook: `Publicar en Facebook`,
@@ -342,6 +355,11 @@ export default {
         },
         'supplementary-file-browser': {
             primary: `Primario`
+        },
+        'permission-language':{
+            arxiv_trademark_license,
+            arxiv_non_endorsement: `${arxiv_trademark_license} This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.`,
+            no_trademark: ``
         },
         'taxonomy-top-list': {
             // Nothing to translate
