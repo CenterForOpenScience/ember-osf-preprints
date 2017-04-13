@@ -1,5 +1,6 @@
+{{title (t (if theme.isProvider 'global.provider_brand' 'global.brand') name=theme.provider.name) separator=(t 'application.separator')}}
+
 {{#if theme.isProvider}}
-    {{title (concat theme.provider.name ' Preprints') separator=' | '}}
     {{#if theme.stylesheet}}
         <style>
             @import url('{{theme.stylesheet}}');
@@ -7,10 +8,11 @@
     {{/if}}
     {{preprint-navbar-branded model=theme.provider}}
 {{else}}
-    {{title 'OSF Preprints' separator=' | '}}
     {{osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login') hideSearch=true}}
     {{preprint-navbar}}
 {{/if}}
+
+{{maintenance-banner}}
 
 {{outlet}}
 

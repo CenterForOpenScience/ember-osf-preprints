@@ -1,5 +1,5 @@
-/*jshint node:true*/
-/* global require, module */
+/* eslint-env node */
+
 'use strict';
 
 const fs = require('fs');
@@ -25,6 +25,12 @@ module.exports = function(defaults) {
         brand = brand.replace(/\..*$/, '');
         css[`brands/${brand}`] = `/assets/css/${brand}.css`;
     }
+
+    const providerDomains = config
+        .PREPRINTS
+        .providers
+        .slice(1)
+        .map(provider => provider.domain);
 
     // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
     var app = new EmberApp(defaults, {
@@ -71,6 +77,37 @@ module.exports = function(defaults) {
                 content: `
                     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
                     <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.7.1/ember.prod.js"></script>`
+            },
+            assets: {
+                enabled: true,
+                content: `
+                    <script>
+                        window.assetSuffix = '${config.ASSET_SUFFIX ? '-' + config.ASSET_SUFFIX : ''}';                        
+                        (function(providerDomains) {
+                            var origin = window.location.origin;
+                        
+                            var isProviderDomain = providerDomains.some(function(domain) {
+                                return ~origin.indexOf(domain);
+                            });
+                        
+                            var prefix = '/' + (isProviderDomain ? '' : 'preprints/') + 'assets/';
+                        
+                            [
+                                'vendor',
+                                'preprint-service'
+                            ].forEach(function (name) {
+                                var script = document.createElement('script');
+                                script.src = prefix + name + window.assetSuffix + '.js';
+                                script.async = false;
+                                document.body.appendChild(script);
+                        
+                                var link = document.createElement('link');
+                                link.rel = 'stylesheet';
+                                link.href = prefix + name + window.assetSuffix + '.css';
+                                document.head.appendChild(link);
+                            });
+                        })(${JSON.stringify(providerDomains)});
+                    </script>`
             }
         },
         postcssOptions: {
@@ -100,7 +137,7 @@ module.exports = function(defaults) {
         },
         // bable options included to fix issue with testing discover controller
         // http://stackoverflow.com/questions/32231773/ember-tests-passing-in-chrome-not-in-phantomjs
-        babel: {
+        'ember-cli-babel': {
             optional: ['es6.spec.symbols'],
             includePolyfill: true
         },

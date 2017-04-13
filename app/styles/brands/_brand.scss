@@ -133,8 +133,7 @@ $logo-dir: '../img/provider_logos/';
         }
     }
 
-    .preprint-403,
-    .preprint-404,
+    .preprint-error-page,
     .preprint-advisory,
     .preprint-submit-header,
     .preprint-search-header,
@@ -150,8 +149,7 @@ $logo-dir: '../img/provider_logos/';
         }
     }
 
-    .preprint-403,
-    .preprint-404,
+    .preprint-error-page,
     .preprint-advisory {
         min-height: 200px;
 
@@ -173,5 +171,9 @@ $logo-dir: '../img/provider_logos/';
             height: 30px;
             background-image: url('../img/share-logo-white.png');
         }
+    }
+
+    .alert-maintenance {
+        margin-top: 52px;
     }
 }
