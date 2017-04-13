@@ -81,7 +81,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'bitss',
-                    logoSharing: { // T
+                    logoSharing: {
                         path: '/assets/img/provider_logos/bitss-small.png',
                         type: 'image/png',
                         width: 1500,
@@ -103,6 +103,16 @@ module.exports = function(environment) {
                     id: 'agrixiv',
                     logoSharing: {
                         path: 'assets/img/provider_logos/agrixiv-banner.svg',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
+                },
+                {
+                    id: 'lawarxiv',
+                    logoSharing: {
+                        path: 'assets/img/provider_logos/lawarxiv-logo.jpg',
                         type: 'image/png',
                         width: 1200,
                         height: 488
