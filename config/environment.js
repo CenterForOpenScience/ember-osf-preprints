@@ -1,10 +1,11 @@
-/* jshint node: true */
+/* eslint-env node */
 
 module.exports = function(environment) {
-    var authorizationType = 'cookie';
+    const authorizationType = 'cookie';
 
-    var ENV = {
+    const ENV = {
         modulePrefix: 'preprint-service',
+        appName: 'Preprints',
         environment: environment,
         rootURL: '/',
         locationType: 'auto',
@@ -33,12 +34,12 @@ module.exports = function(environment) {
         },
         PREPRINTS: {
             defaultProvider: 'osf',
-
-
             // Logos are needed for open graph sharing meta tags (Facebook, LinkedIn, etc) and must be at least 200x200
             providers: [
+                // OSF must be the first provider
                 {
                     id: 'osf',
+                    domain: 'osf.io',
                     logoSharing: {
                         path: '/assets/img/provider_logos/osf-dark.png',
                         type: 'image/png',
@@ -49,6 +50,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'engrxiv',
+                    domain: 'engrxiv.org',
                     logoSharing: {
                         path: '/assets/img/provider_logos/engrxiv-sharing.png',
                         type: 'image/png',
@@ -57,20 +59,10 @@ module.exports = function(environment) {
 
                     },
                     permissionLanguage: 'arxiv_non_endorsement'
-
-                },
-                {
-                    id: 'psyarxiv',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/psyarxiv-sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
-                    permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'socarxiv',
+                    domain: 'socarxiv.org',
                     logoSharing: {
                         path: '/assets/img/provider_logos/socarxiv-sharing.png',
                         type: 'image/png',
@@ -80,8 +72,20 @@ module.exports = function(environment) {
                     permissionLanguage: 'arxiv_trademark_license'
                 },
                 {
+                    id: 'psyarxiv',
+                    domain: 'psyarxiv.com',
+                    logoSharing: {
+                        path: '/assets/img/provider_logos/psyarxiv-sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_trademark_license'
+                },
+                {
                     id: 'bitss',
-                    logoSharing: { // T
+                    // Does not use a provider domain
+                    logoSharing: {
                         path: '/assets/img/provider_logos/bitss-small.png',
                         type: 'image/png',
                         width: 1500,
@@ -91,6 +95,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'scielo',
+                    // domain: 'scielo.org', // Temporarily disabling until ready
                     logoSharing: {
                         path: '/assets/img/provider_logos/scielo-logo.png',
                         type: 'image/png',
@@ -101,6 +106,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'agrixiv',
+                    domain: 'agrixiv.org',
                     logoSharing: {
                         path: 'assets/img/provider_logos/agrixiv-banner.svg',
                         type: 'image/png',
@@ -126,6 +132,12 @@ module.exports = function(environment) {
         FB_APP_ID: process.env.FB_APP_ID,
     };
 
+    if (process.env.ENABLE_PROVIDER_DOMAINS !== 'true') {
+        for (const provider of ENV.PREPRINTS.providers) {
+            delete provider.domain;
+        }
+    }
+
     if (environment === 'development') {
         // ENV.APP.LOG_RESOLVER = true;
         // ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -133,7 +145,7 @@ module.exports = function(environment) {
         // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
         // ENV.APP.LOG_VIEW_LOOKUPS = true;
 
-        ENV.metricsAdapters[0].config.cookieDomain = 'none'
+        ENV.metricsAdapters[0].config.cookieDomain = 'none';
     }
 
     if (environment === 'test') {
@@ -162,6 +174,21 @@ module.exports = function(environment) {
         // Fallback to throwaway defaults if the environment variables are not set
         ENV.metricsAdapters[0].config.id = ENV.metricsAdapters[0].config.id || 'UA-84580271-1';
         ENV.FB_APP_ID = ENV.FB_APP_ID || '1039002926217080';
+
+        const {DOMAIN_PREFIX, PORT, OSF_URL} = process.env;
+
+        for (const provider of ENV.PREPRINTS.providers) {
+            if (!provider.domain)
+                continue;
+
+            if (provider.id === 'osf') {
+                provider.domain = OSF_URL || 'localhost:5000';
+                continue;
+            }
+
+            const suffix = DOMAIN_PREFIX ? '' : `:${PORT ? PORT : '4200'}`;
+            provider.domain = `${DOMAIN_PREFIX || 'local'}.${provider.domain}${suffix}`;
+        }
     }
 
     if (ENV.ASSET_SUFFIX) {

@@ -1,6 +1,6 @@
 <div class="container">
     <div class="navbar-header">
-        {{#link-to "provider.index" theme.id class="navbar-brand" invokeAction=(action "click" "link" "Navbar - Brand")~}}
+        {{#link-to (route-prefix 'index') slug=theme.id class="navbar-brand" invokeAction=(action "click" "link" "Navbar - Brand")~}}
             <span class="navbar-image"></span>
             <span class="navbar-title">{{model.name}} {{t "global.preprints"}}</span>
         {{~/link-to}}
@@ -8,10 +8,10 @@
     <div id="preprint-navbar-links" class="navbar-collapse collapse navbar-right">
         <ul class="nav navbar-nav branded-nav">
             {{#if session.isAuthenticated}}
-                <li><a href="/myprojects/" class="" onbeforeclick={{action "click" "link" "Navbar - My OSF Projects"}}>{{t "components.preprint-navbar-branded.my_projects"}}</a></li>
+                <li><a href="{{host}}myprojects/" class="" onbeforeclick={{action "click" "link" "Navbar - My OSF Projects"}}>{{t "components.preprint-navbar-branded.my_projects"}}</a></li>
             {{/if}}
-            <li><a href={{concat '/preprints/' theme.id '/submit'}} onbeforeclick={{action "click" "link" "Navbar - Add preprint"}}>{{t "global.add_preprint"}}</a></li>
-            <li>{{#link-to "provider.discover" theme.id class="" invokeAction=(action "click" "link" "Navbar - Search")}}{{t "global.search"}}{{/link-to}}</li>
+            <li><a href={{concat theme.pathPrefix 'submit'}} onbeforeclick={{action "click" "link" "Navbar - Add preprint"}}>{{t "global.add_preprint"}}</a></li>
+            <li>{{#link-to (route-prefix 'discover') slug=theme.id class="" invokeAction=(action "click" "link" "Navbar - Search")}}{{t "global.search"}}{{/link-to}}</li>
             {{navbar-auth-dropdown
                 signupUrl=theme.signupUrl
                 loginAction=(action 'login')
