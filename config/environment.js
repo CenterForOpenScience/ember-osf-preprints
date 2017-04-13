@@ -118,7 +118,7 @@ module.exports = function(environment) {
                 {
                     id: 'lawarxiv',
                     logoSharing: {
-                        path: 'assets/img/provider_logos/lawarxiv-logo.jpg',
+                        path: 'assets/img/provider_logos/lawarxiv-logo.png',
                         type: 'image/png',
                         width: 1200,
                         height: 488
