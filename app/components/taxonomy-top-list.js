@@ -25,7 +25,7 @@ export default Ember.Component.extend(Analytics, {
                         parents
                     },
                     page: {
-                        size: 4
+                        size: 4  //number of subjects to show-up in each tooltip.
                     }
                 })
             .then(results =>
