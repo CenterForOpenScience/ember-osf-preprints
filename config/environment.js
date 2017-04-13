@@ -114,6 +114,16 @@ module.exports = function(environment) {
                         height: 488
                     },
                     permissionLanguage: 'arxiv_non_endorsement'
+                },
+                 {
+                    id: 'fusfoundation',
+                    logoSharing: {
+                        path: 'assets/img/provider_logos/fusf_logo.jpeg',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
                 }
             ],
         },
