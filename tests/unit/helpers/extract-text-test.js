@@ -6,6 +6,6 @@ module('Unit | Helper | extract text');
 
 test('extract subject children into a comma separated string', function(assert) {
 
-    let result = extractText([Ember.A([{text: 'Civil'}, {text: 'Mechanical'}]), 2]);
-    assert.equal(result, 'Civil, Mechanical');
+    let result = extractText([Ember.A([{text: 'Civil'}, {text: 'Mechanical'}, {text: 'Computer Science'}, {text: 'Architecture'}]), 2]);
+    assert.equal(result, 'Architecture, Civil');
 });
