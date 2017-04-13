@@ -242,6 +242,14 @@ $logo-dir: 'img/provider_logos/';
     background-image: url($logo-dir + 'scielo-dark-small.png');
 }
 
+.provider-fusfoundation {
+    background-image: url($logo-dir + 'fusf_logo.jpeg');
+}
+
+.provider-fusfoundation-dark {
+    background-image: url($logo-dir + 'fusf_logo.jpeg');
+}
+
 .preprint-advisory  {
     background-color: #f3f5f7;
     border-bottom: 1px solid #e0e6ea;

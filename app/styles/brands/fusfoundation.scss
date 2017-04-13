@@ -6,9 +6,22 @@
     #04506f,                                // Color, theme color #3 (navbar color, preferably a dark color)
     white,                                // Color, theme color #4 (used in link colors)
     #0779a0,                                  // Color, theme color #5 (text color that contrasts with #2, usually black or white)
-    $logo-dir + 'agrixiv-banner.svg',        // String, path to the rectangular provider logo
-    $logo-dir + 'agrixiv-logo.svg', // String, path to the square provider logo
+    $logo-dir + 'fusf.png',        // String, path to the rectangular provider logo
+    $logo-dir + 'fusf_logo.jpeg', // String, path to the square provider logo
     false,                                   // Boolean, whether to use the white share logo or not
-    false,                                  // Boolean, whether to use theme color 4 or theme color 2 for the navbar link color
-    true                                   // Boolean, whether to use the contracts link color (theme color 4)
+    true,                                  // Boolean, whether to use theme color 4 or theme color 2 for the navbar link color
+    false                                   // Boolean, whether to use the contracts link color (theme color 4)
 );
+
+.navbar-title, .subject-item .btn, .subject-filter {
+    color: white;
+}
+
+.branded-nav {
+    a {
+        color: white;
+    }
+    a.active {
+        color: white !important;
+    }
+}
