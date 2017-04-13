@@ -735,7 +735,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 node.set('tags', this.get('basicsTags'));
 
             if (this.get('applyLicense')) {
-                if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || node.get('nodeLicense.copyrightHolders').join() !== copyrightHolders.join()) {
+                if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || (node.get('nodeLicense.copyrightHolders') || []).join() !== copyrightHolders.join()) {
                     node.set('nodeLicense', {
                         year: this.get('basicsLicense.year'),
                         copyright_holders: copyrightHolders
