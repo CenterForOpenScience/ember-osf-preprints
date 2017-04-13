@@ -30,6 +30,6 @@ function flattenObject(ob) {
 test('spanish contains all terms', function(assert) {
     let spanishTerms = flattenObject(spanish);
     for (var term in flattenObject(englishBaseline)) {
-        assert.ok(typeof spanishTerms[term] !== 'undefined', `${term} not defined.`)
-    };
+        assert.ok(typeof spanishTerms[term] !== 'undefined', `${term} not defined.`);
+    }
 });

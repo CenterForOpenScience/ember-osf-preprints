@@ -1,5 +1,7 @@
 const preprints = `Preprints`;
 const brand = `OSF ${preprints}`;
+const arxiv_trademark_license = 'arXiv is a trademark of Cornell University, used under license.';
+
 
 export default {
     global: {
@@ -276,10 +278,12 @@ export default {
                 permissions: `Permisos`,
                 permission_info: `Información de Permisos`,
                 citation: `Citas`,
+                in_citation: `En citas`,
                 citation_info: `Información de Citas`,
-                parent_contributors: `Agregar colaboradores del proyecto padre`
+                parent_contributors: `Agregar colaboradores del proyecto padre`,
+                remove_author: `Elimina al autor/a`
             },
-            remove: `Remover`
+            remove: `Eliminar`
         },
         'preprint-form-body': {
             // Nothing to translate
