@@ -300,7 +300,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         let license = this.get('model.license');
         return {
             year: record ? record.year : null,
-            copyrightHolders: record && record.copyright_holders ? record.copyright_holders.join(',') : null,
+            copyrightHolders: record && record.copyright_holders ? record.copyright_holders.join(', ') : '',
             licenseType: license || null
         };
     }),
@@ -308,15 +308,15 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     licenseChanged: Ember.computed('model.license', 'model.licenseRecord', 'basicsLicense.year', 'basicsLicense.copyrightHolders', 'basicsLicense.licenseType', function() {
         let changed = false;
         if (this.get('model.licenseRecord') || this.get('model.license.content')) {
-            changed = changed || (this.get('model.license.name') !== this.get('basicsLicense.licenseType.name'));
-            changed = changed || (this.get('model.licenseRecord').year !== this.get('basicsLicense.year'));
-            changed = changed || ((this.get('model.licenseRecord.copyright_holders.length') ? this.get('model.licenseRecord.copyright_holders').join(',') : '') !== this.get('basicsLicense.copyrightHolders'));
+            changed |= (this.get('model.license.name') !== this.get('basicsLicense.licenseType.name'));
+            changed |= (this.get('model.licenseRecord').year !== this.get('basicsLicense.year'));
+            changed |= ((this.get('model.licenseRecord.copyright_holders.length') ? this.get('model.licenseRecord.copyright_holders').join(', ') : '') !== this.get('basicsLicense.copyrightHolders'));
         } else {
-            changed = changed || ((this.get('availableLicenses').toArray().length ? this.get('availableLicenses').toArray()[0].get('name') : null) !== this.get('basicsLicense.licenseType.name'));
-            let date = new Date();
-            changed = changed || (date.getUTCFullYear().toString() !== this.get('basicsLicense.year'));
-            changed = changed || !(this.get('basicsLicense.copyrightHolders') === '' || !this.get('basicsLicense.copyrightHolders.length') || this.get('basicsLicense.copyrightHolders') === null);
+            changed |= ((this.get('availableLicenses').toArray().length ? this.get('availableLicenses').toArray()[0].get('name') : null) !== this.get('basicsLicense.licenseType.name'));
+            changed |= ((new Date()).getUTCFullYear().toString() !== this.get('basicsLicense.year'));
+            changed |= !(this.get('basicsLicense.copyrightHolders') === '' || !this.get('basicsLicense.copyrightHolders.length') || this.get('basicsLicense.copyrightHolders') === null);
         }
+
         return changed;
     }),
 
@@ -344,9 +344,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
     // and combines into one array
-
-    // Cannot be called until a project has been selected!
     getContributors: Ember.observer('node', function() {
+        // Cannot be called until a project has been selected!
         if (!this.get('node')) return;
 
         let node = this.get('node');
@@ -514,7 +513,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             this.set('basicsAbstract', this.get('node.description') || null);
 
-            // Ember.run(() => {
             return Promise.resolve()
                 .then(() => {
                     if (currentTitle === nodeTitle) {
@@ -524,14 +522,13 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     node.set('title', nodeTitle);
                     return node.save();
                 })
-                //.then(() => this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint'))
+                .then(() => this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint'))
                 .catch(() => {
                     node.set('title', currentTitle);
                     this.get('toast').error(
                         this.get('i18n').t('submit.could_not_update_title')
                     );
                 });
-            // });
         },
         createComponentCopyFile() {
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
@@ -816,8 +813,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Tag`
                 });
 
-            const tags = this.get('basicsTags');
-            tags.removeAt(tags.indexOf(tag));
+            this.get('basicsTags').removeObject(tag);
         },
 
         /*

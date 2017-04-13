@@ -32,8 +32,6 @@ const panelActionsStub = Ember.Service.extend({
 });
 
 moduleFor('controller:submit', 'Unit | Controller | submit', {
-  // Specify the other units that are required for this test.
-  // needs: ['controller:foo']
     needs: [
         'validator:presence',
         'validator:length',
@@ -615,7 +613,7 @@ test('canEdit', function(assert) {
 // Test CONTROLLER ACTIONS > SUBMIT CONTROLLER
 test('editLicense sets basicsLicense and licenseValid', function(assert) {
     const ctrl = this.subject();
-    assert.equal(ctrl.get('basicsLicense.copyrightHolders'), null);
+    assert.equal(ctrl.get('basicsLicense.copyrightHolders'), '');
     assert.equal(ctrl.get('basicsLicense.licenseType'), null);
     assert.equal(ctrl.get('basicsLicense.year'), null);
     assert.equal(ctrl.get('licenseValid'), false);
@@ -667,31 +665,30 @@ test('nextUploadSection closes current panel and opens next panel', function(ass
     assert.equal(panels.get('Basics.isOpen'), true);
 });
 
-// test('changesSaved temporarily changes currentPanelSaveState to true', function(assert) {
-//     assert.expect(2);
-//
-//     const ctrl = this.subject();
-//     const currentPanelName = 'Discipline';
-//     assert.equal(ctrl.get('disciplineSaveState'), false);
-//
-//     return Ember.run(() => {
-//         ctrl.send('changesSaved', currentPanelName);
-//
-//         Ember.run.next(ctrl, () => {
-//             assert.equal(ctrl.get('disciplineSaveState'), true);
-//         });
-//     });
-// });
+skip('changesSaved temporarily changes currentPanelSaveState to true', function(assert) {
+    assert.expect(2);
+
+    const ctrl = this.subject();
+    const currentPanelName = 'Discipline';
+    assert.equal(ctrl.get('disciplineSaveState'), false);
+
+    return Ember.run(() => {
+        ctrl.send('changesSaved', currentPanelName);
+
+        Ember.run.next(ctrl, () => {
+            assert.equal(ctrl.get('disciplineSaveState'), true);
+        });
+    });
+});
 
 test('error action exists', function(assert) {
     const ctrl = this.subject();
     assert.ok(ctrl.actions.error);
 });
 
-skip('changeInitialState', function() {
-    // test('changeInitialState', function(assert) {
-    //     // TODO testing panel actions - third party
-    // });
+skip('changeInitialState', function(assert) {
+    // TODO testing panel actions - third party
+    assert.ok();
 });
 
 test('finishUpload', function(assert) {
@@ -708,66 +705,58 @@ test('finishUpload', function(assert) {
     });
 });
 
-// test('existingNodeExistingFile', function(assert) {
-//     // TODO Many actions get called by this action. Sending POST to localhost:7357/nodeTags
-//     // Getting Assertion Failed: You can only unload a record which is not inFlight
-//     this.inject.service('store');
-//     const store = this.store;
-//     const ctrl = this.subject();
-//
-//     const node = store.createRecord('node', {
-//         title: 'hello',
-//         // tags: ['first tag'],
-//         description: 'The best abstract'
-//     });
-//
-//     Ember.run(() => {
-//
-//         ctrl.set('nodeTitle', 'New title');
-//         ctrl.set('node', node);
-//
-//         ctrl.send('existingNodeExistingFile');
-//
-//         Ember.run.next(() => {
-//             assert.equal(ctrl.get('node.title'), 'New title');
-//             assert.equal(ctrl.get('basicsAbstract'), node.get('description'));
-//         });
-//     });
-//
-//
-// });
+skip('existingNodeExistingFile', function(assert) {
+    // TODO Many actions get called by this action. Sending POST to localhost:7357/nodeTags
+    // Getting Assertion Failed: You can only unload a record which is not inFlight
+    this.inject.service('store');
+    const store = this.store;
+    const ctrl = this.subject();
+
+    const node = store.createRecord('node', {
+        title: 'hello',
+        // tags: ['first tag'],
+        description: 'The best abstract'
+    });
+
+    Ember.run(() => {
+
+        ctrl.set('nodeTitle', 'New title');
+        ctrl.set('node', node);
+
+        ctrl.send('existingNodeExistingFile');
+
+        Ember.run.next(() => {
+            assert.equal(ctrl.get('node.title'), 'New title');
+            assert.equal(ctrl.get('basicsAbstract'), node.get('description'));
+        });
+    });
+});
 
 
 skip('createComponentCopyFile', function() {
-    // test('createComponentCopyFile', function(assert) {
-    //     // TODO - same error with You can only unload a record which is not inFlight.
-    //     // Assert that node has a child
-    //     this.inject.service('store');
-    //     const store = this.store;
-    //     const ctrl = this.subject();
-    //     Ember.run(() => {
-    //         const node = store.createRecord('node', {
-    //             title: 'hello',
-    //             tags: ['first tag'],
-    //             description: 'The best abstract'
-    //         });
-    //         ctrl.set('nodeTitle', 'New title');
-    //         ctrl.set('node', node);
-    //         ctrl.send('createComponentCopyFile');
-    //     });
-    // });
+    // TODO - same error with You can only unload a record which is not inFlight.
+    // Assert that node has a child
+    this.inject.service('store');
+    const store = this.store;
+    const ctrl = this.subject();
+    Ember.run(() => {
+        const node = store.createRecord('node', {
+            title: 'hello',
+            tags: ['first tag'],
+            description: 'The best abstract'
+        });
+        ctrl.set('nodeTitle', 'New title');
+        ctrl.set('node', node);
+        ctrl.send('createComponentCopyFile');
+    });
 });
 
 skip('resumeAbandonedPreprint', function() {
-    // test('resumeAbandonedPreprint', function(assert) {
-    //     //TODO class startPreprint, which haven't figured out how to test yet
-    // });
+    //TODO class startPreprint, which haven't figured out how to test yet
 });
 
 skip('startPreprint', function() {
-     // test('startPreprint', function(assert) {
-    //     //TODO
-    // });
+    //TODO
 });
 
 test('selectExistingFile', function(assert) {
@@ -1005,29 +994,21 @@ test('setSubjects', function(assert) {
 
 
 skip('discardSubjects', function() {
-    // test('discardSubjects', function(assert) {
-    //     //TODO
-    // })
+    //TODO
 });
 
 skip('saveSubjects', function() {
-    // test('saveSubjects', function(assert) {
-    //     //TODO
-    // })
+    //TODO
 });
 
 
 skip('findContributors', function() {
-    // test('findContributors', function(assert) {
-    //     //TODO
-    // })
+    //TODO
 });
 
 
 skip('highlightSuccessOrFailure', function() {
-    // test('highlightSuccessOrFailure', function(assert) {
-    //     //TODO
-    // })
+    //TODO
 });
 
 test('toggleSharePreprintModal', function(assert) {
@@ -1038,7 +1019,5 @@ test('toggleSharePreprintModal', function(assert) {
 });
 
 skip('savePreprint', function() {
-    test('savePreprint', function() {
-        //TODO
-    });
+    //TODO
 });
