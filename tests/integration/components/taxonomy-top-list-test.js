@@ -6,11 +6,10 @@ moduleForComponent('taxonomy-top-list', 'Integration | Component | taxonomy top 
     integration: true
 });
 
-test('it renders', function(assert) {
+test('renders taxonomy top list', function(assert) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.on('myAction', function(val) { ... });
     this.set('list', Ember.A([{id: 1, text: 'Biology', children: [{text: 'Public Health'}]}, {id: 2, text: 'Engineering', children:[{text: 'Computer Science'}]}]));
-    //Ember.$('#' + subjectId).attr('data-hint', result); Ember.$('#' + subjectId).attr('aria-label', result);
     this.render(hbs`{{taxonomy-top-list list=list}}`);
 
     assert.equal(this.$().text().replace(/\s/g, ''), 'BiologyEngineering');
