@@ -53,6 +53,9 @@ $logo-dir: '../img/provider_logos/';
             color: $theme-color-2;
         }
 
+        .navbar-toggle .icon-bar {
+             background-color: $theme-color-2;
+        }
         a {
             color: $theme-color-2;
         }
