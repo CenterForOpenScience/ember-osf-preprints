@@ -15,3 +15,20 @@ test('it renders', function(assert) {
   assert.equal(this.$('#existingProjectButton').text().trim(), 'Upload a file to an existing OSF project');
   assert.equal(this.$('#existingFileButton').text().trim(), 'Choose a file from an existing OSF project');
 });
+
+test('new file', function(assert) {
+    // Tests that the right component loads if the user uploads a new file
+
+    this.set('toggleNewFile', function() {
+        this.$('#allButtons').children().removeClass('active-custom');
+        this.$('#newFileButton').addClass('active-custom');
+        assert.ok('ok');
+    });
+
+    this.render(hbs `{{project-chooser toggleNewFile=toggleNewFile}}`);
+
+    this.$('#newFileButton').click();
+
+    assert.ok('ok');
+
+});
