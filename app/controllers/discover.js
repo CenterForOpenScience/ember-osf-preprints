@@ -91,7 +91,12 @@ export default Ember.Controller.extend(Analytics, {
                     const providerNames = providers.map(provider => {
                         const name = provider.get('name');
                         // TODO Change this in populate_preprint_providers script to just OSF
-                        return name === 'Open Science Framework' ? 'OSF' : name;
+                        if (name === 'Focused Ultrasound Foundation') {
+                            return 'fusfoundation';
+                        } else if (name === 'Open Science Framework') {
+                            return 'OSF';
+                        }
+                        return name;
                     });
                     this.set('osfProviders', providerNames);
 
