@@ -2,41 +2,12 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('unregistered-contributor-form', 'Integration | Component | unregistered contributor form', {
-  integration: true
+    integration: true
 });
 
-const noop = () => {};
-/*
-function validation (name, email) {
-    return first_name_validation(name) && email_validation(email) ? true : false;
-/*
-    if(first_name_validation(name) && email_validation(email)) {
-        return true;
-    } else {
-        return false;
-    }
-*/
-//}
-/*
-function first_name_validation (name) {
-    return name.length >= 3 ? true : false;
-/*
-    if(name.length >= 3) {
-        return true;
-    } else {
-        return false;
-    }
-*/
-//}
-/*
-function email_validation (email) {
+let noop = () => {};
 
-    var pattern = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-    return pattern.test(email);
-
-}
-*/
-test('form renders', function(assert) {
+test('form renders 11111111', function(assert) {
     // Tests that the unregistered-contirbutor form renders
 
     this.set('resetfindContributorsView', noop);
@@ -53,12 +24,12 @@ test('form renders', function(assert) {
     assert.equal(this.$('button')[1].textContent.trim(), 'Add');
 });
 
-test('cancel unregistered contributor form', function(assert) {
+test('cancel unregistered contributor form 11111111', function(assert) {
     // Tests that the cancel button properly works to reset the contributor form
 
     this.set('resetfindContributorsView', function() {
-        this.$('input')[0].val = "";
-        this.$('input')[1].val = "";
+        this.$('input[name=fullName]').val("");
+        this.$('input[name=username]').val("");
     });
     this.set('addUnregisteredContributor', noop);
     this.set('model', this);
@@ -76,26 +47,29 @@ test('cancel unregistered contributor form', function(assert) {
                         value=value}}`);
 
     // Changes the value of the input boxes
-    this.$('input[name=fullname]').val('Tester Test');
-    this.$('input[name=email]').val('test@test.com');
+    this.$('input[name=fullName]').val('Tester Test');
+    this.$('input[name=username]').val('test@test.com');
 
     // Checks the before value of the input boxes
-//    assert.equal(this.$('input')[0].val, "Tester Test", 'value of input has name before button click');
-//    assert.equal(this.$('input')[1].val, "test@test.com", 'value of input has email before button click');
+    assert.equal(this.$('input[name=fullName]').val(), "Tester Test", 'value of input has name before button click');
+    assert.equal(this.$('input[name=username]').val(), "test@test.com", 'value of input has email before button click');
 
     // Clicks the 'cancel' button
     this.$('button')[0].click();
 
     // Checks the final value of the input boxes
-//    assert.equal(this.$('input')[0].val, "", 'value of input is blank after button click');
-//    assert.equal(this.$('input')[1].val, "", 'value of input is blank after button click');
-    assert.ok('ok');
+    assert.equal(this.$('input[name=fullName]').val(), "", 'value of input is blank after button click');
+    assert.equal(this.$('input[name=username]').val(), "", 'value of input is blank after button click');
 
 });
 
-test('add unregistered contributor', function(assert) {
+test('add unregistered contributor 11111111', function(assert) {
     // Tests that the unregistered contributor is added on submit
 
+    function addUnregisteredContributor(component) {
+        component.$('input[name=fullName]').val("");
+        component.$('input[name=username]').val("");
+    }
     this.set('resetfindContributorsView', noop);
     this.set('addUnregisteredContributor', noop);
     this.set('model', this);
@@ -108,52 +82,24 @@ test('add unregistered contributor', function(assert) {
                         model=model
                         valuePath=valuePath
                         placeholder=placeholder
-                        value=value}}`);
+                        value=value
+                        addUnregistered='assertUnregistered'}}`);
 
     // Changes the value of the input boxes
-    this.$('input')[0].val = "Tester Test";
-    this.$('input')[1].val = "test@test.com";
+    this.$('input[name=fullName]').val("Tester Test");
+    this.$('input[name=username]').val("test@test.com");
 
     // Checks the before value of the input boxes
-    assert.equal(this.$('input')[0].val, "Tester Test", 'value of name input box before submit button click');
-    assert.equal(this.$('input')[1].val, "test@test.com", 'value of email input box before submit button click');
+    assert.equal(this.$('input[name=fullName]').val(), "Tester Test", 'value of name input box before submit button click');
+    assert.equal(this.$('input[name=username]').val(), "test@test.com", 'value of email input box before submit button click');
+
+    this.on('assertUnregistered', addUnregisteredContributor(this));
 
     // Clicks the submit button
-
-});
-
-test('add unregistered contributor invalid input', function(assert) {
-
-    this.set('addUnregistered', function() {
-        assert.ok('ok');
-    });
-    this.set('addUnregisteredContributor', function() {
-        assert.ok('ok');
-    });
-    this.set('resetfindContributorsView', noop);
-    this.set('model', this);
-    this.set('valuePath', 'username');
-    this.set('placeholder', 'Email');
-    this.set('value', '');
-    this.render(hbs `{{unregistered-contributor-form
-                        resetfindContributorsView=resetfindContributorsView
-                        addUnregisteredContributor=addUnregisteredContributor
-                        model=model
-                        valuePath=valuePath
-                        placeholder=placeholder
-                        value=value
-                        addUnregistered=addUnregistered}}`);
-
-    // Changes the value of the input boxes to invalid input
-    // Name field needs to be present and have at least 3 letters
-    // Email needs to be present and have the appropriate format i.e test@tester.com
-
-    this.$('input')[0].val = "dk";
-    this.$('input')[1].val = "dk.co";
-
-    // Clicks the submit button and checks the validation
     this.$('button')[1].click();
 
-    assert.ok('ok');
+    // Chekcs the after value of the input boxes
+    assert.equal(this.$('input[name=fullName]').val(), "", 'value of name input box after submit button is clicked');
+    assert.equal(this.$('input[name=username]').val(), "", 'value of email input box after submit button is clicked');
 
 });
