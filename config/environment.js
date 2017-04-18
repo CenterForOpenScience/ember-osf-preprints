@@ -118,7 +118,7 @@ module.exports = function(environment) {
                  {
                     id: 'fusfoundation',
                     logoSharing: {
-                        path: 'assets/img/provider_logos/fusf_logo.jpeg',
+                        path: 'assets/img/provider_logos/fusf-logo.png',
                         type: 'image/png',
                         width: 1200,
                         height: 488
