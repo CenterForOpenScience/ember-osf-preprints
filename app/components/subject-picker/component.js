@@ -50,10 +50,6 @@ export default Ember.Component.extend(Analytics, {
     store: Ember.inject.service(),
     theme: Ember.inject.service(),
 
-    columns: Ember.A(new Array(3).fill(null).map(() => Column.create())),
-
-    initialSubjects: () => [],
-
     querySubjects(parents = 'null', tier = 0) {
         const column = this.get('columns').objectAt(tier);
 
@@ -73,8 +69,14 @@ export default Ember.Component.extend(Analytics, {
 
     init() {
         this._super(...arguments);
-        this.set('currentSubjects', []);
-        this.set('hasChanged', false);
+
+        this.setProperties({
+            initialSubjects: [],
+            currentSubjects: [],
+            hasChanged: false,
+            columns: Ember.A(new Array(3).fill(null).map(() => Column.create())),
+        });
+
         this.querySubjects();
     },
 
