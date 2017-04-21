@@ -151,7 +151,8 @@ export default {
         add_heading: `Add Preprint`,
         edit_heading: `Edit Preprint`,
         body: {
-            p_add: `Follow these five easy steps to add your preprint to the {{name}} preprint repository.`,
+            p_add: `Follow these six easy steps to add your preprint to an OSF-hosted preprint server.`,
+            p_add_provider: `Follow these five easy steps to add your preprint to the {{name}} preprint server.`,
             p_edit: `Edit your preprint sections below.`,
             upload: `Upload new preprint`,
             connect: `Connect preprint to existing OSF project`,
@@ -307,6 +308,7 @@ export default {
             location: `Preprint location`,
             click_edit: `Click to Edit`,
             name: {
+                Server: 'Select a preprint server',
                 Upload: 'Upload',
                 Discipline: 'Discipline',
                 Basics: 'Basics',

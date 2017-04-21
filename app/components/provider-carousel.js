@@ -23,6 +23,9 @@ export default Ember.Component.extend(Analytics, {
     _resizeListener: null,
     providers: Ember.A(), // Pass in preprint providers
     itemsPerSlide: 5, // Default
+    itemWidth: Ember.computed('itemsPerSlide', function() {
+        return (100 / (this.get('itemsPerSlide') + 1)) + '%';
+    }),
     lightLogo: true, // Light logos by default, for Index page.
     editedProviders: Ember.computed('providers', function() {
         let newProviders = Ember.A()
@@ -33,6 +36,7 @@ export default Ember.Component.extend(Analytics, {
         }
         return newProviders;
     }),
+    selectable: false, // Not selectable by default
     numProviders: Ember.computed('editedProviders', function() {
         return this.get('editedProviders').length;
     }),
@@ -74,7 +78,7 @@ export default Ember.Component.extend(Analytics, {
         if (window.innerWidth < 768) {
             this.set('itemsPerSlide', 1);
         } else {
-            this.set('itemsPerSlide', 5);
+            this.set('itemsPerSlide', this.get('originalItemsPerSlide'));
         }
     },
     didInsertElement: function () {
@@ -83,6 +87,7 @@ export default Ember.Component.extend(Analytics, {
     init: function() {
         // Set resize listener so number of providers per slide can be changed
         this._super(...arguments);
+        this.set('originalItemsPerSlide', this.get('itemsPerSlide'));
         this.setSlideItems();
         this._resizeListener = Ember.run.bind(this, this.setSlideItems);
         Ember.$(window).on('resize', this._resizeListener);
@@ -91,6 +96,18 @@ export default Ember.Component.extend(Analytics, {
         // Unbinds _resizeListener
         if (this._resizeListener) {
             Ember.$(window).off('resize', this._resizeListener);
+        }
+    },
+    activeProvider: Ember.computed('providers', function () {
+        if (this.get('providers').length === 0) {
+            return undefined;
+        }
+        return this.get('providers')[0];
+    }),
+    actions: {
+        selectProvider(provider) {
+            this.set('activeProvider', provider);
+            this.attrs.selectAction(provider);
         }
     }
 });

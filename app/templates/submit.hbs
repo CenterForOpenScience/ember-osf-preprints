@@ -14,9 +14,22 @@
     <div class="container">
         <div class="row m-t-lg">
             <div class="col-xs-12 col-md-10 col-md-offset-1 ">
-                <p>{{if editMode (t "submit.body.p_edit") (t "submit.body.p_add" name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}</p>
+                <p>{{if editMode (t "submit.body.p_edit") (t (if theme.isProvider "submit.body.p_add_provider" "submit.body.p_add") name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}</p>
                 {{#cp-panels accordion=true}}
-                    {{#with _names.[0] as |name|}}
+                    {{#unless editMode}}
+                        {{#unless theme.isProvider}}
+                            {{#with _names.[0] as |name|}}
+                                {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
+                                    {{preprint-form-header editMode=editMode name=name}}
+                                    {{#preprint-form-body}}
+                                        {{provider-carousel itemsPerSlide=6 providers=allProviders selectable=true selectAction=(action 'setProvider')}}
+                                    {{/preprint-form-body}}
+                                {{/preprint-form-section}}
+                            {{/with}}
+                        {{/unless}}
+                    {{/unless}}
+
+                    {{#with _names.[1] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged)}}
                             {{#preprint-form-body}}
@@ -116,7 +129,7 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{#with _names.[1] as |name|}}
+                    {{#with _names.[2] as |name|}}
                         {{#preprint-form-section id='preprint-form-subjects' editMode=editMode class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -136,7 +149,7 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{#with _names.[2] as |name|}}
+                    {{#with _names.[3] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' editMode=editMode class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=node.tags abstract=node.description name=name valid=(not basicsChanged) license=model.license isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -195,7 +208,7 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{#with _names.[3] as |name|}}
+                    {{#with _names.[4] as |name|}}
                         {{#preprint-form-section id='preprint-form-authors' editMode=editMode class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -230,7 +243,7 @@
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
-                    {{#with _names.[4] as |name|}}
+                    {{#with _names.[5] as |name|}}
                         {{#preprint-form-section id='preprint-form-submit' editMode=editMode class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode name=(if editMode 'Update' name) showValidationIndicator=false}}
                             {{#if editMode}}

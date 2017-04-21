@@ -1256,7 +1256,6 @@ nav.branded-navbar {
     margin-bottom: 0;
 }
 
-
 .listOption.btn-link {
     cursor: pointer;
     text-decoration: none;
@@ -1299,4 +1298,21 @@ nav.branded-navbar {
     .taxonomy-left-padding {
         padding-left: 40px;
     }
+}
+
+button.provider {
+    border: none;
+    background: none;
+}
+
+button.provider:focus {
+    outline: 0;
+}
+
+button.provider img {
+    height: 50px;
+}
+
+button.provider.inactive-provider img {
+    opacity: 0.3;
 }

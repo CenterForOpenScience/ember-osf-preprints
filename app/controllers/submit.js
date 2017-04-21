@@ -102,7 +102,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     filePickerState: State.START, // Selected upload state (initial decision on form) - new or existing project? (is poorly named)
     _existingState: existingState, // File states - new file or existing file
     existingState: existingState.CHOOSE, // Selected file state - new or existing file (poorly named)
-    _names: ['upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()), // Form section headers
+    _names: ['server', 'upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()), // Form section headers
 
     // Data for project picker; tracked internally on load
     user: null,
@@ -140,6 +140,24 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     abandonedPreprint: null, // Abandoned(draft) preprint on the current node
     editMode: false, // Edit mode is false by default.
     shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
+    allProviders: [], // Initialize with an empty list of providers
+    currentProvider: undefined,
+
+    init() {
+        let controller = this;
+        this.get('store')
+            .findAll('preprint-provider', { reload: true })
+            .then(function(providers) {
+                controller.set(
+                    'allProviders',
+                    // OSF first, then all the rest
+                    providers.filter(item => item.id === 'osf').concat(providers.filter(item => item.id !== 'osf'))
+                );
+            });
+        const provider = this.get('store')
+            .findRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider);
+        this.set('currentProvider', provider);
+    },
 
     isTopLevelNode: Ember.computed.not('node.parent.id'),
 
@@ -582,12 +600,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     this.set('applyLicense', true);
                 }
             });
-            const provider = this.get('store')
-                .peekRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider);
 
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
-            model.set('provider', provider);
+            model.set('provider', this.get('currentProvider'));
 
             return model.save()
                 .then(() => {
@@ -932,6 +948,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.toggleProperty('shareButtonDisabled');
             model.set('isPublished', true);
             node.set('public', true);
+            model.set('provider', this.get('currentProvider'));
 
             return model.save()
                 .then(() => node.save())
@@ -949,5 +966,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                         );
                 });
         },
+        setProvider(provider) {
+            this.set('currentProvider', provider);
+        }
     }
 });
