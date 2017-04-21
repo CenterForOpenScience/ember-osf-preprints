@@ -7,7 +7,7 @@ moduleForComponent('unregistered-contributor-form', 'Integration | Component | u
 
 let noop = () => {};
 
-test('form renders 11111111', function(assert) {
+test('form renders', function(assert) {
     // Tests that the unregistered-contirbutor form renders
 
     this.set('resetfindContributorsView', noop);
@@ -24,7 +24,7 @@ test('form renders 11111111', function(assert) {
     assert.equal(this.$('button')[1].textContent.trim(), 'Add');
 });
 
-test('cancel unregistered contributor form 11111111', function(assert) {
+test('cancel unregistered contributor form', function(assert) {
     // Tests that the cancel button properly works to reset the contributor form
 
     this.set('resetfindContributorsView', function() {
@@ -63,7 +63,7 @@ test('cancel unregistered contributor form 11111111', function(assert) {
 
 });
 
-test('add unregistered contributor 11111111', function(assert) {
+test('add unregistered contributor', function(assert) {
     // Tests that the unregistered contributor is added on submit
 
     function addUnregisteredContributor(component) {
