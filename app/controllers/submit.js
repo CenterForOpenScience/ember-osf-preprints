@@ -154,9 +154,11 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     providers.filter(item => item.id === 'osf').concat(providers.filter(item => item.id !== 'osf'))
                 );
             });
-        const provider = this.get('store')
-            .findRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider);
-        this.set('currentProvider', provider);
+        this.get('store')
+            .findRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider)
+            .then(function(provider) {
+                controller.set('currentProvider', provider);
+            });
     },
 
     isTopLevelNode: Ember.computed.not('node.parent.id'),
@@ -968,6 +970,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         },
         setProvider(provider) {
             this.set('currentProvider', provider);
+            this.send('discardSubjects');
         }
     }
 });

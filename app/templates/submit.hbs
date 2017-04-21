@@ -135,7 +135,7 @@
                             {{#preprint-form-body}}
                                 <p class="m-b-lg text-smaller">{{t "submit.body.subjects_description"}}</p>
 
-                                {{subject-picker editMode=editMode selected=subjectsList disciplineModifiedToggle=disciplineModifiedToggle save=(action 'setSubjects')}}
+                                {{subject-picker editMode=editMode provider=currentProvider selected=subjectsList disciplineModifiedToggle=disciplineModifiedToggle save=(action 'setSubjects')}}
 
                                 <div class="row">
                                     <div class="col-md-12">
