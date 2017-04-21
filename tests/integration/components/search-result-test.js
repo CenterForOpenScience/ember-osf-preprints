@@ -12,6 +12,7 @@ moduleForComponent('search-result', 'Integration | Component | search result', {
         this.set('noop', noop);
     }
 });
+
 /*
 let result = Ember.Object.extend({
     identifiers: [],
