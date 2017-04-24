@@ -16,17 +16,15 @@
             <div class="col-xs-12 col-md-10 col-md-offset-1 ">
                 <p>{{if editMode (t "submit.body.p_edit") (t (if theme.isProvider "submit.body.p_add_provider" "submit.body.p_add") name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}</p>
                 {{#cp-panels accordion=true}}
-                    {{#unless editMode}}
-                        {{#unless theme.isProvider}}
-                            {{#with _names.[0] as |name|}}
-                                {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
-                                    {{preprint-form-header editMode=editMode name=name showValidationIndicator=false}}
-                                    {{#preprint-form-body}}
-                                        {{provider-carousel itemsPerSlide=6 providers=allProviders selectable=true selectAction=(action 'setProvider')}}
-                                    {{/preprint-form-body}}
-                                {{/preprint-form-section}}
-                            {{/with}}
-                        {{/unless}}
+                    {{#unless (or editMode theme.isProvider)}}
+                        {{#with _names.[0] as |name|}}
+                            {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
+                                {{preprint-form-header editMode=editMode name=name showValidationIndicator=false}}
+                                {{#preprint-form-body}}
+                                    {{provider-carousel itemsPerSlide=6 providers=allProviders selectable=true selectAction=(action 'setProvider')}}
+                                {{/preprint-form-body}}
+                            {{/preprint-form-section}}
+                        {{/with}}
                     {{/unless}}
 
                     {{#with _names.[1] as |name|}}
