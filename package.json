@@ -57,7 +57,7 @@
     "ember-collection": "1.0.0-alpha.6",
     "ember-cp-validations": "^2.9.4",
     "ember-data": "^2.7.0",
-    "ember-data-factory-guy": "^2.11.6",
+    "ember-data-factory-guy": "2.11.6",
     "ember-export-application-global": "^1.0.5",
     "ember-faker": "^1.1.1",
     "ember-font-awesome": "2.1.1",
