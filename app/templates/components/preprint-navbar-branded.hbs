@@ -1,5 +1,10 @@
 <div class="container">
     <div class="navbar-header">
+        <button type="button" class="navbar-toggle" id='preprint-branded-collapse-button' data-toggle="collapse" aria-label={{t 'components.preprint-navbar.toggle'}} data-target="#preprint-navbar-links">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
         {{#link-to (route-prefix 'index') slug=theme.id class="navbar-brand" invokeAction=(action "click" "link" "Navbar - Brand")~}}
             <span class="navbar-image"></span>
             <span class="navbar-title">{{model.name}} {{t "global.preprints"}}</span>
