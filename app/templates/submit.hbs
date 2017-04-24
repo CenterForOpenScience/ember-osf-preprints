@@ -20,7 +20,7 @@
                         {{#unless theme.isProvider}}
                             {{#with _names.[0] as |name|}}
                                 {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
-                                    {{preprint-form-header editMode=editMode name=name}}
+                                    {{preprint-form-header editMode=editMode name=name showValidationIndicator=false}}
                                     {{#preprint-form-body}}
                                         {{provider-carousel itemsPerSlide=6 providers=allProviders selectable=true selectAction=(action 'setProvider')}}
                                     {{/preprint-form-body}}
