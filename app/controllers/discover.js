@@ -91,13 +91,8 @@ export default Ember.Controller.extend(Analytics, {
                     const providerNames = providers.map(provider => {
                         const name = provider.get('name');
                         // TODO Change this in populate_preprint_providers script to just OSF
-                        if (name === 'FocUS Archive') {
-                            return 'focusarchive';
-                        } else if (name === 'Open Science Framework') {
-                            return 'OSF';
-                        }
-                        return name;
-                        });
+                        return name === 'Open Science Framework' ? 'OSF' : name;
+                    });
                     this.set('osfProviders', providerNames);
 
                     return providerNames;
@@ -149,7 +144,7 @@ export default Ember.Controller.extend(Analytics, {
                     this.set('otherProviders', providers);
                 } else {
                     const filtered = providers.filter(
-                        item => item.key.toLowerCase() === this.get('theme.id').toLowerCase()
+                        item => item.key.toLowerCase().replace(/\s/g,'') === this.get('theme.id').toLowerCase()
                     );
 
                     this.set('otherProviders', filtered);
