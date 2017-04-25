@@ -116,14 +116,14 @@ module.exports = function(environment) {
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                  {
-                    id: 'fusfoundation',
+                    id: 'focusarchive',
                     logoSharing: {
                         path: 'assets/img/provider_logos/fusf-logo.png',
                         type: 'image/png',
                         width: 1200,
                         height: 488
                     },
-                    permissionLanguage: 'arxiv_non_endorsement'
+                    permissionLanguage: 'no_trademark'
                 }
             ],
         },
