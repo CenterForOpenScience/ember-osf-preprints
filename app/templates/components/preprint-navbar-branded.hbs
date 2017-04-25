@@ -1,9 +1,11 @@
 <div class="container">
     <div class="navbar-header">
-        {{#link-to (route-prefix 'index') slug=theme.id class="navbar-brand" invokeAction=(action "click" "link" "Navbar - Brand")~}}
+        <a class="navbar-brand" href='{{theme.pathPrefix}}'
+           onclick={{action "click" "link" "Navbar - Brand"}}
+        >
             <span class="navbar-image"></span>
             <span class="navbar-title">{{model.name}} {{t "global.preprints"}}</span>
-        {{~/link-to}}
+        </a>
     </div>
     <div id="preprint-navbar-links" class="navbar-collapse collapse navbar-right">
         <ul class="nav navbar-nav branded-nav">
@@ -11,7 +13,7 @@
                 <li><a href="{{host}}myprojects/" class="" onbeforeclick={{action "click" "link" "Navbar - My OSF Projects"}}>{{t "components.preprint-navbar-branded.my_projects"}}</a></li>
             {{/if}}
             <li><a href={{concat theme.pathPrefix 'submit'}} onbeforeclick={{action "click" "link" "Navbar - Add preprint"}}>{{t "global.add_preprint"}}</a></li>
-            <li>{{#link-to (route-prefix 'discover') slug=theme.id class="" invokeAction=(action "click" "link" "Navbar - Search")}}{{t "global.search"}}{{/link-to}}</li>
+            <li><a class="" href='{{theme.pathPrefix}}discover' onclick={{action "click" "link" "Navbar - Search"}}>{{t "global.search"}}</a></li>
             {{navbar-auth-dropdown
                 signupUrl=theme.signupUrl
                 loginAction=(action 'login')
