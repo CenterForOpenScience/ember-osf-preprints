@@ -25,3 +25,12 @@
         color: white !important;
     }
 }
+
+#preprint-form-subjects {
+    .subject,
+    .subject > .fa,
+    ul li.selected,
+    ul li:active {
+        color: white;
+    }
+}
