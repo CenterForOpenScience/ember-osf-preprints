@@ -22,10 +22,7 @@ export default Ember.Route.extend({
 
         if (providerIds.includes(slugLower)) {
             const {domain} = providers.find(provider => provider.id === slugLower) || {};
-            const isReady = providers.find(function (p) {
-                return p.id === slug;
-            }).ready;
-
+            const isReady = providers.find(provider => provider.id === slug).ready;
             // This should be caught by the proxy, but we'll redirect just in case it is not.
             if (domain) {
                 window.location.replace(
