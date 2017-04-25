@@ -242,6 +242,13 @@ $logo-dir: 'img/provider_logos/';
     background-image: url($logo-dir + 'scielo-dark-small.png');
 }
 
+.provider-lawarxiv {
+    background-image: url($logo-dir + 'lawarxiv-white.png');
+}
+.provider-lawarxiv-dark {
+    background-image: url($logo-dir + 'lawarxiv-dark.png');
+}
+
 .provider-focusarchive {
     background-image: url($logo-dir + 'fusf-logo-white.png');
 }
