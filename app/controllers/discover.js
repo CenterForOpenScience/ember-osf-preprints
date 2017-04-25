@@ -23,10 +23,11 @@ export default Ember.Controller.extend(Analytics, {
     discoverHeader: Ember.computed('i18n', function() { // Header for preprints discover page
         return this.get('i18n').t('discover.search.heading');
     }),
-    facets: [// List of facets available for preprints
-        { key: 'sources', title: 'Providers', component: 'search-facet-provider' },
-        { key: 'subjects', title: 'Subject', component: 'search-facet-taxonomy' }
-    ],
+    facets: Ember.computed('i18n.locale', function() { //List of facets available for preprints
+        return [
+            { key: 'sources', title: `${this.get('i18n').t('discover.main.providers')}`, component: 'search-facet-provider' },
+            { key: 'subjects', title: `${this.get('i18n').t('discover.main.subject')}`, component: 'search-facet-taxonomy' }]
+    }),
     filterMap: { // Map active filters to facet names expected by SHARE
         providers: 'sources',
         subjects: 'subjects'
