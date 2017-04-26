@@ -46,7 +46,7 @@ module.exports = function(environment) {
                         width: 363,
                         height: 242
                     },
-                    permissionLanguage: 'no_trademark',
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'engrxiv',
@@ -58,7 +58,7 @@ module.exports = function(environment) {
                         height: 488
 
                     },
-                    permissionLanguage: 'arxiv_non_endorsement',
+                    permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'socarxiv',
@@ -69,7 +69,7 @@ module.exports = function(environment) {
                         width: 1200,
                         height: 488
                     },
-                    permissionLanguage: 'arxiv_trademark_license',
+                    permissionLanguage: 'arxiv_trademark_license'
                 },
                 {
                     id: 'psyarxiv',
@@ -80,7 +80,7 @@ module.exports = function(environment) {
                         width: 1200,
                         height: 488
                     },
-                    permissionLanguage: 'arxiv_trademark_license',
+                    permissionLanguage: 'arxiv_trademark_license'
                 },
                 {
                     id: 'bitss',
@@ -101,7 +101,7 @@ module.exports = function(environment) {
                         width: 1200,
                         height: 488
                     },
-                    permissionLanguage: 'no_trademark',
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'agrixiv',
@@ -112,7 +112,7 @@ module.exports = function(environment) {
                         width: 1200,
                         height: 488
                     },
-                    permissionLanguage: 'arxiv_non_endorsement',
+                    permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'lawarxiv',
@@ -122,7 +122,7 @@ module.exports = function(environment) {
                         width: 1200,
                         height: 488
                     },
-                    permissionLanguage: 'arxiv_non_endorsement',
+                    permissionLanguage: 'arxiv_non_endorsement'
                 }
             ],
         },
