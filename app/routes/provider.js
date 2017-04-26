@@ -20,6 +20,7 @@ export default Ember.Route.extend({
         const {slug} = transition.params.provider;
         const slugLower = (slug || '').toLowerCase();
 
+        this.store.find('preprint-provider', slug).then(() =>{
         if (providerIds.includes(slugLower)) {
             const {domain} = providers.find(provider => provider.id === slugLower) || {};
 
@@ -52,6 +53,11 @@ export default Ember.Route.extend({
                 this.replaceWith('page-not-found');
             }
         }
+        }
+        ).catch(() =>{
+                this.replaceWith('page-not-found');
+
+            });
     },
 
     actions: {
