@@ -82,16 +82,16 @@ module.exports = function(defaults) {
                 enabled: true,
                 content: `
                     <script>
-                        window.assetSuffix = '${config.ASSET_SUFFIX ? '-' + config.ASSET_SUFFIX : ''}';                        
+                        window.assetSuffix = '${config.ASSET_SUFFIX ? '-' + config.ASSET_SUFFIX : ''}';
                         (function(providerDomains) {
                             var origin = window.location.origin;
-                        
+
                             var isProviderDomain = providerDomains.some(function(domain) {
                                 return ~origin.indexOf(domain);
                             });
-                        
+
                             var prefix = '/' + (isProviderDomain ? '' : 'preprints/') + 'assets/';
-                        
+
                             [
                                 'vendor',
                                 'preprint-service'
@@ -100,7 +100,7 @@ module.exports = function(defaults) {
                                 script.src = prefix + name + window.assetSuffix + '.js';
                                 script.async = false;
                                 document.body.appendChild(script);
-                        
+
                                 var link = document.createElement('link');
                                 link.rel = 'stylesheet';
                                 link.href = prefix + name + window.assetSuffix + '.css';
@@ -137,7 +137,7 @@ module.exports = function(defaults) {
         },
         // bable options included to fix issue with testing discover controller
         // http://stackoverflow.com/questions/32231773/ember-tests-passing-in-chrome-not-in-phantomjs
-        babel: {
+        'ember-cli-babel': {
             optional: ['es6.spec.symbols'],
             includePolyfill: true
         },
@@ -180,6 +180,10 @@ module.exports = function(defaults) {
         production: path.join(app.bowerDirectory, 'hint.css/hint.css')
     });
 
+    app.import({
+        test: path.join(app.bowerDirectory, 'ember/ember-template-compiler.js')
+    });
+    
     // Import component styles from addon
     app.import('vendor/assets/ember-osf.css');
 

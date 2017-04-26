@@ -7,7 +7,12 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
 import getRedirectUrl from '../../utils/get-redirect-url';
 
-const {PREPRINTS: {providers}} = config;
+const {
+    PREPRINTS: {providers},
+    OSF: {renderUrl}
+} = config;
+
+const exportUrl = renderUrl.replace(/render$/, 'export');
 
 // Error handling for API
 const handlers = new Map([
@@ -198,9 +203,10 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     ['dc.license', license ? license.get('name') : 'No license']
                 );
 
-                if (/\.pdf$/.test(primaryFile.get('name'))) {
-                    highwirePress.push(['citation_pdf_url', primaryFile.get('links').download]);
-                }
+                highwirePress.push([
+                    'citation_pdf_url',
+                    `${exportUrl}?format=pdf&url=${encodeURIComponent(`${primaryFile.get('links').download}?direct`)}`
+                ]);
 
                 const openGraphTags = openGraph
                     .map(([property, content]) => ({
