@@ -20,8 +20,8 @@ export default Ember.Route.extend({
         const slugLower = (slug || '').toLowerCase();
         this.store
             .findAll('preprint-provider')
-            .then(p => {
-                const providerList = p.filter(function (item){return (item.id !== 'osf');}).map(provider => {
+            .then(results => {
+                const providerList = results.filter(function (result){return (result.id !== 'osf');}).map(provider => {
                     return provider.get('id');
                 });
 
