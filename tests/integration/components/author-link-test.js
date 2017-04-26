@@ -19,8 +19,8 @@ test('renders non-links', function(assert) {
     contributor = Ember.merge(contributor, contributorModel.serialize().data.attributes);
     this.set('contributor', contributor);
     this.render(hbs`{{author-link contributor=contributor}}`);
-    assert.ok(!this.$('a').length);
-    assert.equal(this.$().text().trim(), contributorModel.get('users.fullName'));
+    assert.ok(!this.$('a').length, 'Found a link when user has no identifiers');
+    assert.equal(this.$().text().trim(), contributorModel.get('users.fullName'), 'Text of author-link not equal to fullName of user');
 });
 
 test('renders links', function(assert) {
@@ -32,6 +32,6 @@ test('renders links', function(assert) {
     this.set('contributor', contributor);
 
     this.render(hbs`{{author-link contributor=contributor}}`);
-    assert.ok(this.$('a').length);
-    assert.equal(this.$().text().trim(), contributorModel.get('users.fullName'));
+    assert.ok(this.$('a').length, 'Expected a link in author-link as user has an identifier');
+    assert.equal(this.$().text().trim(), contributorModel.get('users.fullName'), 'Text of author-link not equal to fullName of user');
 });

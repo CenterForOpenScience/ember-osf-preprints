@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
-import FactoryGuy, { manualSetup } from 'ember-data-factory-guy';
+import config from 'ember-get-config';
 
 moduleFor('controller:content/index', 'Unit | Controller | content/index', {
     needs: [
