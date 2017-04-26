@@ -47,7 +47,6 @@ module.exports = function(environment) {
                         height: 242
                     },
                     permissionLanguage: 'no_trademark',
-                    ready: true
                 },
                 {
                     id: 'engrxiv',
@@ -60,7 +59,6 @@ module.exports = function(environment) {
 
                     },
                     permissionLanguage: 'arxiv_non_endorsement',
-                    ready: true
                 },
                 {
                     id: 'socarxiv',
@@ -72,7 +70,6 @@ module.exports = function(environment) {
                         height: 488
                     },
                     permissionLanguage: 'arxiv_trademark_license',
-                    ready: true
                 },
                 {
                     id: 'psyarxiv',
@@ -84,7 +81,6 @@ module.exports = function(environment) {
                         height: 488
                     },
                     permissionLanguage: 'arxiv_trademark_license',
-                    ready: true
                 },
                 {
                     id: 'bitss',
@@ -95,7 +91,6 @@ module.exports = function(environment) {
                         height: 1500
                     },
                     permissionLanguage: 'no_trademark',
-                    ready: true
                 },
                 {
                     id: 'scielo',
@@ -107,7 +102,6 @@ module.exports = function(environment) {
                         height: 488
                     },
                     permissionLanguage: 'no_trademark',
-                    ready: false
                 },
                 {
                     id: 'agrixiv',
@@ -119,7 +113,6 @@ module.exports = function(environment) {
                         height: 488
                     },
                     permissionLanguage: 'arxiv_non_endorsement',
-                    ready: true
                 },
                 {
                     id: 'lawarxiv',
@@ -130,7 +123,6 @@ module.exports = function(environment) {
                         height: 488
                     },
                     permissionLanguage: 'arxiv_non_endorsement',
-                    ready: false
                 }
             ],
         },

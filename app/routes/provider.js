@@ -3,7 +3,6 @@ import config from 'ember-get-config';
 import getRedirectUrl from '../utils/get-redirect-url';
 
 const providers = config.PREPRINTS.providers.slice(1);
-const providerIds = providers.map(p => p.id);
 
 /**
  * @module ember-preprints
@@ -19,43 +18,49 @@ export default Ember.Route.extend({
     beforeModel(transition) {
         const {slug} = transition.params.provider;
         const slugLower = (slug || '').toLowerCase();
+        this.store
+            .findAll('preprint-provider')
+            .then(p => {
+                const providerList = p.filter(function (item){return (item.id !== 'osf');}).map(provider => {
+                    return provider.get('id');
+                });
 
-        if (providerIds.includes(slugLower)) {
-            const {domain} = providers.find(provider => provider.id === slugLower) || {};
-            const isReady = providers.find(provider => provider.id === slug).ready;
-            // This should be caught by the proxy, but we'll redirect just in case it is not.
-            if (domain) {
-                window.location.replace(
-                    getRedirectUrl(window.location, domain, slug)
-                );
+                if (providerList.includes(slugLower)) {
+                    const {domain} = providers.find(provider => provider.id === slugLower) || {};
 
-                return;
-            }
-            if (!isReady) {
-                this.replaceWith('page-not-found');
-                return;
-            }
+                    // This should be caught by the proxy, but we'll redirect just in case it is not.
+                    if (domain) {
+                        window.location.replace(
+                            getRedirectUrl(window.location, domain, slug)
+                        );
 
-            if (slugLower !== slug) {
-                const {pathname} = window.location;
-                const pathRegex = new RegExp(`^/preprints/${slug}`);
+                        return;
+                    }
 
-                window.location.pathname = pathname.replace(
-                    pathRegex,
-                    `/preprints/${slugLower}`
-                );
-            }
+                    if (slugLower !== slug) {
+                        const {pathname} = window.location;
+                        const pathRegex = new RegExp(`^/preprints/${slug}`);
 
-            this.set('theme.id', slug);
-        } else {
-            this.set('theme.id', config.PREPRINTS.defaultProvider);
+                        window.location.pathname = pathname.replace(
+                            pathRegex,
+                            `/preprints/${slugLower}`
+                        );
+                    }
 
-            if (slug.length === 5) {
-                this.transitionTo('content', slug);
-            } else {
-                this.replaceWith('page-not-found');
-            }
-        }
+                    this.set('theme.id', slug);
+                } else {
+                    this.set('theme.id', config.PREPRINTS.defaultProvider);
+
+                    if (slug.length === 5) {
+                        this.transitionTo('content', slug);
+                    } else {
+                        this.replaceWith('page-not-found');
+                    }
+                }
+
+            });
+
+
     },
 
     actions: {
