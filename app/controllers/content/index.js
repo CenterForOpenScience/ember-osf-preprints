@@ -3,7 +3,6 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from '../../mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
-import fileDownloadPath from '../../utils/file-download-path';
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -140,12 +139,6 @@ export default Ember.Controller.extend(Analytics, {
             text = text.replace(/({{copyrightHolders}})/g, this.get('model.licenseRecord').copyright_holders ? this.get('model.licenseRecord').copyright_holders.join(',') : false || '');
         }
         return text;
-    }),
-
-    _fileDownloadURL: Ember.observer('model.primaryFile', function() {
-        this.get('model.primaryFile').then(file => {
-            this.set('fileDownloadURL', fileDownloadPath(file, this.get('node')));
-        });
     }),
 
     hasShortenedDescription: Ember.computed('node.description', function() {
