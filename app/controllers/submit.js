@@ -725,7 +725,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             const currentNodeLicenseType = node.get('license');
             const currentNodeLicenseRecord = node.get('nodeLicense');
             const copyrightHolders = this.get('basicsLicense.copyrightHolders')
-                .split(',')
+                .split(', ')
                 .map(item => item.trim());
 
             if (this.get('abstractChanged'))

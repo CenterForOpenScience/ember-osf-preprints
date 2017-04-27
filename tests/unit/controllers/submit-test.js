@@ -516,6 +516,19 @@ test('licenseChanged with no model set', function(assert) {
     });
 });
 
+test('basicsLicense with multiple copyrightHolders', function(assert) {
+    const ctrl = this.subject();
+    const model = {
+        licenseRecord: {
+            copyright_holders: ['Frank', 'Everest']
+        }
+    };
+    Ember.run(() => {
+        ctrl.set('model', model);
+        assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest');
+    });
+});
+
 test('basicsChanged computed property', function(assert) {
     const ctrl = this.subject();
     ctrl.set('tagsChanged', false);
