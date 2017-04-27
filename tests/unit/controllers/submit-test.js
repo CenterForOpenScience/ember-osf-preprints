@@ -529,6 +529,30 @@ test('basicsLicense with multiple copyrightHolders', function(assert) {
     });
 });
 
+test('discardBasics properly joins copyrightHolders', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    const store = this.store;
+    Ember.run(() => {
+        const node =  store.createRecord('node', {
+            tags: ['tags']
+        });
+        const model = store.createRecord('preprint', {
+            licenseRecord: {
+                copyright_holders: ['Frank', 'Everest']
+            }
+        });
+        const license = store.createRecord('license', {
+            'name': 'No license'
+        });
+        model.set('license', license);
+        ctrl.set('node', node);
+        ctrl.set('model', model);
+        ctrl.send('discardBasics');
+        assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest');
+    });
+})
+
 test('basicsChanged computed property', function(assert) {
     const ctrl = this.subject();
     ctrl.set('tagsChanged', false);
