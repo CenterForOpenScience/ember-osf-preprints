@@ -4,7 +4,6 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from '../../mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
-import fileDownloadPath from '../../utils/file-download-path';
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -141,13 +140,6 @@ export default Ember.Controller.extend(Analytics, {
         return text
             .replace(/({{year}})/g, year)
             .replace(/({{copyrightHolders}})/g, copyright_holders.join(', '));
-    }),
-
-    fileDownloadURL: Ember.computed('model.primaryFile', 'node', function() {
-        return DS.PromiseObject.create({
-            promise: this.get('model.primaryFile')
-                .then(file => fileDownloadPath(file, this.get('node')))
-        });
     }),
 
     hasShortenedDescription: Ember.computed('node.description', function() {
