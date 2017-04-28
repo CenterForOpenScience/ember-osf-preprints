@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
-import getRedirectUrl from '../utils/get-redirect-url';
 
 const providers = config.PREPRINTS.providers.slice(1);
 const providerIds = providers.map(p => p.id);
@@ -21,17 +20,6 @@ export default Ember.Route.extend({
         const slugLower = (slug || '').toLowerCase();
 
         if (providerIds.includes(slugLower)) {
-            const {domain} = providers.find(provider => provider.id === slugLower) || {};
-
-            // This should be caught by the proxy, but we'll redirect just in case it is not.
-            if (domain) {
-                window.location.replace(
-                    getRedirectUrl(window.location, domain, slug)
-                );
-
-                return;
-            }
-
             if (slugLower !== slug) {
                 const {pathname} = window.location;
                 const pathRegex = new RegExp(`^/preprints/${slug}`);

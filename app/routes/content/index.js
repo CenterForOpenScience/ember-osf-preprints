@@ -5,10 +5,8 @@ import Analytics from '../../mixins/analytics';
 import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
-import getRedirectUrl from '../../utils/get-redirect-url';
 
 const {
-    PREPRINTS: {providers},
     OSF: {renderUrl}
 } = config;
 
@@ -58,38 +56,13 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 const isOSF = providerId === 'osf';
 
                 // If we're on the proper branded site, stay here.
-                if ((!themeId && isOSF) || themeId === providerId)
+                if (themeId === providerId)
                     return Promise.all([
                         provider,
                         preprint.get('node')
                     ]);
 
-                // Otherwise, find the correct provider and redirect
-                const configProvider = providers.find(p => p.id === providerId);
-
-                if (!configProvider)
-                    throw new Error('Provider is not configured properly. Check the Ember configuration.');
-
-                const {domain} = configProvider;
-                const urlParts = [];
-
-                // Provider with a domain
-                if (this.get('theme.isDomain') || domain) {
-                    urlParts.push(getRedirectUrl(window.location, domain));
-                // Provider without a domain
-                } else {
-                    urlParts.push(origin);
-
-                    if (!isOSF)
-                        urlParts.push('preprints', providerId);
-
-                    urlParts.push(preprint.get('id'));
-                }
-
-                const url = urlParts.join('/').replace(/\/\/$/, '/');
-
-                window.location.replace(url);
-
+                window.location.replace(`${config.OSF.url}${isOSF ? '' : `preprints/${providerId}/`}${preprint.get('id')}/`);
                 return Promise.reject();
             })
             .then(([provider, node]) => {
