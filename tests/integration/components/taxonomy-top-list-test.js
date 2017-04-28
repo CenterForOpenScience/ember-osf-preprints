@@ -6,13 +6,17 @@ moduleForComponent('taxonomy-top-list', 'Integration | Component | taxonomy top 
     integration: true
 });
 
-test('it renders', function(assert) {
+test('renders taxonomy top list', function(assert) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.on('myAction', function(val) { ... });
-    this.set('list', Ember.A([{text: 'b'}, {text: 'a'}]));
-
+    this.set('list', Ember.A([{id: 1, text: 'Biology', children: [{text: 'Public Health'}]}, {id: 2, text: 'Engineering', children:[{text: 'Computer Science'}]}]));
     this.render(hbs`{{taxonomy-top-list list=list}}`);
 
-    // Should be sorted as 'ab', not 'ba'
-    assert.equal(this.$().text().replace(/\s/g, ''), 'ab');
+    assert.equal(this.$().text().replace(/\s/g, ''), 'BiologyEngineering');
+
+    assert.equal(this.$('#1').attr('data-hint'), 'Public Health');
+    assert.equal(this.$('#1').attr('aria-label'), 'Public Health');
+
+    assert.equal(this.$('#2').attr('data-hint'), 'Computer Science');
+    assert.equal(this.$('#2').attr('aria-label'), 'Computer Science');
 });
