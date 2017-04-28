@@ -268,57 +268,6 @@ test('fullLicenseText computed property', function (assert) {
     });
 });
 
-test('fileDownloadURL computed property', function (assert) {
-    // Note: testing of the file download url string value should be done in the file-download-path util test
-    this.inject.service('store');
-
-    const store = this.store;
-    const ctrl = this.subject();
-
-    // Without a node should be null
-    Ember.run(() => {
-        const primaryFile = store.createRecord('file', {
-            guid: 'abc12',
-            path: '/test_path'
-        });
-
-        const model = store.createRecord('preprint', {
-            primaryFile
-        });
-
-        ctrl.setProperties({
-            model
-        });
-
-        ctrl.get('fileDownloadURL')
-            .then(url => assert.notOk(url));
-    });
-
-    // With file and node
-    Ember.run(() => {
-        const primaryFile = store.createRecord('file', {
-            guid: 'abc12',
-            path: '/test_path'
-        });
-
-        const model = store.createRecord('preprint', {
-            primaryFile
-        });
-
-        const node = store.createRecord('node', {
-            id: 'def34'
-        });
-
-        ctrl.setProperties({
-            model,
-            node
-        });
-
-        ctrl.get('fileDownloadURL')
-            .then(url => assert.ok(url));
-    });
-});
-
 test('hasShortenedDescription computed property', function (assert) {
     this.inject.service('store');
 
