@@ -680,13 +680,13 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('basicsAbstract', this.get('node.description'));
             this.set('basicsDOI', this.get('model.doi'));
             let date = new Date();
-            this.set('basicsLicense', {
-                year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : date.getUTCFullYear().toString(),
-                copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(', ') : ''
+            this.get('model.license').then(license => {
+                this.set('basicsLicense', {
+                    licenseType: license || this.get('availableLicenses').toArray()[0],
+                    year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : date.getUTCFullYear().toString(),
+                    copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(', ') : ''
+                });
             });
-            this.get('model.license').then(license =>
-                this.set('basicsLicense.licenseType', license || this.get('availableLicenses').toArray()[0])
-            );
         },
         preventDefault(e) {
             e.preventDefault();

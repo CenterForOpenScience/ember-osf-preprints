@@ -1,5 +1,6 @@
 import { moduleFor, test, skip } from 'ember-qunit';
 import Ember from 'ember';
+import wait from 'ember-test-helpers/wait';
 
 const panelNames = [
     'Discipline',
@@ -530,6 +531,7 @@ test('basicsLicense with multiple copyrightHolders', function(assert) {
 });
 
 test('discardBasics properly joins copyrightHolders', function(assert) {
+    assert.expect(1);
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
@@ -549,7 +551,7 @@ test('discardBasics properly joins copyrightHolders', function(assert) {
         ctrl.set('node', node);
         ctrl.set('model', model);
         ctrl.send('discardBasics');
-        assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest');
+        return wait().then(() => assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest'));
     });
 })
 
