@@ -1,5 +1,6 @@
 import { moduleFor, test, skip } from 'ember-qunit';
 import Ember from 'ember';
+import wait from 'ember-test-helpers/wait';
 
 const panelNames = [
     'Discipline',
@@ -515,6 +516,44 @@ test('licenseChanged with no model set', function(assert) {
         assert.equal(ctrl.get('licenseChanged'), true);
     });
 });
+
+test('basicsLicense with multiple copyrightHolders', function(assert) {
+    const ctrl = this.subject();
+    const model = {
+        licenseRecord: {
+            copyright_holders: ['Frank', 'Everest']
+        }
+    };
+    Ember.run(() => {
+        ctrl.set('model', model);
+        assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest');
+    });
+});
+
+test('discardBasics properly joins copyrightHolders', function(assert) {
+    assert.expect(1);
+    const ctrl = this.subject();
+    this.inject.service('store');
+    const store = this.store;
+    Ember.run(() => {
+        const node =  store.createRecord('node', {
+            tags: ['tags']
+        });
+        const model = store.createRecord('preprint', {
+            licenseRecord: {
+                copyright_holders: ['Frank', 'Everest']
+            }
+        });
+        const license = store.createRecord('license', {
+            'name': 'No license'
+        });
+        model.set('license', license);
+        ctrl.set('node', node);
+        ctrl.set('model', model);
+        ctrl.send('discardBasics');
+        return wait().then(() => assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest'));
+    });
+})
 
 test('basicsChanged computed property', function(assert) {
     const ctrl = this.subject();
