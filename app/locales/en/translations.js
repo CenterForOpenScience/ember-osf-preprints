@@ -214,6 +214,7 @@ export default {
         search_contributors_error: `Could not perform search query.`,
         error_completing_preprint: `Error completing preprint.`,
         error_saving_preprint: `Could not save preprint; please try again later`,
+        server_locked: `You cannot change the server after a file has been uploaded`,
     },
     components: {
         'confirm-restart-submit-preprint': {

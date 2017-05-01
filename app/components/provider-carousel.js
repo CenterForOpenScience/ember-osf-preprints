@@ -38,6 +38,7 @@ export default Ember.Component.extend(Analytics, {
     }),
     selectable: false, // Not selectable by default
     activeProvider: undefined,
+    lockedMessage: 'Locked',
     numProviders: Ember.computed('editedProviders', function() {
         return this.get('editedProviders').length;
     }),
@@ -101,8 +102,12 @@ export default Ember.Component.extend(Analytics, {
     },
     actions: {
         selectProvider(provider) {
-            this.set('activeProvider', provider);
-            this.attrs.selectAction(provider);
+            if (this.get('locked')) {
+                this.attrs.errorAction(this.get('lockedMessage'));
+            } else {
+                this.set('activeProvider', provider);
+                this.attrs.selectAction(provider);
+            }
         }
     }
 });

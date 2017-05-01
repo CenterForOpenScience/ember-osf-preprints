@@ -21,16 +21,18 @@
                             {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
                                 {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=true valid=(and providerValid (not providerChanged))}}
                                 {{#preprint-form-body}}
-                                    {{provider-carousel itemsPerSlide=6 providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider')}}
+                                    {{provider-carousel itemsPerSlide=6 providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider') locked=uploadValid lockedMessage=(t 'submit.server_locked') errorAction=(action 'error')}}
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="pull-right">
-                                                <button {{action 'discardProvider'}} class="btn btn-default" disabled={{unless (and providerValid providerChanged) true}} >{{t "global.discard"}}</button>
-                                                <button {{action 'saveProvider'}} class="btn btn-primary" disabled={{unless providerChanged true}} >{{t "submit.body.save_continue"}}</button>
+                                    {{#unless uploadValid}}
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="pull-right">
+                                                    <button {{action 'discardProvider'}} class="btn btn-default" disabled={{unless (and providerValid providerChanged) true}} >{{t "global.discard"}}</button>
+                                                    <button {{action 'saveProvider'}} class="btn btn-primary" disabled={{unless providerChanged true}} >{{t "submit.body.save_continue"}}</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    {{/unless}}
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
                         {{/with}}
