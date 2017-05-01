@@ -37,6 +37,8 @@ export default CpPanelComponent.extend(Analytics, {
      */
     hasOpened: false,
 
+    denyOpenMessage: 'Please complete upload section before continuing',
+
     trackOpenState: Ember.observer('isOpen', function() {
         // Whenever panel is opened (via any means), update the hasOpened state to reflect this fact
         let isOpen = this.get('isOpen');
@@ -92,7 +94,7 @@ export default CpPanelComponent.extend(Analytics, {
                     });
                 this._super(...arguments);
             } else {
-                this.sendAction('errorAction', 'Please complete upload section before continuing');
+                this.sendAction('errorAction', this.get('denyOpenMessage'));
             }
         }
     },

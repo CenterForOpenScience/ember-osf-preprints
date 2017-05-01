@@ -123,6 +123,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
+    serverSaveState: false, // True temporarily when changes have been saved in server section
     uploadSaveState: false, // True temporarily when changes have been saved in upload section
     disciplineSaveState: false, // True temporarily when changes have been saved in discipline section
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
@@ -142,6 +143,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
     allProviders: [], // Initialize with an empty list of providers
     currentProvider: undefined,
+    selectedProvider: undefined,
 
     init() {
         let controller = this;
@@ -153,11 +155,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     // OSF first, then all the rest
                     providers.filter(item => item.id === 'osf').concat(providers.filter(item => item.id !== 'osf'))
                 );
-            });
-        this.get('store')
-            .findRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider)
-            .then(function(provider) {
-                controller.set('currentProvider', provider);
+                controller.set(
+                    'selectedProvider',
+                    providers.filter(item => item.id === controller.get('theme.id') || config.PREPRINTS.provider)[0]
+                );
             });
     },
 
@@ -186,6 +187,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             searchResults: [],
             savingPreprint: false,
             showModalSharePreprint: false,
+            serverSaveState: false,
             uploadSaveState: false,
             disciplineSaveState: false,
             basicsSaveState: false,
@@ -216,6 +218,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     ///////////////////////////////////////
     // Validation rules and changed states for form sections
+
+    providerValid: Ember.computed.bool('currentProvider'),
+    providerChanged: true,
 
     // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
     uploadValid: Ember.computed.alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
@@ -509,7 +514,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             });
             // Closes section, so all panels closed if Upload section revisited
             this.get('panelActions').close('uploadNewFile');
-            this.send('next', this.get('_names.0'));
+            this.send('next', this.get('_names.1'));
         },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
@@ -782,7 +787,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 node.save(),
                 model.save()
             ])
-                .then(() => this.send('next', this.get('_names.2')))
+                .then(() => this.send('next', this.get('_names.3')))
                 // If save fails, do not transition
                 .catch(() => {
                     this.get('toast').error(
@@ -869,14 +874,14 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 model.set('subjects', subjectMap);
                 model.save()
                     .then(() => {
-                        this.send('next', this.get('_names.1'));
+                        this.send('next', this.get('_names.2'));
                     })
                     .catch(() => {
                         model.set('subjects', currentSubjects);
                         this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
                     });
             } else {
-                this.send('next', this.get('_names.1'));
+                this.send('next', this.get('_names.3'));
             }
         },
         /**
@@ -968,9 +973,19 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                         );
                 });
         },
-        setProvider(provider) {
-            this.set('currentProvider', provider);
+        selectProvider(provider) {
+            this.set('selectedProvider', provider);
+            this.set('providerChanged', true);
+        },
+        saveProvider() {
+            this.set('currentProvider', this.get('selectedProvider'));
+            this.set('providerChanged', false);
             this.send('discardSubjects');
+            this.send('next', this.get('_names.0'));
+        },
+        discardProvider() {
+            this.set('selectedProvider', this.get('currentProvider'));
+            this.set('providerChanged', false);
         }
     }
 });

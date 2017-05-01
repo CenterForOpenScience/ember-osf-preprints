@@ -37,6 +37,7 @@ export default Ember.Component.extend(Analytics, {
         return newProviders;
     }),
     selectable: false, // Not selectable by default
+    activeProvider: undefined,
     numProviders: Ember.computed('editedProviders', function() {
         return this.get('editedProviders').length;
     }),
@@ -98,12 +99,6 @@ export default Ember.Component.extend(Analytics, {
             Ember.$(window).off('resize', this._resizeListener);
         }
     },
-    activeProvider: Ember.computed('providers', function () {
-        if (this.get('providers').length === 0) {
-            return undefined;
-        }
-        return this.get('providers')[0];
-    }),
     actions: {
         selectProvider(provider) {
             this.set('activeProvider', provider);

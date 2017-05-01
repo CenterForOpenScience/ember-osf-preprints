@@ -19,16 +19,25 @@
                     {{#unless (or editMode theme.isProvider)}}
                         {{#with _names.[0] as |name|}}
                             {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
-                                {{preprint-form-header editMode=editMode name=name showValidationIndicator=false}}
+                                {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=true valid=(and providerValid (not providerChanged))}}
                                 {{#preprint-form-body}}
-                                    {{provider-carousel itemsPerSlide=6 providers=allProviders selectable=true selectAction=(action 'setProvider')}}
+                                    {{provider-carousel itemsPerSlide=6 providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider')}}
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="pull-right">
+                                                <button {{action 'discardProvider'}} class="btn btn-default" disabled={{unless (and providerValid providerChanged) true}} >{{t "global.discard"}}</button>
+                                                <button {{action 'saveProvider'}} class="btn btn-primary" disabled={{unless providerChanged true}} >{{t "submit.body.save_continue"}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
                         {{/with}}
                     {{/unless}}
 
                     {{#with _names.[1] as |name|}}
-                        {{#preprint-form-section id='preprint-form-upload' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
+                        {{#preprint-form-section id='preprint-form-upload' editMode=editMode class="preprint-form-block" name=name allowOpen=providerValid denyOpenMessage='Please select a preprint server before continuing' errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged)}}
                             {{#preprint-form-body}}
                                 {{#liquid-bind filePickerState class='translate' as |currentState|}}

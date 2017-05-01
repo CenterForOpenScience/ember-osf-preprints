@@ -12,6 +12,7 @@
 
 <div class="preprint-section-status pull-right">
     {{#if (or
+        (and serverSaveState (eq name 'Server'))
         (and uploadSaveState (eq name 'Upload'))
         (and basicsSaveState (eq name 'Basics'))
         (and authorsSaveState (eq name 'Authors'))
