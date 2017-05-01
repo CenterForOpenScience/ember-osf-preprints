@@ -1,9 +1,5 @@
-//import Ember from 'ember';
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
-
-/*
-NOTE: This test has issues rendering with MathJax.  Will need to fix that issue before these tests can run properly
-*/
 
 moduleForComponent('search-result', 'Integration | Component | search result', {
     integration: true,
@@ -13,7 +9,6 @@ moduleForComponent('search-result', 'Integration | Component | search result', {
     }
 });
 
-/*
 let result = Ember.Object.extend({
     identifiers: [],
     contributors: [{ users: ({ bibliographic: 'Todd Frak', name: 'Todd Frak', identifiers: 'kjhg85' }) }],
@@ -33,14 +28,13 @@ function render(context, componentArgs) {
         ${componentArgs || ''}
     }}`));
 }
-*/
+
 test('it renders', function(assert) {
     // Tests that it renders properly without osfID or hyperlink
     // Currently cannot render because of MathJax error
 
     assert.ok('ok');
 
-    /*
     let preprint = result.create();
     this.set('preprint', preprint);
     render(this, 'result=preprint hasMoreContributors=true');
@@ -57,10 +51,10 @@ test('it renders', function(assert) {
     assert.ok(this.$('.text-muted').length);
     assert.ok(this.$('.search-result-providers:contains(test provider1 | test provider2)'));
     assert.ok(this.$('span:contains(April 2017)'));
-    */
+
 
 });
-/*
+
 test('showBody renders', function(assert) {
     // Tests that elements under showBody render properly
     let preprint = result.create({
@@ -95,4 +89,3 @@ test('render title with hyperlink', function(assert) {
     assert.equal(this.$('a:contains(Tests to live by)').attr('href'), 'http://osf.io');
 
 });
-*/
