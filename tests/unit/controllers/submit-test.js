@@ -122,7 +122,13 @@ test('Initial properties', function (assert) {
     const propKeys = Object.keys(expected);
     const actual = ctrl.getProperties(propKeys);
 
-    assert.ok(propKeys.every(key => expected[key] === actual[key]));
+    propKeys.forEach(
+        key => assert.strictEqual(
+            expected[key],
+            actual[key],
+            'Initial value for "' + key + '" does not match expected value'
+        )
+    );
 });
 
 ///////////////////////////////////////////////////////////////////////////////
