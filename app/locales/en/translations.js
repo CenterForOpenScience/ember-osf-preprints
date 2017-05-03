@@ -153,6 +153,7 @@ export default {
             file: `Preprint file`,
             title: `Preprint title`,
             subjects_description: `Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.`,
+            remove_subject_aria: `Remove subject`,
             basics: {
                 doi: {
                     label: `If published, DOI of associated journal article (optional)`
