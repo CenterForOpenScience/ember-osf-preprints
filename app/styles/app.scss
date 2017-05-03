@@ -1,7 +1,8 @@
+/* Import variables before bootstrap so that boostrap variables can be overridden */
+@import 'variables';
 @import 'bootstrap';
 @import 'ember-power-select';
 @import 'base';
-@import 'variables';
 @import 'authors';
 @import 'validated-input';
 @import 'hint';
@@ -240,6 +241,13 @@ $logo-dir: 'img/provider_logos/';
 
 .provider-scielo-dark {
     background-image: url($logo-dir + 'scielo-dark-small.png');
+}
+
+.provider-lawarxiv {
+    background-image: url($logo-dir + 'lawarxiv-white.png');
+}
+.provider-lawarxiv-dark {
+    background-image: url($logo-dir + 'lawarxiv-dark.png');
 }
 
 .preprint-advisory  {
