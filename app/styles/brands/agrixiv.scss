@@ -5,7 +5,7 @@
     black,                                  // Color, theme color #2 (text color mostly, usually white or black)
     #85BF9B,                                // Color, theme color #3 (navbar color, preferably a dark color)
     white,                                // Color, theme color #4 (used in link colors)
-    white,                                  // Color, theme color #5 (text color that contrasts with #2, usually black or white)
+    black,                                  // Color, theme color #5 (text color that contrasts with #2, usually black or white)
     $logo-dir + 'agrixiv-banner.svg',        // String, path to the rectangular provider logo
     $logo-dir + 'agrixiv-logo.svg', // String, path to the square provider logo
     false,                                   // Boolean, whether to use the white share logo or not
