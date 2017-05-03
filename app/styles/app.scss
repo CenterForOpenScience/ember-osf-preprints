@@ -1,7 +1,8 @@
+/* Import variables before bootstrap so that boostrap variables can be overridden */
+@import 'variables';
 @import 'bootstrap';
 @import 'ember-power-select';
 @import 'base';
-@import 'variables';
 @import 'authors';
 @import 'validated-input';
 @import 'hint';

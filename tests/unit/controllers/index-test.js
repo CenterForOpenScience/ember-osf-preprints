@@ -9,8 +9,21 @@ moduleFor('controller:index', 'Unit | Controller | index', {
     ]
 });
 
-// Replace this with your real tests.
+
+test('Initial properties', function (assert) {
+    const ctrl = this.subject();
+
+    const expected = {
+        sharePreprintsTotal: null
+    };
+
+    const propKeys = Object.keys(expected);
+    const actual = ctrl.getProperties(propKeys);
+
+    assert.ok(propKeys.every(key => expected[key] === actual[key]));
+});
+
 test('it exists', function(assert) {
-    let controller = this.subject();
-    assert.ok(controller);
+    const ctrl = this.subject();
+    assert.ok(ctrl);
 });
