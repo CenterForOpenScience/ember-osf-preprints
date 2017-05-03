@@ -7,7 +7,9 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
 import getRedirectUrl from '../../utils/get-redirect-url';
 
-const {PREPRINTS: {providers}} = config;
+const {
+    PREPRINTS: {providers},
+} = config;
 
 // Error handling for API
 const handlers = new Map([
@@ -32,19 +34,20 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
     headTagsService: Ember.inject.service('head-tags'),
     currentUser: Ember.inject.service('currentUser'),
 
-    setupController(controller, model) {
-        controller.set('activeFile', model.get('primaryFile'));
-        controller.set('node', this.get('node'));
-        Ember.run.scheduleOnce('afterRender', this, function() {
-            MathJax.Hub.Queue(['Typeset', MathJax.Hub, [Ember.$('.abstract')[0], Ember.$('#preprintTitle')[0]]]);  // jshint ignore:line
-        });
-
-        return this._super(...arguments);
-    },
-
     afterModel(preprint) {
         const {location: {origin}} = window;
         let contributors = Ember.A();
+
+        const downloadUrl = [
+            origin,
+            this.get('theme.isSubRoute') ? `preprints/${this.get('theme.id')}` : null,
+            preprint.get('id'),
+            'download'
+        ]
+            .filter(part => !!part)
+            .join('/');
+
+        this.set('fileDownloadURL', downloadUrl);
 
         return preprint.get('provider')
             .then(provider => {
@@ -102,11 +105,10 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     provider,
                     node,
                     preprint.get('license'),
-                    preprint.get('primaryFile'),
                     loadAll(node, 'contributors', contributors)
                 ]);
             })
-            .then(([provider, node, license, primaryFile]) => {
+            .then(([provider, node, license]) => {
                 const title = node.get('title');
                 const description = node.get('description');
                 const doi = preprint.get('doi');
@@ -198,9 +200,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     ['dc.license', license ? license.get('name') : 'No license']
                 );
 
-                if (/\.pdf$/.test(primaryFile.get('name'))) {
-                    highwirePress.push(['citation_pdf_url', primaryFile.get('links').download]);
-                }
+                highwirePress.push(['citation_pdf_url', `${downloadUrl}?format=pdf`]);
 
                 const openGraphTags = openGraph
                     .map(([property, content]) => ({
@@ -234,6 +234,20 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 this.set('headTags', headTags);
                 this.get('headTagsService').collectHeadTags();
             });
+    },
+
+    setupController(controller, model) {
+        controller.setProperties({
+            activeFile: model.get('primaryFile'),
+            node: this.get('node'),
+            fileDownloadURL: this.get('fileDownloadURL'),
+        });
+
+        Ember.run.scheduleOnce('afterRender', this, function() {
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, [Ember.$('.abstract')[0], Ember.$('#preprintTitle')[0]]]);  // jshint ignore:line
+        });
+
+        return this._super(...arguments);
     },
 
     actions: {
