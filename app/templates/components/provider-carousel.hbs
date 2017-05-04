@@ -6,9 +6,7 @@
                 {{#each slide as |provider index|}}
                     <div class={{if (not index) (concat "col-sm-2 " columnOffset) "col-sm-2"}} style={{safe-markup (if selectable (concat "width:" itemWidth))}}>
                         {{#if selectable}}
-                            <button class="provider {{unless (eq provider activeProvider) "inactive-provider"}}" onclick={{action 'selectProvider' provider}} disabled={{eq provider activeProvider}}>
-                                <img src="{{provider.logoPath}}" title="{{provider.name}}">
-                            </button>
+                            <button class="provider submit-provider-logo provider-{{provider.id}}-dark {{unless (eq provider activeProvider) "inactive-provider"}}" onclick={{action 'selectProvider' provider}} disabled={{eq provider activeProvider}} title="{{provider.name}}"/>
                         {{else}}
                             {{#if lightLogo}}
                                 <a href="/preprints/{{provider.id}}"
