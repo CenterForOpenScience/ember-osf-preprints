@@ -400,12 +400,15 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 licenseValid
             });
 
-            Ember.get(this, 'metrics')
-                .trackEvent({
-                    category: 'dropdown',
-                    action: 'select',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`
-                });
+            if (this.get('initialLicenseChangeMade') || this.get('editMode')) {
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'dropdown',
+                        action: 'select',
+                        label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`
+                    });
+            }
+            this.set('initialLicenseChangeMade', true);
         },
         applyLicenseToggle(apply) {
             this.set('applyLicense', apply);
