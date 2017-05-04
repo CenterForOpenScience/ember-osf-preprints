@@ -383,6 +383,7 @@ export default Ember.Controller.extend(Analytics, {
         setLoadPage(pageNumber) {
             this.set('page', pageNumber);
             this.loadPage();
+            window.scrollTo(0, Ember.$('#searchResults').position().top - Ember.$('.preprint-navbar').height()*2 - 10);
         },
 
         clearFilters() {
