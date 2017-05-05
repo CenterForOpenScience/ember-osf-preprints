@@ -8,7 +8,7 @@
     {{/if}}
     {{preprint-navbar-branded model=theme.provider}}
 {{else}}
-    {{osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login')}}
+    {{new-osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login')}}
 {{/if}}
 
 {{maintenance-banner}}

@@ -68,7 +68,7 @@
     "ember-lodash": "3.10.0",
     "ember-load-initializers": "0.5.1",
     "ember-metrics": "0.6.3",
-    "ember-osf": "git+https://github.com/pattisdr/ember-osf.git#a80c131a5f425210c37237a9eb38a130805f49d2",
+    "ember-osf": "git+https://github.com/pattisdr/ember-osf.git#672828298db24443d04e2f6e480bd00a339211b1",
     "ember-page-title": "3.0.6",
     "ember-power-select": "1.0.0-beta.7",
     "ember-read-more": "0.0.13",
