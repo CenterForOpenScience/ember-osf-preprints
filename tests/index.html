@@ -16,6 +16,15 @@
 
     {{content-for "head-footer"}}
     {{content-for "test-head-footer"}}
+    <script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true},
+            skipStartupTypeset: true
+        });
+    </script>
   </head>
   <body>
     {{content-for "body"}}

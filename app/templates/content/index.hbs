@@ -68,7 +68,7 @@
                     <div class="share-row p-sm osf-box-lt clearfix">{{!SHARE ROW}}
                         <div class="row clearfix">
                             <div class="col-xs-12 col-lg-8 download_project">
-                                <a class="btn btn-primary" href={{fileDownloadURL}} onclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
+                                <a class="btn btn-primary" href={{fileDownloadURL.content}} onclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
                                 <span class="p-sm" id="downloadCount">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
                             </div>
                             <div class="col-xs-12 col-lg-4 social-div">
