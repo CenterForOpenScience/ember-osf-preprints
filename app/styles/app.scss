@@ -740,7 +740,6 @@ hr {
 }
 
 .subject {
-    display: inline-block;
     color: white;
     overflow: hidden;
     padding: 0 .5rem;
@@ -757,6 +756,10 @@ hr {
     .right-arrow:last-of-type {
         display: none;
     }
+}
+
+.subject-align {
+    display: inline-block;
 }
 
 .subject-container {

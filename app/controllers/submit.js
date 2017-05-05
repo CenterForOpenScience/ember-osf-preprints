@@ -400,14 +400,15 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 licenseValid
             });
 
-            // TODO: Noticed that this fires every time the Submit page loads.  The Ember-OSF license-widget might need some changes.
-            // TODO: Uncomment once this is fixed.
-            // Ember.get(this, 'metrics')
-            //     .trackEvent({
-            //         category: 'dropdown',
-            //         action: 'select',
-            //         label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`
-            //     });
+            if (this.get('initialLicenseChangeMade') || this.get('editMode')) {
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'dropdown',
+                        action: 'select',
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`
+                    });
+            }
+            this.set('initialLicenseChangeMade', true);
         },
         applyLicenseToggle(apply) {
             this.set('applyLicense', apply);

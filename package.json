@@ -65,6 +65,7 @@
     "ember-get-config": "0.0.4",
     "ember-i18n": "4.3.1",
     "ember-link-action": "0.0.35",
+    "ember-lodash": "3.10.0",
     "ember-load-initializers": "0.5.1",
     "ember-metrics": "0.6.3",
     "ember-osf": "git+https://github.com/pattisdr/ember-osf.git#9e1eae7d19abbc3f4f741c7285d287bd653e8988",
