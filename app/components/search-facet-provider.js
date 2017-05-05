@@ -34,7 +34,8 @@ export default Ember.Component.extend(Analytics, {
         'bioRxiv',
         'Cogprints',
         'PeerJ',
-        'Research Papers in Economics'
+        'Research Papers in Economics',
+        'Preprints.org'
     ].map(item => item.toLowerCase()),
 
     init() {
