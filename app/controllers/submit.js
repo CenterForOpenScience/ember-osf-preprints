@@ -144,6 +144,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     allProviders: [], // Initialize with an empty list of providers
     currentProvider: undefined,
     selectedProvider: undefined,
+    providerSaved: false,
 
     init() {
         let controller = this;
@@ -155,10 +156,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     // OSF first, then all the rest
                     providers.filter(item => item.id === 'osf').concat(providers.filter(item => item.id !== 'osf'))
                 );
-                controller.set(
-                    'selectedProvider',
-                    providers.filter(item => item.id === controller.get('theme.id') || config.PREPRINTS.provider)[0]
-                );
+                const currentProvider = providers.filter(item => item.id === controller.get('theme.id') || config.PREPRINTS.provider)[0];
+                controller.set('currentProvider', currentProvider);
+                controller.set('selectedProvider', currentProvider);
             });
     },
 
@@ -219,7 +219,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     ///////////////////////////////////////
     // Validation rules and changed states for form sections
 
-    providerValid: Ember.computed.bool('currentProvider'),
     providerChanged: true,
 
     // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
@@ -980,6 +979,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         saveProvider() {
             this.set('currentProvider', this.get('selectedProvider'));
             this.set('providerChanged', false);
+            this.set('providerSaved', true);
             this.send('discardSubjects');
             this.send('next', this.get('_names.0'));
         },
