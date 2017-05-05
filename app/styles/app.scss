@@ -1,7 +1,8 @@
+/* Import variables before bootstrap so that boostrap variables can be overridden */
+@import 'variables';
 @import 'bootstrap';
 @import 'ember-power-select';
 @import 'base';
-@import 'variables';
 @import 'authors';
 @import 'validated-input';
 @import 'hint';
@@ -231,7 +232,7 @@ $logo-dir: 'img/provider_logos/';
 }
 
 .provider-agrixiv-dark {
-    background-image: url($logo-dir + 'agrixiv-banner.svg');
+    background-image: url($logo-dir + 'agrixiv-logo-dark.png');
 }
 
 .provider-scielo {
@@ -240,6 +241,13 @@ $logo-dir: 'img/provider_logos/';
 
 .provider-scielo-dark {
     background-image: url($logo-dir + 'scielo-dark-small.png');
+}
+
+.provider-lawarxiv {
+    background-image: url($logo-dir + 'lawarxiv-white.png');
+}
+.provider-lawarxiv-dark {
+    background-image: url($logo-dir + 'lawarxiv-dark.png');
 }
 
 .preprint-advisory  {
@@ -733,79 +741,80 @@ hr {
     }
 }
 
-#preprint-form-subjects {
-    .subject {
-        background-color: $brand-primary;
-        display: inline-block;
-        color: white;
-        overflow: hidden;
-        padding: 0 2rem;
-        margin-right: 2rem;
-        margin-bottom: 1rem;
-        border-radius: 2px;
-        transition: background-color 0.1s linear;
-        &:hover {
+.right-arrow {
+    border-top: 1.5rem solid transparent;
+    border-bottom: 1.4rem solid transparent;
+    border-left: 1.5rem solid white;
+    position: absolute;
+    display: inline;
+    &:before {
+        content: '';
+        border-top: 1.4rem solid transparent;
+        border-bottom: 1.3rem solid transparent;
+        border-left: 1.4rem solid $brand-primary;
+        position: absolute;
+        margin-left: -1.5rem;
+        margin-top: -1.4rem;
+        transition: border-color 0.1s linear;
+    }
+}
+
+.subject {
+    color: white;
+    overflow: hidden;
+    padding: 0 .5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    &:hover {
+        .subject-container {
             background-color: lighten($brand-primary, 10%);
-            & > b:after {
-                border-left-color: lighten($brand-primary, 10%);
-            }
         }
-        & > b {
-            display: inline-block;
-            padding: 5px 12px ;
-            position: relative;
-            border-radius: 4px;
-            &%pseudo {
-                content: '';
-                display: block;
-                position: absolute;
-                width: 0;
-                height: 0;
-                left: 100%;
-                top: 50%;
-                margin-top: -5rem;
-                border: {
-                    style: solid;
-                    width: 5rem 0 5rem 3rem;
-                    color: transparent transparent transparent $brand-primary;
-                }
-            }
-            &:before {
-                @extend %pseudo;
-                margin-left: 1px;
-                border-left-color: white;
-                z-index: 1;
-            }
-            &:after {
-                @extend %pseudo;
-                transition: border-color 0.1s linear;
-                z-index: 2;
-            }
-            &:first-child {
-                padding-left: 0;
-            }
-            &:last-of-type {
-                padding-right: 2rem;
-                &:before, &:after {
-                    display: none;
-                }
-            }
-            & + b {
-                margin-left: 2rem;
-            }
-        }
-        & > .fa {
-            color: white;
-            cursor: pointer;
-            transition: color 0.1s linear;
-            &:hover {
-                color: lighten(red, 40%);
-            }
-            &:active {
-                color: lighten(red, 20%);
-            }
+        .right-arrow:before {
+            border-left-color: lighten($brand-primary, 10%);
         }
     }
+    .right-arrow:last-of-type {
+        display: none;
+    }
+}
+
+.subject-align {
+    display: inline-block;
+}
+
+.subject-container {
+    background-color: $brand-primary;
+    display: inline-block;
+    transition: background-color 0.1s linear;
+    margin-left: -10px;
+    padding-left: 10px;
+    &:last-of-type {
+        .cancel-subject {
+            visibility: visible;
+            margin-left: 10px;
+        }
+    }
+}
+
+.subject-container-text {
+    display: inline-block;
+    padding: 5px 15px ;
+}
+
+.cancel-subject {
+    background: none;
+    border: none;
+    padding: 0;
+    visibility: hidden;
+    &:hover {
+        color: lighten(red, 40%);
+    }
+    &:active {
+        color: lighten(red, 20%);
+    }
+}
+
+#preprint-form-subjects {
     ul {
         height: 30rem;
         list-style: none;

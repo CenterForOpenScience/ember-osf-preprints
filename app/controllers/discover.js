@@ -40,7 +40,8 @@ export default Ember.Controller.extend(Analytics, {
         'bioRxiv',
         'Cogprints',
         'PeerJ',
-        'Research Papers in Economics'
+        'Research Papers in Economics',
+        'Preprints.org'
     ].map(item => item.toLowerCase()),
 
     page: 1,
@@ -383,6 +384,7 @@ export default Ember.Controller.extend(Analytics, {
         setLoadPage(pageNumber) {
             this.set('page', pageNumber);
             this.loadPage();
+            window.scrollTo(0, Ember.$('#searchResults').position().top - Ember.$('.preprint-navbar').height()*2 - 10);
         },
 
         clearFilters() {
