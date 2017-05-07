@@ -359,7 +359,8 @@ export default {
             send_email: `Enviar por email`
         },
         'supplementary-file-browser': {
-            primary: `Primario`
+            primary: `Primario`,
+            download_previous_versions: 'Descargar versiones anteriores',
         },
         'permission-language':{
             arxiv_trademark_license,

@@ -24,7 +24,7 @@ test('with file guid', function(assert) {
 
     const result = fileDownloadPath(file, node);
 
-    assert.strictEqual(result, `${osfUrl}abc12/?action=download`);
+    assert.strictEqual(result, `${osfUrl}abc12/download/`);
 });
 
 test('without file guid', function(assert) {
@@ -53,7 +53,7 @@ test('file guid with version', function(assert) {
 
     const result = fileDownloadPath(file, node, 4);
 
-    assert.strictEqual(result, `${osfUrl}abc12/?action=download&version=4`);
+    assert.strictEqual(result, `${osfUrl}abc12/download/?version=4`);
 });
 
 test('without file guid', function(assert) {

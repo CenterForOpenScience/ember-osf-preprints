@@ -5,7 +5,8 @@ export default function fileDownloadPath(file, node, version) {
         return;
     }
 
-    const path = file.get('guid') || `project/${node.get('id')}/files/osfstorage${file.get('path')}`;
+    const guid = file.get('guid');
+    const path = guid ? `${guid}/download/?` : `project/${node.get('id')}/files/osfstorage${file.get('path')}/?action=download&`;
 
-    return `${config.OSF.url}${path}/?action=download${version ? `&version=${version}` : ''}`;
+    return `${config.OSF.url}${path}${version ? `version=${version}` : ''}`.replace(/[&?]$/, '');
 }

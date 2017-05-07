@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import DS from 'ember-data';
 import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from '../mixins/analytics';
 import fileDownloadPath from '../utils/file-download-path';
@@ -17,6 +18,7 @@ import fileDownloadPath from '../utils/file-download-path';
  *      preprint=model
  *      node=node
  *      projectURL=node.links.html
+ *      chosenFile=fileId
  *      chooseFile=(action 'chooseFile')
  * }}
  * ```
@@ -24,89 +26,63 @@ import fileDownloadPath from '../utils/file-download-path';
  */
 export default Ember.Component.extend(Analytics, {
     elementId: 'preprint-file-view',
-    endIndex: 6,
-    startIndex: 0,
+
+    // Max number of objects to show before showing next/prev buttons
+    width: 6,
+
+    max: Ember.computed('files', 'width', function() {
+        return Math.max(this.get('files.length') - this.get('width'), 0);
+    }),
+
+    startIndex: Ember.computed('selectedIndex', 'width', function() {
+        const selectedIndex = this.get('selectedIndex') || 0;
+        const width = this.get('width');
+
+        return Math.floor(selectedIndex / width) * width;
+    }),
+
+    endIndex: Ember.computed('selectedIndex', 'width', function() {
+        const selectedIndex = this.get('selectedIndex') || 0;
+        const width = this.get('width');
+
+        return Math.ceil(selectedIndex / width) * width;
+    }),
 
     scrollAnim: '',
-    selectedFile: null,
-    versions: () => [],
 
-    hasAdditionalFiles: function() {
-        return this.get('files.length') > 1;
-    }.property('files'),
+    hasAdditionalFiles: Ember.computed.gt('files.length', 1),
 
-    hasPrev: function() {
-        return this.get('startIndex') > 0;
-    }.property('files', 'endIndex', 'startIndex'),
+    hasPrev: Ember.computed.gt('startIndex', 0),
 
-    hasNext: function() {
+    hasNext: Ember.computed('endIndex', 'files.length', function() {
         return this.get('endIndex') < this.get('files.length');
-    }.property('files', 'endIndex', 'startIndex'),
+    }),
 
-    __files: function() {
-        this.set('files', []);
-        this.set('selectedFile', null);
-
-        return Promise
-            .all([
-                this.get('node')
-                    .get('files')
-                    .then(providers => {
-                        this.set('provider', providers.findBy('name', 'osfstorage'));
-                        return loadAll(this.get('provider'), 'files', this.get('files'), {'page[size]': 50});
-                    }),
-                this.get('preprint.primaryFile')
-            ])
-            .then(([, pf]) => {
-                this.get('files').removeObject(pf);
-                const files = [pf, ...this.get('files')];
-
-                this.setProperties({
-                    primaryFile: pf,
-                    selectedFile: pf,
-                    files: files,
-                    indexes: files.map(each => each.id),
-                });
-            });
-    }.observes('preprint'),
-
-    selectedFileChanged: Ember.observer('selectedFile', function() {
+    versions: Ember.computed('selectedFile', function() {
         const selectedFile = this.get('selectedFile');
-        this.set('versions', []);
 
-        const index = this.get('files').indexOf(this.get('selectedFile'));
-
-        if (!selectedFile || index < 0)
-            return;
-
-        if (index >= this.get('endIndex') || index < this.get('startIndex')) {
-            const filesLength = this.get('files').length;
-            const max = filesLength - 6;
-            const indexGtMax = index > max;
-
-            this.setProperties({
-                startIndex: indexGtMax ? max : index,
-                endIndex: indexGtMax ? filesLength : index + 6
-            });
+        if (!selectedFile) {
+            return Ember.A();
         }
-
-        this.set('selectedVersion', selectedFile.get('currentVersion'));
 
         const downloadUrl = selectedFile.get('links.download');
         const filename = selectedFile.get('name');
 
-        return selectedFile
-            .query('versions', {sort: '-identifier'})
-            .then(versions => versions
-                .map(version => {
-                    const dateFormatted = encodeURIComponent(version.get('dateCreated').toISOString());
-                    const displayName = filename.replace(/(\.\w+)?$/, ext => `-${dateFormatted}${ext}`);
-                    version.set('downloadUrl', `${downloadUrl}?version=${version.id}&displayName=${displayName}`);
-                    return version;
-                })
-            )
-            .then(versions => this.set('versions', versions));
+        return DS.PromiseArray.create({
+            promise: this.get('selectedFile')
+                .query('versions', {sort: '-id'})
+                .then(versions => versions
+                    .map(version => {
+                        const dateFormatted = encodeURIComponent(version.get('dateCreated').toISOString());
+                        const displayName = filename.replace(/(\.\w+)?$/, ext => `-${dateFormatted}${ext}`);
+                        version.set('downloadUrl', `${downloadUrl}?version=${version.id}&displayName=${displayName}`);
+                        return version;
+                    })
+                )
+        });
     }),
+
+    selectedFileisPrimaryFile: Ember.computed.equal('selectedIndex', 0),
 
     fileRenderURL: Ember.computed('selectedFile.links.download', 'selectedVersion', function() {
         const downloadUrl = this.get('selectedFile.links.download');
@@ -119,17 +95,43 @@ export default Ember.Component.extend(Analytics, {
         return fileDownloadPath(this.get('selectedFile'), this.get('node'));
     }),
 
-    _chosenFile: Ember.observer('chosenFile', 'indexes', function() {
-        const fid = this.get('chosenFile');
-        const index = this.get('indexes').indexOf(fid);
-        if (fid && index !== -1) {
-            this.set('selectedFile', this.get('files')[index]);
-        }
-    }),
-
     init() {
         this._super(...arguments);
-        this.__files();
+
+        this.setProperties({
+            files: Ember.A(),
+            selectedFile: null,
+            selectedIndex: null,
+        });
+
+        return Promise
+            .all([
+                this.get('preprint.primaryFile'),
+                this.get('node.files')
+                    .then(providers => loadAll(
+                        providers.findBy('name', 'osfstorage'),
+                        'files',
+                        this.get('files'),
+                        {
+                            'page[size]': 50
+                        }
+                    ))
+            ])
+            .then(([primaryFile]) => {
+                const files = this.get('files');
+
+                files.removeObject(primaryFile);
+                files.unshiftObject(primaryFile);
+
+                const selectedFile = files.find(({id}) => id === this.get('chosenFile')) || primaryFile;
+
+                this.setProperties({
+                    files,
+                    primaryFile,
+                    selectedFile,
+                    selectedIndex: files.indexOf(selectedFile),
+                });
+            });
     },
 
     actions: {
@@ -141,11 +143,19 @@ export default Ember.Component.extend(Analytics, {
                     label: 'Preprints - Content - Next'
                 });
 
-            if (this.get('endIndex') > this.get('files.length')) return;
+            const endIndex = this.get('endIndex');
 
-            this.set('scrollAnim', `to${direction}`);
-            this.set('endIndex', this.get('endIndex') + 5);
-            this.set('startIndex', this.get('startIndex') + 5);
+            if (endIndex > this.get('files.length')) {
+                return;
+            }
+
+            const width = this.get('width');
+
+            this.setProperties({
+                scrollAnim: `to${direction}`,
+                startIndex: this.get('startIndex') + width,
+                endIndex: endIndex + width,
+            });
         },
         prev(direction) {
             Ember.get(this, 'metrics')
@@ -155,20 +165,21 @@ export default Ember.Component.extend(Analytics, {
                     label: 'Preprints - Content - Prev'
                 });
 
-            const start = this.get('startIndex');
-            if (start <= 0) return;
+            const startIndex = this.get('startIndex');
 
-            this.set('scrollAnim', `to${direction}`);
-
-            if ((start - 5) < 0) {
-                this.set('startIndex', 0);
-                this.set('endIndex', 6);
-            } else {
-                this.set('startIndex', start - 5);
-                this.set('endIndex', this.get('endIndex') - 5);
+            if (startIndex <= 0) {
+                return;
             }
+
+            const width = this.get('width');
+
+            this.setProperties({
+                scrollAnim: `to${direction}`,
+                startIndex: Math.max(startIndex - width, 0),
+                endIndex: Math.max(this.get('endIndex') - width, width)
+            });
         },
-        changeFile(file) {
+        changeFile(selectedFile, selectedIndex) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'file browser',
@@ -176,9 +187,13 @@ export default Ember.Component.extend(Analytics, {
                     label: 'Preprints - Content - File'
                 });
 
-            this.set('selectedFile', file);
+            this.setProperties({
+                selectedFile,
+                selectedIndex,
+            });
+
             if (this.attrs.chooseFile) {
-                this.sendAction('chooseFile', file);
+                this.sendAction('chooseFile', selectedFile);
             }
         }
     },
