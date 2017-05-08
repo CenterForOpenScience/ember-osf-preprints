@@ -47,8 +47,8 @@ function render(context, componentArgs) {
     return context.render(Ember.HTMLBars.compile(`{{supplementary-file-browser
         preprint=preprint
         node=node
-        dualTrackNonContributors=(action dualTrackNonContributors)}}
         ${componentArgs || ''}
+        dualTrackNonContributors=(action dualTrackNonContributors)
     }}`));
 }
 
