@@ -1330,3 +1330,20 @@ nav.branded-navbar {
         }
     }
 }
+
+.search-facet-taxonomy {
+    .taxonomy-caret {
+        vertical-align: top;
+        padding-top: 4px;
+    }
+    .taxonomy-checkbox {
+        max-width: 85%;
+        word-wrap: break-word;
+    }
+    .taxonomy-right-padding {
+        padding-right: 14px;
+    }
+    .taxonomy-left-padding {
+        padding-left: 40px;
+    }
+}
