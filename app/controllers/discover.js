@@ -61,8 +61,6 @@ export default Ember.Controller.extend(Analytics, {
         }];
     }),
     subject: '',// Subject query param.  Must be passed to component, so can be reflected in URL,
-    // TODO _clearFilters has been moved to the Ember-OSF discover-page component.
-    // Call this in willDestroyElement hook or similar of component?
     _clearFilters() {
         this.set('activeFilters', {
             providers: this.get('theme.isProvider') ? this.get('activeFilters.providers') : [],
