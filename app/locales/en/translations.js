@@ -100,7 +100,6 @@ export default {
             },
             powered_by: `Powered by ${brand}`,
             or: `or`,
-            shareTotalText: `searchable preprints`,
             as_of: `as of`,
             example: `See an example`
         },

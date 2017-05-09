@@ -100,7 +100,6 @@ export default {
                 paragraph: `La red <span class="f-w-lg">abierta</span> de repositorios de preprints`
             },
             powered_by: `Utilizando ${brand}`,
-            shareTotalText: `preprints que pueden ser buscados`,
             as_of: `al día de`,
             example: `Ver un ejemplo`,
             or: `o`,
