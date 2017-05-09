@@ -12,5 +12,5 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{add-preprint-box}}`);
 
-  assert.ok(this.$().text().trim().includes, 'Do you want to add your own research as a preprint?');
+  assert.strictEqual(this.$('p')[0].textContent, 'Do you want to add your own research as a preprint?');
 });
