@@ -55,14 +55,3 @@ test('filterReplace looks up key in mapping', function(assert) {
     render(this, 'otherProviders=otherProviders');
     assert.equal(this.$('label')[0].innerText.trim(), 'OSF (99)');
 });
-
-test('preprint number counts formatting', function(assert) {
-    let osfProvider = {
-        doc_count: 1001,
-        key: 'LawArXiv'
-    };
-    this.set('otherProviders', Ember.A([osfProvider]));
-    render(this, 'otherProviders=otherProviders');
-    assert.equal(this.$('label')[0].innerText.trim(), 'LawArXiv (1,001)');
-
-});
