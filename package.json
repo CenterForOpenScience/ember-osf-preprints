@@ -31,6 +31,7 @@
     "ember-ajax": "2.0.1",
     "ember-autosave": "2.0.1",
     "ember-bootstrap": "0.7.2",
+    "ember-browserify": "^1.1.13",
     "ember-cli": "2.10.0",
     "ember-cli-app-version": "1.0.0",
     "ember-cli-babel": "^5.1.6",

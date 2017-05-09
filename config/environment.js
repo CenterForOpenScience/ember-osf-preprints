@@ -154,6 +154,14 @@ module.exports = function(environment) {
 
         ],
         FB_APP_ID: process.env.FB_APP_ID,
+        whiteListedProviders: [
+            'arXiv',
+            'bioRxiv',
+            'Cogprints',
+            'PeerJ',
+            'Research Papers in Economics',
+            'Preprints.org'
+        ].map(item => item.toLowerCase()),
     };
 
     if (process.env.ENABLE_PROVIDER_DOMAINS !== 'true') {

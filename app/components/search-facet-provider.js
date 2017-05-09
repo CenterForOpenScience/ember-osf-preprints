@@ -29,14 +29,7 @@ export default Ember.Component.extend(Analytics, {
     theme: Ember.inject.service(),
     otherProviders: [],
     searchUrl: config.OSF.shareSearchUrl,
-    whiteListedProviders: [
-        'arXiv',
-        'bioRxiv',
-        'Cogprints',
-        'PeerJ',
-        'Research Papers in Economics',
-        'Preprints.org'
-    ].map(item => item.toLowerCase()),
+    whiteListedProviders: config.whiteListedProviders,
 
     init() {
         this._super(...arguments);
