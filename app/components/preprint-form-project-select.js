@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import Permissions from 'ember-osf/const/permissions';
-import Analytics from '../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
 import {stripDiacritics} from 'ember-power-select/utils/group-utils';
 /**
  * @module ember-preprints
@@ -83,7 +83,8 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
-                    label: 'Preprints - Submit - Choose Project'
+                    label: 'Submit - Choose Project',
+                    extra: node.id
                 });
 
         },
@@ -96,7 +97,8 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'select',
-                    label: 'Preprints - Submit - Existing File Selected'
+                    label: 'Submit - Existing File Selected',
+                    extra: file.id
                 });
         },
         changeExistingState(newState) {
@@ -110,7 +112,7 @@ export default Ember.Component.extend(Analytics, {
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: 'Preprints - Submit - Choose Select Existing File as Preprint'
+                        label: 'Submit - Choose Select Existing File as Preprint'
                     });
 
             } else if (newState === this.get('_existingState').NEWFILE) {
@@ -119,7 +121,7 @@ export default Ember.Component.extend(Analytics, {
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: 'Preprints - Submit - Choose Upload Preprint'
+                        label: 'Submit - Choose Upload Preprint'
                     });
             }
         },

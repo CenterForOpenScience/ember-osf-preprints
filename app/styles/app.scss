@@ -48,16 +48,8 @@ ul.comma-list {
         content: "";
     }
 }
-.subject-preview {
-    display: inline-block;
-    background-color: #f8f8f8;
-    border-radius: 3px;
-    border: 1px solid #eee;
-    padding: 1px 7px;
-    margin-bottom: 4px;
-}
 
-.preprint-brand {
+.provider-brand {
     background: url('img/preprints-logo.png') top center no-repeat;
     height: 70px;
     background-size: contain;
@@ -280,7 +272,7 @@ $logo-dir: 'img/provider_logos/';
 
 
 /* Header panel */
-.preprint-search-header {
+.search-header {
     padding-top: 120px;
     background: #e0ebef url('img/search-bg.jpg') top center;
     background-size: cover;
@@ -293,7 +285,7 @@ $logo-dir: 'img/provider_logos/';
         vertical-align: middle;
     }
 }
-.preprint-search-main {
+.search-main {
     background-color: #fbfbfb;
     border-bottom: 1px solid #dedede;
     .filter-heading {
@@ -302,7 +294,7 @@ $logo-dir: 'img/provider_logos/';
     label {
         font-weight: normal;
     }
-    .preprint-search-sidebar ul {
+    .search-sidebar ul {
         padding-left: 25px;
         li {
             list-style: none;
@@ -339,19 +331,7 @@ $logo-dir: 'img/provider_logos/';
         color: #777777;
     }
 }
-.search-result-providers {
-    font-weight: bold;
-}
-ul.preprints-block-list {
-    display: block;
-    list-style: none;
-    padding-left: 0;
-}
 
-.listOption:hover {
-    cursor: pointer;
-    color: rgba(255, 255, 255, 0.8) !important;
-}
 /* VIEW page */
 
 .dark-overlay-header-background {
@@ -1295,7 +1275,75 @@ nav.branded-navbar {
     }
 }
 
+// Override search-facet styling in ember-osf on discover page
+.discover-page {
+    .panel-default {
+        border: 0 solid transparent;
+        box-shadow: none;
+        > .panel-heading {
+              text-align: left;
+              border: 0 solid transparent;
+              padding: 7px 10px;
+              background-color: #EFEFEF;
+              justify-content: flex-start;
+
+        }
+    }
+    .panel-body.individual-facet {
+        padding: 10px 0;
+        background-color: #FBFBFB !important;
+    }
+    .search-sidebar {
+        background-color: transparent !important;
+    }
+}
+
 .alert-maintenance {
     margin-top: 104px;
     margin-bottom: 0;
+}
+
+
+.listOption.btn-link {
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+        color: black;
+    }
+    &:focus {
+        color: black;
+        outline: none;
+    }
+}
+
+#provider-brand-background {
+    height: 140px;
+    background-position-x: right;
+}
+
+#sortByOptionList {
+    background-color: #EFEFEF;
+    min-width: 230px;
+    li {
+        &:hover {
+            background-color: #D9D9D9;
+        }
+    }
+}
+
+.search-facet-taxonomy {
+    .taxonomy-caret {
+        vertical-align: top;
+        padding-top: 4px;
+    }
+    .taxonomy-checkbox {
+        max-width: 85%;
+        word-wrap: break-word;
+    }
+    .taxonomy-right-padding {
+        padding-right: 14px;
+    }
+    .taxonomy-left-padding {
+        padding-left: 40px;
+    }
 }
