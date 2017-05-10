@@ -100,7 +100,6 @@ export default {
                 paragraph: `La red <span class="f-w-lg">abierta</span> de repositorios de preprints`
             },
             powered_by: `Utilizando ${brand}`,
-            search: `{{count}} preprints que pueden ser buscados`,
             as_of: `al día de`,
             example: `Ver un ejemplo`,
             or: `o`,
@@ -370,7 +369,7 @@ export default {
         'taxonomy-top-list': {
             // Nothing to translate
         },
-        'taxonomy-tree': {
+        'search-facet-taxonomy': {
             // Nothing to translate
         },
         'unregistered-contributor-form': {

@@ -33,7 +33,7 @@
                         <a type="button"
                            class="btn btn-success edit-btn"
                            href={{concat theme.guidPathPrefix model.id '/edit'}}
-                           onclick={{action "click" 'link' "Preprints - Content - Edit Preprint" (concat model.links.html 'edit')}}
+                           onclick={{action "click" 'link' "Content - Edit Preprint" (concat model.links.html 'edit')}}
                         >
                             {{t "content.project_button.edit_preprint"}}
                         </a>
@@ -68,15 +68,15 @@
                     <div class="share-row p-sm osf-box-lt clearfix">{{!SHARE ROW}}
                         <div class="row clearfix">
                             <div class="col-xs-12 col-lg-8 download_project">
-                                <a class="btn btn-primary" href={{fileDownloadURL.content}} onclick={{action 'click' 'link' 'Preprints - Content - Download'}}>{{t "content.share.download_preprint"}}</a>
+                                <a class="btn btn-primary" href={{fileDownloadURL}} onclick={{action 'click' 'link' 'Content - Download'}}>{{t "content.share.download_preprint"}}</a>
                                 <span class="p-sm" id="downloadCount">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}}</span>
                             </div>
                             <div class="col-xs-12 col-lg-4 social-div">
                                 <span class="p-xs pull-right social-media-icons">
-                                    <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'click' 'Preprints - Content - tweet'}}>{{fa-icon 'twitter-square' size=2 }}</a>
-                                    <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref 'Facebook' 'click' 'Preprints - Content - share'}}>{{fa-icon 'facebook-square' size=2 }}</a>
-                                    <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref 'LinkedIn' 'click' 'Preprints - Content - share'}}>{{fa-icon 'linkedin-square' size=2 }}</a>
-                                    <a class="m-r-xs text-smaller" href={{emailHref}} onclick={{action 'shareLink' emailHref 'link' 'click' 'Preprints - Content - email'}}>{{fa-icon 'envelope' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'click' 'Content - tweet' model.id}}>{{fa-icon 'twitter-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref 'Facebook' 'click' 'Content - share' model.id}}>{{fa-icon 'facebook-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref 'LinkedIn' 'click' 'Content - share' model.id}}>{{fa-icon 'linkedin-square' size=2 }}</a>
+                                    <a class="m-r-xs text-smaller" href={{emailHref}} onclick={{action 'shareLink' emailHref 'link' 'click' 'Content - email' model.id}}>{{fa-icon 'envelope' size=2 }}</a>
                                 </span>
                             </div>
                         </div>
@@ -145,7 +145,7 @@
                         </div>
                         <div class="col-xs-6 text-left">
                             <p class="f-w-xs">{{t "content.project_button.paragraph"}}</p>
-                            <a type="button" class="btn btn-info" href={{node.links.html}} onclick={{action "click" "link" "Preprints - Content - Visit Project"}}>{{t "content.project_button.button"}}</a>
+                            <a type="button" class="btn btn-info" href={{node.links.html}} onclick={{action "click" "link" "Content - Visit Project" node.id}}>{{t "content.project_button.button"}}</a>
                         </div>
                     </div>
                 </div> {{!END RIGHT SIDE COL}}

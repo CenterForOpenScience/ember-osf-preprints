@@ -17,7 +17,7 @@
             <ul id="previousVersionsList" class="dropdown-menu" aria-labelledby="previousVersionsDropdown">
                 {{#each versions as |version|}}
                     <li>
-                        <a href="{{version.downloadUrl}}" onclick={{action 'click' 'link' 'Preprints - Content - Download Previous Version'}}>
+                        <a href="{{version.downloadUrl}}" onclick={{action 'click' 'link' 'Content - Download Previous Version'}}>
                             {{t "content.version"}} {{version.id}}, {{moment-format version.dateCreated "MM/DD/YYYY HH:mm:SS"}}
                         </a>
                     </li>
@@ -26,7 +26,7 @@
         </div>
         <a id="downloadPreprintButton" class="btn btn-default btn-sm"
            href={{fileDownloadURL}}
-           onclick={{action 'click' 'link' (concat 'Preprints - Content - Download' (if selectedFileisPrimaryFile '' 'Supplementary File'))}}>
+           onclick={{action 'click' 'link' (concat 'Content - Download' (if selectedFileisPrimaryFile '' 'Supplementary File'))}}>
             {{t (concat 'content.share.' (if selectedFileisPrimaryFile 'download_preprint' 'download_file'))}}
         </a>
         <span class="p-sm">{{t "content.version"}}: {{selectedFile.currentVersion}}</span>
