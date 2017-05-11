@@ -1,0 +1,16 @@
+<div>
+    <ul>
+        {{#each otherProviders as |item|}}
+            <li>
+                <label>
+                    <input type="checkbox" checked="{{if (if-filter item.key activeFilters.providers) 'checked'}}" onclick={{action updateFilters 'providers' item.key}} disabled={{theme.isProvider}}>
+                    {{filter-replace item.key filterReplace}}
+                    <small>({{number-format item.doc_count}})</small>
+                </label>
+            </li>
+        {{/each}}
+        {{#if theme.isProvider}}
+            <a href="/preprints/discover" onbeforeclick={{action 'click' 'link' 'Discover - Other Preprint Repositories'}}>{{t "discover.main.otherRepositories"}}</a>
+        {{/if}}
+    </ul>
+</div>
