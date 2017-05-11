@@ -1,19 +1,21 @@
 import Ember from 'ember';
 import Analytics from 'ember-osf/mixins/analytics';
+
 /**
  * @module ember-preprints
  * @submodule components
  */
 
 /**
- * Preprint navbar - use in application.hbs to drop navbar onto every page
+ * Add preprint box - Component of portion of preprints discover page - asks users if they want to create a preprint
  *
  * Sample usage:
  * ```handlebars
- * {{preprint-navbar}}
- *
+ * {{add-preprint-box
+ *}}
  * ```
- * @class preprint-navbar
+ * @class add-preprint-box
  */
 export default Ember.Component.extend(Analytics, {
+    theme: Ember.inject.service()
 });
