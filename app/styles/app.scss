@@ -5,7 +5,7 @@
 @import 'base';
 @import 'authors';
 @import 'validated-input';
-@import 'hint';
+@import "ember-bootstrap/bootstrap";
 
 /* Override styles from ember-osf and osf */
 .footer {
@@ -1302,7 +1302,6 @@ nav.branded-navbar {
     margin-top: 104px;
     margin-bottom: 0;
 }
-
 
 .listOption.btn-link {
     cursor: pointer;
