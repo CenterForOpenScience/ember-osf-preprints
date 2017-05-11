@@ -8,14 +8,14 @@
                         {{#if lightLogo}}
                             <a href="/preprints/{{provider.id}}"
                                 title={{provider.name}}
-                                onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
+                                onclick={{action 'click' 'link' (concat 'Index - Provider Carousel - ' provider.name)}}
                                 >
                                 <div class="provider-logo provider-{{provider.id}}"></div>
                             </a>
                         {{else}}
                             <a href="/preprints/{{provider.id}}/discover"
                                 title={{provider.name}}
-                                onclick={{action 'click' 'link' (concat 'Preprints - Discover - Index ' provider.name)}}
+                                onclick={{action 'click' 'link' (concat 'Discover - Provider Carousel ' provider.name)}}
                             >
                                 <div class="discover-provider-logo provider-{{provider.id}}-dark"></div>
                             </a>
