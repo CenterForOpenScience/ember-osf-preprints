@@ -63,8 +63,7 @@ module.exports = function(defaults) {
             includePaths: [
                 'node_modules/ember-osf/addon/styles',
                 'bower_components/bootstrap-sass/assets/stylesheets',
-                'bower_components/osf-style/sass',
-                'bower_components/hint.css'
+                'bower_components/osf-style/sass'
             ]
         },
         inlineContent: {
@@ -177,15 +176,10 @@ module.exports = function(defaults) {
 
     app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
 
-     app.import({
-        development: path.join(app.bowerDirectory, 'hint.css/hint.css'),
-        production: path.join(app.bowerDirectory, 'hint.css/hint.css')
-    });
-
     app.import({
         test: path.join(app.bowerDirectory, 'ember/ember-template-compiler.js')
     });
-    
+
     // Import component styles from addon
     app.import('vendor/assets/ember-osf.css');
 
