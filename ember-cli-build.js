@@ -46,7 +46,9 @@ module.exports = function(defaults) {
             [useCdn ? 'jquery.js' : '']: false,
         },
         'ember-bootstrap': {
-            importBootstrapCSS: false
+          importBootstrapCSS: false,
+          'bootstrapVersion': 3,
+          'importBootstrapFont': true
         },
         // Needed for branded themes
         fingerprint: {
