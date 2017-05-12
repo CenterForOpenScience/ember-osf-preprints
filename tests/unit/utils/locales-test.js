@@ -1,6 +1,6 @@
 import englishBaseline from 'preprint-service/locales/en/translations';
-import spanish from 'preprint-service/locales/es/translations';
-import { module, test } from 'qunit';
+import spanish from 'preprint-service/locales/es-disabled/translations';
+import { module, skip } from 'qunit';
 
 module('Unit | Utility | locales');
 
@@ -26,8 +26,8 @@ function flattenObject(ob) {
 	return toReturn;
 }
 
-// Replace this with your real tests.
-test('spanish contains all terms', function(assert) {
+// Skip checking Spanish translations while they are disabled.
+skip('spanish contains all terms', function(assert) {
     let spanishTerms = flattenObject(spanish);
     for (var term in flattenObject(englishBaseline)) {
         assert.ok(typeof spanishTerms[term] !== 'undefined', `${term} not defined.`);
