@@ -108,6 +108,14 @@ $logo-dir: '../img/provider_logos/';
             &:hover > b:after {
                 border-left-color: $theme-color-1;
             }
+            .right-arrow:before {
+                border-left: 1.4rem solid $theme-color-3;
+            }
+            &:hover {
+                .right-arrow:before {
+                    border-left-color: $theme-color-1;
+                }
+            }
         }
     }
 
