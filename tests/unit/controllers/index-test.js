@@ -14,7 +14,6 @@ test('Initial properties', function (assert) {
     const ctrl = this.subject();
 
     const expected = {
-        sharePreprintsTotal: null
     };
 
     const propKeys = Object.keys(expected);
