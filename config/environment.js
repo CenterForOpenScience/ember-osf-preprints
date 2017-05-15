@@ -128,6 +128,30 @@ module.exports = function(environment) {
                     id: 'focusarchive',
                     logoSharing: {
                         path: 'assets/img/provider_logos/fusf-logo.png',
+                {
+                    id: 'paleorxiv',
+                    logoSharing: {
+                        path: 'preprint-assets/paleorxiv/sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
+                },
+                {
+                    id: 'mindrxiv',
+                    logoSharing: {
+                        path: 'preprint-assets/mindrxiv/sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
+                },
+                {
+                    id: 'lissa',
+                    logoSharing: {
+                        path: 'preprint-assets/lissa/sharing.png',
                         type: 'image/png',
                         width: 1200,
                         height: 488

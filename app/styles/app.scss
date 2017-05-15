@@ -243,11 +243,31 @@ $logo-dir: 'img/provider_logos/';
 }
 
 .provider-focusarchive {
-    background-image: url($logo-dir + 'fusf-logo-white.png');
+    background-image: url($logo-dir + 'focusarchive' + 'wide_white.png');
+}
+.provider-focusarchive-dark {
+    background-image: url($logo-dir + 'focusarchive' + 'wide_black.png');
 }
 
-.provider-focusarchive-dark {
-    background-image: url($logo-dir + 'fusf-logo-dark.png');
+.provider-paleorxiv {
+    background-image: url($logo-dir + 'paleorxiv' + 'wide_white.png');
+}
+.provider-paleorxiv-dark {
+    background-image: url($logo-dir + 'paleorxiv' + 'wide_black.png');
+}
+
+.provider-mindrxiv {
+    background-image: url($logo-dir + 'mindrxiv' + 'wide_white.png');
+}
+.provider-mindrxiv-dark {
+    background-image: url($logo-dir + 'mindrxiv' + 'wide_black.png');
+}
+
+.provider-lissa {
+    background-image: url($logo-dir + 'lissa' + 'wide_white.png');
+}
+.provider-lissa-dark {
+    background-image: url($logo-dir + 'lissa' + 'wide_black.png');
 }
 
 .preprint-advisory  {
@@ -739,7 +759,6 @@ hr {
         content: '';
         border-top: 1.4rem solid transparent;
         border-bottom: 1.3rem solid transparent;
-        border-left: 1.4rem solid $brand-primary;
         position: absolute;
         margin-left: -1.5rem;
         margin-top: -1.4rem;
@@ -754,15 +773,15 @@ hr {
     margin-bottom: 1rem;
     font-weight: bold;
     &:hover {
-        .subject-container {
-            background-color: lighten($brand-primary, 10%);
-        }
         .right-arrow:before {
             border-left-color: lighten($brand-primary, 10%);
         }
     }
     .right-arrow:last-of-type {
         display: none;
+    }
+    .right-arrow:before {
+        border-left: 1.4rem solid $brand-primary;
     }
 }
 
@@ -771,7 +790,6 @@ hr {
 }
 
 .subject-container {
-    background-color: $brand-primary;
     display: inline-block;
     transition: background-color 0.1s linear;
     margin-left: -10px;
@@ -803,6 +821,22 @@ hr {
 }
 
 #preprint-form-subjects {
+    .subject {
+         background-color: $brand-primary;
+         &:hover {
+             background-color: lighten($brand-primary, 10%);
+             & > b:after {
+                 border-left-color: lighten($brand-primary, 10%);
+             }
+         }
+         & > b {
+             &%pseudo {
+                 border: {
+                     color: transparent transparent transparent $brand-primary;
+                 }
+             }
+         }
+    }
     ul {
         height: 30rem;
         list-style: none;
