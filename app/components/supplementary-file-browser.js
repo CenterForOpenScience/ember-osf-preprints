@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
-
 import fileDownloadPath from '../utils/file-download-path';
 
 /**
@@ -120,7 +119,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
-                    label: 'Preprints - Content - Next'
+                    label: 'Content - Next'
                 });
 
             if (this.get('endIndex') > this.get('files.length')) return;
@@ -134,7 +133,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
-                    label: 'Preprints - Content - Prev'
+                    label: 'Content - Prev'
                 });
             let start = this.get('startIndex');
             if (start <= 0) return;
@@ -153,7 +152,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'select',
-                    label: 'Preprints - Content - File'
+                    label: 'Content - File'
                 });
 
             this.set('selectedFile', file);

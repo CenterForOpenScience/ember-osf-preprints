@@ -405,7 +405,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     .trackEvent({
                         category: 'dropdown',
                         action: 'select',
-                        label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`
                     });
             }
             this.set('initialLicenseChangeMade', true);
@@ -416,7 +416,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'radio-button',
                     action: 'select',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Apply License: ${apply}`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Apply License: ${apply}`
                 });
         },
         next(currentPanelName) {
@@ -431,7 +431,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Authors Next Button`
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Authors Next Button`
                     });
             }
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
@@ -466,7 +466,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: 'Preprints - Submit - Upload new preprint'
+                        label: 'Submit - Upload new preprint'
                     });
             } else if (newState === this.get('_State').EXISTING) {
                 this.get('panelActions').open('chooseProject');
@@ -478,14 +478,14 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: 'Preprints - Submit - Connect preprint to existing OSF Project'
+                        label: 'Submit - Connect preprint to existing OSF Project'
                     });
             } else {
                 Ember.get(this, 'metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: 'Preprints - Submit - Back Button, Upload Section'
+                        label: 'Submit - Back Button, Upload Section'
                     });
             }
         },
@@ -507,7 +507,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Save and Continue, Existing Node Existing File'
+                    label: 'Submit - Save and Continue, Existing Node Existing File'
                 });
 
             const node = this.get('node');
@@ -541,7 +541,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Save and Continue, New Component, Copy File'
+                    label: 'Submit - Save and Continue, New Component, Copy File'
                 });
             node.addChild(this.get('nodeTitle'))
                 .then(child => {
@@ -629,7 +629,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Upload Changes`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Upload Changes`
                 });
 
             this.setProperties({
@@ -677,7 +677,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Basics Changes`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Basics Changes`
                 });
             this.set('basicsTags', this.get('node.tags').slice(0).map(fixSpecialChar));
             this.set('basicsAbstract', this.get('node.description'));
@@ -700,7 +700,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'input',
                     action: 'onchange',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - DOI Text Change`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - DOI Text Change`
                 });
             let basicsDOI = this.get('basicsDOI');
             this.set('basicsDOI', doiRegexExec(basicsDOI));
@@ -710,7 +710,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue Basics Section`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue Basics Section`
                 });
             // Saves the description/tags on the node and the DOI on the preprint, then advances to next panel
             if (!this.get('basicsValid')) {
@@ -801,7 +801,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'input',
                     action: 'onchange',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Add Tag`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Add Tag`
                 });
 
             this.get('basicsTags').pushObject(tag);
@@ -813,7 +813,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Tag`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Tag`
                 });
 
             this.get('basicsTags').removeObject(tag);
@@ -834,7 +834,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Discipline Changes`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Discipline Changes`
                 });
             this.set('subjectsList', Ember.$.extend(true, [], this.get('model.subjects')));
         },
@@ -845,7 +845,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`
                 });
             let model = this.get('model');
             // Current subjects saved so UI can be restored in case of failure
@@ -878,7 +878,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Search for Authors`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Search for Authors`
                 });
             return this.store.query('user', {
                 filter: {
@@ -917,7 +917,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Open Share Preprint Modal'
+                    label: 'Submit - Open Share Preprint Modal'
                 });
             this.toggleProperty('showModalSharePreprint');
         },
@@ -927,7 +927,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit - Complete Preprint Edits' : 'Submit - Share Preprint'}`
+                    label: `${this.get('editMode') ? 'Edit - Complete Preprint Edits' : 'Submit - Share Preprint'}`
                 });
 
             const model = this.get('model');

@@ -43,7 +43,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
             if (this.get('theme.isSubRoute'))
                 route = `provider.${route}`;
 
-            this.transitionTo(route, { queryParams: { queryString: q } });
+            this.transitionTo(route, { queryParams: { q: q } });
         }
     }
 });

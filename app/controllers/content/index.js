@@ -169,7 +169,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - Content - License ${licenseState}`
+                    label: `Content - License ${licenseState}`
                 });
         },
         expandMFR() {
@@ -180,7 +180,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - Content - MFR ${beforeState}`
+                    label: `Content - MFR ${beforeState}`
                 });
         },
         expandAbstract() {
@@ -193,14 +193,15 @@ export default Ember.Controller.extend(Analytics, {
                 activeFile: fileItem
             });
         },
-        shareLink(href, category, action, label) {
+        shareLink(href, category, action, label, extra) {
             const metrics = Ember.get(this, 'metrics');
 
             // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
             metrics.trackEvent({
                 category,
                 action,
-                label
+                label,
+                extra
             });
 
             if (label.includes('email'))

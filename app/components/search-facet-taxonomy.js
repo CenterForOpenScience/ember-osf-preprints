@@ -8,16 +8,19 @@ const pageSize = 150;
  */
 
 /**
- * Builds hierarchy of taxonomies for discover page
+ * Builds taxonomy facet for discover page - to be used with Ember-OSF's discover-page component.
  *
  * Sample usage:
  * ```handlebars
- * {{taxonomy-tree
- *      select=(action 'updateFilters' 'subjects')
- *      subjects=treeSubjects}}
+ * {{search-facet-taxonomy
+ *      updateFilters=(action 'updateFilters')
+ *      activeFilters=activeFilters
+ *      options=facet
+ *      filterReplace=filterReplace
+ *      key=key
  * }}
  * ```
- * @class taxonomy-tree
+ * @class search-facet-taxonomy
  */
 export default Ember.Component.extend(Analytics, {
     theme: Ember.inject.service(),
@@ -57,15 +60,12 @@ export default Ember.Component.extend(Analytics, {
             );
     },
     actions: {
-        select(item) {
-            this.attrs.select(item);
-        },
         expand(item) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'tree',
                     action: item.showChildren ? 'contract' : 'expand',
-                    label: `Preprints - Discover - ${item.text}`
+                    label: `Discover - ${item.text}`
                 });
 
             if (item.showChildren) {

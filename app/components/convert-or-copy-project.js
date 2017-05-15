@@ -38,7 +38,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Make a New Component Selection'
+                    label: 'Submit - Make a New Component Selection'
                 });
 
         },
@@ -54,7 +54,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Use the Current Project Selection'
+                    label: 'Submit - Use the Current Project Selection'
                 });
         },
         confirmConvert() {
@@ -66,7 +66,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Confirm Continue with the Current Project'
+                    label: 'Submit - Confirm Continue with the Current Project'
                 });
         }
     }

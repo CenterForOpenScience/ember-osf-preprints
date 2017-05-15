@@ -154,6 +154,14 @@ module.exports = function(environment) {
 
         ],
         FB_APP_ID: process.env.FB_APP_ID,
+        whiteListedProviders: [
+            'arXiv',
+            'bioRxiv',
+            'Cogprints',
+            'PeerJ',
+            'Research Papers in Economics',
+            'Preprints.org'
+        ].map(item => item.toLowerCase()),
     };
 
     if (process.env.ENABLE_PROVIDER_DOMAINS !== 'true') {
@@ -187,6 +195,8 @@ module.exports = function(environment) {
         // TODO: Provide mocks for all components with manual AJAX calls in the future.
         ENV.SHARE.baseUrl = '/nowhere';
         ENV.SHARE.searchUrl = '/nowhere';
+        ENV.OSF = {};
+        ENV.OSF.shareSearchUrl = '/nowhere';
 
         ENV.metricsAdapters[0].config.cookieDomain = 'none'
     }
