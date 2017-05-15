@@ -124,10 +124,16 @@ module.exports = function(environment) {
                     },
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
-                 {
+                {
                     id: 'focusarchive',
                     logoSharing: {
-                        path: 'assets/img/provider_logos/fusf-logo.png',
+                        path: '/assets/img/provider_logos/focusarchive/sharing.png',
+                        type: 'image/png',
+                        width: 1500,
+                        height: 1500
+                    },
+                    permissionLanguage: 'no_trademark'
+                },
                 {
                     id: 'paleorxiv',
                     logoSharing: {

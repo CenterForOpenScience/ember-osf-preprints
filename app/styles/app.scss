@@ -243,10 +243,10 @@ $logo-dir: 'img/provider_logos/';
 }
 
 .provider-focusarchive {
-    background-image: url($logo-dir + 'focusarchive' + 'wide_white.png');
+    background-image: url($logo-dir + 'focusarchive' + '/wide_white.png');
 }
 .provider-focusarchive-dark {
-    background-image: url($logo-dir + 'focusarchive' + 'wide_black.png');
+    background-image: url($logo-dir + 'focusarchive' + '/wide_black.png');
 }
 
 .provider-paleorxiv {

@@ -6,8 +6,8 @@
     #04506f,                                // Color, theme color #3 (navbar color, preferably a dark color)
     white,                                // Color, theme color #4 (used in link colors)
     #0779a0,                                  // Color, theme color #5 (text color that contrasts with #2, usually black or white)
-    $logo-dir + 'fusf-logo.png',        // String, path to the rectangular provider logo
-    $logo-dir + 'fusf-lt-blue.gif', // String, path to the square provider logo
+    $logo-dir + 'focusarchive/wide_color.png',  // String, path to the rectangular provider logo
+    $logo-dir + 'focusarchive/square_color_transparent.png', // String, path to the square provider logo
     false,                                   // Boolean, whether to use the white share logo or not
     true,                                  // Boolean, whether to use theme color 4 or theme color 2 for the navbar link color
     false                                   // Boolean, whether to use the contracts link color (theme color 4)
