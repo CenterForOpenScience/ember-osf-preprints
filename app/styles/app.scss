@@ -242,6 +242,27 @@ $logo-dir: 'img/provider_logos/';
     background-image: url($logo-dir + 'lawarxiv-dark.png');
 }
 
+.provider-paleorxiv {
+    background-image: url($logo-dir + 'paleorxiv' + 'wide_white.png');
+}
+.provider-paleorxiv-dark {
+    background-image: url($logo-dir + 'paleorxiv' + 'wide_black.png');
+}
+
+.provider-mindrxiv {
+    background-image: url($logo-dir + 'mindrxiv' + 'wide_white.png');
+}
+.provider-mindrxiv-dark {
+    background-image: url($logo-dir + 'mindrxiv' + 'wide_black.png');
+}
+
+.provider-lissa {
+    background-image: url($logo-dir + 'lissa' + 'wide_white.png');
+}
+.provider-lissa-dark {
+    background-image: url($logo-dir + 'lissa' + 'wide_black.png');
+}
+
 .preprint-advisory  {
     background-color: #f3f5f7;
     border-bottom: 1px solid #e0e6ea;
