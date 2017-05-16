@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import DS from 'ember-data';
-import loadAll from 'ember-osf/utils/load-relationship';
+import { PromiseArray } from 'ember-data';
+// import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
 import fileDownloadPath from '../utils/file-download-path';
 
@@ -29,6 +29,10 @@ export default Ember.Component.extend(Analytics, {
 
     // Max number of objects to show before showing next/prev buttons
     width: 6,
+
+    selectedIndex: Ember.computed('files', 'selectedFile', function() {
+        return this.get('files').indexOf(this.get('selectedFile'));
+    }),
 
     max: Ember.computed('files', 'width', function() {
         return Math.max(this.get('files.length') - this.get('width'), 0);
@@ -68,7 +72,7 @@ export default Ember.Component.extend(Analytics, {
         const downloadUrl = selectedFile.get('links.download');
         const filename = selectedFile.get('name');
 
-        return DS.PromiseArray.create({
+        return PromiseArray.create({
             promise: this.get('selectedFile')
                 .query('versions', {sort: '-id'})
                 .then(versions => versions
@@ -101,27 +105,23 @@ export default Ember.Component.extend(Analytics, {
         this.setProperties({
             files: Ember.A(),
             selectedFile: null,
-            selectedIndex: null,
         });
 
         return Promise
             .all([
                 this.get('preprint.primaryFile'),
                 this.get('node.files')
-                    .then(providers => loadAll(
-                        providers.findBy('name', 'osfstorage'),
-                        'files',
-                        this.get('files'),
-                        {
-                            'page[size]': 50
-                        }
-                    ))
+                    .then(providers => providers.findBy('name', 'osfstorage')
+                        .query('files', {
+                            page: {
+                                size: 50
+                            }
+                        })
+                    )
             ])
-            .then(([primaryFile]) => {
-                const files = this.get('files');
-
-                files.removeObject(primaryFile);
-                files.unshiftObject(primaryFile);
+            .then(([primaryFile, files]) => {
+                // files.removeObject(primaryFile);
+                // files.unshiftObject(primaryFile);
 
                 const selectedFile = files.find(({id}) => id === this.get('chosenFile')) || primaryFile;
 
@@ -129,7 +129,6 @@ export default Ember.Component.extend(Analytics, {
                     files,
                     primaryFile,
                     selectedFile,
-                    selectedIndex: files.indexOf(selectedFile),
                 });
             });
     },
@@ -179,7 +178,7 @@ export default Ember.Component.extend(Analytics, {
                 endIndex: Math.max(this.get('endIndex') - width, width)
             });
         },
-        changeFile(selectedFile, selectedIndex) {
+        changeFile(selectedFile) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'file browser',
@@ -189,7 +188,6 @@ export default Ember.Component.extend(Analytics, {
 
             this.setProperties({
                 selectedFile,
-                selectedIndex,
             });
 
             if (this.attrs.chooseFile) {
