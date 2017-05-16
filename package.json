@@ -68,7 +68,7 @@
     "ember-lodash": "3.10.0",
     "ember-load-initializers": "0.5.1",
     "ember-metrics": "0.6.3",
-    "ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#f74415f5ce041e10eecdd2305a9d422c311d5d03",
+    "ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#39e1f6d2a8d6d96c25510d6f3c699d29537c361d",
     "ember-page-title": "3.0.6",
     "ember-power-select": "1.0.0-beta.7",
     "ember-read-more": "0.0.13",
