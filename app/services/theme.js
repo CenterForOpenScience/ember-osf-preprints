@@ -37,7 +37,7 @@ export default Ember.Service.extend({
                     if (provider.get('domainRedirectEnabled')) {
                         const domain = provider.get('domain');
                         const {href, origin} = window.location;
-                        const url = href.replace(new RegExp(`^${origin}/preprints/${id}/`), domain);
+                        const url = href.replace(new RegExp(`^${origin}/preprints/${id}/?`), domain);
 
                         window.location.replace(url);
                     }
