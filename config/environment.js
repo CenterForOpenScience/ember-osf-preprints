@@ -123,6 +123,46 @@ module.exports = function(environment) {
                         height: 488
                     },
                     permissionLanguage: 'arxiv_non_endorsement'
+                },
+                {
+                    id: 'focusarchive',
+                    logoSharing: {
+                        path: '/assets/img/provider_logos/focusarchive/sharing.png',
+                        type: 'image/png',
+                        width: 1500,
+                        height: 1500
+                    },
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'paleorxiv',
+                    logoSharing: {
+                        path: 'preprint-assets/paleorxiv/sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
+                },
+                {
+                    id: 'mindrxiv',
+                    logoSharing: {
+                        path: 'preprint-assets/mindrxiv/sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
+                },
+                {
+                    id: 'lissa',
+                    logoSharing: {
+                        path: 'preprint-assets/lissa/sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'no_trademark'
                 }
             ],
         },
