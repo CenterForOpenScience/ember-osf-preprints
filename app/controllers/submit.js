@@ -399,16 +399,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 basicsLicense,
                 licenseValid
             });
-
-            if (this.get('initialLicenseChangeMade') || this.get('editMode')) {
-                Ember.get(this, 'metrics')
-                    .trackEvent({
-                        category: 'dropdown',
-                        action: 'select',
-                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`
-                    });
-            }
-            this.set('initialLicenseChangeMade', true);
         },
         applyLicenseToggle(apply) {
             this.set('applyLicense', apply);
@@ -762,6 +752,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     },
                     license: this.get('basicsLicense.licenseType')
                 });
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'dropdown',
+                        action: 'select',
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`
+                    });
             }
 
             Promise.all([
