@@ -2689,9 +2689,9 @@ ember-new-computed@^1.0.2:
   dependencies:
     ember-cli-babel "^5.1.5"
 
-ember-osf@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/ember-osf/-/ember-osf-0.5.0.tgz#849d804644546cfded596311f688dd10855688cf"
+ember-osf@0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/ember-osf/-/ember-osf-0.5.2.tgz#e5617e6b6f41dd5bcbc97d4e996fa6e6f2521175"
   dependencies:
     broccoli-funnel "^1.0.1"
     broccoli-merge-trees "^1.1.1"
