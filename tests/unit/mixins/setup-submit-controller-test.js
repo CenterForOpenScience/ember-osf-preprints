@@ -1,12 +1,21 @@
 import Ember from 'ember';
 import SetupSubmitControllerMixin from 'preprint-service/mixins/setup-submit-controller';
-import { module, test } from 'qunit';
+import { moduleFor, test } from 'ember-qunit';
 
-module('Unit | Mixin | setup submit controller');
+moduleFor('mixin:setup-submit-controller', {
+    needs: [
+        'service:theme',
+        'service:panelActions',
+        'service:session',
+    ]
+});
 
-// Replace this with your real tests.
-test('it works', function(assert) {
-  let SetupSubmitControllerObject = Ember.Object.extend(SetupSubmitControllerMixin);
-  let subject = SetupSubmitControllerObject.create();
-  assert.ok(subject);
+test('Setup-submit-controller mixin', function(assert) {
+    let routeObject = Ember.Route.extend(SetupSubmitControllerMixin);
+    this.registry.register('test:subject', routeObject);
+    const routeTest = this.container.lookup('test:subject');
+    assert.ok(SetupSubmitControllerMixin.detect(routeTest));
+    assert.ok(routeTest.get('setupSubmitController'));
+    assert.ok(routeTest.get('theme'));
+    assert.ok(routeTest.get('panelActions'));
 });

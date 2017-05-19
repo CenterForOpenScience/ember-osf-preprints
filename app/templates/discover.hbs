@@ -1,150 +1,22 @@
 {{title 'Search'}}
 
-<div class="preprint-search-header">
-    <div class="container">
-        <div class="row m-v-md ">
-            <div class="col-xs-12 text-center">
-                {{#if theme.isProvider}}
-                    <div class="col-xs-6 text-right">
-                        <div class="preprint-brand" style="height: 140px; background-position-x: right;"></div>
-                    </div>
-                {{/if}}
-                <div class={{if theme.isProvider 'col-xs-6 text-left'}}>
-                    <h1>{{t "discover.search.heading"}}</h1>
-                    <p class="lead">{{t "discover.search.paragraph"}} <a href="https://share.osf.io/" class="share-logo" title="SHARE" onclick={{action 'click' 'link' 'Preprints - Discover - Share Logo'}}></a></p>
-                </div>
-            </div>
-        </div>
-        <div class="row m-t-md m-b-lg">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                <div class="input-group input-group-lg">
-                    {{input id="searchBox" value=(mut queryString) class="form-control" key-up='search' placeholder=(t "discover.search.placeholder")}}
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" {{action "search" this}}>{{t "global.search"}}</button>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row m-v-md">
-            <div class="col-xs-10 col-xs-offset-1" style="text-align: center;">
-                {{#if (not theme.isProvider)}}
-                    <h3>{{t "discover.search.partner"}}</h3>
-                    <div class="row">
-                        {{!CAROUSEL WITH PREPRINT PROVIDERS}}
-                        {{provider-carousel
-                            providers=model
-                            lightLogo=false
-                        }}
-                    </div>
-                {{/if}}
-            </div>
-        </div>
-        <div class="row m-v-md">
-            <div class="col-xs-6 col-xs-offset-6">
-                <span class="pull-right">
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="true" {{action 'click' 'button' 'Preprints - Discover - Sort'}}>
-                            {{t "discover.sort_by"}}: {{chosenSortByOption}}
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sortBy">
-                            {{#each sortByOptions as |option index|}}
-                                <li><a class="listOption" {{action "sortBySelect" index}}>{{option}}</a></li>
-                            {{/each}}
-                        </ul>
-                    </div>
-                </span>
-            </div>
-        </div>
-    </div>
-</div>
+{{discover-page
+    activeFilters=activeFilters
+    consumingService=consumingService
+    detailRoute=detailRoute
+    discoverHeader=discoverHeader
+    facets=facets
+    fetchedProviders=model
+    filterMap=filterMap
+    filterReplace=filterReplace
+    lockedParams=lockedParams
+    page=page
+    provider=provider
+    q=q
+    queryParams=queryParams
+    searchPlaceholder=searchPlaceholder
+    showActiveFilters=showActiveFilters
+    sortOptions=sortOptions
+    subject=subject
+}}
 
-<div class="preprint-search-main p-v-xl">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4 preprint-search-sidebar">
-                {{#if showActiveFilters}}
-                    <div id="activeFilters" class="well well-sm p-md">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4>{{t "discover.main.active_filters.heading"}}:</h4>
-                            </div>
-                            <div class="col-sm-6">
-                                <span class="pull-right">
-                                    <button type="button" class="btn btn-default btn-sm" {{action "clearFilters"}}>{{t "discover.main.active_filters.button"}} {{fa-icon "remove"}}</button>
-                                </span>
-                            </div>
-                        </div>
-                        <div id="activeFiltersList">
-                            {{#each activeFilters.providers as |filter|}}
-                                <span class='preprint-filter provider-filter'>
-                                    {{filter-replace filter}}
-                                    {{#unless theme.isProvider}}
-                                        <span class='pointer'>{{fa-icon 'times-circle' click=(action 'updateFilters' 'providers' filter)}}</span>
-                                    {{/unless}}
-                                </span>
-                            {{/each}}
-                            {{#each activeFilters.subjects as |filter|}}
-                                <span class='preprint-filter subject-filter'>{{filter}} <span class='pointer'>{{fa-icon 'times-circle' click=(action 'updateFilters' 'subjects' filter)}}</span></span>
-                            {{/each}}
-                        </div>
-                    </div>
-                {{/if}}
-                <h4>{{t "discover.main.refine"}}</h4>
-                <div class='m-v-md'>
-                    <h4 class="filter-heading p-sm">{{t "discover.main.providers"}}</h4>
-                    <ul>
-                        {{#each otherProviders as |item|}}
-                            <li>
-                                <label>
-                                    <input type="checkbox" checked="{{if (if-filter item.key activeFilters.providers) 'checked'}}" onclick={{action 'updateFilters' 'providers' item.key}} disabled={{theme.isProvider}}>
-                                    {{filter-replace item.key}}
-                                    <small>({{number-format item.doc_count}})</small>
-                                </label>
-                            </li>
-                        {{/each}}
-                        {{#if theme.isProvider}}
-                            <a href="/preprints/discover" onbeforeclick={{action 'click' 'link' 'Discover - Other Preprint Repositories'}}>{{t "discover.main.otherRepositories"}}</a>
-                        {{/if}}
-                    </ul>
-                </div>
-                <div class="m-t-lg">
-                    <h4 class="filter-heading p-sm">{{t "discover.main.subject"}}</h4>
-                    {{taxonomy-tree select=(action 'updateFilters' 'subjects') subjects=treeSubjects}}
-                </div>
-                <div class="osf-box p-md m-b-lg clearfix m-t-xl">
-                    <p>{{t "discover.main.box.paragraph"}}</p>
-                    {{#link-to (if theme.isSubRoute "provider.submit" "submit")
-                               type="button" class="btn btn-success btn-lg"
-                               invokeAction=(action 'click' 'button' 'Preprints - Discover - Add Preprint')
-                    }}
-                        {{t "discover.main.box.button"}}
-                    {{/link-to}}
-                </div>
-            </div>
-
-            <div class="col-sm-8" id="searchResults">
-                {{#if loading}}
-                    <div class="text-center">
-                        {{fa-icon 'spinner' pulse=true size=3}}
-                    </div>
-                {{else}}
-                    {{#if numberOfResults}}
-                        {{#each results as |result|}}
-                            {{search-result result=result select=(action 'updateFilters' 'subjects')}}
-                        {{/each}}
-                        <div class="pull-right text-right">
-                            {{pagination-pager count=numPages current=page change=(action 'setLoadPage')}}
-                        </div>
-                    {{else}}
-                        <div class="text-muted text-center">
-                            <p class="lead ">{{t "global.no_results_found"}}</p>
-                            <p>{{t "discover.main.results.no_results"}}</p>
-                        </div>
-                    {{/if}}
-                {{/if}}
-            </div>
-        </div>
-    </div>
-</div>

@@ -123,6 +123,46 @@ module.exports = function(environment) {
                         height: 488
                     },
                     permissionLanguage: 'arxiv_non_endorsement'
+                },
+                {
+                    id: 'focusarchive',
+                    logoSharing: {
+                        path: '/assets/img/provider_logos/focusarchive/sharing.png',
+                        type: 'image/png',
+                        width: 1500,
+                        height: 1500
+                    },
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'paleorxiv',
+                    logoSharing: {
+                        path: 'preprint-assets/paleorxiv/sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
+                },
+                {
+                    id: 'mindrxiv',
+                    logoSharing: {
+                        path: 'preprint-assets/mindrxiv/sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'arxiv_non_endorsement'
+                },
+                {
+                    id: 'lissa',
+                    logoSharing: {
+                        path: 'preprint-assets/lissa/sharing.png',
+                        type: 'image/png',
+                        width: 1200,
+                        height: 488
+                    },
+                    permissionLanguage: 'no_trademark'
                 }
             ],
         },
@@ -132,13 +172,36 @@ module.exports = function(environment) {
         metricsAdapters: [
             {
                 name: 'GoogleAnalytics',
-                environments: ['all'],
+                environments: [process.env.KEEN_ENVIRONMENT] || ['production'],
                 config: {
                     id: process.env.GOOGLE_ANALYTICS_ID
                 }
-            }
+            },
+            {
+                name: 'Keen',
+                environments: [process.env.KEEN_ENVIRONMENT] || ['production'],
+                config: {
+                    private: {
+                        projectId: process.env.PREPRINTS_PRIVATE_PROJECT_ID,
+                        writeKey: process.env.PREPRINTS_PRIVATE_WRITE_KEY
+                    },
+                    public: {
+                        projectId: process.env.PREPRINTS_PUBLIC_PROJECT_ID,
+                        writeKey: process.env.PREPRINTS_PUBLIC_WRITE_KEY
+                    }
+                }
+            },
+
         ],
         FB_APP_ID: process.env.FB_APP_ID,
+        whiteListedProviders: [
+            'arXiv',
+            'bioRxiv',
+            'Cogprints',
+            'PeerJ',
+            'Research Papers in Economics',
+            'Preprints.org'
+        ].map(item => item.toLowerCase()),
     };
 
     if (process.env.ENABLE_PROVIDER_DOMAINS !== 'true') {
@@ -172,6 +235,8 @@ module.exports = function(environment) {
         // TODO: Provide mocks for all components with manual AJAX calls in the future.
         ENV.SHARE.baseUrl = '/nowhere';
         ENV.SHARE.searchUrl = '/nowhere';
+        ENV.OSF = {};
+        ENV.OSF.shareSearchUrl = '/nowhere';
 
         ENV.metricsAdapters[0].config.cookieDomain = 'none'
     }
