@@ -2662,14 +2662,6 @@ ember-load-initializers@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/ember-load-initializers/-/ember-load-initializers-0.5.1.tgz#76e3db23c111dbdcd3ae6f687036bf0b56be0cbe"
 
-ember-lodash@3.10.0:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/ember-lodash/-/ember-lodash-3.10.0.tgz#a717dffea1e93c1583d5f91f793fed74ed66c20b"
-  dependencies:
-    broccoli-merge-trees "^1.1.1"
-    ember-cli-babel "^5.1.6"
-    lodash-es "3.10.1"
-
 ember-metrics@0.6.3:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/ember-metrics/-/ember-metrics-0.6.3.tgz#9716a4bb68e6e59a6631b9cd5698e75b264b6d30"
@@ -2697,9 +2689,9 @@ ember-new-computed@^1.0.2:
   dependencies:
     ember-cli-babel "^5.1.5"
 
-ember-osf@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/ember-osf/-/ember-osf-0.5.0.tgz#849d804644546cfded596311f688dd10855688cf"
+ember-osf@0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/ember-osf/-/ember-osf-0.5.2.tgz#e5617e6b6f41dd5bcbc97d4e996fa6e6f2521175"
   dependencies:
     broccoli-funnel "^1.0.1"
     broccoli-merge-trees "^1.1.1"
@@ -4656,10 +4648,6 @@ loader.js@4.0.1:
 lockfile@~1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/lockfile/-/lockfile-1.0.3.tgz#2638fc39a0331e9cac1a04b71799931c9c50df79"
-
-lodash-es@3.10.1:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-3.10.1.tgz#a1c85d9829c9009004339dc3846dbabb46cf4e19"
 
 lodash._arraycopy@^3.0.0:
   version "3.0.0"
