@@ -80,7 +80,7 @@ export default Ember.Service.extend({
 
         const prefix = this.get('isDomain') ? '' : '/preprints';
         // const suffix = config.ASSET_SUFFIX ? `-${config.ASSET_SUFFIX}` : '';
-        return `${prefix}/assets/img/provider_logos/${id}/style.css`;
+        return `${prefix}${config.providerAssetsURL}${id}/style.css`;
     }),
 
     // The logo object for social sharing
