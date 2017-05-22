@@ -1,0 +1,156 @@
+a,
+.preprint-form-section header {
+    color: #6789D3;
+}
+
+.preprint-header {
+    background-image: none;
+    background-color: #FFFFFF;
+    color: black;
+    padding-top: 100px;
+
+    .provider-brand {
+        height: 140px;
+    }
+
+    a:not(.btn) {
+        color: black;
+    }
+}
+
+.navbar-image {
+    background-image: url('./square_color_transparent.png');
+}
+
+.provider-brand {
+    background-image: url('./wide_color.png');
+}
+
+.preprint-navbar {
+    &,
+    .nav > li > a.active {
+        background-color: #6789D3;
+        color: black;
+    }
+
+    .navbar-toggle .icon-bar {
+         background-color: black;
+    }
+    a {
+        color: black;
+    }
+
+    a.navbar-brand {
+        color: black;
+    }
+
+    .navbar-brand:hover,
+    .nav > li > a:hover {
+        background-color: #6789D3;
+        opacity: 0.75;
+    }
+
+    .nav > li.open,
+    .nav > li.open > a,
+    .nav > li.open > a:hover,
+    .nav > li.open > a:focus:not(.active):hover,
+    .nav > li > a:focus:not(.active):hover {
+        background-color: #3F6AC8;
+        color: white;
+    }
+}
+
+#preprint-form-subjects {
+    .subject,
+    .subject > .fa,
+    ul li.selected,
+    ul li:active {
+        background-color: #6789D3;
+        color: black;
+    }
+
+    .subject:hover,
+    .subject:hover > .fa,
+    ul li:hover {
+        background-color: #FFFFFF;
+        color: black;
+    }
+
+    .subject:hover > .fa {
+        opacity: 0.75;
+    }
+
+    .subject {
+        b:after {
+            border-left-color: #6789D3;
+        }
+
+        &:hover > b:after {
+            border-left-color: #FFFFFF;
+        }
+        .right-arrow:before {
+            border-left: 1.4rem solid #6789D3;
+        }
+        &:hover {
+            .right-arrow:before {
+                border-left-color: #FFFFFF;
+            }
+        }
+    }
+}
+
+.dropdown-menu > li > a:hover {
+    color: #FFFFFF;
+}
+
+.subject-item > .btn-primary {
+    color: black;
+    background-color: #6789D3;
+    border-color: #FFFFFF;
+}
+
+.subject-item > .btn-primary:hover {
+    background-color: #FFFFFF;
+    border-color: #6789D3;
+}
+
+.preprint-filter {
+    &,
+    .fa {
+        color: black;
+    }
+}
+
+.preprint-error-page,
+.preprint-advisory,
+.preprint-submit-header,
+.search-header,
+.provider-filter {
+    background: #FFFFFF;
+    color: black;
+}
+
+.subject-filter {
+    &,
+    .fa {
+        background-color: #6789D3;
+    }
+}
+
+.preprint-error-page,
+.preprint-advisory {
+    min-height: 200px;
+
+    a:not(.btn) {
+        color: #3F6AC8;
+        font-weight: bold;
+    }
+}
+
+#view-page .header-row {
+    padding-top: 40px;
+}
+
+.alert-maintenance {
+    margin-top: 52px;
+}

@@ -1,0 +1,144 @@
+a,
+.preprint-form-section header {
+    color: #85BF9B;
+}
+
+
+.preprint-header {
+    background-image: none;
+    background-color: #E7F7E1;
+    color: black;
+    padding-top: 100px;
+
+    .preprint-brand {
+        height: 140px;
+    }
+
+    a:not(.btn) {
+        color: black;
+    }
+}
+
+.navbar-image {
+    background-image: url('./square_color_transparent.png');
+}
+
+.preprint-brand {
+    background-image: url('./wide_color.png');
+}
+
+.preprint-navbar {
+    &,
+    .nav > li > a.active {
+        background-color: #85BF9B;
+        color: black;
+    }
+
+    a {
+        color: black;
+    }
+
+    a.navbar-brand {
+        color: black;
+    }
+
+    .navbar-brand:hover,
+    .nav > li > a:hover {
+        background-color: #85BF9B;
+        opacity: 0.75;
+    }
+
+    .nav > li.open,
+    .nav > li.open > a,
+    .nav > li.open > a:hover,
+    .nav > li.open > a:focus:not(.active):hover,
+    .nav > li > a:focus:not(.active):hover {
+        background-color: white;
+        color: white;
+    }
+}
+
+#preprint-form-subjects {
+    .subject,
+    .subject > .fa,
+    ul li.selected,
+    ul li:active {
+        background-color: #85BF9B;
+        color: black;
+    }
+
+    .subject:hover,
+    .subject:hover > .fa,
+    ul li:hover {
+        background-color: #E7F7E1;
+        color: black;
+    }
+
+    .subject:hover > .fa {
+        opacity: 0.75;
+    }
+
+    .subject {
+        b:after {
+            border-left-color: #85BF9B;
+        }
+
+        &:hover > b:after {
+            border-left-color: #E7F7E1;
+        }
+    }
+}
+
+.dropdown-menu > li > a:hover {
+    color: #E7F7E1;
+}
+
+.subject-item > .btn-primary {
+    color: black;
+    background-color: #85BF9B;
+    border-color: #E7F7E1;
+}
+
+.subject-item > .btn-primary:hover {
+    background-color: #E7F7E1;
+    border-color: #85BF9B;
+}
+
+.preprint-filter {
+    &,
+    .fa {
+        color: black;
+    }
+}
+
+.preprint-403,
+.preprint-404,
+.preprint-advisory,
+.preprint-submit-header,
+.preprint-search-header,
+.provider-filter {
+    background: #E7F7E1;
+    color: black;
+}
+
+.subject-filter {
+    &,
+    .fa {
+        background-color: #85BF9B;
+    }
+}
+
+.preprint-403,
+.preprint-404,
+.preprint-advisory {
+    min-height: 200px;
+
+    a:not(.btn) {
+        color: white;
+        font-weight: bold;
+    }
+}
+
+#view-page .header-row {
+    padding-top: 40px;
+}

@@ -1,0 +1,163 @@
+a,
+.preprint-form-section header {
+    color: #215264;
+}
+
+.preprint-header {
+    background-image: none;
+    background-color: #e14b5a;
+    color: white;
+    padding-top: 100px;
+
+    .provider-brand {
+        height: 140px;
+    }
+
+    a:not(.btn) {
+        color: white;
+    }
+}
+
+.navbar-image {
+    background-image: url('./square_color_transparent.png');
+}
+
+.provider-brand {
+    background-image: url('./wide_color.png');
+}
+
+.preprint-navbar {
+    &,
+    .nav > li > a.active {
+        background-color: #215264;
+        color: white;
+    }
+
+    .navbar-toggle .icon-bar {
+         background-color: white;
+    }
+    a {
+        color: white;
+    }
+
+    a.navbar-brand {
+        color: white;
+    }
+
+    .navbar-brand:hover,
+    .nav > li > a:hover {
+        background-color: #215264;
+        opacity: 0.75;
+    }
+
+    .nav > li.open,
+    .nav > li.open > a,
+    .nav > li.open > a:hover,
+    .nav > li.open > a:focus:not(.active):hover,
+    .nav > li > a:focus:not(.active):hover {
+        background-color: #103749;
+        color: white;
+    }
+}
+
+#preprint-form-subjects {
+    .subject,
+    .subject > .fa,
+    ul li.selected,
+    ul li:active {
+        background-color: #215264;
+        color: white;
+    }
+
+    .subject:hover,
+    .subject:hover > .fa,
+    ul li:hover {
+        background-color: #e14b5a;
+        color: white;
+    }
+
+    .subject:hover > .fa {
+        opacity: 0.75;
+    }
+
+    .subject {
+        b:after {
+            border-left-color: #215264;
+        }
+
+        &:hover > b:after {
+            border-left-color: #e14b5a;
+        }
+        .right-arrow:before {
+            border-left: 1.4rem solid #215264;
+        }
+        &:hover {
+            .right-arrow:before {
+                border-left-color: #e14b5a;
+            }
+        }
+    }
+}
+
+.dropdown-menu > li > a:hover {
+    color: #e14b5a;
+}
+
+.subject-item > .btn-primary {
+    color: white;
+    background-color: #215264;
+    border-color: #e14b5a;
+}
+
+.subject-item > .btn-primary:hover {
+    background-color: #e14b5a;
+    border-color: #215264;
+}
+
+.preprint-filter {
+    &,
+    .fa {
+        color: white;
+    }
+}
+
+.preprint-error-page,
+.preprint-advisory,
+.preprint-submit-header,
+.search-header,
+.provider-filter {
+    background: #e14b5a;
+    color: white;
+}
+
+.subject-filter {
+    &,
+    .fa {
+        background-color: #215264;
+    }
+}
+
+.preprint-error-page,
+.preprint-advisory {
+    min-height: 200px;
+
+    a:not(.btn) {
+        color: #103749;
+        font-weight: bold;
+    }
+}
+
+#view-page .header-row {
+    padding-top: 40px;
+}
+
+
+.search-header .share-logo {
+    width: 48px;
+    height: 30px;
+    background-image: url('../../img/share-logo-white.png');
+}
+
+.alert-maintenance {
+    margin-top: 52px;
+}

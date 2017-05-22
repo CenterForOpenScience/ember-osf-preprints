@@ -79,8 +79,8 @@ export default Ember.Service.extend({
             return;
 
         const prefix = this.get('isDomain') ? '' : '/preprints';
-        const suffix = config.ASSET_SUFFIX ? `-${config.ASSET_SUFFIX}` : '';
-        return `${prefix}/assets/css/${id}${suffix}.css`;
+        // const suffix = config.ASSET_SUFFIX ? `-${config.ASSET_SUFFIX}` : '';
+        return `${prefix}/assets/img/provider_logos/${id}/style.css`;
     }),
 
     // The logo object for social sharing
