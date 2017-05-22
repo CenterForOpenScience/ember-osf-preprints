@@ -1,177 +1,133 @@
 .preprint-subjects {
-    background-color: white;
-}
-
+  background-color: white; }
 
 .preprint-header {
-    background-image: none;
-    background-color: #062F4F;
-    color: white;
-    padding-top: 100px;
-
-    .provider-brand {
-        height: 140px;
-    }
-
-    a:not(.btn) {
-        color: white;
-    }
-}
+  background-image: none;
+  background-color: #062F4F;
+  color: white;
+  padding-top: 100px; }
+  .preprint-header .provider-brand {
+    height: 140px; }
+  .preprint-header a:not(.btn) {
+    color: white; }
 
 .navbar-image {
-    background-image: url('./square_color_transparent.png');
+  background-image: url('./square_color_transparent.png');
 }
-
 .provider-brand {
-    background-image: url('./wide_color.png');
+  background-image: url('./wide_color.png');
 }
+.preprint-navbar,
+.preprint-navbar .nav > li > a.active {
+  background-color: #216C79;
+  color: white; }
 
-.preprint-navbar {
-    &,
-    .nav > li > a.active {
-        background-color: #216C79;
-        color: white;
-    }
+.preprint-navbar .navbar-toggle .icon-bar {
+  background-color: white; }
 
-    .navbar-toggle .icon-bar {
-         background-color: white;
-    }
-    a {
-        color: white;
-    }
+.preprint-navbar a {
+  color: white; }
 
-    a.navbar-brand {
-        color: white;
-    }
+.preprint-navbar a.navbar-brand {
+  color: white; }
 
-    .navbar-brand:hover,
-    .nav > li > a:hover {
-        background-color: #216C79;
-        opacity: 0.75;
-    }
+.preprint-navbar .navbar-brand:hover,
+.preprint-navbar .nav > li > a:hover {
+  background-color: #216C79;
+  opacity: 0.75; }
 
-    .nav > li.open,
-    .nav > li.open > a,
-    .nav > li.open > a:hover,
-    .nav > li.open > a:focus:not(.active):hover,
-    .nav > li > a:focus:not(.active):hover {
-        background-color: white;
-        color: black;
-    }
-}
+.preprint-navbar .nav > li.open,
+.preprint-navbar .nav > li.open > a,
+.preprint-navbar .nav > li.open > a:hover,
+.preprint-navbar .nav > li.open > a:focus:not(.active):hover,
+.preprint-navbar .nav > li > a:focus:not(.active):hover {
+  background-color: white;
+  color: black; }
 
-#preprint-form-subjects {
-    .subject,
-    .subject > .fa,
-    ul li.selected,
-    ul li:active {
-        background-color: #216C79;
-        color: white;
-    }
+#preprint-form-subjects .subject,
+#preprint-form-subjects .subject > .fa,
+#preprint-form-subjects ul li.selected,
+#preprint-form-subjects ul li:active {
+  background-color: #216C79;
+  color: white; }
 
-    .subject:hover,
-    .subject:hover > .fa,
-    ul li:hover {
-        background-color: #062F4F;
-        color: white;
-    }
+#preprint-form-subjects .subject:hover,
+#preprint-form-subjects .subject:hover > .fa,
+#preprint-form-subjects ul li:hover {
+  background-color: #062F4F;
+  color: white; }
 
-    .subject:hover > .fa {
-        opacity: 0.75;
-    }
+#preprint-form-subjects .subject:hover > .fa {
+  opacity: 0.75; }
 
-    .subject {
-        b:after {
-            border-left-color: #216C79;
-        }
+#preprint-form-subjects .subject b:after {
+  border-left-color: #216C79; }
 
-        &:hover > b:after {
-            border-left-color: #062F4F;
-        }
-        .right-arrow:before {
-            border-left: 1.4rem solid #216C79;
-        }
-        &:hover {
-            .right-arrow:before {
-                border-left-color: #062F4F;
-            }
-        }
-    }
-}
+#preprint-form-subjects .subject:hover > b:after {
+  border-left-color: #062F4F; }
+
+#preprint-form-subjects .subject .right-arrow:before {
+  border-left: 1.4rem solid #216C79; }
+
+#preprint-form-subjects .subject:hover .right-arrow:before {
+  border-left-color: #062F4F; }
 
 .dropdown-menu > li > a:hover {
-    color: #062F4F;
-}
+  color: #062F4F; }
 
 .subject-item > .btn-primary {
-    color: white;
-    background-color: #216C79;
-    border-color: #062F4F;
-}
+  color: white;
+  background-color: #216C79;
+  border-color: #062F4F; }
 
 .subject-item > .btn-primary:hover {
-    background-color: #062F4F;
-    border-color: #216C79;
-}
+  background-color: #062F4F;
+  border-color: #216C79; }
 
-.preprint-filter {
-    &,
-    .fa {
-        color: white;
-    }
-}
+.preprint-filter,
+.preprint-filter .fa {
+  color: white; }
 
 .preprint-error-page,
 .preprint-advisory,
 .preprint-submit-header,
 .search-header,
 .provider-filter {
-    background: #062F4F;
-    color: white;
-}
+  background: #062F4F;
+  color: white; }
 
-.subject-filter {
-    &,
-    .fa {
-        background-color: #216C79;
-    }
-}
+.subject-filter,
+.subject-filter .fa {
+  background-color: #216C79; }
 
 .preprint-error-page,
 .preprint-advisory {
-    min-height: 200px;
-
-    a:not(.btn) {
-        font-weight: bold;
-    }
-}
+  min-height: 200px; }
+  .preprint-error-page a:not(.btn),
+  .preprint-advisory a:not(.btn) {
+    font-weight: bold; }
 
 #view-page .header-row {
-    padding-top: 40px;
-}
-
+  padding-top: 40px; }
 
 .search-header .share-logo {
-    width: 48px;
-    height: 30px;
-    background-image: url('../../img/share-logo-white.png');
-}
+  width: 48px;
+  height: 30px;
+  background-image: url("../../img/share-logo-white.png"); }
 
 .alert-maintenance {
-    margin-top: 52px;
-}
+  margin-top: 52px; }
 
 .preprint-submit-button {
-    background: #CF1D35;
-    border-color: #660E1A;
-}
+  background: #CF1D35;
+  border-color: #660E1A; }
 
 .preprint-submit-button:hover {
-    background: #660E1A;
-    border-color: #660E1A;
-}
+  background: #660E1A;
+  border-color: #660E1A; }
 
 .branded-footer a,
 #view-page .osf-box-lt .fa {
-    color: #CF1D35;
-}
+  color: #CF1D35; }
+
+/*# sourceMappingURL=psyarxiv.css.map */
