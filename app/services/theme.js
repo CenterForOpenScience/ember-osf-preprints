@@ -86,13 +86,21 @@ export default Ember.Service.extend({
     // The logo object for social sharing
     logoSharing: Ember.computed('id', function() {
         const id = this.get('id');
+        let logo = {};
+        if (id === 'osf') {
+            logo = config.PREPRINTS.providers
+                .find(provider => provider.id === id)
+                .logoSharing;
 
-        const logo = config.PREPRINTS.providers
-            .find(provider => provider.id === id)
-            .logoSharing;
-
-        logo.path = `/preprints${logo.path}`;
-
+            logo.path = `/preprints${logo.path}`;
+        } else {
+            logo = {
+                path: `/preprints${config.providerAssetsURL}${id}/sharing.png`,
+                type: 'image/png',
+                width: 1200,
+                height: 630
+            }
+        }
         return logo;
     }),
 
