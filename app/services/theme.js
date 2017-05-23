@@ -70,16 +70,12 @@ export default Ember.Service.extend({
 
         return pathPrefix;
     }),
-
     assetsPath: Ember.computed('id', function() {
         const id = this.get('id');
 
         if (!id)
             return;
-
-        const prefix = this.get('isDomain') ? '' : '/preprints';
-        // const suffix = config.ASSET_SUFFIX ? `-${config.ASSET_SUFFIX}` : '';
-        return `${prefix}${config.providerAssetsURL}${id}/`;
+        return `${config.providerAssetsURL}${id}/`;
     }),
     // The URL for the branded stylesheet
     stylesheet: Ember.computed('assetsPath', function() {
