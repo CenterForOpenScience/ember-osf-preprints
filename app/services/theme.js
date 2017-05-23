@@ -71,8 +71,7 @@ export default Ember.Service.extend({
         return pathPrefix;
     }),
 
-    // The URL for the branded stylesheet
-    stylesheet: Ember.computed('id', function() {
+    assetsPath: Ember.computed('id', function() {
         const id = this.get('id');
 
         if (!id)
@@ -80,11 +79,15 @@ export default Ember.Service.extend({
 
         const prefix = this.get('isDomain') ? '' : '/preprints';
         // const suffix = config.ASSET_SUFFIX ? `-${config.ASSET_SUFFIX}` : '';
-        return `${prefix}${config.providerAssetsURL}${id}/style.css`;
+        return `${prefix}${config.providerAssetsURL}${id}/`;
+    }),
+    // The URL for the branded stylesheet
+    stylesheet: Ember.computed('assetsPath', function() {
+        return `${this.get('assetsPath')}style.css`;
     }),
 
     // The logo object for social sharing
-    logoSharing: Ember.computed('id', function() {
+    logoSharing: Ember.computed('id', 'assetsPath', function() {
         const id = this.get('id');
         let logo = {};
         if (id === 'osf') {
@@ -95,7 +98,7 @@ export default Ember.Service.extend({
             logo.path = `/preprints${logo.path}`;
         } else {
             logo = {
-                path: `/preprints${config.providerAssetsURL}${id}/sharing.png`,
+                path: `${this.get('assetsPath')}${id}/sharing.png`,
                 type: 'image/png',
                 width: 1200,
                 height: 630
