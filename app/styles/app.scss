@@ -183,17 +183,6 @@ ul.comma-list {
 }
 
 $logo-dir: 'img/provider_logos/';
-$providers: 'socarxiv' 'engrxiv' 'psyarxiv' 'bitss' 'agrixiv' 'scielo' 'lawarxiv' 'focusarchive' 'paleorxiv' 'mindrxiv' 'lissa';
-
-
-@for $i from 1 through length($providers) {
-    .provider-#{nth($providers, $i)} {
-        background-image: url($logo-dir + nth($providers, $i) + '/wide_white.png');
-    }
-    .provider-#{nth($providers, $i)}-dark {
-        background-image: url($logo-dir + nth($providers, $i) + '/wide_black.png');
-    }
-}
 
 .provider-osf {
     background-image: url($logo-dir + 'osf-small.png');

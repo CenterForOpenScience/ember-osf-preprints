@@ -11,12 +11,6 @@
   .preprint-header a:not(.btn) {
     color: white; }
 
-.navbar-image {
-  background-image: url('./square_color_transparent.png');
-}
-.provider-brand {
-  background-image: url('./wide_color.png');
-}
 .preprint-navbar,
 .preprint-navbar .nav > li > a.active {
   background-color: #216C79;
