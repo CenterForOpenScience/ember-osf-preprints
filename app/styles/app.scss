@@ -48,16 +48,8 @@ ul.comma-list {
         content: "";
     }
 }
-.subject-preview {
-    display: inline-block;
-    background-color: #f8f8f8;
-    border-radius: 3px;
-    border: 1px solid #eee;
-    padding: 1px 7px;
-    margin-bottom: 4px;
-}
 
-.preprint-brand {
+.provider-brand {
     background: url('img/preprints-logo.png') top center no-repeat;
     height: 70px;
     background-size: contain;
@@ -232,7 +224,7 @@ $logo-dir: 'img/provider_logos/';
 }
 
 .provider-agrixiv-dark {
-    background-image: url($logo-dir + 'agrixiv-banner.svg');
+    background-image: url($logo-dir + 'agrixiv-logo-dark.png');
 }
 
 .provider-scielo {
@@ -248,6 +240,34 @@ $logo-dir: 'img/provider_logos/';
 }
 .provider-lawarxiv-dark {
     background-image: url($logo-dir + 'lawarxiv-dark.png');
+}
+
+.provider-focusarchive {
+    background-image: url($logo-dir + 'focusarchive' + '/wide_white.png');
+}
+.provider-focusarchive-dark {
+    background-image: url($logo-dir + 'focusarchive' + '/wide_black.png');
+}
+
+.provider-paleorxiv {
+    background-image: url($logo-dir + 'paleorxiv' + 'wide_white.png');
+}
+.provider-paleorxiv-dark {
+    background-image: url($logo-dir + 'paleorxiv' + 'wide_black.png');
+}
+
+.provider-mindrxiv {
+    background-image: url($logo-dir + 'mindrxiv' + 'wide_white.png');
+}
+.provider-mindrxiv-dark {
+    background-image: url($logo-dir + 'mindrxiv' + 'wide_black.png');
+}
+
+.provider-lissa {
+    background-image: url($logo-dir + 'lissa' + 'wide_white.png');
+}
+.provider-lissa-dark {
+    background-image: url($logo-dir + 'lissa' + 'wide_black.png');
 }
 
 .preprint-advisory  {
@@ -280,7 +300,7 @@ $logo-dir: 'img/provider_logos/';
 
 
 /* Header panel */
-.preprint-search-header {
+.search-header {
     padding-top: 120px;
     background: #e0ebef url('img/search-bg.jpg') top center;
     background-size: cover;
@@ -293,7 +313,7 @@ $logo-dir: 'img/provider_logos/';
         vertical-align: middle;
     }
 }
-.preprint-search-main {
+.search-main {
     background-color: #fbfbfb;
     border-bottom: 1px solid #dedede;
     .filter-heading {
@@ -302,7 +322,7 @@ $logo-dir: 'img/provider_logos/';
     label {
         font-weight: normal;
     }
-    .preprint-search-sidebar ul {
+    .search-sidebar ul {
         padding-left: 25px;
         li {
             list-style: none;
@@ -339,19 +359,7 @@ $logo-dir: 'img/provider_logos/';
         color: #777777;
     }
 }
-.search-result-providers {
-    font-weight: bold;
-}
-ul.preprints-block-list {
-    display: block;
-    list-style: none;
-    padding-left: 0;
-}
 
-.listOption:hover {
-    cursor: pointer;
-    color: rgba(255, 255, 255, 0.8) !important;
-}
 /* VIEW page */
 
 .dark-overlay-header-background {
@@ -741,78 +749,93 @@ hr {
     }
 }
 
+.right-arrow {
+    border-top: 1.5rem solid transparent;
+    border-bottom: 1.4rem solid transparent;
+    border-left: 1.5rem solid white;
+    position: absolute;
+    display: inline;
+    &:before {
+        content: '';
+        border-top: 1.4rem solid transparent;
+        border-bottom: 1.3rem solid transparent;
+        position: absolute;
+        margin-left: -1.5rem;
+        margin-top: -1.4rem;
+        transition: border-color 0.1s linear;
+    }
+}
+
+.subject {
+    color: white;
+    overflow: hidden;
+    padding: 0 .5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    &:hover {
+        .right-arrow:before {
+            border-left-color: lighten($brand-primary, 10%);
+        }
+    }
+    .right-arrow:last-of-type {
+        display: none;
+    }
+    .right-arrow:before {
+        border-left: 1.4rem solid $brand-primary;
+    }
+}
+
+.subject-align {
+    display: inline-block;
+}
+
+.subject-container {
+    display: inline-block;
+    transition: background-color 0.1s linear;
+    margin-left: -10px;
+    padding-left: 10px;
+    &:last-of-type {
+        .cancel-subject {
+            visibility: visible;
+            margin-left: 10px;
+        }
+    }
+}
+
+.subject-container-text {
+    display: inline-block;
+    padding: 5px 15px ;
+}
+
+.cancel-subject {
+    background: none;
+    border: none;
+    padding: 0;
+    visibility: hidden;
+    &:hover {
+        color: lighten(red, 40%);
+    }
+    &:active {
+        color: lighten(red, 20%);
+    }
+}
+
 #preprint-form-subjects {
     .subject {
-        background-color: $brand-primary;
-        display: inline-block;
-        color: white;
-        overflow: hidden;
-        padding: 0 2rem;
-        margin-right: 2rem;
-        margin-bottom: 1rem;
-        border-radius: 2px;
-        transition: background-color 0.1s linear;
-        &:hover {
-            background-color: lighten($brand-primary, 10%);
-            & > b:after {
-                border-left-color: lighten($brand-primary, 10%);
-            }
-        }
-        & > b {
-            display: inline-block;
-            padding: 5px 12px ;
-            position: relative;
-            border-radius: 4px;
-            &%pseudo {
-                content: '';
-                display: block;
-                position: absolute;
-                width: 0;
-                height: 0;
-                left: 100%;
-                top: 50%;
-                margin-top: -5rem;
-                border: {
-                    style: solid;
-                    width: 5rem 0 5rem 3rem;
-                    color: transparent transparent transparent $brand-primary;
-                }
-            }
-            &:before {
-                @extend %pseudo;
-                margin-left: 1px;
-                border-left-color: white;
-                z-index: 1;
-            }
-            &:after {
-                @extend %pseudo;
-                transition: border-color 0.1s linear;
-                z-index: 2;
-            }
-            &:first-child {
-                padding-left: 0;
-            }
-            &:last-of-type {
-                padding-right: 2rem;
-                &:before, &:after {
-                    display: none;
-                }
-            }
-            & + b {
-                margin-left: 2rem;
-            }
-        }
-        & > .fa {
-            color: white;
-            cursor: pointer;
-            transition: color 0.1s linear;
-            &:hover {
-                color: lighten(red, 40%);
-            }
-            &:active {
-                color: lighten(red, 20%);
-            }
-        }
+         background-color: $brand-primary;
+         &:hover {
+             background-color: lighten($brand-primary, 10%);
+             & > b:after {
+                 border-left-color: lighten($brand-primary, 10%);
+             }
+         }
+         & > b {
+             &%pseudo {
+                 border: {
+                     color: transparent transparent transparent $brand-primary;
+                 }
+             }
+         }
     }
     ul {
         height: 30rem;
@@ -1118,7 +1141,7 @@ label.title-label {
 .discover-provider-logo,
 .content-provider-logo {
     background-position-x: center;
-    background-position-y: bottom;
+    background-position-y: center;
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -1294,7 +1317,75 @@ nav.branded-navbar {
     }
 }
 
+// Override search-facet styling in ember-osf on discover page
+.discover-page {
+    .panel-default {
+        border: 0 solid transparent;
+        box-shadow: none;
+        > .panel-heading {
+              text-align: left;
+              border: 0 solid transparent;
+              padding: 7px 10px;
+              background-color: #EFEFEF;
+              justify-content: flex-start;
+
+        }
+    }
+    .panel-body.individual-facet {
+        padding: 10px 0;
+        background-color: #FBFBFB !important;
+    }
+    .search-sidebar {
+        background-color: transparent !important;
+    }
+}
+
 .alert-maintenance {
     margin-top: 104px;
     margin-bottom: 0;
+}
+
+
+.listOption.btn-link {
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+        color: black;
+    }
+    &:focus {
+        color: black;
+        outline: none;
+    }
+}
+
+#provider-brand-background {
+    height: 140px;
+    background-position-x: right;
+}
+
+#sortByOptionList {
+    background-color: #EFEFEF;
+    min-width: 230px;
+    li {
+        &:hover {
+            background-color: #D9D9D9;
+        }
+    }
+}
+
+.search-facet-taxonomy {
+    .taxonomy-caret {
+        vertical-align: top;
+        padding-top: 4px;
+    }
+    .taxonomy-checkbox {
+        max-width: 85%;
+        word-wrap: break-word;
+    }
+    .taxonomy-right-padding {
+        padding-right: 14px;
+    }
+    .taxonomy-left-padding {
+        padding-left: 40px;
+    }
 }

@@ -177,7 +177,7 @@
                                         <label>
                                             <span class="required">{{t "global.abstract"}}:</span>
                                         </label>
-                                        <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Preprints - Edit - Abstract Text Change') (action 'track' 'input' 'onchange' 'Preprints - Submit - Abstract Text Change')}}>
+                                        <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Abstract Text Change') (action 'track' 'input' 'onchange' 'Submit - Abstract Text Change')}}>
                                             {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
                                         </form>
                                     </div>

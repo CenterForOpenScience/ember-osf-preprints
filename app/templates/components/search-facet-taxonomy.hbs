@@ -1,0 +1,46 @@
+<div class="search-facet-taxonomy">
+    <ul>
+        {{#each topLevelItem as |item|}}
+            <li>
+                <span class="pointer m-r-xs {{if item.showChildren 'taxonomy-show-children'}}" {{action 'expand' item}}>
+                    <i class="taxonomy-caret fa {{if item.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
+                </span>
+                <label class="taxonomy-checkbox">
+                    <input type="checkbox" checked="{{if (if-filter item.text activeFilters.subjects) 'checked'}}" onclick={{action updateFilters 'subjects' item}}>
+                    {{item.text}}
+                </label>
+            </li>
+            {{#if item.showChildren}}
+                <ul>
+                    {{#each item.children as |child|}}
+                        <li>
+                            {{# if child.childCount }}
+                                <span class="pointer m-r-xs {{if item.showChildren 'taxonomy-show-children'}}" {{action 'expand' child}}>
+                                    <i class="taxonomy-caret fa {{if child.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
+                                </span>
+                            {{else}}
+                                <span class="taxonomy-right-padding"></span>
+                            {{/if}}
+                            <label class="taxonomy-checkbox">
+                                <input type="checkbox" checked="{{if (if-filter child.text activeFilters.subjects) 'checked'}}" onclick={{action updateFilters 'subjects' child}}>
+                                {{child.text}}
+                            </label>
+                        </li>
+                        {{#if child.showChildren}}
+                            <ul class="taxonomy-left-padding">
+                                {{#each child.children as |grandkid|}}
+                                    <li>
+                                        <label class="taxonomy-checkbox">
+                                            <input type="checkbox" checked="{{if (if-filter grandkid.text activeFilters.subjects) 'checked'}}" onclick={{action updateFilters 'subjects' grandkid}}>
+                                            {{grandkid.text}}
+                                        </label>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        {{/if}}
+                    {{/each}}
+                </ul>
+            {{/if}}
+        {{/each}}
+    </ul>
+</div>

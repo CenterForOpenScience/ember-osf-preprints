@@ -99,7 +99,7 @@ module.exports = function(defaults) {
                                 script.src = prefix + name + window.assetSuffix + '.js';
                                 script.async = false;
                                 document.body.appendChild(script);
-                        
+
                                 var link = document.createElement('link');
                                 link.rel = 'stylesheet';
                                 link.href = prefix + name + window.assetSuffix + '.css';
@@ -177,6 +177,10 @@ module.exports = function(defaults) {
     app.import({
         development: path.join(app.bowerDirectory, 'hint.css/hint.css'),
         production: path.join(app.bowerDirectory, 'hint.css/hint.css')
+    });
+
+    app.import({
+        test: path.join(app.bowerDirectory, 'ember/ember-template-compiler.js')
     });
 
     // Import component styles from addon

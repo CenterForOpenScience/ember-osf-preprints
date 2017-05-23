@@ -99,7 +99,6 @@ export default {
                 paragraph: `The <span class="f-w-lg">open</span> preprint repository network`
             },
             powered_by: `Powered by ${brand}`,
-            search: `{{count}} searchable preprints`,
             or: `or`,
             as_of: `as of`,
             example: `See an example`
@@ -153,6 +152,7 @@ export default {
             file: `Preprint file`,
             title: `Preprint title`,
             subjects_description: `Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.`,
+            remove_subject_aria: `Remove subject`,
             basics: {
                 doi: {
                     label: `If published, DOI of associated journal article (optional)`
@@ -365,7 +365,7 @@ export default {
         'taxonomy-top-list': {
             // Nothing to translate
         },
-        'taxonomy-tree': {
+        'search-facet-taxonomy': {
             // Nothing to translate
         },
         'unregistered-contributor-form': {

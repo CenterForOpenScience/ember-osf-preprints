@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import ResetScrollMixin from '../../mixins/reset-scroll';
 import SetupSubmitControllerMixin from '../../mixins/setup-submit-controller';
-import Analytics from '../../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
 import permissions from 'ember-osf/const/permissions';
 
