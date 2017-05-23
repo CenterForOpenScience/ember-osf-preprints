@@ -4,7 +4,7 @@
     "ember": "2.7.0",
     "ember-cli-shims": "0.1.3",
     "ember-qunit-notifications": "0.1.0",
-    "osf-style": "https://github.com/CenterforOpenScience/osf-style.git#62b2111160a758bde570b94ee1c1cc95266d060d",
+    "osf-style": "https://github.com/CenterforOpenScience/osf-style.git#1.3.0",
     "font-awesome": "4.6.3",
     "dropzone": "4.3.0",
     "bootstrap-sass": "3.3.6",
