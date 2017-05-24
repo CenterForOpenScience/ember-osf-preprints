@@ -30,3 +30,8 @@
 .alert-maintenance {
     margin-top: 52px;
 }
+
+.search-header .share-logo {
+  width: 48px;
+  height: 30px;
+}
