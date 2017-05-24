@@ -32,6 +32,7 @@ export default Ember.Component.extend(Analytics, {
     theme: Ember.inject.service(),
 
     provider: undefined,
+    lastProvider: undefined,
 
     // Store the lists of subjects
     _tier1: null,
@@ -80,7 +81,7 @@ export default Ember.Component.extend(Analytics, {
     selection3: null,
 
     querySubjects(parents = 'null', tier = 0) {
-        let provider = this.get('provider');
+        const provider = this.get('provider');
         if (undefined !== provider) {
             provider.query('taxonomies', {
                 filter: {
@@ -103,9 +104,12 @@ export default Ember.Component.extend(Analytics, {
     },
 
     didReceiveAttrs() {
-        this.querySubjects();
-        this.set('_tier2', []);
-        this.set('_tier3', []);
+        if (this.get('provider') !== this.get('lastProvider')) {
+            this.querySubjects();
+            this.set('_tier2', []);
+            this.set('_tier3', []);
+            this.set('lastProvider', this.get('provider'));
+        }
     },
 
     actions: {
