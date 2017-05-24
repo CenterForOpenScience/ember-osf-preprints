@@ -150,7 +150,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         let controller = this;
         this.get('store')
             .findAll('preprint-provider', { reload: true })
-            .then(function(providers) {
+            .then((providers) => {
                 controller.set(
                     'allProviders',
                     // OSF first, then all the rest
