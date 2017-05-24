@@ -242,6 +242,34 @@ $logo-dir: 'img/provider_logos/';
     background-image: url($logo-dir + 'lawarxiv-dark.png');
 }
 
+.provider-focusarchive {
+    background-image: url($logo-dir + 'focusarchive' + '/wide_white.png');
+}
+.provider-focusarchive-dark {
+    background-image: url($logo-dir + 'focusarchive' + '/wide_black.png');
+}
+
+.provider-paleorxiv {
+    background-image: url($logo-dir + 'paleorxiv' + 'wide_white.png');
+}
+.provider-paleorxiv-dark {
+    background-image: url($logo-dir + 'paleorxiv' + 'wide_black.png');
+}
+
+.provider-mindrxiv {
+    background-image: url($logo-dir + 'mindrxiv' + 'wide_white.png');
+}
+.provider-mindrxiv-dark {
+    background-image: url($logo-dir + 'mindrxiv' + 'wide_black.png');
+}
+
+.provider-lissa {
+    background-image: url($logo-dir + 'lissa' + 'wide_white.png');
+}
+.provider-lissa-dark {
+    background-image: url($logo-dir + 'lissa' + 'wide_black.png');
+}
+
 .preprint-advisory  {
     background-color: #f3f5f7;
     border-bottom: 1px solid #e0e6ea;
@@ -1113,7 +1141,7 @@ label.title-label {
 .discover-provider-logo,
 .content-provider-logo {
     background-position-x: center;
-    background-position-y: bottom;
+    background-position-y: center;
     background-repeat: no-repeat;
     background-size: contain;
 }
