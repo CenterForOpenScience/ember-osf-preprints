@@ -1,29 +1,34 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
 
+const {hostname} = window.location;
+
+const provider = config
+    .PREPRINTS
+    .providers
+    // Exclude OSF
+    .slice(1)
+    // Filter out providers without a domain
+    .filter(p => p.domain)
+    .find(p =>
+        // Check if the hostname includes: the domain, the domain with dashes instead of periods, or just the id
+        hostname.includes(p.domain) ||
+        hostname.includes(p.domain.replace(/\./g, '-')) ||
+        hostname.includes(p.id)
+    );
+
 const Router = Ember.Router.extend({
     location: config.locationType,
     rootURL: config.rootURL,
     metrics: Ember.inject.service(),
-    store: Ember.inject.service(),
     theme: Ember.inject.service(),
 
     init() {
         this._super(...arguments);
 
-        // Set the provider ID from the current origin
-        if (window.isProviderDomain) {
-            return this.get('store')
-                .query('preprint-provider', {
-                    filter: {
-                        domain: `${window.location.origin}/`,
-                    }
-                })
-                .then(providers => {
-                    if (providers.length) {
-                        this.set('theme.id', providers.objectAt(0).get('id'));
-                    }
-                });
+        if (provider) {
+            this.set('theme.id', provider.id);
+            this.set('theme.isDomain', true);
         }
     },
 
@@ -46,7 +51,7 @@ const Router = Ember.Router.extend({
 Router.map(function() {
     this.route('page-not-found', {path: '/*bad_url'});
 
-    if (window.isProviderDomain) {
+    if (provider) {
         this.route('index', {path: '/'});
         this.route('submit');
         this.route('discover');

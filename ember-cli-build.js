@@ -3,19 +3,14 @@
 'use strict';
 
 const fs = require('fs');
-const path = require('path');
-const EmberApp = require('ember-cli/lib/broccoli/ember-app');
-const configFunc = require('./config/environment');
+var path = require('path');
+var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 const nonCdnEnvironments = ['development', 'test'];
 
-const {
-    EMBER_ENV
-} = process.env;
-
 module.exports = function(defaults) {
-    const config = configFunc(EMBER_ENV);
-    const useCdn = !nonCdnEnvironments.includes(EMBER_ENV);
+    var config = require('./config/environment')(process.env.EMBER_ENV);
+    const useCdn = (nonCdnEnvironments.indexOf(process.env.EMBER_ENV) === -1);
 
     const css = {
         'app': '/assets/preprint-service.css'
@@ -23,20 +18,22 @@ module.exports = function(defaults) {
 
     const brands = fs.readdirSync('./app/styles/brands');
 
-    for (const brand of brands) {
+    for (let brand of brands) {
         if (/^_/.test(brand))
             continue;
 
-        const brandId = brand.replace(/\..*$/, '');
-        Object.assign(css, { [`brands/${brandId}`]: `/assets/css/${brandId}.css` });
+        brand = brand.replace(/\..*$/, '');
+        css[`brands/${brand}`] = `/assets/css/${brand}.css`;
     }
 
-    const {
-        OSF: {url: osfUrl}
-    } = defaults.project.config(EMBER_ENV);
+    const providerDomains = config
+        .PREPRINTS
+        .providers
+        .slice(1)
+        .map(provider => provider.domain);
 
     // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
-    const app = new EmberApp(defaults, {
+    var app = new EmberApp(defaults, {
         sourcemaps: {
             enabled: true,
             extensions: ['js']
@@ -86,11 +83,15 @@ module.exports = function(defaults) {
                 content: `
                     <script>
                         window.assetSuffix = '${config.ASSET_SUFFIX ? '-' + config.ASSET_SUFFIX : ''}';
-                        (function(osfUrl) {
+                        (function(providerDomains) {
                             var origin = window.location.origin;
-                            window.isProviderDomain = !~osfUrl.indexOf(origin);
-                            var prefix = '/' + (window.isProviderDomain ? '' : 'preprints/') + 'assets/';
-                        
+
+                            var isProviderDomain = providerDomains.some(function(domain) {
+                                return ~origin.indexOf(domain);
+                            });
+
+                            var prefix = '/' + (isProviderDomain ? '' : 'preprints/') + 'assets/';
+
                             [
                                 'vendor',
                                 'preprint-service'
@@ -105,7 +106,7 @@ module.exports = function(defaults) {
                                 link.href = prefix + name + window.assetSuffix + '.css';
                                 document.head.appendChild(link);
                             });
-                        })('${osfUrl}');
+                        })(${JSON.stringify(providerDomains)});
                     </script>`
             }
         },
@@ -174,7 +175,7 @@ module.exports = function(defaults) {
 
     app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
 
-    app.import({
+     app.import({
         development: path.join(app.bowerDirectory, 'hint.css/hint.css'),
         production: path.join(app.bowerDirectory, 'hint.css/hint.css')
     });
@@ -182,7 +183,7 @@ module.exports = function(defaults) {
     app.import({
         test: path.join(app.bowerDirectory, 'ember/ember-template-compiler.js')
     });
-
+    
     // Import component styles from addon
     app.import('vendor/assets/ember-osf.css');
 
