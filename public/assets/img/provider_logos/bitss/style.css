@@ -3,12 +3,11 @@ a,
   color: #1C4063; }
 
 .preprint-header {
-  background-image: none;
   background-color: #e4f3ff;
   color: black;
-  padding-top: 100px; }
-  .preprint-header .provider-brand {
-    height: 140px; }
+}
+
+
   .preprint-header a:not(.btn) {
     color: black; }
 
@@ -29,7 +28,7 @@ a,
 .preprint-navbar .navbar-brand:hover,
 .preprint-navbar .nav > li > a:hover {
   background-color: #1C4063;
-  opacity: 0.75; }
+}
 
 .preprint-navbar .nav > li.open,
 .preprint-navbar .nav > li.open > a,
@@ -51,9 +50,6 @@ a,
 #preprint-form-subjects ul li:hover {
   background-color: #e4f3ff;
   color: black; }
-
-#preprint-form-subjects .subject:hover > .fa {
-  opacity: 0.75; }
 
 #preprint-form-subjects .subject b:after {
   border-left-color: #1C4063; }
@@ -95,19 +91,10 @@ a,
 .subject-filter .fa {
   background-color: #1C4063; }
 
-.preprint-error-page,
-.preprint-advisory {
-  min-height: 200px; }
   .preprint-error-page a:not(.btn),
   .preprint-advisory a:not(.btn) {
     color: #05233B;
-    font-weight: bold; }
-
-#view-page .header-row {
-  padding-top: 40px; }
-
-.alert-maintenance {
-  margin-top: 52px; }
+}
 
 .navbar-title, .subject-item .btn, .subject-filter {
   color: white; }

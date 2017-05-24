@@ -3,12 +3,9 @@ a,
   color: #222F38; }
 
 .preprint-header {
-  background-image: none;
   background-color: #637074;
   color: white;
-  padding-top: 100px; }
-  .preprint-header .provider-brand {
-    height: 140px; }
+}
   .preprint-header a:not(.btn) {
     color: white; }
 
@@ -29,7 +26,7 @@ a,
 .preprint-navbar .navbar-brand:hover,
 .preprint-navbar .nav > li > a:hover {
   background-color: #222F38;
-  opacity: 0.75; }
+}
 
 .preprint-navbar .nav > li.open,
 .preprint-navbar .nav > li.open > a,
@@ -51,9 +48,6 @@ a,
 #preprint-form-subjects ul li:hover {
   background-color: #637074;
   color: white; }
-
-#preprint-form-subjects .subject:hover > .fa {
-  opacity: 0.75; }
 
 #preprint-form-subjects .subject b:after {
   border-left-color: #222F38; }
@@ -95,23 +89,14 @@ a,
 .subject-filter .fa {
   background-color: #222F38; }
 
-.preprint-error-page,
-.preprint-advisory {
-  min-height: 200px; }
   .preprint-error-page a:not(.btn),
   .preprint-advisory a:not(.btn) {
     color: #AAB9CF;
-    font-weight: bold; }
-
-#view-page .header-row {
-  padding-top: 40px; }
+}
 
 .search-header .share-logo {
   width: 48px;
   height: 30px;
   background-image: url("../../img/share-logo-white.png"); }
-
-.alert-maintenance {
-  margin-top: 52px; }
 
 /*# sourceMappingURL=engrxiv.css.map */

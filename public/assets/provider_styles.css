@@ -1,0 +1,32 @@
+.preprint-header {
+    background-image: none;
+    padding-top: 100px;
+}
+
+.preprint-header .provider-brand {
+    height: 140px;
+}
+
+.preprint-navbar .navbar-brand:hover,
+.preprint-navbar .nav > li > a:hover,
+#preprint-form-subjects .subject:hover > .fa  {
+    opacity: 0.75;
+}
+
+.preprint-error-page,
+.preprint-advisory {
+    min-height: 200px;
+}
+
+.preprint-error-page a:not(.btn),
+.preprint-advisory a:not(.btn) {
+    font-weight: bold;
+}
+
+#view-page .header-row {
+    padding-top: 40px;
+}
+
+.alert-maintenance {
+    margin-top: 52px;
+}

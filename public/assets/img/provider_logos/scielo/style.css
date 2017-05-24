@@ -3,14 +3,15 @@ a,
   color: #6789D3; }
 
 .preprint-header {
-  background-image: none;
   background-color: #FFFFFF;
   color: black;
-  padding-top: 100px; }
-  .preprint-header .provider-brand {
-    height: 140px; }
-  .preprint-header a:not(.btn) {
-    color: black; }
+}
+.preprint-header .provider-brand {
+    height: 140px;
+}
+ .preprint-header a:not(.btn) {
+    color: black;
+}
 
 
 .preprint-navbar,
@@ -30,7 +31,7 @@ a,
 .preprint-navbar .navbar-brand:hover,
 .preprint-navbar .nav > li > a:hover {
   background-color: #6789D3;
-  opacity: 0.75; }
+}
 
 .preprint-navbar .nav > li.open,
 .preprint-navbar .nav > li.open > a,
@@ -52,9 +53,6 @@ a,
 #preprint-form-subjects ul li:hover {
   background-color: #FFFFFF;
   color: black; }
-
-#preprint-form-subjects .subject:hover > .fa {
-  opacity: 0.75; }
 
 #preprint-form-subjects .subject b:after {
   border-left-color: #6789D3; }
@@ -96,18 +94,7 @@ a,
 .subject-filter .fa {
   background-color: #6789D3; }
 
-.preprint-error-page,
-.preprint-advisory {
-  min-height: 200px; }
   .preprint-error-page a:not(.btn),
   .preprint-advisory a:not(.btn) {
     color: #3F6AC8;
-    font-weight: bold; }
-
-#view-page .header-row {
-  padding-top: 40px; }
-
-.alert-maintenance {
-  margin-top: 52px; }
-
-/*# sourceMappingURL=scielo.css.map */
+}
