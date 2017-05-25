@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
+import pathJoin from '../utils/path-join';
 
 /**
  * @module ember-preprints
@@ -75,11 +76,12 @@ export default Ember.Service.extend({
 
         if (!id)
             return;
-        return `${config.providerAssetsURL}${id}/`;
+
+        return pathJoin(config.providerAssetsURL, id, '/');
     }),
     // The URL for the branded stylesheet
     stylesheet: Ember.computed('assetsPath', function() {
-        return `${this.get('assetsPath')}style.css`;
+        return pathJoin(this.get('assetsPath'), 'style.css');
     }),
 
     // The logo object for social sharing
@@ -91,10 +93,10 @@ export default Ember.Service.extend({
                 .find(provider => provider.id === id)
                 .logoSharing;
 
-            logo.path = `/preprints${logo.path}`;
+            logo.path = pathJoin('/preprints', logo.path);
         } else {
             logo = {
-                path: `${this.get('assetsPath')}${id}/sharing.png`,
+                path: pathJoin(this.get('assetsPath'), 'sharing.png'),
                 type: 'image/png',
                 width: 1200,
                 height: 630
