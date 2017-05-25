@@ -15,6 +15,7 @@ module.exports = function(environment) {
             authorizer: `authorizer:osf-${authorizationType}`,
             authenticator: `authenticator:osf-${authorizationType}`
         },
+        providerAssetsURL: 'http://staging-cdn.osf.io/preprints-assets/',
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
@@ -51,117 +52,50 @@ module.exports = function(environment) {
                 {
                     id: 'engrxiv',
                     domain: 'engrxiv.org',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/engrxiv-sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-
-                    },
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'socarxiv',
                     domain: 'socarxiv.org',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/socarxiv-sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_trademark_license'
                 },
                 {
                     id: 'psyarxiv',
                     domain: 'psyarxiv.com',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/psyarxiv-sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_trademark_license'
                 },
                 {
                     id: 'bitss',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/bitss-small.png',
-                        type: 'image/png',
-                        width: 1500,
-                        height: 1500
-                    },
                     permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'scielo',
                     // domain: 'scielo.org', // Temporarily disabling until ready
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/scielo-logo.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'agrixiv',
                     domain: 'agrixiv.org',
-                    logoSharing: {
-                        path: 'assets/img/provider_logos/agrixiv-banner.svg',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'lawarxiv',
-                    logoSharing: {
-                        path: 'assets/img/provider_logos/lawarxiv-logo.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'focusarchive',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/focusarchive/sharing.png',
-                        type: 'image/png',
-                        width: 1500,
-                        height: 1500
-                    },
                     permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'paleorxiv',
-                    logoSharing: {
-                        path: 'preprint-assets/paleorxiv/sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'mindrxiv',
-                    logoSharing: {
-                        path: 'preprint-assets/mindrxiv/sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'lissa',
-                    logoSharing: {
-                        path: 'preprint-assets/lissa/sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'no_trademark'
                 }
             ],

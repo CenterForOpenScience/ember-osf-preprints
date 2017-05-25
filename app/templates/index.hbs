@@ -6,7 +6,11 @@
             <div class="row">{{!HEADER ROW}}
                 {{!TITLE}}
                 <div class="text-center m-t-lg col-xs-12">
-                    <div class="provider-brand"></div>
+                    {{#if theme.isProvider}}
+                        <div class="provider-brand" style="background-image: url('{{theme.assetsPath}}wide_color.png"></div>
+                    {{else}}
+                        <div class="provider-brand"></div>
+                    {{/if}}
                     <p class="lead">
                         <span>{{if theme.isProvider theme.provider.description (t "index.header.title.paragraph")}}</span>
                         {{#if theme.isProvider}}
