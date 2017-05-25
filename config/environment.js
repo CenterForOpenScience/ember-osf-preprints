@@ -199,14 +199,5 @@ module.exports = function(environment) {
         }
     }
 
-    if (ENV.ASSET_SUFFIX) {
-        ENV.PREPRINTS.providers = ENV.PREPRINTS.providers.map(provider => {
-            provider.logoSharing.path = provider.logoSharing.path
-                .replace(/\..*$/, match => `-${ENV.ASSET_SUFFIX}${match}`);
-
-            return provider;
-        });
-    }
-
     return ENV;
 };
