@@ -51,6 +51,7 @@ module.exports = function(defaults) {
         // Needed for branded themes
         fingerprint: {
             customHash: config.ASSET_SUFFIX,
+            exclude: ['square_color_transparent.png', 'square_color_no_transparent.png', 'wide_black.png', 'wide_white.png', 'wide_color.png', 'sharing.png', 'style.css']
         },
         outputPaths: {
             app: {
@@ -183,7 +184,7 @@ module.exports = function(defaults) {
     app.import({
         test: path.join(app.bowerDirectory, 'ember/ember-template-compiler.js')
     });
-    
+
     // Import component styles from addon
     app.import('vendor/assets/ember-osf.css');
 
