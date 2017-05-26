@@ -15,7 +15,7 @@ module.exports = function(environment) {
             authorizer: `authorizer:osf-${authorizationType}`,
             authenticator: `authenticator:osf-${authorizationType}`
         },
-        providerAssetsURL: 'https://staging-cdn.osf.io/preprints-assets/',
+        providerAssetsURL: '/preprints/assets/img/provider_logos/',
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
