@@ -1,0 +1,119 @@
+a,
+.preprint-form-section header {
+  color: #1C4063; }
+
+.preprint-header {
+  background-color: #e4f3ff;
+  color: black;
+}
+
+
+  .preprint-header a:not(.btn) {
+    color: black; }
+
+.preprint-navbar,
+.preprint-navbar .nav > li > a.active {
+  background-color: #1C4063;
+  color: black; }
+
+.preprint-navbar .navbar-toggle .icon-bar {
+  background-color: black; }
+
+.preprint-navbar a {
+  color: black; }
+
+.preprint-navbar a.navbar-brand {
+  color: #05233B; }
+
+.preprint-navbar .navbar-brand:hover,
+.preprint-navbar .nav > li > a:hover {
+  background-color: #1C4063;
+}
+
+.preprint-navbar .nav > li.open,
+.preprint-navbar .nav > li.open > a,
+.preprint-navbar .nav > li.open > a:hover,
+.preprint-navbar .nav > li.open > a:focus:not(.active):hover,
+.preprint-navbar .nav > li > a:focus:not(.active):hover {
+  background-color: #05233B;
+  color: white; }
+
+#preprint-form-subjects .subject,
+#preprint-form-subjects .subject > .fa,
+#preprint-form-subjects ul li.selected,
+#preprint-form-subjects ul li:active {
+  background-color: #1C4063;
+  color: black; }
+
+#preprint-form-subjects .subject:hover,
+#preprint-form-subjects .subject:hover > .fa,
+#preprint-form-subjects ul li:hover {
+  background-color: #e4f3ff;
+  color: black; }
+
+#preprint-form-subjects .subject b:after {
+  border-left-color: #1C4063; }
+
+#preprint-form-subjects .subject:hover > b:after {
+  border-left-color: #e4f3ff; }
+
+#preprint-form-subjects .subject .right-arrow:before {
+  border-left: 1.4rem solid #1C4063; }
+
+#preprint-form-subjects .subject:hover .right-arrow:before {
+  border-left-color: #e4f3ff; }
+
+.dropdown-menu > li > a:hover {
+  color: #e4f3ff; }
+
+.subject-item > .btn-primary {
+  color: black;
+  background-color: #1C4063;
+  border-color: #e4f3ff; }
+
+.subject-item > .btn-primary:hover {
+  background-color: #e4f3ff;
+  border-color: #1C4063; }
+
+.preprint-filter,
+.preprint-filter .fa {
+  color: black; }
+
+.preprint-error-page,
+.preprint-advisory,
+.preprint-submit-header,
+.search-header,
+.provider-filter {
+  background: #e4f3ff;
+  color: black; }
+
+.subject-filter,
+.subject-filter .fa {
+  background-color: #1C4063; }
+
+  .preprint-error-page a:not(.btn),
+  .preprint-advisory a:not(.btn) {
+    color: #05233B;
+}
+
+.navbar-title, .subject-item .btn, .subject-filter {
+  color: white; }
+
+.branded-nav a {
+  color: white; }
+
+.branded-nav a.active {
+  color: white !important; }
+
+.subject-item .btn:hover {
+  color: black; }
+
+#preprint-form-subjects .subject, #preprint-form-subjects .subject > .fa,
+#preprint-form-subjects ul li.selected:not(:hover),
+#preprint-form-subjects ul li:active {
+  color: white; }
+
+/* This needs to be in every style.css to have discover page show right logo */
+.provider-brand {
+    background-image: url('./wide_color.png');
+}

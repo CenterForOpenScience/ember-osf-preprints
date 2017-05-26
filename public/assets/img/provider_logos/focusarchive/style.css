@@ -1,0 +1,176 @@
+.preprint-subjects {
+    background-color: white;
+}
+
+.preprint-header {
+    background-image: none;
+    background-color: #dad9d0;
+    color: black;
+    padding-top: 100px;
+
+    .provider-brand {
+        height: 140px;
+    }
+
+    a:not(.btn) {
+        color: black;
+    }
+}
+
+.navbar-image {
+    background-image: url('./square_color_transparent.png');
+}
+
+.provider-brand {
+    background-image: url('./wide_color.png');
+}
+
+.preprint-navbar {
+    &,
+    .nav > li > a.active {
+        background-color: #04506f;
+        color: black;
+    }
+
+    .navbar-toggle .icon-bar {
+         background-color: black;
+    }
+    a {
+        color: black;
+    }
+
+    a.navbar-brand {
+        color: white;
+    }
+
+    .navbar-brand:hover,
+    .nav > li > a:hover {
+        background-color: #04506f;
+        opacity: 0.75;
+    }
+
+    .nav > li.open,
+    .nav > li.open > a,
+    .nav > li.open > a:hover,
+    .nav > li.open > a:focus:not(.active):hover,
+    .nav > li > a:focus:not(.active):hover {
+        background-color: white;
+        color: #0779a0;
+    }
+}
+
+#preprint-form-subjects {
+    .subject,
+    .subject > .fa,
+    ul li.selected,
+    ul li:active {
+        background-color: #04506f;
+        color: black;
+    }
+
+    .subject:hover,
+    .subject:hover > .fa,
+    ul li:hover {
+        background-color: #dad9d0;
+        color: black;
+    }
+
+    .subject:hover > .fa {
+        opacity: 0.75;
+    }
+
+    .subject {
+        b:after {
+            border-left-color: #04506f;
+        }
+
+        &:hover > b:after {
+            border-left-color: #dad9d0;
+        }
+        .right-arrow:before {
+            border-left: 1.4rem solid #04506f;
+        }
+        &:hover {
+            .right-arrow:before {
+                border-left-color: #dad9d0;
+            }
+        }
+    }
+}
+
+.dropdown-menu > li > a:hover {
+    color: #dad9d0;
+}
+
+.subject-item > .btn-primary {
+    color: black;
+    background-color: #04506f;
+    border-color: #dad9d0;
+}
+
+.subject-item > .btn-primary:hover {
+    background-color: #dad9d0;
+    border-color: #04506f;
+}
+
+.preprint-filter {
+    &,
+    .fa {
+        color: black;
+    }
+}
+
+.preprint-error-page,
+.preprint-advisory,
+.preprint-submit-header,
+.search-header,
+.provider-filter {
+    background: #dad9d0;
+    color: black;
+}
+
+.subject-filter {
+    &,
+    .fa {
+        background-color: #04506f;
+    }
+}
+
+.preprint-error-page,
+.preprint-advisory {
+    min-height: 200px;
+
+    a:not(.btn) {
+        font-weight: bold;
+    }
+}
+
+#view-page .header-row {
+    padding-top: 40px;
+}
+
+.alert-maintenance {
+    margin-top: 52px;
+}
+
+.navbar-title, .subject-item .btn, .subject-filter {
+    color: white;
+}
+
+.branded-nav {
+    a {
+        color: white;
+    }
+    a.active {
+        color: white !important;
+    }
+}
+
+#preprint-form-subjects {
+    .subject,
+    .subject > .fa,
+    ul li.selected,
+    ul li:active {
+        color: white;
+    }
+}
