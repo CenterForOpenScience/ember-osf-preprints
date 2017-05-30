@@ -18,7 +18,7 @@ export default Ember.Service.extend({
     session: Ember.inject.service(),
 
     // If we're using a provider domain
-    isDomain: false,
+    isDomain: window.isProviderDomain,
 
     // The id of the current provider
     id: config.PREPRINTS.defaultProvider,
@@ -28,13 +28,23 @@ export default Ember.Service.extend({
     // The provider object
     provider: Ember.computed('id', function() {
         const id = this.get('id');
+        const store = this.get('store');
 
-        if (!id)
-            return;
+        // Check if redirect is enabled for the current provider
+        if (!window.isProviderDomain && this.get('isProvider')) {
+            store.findRecord('preprint-provider', id)
+                .then(provider => {
+                    if (provider.get('domainRedirectEnabled')) {
+                        const domain = provider.get('domain');
+                        const {href, origin} = window.location;
+                        const url = href.replace(new RegExp(`^${origin}/preprints/${id}/?`), domain);
 
-        return this
-            .get('store')
-            .findRecord('preprint-provider', id);
+                        window.location.replace(url);
+                    }
+                });
+        }
+
+        return store.findRecord('preprint-provider', id);
     }),
 
     // If we're using a branded provider

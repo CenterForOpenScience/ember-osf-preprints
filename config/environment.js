@@ -40,7 +40,6 @@ module.exports = function(environment) {
                 // OSF must be the first provider
                 {
                     id: 'osf',
-                    domain: 'osf.io',
                     logoSharing: {
                         path: '/assets/img/provider_logos/osf-dark.png',
                         type: 'image/png',
@@ -51,17 +50,14 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'engrxiv',
-                    domain: 'engrxiv.org',
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'socarxiv',
-                    domain: 'socarxiv.org',
                     permissionLanguage: 'arxiv_trademark_license'
                 },
                 {
                     id: 'psyarxiv',
-                    domain: 'psyarxiv.com',
                     permissionLanguage: 'arxiv_trademark_license'
                 },
                 {
@@ -70,12 +66,10 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'scielo',
-                    // domain: 'scielo.org', // Temporarily disabling until ready
                     permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'agrixiv',
-                    domain: 'agrixiv.org',
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
@@ -138,12 +132,6 @@ module.exports = function(environment) {
         ].map(item => item.toLowerCase()),
     };
 
-    if (process.env.ENABLE_PROVIDER_DOMAINS !== 'true') {
-        for (const provider of ENV.PREPRINTS.providers) {
-            delete provider.domain;
-        }
-    }
-
     if (environment === 'development') {
         // ENV.APP.LOG_RESOLVER = true;
         // ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -182,21 +170,6 @@ module.exports = function(environment) {
         // Fallback to throwaway defaults if the environment variables are not set
         ENV.metricsAdapters[0].config.id = ENV.metricsAdapters[0].config.id || 'UA-84580271-1';
         ENV.FB_APP_ID = ENV.FB_APP_ID || '1039002926217080';
-
-        const {DOMAIN_PREFIX, PORT, OSF_URL} = process.env;
-
-        for (const provider of ENV.PREPRINTS.providers) {
-            if (!provider.domain)
-                continue;
-
-            if (provider.id === 'osf') {
-                provider.domain = OSF_URL || 'localhost:5000';
-                continue;
-            }
-
-            const suffix = DOMAIN_PREFIX ? '' : `:${PORT ? PORT : '4200'}`;
-            provider.domain = `${DOMAIN_PREFIX || 'local'}.${provider.domain}${suffix}`;
-        }
     }
 
     return ENV;
