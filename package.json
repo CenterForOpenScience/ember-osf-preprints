@@ -12,7 +12,8 @@
     "start": "ember server",
     "check-style": "eslint .",
     "test": "yarn run check-style && ember test",
-    "test:cover": "COVERAGE=true yarn test"
+    "test:cover": "COVERAGE=true yarn test",
+    "postinstall": "npm rebuild node-sass"
   },
   "repository": {
     "type": "git",
