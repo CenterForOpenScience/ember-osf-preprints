@@ -91,6 +91,14 @@ module.exports = function(environment) {
                 {
                     id: 'lissa',
                     permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'sportrxiv',
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'thesiscommons',
+                    permissionLanguage: 'no_trademark'
                 }
             ],
         },
