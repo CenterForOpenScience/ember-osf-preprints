@@ -1320,6 +1320,9 @@ button.provider:focus {
 
 button.provider.inactive-provider {
     opacity: 0.3;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
 }
 
 #preprint-form-server .row {
