@@ -50,7 +50,8 @@ export default {
         see_more: 'See more',
         see_less: 'See less',
         version: 'Version',
-        article_doi: `Article DOI`,
+        preprint_doi: `Preprint DOI`,
+        article_doi: `Peer reviewed Publication DOI`,
         citations: `Citations`,
         disciplines: `Disciplines`,
         project_button: {

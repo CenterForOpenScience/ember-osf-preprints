@@ -85,6 +85,13 @@
                         </button>
                     </div>
 
+                    {{#if model.links.preprint_doi}}
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi"}}</strong></h4>
+                            <a href={{model.links.preprint_doi}} {{action "click" "link" "Content - Preprint DOI" model.links.preprint_doi}}>{{extract-doi model.links.preprint_doi}}</a>
+                        </div>
+                    {{/if}}
+
                     {{#if model.doi}}
                         <div class="p-t-xs">
                             <h4 class="p-v-md f-w-md"><strong>{{t "content.article_doi"}}</strong></h4>
