@@ -27,13 +27,15 @@
                     {{total-share-results}}
                 </div>
             </div> {{!END ROW}}
-            <div class="row">
-                <div class="text-center col-xs-12">
-                    <p class="lead">{{t 'index.header.or'}}</p>
-                    <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>{{t "global.add_preprint"}}</a>
-                    <div class="m-t-md">{{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
+            {{#if theme.provider.allowSubmissions}}
+                <div class="row">
+                    <div class="text-center col-xs-12">
+                        <p class="lead">{{t 'index.header.or'}}</p>
+                        <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>{{t "global.add_preprint"}}</a>
+                        <div class="m-t-md">{{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
+                    </div>
                 </div>
-            </div>
+            {{/if}}
         </div> {{!END CONTAINER}}
     </div> {{!END HEADER}}
 
