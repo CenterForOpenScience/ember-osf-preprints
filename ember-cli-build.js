@@ -173,6 +173,9 @@ module.exports = function(defaults) {
     });
 
     app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
+    app.import(path.join(app.bowerDirectory, 'bootstrap-daterangepicker/daterangepicker.js'));
+    app.import(path.join(app.bowerDirectory, 'c3/c3.js'));
+    app.import(path.join(app.bowerDirectory, 'd3/d3.js'));
 
     app.import({
         development: path.join(app.bowerDirectory, 'hint.css/hint.css'),
