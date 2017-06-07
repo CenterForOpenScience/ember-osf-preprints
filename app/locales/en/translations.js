@@ -82,6 +82,10 @@ export default {
             refine: `Refine your search by`,
             providers: `Providers`,
             subject: `Subject`,
+            source: `Source`,
+            date: `Date`,
+            type: `Type`,
+            tag: `Tag`,
             box: {
                 paragraph: `Do you want to add your own research as a preprint?`,
                 button: `Add your preprint`
