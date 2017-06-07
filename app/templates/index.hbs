@@ -46,7 +46,11 @@
                 <div class="col-xs-12">
                     <h2>{{t "index.subjects.heading"}}</h2>
                     <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
-                        {{taxonomy-top-list list=model.taxonomies}}
+                        {{#if theme.provider.additionalProviders}}
+                            {{additional-provider-list additionalProviders=theme.provider.additionalProviders}}
+                        {{else}}
+                            {{taxonomy-top-list list=model.taxonomies}}
+                        {{/if}}
                     </div> {{!END SUBJECTS LIST}}
                 </div>
             </div>{{!END ROW}}
