@@ -1,0 +1,11 @@
+{{#each sortedList as |pair|}}
+    <div class="subject row m-b-sm">
+        {{#each pair as |addProvider|}}
+            <div class="col-xs-12 col-sm-6 subject-item">
+                {{#link-to (route-prefix 'discover') (query-params source=addProvider) class='btn btn-primary p-sm' invokeAction=(action "click" "link" (concat 'Index - Browse Additional Providers ' addProvider))}}
+                    {{addProvider}}
+                {{/link-to}}
+            </div>
+        {{/each}}
+    </div>
+{{/each}}
