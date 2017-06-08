@@ -1,25 +1,19 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('additional-provider-list', 'Integration | Component | additional provider list', {
-  integration: true
+    integration: true
 });
 
-test('it renders', function(assert) {
+test('additionalProviderList renders', function(assert) {
+    this.set('additionalProviders', Ember.A(['B Provider', 'A Provider']));
+    this.render(hbs`{{additional-provider-list additionalProviders=additionalProviders}}`);
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+    // Should be alphabetically sorted as 'A Provider, B Provider'
+    assert.equal(this.$().text().replace(/\s/g, ''), 'AProviderBProvider');
 
-  this.render(hbs`{{additional-provider-list}}`);
+    assert.ok(this.$('.subject-item').length);
+    assert.ok(this.$('.subject-item a').length);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#additional-provider-list}}
-      template block text
-    {{/additional-provider-list}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });
