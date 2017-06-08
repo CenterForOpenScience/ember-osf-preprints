@@ -31,8 +31,8 @@ export default Ember.Controller.extend(Analytics, {
         if (additionalProviders.length) {
             return [
                 { key: 'sources', title: this.get('i18n').t('discover.main.source'), component: 'search-facet-source'},
-                { key: 'date', title: this.get('i18n').t('discover.main.date'), component: 'search-facet-daterange' },
-                { key: 'type', title: this.get('i18n').t('discover.main.type'), component: 'search-facet-worktype', data: this.get('processedTypes')},
+                { key: 'date', title: this.get('i18n').t('discover.main.date'), component: 'search-facet-daterange'},
+                { key: 'type', title: this.get('i18n').t('discover.main.type'), component: 'search-facet-worktype'},
                 { key: 'tags', title: this.get('i18n').t('discover.main.tag'), component: 'search-facet-typeahead'},
             ];
         } else {
