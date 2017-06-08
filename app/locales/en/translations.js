@@ -308,6 +308,7 @@ export default {
             title: `Preprint title`,
             location: `Preprint location`,
             click_edit: `Click to Edit`,
+            server: `Preprint server`,
             name: {
                 Server: 'Select a preprint server',
                 Upload: 'Upload',

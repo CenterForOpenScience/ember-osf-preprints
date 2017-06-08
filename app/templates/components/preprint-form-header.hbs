@@ -24,6 +24,12 @@
     {{/if}}
 </div>
 
+{{#if (and (not isOpen) (eq name 'Server'))}}
+    <div class="m-t-md preprint-header-preview">
+        <p><em class="m-r-md"> {{t "components.preprint-form-header.server"}}: </em> {{currentProvider.name}}</p>
+    </div>
+{{/if}}
+
 {{#if (and (not isOpen) (eq name 'Upload'))}}
     <div class="m-t-md preprint-header-preview">
         {{#if preprintNode}}
