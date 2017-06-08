@@ -26,6 +26,7 @@ export default Ember.Controller.extend(Analytics, {
     discoverHeader: Ember.computed('i18n', 'additionalProviders', function() { // Header for preprints discover page
         return this.get('additionalProviders').length ? this.get('i18n').t('discover.search.heading_repository_search') : this.get('i18n').t('discover.search.heading');
     }),
+    end: '', // End query param. Must be passed to component, so can be reflected in the URL
     facets: Ember.computed('i18n.locale', 'additionalProviders', function() { // List of facets available for preprints
         const additionalProviders = this.get('additionalProviders');
         if (additionalProviders.length) {
@@ -63,7 +64,7 @@ export default Ember.Controller.extend(Analytics, {
     page: 1, // Page query param. Must be passed to component, so can be reflected in URL
     provider: '', // Provider query param. Must be passed to component, so can be reflected in URL
     q: '', // q query param.  Must be passed to component, so can be reflected in URL
-    queryParams: ['page', 'q', 'subject', 'provider'], // Pass in the list of queryParams for this component
+    queryParams: ['page', 'q', 'sources', 'tags', 'type', 'start', 'end', 'subject', 'provider'], // Pass in the list of queryParams for this component
     searchPlaceholder: Ember.computed('i18n', function() { // Search bar placeholder
         return this.get('i18n').t('discover.search.placeholder');
     }),
@@ -84,7 +85,10 @@ export default Ember.Controller.extend(Analytics, {
             sortBy: '-date_updated'
         }];
     }),
-    subject: '',// Subject query param.  Must be passed to component, so can be reflected in URL,
+    sources: '', // Sources query param. Must be passed to component, so can be reflected in the URL
+    start: '', // Start query param. Must be passed to component, so can be reflected in the URL
+    subject: '', // Subject query param.  Must be passed to component, so can be reflected in URL
+    tags: '', // Tags query param.  Must be passed to component, so can be reflected in URL
     themeProvider: Ember.computed('model', function() { // Pulls the preprint provider from the already loaded model
         let themeProvider = null;
         this.get('model').forEach(provider => {
@@ -94,6 +98,7 @@ export default Ember.Controller.extend(Analytics, {
         });
         return themeProvider;
     }),
+    type: '', //Type query param. Must be passed to component, so can be reflected in URL
     _clearFilters() {
         this.set('activeFilters', {
             providers: [],
