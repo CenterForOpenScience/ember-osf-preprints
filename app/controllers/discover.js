@@ -73,7 +73,10 @@ export default Ember.Controller.extend(Analytics, {
     searchPlaceholder: Ember.computed('i18n', function() { // Search bar placeholder
         return this.get('i18n').t('discover.search.placeholder');
     }),
-    showActiveFilters: true, // Whether Active Filters should be displayed.
+    showActiveFilters: Ember.computed('additionalProviders', function() {  // Whether Active Filters should be displayed.
+        const additionalProviders = this.get('additionalProviders');
+        return additionalProviders.length ? false: true;
+    }),
     sortOptions: Ember.computed('i18n.locale', function() { // Sort options for preprints
         const i18n = this.get('i18n');
         return [{
