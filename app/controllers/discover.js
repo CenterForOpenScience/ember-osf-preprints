@@ -23,8 +23,8 @@ export default Ember.Controller.extend(Analytics, {
     }),
     consumingService: 'preprints', // Consuming service - preprints here
     detailRoute: 'content', // Name of detail route for this application
-    discoverHeader: Ember.computed('i18n', function() { // Header for preprints discover page
-        return this.get('i18n').t('discover.search.heading');
+    discoverHeader: Ember.computed('i18n', 'additionalProviders', function() { // Header for preprints discover page
+        return this.get('additionalProviders') ? this.get('i18n').t('discover.search.heading_repository_search') : this.get('i18n').t('discover.search.heading');
     }),
     facets: Ember.computed('i18n.locale', 'additionalProviders', function() { // List of facets available for preprints
         const additionalProviders = this.get('additionalProviders');

@@ -65,6 +65,7 @@ export default {
     discover: {
         search: {
             heading: `Preprint Archive Search`,
+            heading_repository_search: `Repository Search`,
             paragraph: `powered by`,
             partner: `Partner Repositories`,
             placeholder: `Search preprints...`
