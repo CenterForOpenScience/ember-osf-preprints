@@ -58,7 +58,14 @@ export default Ember.Controller.extend(Analytics, {
         OSF: 'OSF Preprints',
         'Research Papers in Economics': 'RePEc'
     },
-    lockedParams: {types: 'preprint'}, // Parameter names which cannot be changed
+    lockedParams: Ember.computed('additionalProviders', function() {
+        if (this.get('additionalProviders').length) {
+            return {};
+        } else {
+            return {types: 'preprint'};
+        }
+
+    }), // Parameter names which cannot be changed
     page: 1, // Page query param. Must be passed to component, so can be reflected in URL
     provider: '', // Provider query param. Must be passed to component, so can be reflected in URL
     q: '', // q query param.  Must be passed to component, so can be reflected in URL
