@@ -66,7 +66,9 @@ module.exports = function(defaults) {
                 'node_modules/ember-osf/addon/styles',
                 'bower_components/bootstrap-sass/assets/stylesheets',
                 'bower_components/osf-style/sass',
-                'bower_components/hint.css'
+                'bower_components/hint.css',
+                'bower_components/c3',
+                'bower_components/bootstrap-daterangepicker',
             ]
         },
         inlineContent: {
