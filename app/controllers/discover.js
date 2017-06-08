@@ -32,10 +32,21 @@ export default Ember.Controller.extend(Analytics, {
     discoverHeader: Ember.computed('i18n', function() { // Header for preprints discover page
         return this.get('i18n').t('discover.search.heading');
     }),
-    facets: Ember.computed('i18n.locale', function() { //List of facets available for preprints
-        return [
-            { key: 'sources', title: `${this.get('i18n').t('discover.main.providers')}`, component: 'search-facet-provider' },
-            { key: 'subjects', title: `${this.get('i18n').t('discover.main.subject')}`, component: 'search-facet-taxonomy' }]
+    facets: Ember.computed('i18n.locale', 'additionalProviders', function() { // List of facets available for preprints
+        const additionalProviders = this.get('additionalProviders');
+        if (additionalProviders.length) {
+            return [
+                { key: 'sources', title: this.get('i18n').t('discover.main.source'), component: 'search-facet-source'},
+                { key: 'date', title: this.get('i18n').t('discover.main.date'), component: 'search-facet-daterange' },
+                { key: 'type', title: this.get('i18n').t('discover.main.type'), component: 'search-facet-worktype', data: this.get('processedTypes')},
+                { key: 'tags', title: this.get('i18n').t('discover.main.tag'), component: 'search-facet-typeahead'},
+            ];
+        } else {
+            return [
+                { key: 'sources', title: `${this.get('i18n').t('discover.main.providers')}`, component: 'search-facet-provider' },
+                { key: 'subjects', title: `${this.get('i18n').t('discover.main.subject')}`, component: 'search-facet-taxonomy' }
+            ]
+        }
     }),
     filterMap: { // Map active filters to facet names expected by SHARE
         providers: 'sources',
