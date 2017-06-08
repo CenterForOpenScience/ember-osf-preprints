@@ -17,16 +17,10 @@ import Analytics from 'ember-osf/mixins/analytics';
 export default Ember.Controller.extend(Analytics, {
     i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
-    additionalProviders: Ember.computed('model', function() {
-        let additionalProviders = [];
-        this.get('model').forEach(provider => {
-            if (provider.id === this.get('theme.id')) {
-                additionalProviders = provider.get('additionalProviders');
-            }
-        });
-        return additionalProviders;
-    }),
     activeFilters: { providers: [], subjects: [] },
+    additionalProviders: Ember.computed('themeProvider', function() { // Pulls additionalProviders array off of preprint provider
+        return this.get('themeProvider.additionalProviders') || [];
+    }),
     consumingService: 'preprints', // Consuming service - preprints here
     detailRoute: 'content', // Name of detail route for this application
     discoverHeader: Ember.computed('i18n', function() { // Header for preprints discover page
@@ -91,6 +85,15 @@ export default Ember.Controller.extend(Analytics, {
         }];
     }),
     subject: '',// Subject query param.  Must be passed to component, so can be reflected in URL,
+    themeProvider: Ember.computed('model', function() { // Pulls the preprint provider from the already loaded model
+        let themeProvider = null;
+        this.get('model').forEach(provider => {
+            if (provider.id === this.get('theme.id')) {
+                themeProvider = provider;
+            }
+        });
+        return themeProvider;
+    }),
     _clearFilters() {
         this.set('activeFilters', {
             providers: [],
