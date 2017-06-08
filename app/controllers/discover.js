@@ -17,6 +17,15 @@ import Analytics from 'ember-osf/mixins/analytics';
 export default Ember.Controller.extend(Analytics, {
     i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
+    additionalProviders: Ember.computed('model', function() {
+        let additionalProviders = [];
+        this.get('model').forEach(provider => {
+            if (provider.id === this.get('theme.id')) {
+                additionalProviders = provider.get('additionalProviders');
+            }
+        });
+        return additionalProviders;
+    }),
     activeFilters: { providers: [], subjects: [] },
     consumingService: 'preprints', // Consuming service - preprints here
     detailRoute: 'content', // Name of detail route for this application
