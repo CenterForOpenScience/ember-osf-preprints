@@ -68,7 +68,8 @@ export default {
             heading_repository_search: `Repository Search`,
             paragraph: `powered by`,
             partner: `Partner Repositories`,
-            placeholder: `Search preprints...`
+            placeholder: `Search preprints...`,
+            repository_placeholder: `Search repository...`
         },
         sort_by: `Sort by`,
         sort_newest_oldest: `Modified Date (newest to oldest)`,
