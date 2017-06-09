@@ -3,7 +3,11 @@
 {{#if theme.isProvider}}
     {{#if theme.stylesheet}}
         <style>
-            @import url('/preprints/assets/provider_styles.css');
+            {{#if theme.isDomain}}
+                @import url('/assets/provider_styles.css');
+            {{else}}
+                @import url('/preprints/assets/provider_styles.css');
+            {{/if}}
         </style>
         <style>
             @import url('{{theme.stylesheet}}');
