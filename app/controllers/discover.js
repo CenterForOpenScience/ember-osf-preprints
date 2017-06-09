@@ -18,7 +18,8 @@ export default Ember.Controller.extend(Analytics, {
     i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
     activeFilters: { providers: [], subjects: [] },
-    additionalProviders: Ember.computed('themeProvider', function() { // Do additional Providers exist?
+    additionalProviders: Ember.computed('themeProvider', function() { // Do additionalProviders exist?
+        // for now, using this property to alter many pieces of the landing/discover page
         return (this.get('themeProvider.additionalProviders') || []).length > 1;
     }),
     consumingService: 'preprints', // Consuming service - preprints here
