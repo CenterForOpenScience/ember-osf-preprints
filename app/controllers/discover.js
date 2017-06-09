@@ -24,7 +24,7 @@ export default Ember.Controller.extend(Analytics, {
     consumingService: 'preprints', // Consuming service - preprints here
     detailRoute: 'content', // Name of detail route for this application
     discoverHeader: Ember.computed('i18n', 'additionalProviders', function() { // Header for preprints discover page
-        // If additionalProviders, use more generic Repository Search
+        // If additionalProviders, use more generic Repository Search page title
         return this.get('additionalProviders') ? this.get('i18n').t('discover.search.heading_repository_search') : this.get('i18n').t('discover.search.heading');
     }),
     end: '', // End query param. Must be passed to component, so can be reflected in the URL
@@ -54,7 +54,7 @@ export default Ember.Controller.extend(Analytics, {
         'Research Papers in Economics': 'RePEc'
     },
     lockedParams: Ember.computed('additionalProviders', function() { // Query parameters that cannot be changed.
-        // if additionalProviders, open up search results to all types of results. Otherwise, restrict to just preprints.
+        // if additionalProviders, open up search results to all types of results instead of just preprints.
         return this.get('additionalProviders') ? {} : {types: 'preprint'};
     }),
     page: 1, // Page query param. Must be passed to component, so can be reflected in URL

@@ -27,7 +27,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedR
     afterModel() {
         return this.get('theme.provider').then(provider => {
             if (!provider.get('allowSubmissions')) {
-                this.transitionTo('page-not-found');
+                this.replaceWith('page-not-found');
             }
         })
     },
