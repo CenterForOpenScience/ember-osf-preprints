@@ -34,8 +34,12 @@ moduleForComponent('supplementary-file-browser', 'Integration | Component | supp
             files: providersQuery,
             id: 890
         });
+        let dualTrackNonContributors = () => {};
+
         this.set('preprint', preprint);
         this.set('node', node);
+        this.set('dualTrackNonContributors', dualTrackNonContributors);
+
     }
 });
 
@@ -44,6 +48,7 @@ function render(context, componentArgs) {
         preprint=preprint
         node=node
         ${componentArgs || ''}
+        dualTrackNonContributors=(action dualTrackNonContributors)
     }}`));
 }
 

@@ -57,7 +57,7 @@
                             {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{node.title}} </a> {{t "content.public"}}.
                         </div>
                     {{/if}}
-                    {{supplementary-file-browser chosenFile=chosenFile preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile')}}
+                    {{supplementary-file-browser chosenFile=chosenFile preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile') dualTrackNonContributors=(action 'dualTrackNonContributors')}}
                     <button class="expand-mfr-carrot hidden-xs hidden-sm" {{action 'expandMFR'}}>
                         <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                     </button>
@@ -66,7 +66,7 @@
             {{#unless fullScreenMFR}}
                 <div class="col-md-5"> {{!RIGHT SIDE COL}}
                     <div class="share-row p-sm osf-box-lt clearfix">{{!SHARE ROW}}
-                        <a class="btn btn-primary p-v-xs" href={{fileDownloadURL}} onclick={{action 'click' 'link' 'Content - Download'}}>{{t "content.share.download_preprint"}}</a>
+                        <a class="btn btn-primary p-v-xs" href={{fileDownloadURL}} onclick={{action 'dualTrackNonContributors' 'link' 'Content - Download' model.primaryFile.links.download true}}>{{t "content.share.download_preprint"}} </a>
                         <div class=" p-v-xs pull-right">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}} </div>
                     </div>
                     <div class="p-t-md pull-right">
