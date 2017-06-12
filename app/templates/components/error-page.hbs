@@ -13,11 +13,14 @@
                     {{supportEmail}}
                 </a>
             </p>
-            <a class="btn btn-primary m-t-md" href='{{theme.pathPrefix}}'
-               onclick={{action 'click' 'link' (concat label " - Go to Index")}}
-            >
+            {{#link-to
+                (route-prefix 'index')
+                slug=theme.id
+                class="btn btn-primary m-t-md"
+                invokeAction=(action "click" "link" (concat label " - Go to Index"))
+            }}
                 {{t 'components.error-page.go_to' brand=(t (if theme.isProvider "global.provider_brand" "global.brand") name=theme.provider.name)}}
-            </a>
+            {{/link-to}}
         </div>
     </div>
 </div>
