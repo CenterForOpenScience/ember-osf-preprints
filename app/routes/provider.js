@@ -1,6 +1,5 @@
-import Ember from 'ember';
+import Ember, { Logger } from 'ember';
 import config from 'ember-get-config';
-import getRedirectUrl from '../utils/get-redirect-url';
 
 const providers = config.PREPRINTS.providers.slice(1);
 const providerIds = providers.map(p => p.id);
@@ -17,21 +16,10 @@ export default Ember.Route.extend({
     theme: Ember.inject.service(),
 
     beforeModel(transition) {
-        const {slug} = transition.params.provider;
-        const slugLower = (slug || '').toLowerCase();
+        const {slug = ''} = transition.params.provider;
+        const slugLower = slug.toLowerCase();
 
         if (providerIds.includes(slugLower)) {
-            const {domain} = providers.find(provider => provider.id === slugLower) || {};
-
-            // This should be caught by the proxy, but we'll redirect just in case it is not.
-            if (domain) {
-                window.location.replace(
-                    getRedirectUrl(window.location, domain, slug)
-                );
-
-                return;
-            }
-
             if (slugLower !== slug) {
                 const {pathname} = window.location;
                 const pathRegex = new RegExp(`^/preprints/${slug}`);
@@ -56,8 +44,7 @@ export default Ember.Route.extend({
 
     actions: {
         error(error) {
-            // Manage your errors
-            Ember.onerror(error);
+            Logger.error(error);
 
             // substate implementation when returning `true`
             return true;

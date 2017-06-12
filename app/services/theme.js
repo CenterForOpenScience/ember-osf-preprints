@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
+import pathJoin from '../utils/path-join';
 
 /**
  * @module ember-preprints
@@ -17,7 +18,7 @@ export default Ember.Service.extend({
     session: Ember.inject.service(),
 
     // If we're using a provider domain
-    isDomain: false,
+    isDomain: window.isProviderDomain,
 
     // The id of the current provider
     id: config.PREPRINTS.defaultProvider,
@@ -27,13 +28,23 @@ export default Ember.Service.extend({
     // The provider object
     provider: Ember.computed('id', function() {
         const id = this.get('id');
+        const store = this.get('store');
 
-        if (!id)
-            return;
+        // Check if redirect is enabled for the current provider
+        if (!window.isProviderDomain && this.get('isProvider')) {
+            store.findRecord('preprint-provider', id)
+                .then(provider => {
+                    if (provider.get('domainRedirectEnabled')) {
+                        const domain = provider.get('domain');
+                        const {href, origin} = window.location;
+                        const url = href.replace(new RegExp(`^${origin}/preprints/${id}/?`), domain);
 
-        return this
-            .get('store')
-            .findRecord('preprint-provider', id);
+                        window.location.replace(url);
+                    }
+                });
+        }
+
+        return store.findRecord('preprint-provider', id);
     }),
 
     // If we're using a branded provider
@@ -70,29 +81,37 @@ export default Ember.Service.extend({
 
         return pathPrefix;
     }),
-
-    // The URL for the branded stylesheet
-    stylesheet: Ember.computed('id', function() {
+    assetsPath: Ember.computed('id', function() {
         const id = this.get('id');
 
         if (!id)
             return;
 
-        const prefix = this.get('isDomain') ? '' : '/preprints';
-        const suffix = config.ASSET_SUFFIX ? `-${config.ASSET_SUFFIX}` : '';
-        return `${prefix}/assets/css/${id}${suffix}.css`;
+        return pathJoin(config.providerAssetsURL, id, '/');
+    }),
+    // The URL for the branded stylesheet
+    stylesheet: Ember.computed('assetsPath', function() {
+        return pathJoin(this.get('assetsPath'), 'style.css');
     }),
 
     // The logo object for social sharing
-    logoSharing: Ember.computed('id', function() {
+    logoSharing: Ember.computed('id', 'assetsPath', function() {
         const id = this.get('id');
+        let logo = {};
+        if (id === 'osf') {
+            logo = config.PREPRINTS.providers
+                .find(provider => provider.id === id)
+                .logoSharing;
 
-        const logo = config.PREPRINTS.providers
-            .find(provider => provider.id === id)
-            .logoSharing;
-
-        logo.path = `/preprints${logo.path}`;
-
+            logo.path = pathJoin('/preprints', logo.path);
+        } else {
+            logo = {
+                path: pathJoin(this.get('assetsPath'), 'sharing.png'),
+                type: 'image/png',
+                width: 1200,
+                height: 630
+            }
+        }
         return logo;
     }),
 

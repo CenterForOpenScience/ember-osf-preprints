@@ -3,6 +3,9 @@
 {{#if theme.isProvider}}
     {{#if theme.stylesheet}}
         <style>
+            @import url('/preprints/assets/provider_styles.css');
+        </style>
+        <style>
             @import url('{{theme.stylesheet}}');
         </style>
     {{/if}}
