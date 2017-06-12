@@ -106,16 +106,6 @@ ul.comma-list {
     color: black;
 }
 
-#downloadCount {
-    display: inline-block;
-}
-
-@media (max-width: 991px) {
-    .download_project, .social-div {
-        width: auto;
-    }
-}
-
 @media (max-width: 768px) {
     #providerCarousel {
         .carousel-control .icon-next, .carousel-control .icon-prev {
@@ -1139,16 +1129,6 @@ label.title-label {
         }
     }
 }
-
-.social-media-icons {
-    float: none !important;
-    white-space: nowrap;
-}
-
-.social-div {
-    margin-top: 5px;
-}
-
 
 .content-provider-logo {
     min-height: 80px;
