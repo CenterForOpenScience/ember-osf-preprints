@@ -110,7 +110,7 @@ export default {
             example: `See an example`
         },
         subjects: {
-            heading: `Browse <small>by subject</small>`
+            heading: `Browse <small>by {{browse-by}}</small>`
         },
         services: {
             top: {
