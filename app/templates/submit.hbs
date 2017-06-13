@@ -39,7 +39,7 @@
                     {{/unless}}
 
                     {{#with _names.[1] as |name|}}
-                        {{#preprint-form-section id='preprint-form-upload' editMode=editMode class="preprint-form-block" name=name allowOpen=providerSaved denyOpenMessage='Please select a preprint server before continuing' errorAction=(action 'error') as |hasOpened|}}
+                        {{#preprint-form-section id='preprint-form-upload' editMode=editMode class="preprint-form-block" name=name allowOpen=(or providerSaved editMode) denyOpenMessage='Please select a preprint server before continuing' errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged)}}
                             {{#preprint-form-body}}
                                 {{#liquid-bind filePickerState class='translate' as |currentState|}}
