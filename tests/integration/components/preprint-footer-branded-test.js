@@ -1,13 +1,22 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import sanitizer from 'preprint-service/sanitizers/footer-links';
 
 moduleForComponent('preprint-footer-branded', 'Integration | Component | preprint footer branded', {
-  integration: true
+  integration: true,
+
+  setup() {
+    this.container.registry.register('sanitizer:footer-links', Ember.Object.extend(sanitizer));
+  }
+
 });
 
 test('shows all social', function(assert) {
     this.set('model', {
-        footerLinks: '<i class="fa fa-2x fa-twitter"></i><i class="fa fa-2x fa-instagram"></i><i class="fa fa-2x fa-facebook"></i>'
+        footerLinks: `<a class="fa fa-2x fa-twitter"></a>
+                      <a class="fa fa-2x fa-instagram"></a>
+                      <a class="fa fa-2x fa-facebook"></a>`
     });
 
     this.render(hbs`{{preprint-footer-branded model=model}}`);

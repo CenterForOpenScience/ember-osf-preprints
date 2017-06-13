@@ -19,7 +19,8 @@
     "Faker": "~3.0.0",
     "c3": "0.4.11",
     "d3": "3.5.17",
-    "bootstrap-daterangepicker": "^2.1.23"
+    "bootstrap-daterangepicker": "^2.1.23",
+    "sanitize.js": "^1.0.0"
   },
   "resolutions": {
     "jquery": "2.2.4"

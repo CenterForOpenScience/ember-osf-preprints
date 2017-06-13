@@ -1,6 +1,6 @@
 <div class="text-center branded-footer-links">
     <div>
-        {{safe-markup model.footerLinks}}
+        {{sanitize-html model.footerLinks "footer-links"}}
     </div>
 
 </div>
