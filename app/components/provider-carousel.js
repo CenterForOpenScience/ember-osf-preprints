@@ -102,12 +102,8 @@ export default Ember.Component.extend(Analytics, {
     },
     actions: {
         selectProvider(provider) {
-            if (this.get('locked')) {
-                this.attrs.errorAction(this.get('lockedMessage'));
-            } else {
-                this.set('activeProvider', provider);
-                this.attrs.selectAction(provider);
-            }
+            this.set('activeProvider', provider);
+            this.attrs.selectAction(provider);
         }
     }
 });

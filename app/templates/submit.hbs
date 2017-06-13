@@ -18,10 +18,10 @@
                 {{#cp-panels accordion=true}}
                     {{#unless (or editMode theme.isProvider)}}
                         {{#with _names.[0] as |name|}}
-                            {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
-                                {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=providerSaved currentProvider=currentProvider valid=(not providerChanged)}}
+                            {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=(not uploadValid) denyOpenMessage=(t 'submit.server_locked') errorAction=(action 'error') as |hasOpened|}}
+                                {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=(and providerSaved (not uploadValid)) currentProvider=currentProvider valid=(not providerChanged)}}
                                 {{#preprint-form-body}}
-                                    {{provider-carousel itemsPerSlide=6 providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider') locked=uploadValid lockedMessage=(t 'submit.server_locked') errorAction=(action 'error')}}
+                                    {{provider-carousel itemsPerSlide=6 providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider')}}
 
                                     {{#unless uploadValid}}
                                         <div class="row">
