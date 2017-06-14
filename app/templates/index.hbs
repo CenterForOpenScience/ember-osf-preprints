@@ -12,7 +12,7 @@
                         <div class="provider-brand"></div>
                     {{/if}}
                     <p class="lead">
-                        <span>{{if theme.isProvider theme.provider.description (t "index.header.title.paragraph")}}</span>
+                        <span>{{if theme.isProvider (safe-markup theme.provider.description) (t "index.header.title.paragraph")}}</span>
                         {{#if theme.isProvider}}
                             <br>
                             <small>
