@@ -51,7 +51,7 @@ export default {
         see_less: 'See less',
         version: 'Version',
         preprint_doi: `Preprint DOI`,
-        article_doi: `Peer reviewed Publication DOI`,
+        article_doi: `Peer-reviewed Publication DOI`,
         citations: `Citations`,
         disciplines: `Disciplines`,
         project_button: {
@@ -162,7 +162,7 @@ export default {
             remove_subject_aria: `Remove subject`,
             basics: {
                 doi: {
-                    label: `Peer reviewed publication DOI (optional)`
+                    label: `Peer-reviewed publication DOI (optional)`
                 },
                 keywords: {
                     label: `Keywords`,
