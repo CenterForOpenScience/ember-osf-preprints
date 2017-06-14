@@ -73,6 +73,7 @@
     "ember-power-select": "1.0.0-beta.7",
     "ember-read-more": "0.0.13",
     "ember-resolver": "2.1.0",
+    "ember-sanitize": "^2.0.2",
     "ember-sortable": "1.8.2",
     "ember-toastr": "1.4.1",
     "ember-truth-helpers": "1.2.0",
