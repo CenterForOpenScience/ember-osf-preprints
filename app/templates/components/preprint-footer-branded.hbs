@@ -43,6 +43,13 @@
                 <i class="fa fa-2x fa-instagram"></i>
             </a>
         {{/if}}
+        {{#if model.blogUrl}}
+            <a href="{{model.blogUrl}}"
+               aria-label={{t "components.preprint-footer-branded.blog"}}
+               onbeforeclick={{action 'click' 'link' 'Branded Footer - Blog'}}>
+                <i class="fa fa-2x fa-pencil"></i>
+            </a>
+        {{/if}}
     </div>
 
 
