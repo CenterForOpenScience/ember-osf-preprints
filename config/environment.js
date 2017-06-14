@@ -99,6 +99,10 @@ module.exports = function(environment) {
                 {
                     id: 'thesiscommons',
                     permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'asu',
+                    permissionLanguage: 'no_trademark'
                 }
             ],
         },

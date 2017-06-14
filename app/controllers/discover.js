@@ -18,15 +18,31 @@ export default Ember.Controller.extend(Analytics, {
     i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
     activeFilters: { providers: [], subjects: [] },
+    additionalProviders: Ember.computed('themeProvider', function() { // Do additionalProviders exist?
+        // for now, using this property to alter many pieces of the landing/discover page
+        return (this.get('themeProvider.additionalProviders') || []).length > 1;
+    }),
     consumingService: 'preprints', // Consuming service - preprints here
     detailRoute: 'content', // Name of detail route for this application
-    discoverHeader: Ember.computed('i18n', function() { // Header for preprints discover page
-        return this.get('i18n').t('discover.search.heading');
+    discoverHeader: Ember.computed('i18n', 'additionalProviders', function() { // Header for preprints discover page
+        // If additionalProviders, use more generic Repository Search page title
+        return this.get('additionalProviders') ? this.get('i18n').t('discover.search.heading_repository_search') : this.get('i18n').t('discover.search.heading');
     }),
-    facets: Ember.computed('i18n.locale', function() { //List of facets available for preprints
-        return [
-            { key: 'sources', title: `${this.get('i18n').t('discover.main.providers')}`, component: 'search-facet-provider' },
-            { key: 'subjects', title: `${this.get('i18n').t('discover.main.subject')}`, component: 'search-facet-taxonomy' }]
+    end: '', // End query param. Must be passed to component, so can be reflected in the URL
+    facets: Ember.computed('i18n.locale', 'additionalProviders', function() { // List of facets available for preprints
+        if (this.get('additionalProviders')) { // if additionalProviders exist, use subset of SHARE facets
+            return [
+                { key: 'sources', title: this.get('i18n').t('discover.main.source'), component: 'search-facet-source'},
+                { key: 'date', title: this.get('i18n').t('discover.main.date'), component: 'search-facet-daterange'},
+                { key: 'type', title: this.get('i18n').t('discover.main.type'), component: 'search-facet-worktype'},
+                { key: 'tags', title: this.get('i18n').t('discover.main.tag'), component: 'search-facet-typeahead'},
+            ];
+        } else { // Regular preprints and branded preprints get provider and taxonomy facets
+            return [
+                { key: 'sources', title: `${this.get('i18n').t('discover.main.providers')}`, component: 'search-facet-provider' },
+                { key: 'subjects', title: `${this.get('i18n').t('discover.main.subject')}`, component: 'search-facet-taxonomy' }
+            ]
+        }
     }),
     filterMap: { // Map active filters to facet names expected by SHARE
         providers: 'sources',
@@ -38,15 +54,21 @@ export default Ember.Controller.extend(Analytics, {
         OSF: 'OSF Preprints',
         'Research Papers in Economics': 'RePEc'
     },
-    lockedParams: {types: 'preprint'}, // Parameter names which cannot be changed
+    lockedParams: Ember.computed('additionalProviders', function() { // Query parameters that cannot be changed.
+        // if additionalProviders, open up search results to all types of results instead of just preprints.
+        return this.get('additionalProviders') ? {} : {types: 'preprint'};
+    }),
     page: 1, // Page query param. Must be passed to component, so can be reflected in URL
     provider: '', // Provider query param. Must be passed to component, so can be reflected in URL
     q: '', // q query param.  Must be passed to component, so can be reflected in URL
-    queryParams: ['page', 'q', 'subject', 'provider'], // Pass in the list of queryParams for this component
-    searchPlaceholder: Ember.computed('i18n', function() { // Search bar placeholder
-        return this.get('i18n').t('discover.search.placeholder');
+    queryParams: ['page', 'q', 'sources', 'tags', 'type', 'start', 'end', 'subject', 'provider'], // Pass in the list of queryParams for this component
+    searchPlaceholder: Ember.computed('i18n', 'additionalProviders', function() { // Search bar placeholder
+        return this.get('additionalProviders') ? this.get('i18n').t('discover.search.repository_placeholder'): this.get('i18n').t('discover.search.placeholder');
     }),
-    showActiveFilters: true, // Whether Active Filters should be displayed.
+    showActiveFilters: Ember.computed('additionalProviders', function() {  // Whether Active Filters should be displayed.
+        // additionalProviders are using SHARE facets which do not work with Active Filters at this time
+        return !this.get('additionalProviders');
+    }),
     sortOptions: Ember.computed('i18n.locale', function() { // Sort options for preprints
         const i18n = this.get('i18n');
         return [{
@@ -60,7 +82,20 @@ export default Ember.Controller.extend(Analytics, {
             sortBy: '-date_updated'
         }];
     }),
-    subject: '',// Subject query param.  Must be passed to component, so can be reflected in URL,
+    sources: '', // Sources query param. Must be passed to component, so can be reflected in the URL
+    start: '', // Start query param. Must be passed to component, so can be reflected in the URL
+    subject: '', // Subject query param.  Must be passed to component, so can be reflected in URL
+    tags: '', // Tags query param.  Must be passed to component, so can be reflected in URL
+    themeProvider: Ember.computed('model', function() { // Pulls the preprint provider from the already loaded model
+        let themeProvider = null;
+        this.get('model').forEach(provider => {
+            if (provider.id === this.get('theme.id')) {
+                themeProvider = provider;
+            }
+        });
+        return themeProvider;
+    }),
+    type: '', //Type query param. Must be passed to component, so can be reflected in URL
     _clearFilters() {
         this.set('activeFilters', {
             providers: [],
