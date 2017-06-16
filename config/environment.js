@@ -15,6 +15,7 @@ module.exports = function(environment) {
             authorizer: `authorizer:osf-${authorizationType}`,
             authenticator: `authenticator:osf-${authorizationType}`
         },
+        // Set to 'local' to use local assets at providerAssetsPath.
         providerAssetsURL: process.env.PROVIDER_ASSETS_URL || 'https://staging-cdn.osf.io/preprints-assets/',
         // path to local preprint provider assets (relative to public/assets/)
         providerAssetsPath: 'osf-assets/files/preprints-assets',
