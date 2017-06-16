@@ -6,7 +6,7 @@
         <form class="form">
             <div class="toggle-button">
                 <input id='copy' onchange={{action "chooseCopyToComponent" value="true"}} type="radio" name="createComponentDecision" checked={{eq convertOrCopy 'copy'}}>
-                <label class='wide-text-only' for="copy"><i class="fa fa-plus-circle"></i> {{t "components.convert-or-copy.copy"}}</label>
+                <label class='wide-text-only' for="copy"><i class="fa fa-plus-circle"></i> {{t-plus "components.convert-or-copy.copy"}}</label>
 
                 <input id='convert' onchange={{action "chooseConvertExisting"}} type="radio" name="createComponentDecision" checked={{eq convertOrCopy 'convert'}}>
                 <label class='wide-text-only' for="convert">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="p-t-md text-right">
-                    <button {{action "chooseCopyToComponent"}} class="btn btn-default btn-wrap m-t-xs">{{t "components.convert-or-copy.create_a_new_component"}} </button>
+                    <button {{action "chooseCopyToComponent"}} class="btn btn-default btn-wrap m-t-xs">{{t-plus "components.convert-or-copy.create_a_new_component"}} </button>
                     <button {{action "confirmConvert"}} class="btn btn-success btn-wrap m-t-xs">
                         {{if isTopLevelNode (t "components.convert-or-copy.continue_with_this_project") (t "components.convert-or-copy.continue_with_this_component")}}
                     </button>

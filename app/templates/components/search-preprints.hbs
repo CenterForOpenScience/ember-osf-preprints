@@ -1,6 +1,6 @@
 <div class="input-group input-group-lg">
     <input id="searchBox" type="search" class="form-control" placeholder={{if theme.provider.additionalProviders (t 'discover.search.repository_placeholder')(t "global.search_preprints") }}>
     <span class="input-group-btn">
-        <button class="btn btn-default" type="button" {{action "search" this}}>{{t "global.search"}}</button>
+        <button class="btn btn-default" type="button" {{action "search" this}}>{{t-plus "global.search"}}</button>
     </span>
 </div>

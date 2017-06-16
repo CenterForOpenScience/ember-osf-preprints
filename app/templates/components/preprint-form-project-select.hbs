@@ -23,11 +23,11 @@
                             {{/power-select}}
                         </div>
                     {{else}}
-                        <p class="m-t-md text-danger"> {{t "components.preprint-form-project-select.no_valid_existing_nodes"}} </p>
+                        <p class="m-t-md text-danger"> {{t-plus "components.preprint-form-project-select.no_valid_existing_nodes"}} </p>
                     {{/if}}
                 {{/if}}
                 <p class="text-muted text-smaller m-t-xs">
-                    {{t "components.preprint-form-project-select.existing_project_selector"}}
+                    {{t-plus "components.preprint-form-project-select.existing_project_selector"}}
                 </p>
             {{/preprint-form-body}}
         {{/preprint-form-section}}
@@ -43,11 +43,11 @@
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-3 col-sm-offset-3 text-center">
                                         <input id='existing' class="radio_item" onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
-                                        <label for="existing" class='choose-large'><i class="fa fa-cloud-upload"></i> {{t "components.preprint-form-project-select.upload_preprint"}}</label>
+                                        <label for="existing" class='choose-large'><i class="fa fa-cloud-upload"></i> {{t-plus "components.preprint-form-project-select.upload_preprint"}}</label>
                                     </div>
                                     <div class="col-xs-6 col-sm-3 text-center">
                                         <input id='newfile' class="radio_item" onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
-                                        <label class='choose-large' for="newfile"><i class="fa fa-th-list"></i>{{t "components.preprint-form-project-select.select_existing_file"}}</label>
+                                        <label class='choose-large' for="newfile"><i class="fa fa-th-list"></i>{{t-plus "components.preprint-form-project-select.select_existing_file"}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -95,8 +95,8 @@
                                             {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name)}}
                                         </form>
                                         <div class="text-center m-v-md">
-                                            <p> {{t "components.preprint-form-project-select.initiate_preprint_process"}} </p>
-                                            <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>{{t "submit.body.save_continue"}}</button>
+                                            <p> {{t-plus "components.preprint-form-project-select.initiate_preprint_process"}} </p>
+                                            <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>{{t-plus "submit.body.save_continue"}}</button>
                                         </div>
                                     {{/preprint-form-body}}
                                 {{/preprint-form-section}}
@@ -144,7 +144,7 @@
         {{else}}
             {{#unless (eq currentState 'start')}}
                 <p class="alert alert-danger" role="alert">
-                    {{t "components.preprint-form-project-select.admin_only"}}
+                    {{t-plus "components.preprint-form-project-select.admin_only"}}
                 </p>
             {{/unless}}
         {{/if}}
@@ -152,6 +152,6 @@
 {{/cp-panels}}
 {{#unless nodeLocked}}
     <div class="p-t-xs">
-        <button class="btn btn-default" {{action changeInitialState startState}}>{{t "global.back"}}</button>
+        <button class="btn btn-default" {{action changeInitialState startState}}>{{t-plus "global.back"}}</button>
     </div>
 {{/unless}}

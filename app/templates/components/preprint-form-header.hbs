@@ -4,9 +4,9 @@
 
 <div class="section-header">
     {{#if (eq name 'location_of_preprint')}}
-        <span class='text-muted'> {{t (concat "components.preprint-form-header.name." name)}} </span>
+        <span class='text-muted'> {{t-plus (concat "components.preprint-form-header.name." name)}} </span>
     {{else}}
-        {{t (concat "components.preprint-form-header.name." name)}}
+        {{t-plus (concat "components.preprint-form-header.name." name)}}
     {{/if}}
 </div>
 
@@ -16,7 +16,7 @@
         (and basicsSaveState (eq name 'Basics'))
         (and authorsSaveState (eq name 'Authors'))
         (and disciplineSaveState (eq name 'Discipline')) )}}
-        <span class="text-success text-smaller m-r-md"> {{t "components.preprint-form-header.changes_saved"}} </span>
+        <span class="text-success text-smaller m-r-md"> {{t-plus "components.preprint-form-header.changes_saved"}} </span>
     {{/if}}
     {{#if showValidationIndicator}}
         {{fa-icon 'fa-floppy-o'}}
@@ -26,10 +26,10 @@
 {{#if (and (not isOpen) (eq name 'Upload'))}}
     <div class="m-t-md preprint-header-preview">
         {{#if preprintNode}}
-            <p><em class="m-r-md"> {{t "components.preprint-form-header.location"}}: </em> {{get-ancestor-descriptor preprintNode}} {{preprintNode.title}}</p>
+            <p><em class="m-r-md"> {{t-plus "components.preprint-form-header.location"}}: </em> {{get-ancestor-descriptor preprintNode}} {{preprintNode.title}}</p>
         {{/if}}
-        <p><em class="m-r-md"> {{t "components.preprint-form-header.file"}}: </em> {{preprintFile.name}} <em>(Version: {{preprintFile.currentVersion}})</em>  </p>
-        <p><em class="m-r-md"> {{t "components.preprint-form-header.title"}}: </em> {{preprintTitle}} </p>
+        <p><em class="m-r-md"> {{t-plus "components.preprint-form-header.file"}}: </em> {{preprintFile.name}} <em>(Version: {{preprintFile.currentVersion}})</em>  </p>
+        <p><em class="m-r-md"> {{t-plus "components.preprint-form-header.title"}}: </em> {{preprintTitle}} </p>
     </div>
 {{/if}}
 
@@ -37,10 +37,10 @@
     <div class="m-t-md preprint-header-preview">
         {{#if (or isValidationActive editMode)}}
             {{#if (eq name 'Basics')}}
-                <p><em class="m-r-md"> {{t "global.license"}}: </em> {{if license license.name (t "global.none")}} </p>
-                <p><em class="m-r-md"> {{t "global.doi"}}: </em> {{if doi doi (t "global.none")}} </p>
+                <p><em class="m-r-md"> {{t-plus "global.license"}}: </em> {{if license license.name (t "global.none")}} </p>
+                <p><em class="m-r-md"> {{t-plus "global.doi"}}: </em> {{if doi doi (t "global.none")}} </p>
                 <p>
-                    <em class="m-r-md"> {{t "global.tags"}}: </em>
+                    <em class="m-r-md"> {{t-plus "global.tags"}}: </em>
                     {{#if tags}}
                         <ul class="comma-list">
                             {{#each tags as |tag|~}}
@@ -48,10 +48,10 @@
                             {{~/each}}
                         </ul>
                     {{else}}
-                        <span>{{t "global.none"}}</span>
+                        <span>{{t-plus "global.none"}}</span>
                     {{/if}}
                 </p>
-                <em class="m-r-md"> {{t "global.abstract"}}: </em>
+                <em class="m-r-md"> {{t-plus "global.abstract"}}: </em>
                 <p class="abstract">{{if abstract abstract (t "global.none")}} </p>
             {{else if (eq name 'Discipline')}}
                 {{#if subjects}}
@@ -59,7 +59,7 @@
                         <span class="subject-preview">{{subject.text}} </span>
                     {{/each}}
                 {{else}}
-                    <span>{{t "global.none"}}</span>
+                    <span>{{t-plus "global.none"}}</span>
                 {{/if}}
             {{else if (eq name 'Authors')}}
                 <ul class="author-preview comma-list">
@@ -106,23 +106,23 @@
             {{#if (eq convertOrCopy 'convert')}}
                 <p>
                     {{#if isTopLevelNode}}
-                        {{t "global.convert_project"}}
+                        {{t-plus "global.convert_project"}}
                     {{else}}
-                        {{t "global.convert_component"}}
+                        {{t-plus "global.convert_component"}}
                     {{/if}}
                 </p>
             {{/if}}
 
             {{#if (eq convertOrCopy 'copy')}}
                 <p>
-                    {{t "global.copy_inside_project"}}
+                    {{t-plus "global.copy_inside_project"}}
                 </p>
             {{/if}}
         {{/if}}
 
         {{#if (eq name 'finalize_upload')}}
             {{#if nodeTitle}}
-                 <p>{{t "components.preprint-form-header.title"}}: {{nodeTitle}} </p>
+                 <p>{{t-plus "components.preprint-form-header.title"}}: {{nodeTitle}} </p>
             {{/if}}
         {{/if}}
 
@@ -134,7 +134,7 @@
 
 
         {{#if (and (is-section-editable name) (or editMode (or (not showValidationIndicator) isValidationActive)))}}
-            <i class="text-smaller m-t-md">{{t "components.preprint-form-header.click_edit"}}</i>
+            <i class="text-smaller m-t-md">{{t-plus "components.preprint-form-header.click_edit"}}</i>
         {{/if}}
     </div>
 {{/if}}

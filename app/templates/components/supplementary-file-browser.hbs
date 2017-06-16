@@ -8,11 +8,11 @@
     </div>
     <div class="col-sm-6 text-nowrap supplemental-downloads">
         {{#if (eq selectedFile.id preprint.primaryFile.id)}}
-            <a class="btn btn-default btn-sm" href={{fileDownloadURL}} onclick={{action dualTrackNonContributors 'link' 'Content - Download' selectedFile.links.download true}}> {{t "content.share.download_preprint"}}</a>
+            <a class="btn btn-default btn-sm" href={{fileDownloadURL}} onclick={{action dualTrackNonContributors 'link' 'Content - Download' selectedFile.links.download true}}> {{t-plus "content.share.download_preprint"}}</a>
         {{else}}
-            <a class="btn btn-default btn-sm" href={{fileDownloadURL}} onclick={{action dualTrackNonContributors 'link' 'Content - Download Supplementary File' selectedFile.links.download false}}> {{t "content.share.download_file"}} </a>
+            <a class="btn btn-default btn-sm" href={{fileDownloadURL}} onclick={{action dualTrackNonContributors 'link' 'Content - Download Supplementary File' selectedFile.links.download false}}> {{t-plus "content.share.download_file"}} </a>
         {{/if}}
-        <span class="p-sm"> {{t "content.version"}}: {{selectedFile.currentVersion}}</span>
+        <span class="p-sm"> {{t-plus "content.version"}}: {{selectedFile.currentVersion}}</span>
     </div>
 </div>
 
@@ -34,7 +34,7 @@
                         {{/if}}
                         {{#if (eq preprint.primaryFile.id supplement.id)}}
                             <i style="margin-top: -4px;" class="fa fa-file-text fa-2x p-b-xs preprint-image" aria-hidden="true"></i>
-                            <p class="hidden-xs" style="font-size: 75%; margin-bottom: -10px">{{t "components.supplementary-file-browser.primary"}}</p>
+                            <p class="hidden-xs" style="font-size: 75%; margin-bottom: -10px">{{t-plus "components.supplementary-file-browser.primary"}}</p>
                         {{else}}
                             <i style="color:gray" class="fa fa-file-text fa-2x p-b-xs" aria-hidden="true"></i>
                         {{/if}}

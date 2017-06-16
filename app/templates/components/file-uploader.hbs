@@ -17,14 +17,14 @@
 
     <div class="p-t-xs pull-right">
         <button class="btn btn-default" {{action changeInitialState startState}}>Back</button>
-        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "submit.body.save_continue"}}</button>
+        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t-plus "submit.body.save_continue"}}</button>
     </div>
 {{else}}
     {{#preprint-form-section editMode=editMode class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}  {{!UPLOAD NEW FILE SECTION}}
         {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false}}
         {{#preprint-form-body}}
             {{#if nodeLocked}}
-                <p class='text-muted m-v-sm text-smaller'> {{t "components.file-uploader.update_version"}}</p>
+                <p class='text-muted m-v-sm text-smaller'> {{t-plus "components.file-uploader.update_version"}}</p>
             {{else}}
                 <div class="m-t-sm">
                     <form class="form">
@@ -63,8 +63,8 @@
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
             <div class="m-v-md text-center">
-                <p>{{t "components.preprint-form-project-select.edit_organize_section"}}  </p>
-                <button {{action "discardUploadChanges"}} class="btn btn-default" disabled={{unless uploadChanged true}} >{{t "global.discard"}}</button>
+                <p>{{t-plus "components.preprint-form-project-select.edit_organize_section"}}  </p>
+                <button {{action "discardUploadChanges"}} class="btn btn-default" disabled={{unless uploadChanged true}} >{{t-plus "global.discard"}}</button>
                 <button class="btn btn-primary" disabled={{not (and hasFile titleValid)}} {{action 'uploadFileToExistingNode'}}>Save and continue</button>
             </div>
         {{else}}
@@ -88,7 +88,7 @@
                         </form>
 
                         <div class="row text-center m-v-md">
-                            <p> {{t "components.preprint-form-project-select.initiate_preprint_process"}} </p>
+                            <p> {{t-plus "components.preprint-form-project-select.initiate_preprint_process"}} </p>
                             <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>Save and continue</button>
                         </div>
                     {{/preprint-form-body}}
