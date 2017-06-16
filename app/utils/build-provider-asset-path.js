@@ -1,7 +1,6 @@
-import config from 'ember-get-config';
 import pathJoin from '../utils/path-join';
 
-export default function buildProviderAssetPath(providerId, assetName, isDomain) {
+export default function buildProviderAssetPath(config, providerId, assetName, isDomain) {
     if (config.providerAssetsURL != 'local') {
         return pathJoin(config.providerAssetsURL, providerId, assetName);
     }

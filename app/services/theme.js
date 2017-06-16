@@ -94,7 +94,7 @@ export default Ember.Service.extend({
             logo.path = pathJoin('/preprints', logo.path);
         } else {
             logo = {
-                path: buildProviderAssetPath(id, 'sharing.png', this.get('isDomain')),
+                path: buildProviderAssetPath(config, id, 'sharing.png', this.get('isDomain')),
                 type: 'image/png',
                 width: 1200,
                 height: 630
