@@ -6,7 +6,7 @@ export default function buildProviderAssetPath(providerId, assetName, isDomain) 
         return pathJoin(config.providerAssetsURL, providerId, assetName);
     }
     if (config.ASSET_SUFFIX) {
-        assetName = assetName.replace(/(\.[^\.]+)$/, function(match, $1) { return `-${config.ASSET_SUFFIX}${$1}`; });
+        assetName = assetName.replace(/\.[^\.]+$/, `-${config.ASSET_SUFFIX}$&`);
     }
     const providerAssetPath = 'assets/osf-assets/files/preprints-assets';
     if (isDomain) {
