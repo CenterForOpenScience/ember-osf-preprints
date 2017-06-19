@@ -37,8 +37,8 @@
     <div class="m-t-md preprint-header-preview">
         {{#if (or isValidationActive editMode)}}
             {{#if (eq name 'Basics')}}
-                <p><em class="m-r-md"> {{t-plus "global.license"}}: </em> {{if license license.name (t "global.none")}} </p>
-                <p><em class="m-r-md"> {{t-plus "global.doi"}}: </em> {{if doi doi (t "global.none")}} </p>
+                <p><em class="m-r-md"> {{t-plus "global.license"}}: </em> {{if license license.name (t-plus "global.none")}} </p>
+                <p><em class="m-r-md"> {{t-plus "global.doi"}}: </em> {{if doi doi (t-plus "global.none")}} </p>
                 <p>
                     <em class="m-r-md"> {{t-plus "global.tags"}}: </em>
                     {{#if tags}}
@@ -52,7 +52,7 @@
                     {{/if}}
                 </p>
                 <em class="m-r-md"> {{t-plus "global.abstract"}}: </em>
-                <p class="abstract">{{if abstract abstract (t "global.none")}} </p>
+                <p class="abstract">{{if abstract abstract (t-plus "global.none")}} </p>
             {{else if (eq name 'Discipline')}}
                 {{#if subjects}}
                     {{#each subjects as |subject|}}

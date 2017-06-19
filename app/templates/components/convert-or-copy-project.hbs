@@ -1,5 +1,5 @@
 <p class="text-muted text-smaller">
-    {{if isTopLevelNode (t "components.convert-or-copy.organize_language_project") (t "components.convert-or-copy.organize_language_component")}}
+    {{if isTopLevelNode (t-plus "components.convert-or-copy.organize_language_project") (t-plus "components.convert-or-copy.organize_language_component")}}
 </p>
 <div id='convertExistingOrCreateComponent'>
     <div class="row text-center m-v-md">
@@ -11,7 +11,7 @@
                 <input id='convert' onchange={{action "chooseConvertExisting"}} type="radio" name="createComponentDecision" checked={{eq convertOrCopy 'convert'}}>
                 <label class='wide-text-only' for="convert">
                     <i class="fa fa-cube"></i>
-                    {{if isTopLevelNode (t "components.convert-or-copy.convert_project") (t "components.convert-or-copy.convert_component")}}
+                    {{if isTopLevelNode (t-plus "components.convert-or-copy.convert_project") (t-plus "components.convert-or-copy.convert_component")}}
                 </label>
             </div>
         </form>
@@ -29,17 +29,17 @@
                     </div>
                     <div class="col-xs-10">
                         <h4 class="m-b-md">
-                            {{if isTopLevelNode (t "components.convert-or-copy.header_convert_confirmation_project") (t "components.convert-or-copy.header_convert_confirmation_component")}}
+                            {{if isTopLevelNode (t-plus "components.convert-or-copy.header_convert_confirmation_project") (t-plus "components.convert-or-copy.header_convert_confirmation_component")}}
                         </h4>
                         <p class="m-b-md">
-                            {{if isTopLevelNode (t "components.convert-or-copy.convert_confirmation_details_project") (t "components.convert-or-copy.convert_confirmation_details_component")}}
+                            {{if isTopLevelNode (t-plus "components.convert-or-copy.convert_confirmation_details_project") (t-plus "components.convert-or-copy.convert_confirmation_details_component")}}
                         </p>
                     </div>
                 </div>
                 <div class="p-t-md text-right">
                     <button {{action "chooseCopyToComponent"}} class="btn btn-default btn-wrap m-t-xs">{{t-plus "components.convert-or-copy.create_a_new_component"}} </button>
                     <button {{action "confirmConvert"}} class="btn btn-success btn-wrap m-t-xs">
-                        {{if isTopLevelNode (t "components.convert-or-copy.continue_with_this_project") (t "components.convert-or-copy.continue_with_this_component")}}
+                        {{if isTopLevelNode (t-plus "components.convert-or-copy.continue_with_this_project") (t-plus "components.convert-or-copy.continue_with_this_component")}}
                     </button>
                 </div>
             </div>

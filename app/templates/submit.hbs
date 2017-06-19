@@ -14,7 +14,7 @@
     <div class="container">
         <div class="row m-t-lg">
             <div class="col-xs-12 col-md-10 col-md-offset-1 ">
-                <p>{{if editMode (t "submit.body.p_edit") (t "submit.body.p_add" name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}</p>
+                <p>{{if editMode (t-plus "submit.body.p_edit") (t-plus "submit.body.p_add" name=(if theme.isProvider theme.provider.name (t-plus "global.brand_name")))}}</p>
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
@@ -164,7 +164,7 @@
                                         <div>
                                             <label>{{t-plus "submit.body.basics.doi.label"}}:</label>
                                             <form onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
-                                                {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
+                                                {{validated-input model=this valuePath='basicsDOI' placeholder=(t-plus "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
                                             </form>
                                         </div>
                                         <div class="clearfix">
@@ -178,7 +178,7 @@
                                             <span class="required">{{t-plus "global.abstract"}}:</span>
                                         </label>
                                         <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Abstract Text Change') (action 'track' 'input' 'onchange' 'Submit - Abstract Text Change')}}>
-                                            {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
+                                            {{validated-input model=this valuePath='basicsAbstract' placeholder=(t-plus "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
                                         </form>
                                     </div>
                                 </div>
@@ -238,7 +238,7 @@
                                     <div>
                                         <div class="text-center">
                                             <p>
-                                                {{t-plus "submit.body.update.paragraph" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
+                                                {{t-plus "submit.body.update.paragraph" name=(if theme.isProvider theme.provider.name (t-plus "global.brand_name"))}}
                                             </p>
                                             <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'savePreprint'}}>{{t-plus "global.complete"}}</button>
                                         </div>
@@ -248,18 +248,18 @@
                                 {{#cp-panel-body}}
                                     <div>
                                         <p>
-                                            {{t-plus "submit.body.submit.paragraph.line1" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
+                                            {{t-plus "submit.body.submit.paragraph.line1" name=(if theme.isProvider theme.provider.name (t-plus "global.brand_name"))}}
                                         </p>
                                         <p>
-                                            {{t-plus "submit.body.submit.paragraph.line2" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
+                                            {{t-plus "submit.body.submit.paragraph.line2" name=(if theme.isProvider theme.provider.name (t-plus "global.brand_name"))}}
                                         </p>
                                         <div class="text-center">
                                             {{#unless allSectionsValid}}
                                                 <p class="m-t-md"> <strong>{{t-plus "submit.body.submit.invalid.description"}}</strong></p>
-                                                <p class="text-danger"> {{unless (and savedTitle savedFile) (t "submit.body.submit.invalid.upload")}}</p>
-                                                <p class="text-danger"> {{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
-                                                <p class="text-danger"> {{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
-                                                <p class="text-danger"> {{unless authorsValid (t "global.authors")}}</p>
+                                                <p class="text-danger"> {{unless (and savedTitle savedFile) (t-plus "submit.body.submit.invalid.upload")}}</p>
+                                                <p class="text-danger"> {{unless savedSubjects (t-plus "submit.body.submit.invalid.discipline")}}</p>
+                                                <p class="text-danger"> {{unless savedAbstract (t-plus "submit.body.submit.invalid.basics")}}</p>
+                                                <p class="text-danger"> {{unless authorsValid (t-plus "global.authors")}}</p>
                                             {{/unless}}
                                             <p> </p>
                                             <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>{{t-plus "global.share"}}</button>

@@ -44,7 +44,7 @@
         <div class="container"> {{!CONTAINER DIV}}
             <div class="row p-v-md">{{!SUBJECTS ROW}}
                 <div class="col-xs-12">
-                    <h2>{{if theme.provider.additionalProviders (t "index.subjects.heading" browse-by="provider") (t "index.subjects.heading" browse-by="subject")}}</h2>
+                    <h2>{{if theme.provider.additionalProviders (t-plus "index.subjects.heading" browse-by="provider") (t-plus "index.subjects.heading" browse-by="subject")}}</h2>
                     <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
                         {{#if theme.provider.additionalProviders}}
                             {{additional-provider-list additionalProviders=theme.provider.additionalProviders}}

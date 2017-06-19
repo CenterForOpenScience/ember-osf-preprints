@@ -1,4 +1,4 @@
-{{title (t (concat translateKey '.heading'))}}
+{{title (t-plus (concat translateKey '.heading'))}}
 
 <div class="container">
     <div class="row">
@@ -19,7 +19,7 @@
                 class="btn btn-primary m-t-md"
                 invokeAction=(action "click" "link" (concat label " - Go to Index"))
             }}
-                {{t-plus 'components.error-page.go_to' brand=(t (if theme.isProvider "global.provider_brand" "global.brand") name=theme.provider.name)}}
+                {{t-plus 'components.error-page.go_to' brand=(t-plus (if theme.isProvider "global.provider_brand" "global.brand") name=theme.provider.name)}}
             {{/link-to}}
         </div>
     </div>

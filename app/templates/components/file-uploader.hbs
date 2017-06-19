@@ -6,7 +6,7 @@
         buildUrl=(action 'getUrl')
         complete=(action 'complete')
         preUpload=(action 'preUpload')
-        defaultMessage=(t 'components.file-uploader.dropzone_message')
+        defaultMessage=(t-plus 'components.file-uploader.dropzone_message')
         maxfilesexceeded=(action 'maxfilesexceeded')
     }}
     {{#if hasFile}}
@@ -45,7 +45,7 @@
                 buildUrl=(action 'getUrl')
                 complete=(action 'complete')
                 preUpload=(action 'preUpload')
-                defaultMessage=(t 'components.file-uploader.dropzone_message')
+                defaultMessage=(t-plus 'components.file-uploader.dropzone_message')
                 maxfilesexceeded=(action 'maxfilesexceeded')
             }}
         {{/preprint-form-body}}
@@ -56,7 +56,7 @@
             {{#preprint-form-section editMode=editMode class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}} {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
                 {{preprint-form-header nodeTitle=nodeTitle name='title_of_preprint' showValidationIndicator=false}}
                 {{#preprint-form-body}}
-                    <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
+                    <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t-plus "components.preprint-form-project-select.edit_preprint_title_project") (t-plus "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                     <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Edit title') (action 'track' 'input' 'onchange' 'Submit - Edit title')}}>
                         {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action 'uploadFileToExistingNode')}}
                     </form>
@@ -80,7 +80,7 @@
                     {{#preprint-form-body}}
                         {{#if (eq convertOrCopy 'convert')}}
                             {{#if convertProjectConfirmed}}
-                                <label class="text-muted title-label text-smaller"> {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
+                                <label class="text-muted title-label text-smaller"> {{if isTopLevelNode (t-plus "components.preprint-form-project-select.edit_preprint_title_project") (t-plus "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                             {{/if}}
                         {{/if}}
                         <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Connect preprint to existing project'}}>
