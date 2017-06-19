@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
         </button>
         {{#link-to (route-prefix 'index') slug=theme.id class="navbar-brand" invokeAction=(action "click" "link" "Navbar - Brand")~}}
-            <span class="navbar-image" style="background-image: url('{{theme.assetsPath}}square_color_transparent.png')"></span>
+            <span class="navbar-image" style="background-image: url('{{providerAsset theme.id 'square_color_transparent.png'}}')"></span>
             <span class="navbar-title">{{model.name}} {{t-plus "global.preprints"}}</span>
         {{~/link-to}}
     </div>

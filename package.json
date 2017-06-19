@@ -13,7 +13,9 @@
     "check-style": "eslint .",
     "test": "yarn run check-style && ember test",
     "test:cover": "COVERAGE=true yarn test",
-    "postinstall": "npm rebuild node-sass"
+    "postinstall": "npm rebuild node-sass",
+    "update-assets": "git submodule update --remote",
+    "update-assets-hotfix": "git checkout -b hotfix/update-assets && npm run update-assets && git ci public/assets/osf-assets -m 'Updated assets'"
   },
   "repository": {
     "type": "git",
@@ -33,7 +35,7 @@
     "ember-autosave": "2.0.1",
     "ember-bootstrap": "0.7.2",
     "ember-browserify": "^1.1.13",
-    "ember-cli": "2.10.0",
+    "ember-cli": "2.11.1",
     "ember-cli-app-version": "1.0.0",
     "ember-cli-babel": "^5.1.6",
     "ember-cli-bootstrap-sassy": "0.5.3",
@@ -51,6 +53,7 @@
     "ember-cli-qunit": "3.0.0",
     "ember-cli-release": "0.2.9",
     "ember-cli-sass": "5.3.1",
+    "ember-cli-shims": "1.0.2",
     "ember-cli-sri": "2.1.0",
     "ember-cli-template-lint": "0.4.12",
     "ember-cli-test-loader": "1.1.0",
@@ -68,7 +71,7 @@
     "ember-link-action": "0.0.35",
     "ember-load-initializers": "0.5.1",
     "ember-metrics": "0.6.3",
-    "ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#5bca63ba333aac4339d4119872e34490bf907fde",
+    "ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#fee345f45b99ea29644ce0199d1aa89f89718cf7",
     "ember-page-title": "3.0.6",
     "ember-power-select": "1.0.0-beta.7",
     "ember-read-more": "0.0.13",
