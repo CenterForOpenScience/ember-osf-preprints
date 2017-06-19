@@ -23,8 +23,22 @@ You will need the following things properly installed on your computer.
 ## Installation
 
 * `git clone` this repository
+  * To pull in local preprint provider assets as well, use `git clone --recursive` instead (assuming you are using git >= 1.6.5).
 * `yarn install --pure-lockfile`
 * `bower install`
+
+## Preprint Provider Assets
+
+If you will be using local preprint provider assets (rather than the CDN):
+
+1. If you did not clone the repository using --recursive, run: `git submodule update --init --recursive`
+2. Set the PROVIDER_ASSETS_URL environment variable to 'local'
+
+### Updating Assets
+
+* To refresh your local assets, run: `git submodule update`
+* To update the assets submodule to the latest assets, run: `npm run update-assets`
+* To update to the latest assets and create a hotfix, run: `npm run updates-assets-hotfix`
 
 ## Running / Development
 For local development, this is designed to run alongside (and from within) the flask application for osf.io.
