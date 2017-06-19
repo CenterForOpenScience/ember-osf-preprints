@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Analytics from 'ember-osf/mixins/analytics';
-import config from 'ember-get-config';
 /**
  * @module ember-preprints
  * @submodule components
@@ -28,7 +27,6 @@ export default Ember.Component.extend(Analytics, {
     numProviders: Ember.computed('providers', function() {
         return this.get('providers').length;
     }),
-    providerAssetsURL: config.providerAssetsURL,
     numSlides: Ember.computed('numProviders', 'itemsPerSlide', function() {
         return Math.ceil(this.get('numProviders') / this.get('itemsPerSlide'));
     }),
