@@ -33,7 +33,7 @@ export default {
         preprints,
         brand,
         brand_name: 'OSF',
-        provider_brand: `{{_plus.name}} {{preprintWords.preprints}}`,
+        provider_brand: `{{name}} {{preprintWords.preprints}}`,
         add_preprint: `Add a {{preprintWords.preprint}}`,
         title: `Title`,
         search_preprints: `Search {{preprintWords.preprints}}...`,
@@ -124,7 +124,7 @@ export default {
             example: `See an example`
         },
         subjects: {
-            heading: `Browse <small>by {{_plus.browse-by}}</small>`
+            heading: `Browse <small>by {{browse-by}}</small>`
         },
         services: {
             top: {
@@ -151,7 +151,7 @@ export default {
     // Error pages
     'page-not-found': { // 404
         heading: `Page not found`,
-        message: `The page you were looking for is not found on the {{_plus.brand}} service.`
+        message: `The page you were looking for is not found on the {{brand}} service.`
     },
     'page-forbidden': { // 403
         heading: `Forbidden`,
@@ -165,7 +165,7 @@ export default {
         add_heading: `Add {{preprintWords.Preprint}}`,
         edit_heading: `Edit {{preprintWords.Preprint}}`,
         body: {
-            p_add: `Follow these five easy steps to add your {{preprintWords.preprint}} to the {{_plus.name}} {{preprintWords.preprint}} repository.`,
+            p_add: `Follow these five easy steps to add your {{preprintWords.preprint}} to the {{name}} {{preprintWords.preprint}} repository.`,
             p_edit: `Edit your {{preprintWords.preprint}} sections below.`,
             upload: `Upload new {{preprintWords.preprint}}`,
             connect: `Connect {{preprintWords.preprint}} to existing OSF project`,
@@ -194,7 +194,7 @@ export default {
             },
             submit: {
                 paragraph: {
-                    line1: `When you share this preprint, it will become publicly accessible via {{_plus.name}} {{preprintWords.Preprints}}. You will be unable to delete the {{preprintWords.preprint}} file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your {{preprintWords.preprint}} such as supplementary materials, appendices, data, or protocols. If posting this {{preprintWords.preprint}} is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
+                    line1: `When you share this preprint, it will become publicly accessible via {{name}} {{preprintWords.Preprints}}. You will be unable to delete the {{preprintWords.preprint}} file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your {{preprintWords.preprint}} such as supplementary materials, appendices, data, or protocols. If posting this {{preprintWords.preprint}} is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
                     line2: `By clicking Share, you confirm that all Contributors agree with sharing this preprint, and that you have the right to share it.`
                 },
                 invalid: {
@@ -205,7 +205,7 @@ export default {
                 }
             },
             update: {
-                paragraph: `Edits to this {{preprintWords.preprint}} will update both the {{preprintWords.preprint}} and the OSF project and will become publicly accessible via {{_plus.name}} {{preprintWords.Preprints}}.`
+                paragraph: `Edits to this {{preprintWords.preprint}} will update both the {{preprintWords.preprint}} and the OSF project and will become publicly accessible via {{name}} {{preprintWords.Preprints}}.`
             },
             save_continue: `Save and continue`,
         },
@@ -257,7 +257,7 @@ export default {
         },
         'error-page': {
             email_message: `If this should not have occurred and the issue persists, please report it to`,
-            go_to: `Go to {{_plus.brand}}`
+            go_to: `Go to {{brand}}`
         },
         'file-uploader': {
             dropzone_message: `Drop {{preprintWords.preprint}} file here to upload`,
@@ -282,7 +282,7 @@ export default {
         },
         'permission-language':{
             arxiv_trademark_license,
-            arxiv_non_endorsement: `${arxiv_trademark_license} This license should not be understood to indicate endorsement of content on {{_plus.provider}} by Cornell University or arXiv.`,
+            arxiv_non_endorsement: `${arxiv_trademark_license} This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.`,
             no_trademark: ``
         },
         'preprint-form-authors': {
