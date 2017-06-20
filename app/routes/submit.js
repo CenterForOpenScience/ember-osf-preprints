@@ -3,7 +3,7 @@ import Ember from 'ember';
 import CasAuthenticatedRouteMixin from 'ember-osf/mixins/cas-authenticated-route';
 import ResetScrollMixin from '../mixins/reset-scroll';
 import SetupSubmitControllerMixin from '../mixins/setup-submit-controller';
-import Analytics from '../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
 
 /**
  * @module ember-preprints
@@ -23,6 +23,13 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, CasAuthenticatedR
         return this.store.createRecord('preprint', {
             subjects: []
         });
+    },
+    afterModel() {
+        return this.get('theme.provider').then(provider => {
+            if (!provider.get('allowSubmissions')) {
+                this.replaceWith('page-not-found');
+            }
+        })
     },
     setupController(controller, model) {
         this.setupSubmitController(controller, model);

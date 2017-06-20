@@ -1,9 +1,9 @@
 import Ember from 'ember';
+import DS from 'ember-data';
 import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
-import Analytics from '../../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
-import fileDownloadPath from '../../utils/file-download-path';
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -53,9 +53,9 @@ function queryStringify(queryParams) {
 export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(),
     fullScreenMFR: false,
+    currentUser: Ember.inject.service(),
     expandedAuthors: true,
     showLicenseText: false,
-    fileDownloadURL: '',
     expandedAbstract: navigator.userAgent.includes('Prerender'),
     queryParams: {
         chosenFile: 'file'
@@ -114,38 +114,34 @@ export default Ember.Controller.extend(Analytics, {
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
 
-    hasTag: Ember.computed('node.tags', function() {
-        return (this.get('node.tags') || []).length;
-    }),
+    hasTag: Ember.computed.bool('node.tags.length'),
 
-    getAuthors: Ember.observer('node', function() {
+    authors: Ember.computed('node', function() {
         // Cannot be called until node has loaded!
         const node = this.get('node');
-        if (!node) return [];
+
+        if (!node)
+            return [];
 
         const contributors = Ember.A();
-        loadAll(node, 'contributors', contributors).then(() =>
-            this.set('authors', contributors)
-        );
+
+        return DS.PromiseArray.create({
+            promise: loadAll(node, 'contributors', contributors)
+                .then(() => contributors)
+        });
     }),
 
     doiUrl: Ember.computed('model.doi', function() {
         return `https://dx.doi.org/${this.get('model.doi')}`;
     }),
 
-    fullLicenseText: Ember.computed('model.license', function() {
-        let text = this.get('model.license.text');
-        if (text) {
-            text = text.replace(/({{year}})/g, this.get('model.licenseRecord').year || '');
-            text = text.replace(/({{copyrightHolders}})/g, this.get('model.licenseRecord').copyright_holders ? this.get('model.licenseRecord').copyright_holders.join(',') : false || '');
-        }
-        return text;
-    }),
+    fullLicenseText: Ember.computed('model.license.text', 'model.licenseRecord', function() {
+        const text = this.get('model.license.text') || '';
+        const {year = '', copyright_holders = []} = this.get('model.licenseRecord');
 
-    _fileDownloadURL: Ember.observer('model.primaryFile', function() {
-        this.get('model.primaryFile').then(file => {
-            this.set('fileDownloadURL', fileDownloadPath(file, this.get('node')));
-        });
+        return text
+            .replace(/({{year}})/g, year)
+            .replace(/({{copyrightHolders}})/g, copyright_holders.join(', '));
     }),
 
     hasShortenedDescription: Ember.computed('node.description', function() {
@@ -173,7 +169,7 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - Content - License ${licenseState}`
+                    label: `Content - License ${licenseState}`
                 });
         },
         expandMFR() {
@@ -184,29 +180,28 @@ export default Ember.Controller.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - Content - MFR ${beforeState}`
+                    label: `Content - MFR ${beforeState}`
                 });
-        },
-        // Unused
-        expandAuthors() {
-            this.toggleProperty('expandedAuthors');
         },
         expandAbstract() {
             this.toggleProperty('expandedAbstract');
         },
         // Metrics are handled in the component
         chooseFile(fileItem) {
-            this.set('chosenFile', fileItem.get('id'));
-            this.set('activeFile', fileItem);
+            this.setProperties({
+                chosenFile: fileItem.get('id'),
+                activeFile: fileItem
+            });
         },
-        shareLink(href, category, action, label) {
+        shareLink(href, category, action, label, extra) {
             const metrics = Ember.get(this, 'metrics');
 
             // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
             metrics.trackEvent({
                 category,
                 action,
-                label
+                label,
+                extra
             });
 
             if (label.includes('email'))
@@ -214,6 +209,57 @@ export default Ember.Controller.extend(Analytics, {
 
             window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
             return false;
+        },
+        // Sends Event to GA/Keen as normal. Sends second event to Keen under "non-contributor-preprint-downloads" collection
+        // to track non contributor preprint downloads specifically.
+        dualTrackNonContributors(category, label, url, primary) {
+            this.send('click', category, label, url); // Sends event to both Google Analytics and Keen.
+            const authors = this.get('authors');
+            let userIsContrib = false;
+
+            const eventData = {
+                download_info: {
+                    preprint: {
+                        type: 'preprint',
+                        id: this.get('model.id')
+                    },
+                    file: {
+                        id: primary ? this.get('model.primaryFile.id') : this.get('activeFile.id'),
+                        primaryFile: primary,
+                        version: primary ? this.get('model.primaryFile.currentVersion') : this.get('activeFile.currentVersion')
+                    }
+                },
+                interaction: {
+                    category: category,
+                    action: 'click',
+                    label: `${label} as Non-Contributor`,
+                    url: url
+                }
+            };
+
+            const keenPayload =  {
+                collection: 'non-contributor-preprint-downloads',
+                eventData: eventData,
+                node: this.get('node'),
+            };
+
+            this.get('currentUser').load()
+                .then(user => {
+                    if (user) {
+                        const userId = user.id;
+                        authors.forEach((author) => {
+                            if (author.get('userId') === userId) {
+                                userIsContrib = true;
+                            }
+                        });
+                    }
+                    if (!userIsContrib) {
+                        Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor
+                    }
+                })
+                .catch(() => {
+                    Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen for non-authenticated user
+                });
         }
     },
 });

@@ -65,9 +65,11 @@ export default {
     discover: {
         search: {
             heading: `Preprint Archive Search`,
+            heading_repository_search: `Repository Search`,
             paragraph: `powered by`,
             partner: `Partner Repositories`,
-            placeholder: `Search preprints...`
+            placeholder: `Search preprints...`,
+            repository_placeholder: `Search repository...`
         },
         sort_by: `Sort by`,
         sort_newest_oldest: `Modified Date (newest to oldest)`,
@@ -82,6 +84,10 @@ export default {
             refine: `Refine your search by`,
             providers: `Providers`,
             subject: `Subject`,
+            source: `Source`,
+            date: `Date`,
+            type: `Type`,
+            tag: `Tag`,
             box: {
                 paragraph: `Do you want to add your own research as a preprint?`,
                 button: `Add your preprint`
@@ -99,13 +105,12 @@ export default {
                 paragraph: `The <span class="f-w-lg">open</span> preprint repository network`
             },
             powered_by: `Powered by ${brand}`,
-            search: `{{count}} searchable preprints`,
             or: `or`,
             as_of: `as of`,
             example: `See an example`
         },
         subjects: {
-            heading: `Browse <small>by subject</small>`
+            heading: `Browse <small>by {{browse-by}}</small>`
         },
         services: {
             top: {
@@ -153,6 +158,7 @@ export default {
             file: `Preprint file`,
             title: `Preprint title`,
             subjects_description: `Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.`,
+            remove_subject_aria: `Remove subject`,
             basics: {
                 doi: {
                     label: `If published, DOI of associated journal article (optional)`
@@ -365,7 +371,7 @@ export default {
         'taxonomy-top-list': {
             // Nothing to translate
         },
-        'taxonomy-tree': {
+        'search-facet-taxonomy': {
             // Nothing to translate
         },
         'unregistered-contributor-form': {

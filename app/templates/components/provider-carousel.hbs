@@ -8,16 +8,16 @@
                         {{#if lightLogo}}
                             <a href="/preprints/{{provider.id}}"
                                 title={{provider.name}}
-                                onbeforeclick={{action 'click' 'link' (concat 'Index - Provider - ' provider.name)}}
+                                onclick={{action 'click' 'link' (concat 'Index - Provider Carousel - ' provider.name)}}
                                 >
-                                <div class="provider-logo provider-{{provider.id}}"></div>
+                                <div class="provider-logo provider-{{provider.id}}" style="background-image: url('{{providerAsset provider.id 'wide_white.png'}}')"></div>
                             </a>
                         {{else}}
                             <a href="/preprints/{{provider.id}}/discover"
                                 title={{provider.name}}
-                                onclick={{action 'click' 'link' (concat 'Preprints - Discover - Index ' provider.name)}}
+                                onclick={{action 'click' 'link' (concat 'Discover - Provider Carousel ' provider.name)}}
                             >
-                                <div class="discover-provider-logo provider-{{provider.id}}-dark"></div>
+                                <div class="discover-provider-logo provider-{{provider.id}}-dark" style="background-image: url('{{providerAsset provider.id 'wide_black.png'}}')"></div>
                             </a>
                         {{/if}}
                     </div>
@@ -36,5 +36,3 @@
         </a>
     {{/if}}
 </div>
-
-

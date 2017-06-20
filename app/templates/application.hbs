@@ -1,11 +1,16 @@
 {{title (t (if theme.isProvider 'global.provider_brand' 'global.brand') name=theme.provider.name) separator=(t 'application.separator')}}
 
 {{#if theme.isProvider}}
-    {{#if theme.stylesheet}}
-        <style>
-            @import url('{{theme.stylesheet}}');
-        </style>
-    {{/if}}
+    <style>
+        {{#if theme.isDomain}}
+            @import url('/assets/provider_styles.css');
+        {{else}}
+            @import url('/preprints/assets/provider_styles.css');
+        {{/if}}
+    </style>
+    <style>
+        @import url('{{providerAsset theme.id 'style.css'}}');
+    </style>
     {{preprint-navbar-branded model=theme.provider}}
 {{else}}
     {{osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login') hideSearch=true}}

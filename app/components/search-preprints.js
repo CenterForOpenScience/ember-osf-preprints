@@ -17,6 +17,7 @@ import Ember from 'ember';
  */
 export default Ember.Component.extend({
     metrics: Ember.inject.service(),
+    theme: Ember.inject.service(),
     actions: {
         search() {
             let query = Ember.$.trim(this.$('#searchBox').val());
@@ -26,7 +27,8 @@ export default Ember.Component.extend({
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Index - Search'
+                    label: 'Index - Search',
+                    extra: query
                 });
         }
     },
