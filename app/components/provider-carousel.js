@@ -28,7 +28,7 @@ export default Ember.Component.extend(Analytics, {
     editedProviders: Ember.computed('providers', function() {
         let newProviders = Ember.A()
         for (const provider of this.get('providers')) {
-          if (provider.id !== 'asu') {
+          if (provider && provider.get('id')!== 'asu') {
               newProviders.pushObject(provider)
           }
         }
