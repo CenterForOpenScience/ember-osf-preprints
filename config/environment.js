@@ -89,7 +89,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'mindrxiv',
-                    permissionLanguage: 'arxiv_non_endorsement'
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'lissa',
