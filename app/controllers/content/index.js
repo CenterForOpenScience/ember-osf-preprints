@@ -53,6 +53,8 @@ function queryStringify(queryParams) {
 export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(),
     fullScreenMFR: false,
+    currentUser: Ember.inject.service(),
+    expandedAuthors: true,
     showLicenseText: false,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
     queryParams: {
@@ -207,6 +209,57 @@ export default Ember.Controller.extend(Analytics, {
 
             window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
             return false;
+        },
+        // Sends Event to GA/Keen as normal. Sends second event to Keen under "non-contributor-preprint-downloads" collection
+        // to track non contributor preprint downloads specifically.
+        dualTrackNonContributors(category, label, url, primary) {
+            this.send('click', category, label, url); // Sends event to both Google Analytics and Keen.
+            const authors = this.get('authors');
+            let userIsContrib = false;
+
+            const eventData = {
+                download_info: {
+                    preprint: {
+                        type: 'preprint',
+                        id: this.get('model.id')
+                    },
+                    file: {
+                        id: primary ? this.get('model.primaryFile.id') : this.get('activeFile.id'),
+                        primaryFile: primary,
+                        version: primary ? this.get('model.primaryFile.currentVersion') : this.get('activeFile.currentVersion')
+                    }
+                },
+                interaction: {
+                    category: category,
+                    action: 'click',
+                    label: `${label} as Non-Contributor`,
+                    url: url
+                }
+            };
+
+            const keenPayload =  {
+                collection: 'non-contributor-preprint-downloads',
+                eventData: eventData,
+                node: this.get('node'),
+            };
+
+            this.get('currentUser').load()
+                .then(user => {
+                    if (user) {
+                        const userId = user.id;
+                        authors.forEach((author) => {
+                            if (author.get('userId') === userId) {
+                                userIsContrib = true;
+                            }
+                        });
+                    }
+                    if (!userIsContrib) {
+                        Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor
+                    }
+                })
+                .catch(() => {
+                    Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen for non-authenticated user
+                });
         }
     },
 });

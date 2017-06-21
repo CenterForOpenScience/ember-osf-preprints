@@ -7,13 +7,13 @@
                 {{!TITLE}}
                 <div class="text-center m-t-lg col-xs-12">
                     {{#if theme.isProvider}}
-                        <div class="provider-brand" style="background-image: url('{{theme.assetsPath}}wide_color.png"></div>
+                        <div class="provider-brand" style="background-image: url('{{providerAsset theme.id 'wide_color.png'}}')"></div>
                     {{else}}
                         <div class="provider-brand"></div>
                     {{/if}}
                     <p class="lead">
-                        <span>{{if theme.isProvider theme.provider.description (t "index.header.title.paragraph")}}</span>
                         {{#if theme.isProvider}}
+                            {{sanitize-html theme.provider.description "description"}}
                             <br>
                             <small>
                                 <a href="https://osf.io/preprints/" onbeforeclick={{action "click" "link" "Index - Powered By"}}>{{t "index.header.powered_by"}}</a>
@@ -104,7 +104,7 @@
         <div class="container">
             <div class="row">
                 {{#if (and theme.isProvider theme.provider.advisoryBoard.length)}}
-                    {{safe-markup theme.provider.advisoryBoard}}
+                    {{sanitize-html theme.provider.advisoryBoard "advisory-board"}}
                 {{else if (not theme.isProvider)}}
                     <div class="col-xs-12">
                         <h2>{{t "index.advisory.heading"}}</h2>

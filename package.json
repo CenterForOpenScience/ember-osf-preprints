@@ -13,7 +13,9 @@
     "check-style": "eslint .",
     "test": "yarn run check-style && ember test",
     "test:cover": "COVERAGE=true yarn test",
-    "postinstall": "npm rebuild node-sass"
+    "postinstall": "npm rebuild node-sass",
+    "update-assets": "git submodule update --remote",
+    "update-assets-hotfix": "git checkout -b hotfix/update-assets && npm run update-assets && git ci public/assets/osf-assets -m 'Updated assets'"
   },
   "repository": {
     "type": "git",
@@ -33,7 +35,7 @@
     "ember-autosave": "2.0.1",
     "ember-bootstrap": "0.7.2",
     "ember-browserify": "^1.1.13",
-    "ember-cli": "2.10.0",
+    "ember-cli": "2.11.1",
     "ember-cli-app-version": "1.0.0",
     "ember-cli-babel": "^5.1.6",
     "ember-cli-bootstrap-sassy": "0.5.3",
@@ -51,6 +53,7 @@
     "ember-cli-qunit": "3.0.0",
     "ember-cli-release": "0.2.9",
     "ember-cli-sass": "5.3.1",
+    "ember-cli-shims": "1.0.2",
     "ember-cli-sri": "2.1.0",
     "ember-cli-template-lint": "0.4.12",
     "ember-cli-test-loader": "1.1.0",
@@ -73,6 +76,7 @@
     "ember-power-select": "1.0.0-beta.7",
     "ember-read-more": "0.0.13",
     "ember-resolver": "2.1.0",
+    "ember-sanitize": "^2.0.2",
     "ember-sortable": "1.8.2",
     "ember-toastr": "1.4.1",
     "ember-truth-helpers": "1.2.0",

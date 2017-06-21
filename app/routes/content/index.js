@@ -155,9 +155,17 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 }
 
                 for (const contributor of contributors) {
-                    const givenName = contributor.get('users.givenName');
-                    const familyName = contributor.get('users.familyName');
-                    const fullName = contributor.get('users.fullName');
+                    let givenName = contributor.get('users.givenName');
+                    let familyName = contributor.get('users.familyName');
+                    let fullName = contributor.get('users.fullName');
+
+                    // If the contributor is unregistered, use the unregistered_contributor field for first/last/middle names
+                    if(contributor.get('unregisteredContributor')) {
+                        let unregisteredName = contributor.get('unregisteredContributor').split(" ");
+                        givenName = unregisteredName[0];
+                        familyName = unregisteredName.length > 1 ? unregisteredName.pop() : '';
+                        fullName = contributor.get('unregisteredContributor');
+                    }
 
                     openGraph.push(
                         ['og:type', 'article:author'],

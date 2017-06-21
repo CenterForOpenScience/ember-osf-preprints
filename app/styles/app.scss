@@ -107,16 +107,6 @@ ul.comma-list {
     color: black;
 }
 
-#downloadCount {
-    display: inline-block;
-}
-
-@media (max-width: 991px) {
-    .download_project, .social-div {
-        width: auto;
-    }
-}
-
 @media (max-width: 768px) {
     #providerCarousel {
         .carousel-control .icon-next, .carousel-control .icon-prev {
@@ -283,6 +273,15 @@ $logo-dir: 'img/provider_logos/';
 }
 
 /* VIEW page */
+
+.subject-preview {
+    display: inline-block;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    border: 1px solid #eee;
+    padding: 1px 7px;
+    margin-bottom: 4px;
+}
 
 .dark-overlay-header-background {
     background: #343333 url("img/dark-overlay.png") top center;
@@ -1140,16 +1139,6 @@ label.title-label {
         }
     }
 }
-
-.social-media-icons {
-    float: none !important;
-    white-space: nowrap;
-}
-
-.social-div {
-    margin-top: 5px;
-}
-
 
 .content-provider-logo {
     min-height: 80px;

@@ -59,6 +59,28 @@ export default Ember.Component.extend(Analytics, {
                 this.set('indexes', this.get('files').map(each => each.id));
             });
     }.observes('preprint'),
+
+    selectedFileChanged: Ember.observer('selectedFile', function() {
+        const eventData = {
+            file_views: {
+                preprint: {
+                    type: 'preprint',
+                    id: this.get('preprint.id')
+                },
+                file: {
+                    id: this.get('selectedFile.id'),
+                    primaryFile: this.get('preprint.primaryFile.id') === this.get('selectedFile.id'),
+                    version: this.get('selectedFile.currentVersion')
+                }
+            }
+        };
+        Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', {
+            collection: 'preprint-file-views',
+            eventData: eventData,
+            node: this.get('node'),
+        });
+    }),
+
     _chosenFile: Ember.observer('chosenFile', 'indexes', function() {
         let fid = this.get('chosenFile');
         let index = this.get('indexes').indexOf(fid);

@@ -15,7 +15,10 @@ module.exports = function(environment) {
             authorizer: `authorizer:osf-${authorizationType}`,
             authenticator: `authenticator:osf-${authorizationType}`
         },
+        // Set to 'local' to use local assets at providerAssetsPath.
         providerAssetsURL: process.env.PROVIDER_ASSETS_URL || 'https://staging-cdn.osf.io/preprints-assets/',
+        // path to local preprint provider assets (relative to public/assets/)
+        providerAssetsPath: 'osf-assets/files/preprints-assets',
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
@@ -86,7 +89,7 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'mindrxiv',
-                    permissionLanguage: 'arxiv_non_endorsement'
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'lissa',
