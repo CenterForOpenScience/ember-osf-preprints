@@ -94,7 +94,7 @@ export default Ember.Component.extend(Analytics, {
                     this.set('otherProviders', providers);
                 } else {
                     const filtered = providers.filter(
-                        item => item.key.toLowerCase() === this.get('theme.id').toLowerCase()
+                        item => item.key.toLowerCase().replace(/\s/g,'') === this.get('theme.id').toLowerCase()
                     );
 
                     this.set('otherProviders', filtered);

@@ -1,8 +1,23 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import Ember from 'ember';
+
+//Stub location service
+const themeStub = Ember.Service.extend({
+    isProvider: true,
+    provider: Ember.RSVP.resolve({
+        name: 'OSF',
+        additionalProviders: ['Other Provider'],
+
+    })
+});
 
 moduleForComponent('search-preprints', 'Integration | Component | search preprints', {
-  integration: true
+  integration: true,
+  beforeEach: function() {
+      this.register('service:theme', themeStub);
+      this.inject.service('theme');
+  }
 });
 
 test('it renders', function(assert) {

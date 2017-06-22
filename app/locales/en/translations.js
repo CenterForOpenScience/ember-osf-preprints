@@ -65,9 +65,11 @@ export default {
     discover: {
         search: {
             heading: `Preprint Archive Search`,
+            heading_repository_search: `Repository Search`,
             paragraph: `powered by`,
             partner: `Partner Repositories`,
-            placeholder: `Search preprints...`
+            placeholder: `Search preprints...`,
+            repository_placeholder: `Search repository...`
         },
         sort_by: `Sort by`,
         sort_newest_oldest: `Modified Date (newest to oldest)`,
@@ -82,6 +84,10 @@ export default {
             refine: `Refine your search by`,
             providers: `Providers`,
             subject: `Subject`,
+            source: `Source`,
+            date: `Date`,
+            type: `Type`,
+            tag: `Tag`,
             box: {
                 paragraph: `Do you want to add your own research as a preprint?`,
                 button: `Add your preprint`
@@ -104,7 +110,7 @@ export default {
             example: `See an example`
         },
         subjects: {
-            heading: `Browse <small>by subject</small>`
+            heading: `Browse <small>by {{browse-by}}</small>`
         },
         services: {
             top: {

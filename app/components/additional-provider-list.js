@@ -6,23 +6,23 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 
 /**
- * Displays top level disciplines for preprints index page
+ * Displays additional SHARE sources for preprints index page
  *
  * Sample usage:
  * ```handlebars
- * {{taxonomy-top-list
- *     list=model.taxonomies
+ * {{additional-provider-list
+ *     additionalProviders=additionalProviders
  * }}
  * ```
- * @class taxonomy-top-list
+ * @class additional-provider-list
  */
 export default Ember.Component.extend(Analytics, {
     theme: Ember.inject.service(),
-    sortedList: Ember.computed('list', 'list.content', function() {
-        if (!this.get('list')) {
+    sortedList: Ember.computed('additionalProviders', function() {
+        if (!this.get('additionalProviders')) {
             return;
         }
-        const sortedList = this.get('list').sortBy('text');
+        const sortedList = this.get('additionalProviders').sort();
         const pairedList = [];
         for (let i = 0; i < sortedList.get('length'); i += 2) {
             let pair = [];

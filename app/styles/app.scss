@@ -6,6 +6,7 @@
 @import 'authors';
 @import 'validated-input';
 @import 'hint';
+@import 'daterangepicker.scss';
 
 /* Override styles from ember-osf and osf */
 .footer {
@@ -106,16 +107,6 @@ ul.comma-list {
     color: black;
 }
 
-#downloadCount {
-    display: inline-block;
-}
-
-@media (max-width: 991px) {
-    .download_project, .social-div {
-        width: auto;
-    }
-}
-
 @media (max-width: 768px) {
     #providerCarousel {
         .carousel-control .icon-next, .carousel-control .icon-prev {
@@ -189,57 +180,6 @@ $logo-dir: 'img/provider_logos/';
 }
 .provider-osf-dark {
     background-image: url($logo-dir + 'osf-dark-small.png');
-}
-
-.provider-socarxiv {
-    background-image: url($logo-dir + 'socarxiv-small.png');
-}
-.provider-socarxiv-dark {
-    background-image: url($logo-dir + 'socarxiv-dark-small.png');
-}
-
-.provider-engrxiv {
-    background-image: url($logo-dir + 'engrxiv-small.png');
-}
-.provider-engrxiv-dark {
-    background-image: url($logo-dir + 'engrxiv-dark-small.png');
-}
-
-.provider-psyarxiv {
-    background-image: url($logo-dir + 'psyarxiv-small.png');
-}
-.provider-psyarxiv-dark {
-    background-image: url($logo-dir + 'psyarxiv-dark-small.png');
-}
-
-.provider-bitss {
-    background-image: url($logo-dir + 'bitss-small.png');
-}
-.provider-bitss-dark {
-    background-image: url($logo-dir + 'bitss-dark-small.png');
-}
-
-.provider-agrixiv {
-    background-image: url($logo-dir + 'agrixiv-small.svg');
-}
-
-.provider-agrixiv-dark {
-    background-image: url($logo-dir + 'agrixiv-logo-dark.png');
-}
-
-.provider-scielo {
-    background-image: url($logo-dir + 'scielo-small.png');
-}
-
-.provider-scielo-dark {
-    background-image: url($logo-dir + 'scielo-dark-small.png');
-}
-
-.provider-lawarxiv {
-    background-image: url($logo-dir + 'lawarxiv-white.png');
-}
-.provider-lawarxiv-dark {
-    background-image: url($logo-dir + 'lawarxiv-dark.png');
 }
 
 .preprint-advisory  {
@@ -333,6 +273,15 @@ $logo-dir: 'img/provider_logos/';
 }
 
 /* VIEW page */
+
+.subject-preview {
+    display: inline-block;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    border: 1px solid #eee;
+    padding: 1px 7px;
+    margin-bottom: 4px;
+}
 
 .dark-overlay-header-background {
     background: #343333 url("img/dark-overlay.png") top center;
@@ -731,7 +680,6 @@ hr {
         content: '';
         border-top: 1.4rem solid transparent;
         border-bottom: 1.3rem solid transparent;
-        border-left: 1.4rem solid $brand-primary;
         position: absolute;
         margin-left: -1.5rem;
         margin-top: -1.4rem;
@@ -746,15 +694,15 @@ hr {
     margin-bottom: 1rem;
     font-weight: bold;
     &:hover {
-        .subject-container {
-            background-color: lighten($brand-primary, 10%);
-        }
         .right-arrow:before {
             border-left-color: lighten($brand-primary, 10%);
         }
     }
     .right-arrow:last-of-type {
         display: none;
+    }
+    .right-arrow:before {
+        border-left: 1.4rem solid $brand-primary;
     }
 }
 
@@ -763,7 +711,6 @@ hr {
 }
 
 .subject-container {
-    background-color: $brand-primary;
     display: inline-block;
     transition: background-color 0.1s linear;
     margin-left: -10px;
@@ -795,6 +742,22 @@ hr {
 }
 
 #preprint-form-subjects {
+    .subject {
+         background-color: $brand-primary;
+         &:hover {
+             background-color: lighten($brand-primary, 10%);
+             & > b:after {
+                 border-left-color: lighten($brand-primary, 10%);
+             }
+         }
+         & > b {
+             &%pseudo {
+                 border: {
+                     color: transparent transparent transparent $brand-primary;
+                 }
+             }
+         }
+    }
     ul {
         height: 30rem;
         list-style: none;
@@ -1099,7 +1062,7 @@ label.title-label {
 .discover-provider-logo,
 .content-provider-logo {
     background-position-x: center;
-    background-position-y: bottom;
+    background-position-y: center;
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -1176,16 +1139,6 @@ label.title-label {
         }
     }
 }
-
-.social-media-icons {
-    float: none !important;
-    white-space: nowrap;
-}
-
-.social-div {
-    margin-top: 5px;
-}
-
 
 .content-provider-logo {
     min-height: 80px;
