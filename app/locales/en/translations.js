@@ -366,7 +366,8 @@ export default {
             send_email: `Send in email`
         },
         'supplementary-file-browser': {
-            primary: `Primary`
+            primary: `Primary`,
+            download_previous_versions: 'Download previous versions',
         },
         'taxonomy-top-list': {
             // Nothing to translate
