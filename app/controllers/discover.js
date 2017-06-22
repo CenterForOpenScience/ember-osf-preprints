@@ -29,6 +29,9 @@ export default Ember.Controller.extend(Analytics, {
         return this.get('additionalProviders') ? this.get('i18n').t('discover.search.heading_repository_search') : this.get('i18n').t('discover.search.heading');
     }),
     end: '', // End query param. Must be passed to component, so can be reflected in the URL
+    externalProviders: Ember.computed('model', function() {
+        return this.get('model').filter(item => item.id !== 'osf');
+    }),
     facets: Ember.computed('i18n.locale', 'additionalProviders', function() { // List of facets available for preprints
         if (this.get('additionalProviders')) { // if additionalProviders exist, use subset of SHARE facets
             return [
