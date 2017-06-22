@@ -1,5 +1,5 @@
 const preprints = `{{preprintWords.Preprints}}`;
-const brand = `OSF {{preprintWords.Preprints}}`;
+const brand = `OSF Preprints`;
 const arxiv_trademark_license = 'arXiv is a trademark of Cornell University, used under license.';
 
 export default {
