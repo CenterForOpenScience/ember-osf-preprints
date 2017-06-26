@@ -17,6 +17,7 @@ import Ember from 'ember';
  */
 export default Ember.Component.extend({
     metrics: Ember.inject.service(),
+    theme: Ember.inject.service(),
     actions: {
         search() {
             let query = Ember.$.trim(this.$('#searchBox').val());

@@ -15,6 +15,10 @@ module.exports = function(environment) {
             authorizer: `authorizer:osf-${authorizationType}`,
             authenticator: `authenticator:osf-${authorizationType}`
         },
+        // Set to 'local' to use local assets at providerAssetsPath.
+        providerAssetsURL: process.env.PROVIDER_ASSETS_URL || 'https://staging-cdn.osf.io/preprints-assets/',
+        // path to local preprint provider assets (relative to public/assets/)
+        providerAssetsPath: 'osf-assets/files/preprints-assets',
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
@@ -39,7 +43,6 @@ module.exports = function(environment) {
                 // OSF must be the first provider
                 {
                     id: 'osf',
-                    domain: 'osf.io',
                     logoSharing: {
                         path: '/assets/img/provider_logos/osf-dark.png',
                         type: 'image/png',
@@ -50,118 +53,58 @@ module.exports = function(environment) {
                 },
                 {
                     id: 'engrxiv',
-                    domain: 'engrxiv.org',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/engrxiv-sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-
-                    },
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'socarxiv',
-                    domain: 'socarxiv.org',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/socarxiv-sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_trademark_license'
                 },
                 {
                     id: 'psyarxiv',
-                    domain: 'psyarxiv.com',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/psyarxiv-sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_trademark_license'
                 },
                 {
                     id: 'bitss',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/bitss-small.png',
-                        type: 'image/png',
-                        width: 1500,
-                        height: 1500
-                    },
                     permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'scielo',
-                    // domain: 'scielo.org', // Temporarily disabling until ready
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/scielo-logo.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'agrixiv',
-                    domain: 'agrixiv.org',
-                    logoSharing: {
-                        path: 'assets/img/provider_logos/agrixiv-banner.svg',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'lawarxiv',
-                    logoSharing: {
-                        path: 'assets/img/provider_logos/lawarxiv-logo.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'focusarchive',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/focusarchive/sharing.png',
-                        type: 'image/png',
-                        width: 1500,
-                        height: 1500
-                    },
                     permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'paleorxiv',
-                    logoSharing: {
-                        path: 'preprint-assets/paleorxiv/sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'mindrxiv',
-                    logoSharing: {
-                        path: 'preprint-assets/mindrxiv/sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
-                    permissionLanguage: 'arxiv_non_endorsement'
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'lissa',
-                    logoSharing: {
-                        path: 'preprint-assets/lissa/sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'sportrxiv',
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'thesiscommons',
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'asu',
                     permissionLanguage: 'no_trademark'
                 }
             ],
@@ -204,12 +147,6 @@ module.exports = function(environment) {
         ].map(item => item.toLowerCase()),
     };
 
-    if (process.env.ENABLE_PROVIDER_DOMAINS !== 'true') {
-        for (const provider of ENV.PREPRINTS.providers) {
-            delete provider.domain;
-        }
-    }
-
     if (environment === 'development') {
         // ENV.APP.LOG_RESOLVER = true;
         // ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -248,30 +185,6 @@ module.exports = function(environment) {
         // Fallback to throwaway defaults if the environment variables are not set
         ENV.metricsAdapters[0].config.id = ENV.metricsAdapters[0].config.id || 'UA-84580271-1';
         ENV.FB_APP_ID = ENV.FB_APP_ID || '1039002926217080';
-
-        const {DOMAIN_PREFIX, PORT, OSF_URL} = process.env;
-
-        for (const provider of ENV.PREPRINTS.providers) {
-            if (!provider.domain)
-                continue;
-
-            if (provider.id === 'osf') {
-                provider.domain = OSF_URL || 'localhost:5000';
-                continue;
-            }
-
-            const suffix = DOMAIN_PREFIX ? '' : `:${PORT ? PORT : '4200'}`;
-            provider.domain = `${DOMAIN_PREFIX || 'local'}.${provider.domain}${suffix}`;
-        }
-    }
-
-    if (ENV.ASSET_SUFFIX) {
-        ENV.PREPRINTS.providers = ENV.PREPRINTS.providers.map(provider => {
-            provider.logoSharing.path = provider.logoSharing.path
-                .replace(/\..*$/, match => `-${ENV.ASSET_SUFFIX}${match}`);
-
-            return provider;
-        });
     }
 
     return ENV;

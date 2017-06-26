@@ -3,14 +3,19 @@
 'use strict';
 
 const fs = require('fs');
-var path = require('path');
-var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const path = require('path');
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const configFunc = require('./config/environment');
 
 const nonCdnEnvironments = ['development', 'test'];
 
+const {
+    EMBER_ENV
+} = process.env;
+
 module.exports = function(defaults) {
-    var config = require('./config/environment')(process.env.EMBER_ENV);
-    const useCdn = (nonCdnEnvironments.indexOf(process.env.EMBER_ENV) === -1);
+    const config = configFunc(EMBER_ENV);
+    const useCdn = !nonCdnEnvironments.includes(EMBER_ENV);
 
     const css = {
         'app': '/assets/preprint-service.css'
@@ -18,22 +23,20 @@ module.exports = function(defaults) {
 
     const brands = fs.readdirSync('./app/styles/brands');
 
-    for (let brand of brands) {
+    for (const brand of brands) {
         if (/^_/.test(brand))
             continue;
 
-        brand = brand.replace(/\..*$/, '');
-        css[`brands/${brand}`] = `/assets/css/${brand}.css`;
+        const brandId = brand.replace(/\..*$/, '');
+        Object.assign(css, { [`brands/${brandId}`]: `/assets/css/${brandId}.css` });
     }
 
-    const providerDomains = config
-        .PREPRINTS
-        .providers
-        .slice(1)
-        .map(provider => provider.domain);
+    const {
+        OSF: {url: osfUrl}
+    } = defaults.project.config(EMBER_ENV);
 
     // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
-    var app = new EmberApp(defaults, {
+    const app = new EmberApp(defaults, {
         sourcemaps: {
             enabled: true,
             extensions: ['js']
@@ -50,7 +53,7 @@ module.exports = function(defaults) {
         },
         // Needed for branded themes
         fingerprint: {
-            customHash: config.ASSET_SUFFIX,
+            customHash: config.ASSET_SUFFIX
         },
         outputPaths: {
             app: {
@@ -62,7 +65,9 @@ module.exports = function(defaults) {
                 'node_modules/ember-osf/addon/styles',
                 'bower_components/bootstrap-sass/assets/stylesheets',
                 'bower_components/osf-style/sass',
-                'bower_components/hint.css'
+                'bower_components/hint.css',
+                'bower_components/c3',
+                'bower_components/bootstrap-daterangepicker',
             ]
         },
         inlineContent: {
@@ -83,15 +88,10 @@ module.exports = function(defaults) {
                 content: `
                     <script>
                         window.assetSuffix = '${config.ASSET_SUFFIX ? '-' + config.ASSET_SUFFIX : ''}';
-                        (function(providerDomains) {
+                        (function(osfUrl) {
                             var origin = window.location.origin;
-
-                            var isProviderDomain = providerDomains.some(function(domain) {
-                                return ~origin.indexOf(domain);
-                            });
-
-                            var prefix = '/' + (isProviderDomain ? '' : 'preprints/') + 'assets/';
-
+                            window.isProviderDomain = !~osfUrl.indexOf(origin);
+                            var prefix = '/' + (window.isProviderDomain ? '' : 'preprints/') + 'assets/';
                             [
                                 'vendor',
                                 'preprint-service'
@@ -106,7 +106,7 @@ module.exports = function(defaults) {
                                 link.href = prefix + name + window.assetSuffix + '.css';
                                 document.head.appendChild(link);
                             });
-                        })(${JSON.stringify(providerDomains)});
+                        })('${osfUrl}');
                     </script>`
             }
         },
@@ -138,7 +138,6 @@ module.exports = function(defaults) {
         // bable options included to fix issue with testing discover controller
         // http://stackoverflow.com/questions/32231773/ember-tests-passing-in-chrome-not-in-phantomjs
         'ember-cli-babel': {
-            optional: ['es6.spec.symbols'],
             includePolyfill: true
         },
     });
@@ -174,8 +173,11 @@ module.exports = function(defaults) {
     });
 
     app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
+    app.import(path.join(app.bowerDirectory, 'bootstrap-daterangepicker/daterangepicker.js'));
+    app.import(path.join(app.bowerDirectory, 'c3/c3.js'));
+    app.import(path.join(app.bowerDirectory, 'd3/d3.js'));
 
-     app.import({
+    app.import({
         development: path.join(app.bowerDirectory, 'hint.css/hint.css'),
         production: path.join(app.bowerDirectory, 'hint.css/hint.css')
     });
@@ -183,7 +185,7 @@ module.exports = function(defaults) {
     app.import({
         test: path.join(app.bowerDirectory, 'ember/ember-template-compiler.js')
     });
-    
+
     // Import component styles from addon
     app.import('vendor/assets/ember-osf.css');
 

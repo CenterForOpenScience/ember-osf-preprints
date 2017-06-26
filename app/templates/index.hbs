@@ -6,10 +6,14 @@
             <div class="row">{{!HEADER ROW}}
                 {{!TITLE}}
                 <div class="text-center m-t-lg col-xs-12">
-                    <div class="provider-brand"></div>
+                    {{#if theme.isProvider}}
+                        <div class="provider-brand" style="background-image: url('{{providerAsset theme.id 'wide_color.png'}}')"></div>
+                    {{else}}
+                        <div class="provider-brand"></div>
+                    {{/if}}
                     <p class="lead">
-                        <span>{{if theme.isProvider theme.provider.description (t "index.header.title.paragraph")}}</span>
                         {{#if theme.isProvider}}
+                            {{sanitize-html theme.provider.description "description"}}
                             <br>
                             <small>
                                 <a href="https://osf.io/preprints/" onbeforeclick={{action "click" "link" "Index - Powered By"}}>{{t "index.header.powered_by"}}</a>
@@ -23,13 +27,15 @@
                     {{total-share-results}}
                 </div>
             </div> {{!END ROW}}
-            <div class="row">
-                <div class="text-center col-xs-12">
-                    <p class="lead">{{t 'index.header.or'}}</p>
-                    <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>{{t "global.add_preprint"}}</a>
-                    <div class="m-t-md">{{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
+            {{#if theme.provider.allowSubmissions}}
+                <div class="row">
+                    <div class="text-center col-xs-12">
+                        <p class="lead">{{t 'index.header.or'}}</p>
+                        <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>{{t "global.add_preprint"}}</a>
+                        <div class="m-t-md">{{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
+                    </div>
                 </div>
-            </div>
+            {{/if}}
         </div> {{!END CONTAINER}}
     </div> {{!END HEADER}}
 
@@ -38,9 +44,13 @@
         <div class="container"> {{!CONTAINER DIV}}
             <div class="row p-v-md">{{!SUBJECTS ROW}}
                 <div class="col-xs-12">
-                    <h2>{{t "index.subjects.heading"}}</h2>
+                    <h2>{{if theme.provider.additionalProviders (t "index.subjects.heading" browse-by="provider") (t "index.subjects.heading" browse-by="subject")}}</h2>
                     <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
-                        {{taxonomy-top-list list=model.taxonomies}}
+                        {{#if theme.provider.additionalProviders}}
+                            {{additional-provider-list additionalProviders=theme.provider.additionalProviders}}
+                        {{else}}
+                            {{taxonomy-top-list list=model.taxonomies}}
+                        {{/if}}
                     </div> {{!END SUBJECTS LIST}}
                 </div>
             </div>{{!END ROW}}
@@ -94,7 +104,7 @@
         <div class="container">
             <div class="row">
                 {{#if (and theme.isProvider theme.provider.advisoryBoard.length)}}
-                    {{safe-markup theme.provider.advisoryBoard}}
+                    {{sanitize-html theme.provider.advisoryBoard "advisory-board"}}
                 {{else if (not theme.isProvider)}}
                     <div class="col-xs-12">
                         <h2>{{t "index.advisory.heading"}}</h2>
