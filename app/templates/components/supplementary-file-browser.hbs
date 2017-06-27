@@ -8,9 +8,9 @@
     </div>
     <div class="col-sm-6 text-nowrap supplemental-downloads">
         {{#if (eq selectedFile.id preprint.primaryFile.id)}}
-            <a class="btn btn-default btn-sm" href={{fileDownloadURL}} onclick={{action 'click' 'link' 'Content - Download'}}> {{t "content.share.download_preprint"}}</a>
+            <a class="btn btn-default btn-sm" href={{fileDownloadURL}} onclick={{action dualTrackNonContributors 'link' 'Content - Download' selectedFile.links.download true}}> {{t "content.share.download_preprint"}}</a>
         {{else}}
-            <a class="btn btn-default btn-sm" href={{fileDownloadURL}} onclick={{action 'click' 'link' 'Content - Download Supplementary File'}}> {{t "content.share.download_file"}} </a>
+            <a class="btn btn-default btn-sm" href={{fileDownloadURL}} onclick={{action dualTrackNonContributors 'link' 'Content - Download Supplementary File' selectedFile.links.download false}}> {{t "content.share.download_file"}} </a>
         {{/if}}
         <span class="p-sm"> {{t "content.version"}}: {{selectedFile.currentVersion}}</span>
     </div>

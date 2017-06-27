@@ -6,6 +6,7 @@
 @import 'authors';
 @import 'validated-input';
 @import 'hint';
+@import 'daterangepicker.scss';
 
 /* Override styles from ember-osf and osf */
 .footer {
@@ -106,16 +107,6 @@ ul.comma-list {
     color: black;
 }
 
-#downloadCount {
-    display: inline-block;
-}
-
-@media (max-width: 991px) {
-    .download_project, .social-div {
-        width: auto;
-    }
-}
-
 @media (max-width: 768px) {
     #providerCarousel {
         .carousel-control .icon-next, .carousel-control .icon-prev {
@@ -189,85 +180,6 @@ $logo-dir: 'img/provider_logos/';
 }
 .provider-osf-dark {
     background-image: url($logo-dir + 'osf-dark-small.png');
-}
-
-.provider-socarxiv {
-    background-image: url($logo-dir + 'socarxiv-small.png');
-}
-.provider-socarxiv-dark {
-    background-image: url($logo-dir + 'socarxiv-dark-small.png');
-}
-
-.provider-engrxiv {
-    background-image: url($logo-dir + 'engrxiv-small.png');
-}
-.provider-engrxiv-dark {
-    background-image: url($logo-dir + 'engrxiv-dark-small.png');
-}
-
-.provider-psyarxiv {
-    background-image: url($logo-dir + 'psyarxiv-small.png');
-}
-.provider-psyarxiv-dark {
-    background-image: url($logo-dir + 'psyarxiv-dark-small.png');
-}
-
-.provider-bitss {
-    background-image: url($logo-dir + 'bitss-small.png');
-}
-.provider-bitss-dark {
-    background-image: url($logo-dir + 'bitss-dark-small.png');
-}
-
-.provider-agrixiv {
-    background-image: url($logo-dir + 'agrixiv-small.svg');
-}
-
-.provider-agrixiv-dark {
-    background-image: url($logo-dir + 'agrixiv-logo-dark.png');
-}
-
-.provider-scielo {
-    background-image: url($logo-dir + 'scielo-small.png');
-}
-
-.provider-scielo-dark {
-    background-image: url($logo-dir + 'scielo-dark-small.png');
-}
-
-.provider-lawarxiv {
-    background-image: url($logo-dir + 'lawarxiv-white.png');
-}
-.provider-lawarxiv-dark {
-    background-image: url($logo-dir + 'lawarxiv-dark.png');
-}
-
-.provider-focusarchive {
-    background-image: url($logo-dir + 'focusarchive' + '/wide_white.png');
-}
-.provider-focusarchive-dark {
-    background-image: url($logo-dir + 'focusarchive' + '/wide_black.png');
-}
-
-.provider-paleorxiv {
-    background-image: url($logo-dir + 'paleorxiv' + 'wide_white.png');
-}
-.provider-paleorxiv-dark {
-    background-image: url($logo-dir + 'paleorxiv' + 'wide_black.png');
-}
-
-.provider-mindrxiv {
-    background-image: url($logo-dir + 'mindrxiv' + 'wide_white.png');
-}
-.provider-mindrxiv-dark {
-    background-image: url($logo-dir + 'mindrxiv' + 'wide_black.png');
-}
-
-.provider-lissa {
-    background-image: url($logo-dir + 'lissa' + 'wide_white.png');
-}
-.provider-lissa-dark {
-    background-image: url($logo-dir + 'lissa' + 'wide_black.png');
 }
 
 .preprint-advisory  {
@@ -361,6 +273,15 @@ $logo-dir: 'img/provider_logos/';
 }
 
 /* VIEW page */
+
+.subject-preview {
+    display: inline-block;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    border: 1px solid #eee;
+    padding: 1px 7px;
+    margin-bottom: 4px;
+}
 
 .dark-overlay-header-background {
     background: #343333 url("img/dark-overlay.png") top center;
@@ -1218,16 +1139,6 @@ label.title-label {
         }
     }
 }
-
-.social-media-icons {
-    float: none !important;
-    white-space: nowrap;
-}
-
-.social-div {
-    margin-top: 5px;
-}
-
 
 .content-provider-logo {
     min-height: 80px;

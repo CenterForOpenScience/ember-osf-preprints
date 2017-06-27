@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Analytics from 'ember-osf/mixins/analytics';
-
 /**
  * @module ember-preprints
  * @submodule components
@@ -25,16 +24,25 @@ export default Ember.Component.extend(Analytics, {
     providers: Ember.A(), // Pass in preprint providers
     itemsPerSlide: 5, // Default
     lightLogo: true, // Light logos by default, for Index page.
-    numProviders: Ember.computed('providers', function() {
-        return this.get('providers').length;
+    editedProviders: Ember.computed('providers', function() {
+        let newProviders = Ember.A()
+        for (const provider of this.get('providers')) {
+          if (provider && provider.get('id')!== 'asu') {
+              newProviders.pushObject(provider)
+          }
+        }
+        return newProviders;
+    }),
+    numProviders: Ember.computed('editedProviders', function() {
+        return this.get('editedProviders').length;
     }),
     numSlides: Ember.computed('numProviders', 'itemsPerSlide', function() {
         return Math.ceil(this.get('numProviders') / this.get('itemsPerSlide'));
     }),
-    slides: Ember.computed('numSlides', 'providers', 'itemsPerSlide', function() {
+    slides: Ember.computed('numSlides', 'editedProviders', 'itemsPerSlide', function() {
         const numSlides = this.get('numSlides');
         const itemsPerSlide = this.get('itemsPerSlide');
-        return new Array(numSlides).fill().map((_, i) => this.get('providers').slice(i * itemsPerSlide, i * itemsPerSlide + itemsPerSlide));
+        return new Array(numSlides).fill().map((_, i) => this.get('editedProviders').slice(i * itemsPerSlide, i * itemsPerSlide + itemsPerSlide));
     }),
     columnOffset: Ember.computed('numProviders', 'itemsPerSlide', function() {
         // If only one slide of providers, center the provider logos by adding a column offset.
@@ -86,4 +94,3 @@ export default Ember.Component.extend(Analytics, {
         }
     }
 });
-
