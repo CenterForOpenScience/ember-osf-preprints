@@ -1,16 +1,7 @@
 module.exports = {
     root: true,
-    parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module'
-    },
-    extends: 'eslint:recommended',
-    env: {
-        browser: true,
-        es6: true
-    },
+    extends: 'cos-ember',
     globals: {
-        MathJax: true
+        MathJax: true,
     },
-    rules: {}
 };

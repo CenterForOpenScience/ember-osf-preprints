@@ -83,7 +83,7 @@
     "ember-toastr": "1.4.1",
     "ember-truth-helpers": "1.2.0",
     "ember-welcome-page": "1.0.1",
-    "eslint": "3.18.0",
+    "eslint": "^4.1.1",
     "faker": "4.1.0",
     "liquid-fire": "0.27.3",
     "loader.js": "4.0.1",
@@ -93,5 +93,8 @@
   "bugs": {
     "url": "https://github.com/CenterForOpenScience/ember-preprints/issues"
   },
-  "homepage": "https://github.com/CenterForOpenScience/ember-preprints#readme"
+  "homepage": "https://github.com/CenterForOpenScience/ember-preprints#readme",
+  "dependencies": {
+    "eslint-config-cos-ember": "^0.5.0"
+  }
 }
