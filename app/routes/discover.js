@@ -20,8 +20,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     model() {
         return this
             .get('store')
-            .findAll('preprint-provider', { reload: true })
-            .then(result => result.filter(item => item.id !== 'osf'));
+            .findAll('preprint-provider', { reload: true });
     },
     actions: {
         willTransition() {
