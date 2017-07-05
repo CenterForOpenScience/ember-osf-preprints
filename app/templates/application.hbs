@@ -13,8 +13,7 @@
     </style>
     {{preprint-navbar-branded model=theme.provider}}
 {{else}}
-    {{osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login') hideSearch=true}}
-    {{preprint-navbar}}
+    {{new-osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login')}}
 {{/if}}
 
 {{maintenance-banner}}
