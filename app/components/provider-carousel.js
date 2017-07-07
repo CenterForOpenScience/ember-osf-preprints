@@ -23,9 +23,6 @@ export default Ember.Component.extend(Analytics, {
     _resizeListener: null,
     providers: Ember.A(), // Pass in preprint providers
     itemsPerSlide: 5, // Default
-    itemWidth: Ember.computed('itemsPerSlide', function() {
-        return (100 / (this.get('itemsPerSlide') + 1)) + '%';
-    }),
     lightLogo: true, // Light logos by default, for Index page.
     editedProviders: Ember.computed('providers', function() {
         let newProviders = Ember.A()
@@ -53,6 +50,9 @@ export default Ember.Component.extend(Analytics, {
     columnOffset: Ember.computed('numProviders', 'itemsPerSlide', function() {
         // If only one slide of providers, center the provider logos by adding a column offset.
         let offset = 'col-sm-offset-1';
+        if (this.get('selectable')) {
+            offset = 'col-lg-offset-1 col-md-offset-2 col-sm-offset-2 col-xs-offset-3';
+        }
         const numProviders = this.get('numProviders');
         if (numProviders <= this.get('itemsPerSlide')) {
             switch (numProviders) {
@@ -76,11 +76,23 @@ export default Ember.Component.extend(Analytics, {
         return offset;
     }),
     setSlideItems: function() {
-        // On xs screens, show one provider per slide. Otherwise, five.
-        if (window.innerWidth < 768) {
-            this.set('itemsPerSlide', 1);
+        if (this.get('selectable')) {
+            if (window.innerWidth < 320) {
+                this.set('itemsPerSlide', 1);
+            } else if (window.innerWidth < 768) {
+                this.set('itemsPerSlide', 2);
+            } else if (window.innerWidth < 1200) {
+                this.set('itemsPerSlide', 4);
+            } else {
+                this.set('itemsPerSlide', this.get('originalItemsPerSlide'));
+            }
         } else {
-            this.set('itemsPerSlide', this.get('originalItemsPerSlide'));
+            // On xs screens, show one provider per slide. Otherwise, five.
+            if (window.innerWidth < 768) {
+                this.set('itemsPerSlide', 1);
+            } else {
+                this.set('itemsPerSlide', this.get('originalItemsPerSlide'));
+            }
         }
     },
     didInsertElement: function () {
@@ -93,6 +105,9 @@ export default Ember.Component.extend(Analytics, {
         this.setSlideItems();
         this._resizeListener = Ember.run.bind(this, this.setSlideItems);
         Ember.$(window).on('resize', this._resizeListener);
+    },
+    didReceiveAttrs: function () {
+        this.setSlideItems();
     },
     willDestroy: function() {
         // Unbinds _resizeListener

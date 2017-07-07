@@ -1156,7 +1156,7 @@ label.title-label {
 
 .submit-provider-logo {
     min-height: 50px;
-    min-width: 100px;
+    min-width: 50px;
 }
 
 .edit-btn {
@@ -1333,4 +1333,8 @@ img.current-provider {
     vertical-align: middle;
     height: 30px;
     margin-right: 5px;
+}
+
+#providerCarousel .item > div {
+    text-align: center;
 }
