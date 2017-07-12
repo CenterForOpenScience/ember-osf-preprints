@@ -4,23 +4,33 @@
         {{#each slides as |slide index|}}
             <div class={{if (not index) "item active" "item"}}>
                 {{#each slide as |provider index|}}
-                    <div class={{if (not index) (concat "col-sm-2 " columnOffset) "col-sm-2"}}>
-                        {{#if lightLogo}}
-                            <a href="/preprints/{{provider.id}}"
-                                title={{provider.name}}
-                                onclick={{action 'click' 'link' (concat 'Index - Provider Carousel - ' provider.name)}}
+                    {{#if selectable}}
+                        <div class={{if (not index) (concat "col-lg-1 col-md-2 col-sm-2 col-xs-3 " columnOffset) "col-lg-1 col-md-2 col-sm-2 col-xs-3"}}>
+                            <button class="provider submit-provider-logo {{unless (eq provider activeProvider) "inactive-provider"}}"
+                                onclick={{action 'selectProvider' provider}}
+                                disabled={{eq provider activeProvider}}
+                                title="{{provider.name}}"
+                                style={{safe-markup (concat "background-image: url('" (providerAsset provider.id 'square_color_no_transparent.png') "')")}} />
+                        </div>
+                    {{else}}
+                        <div class={{if (not index) (concat "col-sm-2 " columnOffset) "col-sm-2"}}>
+                            {{#if lightLogo}}
+                                <a href="/preprints/{{provider.id}}"
+                                    title={{provider.name}}
+                                    onclick={{action 'click' 'link' (concat 'Index - Provider Carousel - ' provider.name)}}
+                                    >
+                                    <div class="provider-logo provider-{{provider.id}}" style="background-image: url('{{providerAsset provider.id 'wide_white.png'}}')"></div>
+                                </a>
+                            {{else}}
+                                <a href="/preprints/{{provider.id}}/discover"
+                                    title={{provider.name}}
+                                    onclick={{action 'click' 'link' (concat 'Discover - Provider Carousel ' provider.name)}}
                                 >
-                                <div class="provider-logo provider-{{provider.id}}" style="background-image: url('{{providerAsset provider.id 'wide_white.png'}}')"></div>
-                            </a>
-                        {{else}}
-                            <a href="/preprints/{{provider.id}}/discover"
-                                title={{provider.name}}
-                                onclick={{action 'click' 'link' (concat 'Discover - Provider Carousel ' provider.name)}}
-                            >
-                                <div class="discover-provider-logo provider-{{provider.id}}-dark" style="background-image: url('{{providerAsset provider.id 'wide_black.png'}}')"></div>
-                            </a>
-                        {{/if}}
-                    </div>
+                                    <div class="discover-provider-logo provider-{{provider.id}}-dark" style="background-image: url('{{providerAsset provider.id 'wide_black.png'}}')"></div>
+                                </a>
+                            {{/if}}
+                        </div>
+                    {{/if}}
                 {{/each}}
             </div>
         {{/each}}

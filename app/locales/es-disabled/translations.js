@@ -148,7 +148,8 @@ export default {
         add_heading: `Agregar un Preprint`,
         edit_heading: `Editar un Preprint`,
         body: {
-            p_add: `Siga estos simples cinco pasos para agregar su preprint al repositorio de preprints de {{name}}.`,
+            p_add: `Siga estos simples seis pasos para agregar su preprint a un servidor de preprints alojado en OSF.`,
+            p_add_provider: `Siga estos simples cinco pasos para agregar su preprint al servidor de preprints de {{name}}.`,
             p_edit: `Edite las secciones de su preprint más abajo.`,
             upload: `Suba su nuevo preprint`,
             connect: `Conecte el preprint a un proyecto ya existente de la OSF`,
@@ -210,6 +211,7 @@ export default {
         search_contributors_error: `No se pudo realizar la búsqueda.`,
         error_completing_preprint: `Error completando el preprint.`,
         error_saving_preprint: `No se pudo grabar el preprint; por favor, trate de nuevo`,
+        server_locked: `No se puede cambiar el servidor después de que se ha cargado un archivo`,
     },
     components: {
         'confirm-restart-submit-preprint': {
@@ -295,6 +297,7 @@ export default {
             location: `Ubicación preprint`,
             click_edit: `Cliquear para Editar`,
             name: {
+                Server: 'Seleccione un servidor de preprints',
                 Upload: 'Cargar',
                 Discipline: 'Disciplinas',
                 Basics: 'Campos Básicos',

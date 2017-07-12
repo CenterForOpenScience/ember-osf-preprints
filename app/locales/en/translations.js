@@ -152,7 +152,8 @@ export default {
         add_heading: `Add Preprint`,
         edit_heading: `Edit Preprint`,
         body: {
-            p_add: `Follow these five easy steps to add your preprint to the {{name}} preprint repository.`,
+            p_add: `Follow these six easy steps to add your preprint to an OSF-hosted preprint server.`,
+            p_add_provider: `Follow these five easy steps to add your preprint to the {{name}} preprint server.`,
             p_edit: `Edit your preprint sections below.`,
             upload: `Upload new preprint`,
             connect: `Connect preprint to existing OSF project`,
@@ -214,6 +215,7 @@ export default {
         search_contributors_error: `Could not perform search query.`,
         error_completing_preprint: `Error completing preprint.`,
         error_saving_preprint: `Could not save preprint; please try again later`,
+        server_locked: `You cannot change the server after a file has been uploaded`,
     },
     components: {
         'confirm-restart-submit-preprint': {
@@ -307,7 +309,9 @@ export default {
             title: `Preprint title`,
             location: `Preprint location`,
             click_edit: `Click to Edit`,
+            server: `Preprint server`,
             name: {
+                Server: 'Select a preprint server',
                 Upload: 'Upload',
                 Discipline: 'Discipline',
                 Basics: 'Basics',

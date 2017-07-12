@@ -92,7 +92,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     filePickerState: State.START, // Selected upload state (initial decision on form) - new or existing project? (is poorly named)
     _existingState: existingState, // File states - new file or existing file
     existingState: existingState.CHOOSE, // Selected file state - new or existing file (poorly named)
-    _names: ['upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()), // Form section headers
+    _names: ['server', 'upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()), // Form section headers
 
     // Data for project picker; tracked internally on load
     user: null,
@@ -113,6 +113,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
+    serverSaveState: false, // True temporarily when changes have been saved in server section
     uploadSaveState: false, // True temporarily when changes have been saved in upload section
     disciplineSaveState: false, // True temporarily when changes have been saved in discipline section
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
@@ -130,6 +131,26 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     abandonedPreprint: null, // Abandoned(draft) preprint on the current node
     editMode: false, // Edit mode is false by default.
     shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
+    allProviders: [], // Initialize with an empty list of providers
+    currentProvider: undefined,
+    selectedProvider: undefined,
+    providerSaved: false,
+
+    init() {
+        let controller = this;
+        this.get('store')
+            .findAll('preprint-provider', { reload: true })
+            .then((providers) => {
+                controller.set(
+                    'allProviders',
+                    // OSF first, then all the rest
+                    providers.filter(item => item.id === 'osf').concat(providers.filter(item => item.id !== 'osf'))
+                );
+                const currentProvider = providers.filter(item => item.id === controller.get('theme.id') || config.PREPRINTS.provider)[0];
+                controller.set('currentProvider', currentProvider);
+                controller.set('selectedProvider', currentProvider);
+            });
+    },
 
     isTopLevelNode: Ember.computed.not('node.parent.id'),
 
@@ -156,6 +177,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             searchResults: [],
             savingPreprint: false,
             showModalSharePreprint: false,
+            serverSaveState: false,
             uploadSaveState: false,
             disciplineSaveState: false,
             basicsSaveState: false,
@@ -186,6 +208,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     ///////////////////////////////////////
     // Validation rules and changed states for form sections
+
+    providerChanged: true,
 
     // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
     uploadValid: Ember.computed.alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
@@ -479,7 +503,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             });
             // Closes section, so all panels closed if Upload section revisited
             this.get('panelActions').close('uploadNewFile');
-            this.send('next', this.get('_names.0'));
+            this.send('next', this.get('_names.1'));
         },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
@@ -572,12 +596,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     this.set('applyLicense', true);
                 }
             });
-            const provider = this.get('store')
-                .peekRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider);
 
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
-            model.set('provider', provider);
+            model.set('provider', this.get('currentProvider'));
 
             return model.save()
                 .then(() => {
@@ -754,7 +776,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 node.save(),
                 model.save()
             ])
-                .then(() => this.send('next', this.get('_names.2')))
+                .then(() => this.send('next', this.get('_names.3')))
                 // If save fails, do not transition
                 .catch(() => {
                     this.get('toast').error(
@@ -841,14 +863,14 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 model.set('subjects', subjectMap);
                 model.save()
                     .then(() => {
-                        this.send('next', this.get('_names.1'));
+                        this.send('next', this.get('_names.2'));
                     })
                     .catch(() => {
                         model.set('subjects', currentSubjects);
                         this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
                     });
             } else {
-                this.send('next', this.get('_names.1'));
+                this.send('next', this.get('_names.3'));
             }
         },
         /**
@@ -922,6 +944,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.toggleProperty('shareButtonDisabled');
             model.set('isPublished', true);
             node.set('public', true);
+            model.set('provider', this.get('currentProvider'));
 
             return model.save()
                 .then(() => node.save())
@@ -939,5 +962,23 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                         );
                 });
         },
+        selectProvider(provider) {
+            this.set('selectedProvider', provider);
+            this.set('providerChanged', true);
+        },
+        saveProvider() {
+            this.set('currentProvider', this.get('selectedProvider'));
+            this.get('currentProvider').query('licensesAcceptable', {'page[size]': 20}).then(licenses => {
+                this.set('availableLicenses', licenses);
+            });
+            this.set('providerChanged', false);
+            this.set('providerSaved', true);
+            this.send('discardSubjects');
+            this.send('next', this.get('_names.0'));
+        },
+        discardProvider() {
+            this.set('selectedProvider', this.get('currentProvider'));
+            this.set('providerChanged', false);
+        }
     }
 });
