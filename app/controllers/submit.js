@@ -750,34 +750,40 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     });
             }
 
-            Promise.all([
-                node.save(),
-                model.save()
-            ])
-                .then(() => this.send('next', this.get('_names.2')))
-                // If save fails, do not transition
+            const saveOriginalValues = () => {
+                model.setProperties({
+                    licenseRecord: currentLicenseRecord,
+                    license: currentLicenseType,
+                    doi: currentDOI,
+                });
+
+                node.setProperties({
+                    description: currentAbstract,
+                    tags: currentTags,
+                    license: currentNodeLicenseType,
+                    nodeLicense: currentNodeLicenseRecord,
+                });
+
+                node.save().then(() => model.save());
+            };
+
+            node.save()
+                .then(() => model.save()
+                    .then(() => this.send('next', this.get('_names.2')))
+                    .catch(() => {
+                        // If model save fails, do not transition, save original vales
+                        this.get('toast').error(
+                            this.get('i18n').t('submit.basics_error')
+                        );
+                        saveOriginalValues();
+                    })
+                )
                 .catch(() => {
+                    // If node save fails, do not transition, save original values
                     this.get('toast').error(
                         this.get('i18n').t('submit.basics_error')
                     );
-
-                    model.setProperties({
-                        licenseRecord: currentLicenseRecord,
-                        license: currentLicenseType,
-                        doi: currentDOI,
-                    });
-
-                    node.setProperties({
-                        description: currentAbstract,
-                        tags: currentTags,
-                        license: currentNodeLicenseType,
-                        nodeLicense: currentNodeLicenseRecord,
-                    });
-
-                    return Promise.all([
-                        node.save(),
-                        model.save()
-                    ]);
+                    saveOriginalValues();
                 });
         },
 
