@@ -88,7 +88,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 const description = node.get('description');
                 const mintDoi = extractDoiFromString(preprint.get('links.preprint_doi'));
                 const peerDoi = preprint.get('doi');
-                const doi = peerDoi !== ''? peerDoi: mintDoi;
+                const doi = peerDoi !== '' ? peerDoi : mintDoi;
                 const image = this.get('theme.logoSharing');
                 const imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
                 const dateCreated = new Date(preprint.get('dateCreated') || null);
@@ -143,11 +143,11 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     ['dc.title', title],
                     ['dc.abstract', description],
                     ['dc.identifier', canonicalUrl],
-                    ['dc.identifier', mintDoi], // Should be the minted doi
+                    ['dc.identifier', mintDoi],
                 ];
                 if(peerDoi !== '') {
                     dublinCore.push(
-                        ['dc.relation', peerDoi] // Should be peer doi
+                        ['dc.relation', peerDoi]
                     );
                 }
 
