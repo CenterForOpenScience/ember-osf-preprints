@@ -143,11 +143,11 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     ['dc.title', title],
                     ['dc.abstract', description],
                     ['dc.identifier', canonicalUrl],
-                    ['dc.identifier', mintDoi],
+                    ['dc.identifier', 'doi:' + mintDoi],
                 ];
                 if(peerDoi !== '') {
                     dublinCore.push(
-                        ['dc.relation', peerDoi]
+                        ['dc.relation', 'doi:' + peerDoi]
                     );
                 }
 
