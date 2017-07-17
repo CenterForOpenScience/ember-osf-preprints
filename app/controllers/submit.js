@@ -12,6 +12,8 @@ import loadAll from 'ember-osf/utils/load-relationship';
 
 import fixSpecialChar from 'ember-osf/utils/fix-special-char';
 
+import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
+
 // Enum of available upload states > New project or existing project?
 export const State = Object.freeze(Ember.Object.create({
     START: 'start',
@@ -55,18 +57,6 @@ const BasicsValidations = buildValidations({
 function subjectIdMap(subjectArray) {
     // Maps array of arrays of disciplines into array of arrays of discipline ids.
     return subjectArray.map(subjectBlock => subjectBlock.map(subject => subject.id));
-}
-
-function doiRegexExec(doi) {
-    //Strips url out of inputted doi, if any.  For example, user input this DOI: https://dx.doi.org/10.12345/hello. Returns 10.12345/hello.
-    // If doi invalid, returns doi.
-    const doiRegex = /\b(10\.\d{4,}(?:\.\d+)*\/\S+(?:(?!["&\'<>])\S))\b/;
-    if (doi) {
-        const doiOnly = doiRegex.exec(doi);
-        return doiOnly !== null ? doiOnly[0] : doi;
-    }
-    return doi;
-
 }
 
 /**
@@ -271,7 +261,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     doiChanged: Ember.computed('model.doi', 'basicsDOI', function() {
         // Does the pending DOI differ from the saved DOI in the db?
         // If pending DOI and saved DOI are both falsy values, doi has not changed.
-        const basicsDOI = doiRegexExec(this.get('basicsDOI'));
+        const basicsDOI = extractDoiFromString(this.get('basicsDOI'));
         const modelDOI = this.get('model.doi');
         return (basicsDOI || modelDOI) && basicsDOI !== modelDOI;
     }),
@@ -671,7 +661,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - DOI Text Change`
                 });
             let basicsDOI = this.get('basicsDOI');
-            this.set('basicsDOI', doiRegexExec(basicsDOI));
+            this.set('basicsDOI', extractDoiFromString(basicsDOI));
         },
         saveBasics() {
             Ember.get(this, 'metrics')
@@ -738,34 +728,40 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     });
             }
 
-            Promise.all([
-                node.save(),
-                model.save()
-            ])
-                .then(() => this.send('next', this.get('_names.2')))
-                // If save fails, do not transition
+            const saveOriginalValues = () => {
+                model.setProperties({
+                    licenseRecord: currentLicenseRecord,
+                    license: currentLicenseType,
+                    doi: currentDOI,
+                });
+
+                node.setProperties({
+                    description: currentAbstract,
+                    tags: currentTags,
+                    license: currentNodeLicenseType,
+                    nodeLicense: currentNodeLicenseRecord,
+                });
+
+                node.save().then(() => model.save());
+            };
+
+            node.save()
+                .then(() => model.save()
+                    .then(() => this.send('next', this.get('_names.2')))
+                    .catch(() => {
+                        // If model save fails, do not transition, save original vales
+                        this.get('toast').error(
+                            this.get('i18n').t('submit.basics_error')
+                        );
+                        saveOriginalValues();
+                    })
+                )
                 .catch(() => {
+                    // If node save fails, do not transition, save original values
                     this.get('toast').error(
                         this.get('i18n').t('submit.basics_error')
                     );
-
-                    model.setProperties({
-                        licenseRecord: currentLicenseRecord,
-                        license: currentLicenseType,
-                        doi: currentDOI,
-                    });
-
-                    node.setProperties({
-                        description: currentAbstract,
-                        tags: currentTags,
-                        license: currentNodeLicenseType,
-                        nodeLicense: currentNodeLicenseRecord,
-                    });
-
-                    return Promise.all([
-                        node.save(),
-                        model.save()
-                    ]);
+                    saveOriginalValues();
                 });
         },
 

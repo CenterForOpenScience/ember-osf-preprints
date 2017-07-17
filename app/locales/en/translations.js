@@ -50,7 +50,8 @@ export default {
         see_more: 'See more',
         see_less: 'See less',
         version: 'Version',
-        article_doi: `Article DOI`,
+        preprint_doi: `Preprint DOI`,
+        article_doi: `Peer-reviewed Publication DOI`,
         citations: `Citations`,
         disciplines: `Disciplines`,
         project_button: {
@@ -161,7 +162,7 @@ export default {
             remove_subject_aria: `Remove subject`,
             basics: {
                 doi: {
-                    label: `If published, DOI of associated journal article (optional)`
+                    label: `Peer-reviewed publication DOI (optional)`
                 },
                 keywords: {
                     label: `Keywords`,
@@ -180,7 +181,7 @@ export default {
             },
             submit: {
                 paragraph: {
-                    line1: `When you share this preprint, it will become publicly accessible via {{name}} Preprints. You will be unable to delete the preprint file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
+                    line1: `When you share this preprint, the DOI will be created and the preprint will become publicly accessible via {{name}} Preprints. You will be unable to delete the preprint file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your preprint such as supplementary materials, appendices, data, or protocols. If posting this preprint is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
                     line2: `By clicking Share, you confirm that all Contributors agree with sharing this preprint, and that you have the right to share it.`
                 },
                 invalid: {
