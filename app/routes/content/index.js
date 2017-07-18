@@ -5,6 +5,7 @@ import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
+import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
 const {
     OSF: {url: osfUrl}
@@ -85,7 +86,9 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             .then(([provider, node, license]) => {
                 const title = node.get('title');
                 const description = node.get('description');
-                const doi = preprint.get('doi');
+                const mintDoi = extractDoiFromString(preprint.get('links.preprint_doi'));
+                const peerDoi = preprint.get('doi');
+                const doi = peerDoi !== '' ? peerDoi : mintDoi;
                 const image = this.get('theme.logoSharing');
                 const imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
                 const dateCreated = new Date(preprint.get('dateCreated') || null);
@@ -120,7 +123,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     ['citation_description', description],
                     ['citation_public_url', canonicalUrl],
                     ['citation_publication_date', `${dateCreated.getFullYear()}/${dateCreated.getMonth() + 1}/${dateCreated.getDate()}`],
-                    ['citation_doi', doi]
+                    ['citation_doi', doi],
                 ];
 
                 // TODO map Eprints fields
@@ -136,12 +139,17 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 const prism = [];
 
                 // Dublin Core
-                const dublinCore = [
+                var dublinCore = [
                     ['dc.title', title],
                     ['dc.abstract', description],
                     ['dc.identifier', canonicalUrl],
-                    ['dc.identifier', doi]
+                    ['dc.identifier', 'doi:' + mintDoi],
                 ];
+                if(peerDoi !== '') {
+                    dublinCore.push(
+                        ['dc.relation', 'doi:' + peerDoi]
+                    );
+                }
 
                 const tags = [
                     ...preprint.get('subjects').map(subjectBlock => subjectBlock.map(subject => subject.text)),
