@@ -16,7 +16,7 @@
     "postinstall": "npm rebuild node-sass",
     "update-assets": "git submodule update --remote",
     "update-assets-hotfix": "git checkout -b hotfix/update-assets && npm run update-assets && git ci public/assets/osf-assets -m 'Updated assets'",
-    "use-ember-osf-develop": "yarn upgrade ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop#$(date -u +%FT%TZ)"
+    "use-ember-osf-develop": "yarn upgrade @centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop#$(date -u +%FT%TZ)"
   },
   "repository": {
     "type": "git",
