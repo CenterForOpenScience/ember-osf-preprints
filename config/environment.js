@@ -106,6 +106,10 @@ module.exports = function(environment) {
                 {
                     id: 'asu',
                     permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'nutrixiv',
+                    permissionLanguage: 'no_trademark'
                 }
             ],
         },
