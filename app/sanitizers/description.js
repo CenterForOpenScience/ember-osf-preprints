@@ -2,5 +2,5 @@
 export default {
     elements: ['a', 'br', 'em', 'p', 'span', 'strong', 'i', 'b', 'u'],
     attributes: {
-        __ALL__: ['class', 'href', 'title', 'target']}
+        __ALL__: ['class', 'style', 'href', 'title', 'target']}
 };

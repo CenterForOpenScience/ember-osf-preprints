@@ -14,7 +14,7 @@
                                         {{#if author.unregisteredContributor}}
                                             <li>{{author.unregisteredContributor}}</li>
                                         {{else}}
-                                            <li><a href={{author.users.profileURL}} {{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.givenName}} {{author.users.familyName}}</a></li>
+                                            <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.givenName}} {{author.users.familyName}}</a></li>
                                         {{/if}}
                                     {{/if}}
                                 {{~/each}}
@@ -85,10 +85,17 @@
                         </button>
                     </div>
 
+                    {{#if model.links.preprint_doi}}
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi"}}</strong></h4>
+                            <a href={{model.links.preprint_doi}} onclick={{action "click" "link" "Content - Preprint DOI" model.links.preprint_doi}}>{{extract-doi model.links.preprint_doi}}</a>
+                        </div>
+                    {{/if}}
+
                     {{#if model.doi}}
                         <div class="p-t-xs">
                             <h4 class="p-v-md f-w-md"><strong>{{t-plus "content.article_doi"}}</strong></h4>
-                            <a href={{doiUrl}} {{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
+                            <a href={{doiUrl}} onlick={{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
                         </div>
                     {{/if}}
 
