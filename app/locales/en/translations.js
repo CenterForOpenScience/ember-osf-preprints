@@ -1,5 +1,5 @@
 const preprints = `{{preprintWords.Preprints}}`;
-const brand = `OSF {{preprintWords.Preprints}}`;
+const brand = `OSF Preprints`;
 const arxiv_trademark_license = 'arXiv is a trademark of Cornell University, used under license.';
 
 export default {
@@ -90,7 +90,7 @@ export default {
             type: `Type`,
             tag: `Tag`,
             box: {
-                paragraph: `Do you want to add your own research as a preprint?`,
+                paragraph: `Do you want to add your own research as a {{preprintWords.preprint}}?`,
                 button: `Add your {{preprintWords.preprint}}`
             },
             results: {
@@ -218,7 +218,7 @@ export default {
     components: {
         'confirm-restart-submit-preprint': {
             title: `Restart {{preprintWords.Preprint}}`,
-            body: `Are you sure you want to restart this preprint? Your uploaded file and supplemental information will be deleted.`
+            body: `Are you sure you want to restart this {{preprintWords.preprint}}? Your uploaded file and supplemental information will be deleted.`
         },
         'confirm-share-preprint': {
             title: `Share {{preprintWords.Preprint}}`,
