@@ -88,7 +88,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 const description = node.get('description');
                 const mintDoi = extractDoiFromString(preprint.get('links.preprint_doi'));
                 const peerDoi = preprint.get('doi');
-                const doi = peerDoi !== '' ? peerDoi : mintDoi;
+                const doi = peerDoi ? peerDoi : mintDoi;
                 const image = this.get('theme.logoSharing');
                 const imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
                 const dateCreated = new Date(preprint.get('dateCreated') || null);
@@ -118,13 +118,17 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ];
 
                 // Highwire Press
-                const highwirePress = [
+                var highwirePress = [
                     ['citation_title', title],
                     ['citation_description', description],
                     ['citation_public_url', canonicalUrl],
                     ['citation_publication_date', `${dateCreated.getFullYear()}/${dateCreated.getMonth() + 1}/${dateCreated.getDate()}`],
-                    ['citation_doi', doi],
                 ];
+                if (doi) {
+                    highwirePress.push(
+                        ['citation_doi', doi]
+                    );
+                }
 
                 // TODO map Eprints fields
                 // Eprints
@@ -143,9 +147,13 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     ['dc.title', title],
                     ['dc.abstract', description],
                     ['dc.identifier', canonicalUrl],
-                    ['dc.identifier', 'doi:' + mintDoi],
                 ];
-                if(peerDoi !== '') {
+                if (mintDoi) {
+                    dublinCore.push(
+                        ['dc.identifier', 'doi:' + mintDoi]
+                    );
+                }
+                if (peerDoi) {
                     dublinCore.push(
                         ['dc.relation', 'doi:' + peerDoi]
                     );
