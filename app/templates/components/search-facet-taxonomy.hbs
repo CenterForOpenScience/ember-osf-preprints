@@ -6,7 +6,7 @@
                     <i class="taxonomy-caret fa {{if item.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
                 </span>
                 <label class="taxonomy-checkbox">
-                    <input type="checkbox" checked="{{if (if-filter item.text activeFilters.subjects) 'checked'}}" onclick={{action updateFilters 'subjects' item}}>
+                    <input type="checkbox" checked="{{if (if-filter (concat item.shareTitle "|" item.text) activeFilters.subjects) 'checked'}}" onclick={{action updateFilters 'subjects' (concat item.shareTitle "|" item.text)}}>
                     {{item.text}}
                 </label>
             </li>
@@ -22,7 +22,7 @@
                                 <span class="taxonomy-right-padding"></span>
                             {{/if}}
                             <label class="taxonomy-checkbox">
-                                <input type="checkbox" checked="{{if (if-filter child.text activeFilters.subjects) 'checked'}}" onclick={{action updateFilters 'subjects' child}}>
+                                <input type="checkbox" checked="{{if (if-filter (concat item.shareTitle "|" item.text "|" child.text) activeFilters.subjects) 'checked'}}" onclick={{action updateFilters 'subjects' (concat item.shareTitle "|" item.text "|" child.text)}}>
                                 {{child.text}}
                             </label>
                         </li>
@@ -31,7 +31,7 @@
                                 {{#each child.children as |grandkid|}}
                                     <li>
                                         <label class="taxonomy-checkbox">
-                                            <input type="checkbox" checked="{{if (if-filter grandkid.text activeFilters.subjects) 'checked'}}" onclick={{action updateFilters 'subjects' grandkid}}>
+                                            <input type="checkbox" checked="{{if (if-filter (concat item.shareTitle "|" item.text "|" child.text "|" grandkid.text) activeFilters.subjects) 'checked'}}" onclick={{action updateFilters 'subjects' (concat item.shareTitle "|" item.text "|" child.text "|" grandkid.text)}}>
                                             {{grandkid.text}}
                                         </label>
                                     </li>
