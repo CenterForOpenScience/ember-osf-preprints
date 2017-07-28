@@ -69,8 +69,6 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
 
 });
 
-
-
 test('Initial properties', function (assert) {
     const ctrl = this.subject();
 
@@ -110,7 +108,6 @@ test('Initial properties', function (assert) {
         'osfStorageProvider': null,
         'osfProviderLoaded': false,
         'titleValid': null,
-        'disciplineModifiedToggle': false,
         'uploadInProgress': false,
         'existingPreprints.length': 0,
         'abandonedPreprint': null,
@@ -196,13 +193,6 @@ test('authorsValid computed property', function(assert) {
     assert.equal(ctrl.get('authorsValid'), false);
     ctrl.set('contributors', ['Jane Goodall']);
     assert.equal(ctrl.get('authorsValid'), true);
-});
-
-test('disciplineValid computed property', function(assert) {
-    const ctrl = this.subject();
-    assert.equal(ctrl.get('disciplineValid'), false);
-    ctrl.set('subjectsList', [['Test Subject']]);
-    assert.equal(ctrl.get('disciplineValid'), true);
 });
 
 test('savedTitle computed property', function(assert) {
@@ -553,7 +543,7 @@ test('discardBasics properly joins copyrightHolders', function(assert) {
         ctrl.send('discardBasics');
         return wait().then(() => assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest'));
     });
-})
+});
 
 test('basicsChanged computed property', function(assert) {
     const ctrl = this.subject();
@@ -598,21 +588,6 @@ test('disciplineReduced', function(assert) {
         assert.equal(ctrl.get('disciplineReduced')[0].id, '12345');
         assert.equal(ctrl.get('disciplineReduced')[1].id, '56789');
         assert.equal(ctrl.get('disciplineReduced')[2].id, '12250');
-    });
-});
-
-test('disciplineChanged', function(assert) {
-    const ctrl = this.subject();
-    this.inject.service('store');
-    const store = this.store;
-    Ember.run(() => {
-        const preprint = store.createRecord('preprint', {
-            'subjects': [[{id: '12345'},{id:'56789'}]]
-        });
-        ctrl.set('model', preprint);
-        assert.equal(ctrl.get('disciplineChanged'), false);
-        ctrl.set('subjectsList', [[{id: '12345'},{id:'12250'}]]);
-        assert.equal(ctrl.get('disciplineChanged'), true);
     });
 });
 
@@ -1022,16 +997,6 @@ test('removeTag', function(assert) {
     assert.equal(ctrl.get('basicsTags')[0], 'firstTag');
 });
 
-test('setSubjects', function(assert) {
-    const ctrl = this.subject();
-    assert.equal(ctrl.get('disciplineModifiedToggle'), false);
-    assert.equal(ctrl.get('subjectsList').length, 0);
-    ctrl.send('setSubjects', [['Test Subject Test Only']]);
-    assert.equal(ctrl.get('disciplineModifiedToggle'), true);
-    assert.equal(ctrl.get('subjectsList').length, 1);
-});
-
-
 skip('discardSubjects', function() {
     //TODO
 });
@@ -1040,11 +1005,9 @@ skip('saveSubjects', function() {
     //TODO
 });
 
-
 skip('findContributors', function() {
     //TODO
 });
-
 
 skip('highlightSuccessOrFailure', function() {
     //TODO
