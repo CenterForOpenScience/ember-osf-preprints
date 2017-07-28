@@ -819,24 +819,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 return sendNext();
             }
 
-            // let model = this.get('model');
-            // // Current subjects saved so UI can be restored in case of failure
-            // let currentSubjects = Ember.$.extend(true, [], this.get('model.subjects'));
-            // let subjectMap = subjectIdMap(this.get('subjectsList'));
-            // if (this.get('disciplineChanged')) {
-            //     model.set('subjects', subjectMap);
-            //     model.save()
-            //         .then(() => {
-            //             this.send('next', this.get('_names.1'));
-            //         })
-            //         .catch(() => {
-            //             model.set('subjects', currentSubjects);
-            //             this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
-            //         });
-            // } else {
-            //     this.send('next', this.get('_names.1'));
-            // }
-
             const model = this.get('model');
 
             model.set('subjects', subjectIdMap(this.get('subjectsList')));
