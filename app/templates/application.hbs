@@ -1,4 +1,4 @@
-{{title (t-plus (if theme.isProvider 'global.provider_brand' 'global.brand') name=theme.provider.name) separator=(t-plus 'application.separator')}}
+{{title (t (if theme.isProvider 'global.provider_brand' 'global.brand') name=theme.provider.name) separator=(t 'application.separator')}}
 
 {{#if theme.isProvider}}
     <style>

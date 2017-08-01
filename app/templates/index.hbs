@@ -16,7 +16,7 @@
                             {{sanitize-html theme.provider.description "description"}}
                             <br>
                             <small>
-                                <a href="https://osf.io/preprints/" onbeforeclick={{action "click" "link" "Index - Powered By"}}>{{t-plus "index.header.powered_by"}}</a>
+                                <a href="https://osf.io/preprints/" onbeforeclick={{action "click" "link" "Index - Powered By"}}>{{t "index.header.powered_by"}}</a>
                             </small>
                         {{/if}}
                     </p>
@@ -32,9 +32,9 @@
             {{#if theme.provider.allowSubmissions}}
                 <div class="row">
                     <div class="text-center col-xs-12">
-                        <p class="lead">{{t-plus 'index.header.or'}}</p>
-                        <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>{{t-plus "global.add_preprint"}}</a>
-                        <div class="m-t-md">{{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}{{t-plus "index.header.example"}}{{/link-to}}</div>
+                        <p class="lead">{{t 'index.header.or'}}</p>
+                        <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>{{t "global.add_preprint"}}</a>
+                        <div class="m-t-md">{{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
                     </div>
                 </div>
             {{/if}}
@@ -46,7 +46,7 @@
         <div class="container"> {{!CONTAINER DIV}}
             <div class="row p-v-md">{{!SUBJECTS ROW}}
                 <div class="col-xs-12">
-                    <h2>{{if theme.provider.additionalProviders (t-plus "index.subjects.heading" browse-by="provider") (t-plus "index.subjects.heading" browse-by="subject")}}</h2>
+                    <h2>{{if theme.provider.additionalProviders (t "index.subjects.heading" browse-by="provider") (t "index.subjects.heading" browse-by="subject")}}</h2>
                     <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
                         {{#if theme.provider.additionalProviders}}
                             {{additional-provider-list additionalProviders=theme.provider.additionalProviders}}
@@ -65,8 +65,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
-                        <h2>{{t-plus "index.services.top.heading"}}</h2>
-                        <p class="m-b-lg">{{t-plus "index.services.top.paragraph"}}</p>
+                        <h2>{{t "index.services.top.heading"}}</h2>
+                        <p class="m-b-lg">{{t "index.services.top.paragraph"}}</p>
                     </div>
                 </div>
             </div>
@@ -79,22 +79,22 @@
             <div class="row p-v-md">
                 <div class="col-md-12 text-center">
                     <p class="lead">
-                        {{t-plus "index.services.bottom.p1"}}
+                        {{t "index.services.bottom.p1"}}
                         <div class="p-t-sm">
-                            {{t-plus "index.services.bottom.div.line1"}}
+                            {{t "index.services.bottom.div.line1"}}
                             <a class="source_code_link" href="https://github.com/CenterForOpenScience/ember-preprints"
                                 onclick={{action "click" "link" "Index - GitHub Repo" "https://github.com/CenterForOpenScience/ember-preprints"}}>
-                                {{t-plus "index.services.bottom.div.linkText1"}}
+                                {{t "index.services.bottom.div.linkText1"}}
                             </a>
-                            {{t-plus "index.services.bottom.div.line2"}}
+                            {{t "index.services.bottom.div.line2"}}
                             <a class="source_code_link" href="https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"
                                 onclick={{action "click" "link" "Index - Requirements and Roadmap" "https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"}}>
-                                {{t-plus "index.services.bottom.div.linkText2"}}
+                                {{t "index.services.bottom.div.linkText2"}}
                             </a>
-                            {{t-plus "index.services.bottom.div.line3"}}
+                            {{t "index.services.bottom.div.line3"}}
                         </div>
                     </p>
-                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg" onclick={{action 'contactLink' emailHref 'link' 'click' 'Index - contact email'}}>{{t-plus "index.services.bottom.contact"}}</a>
+                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg" onclick={{action 'contactLink' emailHref 'link' 'click' 'Index - contact email'}}>{{t "index.services.bottom.contact"}}</a>
                 </div>
             </div>
         </div>
@@ -109,8 +109,8 @@
                     {{sanitize-html theme.provider.advisoryBoard "advisory-board"}}
                 {{else if (not theme.isProvider)}}
                     <div class="col-xs-12">
-                        <h2>{{t-plus "index.advisory.heading"}}</h2>
-                        <p class="m-b-lg">{{t-plus "index.advisory.paragraph"}}</p>
+                        <h2>{{t "index.advisory.heading"}}</h2>
+                        <p class="m-b-lg">{{t "index.advisory.paragraph"}}</p>
                     </div>
                     <div class="col-xs-6">
                         <ul>

@@ -1,19 +1,19 @@
 <form {{action (action addUnregisteredContributor fullName email) on="submit"}}>
     <div>
-        <label>{{t-plus "components.unregistered-contributor-form.full_name"}}</label>
+        <label>{{t "components.unregistered-contributor-form.full_name"}}</label>
         <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Author Full Name Text Change') (action 'track' 'input' 'onchange' 'Submit - Author Full Name Text Change')}}>
-            {{validated-input model=this valuePath='fullName' placeholder=(t-plus "components.unregistered-contributor-form.full_name") value=fullName}}
+            {{validated-input model=this valuePath='fullName' placeholder=(t "components.unregistered-contributor-form.full_name") value=fullName}}
         </form>
     </div>
     <div>
-        <label>{{t-plus "components.unregistered-contributor-form.email"}}</label>
+        <label>{{t "components.unregistered-contributor-form.email"}}</label>
         <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Author Email Text Change') (action 'track' 'input' 'onchange' 'Submit - Author Email Text Change')}}>
-            {{validated-input model=this valuePath='username' placeholder=(t-plus "components.unregistered-contributor-form.email") value=email}}
+            {{validated-input model=this valuePath='username' placeholder=(t "components.unregistered-contributor-form.email") value=email}}
         </form>
     </div>
-    <p class="text-muted">{{t-plus "components.unregistered-contributor-form.paragraph"}}</p>
+    <p class="text-muted">{{t "components.unregistered-contributor-form.paragraph"}}</p>
     <div class="pull-right unregistered-submit">
-        <button {{action resetfindContributorsView}} type="button" class="btn btn-default btn-small"> {{t-plus "global.cancel"}} </button>
-        <button type="submit" disabled={{not isFormValid}} {{action "addUnregistered" fullName email}} class="btn btn-success btn-small"> {{t-plus "global.add"}} </button>
+        <button {{action resetfindContributorsView}} type="button" class="btn btn-default btn-small"> {{t "global.cancel"}} </button>
+        <button type="submit" disabled={{not isFormValid}} {{action "addUnregistered" fullName email}} class="btn btn-success btn-small"> {{t "global.add"}} </button>
     </div>
 </form>

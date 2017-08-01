@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h1>{{t-plus (if editMode "submit.edit_heading" "submit.add_heading")}}</h1>
+                <h1>{{t (if editMode "submit.edit_heading" "submit.add_heading")}}</h1>
             </div>
         </div>
 
@@ -14,7 +14,7 @@
     <div class="container">
         <div class="row m-t-lg">
             <div class="col-xs-12 col-md-10 col-md-offset-1 ">
-                <p>{{if editMode (t-plus "submit.body.p_edit") (t-plus "submit.body.p_add" name=(if theme.isProvider theme.provider.name (t-plus "global.brand_name")))}}</p>
+                <p>{{if editMode (t "submit.body.p_edit") (t "submit.body.p_add" name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}</p>
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
@@ -25,10 +25,10 @@
                                         {{#if (eq currentState _State.START)}}
                                             <div class="row">
                                                 <div class="col-xs-6">
-                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.NEW}}>{{t-plus "submit.body.upload"}}</button>
+                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.NEW}}>{{t "submit.body.upload"}}</button>
                                                 </div>
                                                 <div class="col-xs-6">
-                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.EXISTING}}>{{t-plus "submit.body.connect"}}</button>
+                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.EXISTING}}>{{t "submit.body.connect"}}</button>
                                                 </div>
                                             </div>
                                         {{else if (eq currentState _State.NEW)}}
@@ -120,15 +120,15 @@
                         {{#preprint-form-section id='preprint-form-subjects' editMode=editMode class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
-                                <p class="m-b-lg text-smaller">{{t-plus "submit.body.subjects_description"}}</p>
+                                <p class="m-b-lg text-smaller">{{t "submit.body.subjects_description"}}</p>
 
                                 {{subject-picker editMode=editMode selected=subjectsList disciplineModifiedToggle=disciplineModifiedToggle save=(action 'setSubjects')}}
 
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">
-                                            <button {{action 'discardSubjects'}} class="btn btn-default" disabled={{unless disciplineChanged true}} >{{t-plus "global.discard"}}</button>
-                                            <button {{action 'saveSubjects'}} class="btn btn-primary" disabled={{unless disciplineValid true}} >{{t-plus "submit.body.save_continue"}}</button>
+                                            <button {{action 'discardSubjects'}} class="btn btn-default" disabled={{unless disciplineChanged true}} >{{t "global.discard"}}</button>
+                                            <button {{action 'saveSubjects'}} class="btn btn-primary" disabled={{unless disciplineValid true}} >{{t "submit.body.save_continue"}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -146,9 +146,9 @@
                                         <br>
                                         <div class="row">
                                             <div class='col-xs-12'>
-                                                <label> {{t-plus "submit.body.basics.license.apply_license_title"}} </label>
+                                                <label> {{t "submit.body.basics.license.apply_license_title"}} </label>
                                                 {{#if (or (not newNode) editMode)}}
-                                                    <p>{{t-plus "submit.body.basics.license.apply_license_text"}}</p>
+                                                    <p>{{t "submit.body.basics.license.apply_license_text"}}</p>
                                                 {{/if}}
                                                 <span style="margin: 5px">
                                                     <input onchange={{action 'applyLicenseToggle' true}} type="radio" checked={{applyLicense}}> Yes
@@ -162,31 +162,31 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div>
-                                            <label>{{t-plus "submit.body.basics.doi.label"}}:</label>
+                                            <label>{{t "submit.body.basics.doi.label"}}:</label>
                                             <form onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
-                                                {{validated-input model=this valuePath='basicsDOI' placeholder=(t-plus "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
+                                                {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
                                             </form>
                                         </div>
                                         <div class="clearfix">
-                                            <label>{{t-plus "submit.body.basics.keywords.label"}}:</label>
-                                            <p class="text-smaller">{{t-plus "submit.body.basics.keywords.paragraph"}}</p>
+                                            <label>{{t "submit.body.basics.keywords.label"}}:</label>
+                                            <p class="text-smaller">{{t "submit.body.basics.keywords.paragraph"}}</p>
                                             {{tags-widget addATag=(action 'addTag') removeATag=(action 'removeTag') tags=basicsTags}}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label>
-                                            <span class="required">{{t-plus "global.abstract"}}:</span>
+                                            <span class="required">{{t "global.abstract"}}:</span>
                                         </label>
                                         <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Abstract Text Change') (action 'track' 'input' 'onchange' 'Submit - Abstract Text Change')}}>
-                                            {{validated-input model=this valuePath='basicsAbstract' placeholder=(t-plus "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
+                                            {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
                                         </form>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">
-                                            <button {{action 'discardBasics'}} class="btn btn-default" disabled={{unless basicsChanged true}} >{{t-plus "global.discard"}}</button>
-                                            <button {{action 'saveBasics'}} class="btn btn-primary" disabled={{unless basicsValid true}} >{{t-plus "submit.body.save_continue"}}</button>
+                                            <button {{action 'discardBasics'}} class="btn btn-default" disabled={{unless basicsChanged true}} >{{t "global.discard"}}</button>
+                                            <button {{action 'saveBasics'}} class="btn btn-primary" disabled={{unless basicsValid true}} >{{t "submit.body.save_continue"}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -200,7 +200,7 @@
                             {{preprint-form-header editMode=editMode authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="text-smaller">
-                                    {{t-plus "submit.body.authors.paragraph"}}
+                                    {{t "submit.body.authors.paragraph"}}
                                 </p>
                                 {{preprint-form-authors
                                     contributors=contributors
@@ -223,7 +223,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">
-                                            <button {{action 'next' name}} class="btn btn-primary" disabled={{unless authorsValid true}} >{{t-plus "global.next"}}</button>
+                                            <button {{action 'next' name}} class="btn btn-primary" disabled={{unless authorsValid true}} >{{t "global.next"}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -238,9 +238,9 @@
                                     <div>
                                         <div class="text-center">
                                             <p>
-                                                {{t-plus "submit.body.update.paragraph" name=(if theme.isProvider theme.provider.name (t-plus "global.brand_name"))}}
+                                                {{t "submit.body.update.paragraph" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
                                             </p>
-                                            <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'savePreprint'}}>{{t-plus "global.complete"}}</button>
+                                            <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'savePreprint'}}>{{t "global.complete"}}</button>
                                         </div>
                                     </div>
                                 {{/cp-panel-body}}
@@ -248,21 +248,21 @@
                                 {{#cp-panel-body}}
                                     <div>
                                         <p>
-                                            {{t-plus "submit.body.submit.paragraph.line1" name=(if theme.isProvider theme.provider.name (t-plus "global.brand_name"))}}
+                                            {{t "submit.body.submit.paragraph.line1" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
                                         </p>
                                         <p>
-                                            {{t-plus "submit.body.submit.paragraph.line2" name=(if theme.isProvider theme.provider.name (t-plus "global.brand_name"))}}
+                                            {{t "submit.body.submit.paragraph.line2" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
                                         </p>
                                         <div class="text-center">
                                             {{#unless allSectionsValid}}
-                                                <p class="m-t-md"> <strong>{{t-plus "submit.body.submit.invalid.description"}}</strong></p>
-                                                <p class="text-danger"> {{unless (and savedTitle savedFile) (t-plus "submit.body.submit.invalid.upload")}}</p>
-                                                <p class="text-danger"> {{unless savedSubjects (t-plus "submit.body.submit.invalid.discipline")}}</p>
-                                                <p class="text-danger"> {{unless savedAbstract (t-plus "submit.body.submit.invalid.basics")}}</p>
-                                                <p class="text-danger"> {{unless authorsValid (t-plus "global.authors")}}</p>
+                                                <p class="m-t-md"> <strong>{{t "submit.body.submit.invalid.description"}}</strong></p>
+                                                <p class="text-danger"> {{unless (and savedTitle savedFile) (t "submit.body.submit.invalid.upload")}}</p>
+                                                <p class="text-danger"> {{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
+                                                <p class="text-danger"> {{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
+                                                <p class="text-danger"> {{unless authorsValid (t "global.authors")}}</p>
                                             {{/unless}}
                                             <p> </p>
-                                            <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>{{t-plus "global.share"}}</button>
+                                            <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>{{t "global.share"}}</button>
                                             <div>
                                                 {{confirm-share-preprint isOpen=showModalSharePreprint shareButtonDisabled=shareButtonDisabled savePreprint=(action 'savePreprint')}}
                                             </div>

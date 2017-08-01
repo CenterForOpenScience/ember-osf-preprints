@@ -2,7 +2,7 @@
     <div class="col-xs-12 col-md-5 col-division-right">
         <form {{action 'findContributors' 1 on='submit'}}>
             <div class="input-group author-search-box">
-                <input id="author-search-box" type="text" class="form-control searchQuery" onchange={{action (mut query) value="target.value"}} placeholder={{t-plus "components.preprint-form-authors.search.placeholder"}}>
+                <input id="author-search-box" type="text" class="form-control searchQuery" onchange={{action (mut query) value="target.value"}} placeholder={{t "components.preprint-form-authors.search.placeholder"}}>
                 <span class="input-group-btn">
                     <button class="btn btn-default authors-search-button" type="button" {{action 'findContributors' 1}} >
                         <i class="glyphicon glyphicon-search"></i>
@@ -13,10 +13,10 @@
         {{#if (not-eq addState 'emptyView')}}
             {{#if (eq addState 'searchView')}}
                 <div class="unregisteredUsers">
-                    <p>{{t-plus "components.preprint-form-authors.unregistered_users.paragraph"}}</p>
-                    <button class="btn btn-primary btn-small" {{action "unregisteredView"}}>{{t-plus "components.preprint-form-authors.unregistered_users.button"}}</button>
+                    <p>{{t "components.preprint-form-authors.unregistered_users.paragraph"}}</p>
+                    <button class="btn btn-primary btn-small" {{action "unregisteredView"}}>{{t "components.preprint-form-authors.unregistered_users.button"}}</button>
                 </div>
-                <h3> {{t-plus "components.preprint-form-authors.results"}} </h3>
+                <h3> {{t "components.preprint-form-authors.results"}} </h3>
                 {{#if searchResults}}
                     <table class="table author-table">
                         {{#each searchResults as |result|}}
@@ -25,25 +25,25 @@
                                     <img class="m-l-xs" src={{result.links.profile_image}} height=30 width=30>
                                     <a href={{result.links.html}} target="_blank"> {{result.fullName}} </a>
                                     {{#if (eq currentUser result)}}
-                                        <span class="small"> {{t-plus "components.preprint-form-authors.yourself"}} </span>
+                                        <span class="small"> {{t "components.preprint-form-authors.yourself"}} </span>
                                     {{/if}}
                                 </td>
                                 <td class="p-v-xs">
                                     {{#if (user-is-contributor result contributors authorModification)}}
-                                        <span class="hint hint--left pull-right" aria-label="{{t-plus "components.preprint-form-authors.already_added"}}">
+                                        <span class="hint hint--left pull-right" aria-label="{{t "components.preprint-form-authors.already_added"}}">
                                             <button class="btn btn-default btn-small disabled disabled-checkmark">
                                                 <i class="fa fa-check" aria-hidden="true"></i>
                                             </button>
                                         </span>
                                     {{else}}
-                                        <button class="btn btn-success btn-small pull-right" {{action "addContributor" result}}> {{t-plus "global.add"}} </button>
+                                        <button class="btn btn-success btn-small pull-right" {{action "addContributor" result}}> {{t "global.add"}} </button>
                                     {{/if}}
                                 </td>
                             </tr>
                         {{/each}}
                     </table>
                 {{else}}
-                    {{t-plus "global.no_results_found"}}
+                    {{t "global.no_results_found"}}
                 {{/if}}
                 {{#if (gt pages 1)}}
                     <div class="pull-right text-right">                        
@@ -52,7 +52,7 @@
                 {{/if}}
             {{/if}}
             {{#if (eq addState 'unregisteredView')}}
-                <h3> {{t-plus "components.preprint-form-authors.add_email"}} </h3>
+                <h3> {{t "components.preprint-form-authors.add_email"}} </h3>
                 <div class="user-validation" id="add-unregistered-contributor-form">
                     {{unregistered-contributor-form editMode=editMode resetfindContributorsView=(action 'resetfindContributorsView') addUnregisteredContributor=(action 'addUnregisteredContributor')}}
                 </div>
@@ -61,11 +61,11 @@
     </div>
     <div class="col-xs-12 col-md-7">
         <div class="author-header">
-            <h2 class="header-inline"> {{t-plus "global.authors"}} </h2>
+            <h2 class="header-inline"> {{t "global.authors"}} </h2>
             <span>
                 <i class="fa fa-question-circle permission-info"
                     data-toggle="popover"
-                    data-title="{{t-plus "components.preprint-form-authors.authors.title"}}"
+                    data-title="{{t "components.preprint-form-authors.authors.title"}}"
                     data-trigger="hover"
                     data-html="true"
                     data-placement="bottom"
@@ -73,21 +73,21 @@
                 </i>
             </span>
             {{#if (and (gt numParentContributors 1) (not parentContributorsAdded))}}
-                <button class="btn btn-default pull-right" {{action 'addContributorsFromParentProject'}}> <i class="fa fa-plus icon-large small"></i> <em class="small"> {{t-plus "components.preprint-form-authors.authors.parent_contributors"}} </em> </button>
+                <button class="btn btn-default pull-right" {{action 'addContributorsFromParentProject'}}> <i class="fa fa-plus icon-large small"></i> <em class="small"> {{t "components.preprint-form-authors.authors.parent_contributors"}} </em> </button>
             {{/if}}
         </div>
-        <p class="drag-drop small"> {{t-plus "components.preprint-form-authors.authors.order_instructions"}} </p>
+        <p class="drag-drop small"> {{t "components.preprint-form-authors.authors.order_instructions"}} </p>
         <div class="panel-body">
             <table class="table author-table current-authors">
                 <tr>
                     <th> </th>
-                    <th class="contrib-column-header"> {{t-plus "components.preprint-form-authors.authors.name"}} </th>
+                    <th class="contrib-column-header"> {{t "components.preprint-form-authors.authors.name"}} </th>
                     <th class="contrib-column-header">
-                        {{t-plus "components.preprint-form-authors.authors.permissions"}}
+                        {{t "components.preprint-form-authors.authors.permissions"}}
                         <span>
                             <i class="fa fa-question-circle permission-info"
                                 data-toggle="popover"
-                                data-title="{{t-plus "components.preprint-form-authors.authors.permission_info"}}"
+                                data-title="{{t "components.preprint-form-authors.authors.permission_info"}}"
                                 data-trigger="hover"
                                 data-html="true"
                                 data-placement="bottom"
@@ -97,11 +97,11 @@
                         <br>
                     </th>
                     <th class="bib-padding">
-                        {{t-plus "components.preprint-form-authors.authors.citation"}}
+                        {{t "components.preprint-form-authors.authors.citation"}}
                         <span>
                             <i class="fa fa-question-circle permission-info"
                                 data-toggle="popover"
-                                data-title="{{t-plus "components.preprint-form-authors.authors.citation_info"}}"
+                                data-title="{{t "components.preprint-form-authors.authors.citation_info"}}"
                                 data-trigger="hover"
                                 data-html="true"
                                 data-placement="bottom"
@@ -127,7 +127,7 @@
                                         {{/if}}
                                         <span class="pull-right remove-contributor-padding-xs">
                                             {{#if (and (permissionToRemoveContributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors authorModification))}}
-                                                <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t-plus "components.preprint-form-authors.authors.remove_author"}}>
+                                                <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
                                                     <i class="fa fa-times"> </i>
                                                 </button>
                                             {{/if}}
@@ -147,7 +147,7 @@
                             <td>
                                 <div class="form-group vert-align-enabled-permissions">
                                     {{#if (and (not (contributor-is-current-user contrib currentUser)) isAdmin (and canEdit (min-admins contrib contributors authorModification)))}}
-                                        <span class="visible-xs-inline permission-label"><em> {{t-plus "components.preprint-form-authors.authors.permissions"}}: </em></span>
+                                        <span class="visible-xs-inline permission-label"><em> {{t "components.preprint-form-authors.authors.permissions"}}: </em></span>
                                         <select class="text-smaller form-control permission-select" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
                                             {{#each permissionOptions as |option|}}
                                                 <option selected={{eq contrib.permission option.value}} value={{option.value}}>
@@ -157,23 +157,23 @@
                                         </select>
                                     {{else}}
                                         <div class="vert-align-disabled-permissions">
-                                            <span class="visible-xs-inline permission-label"> <em> {{t-plus "components.preprint-form-authors.authors.permissions"}}:  </em></span> <span class="text-smaller"> {{permission-map contrib.permission}} </span>
+                                            <span class="visible-xs-inline permission-label"> <em> {{t "components.preprint-form-authors.authors.permissions"}}:  </em></span> <span class="text-smaller"> {{permission-map contrib.permission}} </span>
                                         </div>
                                     {{/if}}
                                 </div>
                             </td>
                             <td class="bib-padding">
                                 <div class="form-group vert-align">
-                                    <span class="visible-xs-inline checkbox-padding"><em>{{t-plus "components.preprint-form-authors.authors.in_citation"}}:</em></span>
+                                    <span class="visible-xs-inline checkbox-padding"><em>{{t "components.preprint-form-authors.authors.in_citation"}}:</em></span>
                                     <input disabled={{if (and isAdmin (and canEdit (min-bibliographic contrib contributors authorModification))) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
                                 </div>
                             </td>
                             <td>
                                 <div class="delete-contrib-button form-group vert-align nudge-right hidden-xs">
                                     {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin node) (conditions-for-contrib-removal contrib contributors authorModification))}}
-                                        <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm" > {{t-plus "components.preprint-form-authors.remove"}} </button>
+                                        <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm" > {{t "components.preprint-form-authors.remove"}} </button>
                                     {{else}}
-                                        <button class="btn btn-danger btn-sm disabled"> {{t-plus "components.preprint-form-authors.remove"}} </button>
+                                        <button class="btn btn-danger btn-sm disabled"> {{t "components.preprint-form-authors.remove"}} </button>
                                     {{/if}}
                                 </div>
                             </td>

@@ -1,13 +1,13 @@
-{{title (t-plus (concat translateKey '.heading'))}}
+{{title (t (concat translateKey '.heading'))}}
 
 <div class="container">
     <div class="row">
         <div class="col-xs-12">
-            <h1>{{t-plus (concat translateKey '.heading')}}</h1>
+            <h1>{{t (concat translateKey '.heading')}}</h1>
             <p>
-                {{t-plus (concat translateKey '.message')}}
+                {{t (concat translateKey '.message')}}
                 <br>
-                <span>{{t-plus 'components.error-page.email_message'}}</span>
+                <span>{{t 'components.error-page.email_message'}}</span>
                 <a href="mailto:{{supportEmail}}"
                    onbeforeclick={{action "click" "link" (concat label " - Support")}}>
                     {{supportEmail}}
@@ -15,7 +15,7 @@
             </p>
             <a class="btn btn-primary m-t-md" href='{{theme.pathPrefix}}'
                 onclick={{action 'click' 'link' (concat label " - Go to Index")}}>
-                {{t 'components.error-page.go_to' brand=(t-plus (if theme.isProvider "global.provider_brand" "global.brand") name=theme.provider.name)}}
+                {{t 'components.error-page.go_to' brand=(t (if theme.isProvider "global.provider_brand" "global.brand") name=theme.provider.name)}}
             </a>
         </div>
     </div>

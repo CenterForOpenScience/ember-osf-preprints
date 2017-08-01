@@ -6,7 +6,7 @@
         buildUrl=(action 'getUrl')
         complete=(action 'complete')
         preUpload=(action 'preUpload')
-        defaultMessage=(t-plus 'components.file-uploader.dropzone_message')
+        defaultMessage=(t 'components.file-uploader.dropzone_message')
         maxfilesexceeded=(action 'maxfilesexceeded')
     }}
     {{#if hasFile}}
@@ -17,14 +17,14 @@
 
     <div class="p-t-xs pull-right">
         <button class="btn btn-default" {{action changeInitialState startState}}>Back</button>
-        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t-plus "submit.body.save_continue"}}</button>
+        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "submit.body.save_continue"}}</button>
     </div>
 {{else}}
     {{#preprint-form-section editMode=editMode class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}  {{!UPLOAD NEW FILE SECTION}}
         {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false}}
         {{#preprint-form-body}}
             {{#if nodeLocked}}
-                <p class='text-muted m-v-sm text-smaller'> {{t-plus "components.file-uploader.update_version"}}</p>
+                <p class='text-muted m-v-sm text-smaller'> {{t "components.file-uploader.update_version"}}</p>
             {{else}}
                 <div class="m-t-sm">
                     <form class="form">
@@ -45,7 +45,7 @@
                 buildUrl=(action 'getUrl')
                 complete=(action 'complete')
                 preUpload=(action 'preUpload')
-                defaultMessage=(t-plus 'components.file-uploader.dropzone_message')
+                defaultMessage=(t 'components.file-uploader.dropzone_message')
                 maxfilesexceeded=(action 'maxfilesexceeded')
             }}
         {{/preprint-form-body}}
@@ -56,15 +56,15 @@
             {{#preprint-form-section editMode=editMode class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}} {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
                 {{preprint-form-header nodeTitle=nodeTitle name='title_of_preprint' showValidationIndicator=false}}
                 {{#preprint-form-body}}
-                    <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t-plus "components.preprint-form-project-select.edit_preprint_title_project") (t-plus "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
+                    <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                     <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Edit title') (action 'track' 'input' 'onchange' 'Submit - Edit title')}}>
                         {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action 'uploadFileToExistingNode')}}
                     </form>
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
             <div class="m-v-md text-center">
-                <p>{{t-plus "components.preprint-form-project-select.edit_organize_section"}}  </p>
-                <button {{action "discardUploadChanges"}} class="btn btn-default" disabled={{unless uploadChanged true}} >{{t-plus "global.discard"}}</button>
+                <p>{{t "components.preprint-form-project-select.edit_organize_section"}}  </p>
+                <button {{action "discardUploadChanges"}} class="btn btn-default" disabled={{unless uploadChanged true}} >{{t "global.discard"}}</button>
                 <button class="btn btn-primary" disabled={{not (and hasFile titleValid)}} {{action 'uploadFileToExistingNode'}}>Save and continue</button>
             </div>
         {{else}}
@@ -80,7 +80,7 @@
                     {{#preprint-form-body}}
                         {{#if (eq convertOrCopy 'convert')}}
                             {{#if convertProjectConfirmed}}
-                                <label class="text-muted title-label text-smaller"> {{if isTopLevelNode (t-plus "components.preprint-form-project-select.edit_preprint_title_project") (t-plus "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
+                                <label class="text-muted title-label text-smaller"> {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                             {{/if}}
                         {{/if}}
                         <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Connect preprint to existing project'}}>
@@ -88,7 +88,7 @@
                         </form>
 
                         <div class="row text-center m-v-md">
-                            <p> {{t-plus "components.preprint-form-project-select.initiate_preprint_process"}} </p>
+                            <p> {{t "components.preprint-form-project-select.initiate_preprint_process"}} </p>
                             <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>Save and continue</button>
                         </div>
                     {{/preprint-form-body}}

@@ -20,7 +20,7 @@ const {
  * ```handlebars
  * {{validated-input
  *      model=this valuePath='nodeTitle'
- *      placeholder=(t-plus "components.file-uploader.title_placeholder")
+ *      placeholder=(t "components.file-uploader.title_placeholder")
  *      value=nodeTitle
  * }}
  * ```
