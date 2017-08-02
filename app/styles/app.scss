@@ -30,6 +30,7 @@
 }
 body {
     font-family: "Open Sans", "Helvetica Neue", sans-serif;
+    margin-top: 50px;
 }
 
 .btn-wrap {
@@ -119,7 +120,8 @@ ul.comma-list {
 /* Main header with search bar */
 .preprint-header{
     background:#214661 url('img/preprints-bg.jpg') top center ;
-    padding-top: 150px;
+    background-position-y: -50px;
+    padding-top: 100px;
     padding-bottom: 30px;
     border-bottom: 1px solid #dddddd;
     color: white;
@@ -213,9 +215,10 @@ $logo-dir: 'img/provider_logos/';
 
 /* Header panel */
 .search-header {
-    padding-top: 120px;
+    padding-top: 70px;
     background: #e0ebef url('img/search-bg.jpg') top center;
     background-size: cover;
+    background-position-y: -50px;
     .share-logo {
         width: 46px;
         height: 22px;
@@ -294,7 +297,7 @@ $logo-dir: 'img/provider_logos/';
     }
     .header-row {
         color: #ffffff;
-        padding-top: 90px;
+        padding-top: 40px;
     }
     .view-authors {
         color: white;
@@ -335,11 +338,12 @@ $logo-dir: 'img/provider_logos/';
 /* SUBMIT page */
 
 .preprint-submit-header {
-    padding-top: 140px;
+    padding-top: 90px;
     background: url("img/submit_bg.jpg") no-repeat top center;
     background-size: cover;
+    background-position-y: -50px;
     border-bottom: 1px solid #eee;
-    height: 250px;
+    height: 200px;
 }
 .preprint-submit-body {
     background-color: #f8f8f8;
@@ -413,7 +417,7 @@ $logo-dir: 'img/provider_logos/';
 }
 
 .preprint-error-page {
-    padding: 120px 0 120px 0;
+    padding: 70px 0 120px 0;
     background-color: #ecf2f3;
     border-bottom: 1px solid #d6dbdc;
 }
@@ -1252,7 +1256,7 @@ nav.branded-navbar {
 }
 
 .alert-maintenance {
-    margin-top: 104px;
+    margin-top: 50px;
     margin-bottom: 0;
 }
 

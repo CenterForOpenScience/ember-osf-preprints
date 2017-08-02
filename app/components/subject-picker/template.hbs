@@ -1,46 +1,39 @@
 <div class="row">
-    {{#each selected as |subject|}}
+    {{#each currentSubjects as |subject index|}}
         <span class="subject subject-align">
             {{#each subject as |segment|}}
-                <div class="subject-container"><span class="subject-container-text">{{segment.text}}<button class="cancel-subject fa fa-close" aria-label="{{t 'submit.body.remove_subject_aria'}}" title="Remove" {{action 'deselect' subject}} /></span></div><span class="right-arrow"></span>
+                <div class="subject-container">
+                    <span class="subject-container-text">
+                        {{segment.text}}
+                        <button class="cancel-subject fa fa-close" aria-label="{{t 'submit.body.remove_subject_aria'}}" title="Remove" {{action 'deselect' index}}></button>
+                    </span>
+                </div>
+                <span class="right-arrow"></span>
             {{/each}}
         </span>
     {{/each}}
 </div>
 
 <div class="row">
+    {{#each columns as |column tier|}}
+        <div class="col-md-4">
+            <ul style="overflow: scroll" role="listbox">
+                {{input value=column.filterText class="form-control" placeholder="Search"}}
+                {{#each column.subjectsSorted as |subject|}}
+                    <li {{action 'select' subject tier}} class={{if (eq subject column.selection) 'selected'}} role="listitem">
+                        {{subject.text}}
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    {{/each}}
+</div>
 
-    <div class="col-md-4">
-        <ul style="overflow: scroll">
-            {{input value=tier1FilterText class="form-control" placeholder="Search"}}
-            {{#each tier1Sorted as |subject|}}
-                <li {{action 'select' subject '1'}} class={{if (eq subject selection1) 'selected'}}>
-                    {{subject.text}}
-                </li>
-            {{/each}}
-        </ul>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-right">
+            <button {{action 'discard'}} class="btn btn-default" disabled={{not hasChanged}}>{{t "global.discard"}}</button>
+            <button {{action 'save'}} class="btn btn-primary" disabled={{not isValid}}>{{t "submit.body.save_continue"}}</button>
+        </div>
     </div>
-
-    <div class="col-md-4">
-        <ul style="overflow: scroll">
-            {{input value=tier2FilterText class="form-control" placeholder="Search"}}
-            {{#each tier2Sorted as |subject|}}
-                <li {{action 'select' subject '2'}} class={{if (eq subject selection2) 'selected'}}>
-                    {{subject.text}}
-                </li>
-            {{/each}}
-        </ul>
-    </div>
-
-    <div class="col-md-4">
-        <ul style="overflow: scroll">
-            {{input value=tier3FilterText class="form-control" placeholder="Search"}}
-            {{#each tier3Sorted as |subject|}}
-                <li {{action 'select' subject '3'}} class={{if (eq subject selection3) 'selected'}}>
-                    {{subject.text}}
-                </li>
-            {{/each}}
-        </ul>
-    </div>
-
 </div>

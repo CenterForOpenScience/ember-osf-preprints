@@ -39,7 +39,8 @@ export default Ember.Component.extend(Analytics, {
                     text: result.get('text'),
                     children: [],
                     showChildren: false,
-                    childCount: result.get('child_count')
+                    childCount: result.get('child_count'),
+                    shareTitle: result.get('shareTitle'),
                 }))
                 .sort((prev, next) => {
                     if (prev.text > next.text) {
