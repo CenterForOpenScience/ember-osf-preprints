@@ -19,10 +19,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
         return Ember.RSVP.hash({
             taxonomies: this.get('theme.provider')
                 .then(provider => provider
-                    .query('taxonomies', {
-                        filter: {
-                            parents: 'null'
-                        },
+                    .query('highlightedTaxonomies', {
                         page: {
                             size: 20
                         }
