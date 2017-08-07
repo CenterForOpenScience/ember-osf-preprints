@@ -110,6 +110,10 @@ module.exports = function(environment) {
                 {
                     id: 'nutrixiv',
                     permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'inarxiv',
+                    permissionLanguage: 'no_trademark'
                 }
             ],
         },
