@@ -18,7 +18,9 @@
 
 {{maintenance-banner}}
 
-{{donate-banner}}
+{{#unless theme.isProvider}}
+    {{donate-banner}}
+{{/unless}}
 
 {{outlet}}
 
