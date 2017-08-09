@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Analytics from '../../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
 
 function arrayEquals(arr1, arr2) {
     return arr1.length === arr2.length && arr1.reduce((acc, val, i) => acc && val === arr2[i], true);
@@ -8,7 +8,25 @@ function arrayEquals(arr1, arr2) {
 function arrayStartsWith(arr, prefix) {
     return prefix.reduce((acc, val, i) => acc && val && arr[i] && val.id === arr[i].id, true);
 }
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
+/**
+ * Add discipline when creating a preprint.
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{subject-picker
+ *      editMode=editMode
+ *      selected=subjectsList
+ *      disciplineModifiedToggle=disciplineModifiedToggle
+ *      save=(action 'setSubjects')
+ *}}
+ * ```
+ * @class subject-picker
+ */
 export default Ember.Component.extend(Analytics, {
     store: Ember.inject.service(),
     theme: Ember.inject.service(),
@@ -88,7 +106,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Remove`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Remove`
                 });
             let index;
             if (subject.length === 1) {
@@ -123,7 +141,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Add`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Add`
                 });
             tier = parseInt(tier);
             if (this.get(`selection${tier}`) === selected) return;

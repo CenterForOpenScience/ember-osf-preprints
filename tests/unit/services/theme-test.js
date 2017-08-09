@@ -1,3 +1,4 @@
+import config from '../../../config/environment';
 import { moduleFor, test } from 'ember-qunit';
 
 moduleFor('service:theme', 'Unit | Service | theme', {
@@ -7,6 +8,14 @@ moduleFor('service:theme', 'Unit | Service | theme', {
 
 // Replace this with your real tests.
 test('it exists', function(assert) {
-  let service = this.subject();
-  assert.ok(service);
+    let service = this.subject();
+    assert.ok(service);
+});
+
+test('themes have proper config', function(assert) {
+    let providers = config.PREPRINTS.providers;
+    for (var provider of providers) {
+        assert.ok(typeof provider.id !== 'undefined');
+        assert.ok(typeof provider.permissionLanguage !== 'undefined');
+    }
 });

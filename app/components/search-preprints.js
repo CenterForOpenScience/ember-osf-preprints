@@ -1,7 +1,23 @@
 import Ember from 'ember';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
+/**
+ * Search bar and search button
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{search-preprints
+ *  search="search"
+}}
+ * ```
+ * @class search-preprints
+ */
 export default Ember.Component.extend({
     metrics: Ember.inject.service(),
+    theme: Ember.inject.service(),
     actions: {
         search() {
             let query = Ember.$.trim(this.$('#searchBox').val());
@@ -11,7 +27,8 @@ export default Ember.Component.extend({
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Index - Search'
+                    label: 'Index - Search',
+                    extra: query
                 });
         }
     },

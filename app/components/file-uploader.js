@@ -1,6 +1,10 @@
 import Ember from 'ember';
 import {State} from '../controllers/submit';
-import Analytics from '../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * File uploader widget - handles all cases where uploading a new file as your preprint, or uploading a new version of your preprint.
@@ -12,10 +16,43 @@ import Analytics from '../mixins/analytics';
  *  either become the newly created project or component, or the existing node.  After file is uploaded to the designated 'node',
  *  'osfFile' is set to the uploadedFile.
  *
- *  NOTE: file-uploader is used in two places in this application - on the submit page and inside the preprint-form-project-select component.
+ *  NOTE: file-uploader is used in two places in the preprints application - on the submit page and inside the preprint-form-project-select component.
  *  If new properties need to be passed to this component, be sure to update in both places.
  *
- * ```
+ * ```handlebars
+ * {{file-uploader
+ *   changeInitialState=(action 'changeInitialState')
+ *   nextUploadSection=nextUploadSection
+ *   finishUpload=(action 'finishUpload')
+ *   clearDownstreamFields=(action 'clearDownstreamFields')
+ *   nextUploadSection=(action 'nextUploadSection')
+ *   startPreprint=(action 'startPreprint')
+ *   discardUploadChanges=(action 'discardUploadChanges')
+ *   newNodeNewFile=true
+ *   startState=_State.START
+ *   existingState=existingState
+ *   _existingState=_existingState
+ *   nodeTitle=nodeTitle
+ *   currentUser=user
+ *   osfFile=selectedFile
+ *   hasFile=hasFile
+ *   file=file
+ *   node=node
+ *   parentNode=parentNode
+ *   convertProjectConfirmed=convertProjectConfirmed
+ *   convertOrCopy=convertOrCopy
+ *   isTopLevelNode=isTopLevelNode
+ *   nodeLocked=nodeLocked
+ *   titleValid=titleValid
+ *   uploadChanged=uploadChanged
+ *   uploadInProgress=uploadInProgress
+ *   abandonedPreprint=abandonedPreprint
+ *   resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
+ *   basicsAbstract=basicsAbstract
+ *   editMode=editMode
+ *   newNode=newNode
+ *   applyLicense=applyLicense
+}}
  * @class file-uploader
  */
 export default Ember.Component.extend(Analytics, {
@@ -98,7 +135,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Save and Continue, New Node New File'
+                    label: 'Submit - Save and Continue, New Node New File'
                 });
             this.get('store').createRecord('node', {
                 public: false,
@@ -124,7 +161,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Save and Continue, New Component New File'
+                    label: 'Submit - Save and Continue, New Component New File'
                 });
             let node = this.get('node');
             node
@@ -150,7 +187,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('nodeLocked') ? 'Save File/Title Edits' : 'Existing Node New File'}`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('nodeLocked') ? 'Save File/Title Edits' : 'Existing Node New File'}`
                 });
             if (this.get('nodeLocked')) { // Edit mode
                 this.set('uploadInProgress', true);
@@ -294,12 +331,12 @@ export default Ember.Component.extend(Analytics, {
             };
 
             if (this.get('newNodeNewFile')) {
-                eventData.label = 'Preprints - Submit - Drop File, New Node';
+                eventData.label = 'Submit - Drop File, New Node';
             } else {
                 if (this.get('nodeLocked')) {
-                    eventData.label = `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Drop File, New Version`;
+                    eventData.label = `${this.get('editMode') ? 'Edit' : 'Submit'} - Drop File, New Version`;
                 } else {
-                    eventData.label = 'Preprints - Submit - Drop File, Existing Node';
+                    eventData.label = 'Submit - Drop File, Existing Node';
                 }
             }
             Ember.get(this, 'metrics')

@@ -14,18 +14,19 @@ const TitleValidation = buildValidations({
         ]
     },
 });
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
- * Preprint-title-editor widget - allows you to add a title if none exists, or edit existing title.
- * Adds validation.
- *
- *  Will modify nodeTitle and titleValid.
+ * Preprint-title-editor widget - allows you to add a title if none exists, or edit existing title. Adds validation. Will modify nodeTitle and titleValid.
  *
  * Sample usage:
  * ```handlebars
  * {{preprint-title-editor
- *  nodeTitle=nodeTitle,
- *  titlePlaceholder=titlePlaceholder,
+ *  nodeTitle=nodeTitle
+ *  titlePlaceholder=titlePlaceholder
  *  titleValid=titleValid
 }}
  * ```

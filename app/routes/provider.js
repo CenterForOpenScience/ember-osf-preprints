@@ -1,22 +1,31 @@
-import Ember from 'ember';
+import Ember, { Logger } from 'ember';
 import config from 'ember-get-config';
 
+const providers = config.PREPRINTS.providers.slice(1);
+const providerIds = providers.map(p => p.id);
+
+/**
+ * @module ember-preprints
+ * @submodule routes
+ */
+
+/**
+ * @class Provider Route Handler
+ */
 export default Ember.Route.extend({
     theme: Ember.inject.service(),
 
-    providerIds: config.PREPRINTS.providers
-        .slice(1)
-        .map(provider => provider.id),
-
     beforeModel(transition) {
-        const {slug} = transition.params.provider;
-        const slugLower = (slug || '').toLowerCase();
+        const {slug = ''} = transition.params.provider;
+        const slugLower = slug.toLowerCase();
 
-        if (this.get('providerIds').includes(slugLower)) {
+        if (providerIds.includes(slugLower)) {
             if (slugLower !== slug) {
                 const {pathname} = window.location;
+                const pathRegex = new RegExp(`^/preprints/${slug}`);
+
                 window.location.pathname = pathname.replace(
-                    new RegExp(`^/preprints/${slug}`),
+                    pathRegex,
                     `/preprints/${slugLower}`
                 );
             }
@@ -35,8 +44,7 @@ export default Ember.Route.extend({
 
     actions: {
         error(error) {
-            // Manage your errors
-            Ember.onerror(error);
+            Logger.error(error);
 
             // substate implementation when returning `true`
             return true;

@@ -1,10 +1,11 @@
-/* jshint node: true */
+/* eslint-env node */
 
 module.exports = function(environment) {
-    var authorizationType = 'cookie';
+    const authorizationType = 'cookie';
 
-    var ENV = {
+    const ENV = {
         modulePrefix: 'preprint-service',
+        appName: 'Preprints',
         environment: environment,
         rootURL: '/',
         locationType: 'auto',
@@ -14,6 +15,10 @@ module.exports = function(environment) {
             authorizer: `authorizer:osf-${authorizationType}`,
             authenticator: `authenticator:osf-${authorizationType}`
         },
+        // Set to 'local' to use local assets at providerAssetsPath.
+        providerAssetsURL: process.env.PROVIDER_ASSETS_URL || 'https://staging-cdn.osf.io/preprints-assets/',
+        // path to local preprint provider assets (relative to public/assets/)
+        providerAssetsPath: 'osf-assets/files/preprints-assets',
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
@@ -33,10 +38,9 @@ module.exports = function(environment) {
         },
         PREPRINTS: {
             defaultProvider: 'osf',
-
-
             // Logos are needed for open graph sharing meta tags (Facebook, LinkedIn, etc) and must be at least 200x200
             providers: [
+                // OSF must be the first provider
                 {
                     id: 'osf',
                     logoSharing: {
@@ -44,57 +48,68 @@ module.exports = function(environment) {
                         type: 'image/png',
                         width: 363,
                         height: 242
-                    }
+                    },
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'engrxiv',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/engrxiv-sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-
-                    },
-                    permissionLanguage: 'arxiv_non_endorsement'
-
-                },
-                {
-                    id: 'psyarxiv',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/psyarxiv-sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_non_endorsement'
                 },
                 {
                     id: 'socarxiv',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/socarxiv-sharing.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    },
                     permissionLanguage: 'arxiv_trademark_license'
                 },
                 {
+                    id: 'psyarxiv',
+                    permissionLanguage: 'arxiv_trademark_license'
+                },
+                {
+                    id: 'bitss',
+                    permissionLanguage: 'no_trademark'
+                },
+                {
                     id: 'scielo',
-                    logoSharing: {
-                        path: '/assets/img/provider_logos/scielo-logo.png',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    }
+                    permissionLanguage: 'no_trademark'
                 },
                 {
                     id: 'agrixiv',
-                    logoSharing: {
-                        path: 'assets/img/provider_logos/agrixiv-banner.svg',
-                        type: 'image/png',
-                        width: 1200,
-                        height: 488
-                    }
+                    permissionLanguage: 'arxiv_non_endorsement'
+                },
+                {
+                    id: 'lawarxiv',
+                    permissionLanguage: 'arxiv_non_endorsement'
+                },
+                {
+                    id: 'focusarchive',
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'paleorxiv',
+                    permissionLanguage: 'arxiv_non_endorsement'
+                },
+                {
+                    id: 'mindrxiv',
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'lissa',
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'sportrxiv',
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'thesiscommons',
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'asu',
+                    permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'nutrixiv',
+                    permissionLanguage: 'no_trademark'
                 }
             ],
         },
@@ -104,13 +119,36 @@ module.exports = function(environment) {
         metricsAdapters: [
             {
                 name: 'GoogleAnalytics',
-                environments: ['all'],
+                environments: [process.env.KEEN_ENVIRONMENT] || ['production'],
                 config: {
                     id: process.env.GOOGLE_ANALYTICS_ID
                 }
-            }
+            },
+            {
+                name: 'Keen',
+                environments: [process.env.KEEN_ENVIRONMENT] || ['production'],
+                config: {
+                    private: {
+                        projectId: process.env.PREPRINTS_PRIVATE_PROJECT_ID,
+                        writeKey: process.env.PREPRINTS_PRIVATE_WRITE_KEY
+                    },
+                    public: {
+                        projectId: process.env.PREPRINTS_PUBLIC_PROJECT_ID,
+                        writeKey: process.env.PREPRINTS_PUBLIC_WRITE_KEY
+                    }
+                }
+            },
+
         ],
         FB_APP_ID: process.env.FB_APP_ID,
+        whiteListedProviders: [
+            'arXiv',
+            'bioRxiv',
+            'Cogprints',
+            'PeerJ',
+            'Research Papers in Economics',
+            'Preprints.org'
+        ].map(item => item.toLowerCase()),
     };
 
     if (environment === 'development') {
@@ -120,12 +158,12 @@ module.exports = function(environment) {
         // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
         // ENV.APP.LOG_VIEW_LOOKUPS = true;
 
-        ENV.metricsAdapters[0].config.cookieDomain = 'none'
+        ENV.metricsAdapters[0].config.cookieDomain = 'none';
     }
 
     if (environment === 'test') {
         // Testem prefers this...
-        // ENV.baseURL = '/';
+        ENV.baseURL = '/';
         ENV.locationType = 'none';
 
         // keep test console output quieter
@@ -138,6 +176,8 @@ module.exports = function(environment) {
         // TODO: Provide mocks for all components with manual AJAX calls in the future.
         ENV.SHARE.baseUrl = '/nowhere';
         ENV.SHARE.searchUrl = '/nowhere';
+        ENV.OSF = {};
+        ENV.OSF.shareSearchUrl = '/nowhere';
 
         ENV.metricsAdapters[0].config.cookieDomain = 'none'
     }
@@ -149,15 +189,6 @@ module.exports = function(environment) {
         // Fallback to throwaway defaults if the environment variables are not set
         ENV.metricsAdapters[0].config.id = ENV.metricsAdapters[0].config.id || 'UA-84580271-1';
         ENV.FB_APP_ID = ENV.FB_APP_ID || '1039002926217080';
-    }
-
-    if (ENV.ASSET_SUFFIX) {
-        ENV.PREPRINTS.providers = ENV.PREPRINTS.providers.map(provider => {
-            provider.logoSharing.path = provider.logoSharing.path
-                .replace(/\..*$/, match => `-${ENV.ASSET_SUFFIX}${match}`);
-
-            return provider;
-        });
     }
 
     return ENV;

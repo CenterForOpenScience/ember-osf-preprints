@@ -1,0 +1,38 @@
+{{!Provider Carousel}}
+<div id="providerCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+    <div class="carousel-inner" role="listbox">
+        {{#each slides as |slide index|}}
+            <div class={{if (not index) "item active" "item"}}>
+                {{#each slide as |provider index|}}
+                    <div class={{if (not index) (concat "col-sm-2 " columnOffset) "col-sm-2"}}>
+                        {{#if lightLogo}}
+                            <a href="/preprints/{{provider.id}}"
+                                title={{provider.name}}
+                                onclick={{action 'click' 'link' (concat 'Index - Provider Carousel - ' provider.name)}}
+                                >
+                                <div class="provider-logo provider-{{provider.id}}" style="background-image: url('{{providerAsset provider.id 'wide_white.png'}}')"></div>
+                            </a>
+                        {{else}}
+                            <a href="/preprints/{{provider.id}}/discover"
+                                title={{provider.name}}
+                                onclick={{action 'click' 'link' (concat 'Discover - Provider Carousel ' provider.name)}}
+                            >
+                                <div class="discover-provider-logo provider-{{provider.id}}-dark" style="background-image: url('{{providerAsset provider.id 'wide_black.png'}}')"></div>
+                            </a>
+                        {{/if}}
+                    </div>
+                {{/each}}
+            </div>
+        {{/each}}
+    </div>
+    {{#if (gt numProviders itemsPerSlide)}}
+        <a class="left carousel-control" href="#providerCarousel" role="button" data-slide="prev">
+            <span class={{concat "icon-prev fa fa-angle-left" (if (not lightLogo) " dark-control")}}></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#providerCarousel" role="button" data-slide="next">
+            <span class={{concat "icon-next fa fa-angle-right" (if (not lightLogo) " dark-control")}}></span>
+            <span class="sr-only">Next</span>
+        </a>
+    {{/if}}
+</div>

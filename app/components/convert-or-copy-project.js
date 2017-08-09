@@ -1,5 +1,9 @@
 import Ember from 'ember';
-import Analytics from '../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
 /**
  * Convert Or Copy Widget - very simple, just presents decision, do you want to convert this project or copy file to a new component.
@@ -34,7 +38,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Make a New Component Selection'
+                    label: 'Submit - Make a New Component Selection'
                 });
 
         },
@@ -50,7 +54,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Use the Current Project Selection'
+                    label: 'Submit - Use the Current Project Selection'
                 });
         },
         confirmConvert() {
@@ -62,7 +66,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Preprints - Submit - Confirm Continue with the Current Project'
+                    label: 'Submit - Confirm Continue with the Current Project'
                 });
         }
     }

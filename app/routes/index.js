@@ -1,8 +1,17 @@
 import Ember from 'ember';
 
 import ResetScrollMixin from '../mixins/reset-scroll';
-import Analytics from '../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
 
+/**
+ * @module ember-preprints
+ * @submodule routes
+ */
+
+/**
+ * Loads all disciplines and preprint providers to the index page
+ * @class Index Route Handler
+ */
 export default Ember.Route.extend(Analytics, ResetScrollMixin, {
     // store: Ember.inject.service(),
     theme: Ember.inject.service(),
@@ -31,10 +40,10 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, {
         search(q) {
             let route = 'discover';
 
-            if (this.get('theme.isProvider'))
+            if (this.get('theme.isSubRoute'))
                 route = `provider.${route}`;
 
-            this.transitionTo(route, { queryParams: { queryString: q } });
+            this.transitionTo(route, { queryParams: { q: q } });
         }
     }
 });

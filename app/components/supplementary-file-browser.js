@@ -1,7 +1,27 @@
 import Ember from 'ember';
 import loadAll from 'ember-osf/utils/load-relationship';
-import Analytics from '../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
+import fileDownloadPath from '../utils/file-download-path';
 
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
+
+/**
+ * Displays supplemental preprint files
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{supplementary-file-browser
+ *      preprint=model
+ *      node=node
+ *      projectURL=node.links.html
+ *      chooseFile=(action 'chooseFile')
+ * }}
+ * ```
+ * @class supplementary-file-browser
+ */
 export default Ember.Component.extend(Analytics, {
     elementId: 'preprint-file-view',
     endIndex: 6,
@@ -36,8 +56,57 @@ export default Ember.Component.extend(Analytics, {
                 this.set('primaryFile', pf);
                 this.set('selectedFile', this.get('primaryFile'));
                 this.set('files', [this.get('primaryFile')].concat(this.get('files')));
+                this.set('indexes', this.get('files').map(each => each.id));
             });
     }.observes('preprint'),
+
+    selectedFileChanged: Ember.observer('selectedFile', function() {
+        const eventData = {
+            file_views: {
+                preprint: {
+                    type: 'preprint',
+                    id: this.get('preprint.id')
+                },
+                file: {
+                    id: this.get('selectedFile.id'),
+                    primaryFile: this.get('preprint.primaryFile.id') === this.get('selectedFile.id'),
+                    version: this.get('selectedFile.currentVersion')
+                }
+            }
+        };
+        Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', {
+            collection: 'preprint-file-views',
+            eventData: eventData,
+            node: this.get('node'),
+        });
+    }),
+
+    _chosenFile: Ember.observer('chosenFile', 'indexes', function() {
+        let fid = this.get('chosenFile');
+        let index = this.get('indexes').indexOf(fid);
+        if (fid && index !== -1) {
+            this.set('selectedFile', this.get('files')[index]);
+        }
+    }),
+    _moveIfNeeded: Ember.observer('selectedFile', function() {
+        let index = this.get('files').indexOf(this.get('selectedFile'));
+        if (index < 0) {
+            return;
+        }
+        if (index >= this.get('endIndex') || index < this.get('startIndex')) {
+            let max = this.get('files').length - 6;
+            if (index > max) {
+                this.set('startIndex', max);
+                this.set('endIndex', this.get('files').length);
+            } else {
+                this.set('startIndex', index);
+                this.set('endIndex', index + 6);
+            }
+        }
+    }),
+    fileDownloadURL: Ember.computed('selectedFile', function() {
+        return fileDownloadPath(this.get('selectedFile'), this.get('node'));
+    }),
 
     init() {
         this._super(...arguments);
@@ -50,7 +119,7 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
-                    label: 'Preprints - Content - Next'
+                    label: 'Content - Next'
                 });
 
             if (this.get('endIndex') > this.get('files.length')) return;
@@ -64,25 +133,29 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
-                    label: 'Preprints - Content - Prev'
+                    label: 'Content - Prev'
                 });
-
-            if (this.get('startIndex') <= 0) return;
+            let start = this.get('startIndex');
+            if (start <= 0) return;
 
             this.set('scrollAnim', `to${direction}`);
-            this.set('endIndex', this.get('endIndex') - 5);
-            this.set('startIndex', this.get('startIndex') - 5);
+            if ((start - 5) < 0) {
+                this.set('startIndex', 0);
+                this.set('endIndex', 6);
+            } else {
+                this.set('startIndex', start - 5);
+                this.set('endIndex', this.get('endIndex') - 5);
+            }
         },
         changeFile(file) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'file browser',
                     action: 'select',
-                    label: 'Preprints - Content - File'
+                    label: 'Content - File'
                 });
 
             this.set('selectedFile', file);
-
             if (this.attrs.chooseFile) {
                 this.sendAction('chooseFile', file);
             }

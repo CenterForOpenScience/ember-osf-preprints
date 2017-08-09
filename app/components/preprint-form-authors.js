@@ -1,11 +1,45 @@
 import Ember from 'ember';
 import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
 import { permissionSelector } from 'ember-osf/const/permissions';
-import Analytics from '../mixins/analytics';
+import Analytics from 'ember-osf/mixins/analytics';
+/**
+ * @module ember-preprints
+ * @submodule components
+ */
 
+/**
+ * Displays current preprint authors and their permissions/bibliographic information. Allows user to search for
+ * authors, add authors, edit authors permissions/bibliographic information, and remove authors.  Actions
+ * that are not allowed are disabled (for example, you cannot remove the sole bibliographic author).
+ *
+ * Sample usage:
+ * ```handlebars
+ * {{preprint-form-authors
+ *    contributors=contributors
+ *    parentContributors=parentContributors
+ *    node=node
+ *    isAdmin=isAdmin
+ *    canEdit=canEdit
+ *    currentUser=user
+ *    addContributor=(action 'addContributor')
+ *    addContributors=(action 'addContributors')
+ *    findContributors=(action 'findContributors')
+ *    searchResults=searchResults
+ *    removeContributor=(action 'removeContributor')
+ *    editContributor=(action 'updateContributor')
+ *    reorderContributors=(action 'reorderContributors')
+ *    highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+ *    parentNode=parentNode
+ *    editMode=editMode
+}}
+ * ```
+ * @class preprint-form-authors
+ */
 export default CpPanelBodyComponent.extend(Analytics, {
+    i18n: Ember.inject.service(),
     valid: Ember.computed.alias('newContributorId'),
     authorModification: false,
+    currentPage: 1,
     // Permissions labels for dropdown
     permissionOptions: permissionSelector,
     parentContributorsAdded: false,
@@ -56,14 +90,15 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Add Author`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Add Author`
                 });
             this.attrs.addContributor(user.id, 'write', true, this.get('sendEmail'), undefined, undefined, true).then((res) => {
                 this.toggleAuthorModification();
                 this.get('contributors').pushObject(res);
+                this.get('toast').success(this.get('i18n').t('submit.preprint_author_added'));
                 this.highlightSuccessOrFailure(res.id, this, 'success');
             }, () => {
-                this.get('toast').error('Could not add contributor.');
+                this.get('toast').error(this.get('i18n').t('submit.error_adding_author'));
                 this.highlightSuccessOrFailure(user.id, this, 'error');
                 user.rollbackAttributes();
             });
@@ -74,7 +109,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - Submit - Bulk Add Contributors From Parent`
+                    label: `Submit - Bulk Add Contributors From Parent`
                 });
             this.set('parentContributorsAdded', true);
             let contributorsToAdd = Ember.A();
@@ -109,12 +144,13 @@ export default CpPanelBodyComponent.extend(Analytics, {
                     this.set('addState', 'searchView');
                     this.set('fullName', '');
                     this.set('email', '');
+                    this.get('toast').success(this.get('i18n').t('submit.preprint_unregistered_author_added'));
                     this.highlightSuccessOrFailure(contributor.id, this, 'success');
                 }, (error) => {
                     if (error.errors[0] && error.errors[0].detail && error.errors[0].detail.indexOf('is already a contributor') > -1) {
                         this.get('toast').error(error.errors[0].detail);
                     } else {
-                        this.get('toast').error('Could not add unregistered contributor.');
+                        this.get('toast').error(this.get('i18n').t('submit.error_adding_unregistered_author'));
                     }
                     this.highlightSuccessOrFailure('add-unregistered-contributor-form', this, 'error');
                 });
@@ -139,14 +175,15 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Author`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Author`
                 });
             this.attrs.removeContributor(contrib).then(() => {
                 this.toggleAuthorModification();
                 this.removedSelfAsAdmin(contrib, contrib.get('permission'));
                 this.get('contributors').removeObject(contrib);
+                this.get('toast').success(this.get('i18n').t('submit.preprint_author_removed'));
             }, () => {
-                this.get('toast').error('Could not remove author');
+                this.get('toast').error(this.get('i18n').t('submit.error_adding_author'));
                 this.highlightSuccessOrFailure(contrib.id, this, 'error');
                 contrib.rollbackAttributes();
             });
@@ -158,7 +195,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Change Author Permissions`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Change Author Permissions`
                 });
             this.attrs.editContributor(contributor, permission, '').then(() => {
                 this.toggleAuthorModification();
@@ -177,7 +214,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'checkbox',
                     action: 'select',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Update Bibliographic Author`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Update Bibliographic Author`
                 });
             this.attrs.editContributor(contributor, '', isBibliographic).then(() => {
                 this.toggleAuthorModification();
@@ -194,7 +231,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Go to Add Author by Email Form`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Go to Add Author by Email Form`
                 });
             this.set('addState', 'unregisteredView');
         },
@@ -210,7 +247,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Cancel Add Author By Email`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Cancel Add Author By Email`
                 });
             this.set('addState', 'searchView');
         },
@@ -221,7 +258,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'div',
                     action: 'drag',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Reorder Authors`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Reorder Authors`
                 });
             let originalOrder = this.get('contributors');
             this.set('contributors', itemModels);
@@ -234,6 +271,20 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 this.get('toast').error('Could not reorder contributors');
                 draggedContrib.rollbackAttributes();
             });
+        },
+        // Action used by the pagination-pager component to the handle user-click event.
+        pageChanged(current) {
+            let query = this.get('query');
+            if (query) {
+                this.attrs.findContributors(query, current).then(() => {
+                    this.set('addState', 'searchView');
+                    this.set('currentPage', current);
+                })
+                .catch(() => {
+                        this.get('toast').error('Could not perform search query.');
+                        this.highlightSuccessOrFailure('author-search-box', this, 'error');
+                    });
+            }
         }
     },
     // TODO find alternative to jquery selectors. Temporary popover content for authors page.
@@ -264,20 +315,17 @@ export default CpPanelBodyComponent.extend(Analytics, {
             'A registered administrator is a user who has both confirmed their account and has administrator privileges.'
         });
     },
-    /**
-    * If user removes their own admin permissions, many things on the page must become
-    * disabled.  Changing the isAdmin flag to false will remove many of the options
-    * on the page.
-    */
+
+    /* If user removes their own admin permissions, many things on the page must become
+    disabled.  Changing the isAdmin flag to false will remove many of the options
+    on the page. */
     removedSelfAsAdmin(contributor, permission) {
         if (this.get('currentUser').id === contributor.get('userId') && permission !== 'ADMIN') {
             this.set('isAdmin', false);
         }
     },
-    /**
-    * Toggling this property, authorModification, updates several items on the page - disabling elements, enabling
-    * others, depending on what requests are permitted
-    */
+    /* Toggling this property, authorModification, updates several items on the page - disabling elements, enabling
+    others, depending on what requests are permitted */
     toggleAuthorModification() {
         this.toggleProperty('authorModification');
     }

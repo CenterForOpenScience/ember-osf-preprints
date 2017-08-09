@@ -2,15 +2,22 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('preprint-form-header', 'Integration | Component | preprint form header', {
-  integration: true
+    integration: true
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
-  const name = 'Upload';
-  this.set('name', name);
+    this.render(hbs`{{preprint-form-header name='Upload'}}`);
+    assert.equal(this.$('.section-header').text().trim(), 'Upload');
+});
 
-  this.render(hbs`{{preprint-form-header name=name}}`);
-  assert.equal(this.$('.section-header').text().trim(), name);
+test('clicking on header triggers isOpen', function(assert){
+    this.render(hbs`
+        {{#preprint-form-section allowOpen=true}}
+            {{#preprint-form-header name='Upload'}}Title{{/preprint-form-header}}
+            {{#preprint-form-body}}Body{{/preprint-form-body}}
+        {{/preprint-form-section}}
+    `);
+    assert.ok(this.$('.preprint-header-preview').length);
+    this.$('header').click();
+    assert.ok(!this.$('.preprint-header-preview').length);
 });

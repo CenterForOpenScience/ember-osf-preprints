@@ -10,8 +10,8 @@
         maxfilesexceeded=(action 'maxfilesexceeded')
     }}
     {{#if hasFile}}
-        <form onchange={{action 'track' 'input' 'onchange' 'Preprints - Submit - Add title, Upload new preprint'}}>
-            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+        <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Upload new preprint'}}>
+            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action 'setNodeAndFile')}}
         </form>
     {{/if}}
 
@@ -57,8 +57,8 @@
                 {{preprint-form-header nodeTitle=nodeTitle name='title_of_preprint' showValidationIndicator=false}}
                 {{#preprint-form-body}}
                     <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
-                    <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Preprints - Edit - Edit title') (action 'track' 'input' 'onchange' 'Preprints - Submit - Edit title')}}>
-                        {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                    <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Edit title') (action 'track' 'input' 'onchange' 'Submit - Edit title')}}>
+                        {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action 'uploadFileToExistingNode')}}
                     </form>
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
@@ -83,9 +83,10 @@
                                 <label class="text-muted title-label text-smaller"> {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                             {{/if}}
                         {{/if}}
-                        <form onchange={{action 'track' 'input' 'onchange' 'Preprints - Submit - Add title, Connect preprint to existing project'}}>
-                            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid}}
+                        <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Connect preprint to existing project'}}>
+                            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action 'setNodeAndFile')}}
                         </form>
+
                         <div class="row text-center m-v-md">
                             <p> {{t "components.preprint-form-project-select.initiate_preprint_process"}} </p>
                             <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>Save and continue</button>

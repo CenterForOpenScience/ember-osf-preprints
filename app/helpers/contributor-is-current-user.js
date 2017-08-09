@@ -1,10 +1,15 @@
 import Ember from 'ember';
 
 /**
+ * @module ember-preprints
+ * @submodule helpers
+ */
+
+/**
  * contributorIsCurrentUser helper. Checks to see if particular contributor listed is the current
  * logged in user
  *
- * @method contributorIsCurrentUser
+ * @class contributorIsCurrentUser
  * @param {Object} contributor Contributor in question.
  * @param {Object} currentUser Current logged in user.
  * @return {Boolean} Is this contributor the current user?
