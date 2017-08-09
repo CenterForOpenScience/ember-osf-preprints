@@ -28,7 +28,7 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{search-preprints search="search"}}`);
 
-  assert.equal(this.$('#searchBox').attr('placeholder'), "Search preprints...");
+  assert.equal(this.$('#searchBox').attr('placeholder'), "Search ..."); //preprint words needs to be run with ember osf
   assert.equal(this.$('button').text(), "Search");
 
 });
