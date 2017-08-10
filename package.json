@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.111.10",
+  "version": "0.111.11",
   "description": "Center for Open Science Preprint Service",
   "private": true,
   "directories": {
