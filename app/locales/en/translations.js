@@ -19,7 +19,7 @@ export default {
         preprints,
         brand,
         brand_name: 'OSF',
-        provider_brand: `{{name}} {{preprintWords.preprints}}`,
+        provider_brand: `{{name}} {{preprintWords.Preprints}}`,
         add_preprint: `Add a {{preprintWords.preprint}}`,
         title: `Title`,
         search_preprints: `Search {{preprintWords.preprints}}...`,
