@@ -19,7 +19,7 @@ export default {
         preprints,
         brand,
         brand_name: 'OSF',
-        provider_brand: `{{name}} {{preprintWords.preprints}}`,
+        provider_brand: `{{name}} {{preprintWords.Preprints}}`,
         add_preprint: `Add a {{preprintWords.preprint}}`,
         title: `Title`,
         search_preprints: `Search {{preprintWords.preprints}}...`,
@@ -50,7 +50,7 @@ export default {
         see_more: 'See more',
         see_less: 'See less',
         version: 'Version',
-        preprint_doi: `Preprint DOI`,
+        preprint_doi: `{{preprintWords.Preprint}} DOI`,
         article_doi: `Peer-reviewed Publication DOI`,
         citations: `Citations`,
         disciplines: `Disciplines`,
@@ -181,8 +181,8 @@ export default {
             },
             submit: {
                 paragraph: {
-                    line1: `When you share this preprint, the DOI will be created and the preprint will become publicly accessible via {{name}} {{preprintWords.Preprints}}. You will be unable to delete the {{preprintWords.preprint}} file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your {{preprintWords.preprint}} such as supplementary materials, appendices, data, or protocols. If posting this {{preprintWords.preprint}} is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
-                    line2: `By clicking Share, you confirm that all Contributors agree with sharing this preprint, and that you have the right to share it.`
+                    line1: `When you share this {{preprintWords.preprint}}, the DOI will be created and the {{preprintWords.preprint}} will become publicly accessible via {{name}} {{preprintWords.Preprints}}. You will be unable to delete the {{preprintWords.preprint}} file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your {{preprintWords.preprint}} such as supplementary materials, appendices, data, or protocols. If posting this {{preprintWords.preprint}} is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
+                    line2: `By clicking Share, you confirm that all Contributors agree with sharing this {{preprintWords.preprint}}, and that you have the right to share it.`
                 },
                 invalid: {
                     description: `The following section(s) must be completed before sharing this {{preprintWords.preprint}}.`,
@@ -213,7 +213,7 @@ export default {
         disciplines_error: `Error saving discipline(s).`,
         search_contributors_error: `Could not perform search query.`,
         error_completing_preprint: `Error completing {{preprintWords.preprint}}.`,
-        error_saving_preprint: `Could not save preprint; please try again later`,
+        error_saving_preprint: `Could not save {{preprintWords.preprint}}; please try again later`,
     },
     components: {
         'confirm-restart-submit-preprint': {
