@@ -24,9 +24,9 @@ export default Ember.Controller.extend(Analytics, {
     }),
     consumingService: 'preprints', // Consuming service - preprints here
     detailRoute: 'content', // Name of detail route for this application
-    discoverHeader: Ember.computed('i18n', 'additionalProviders', function() { // Header for preprints discover page
+    discoverHeader: Ember.computed('additionalProviders', function() { // Header for preprints discover page
         // If additionalProviders, use more generic Repository Search page title
-        return this.get('additionalProviders') ? this.get('i18n').t('discover.search.heading_repository_search') : this.get('i18n').t('discover.search.heading');
+        return this.get('additionalProviders') ? 'discover.search.heading_repository_search' : 'discover.search.heading';
     }),
     end: '', // End query param. Must be passed to component, so can be reflected in the URL
     externalProviders: Ember.computed('model', function() {
