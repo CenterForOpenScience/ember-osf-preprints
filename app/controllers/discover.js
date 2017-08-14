@@ -24,9 +24,9 @@ export default Ember.Controller.extend(Analytics, {
     }),
     consumingService: 'preprints', // Consuming service - preprints here
     detailRoute: 'content', // Name of detail route for this application
-    discoverHeader: Ember.computed('i18n', 'additionalProviders', function() { // Header for preprints discover page
+    discoverHeader: Ember.computed('additionalProviders', function() { // Header for preprints discover page
         // If additionalProviders, use more generic Repository Search page title
-        return this.get('additionalProviders') ? this.get('i18n').t('discover.search.heading_repository_search') : this.get('i18n').t('discover.search.heading');
+        return this.get('additionalProviders') ? 'discover.search.heading_repository_search' : 'discover.search.heading';
     }),
     end: '', // End query param. Must be passed to component, so can be reflected in the URL
     externalProviders: Ember.computed('model', function() {
@@ -65,8 +65,8 @@ export default Ember.Controller.extend(Analytics, {
     provider: '', // Provider query param. Must be passed to component, so can be reflected in URL
     q: '', // q query param.  Must be passed to component, so can be reflected in URL
     queryParams: ['page', 'q', 'sources', 'tags', 'type', 'start', 'end', 'subject', 'provider'], // Pass in the list of queryParams for this component
-    searchPlaceholder: Ember.computed('i18n', 'additionalProviders', function() { // Search bar placeholder
-        return this.get('additionalProviders') ? this.get('i18n').t('discover.search.repository_placeholder'): this.get('i18n').t('discover.search.placeholder');
+    searchPlaceholder: Ember.computed('additionalProviders', function() { // Search bar placeholder
+        return this.get('additionalProviders') ? 'discover.search.repository_placeholder': 'discover.search.placeholder';
     }),
     showActiveFilters: Ember.computed('additionalProviders', function() {  // Whether Active Filters should be displayed.
         // additionalProviders are using SHARE facets which do not work with Active Filters at this time
