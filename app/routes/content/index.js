@@ -257,6 +257,11 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
 
                 return this.intermediateTransitionTo(page);
             }
+        },
+        didTransition() {
+            const ev = document.createEvent('HTMLEvents');
+            ev.initEvent('ZoteroItemUpdated', true, true);
+            document.dispatchEvent(ev);
         }
     }
 });
