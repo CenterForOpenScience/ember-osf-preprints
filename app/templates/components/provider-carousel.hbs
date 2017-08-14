@@ -5,19 +5,27 @@
             <div class={{if (not index) "item active" "item"}}>
                 {{#each slide as |provider index|}}
                     <div class={{if (not index) (concat "col-sm-2 " columnOffset) "col-sm-2"}}>
-                        {{#if lightLogo}}
-                            <a href="/preprints/{{provider.id}}"
+                        {{#if (and provider.domain provider.domainRedirectEnabled)}}
+                            <a href="{{provider.domain}}{{if lightLogo '' '/discover'}}"
                                 title={{provider.name}}
                                 onclick={{action 'click' 'link' (concat 'Index - Provider Carousel - ' provider.name)}}
                                 >
-                                <div class="provider-logo provider-{{provider.id}}" style="background-image: url('{{providerAsset provider.id 'wide_white.png'}}')"></div>
+                                {{#if lightLogo}}
+                                    <div class="provider-logo provider-{{provider.id}}" style="background-image: url('{{providerAsset provider.id 'wide_white.png'}}')"></div>
+                                {{else}}
+                                    <div class="discover-provider-logo provider-{{provider.id}}-dark" style="background-image: url('{{providerAsset provider.id 'wide_black.png'}}')"></div>
+                                {{/if}}
                             </a>
                         {{else}}
-                            <a href="/preprints/{{provider.id}}/discover"
+                            <a href="/preprints/{{provider.id}}{{if lightLogo '' '/discover'}}"
                                 title={{provider.name}}
                                 onclick={{action 'click' 'link' (concat 'Discover - Provider Carousel ' provider.name)}}
-                            >
-                                <div class="discover-provider-logo provider-{{provider.id}}-dark" style="background-image: url('{{providerAsset provider.id 'wide_black.png'}}')"></div>
+                                >
+                                {{#if lightLogo}}
+                                    <div class="provider-logo provider-{{provider.id}}" style="background-image: url('{{providerAsset provider.id 'wide_white.png'}}')"></div>
+                                {{else}}
+                                    <div class="discover-provider-logo provider-{{provider.id}}-dark" style="background-image: url('{{providerAsset provider.id 'wide_black.png'}}')"></div>
+                                {{/if}}
                             </a>
                         {{/if}}
                     </div>
