@@ -53,6 +53,11 @@ export default Ember.Service.extend({
         return this.get('id') !== 'osf';
     }),
 
+    // If we should include the preprint word in the title
+    preprintWordInTitle: Ember.computed('id', function() {
+        return this.get('id') !== 'thesiscommons';
+    }),
+
     // If we're using a branded provider and not under a branded domain (e.g. /preprints/<provider>)
     isSubRoute: Ember.computed('isProvider', 'isDomain', function() {
         return this.get('isProvider') && !this.get('isDomain');
