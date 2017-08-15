@@ -30,6 +30,7 @@ export default Ember.Component.extend(Analytics, {
     otherProviders: [],
     searchUrl: config.OSF.shareSearchUrl,
     whiteListedProviders: config.whiteListedProviders,
+    osfUrl: config.OSF.url,
 
     init() {
         this._super(...arguments);
