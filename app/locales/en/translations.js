@@ -344,6 +344,25 @@ export default {
             my_projects: `My OSF Projects`,
             headline: `On the OSF`,
         },
+        'preprint-status-banner': {
+            message: {
+                base: `{{name}} uses {{reviewsWorkflow}}, therefore this preprint is`,
+                pending_pre: `not publicly available or searchable until approved by a moderator`,
+                pending_post: `publicly available and searchable but is subject to removal by a moderator`,
+                accepted: `publicly available and searchable`,
+                rejected: `not publicly available or searchable`,
+            },
+            pending: `pending`,
+            accepted: `accepted`,
+            rejected: `rejected`,
+            feedback: {
+                moderator_feedback: `Moderator feedback`,
+                moderator: `Moderator`,
+                base: `This {{preprintWords.preprint}} is`,
+            },
+            pre_moderation: `pre-moderation`,
+            post_moderation: `post-moderation`,
+        },
         'project-chooser': {
             file_upload_create: `Upload a file and create an OSF project`,
             provide_title: `Please provide a title for your project`,

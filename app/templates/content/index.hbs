@@ -44,6 +44,9 @@
             </div>
         </div> {{!END CONTAINER DIV}}
     </div> {{!END HEADER ROW}}
+    {{#if isAdmin}}
+        {{preprint-status-banner submission=model}}
+    {{/if}}
     <div id="view-page" class="container">{{!CONTAINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
             <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}
