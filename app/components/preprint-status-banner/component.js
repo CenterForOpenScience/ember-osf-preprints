@@ -40,6 +40,7 @@ const CLASS_NAMES = {
 
 
 export default Ember.Component.extend({
+    i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
 
     // translations
@@ -77,7 +78,14 @@ export default Ember.Component.extend({
     reviewerComment:'',
     reviewerName: '',
 
-    bannerContent: Ember.computed('submission.provider.reviewsWorkflow', 'submission.reviewsState', function() {
+    bannerContent: Ember.computed('statusExplanation', 'workflow', function() {
+        let tName = this.get('theme.isProvider') ? this.get('theme.provider.name') : this.get('i18n').t('global.brand_name');
+        let tWorkflow = this.get('i18n').t(this.get('workflow'));
+        let tStatusExplanation = this.get('i18n').t(this.get('statusExplanation'));
+        return `${this.get('i18n').t(this.get('baseMessage'), {name: tName, reviewsWorkflow: tWorkflow})} ${tStatusExplanation}.`;
+    }),
+
+    statusExplanation: Ember.computed('submission.provider.reviewsWorkflow', 'submission.reviewsState', function() {
         if (this.get('submission.reviewsState') === PENDING) {
             return MESSAGE[this.get('submission.provider.reviewsWorkflow').toLowerCase()];
         }
