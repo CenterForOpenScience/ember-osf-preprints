@@ -6,9 +6,7 @@
             <div class="status-explanation">
                 <i class="fa {{icon}} status-icon" aria-hidden="true"></i>
                 <strong>{{t status}}:</strong>
-                <span>
-                    {{t baseMessage name=(if theme.isProvider theme.provider.name (t "global.brand_name")) reviewsWorkflow=(t workflow)}} {{t bannerContent}}.
-                </span>
+                <span>{{bannerContent}}</span>
             </div>
             {{#if (and reviewerComment (not submission.provider.reviewsCommentsPrivate))}}
                 <div class="dropdown reviewer-feedback">
@@ -24,7 +22,7 @@
                         </div>
                         <div class="status p-md">
                             <strong>{{t status}}</strong>
-                            <div>{{t feedbackBaseMessage}} {{t bannerContent}}.</div>
+                            <div>{{t feedbackBaseMessage}} {{t statusExplanation}}.</div>
                         </div>
                         <div class="moderator-comment" aria-labelledby="moderator-feedback">
                             <p>{{reviewerComment}}</p>
