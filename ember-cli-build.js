@@ -31,10 +31,6 @@ module.exports = function(defaults) {
         Object.assign(css, { [`brands/${brandId}`]: `/assets/css/${brandId}.css` });
     }
 
-    const {
-        OSF: {url: osfUrl}
-    } = defaults.project.config(EMBER_ENV);
-
     // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
     const app = new EmberApp(defaults, {
         sourcemaps: {
@@ -75,40 +71,14 @@ module.exports = function(defaults) {
                 enabled: useCdn,
                 content: `
                     <script src="https://cdn.ravenjs.com/3.5.1/ember/raven.min.js"></script>
-                    <script>Raven.config("${config.sentryDSN}", {}).install();</script>`
+                    <script>Raven.config("${config.sentryDSN}", {}).install();</script>`.trim()
             },
             cdn: {
                 enabled: useCdn,
                 content: `
                     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-                    <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.7.1/ember.prod.js"></script>`
+                    <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.7.1/ember.prod.js"></script>`.trim()
             },
-            assets: {
-                enabled: true,
-                content: `
-                    <script>
-                        window.assetSuffix = '${config.ASSET_SUFFIX ? '-' + config.ASSET_SUFFIX : ''}';
-                        (function(osfUrl) {
-                            var origin = window.location.origin;
-                            window.isProviderDomain = !~osfUrl.indexOf(origin);
-                            var prefix = '/' + (window.isProviderDomain ? '' : 'preprints/') + 'assets/';
-                            [
-                                'vendor',
-                                'preprint-service'
-                            ].forEach(function (name) {
-                                var script = document.createElement('script');
-                                script.src = prefix + name + window.assetSuffix + '.js';
-                                script.async = false;
-                                document.body.appendChild(script);
-
-                                var link = document.createElement('link');
-                                link.rel = 'stylesheet';
-                                link.href = prefix + name + window.assetSuffix + '.css';
-                                document.head.appendChild(link);
-                            });
-                        })('${osfUrl}');
-                    </script>`
-            }
         },
         postcssOptions: {
             compile: {

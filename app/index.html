@@ -28,7 +28,30 @@
 
     {{content-for "cdn"}}
 
-    {{content-for "assets"}}
+    <script>
+        (function() {
+            var encodedConfig = document.head.querySelector("meta[name$='/config/environment']").content;
+            var config = JSON.parse(decodeURIComponent(encodedConfig));
+            var assetSuffix = config.ASSET_SUFFIX ? '-' + config.ASSET_SUFFIX : '';
+            var origin = window.location.origin;
+            window.isProviderDomain = !~config.OSF.url.indexOf(origin);
+            var prefix = '/' + (window.isProviderDomain ? '' : 'preprints/') + 'assets/';
+            [
+                'vendor',
+                'preprint-service'
+            ].forEach(function (name) {
+                var script = document.createElement('script');
+                script.src = prefix + name + assetSuffix + '.js';
+                script.async = false;
+                document.body.appendChild(script);
+
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = prefix + name + assetSuffix + '.css';
+                document.head.appendChild(link);
+            });
+        })();
+    </script>
 
     {{content-for "raven"}}
 
