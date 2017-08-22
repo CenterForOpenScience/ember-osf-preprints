@@ -114,6 +114,10 @@ module.exports = function(environment) {
                 {
                     id: 'inarxiv',
                     permissionLanguage: 'no_trademark'
+                },
+                {
+                    id: 'medarxiv',
+                    permissionLanguage: 'no_trademark'
                 }
             ],
         },
