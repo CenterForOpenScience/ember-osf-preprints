@@ -6,12 +6,17 @@ import pathJoin from '../utils/path-join';
  * @submodule helpers
  */
 
-/**
- * To determine the link url for branded preprints on the provider carousel
- *
- * @class route-prefix
- */
-
+ /**
+  * To determine the link url for branded preprints on the provider carousel
+  * Returns a string of the url with the necessary path
+  *
+  * @class brandedPreprintUrl
+  * @param {Object[]} params all positional parameters.
+  * @param {Object} params[0] The provider the url is being generated for.
+  * @param {Object} hash all named parameters.
+  * @param {String} hash.path The path to append.
+  * @return {String} The url.
+  */
 export function brandedPreprintUrl(params, hash) {
     let url = '';
     let [provider] = params;
