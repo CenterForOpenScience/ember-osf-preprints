@@ -12,12 +12,16 @@ import pathJoin from '../utils/path-join';
  * @class route-prefix
  */
 
-export function brandedPreprintUrl(provider, lightLogo) {
+export function brandedPreprintUrl(params, hash) {
     let url = '';
-    if (provider[0].get('domain') && provider[0].get('domainRedirectEnabled')) {
-        url = lightLogo.type ? provider[0].get('domain') : pathJoin(provider[0].get('domain'), 'discover');
+    let [provider] = params;
+    if (provider.get('domain') && provider.get('domainRedirectEnabled')) {
+        url = provider.get('domain');
     } else {
-        url = lightLogo.type ? '/preprints/' + provider[0].get('id') : '/preprints/' + provider[0].get('id') + '/discover';
+        url = '/preprints/' + provider.get('id');
+    }
+    if (hash.path) {
+        return pathJoin(url, hash.path);
     }
     return url;
 }
