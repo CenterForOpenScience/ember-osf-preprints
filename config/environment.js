@@ -48,80 +48,61 @@ module.exports = function(environment) {
                         type: 'image/png',
                         width: 363,
                         height: 242
-                    },
-                    permissionLanguage: 'no_trademark'
+                    }
                 },
                 {
-                    id: 'engrxiv',
-                    permissionLanguage: 'arxiv_non_endorsement'
+                    id: 'engrxiv'
                 },
                 {
-                    id: 'socarxiv',
-                    permissionLanguage: 'arxiv_trademark_license'
+                    id: 'socarxiv'
                 },
                 {
-                    id: 'psyarxiv',
-                    permissionLanguage: 'arxiv_trademark_license'
+                    id: 'psyarxiv'
                 },
                 {
-                    id: 'bitss',
-                    permissionLanguage: 'no_trademark'
+                    id: 'bitss'
                 },
                 {
-                    id: 'scielo',
-                    permissionLanguage: 'no_trademark'
+                    id: 'scielo'
                 },
                 {
-                    id: 'agrixiv',
-                    permissionLanguage: 'arxiv_non_endorsement'
+                    id: 'agrixiv'
                 },
                 {
-                    id: 'lawarxiv',
-                    permissionLanguage: 'arxiv_non_endorsement'
+                    id: 'lawarxiv'
                 },
                 {
-                    id: 'focusarchive',
-                    permissionLanguage: 'no_trademark'
+                    id: 'focusarchive'
                 },
                 {
-                    id: 'paleorxiv',
-                    permissionLanguage: 'arxiv_non_endorsement'
+                    id: 'paleorxiv'
                 },
                 {
-                    id: 'mindrxiv',
-                    permissionLanguage: 'no_trademark'
+                    id: 'mindrxiv'
                 },
                 {
-                    id: 'lissa',
-                    permissionLanguage: 'no_trademark'
+                    id: 'lissa'
                 },
                 {
-                    id: 'sportrxiv',
-                    permissionLanguage: 'no_trademark'
+                    id: 'sportrxiv'
                 },
                 {
-                    id: 'thesiscommons',
-                    permissionLanguage: 'no_trademark'
+                    id: 'thesiscommons'
                 },
                 {
-                    id: 'asu',
-                    permissionLanguage: 'no_trademark'
+                    id: 'asu'
                 },
                 {
-                    id: 'nutrixiv',
-                    permissionLanguage: 'no_trademark'
+                    id: 'nutrixiv'
                 },
                 {
-                    id: 'inarxiv',
-                    permissionLanguage: 'no_trademark'
+                    id: 'inarxiv'
                 },
                 {
-                    id: 'medarxiv',
-                    permissionLanguage: 'no_trademark'
+                    id: 'medarxiv'
                 },
                 {
-                    id: 'experimentalprotocols',
-                    permissionLanguage: 'no_trademark'
+                    id: 'experimentalprotocols'
                 }
             ],
         },
