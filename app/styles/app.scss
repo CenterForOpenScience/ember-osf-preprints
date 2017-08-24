@@ -158,6 +158,8 @@ ul.comma-list {
     .subject-item a {
         width: 100%;
         font-size: 17px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
