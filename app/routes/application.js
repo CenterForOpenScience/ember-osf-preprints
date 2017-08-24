@@ -13,6 +13,27 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 export default Ember.Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
     i18n: Ember.inject.service(),
+    store: Ember.inject.service(),
+    theme: Ember.inject.service(),
+
+    beforeModel: function () {
+        // Set the provider ID from the current origin
+        if (window.isProviderDomain) {
+            return this.get('store').query(
+                'preprint-provider',
+                {
+                    filter: {
+                        domain: `${window.location.origin}/`,
+                    }
+                }
+            ).then(providers => {
+                if (providers.length) {
+                    this.set('theme.id', providers.objectAt(0).get('id'));
+                }
+            });
+        }
+    },
+
     afterModel: function() {
         const availableLocales = this.get('i18n.locales').toArray();
         let locale;
