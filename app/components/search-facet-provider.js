@@ -39,13 +39,14 @@ export default Ember.Component.extend(Analytics, {
             this.get('store')
                 .findAll('preprint-provider')
                 .then(providers => {
-                    const providerNames = providers.map(provider => {
+                    const providerNames = providers.filter(
+                        provider => provider.get('id') !== 'asu'
+                    ).map(provider => {
                         const name = provider.get('name');
                         // TODO Change this in populate_preprint_providers script to just OSF
                         return name === 'Open Science Framework' ? 'OSF' : name;
                     });
                     this.set('osfProviders', providerNames);
-
                     return providerNames;
                 }),
             // The providers list from SHARE
