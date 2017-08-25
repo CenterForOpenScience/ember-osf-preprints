@@ -27,8 +27,8 @@ const MESSAGE = {
 };
 
 const WORKFLOW = {
-    [PRE_MODERATION]: 'components.preprint-status-banner.pre_moderation',
-    [POST_MODERATION]: 'components.preprint-status-banner.post_moderation'
+    [PRE_MODERATION]: 'global.pre_moderation',
+    [POST_MODERATION]: 'global.post_moderation'
 };
 
 const CLASS_NAMES = {
@@ -37,7 +37,6 @@ const CLASS_NAMES = {
     [ACCEPTED]: 'preprint-status-accepted',
     [REJECTED]: 'preprint-status-rejected'
 };
-
 
 export default Ember.Component.extend({
     i18n: Ember.inject.service(),
@@ -53,43 +52,41 @@ export default Ember.Component.extend({
     classNameBindings: ['getClassName'],
 
     getClassName: Ember.computed('submission.provider.reviewsWorkflow', 'submission.reviewsState', function() {
-        if (this.get('submission.reviewsState') === PENDING) {
-            return CLASS_NAMES[this.get('submission.provider.reviewsWorkflow').toLowerCase()]
-        }
-        return CLASS_NAMES[this.get('submission.reviewsState')];
-    }),
-
-    // TODO: move to 'content/index.hbs' once null value is updated
-    attributeBindings: ['hidden'],
-    hidden: Ember.computed('submission.provider.reviewsWorkflow', function() {
-        return this.get('submission.provider.reviewsWorkflow') === 'none';
+        return this.get('submission.reviewsState') === PENDING ?
+            CLASS_NAMES[this.get('submission.provider.reviewsWorkflow')] :
+            CLASS_NAMES[this.get('submission.reviewsState')];
     }),
 
     didReceiveAttrs() {
-        this.get('submission.reviewLogs').then(reviewLogs => {
-            let firstLog = reviewLogs.toArray()[0];
-            this.set('reviewerComment', firstLog.get('comment'));
-            firstLog.get('creator').then(user => {
-                this.set('reviewerName', user.get('fullName'));
-            })
-        });
+        if (!this.get('submission.provider.reviewsCommentsPrivate')) {
+            this.get('submission.reviewLogs').then(reviewLogs => {
+                let firstLog = reviewLogs.toArray()[0];
+                this.set('reviewerComment', firstLog.get('comment'));
+                firstLog.get('creator').then(user => {
+                    this.set('reviewerName', user.get('fullName'));
+                })
+            });
+        }
     },
 
     reviewerComment:'',
     reviewerName: '',
 
     bannerContent: Ember.computed('statusExplanation', 'workflow', function() {
-        let tName = this.get('theme.isProvider') ? this.get('theme.provider.name') : this.get('i18n').t('global.brand_name');
+        let tName = this.get('theme.isProvider') ?
+            this.get('theme.provider.name') :
+            this.get('i18n').t('global.brand_name');
+
         let tWorkflow = this.get('i18n').t(this.get('workflow'));
         let tStatusExplanation = this.get('i18n').t(this.get('statusExplanation'));
+
         return `${this.get('i18n').t(this.get('baseMessage'), {name: tName, reviewsWorkflow: tWorkflow})} ${tStatusExplanation}.`;
     }),
 
     statusExplanation: Ember.computed('submission.provider.reviewsWorkflow', 'submission.reviewsState', function() {
-        if (this.get('submission.reviewsState') === PENDING) {
-            return MESSAGE[this.get('submission.provider.reviewsWorkflow').toLowerCase()];
-        }
-        return MESSAGE[this.get('submission.reviewsState')];
+        return this.get('submission.reviewsState') === PENDING ?
+            MESSAGE[this.get('submission.provider.reviewsWorkflow')] :
+            MESSAGE[this.get('submission.reviewsState')];
     }),
 
     status: Ember.computed('submission.reviewsState', function() {
@@ -101,7 +98,7 @@ export default Ember.Component.extend({
     }),
 
     workflow: Ember.computed('submission.provider.reviewsWorkflow', function () {
-        return WORKFLOW[this.get('submission.provider.reviewsWorkflow').toLowerCase()];
+        return WORKFLOW[this.get('submission.provider.reviewsWorkflow')];
     }),
 
 });

@@ -4,17 +4,18 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h1>{{t (if editMode "submit.edit_heading" "submit.add_heading")}}</h1>
+                <h1>{{t (if editMode "submit.edit_heading" heading)}}</h1>
             </div>
         </div>
-
     </div>
 </div>
 <div class="preprint-submit-body">
     <div class="container">
         <div class="row m-t-lg">
             <div class="col-xs-12 col-md-10 col-md-offset-1 ">
-                <p>{{if editMode (t "submit.body.p_edit") (t "submit.body.p_add" name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}</p>
+                <p class="instructions">
+                    {{if editMode (t "submit.body.p_edit") (t "submit.body.p_add" name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}
+                </p>
                 {{#cp-panels accordion=true}}
                     {{#with _names.[0] as |name|}}
                         {{#preprint-form-section id='preprint-form-upload' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=true errorAction=(action 'error') as |hasOpened|}}
@@ -217,59 +218,71 @@
                                     parentNode=parentNode
                                     editMode=editMode
                                 }}
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="pull-right">
-                                            <button {{action 'next' name}} class="btn btn-primary" disabled={{unless authorsValid true}} >{{t "global.next"}}</button>
-                                        </div>
-                                    </div>
-                                </div>
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
-                    {{#with _names.[4] as |name|}}
-                        {{#preprint-form-section id='preprint-form-submit' editMode=editMode class="preprint-form-block"  animate=true name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode name=(if editMode 'Update' name) showValidationIndicator=false}}
-                            {{#if editMode}}
-                                {{#cp-panel-body}}
-                                    <div>
-                                        <div class="text-center">
-                                            <p>
-                                                {{t "submit.body.update.paragraph" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
-                                            </p>
-                                            <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'savePreprint'}}>{{t "global.complete"}}</button>
-                                        </div>
-                                    </div>
-                                {{/cp-panel-body}}
-                            {{else}}
-                                {{#cp-panel-body}}
-                                    <div>
-                                        <p>
-                                            {{t "submit.body.submit.paragraph.line1" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
-                                        </p>
-                                        <p>
-                                            {{t "submit.body.submit.paragraph.line2" name=(if theme.isProvider theme.provider.name (t "global.brand_name"))}}
-                                        </p>
-                                        <div class="text-center">
-                                            {{#unless allSectionsValid}}
-                                                <p class="m-t-md"> <strong>{{t "submit.body.submit.invalid.description"}}</strong></p>
-                                                <p class="text-danger"> {{unless (and savedTitle savedFile) (t "submit.body.submit.invalid.upload")}}</p>
-                                                <p class="text-danger"> {{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
-                                                <p class="text-danger"> {{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
-                                                <p class="text-danger"> {{unless authorsValid (t "global.authors")}}</p>
-                                            {{/unless}}
-                                            <p> </p>
-                                            <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>{{t "global.share"}}</button>
-                                            <div>
-                                                {{confirm-share-preprint isOpen=showModalSharePreprint shareButtonDisabled=shareButtonDisabled savePreprint=(action 'savePreprint')}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                {{/cp-panel-body}}
-                            {{/if}}
-                        {{/preprint-form-section}}
-                    {{/with}}
                 {{/cp-panels}}
+                <div class="submit-section">
+                    {{#if editMode}}
+                        <div>
+                            {{#if showInformation}}
+                                <p>{{t editInformation1 name=providerName reviewsWorkflow=(t workflow)}}</p>
+                                <p>{{t editInformation2 name=providerName reviewsWorkflow=(t workflow)}}</p>
+                            {{/if}}
+                            {{#if canResubmit}}
+                                <button class="btn btn-success btn-md m-t-md pull-right" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>
+                                    {{t "submit.body.edit.resubmit_button"}}
+                                </button>
+                                <div>
+                                    {{confirm-share-preprint
+                                        isOpen=showModalSharePreprint
+                                        shareButtonDisabled=shareButtonDisabled
+                                        savePreprint=(action 'resubmit')
+                                        buttonLabel="submit.body.edit.resubmit_button"
+                                        title=modalTitle
+                                    }}
+                                </div>
+                            {{/if}}
+                            <button class="btn btn-primary btn-md m-t-md pull-right" disabled={{unless allSectionsValid true}} {{action 'returnToSubmission'}}>
+                                {{t "submit.body.edit.return_button"}}
+                            </button>
+                        </div>
+                    {{else}}
+                        <p class="information">{{t generalInformation name=providerName}}</p>
+                        <p class="information">{{t permissionInformation name=providerName}}</p>
+                        {{#if moderationType}}
+                            <p class="information">
+                                {{t moderationInformation name=providerName reviewsWorkflow=(t workflow)}}
+                            </p>
+                        {{/if}}
+                        <div class="text-center">
+                            {{#unless allSectionsValid}}
+                                <span id="validation-errors">
+                                    <p class="m-t-md"><strong>{{t "submit.body.submit.invalid.description"}}</strong></p>
+                                    <p class="text-danger">{{unless (and savedTitle savedFile) (t "submit.body.submit.invalid.upload")}}</p>
+                                    <p class="text-danger">{{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
+                                    <p class="text-danger">{{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
+                                    <p class="text-danger">{{unless authorsValid (t "global.authors")}}</p>
+                                </span>
+                            {{/unless}}
+                            <button class="btn btn-success btn-md m-t-md pull-right" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>
+                                {{t buttonLabel}}
+                            </button>
+                            <button class="btn btn-default btn-md m-t-md pull-right" {{action 'cancel'}}>
+                                {{t "global.cancel"}}
+                            </button>
+                            <div>
+                                {{confirm-share-preprint
+                                    isOpen=showModalSharePreprint
+                                    shareButtonDisabled=shareButtonDisabled
+                                    savePreprint=(action 'savePreprint')
+                                    buttonLabel=buttonLabel
+                                    title=modalTitle
+                                }}
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
             </div>
         </div>
     </div>

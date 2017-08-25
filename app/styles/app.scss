@@ -485,6 +485,28 @@ $color-border-light: #DDDDDD;
     background-color: #f8f8f8;
     border-bottom: 1px solid #dddddd;
     padding-bottom: 50px;
+
+    .instructions {
+        font-size: 18px;
+    }
+
+    .submit-section {
+        font-size: 18px;
+        padding-top: 20px;
+
+        #validation-errors {
+            margin-bottom: 10px;
+        }
+
+        .information {
+            margin-bottom: 15px;
+        }
+
+        button {
+            font-size: 18px;
+            margin-left: 15px;
+        }
+    }
 }
 
 .preprint-form-block {

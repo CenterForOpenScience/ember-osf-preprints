@@ -14,6 +14,8 @@ import Analytics from 'ember-osf/mixins/analytics';
  *  isOpen=showModalSharePreprint
  *  shareButtonDisabled=shareButtonDisabled
  *  savePreprint=(action 'savePreprint')
+ *  title=title
+ *  buttonLabel=buttonLabel
  *}}
  * ```
  * @class confirm-share-preprint
