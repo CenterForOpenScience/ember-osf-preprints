@@ -5,27 +5,7 @@ const Router = Ember.Router.extend({
     location: config.locationType,
     rootURL: config.rootURL,
     metrics: Ember.inject.service(),
-    store: Ember.inject.service(),
     theme: Ember.inject.service(),
-
-    init() {
-        this._super(...arguments);
-
-        // Set the provider ID from the current origin
-        if (window.isProviderDomain) {
-            return this.get('store')
-                .query('preprint-provider', {
-                    filter: {
-                        domain: `${window.location.origin}/`,
-                    }
-                })
-                .then(providers => {
-                    if (providers.length) {
-                        this.set('theme.id', providers.objectAt(0).get('id'));
-                    }
-                });
-        }
-    },
 
     didTransition() {
         this._super(...arguments);
