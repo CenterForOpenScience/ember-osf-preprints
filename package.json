@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.112.1",
+  "version": "0.113.0",
   "description": "Center for Open Science Preprint Service",
   "private": true,
   "directories": {
@@ -24,12 +24,12 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@centerforopenscience/ember-osf": "0.9.1",
+    "@centerforopenscience/ember-osf": "0.10.0",
     "autoprefixer": "6.3.7",
     "broccoli-asset-rev": "2.4.2",
     "coveralls": "2.11.16",
