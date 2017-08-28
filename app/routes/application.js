@@ -17,21 +17,26 @@ export default Ember.Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
     theme: Ember.inject.service(),
 
     beforeModel: function () {
-        // Set the provider ID from the current origin
-        if (window.isProviderDomain) {
-            return this.get('store').query(
-                'preprint-provider',
-                {
-                    filter: {
-                        domain: `${window.location.origin}/`,
+        let detectBrandedDomain = () => {
+            // Set the provider ID from the current origin
+            if (window.isProviderDomain) {
+                return this.get('store').query(
+                    'preprint-provider',
+                    {
+                        filter: {
+                            domain: `${window.location.origin}/`,
+                        }
                     }
-                }
-            ).then(providers => {
-                if (providers.length) {
-                    this.set('theme.id', providers.objectAt(0).get('id'));
-                }
-            });
-        }
+                ).then(providers => {
+                    if (providers.length) {
+                        this.set('theme.id', providers.objectAt(0).get('id'));
+                    }
+                });
+            }
+        };
+        let parentResult = this._super(...arguments);
+        // Chain on to parent's promise if parent returns a promise.
+        return parentResult instanceof Promise ? parentResult.then(detectBrandedDomain) : detectBrandedDomain();
     },
 
     afterModel: function() {
