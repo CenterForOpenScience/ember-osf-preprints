@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 
 /**
@@ -100,6 +101,7 @@ export default Ember.Controller.extend(Analytics, {
         return themeProvider;
     }),
     type: '', //Type query param. Must be passed to component, so can be reflected in URL
+    whiteListedProviders: config.whiteListedProviders,
     _clearFilters() {
         this.set('activeFilters', {
             providers: [],

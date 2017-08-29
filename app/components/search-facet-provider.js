@@ -29,7 +29,7 @@ export default Ember.Component.extend(Analytics, {
     theme: Ember.inject.service(),
     otherProviders: [],
     searchUrl: config.OSF.shareSearchUrl,
-    whiteListedProviders: config.whiteListedProviders,
+    whiteListedProviders: config.whiteListedProviders.map(item => item.toLowerCase()),
     osfUrl: config.OSF.url,
 
     init() {

@@ -87,7 +87,7 @@ module.exports = function(environment) {
             'PeerJ',
             'Research Papers in Economics',
             'Preprints.org'
-        ].map(item => item.toLowerCase()),
+        ],
     };
 
     if (environment === 'development') {
