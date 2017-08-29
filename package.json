@@ -29,7 +29,7 @@
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@centerforopenscience/ember-osf": "0.10.1",
+    "@centerforopenscience/ember-osf": "0.10.2",
     "autoprefixer": "6.3.7",
     "broccoli-asset-rev": "2.4.2",
     "coveralls": "2.11.16",
