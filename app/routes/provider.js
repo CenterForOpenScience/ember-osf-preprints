@@ -19,6 +19,7 @@ export default Ember.Route.extend({
         const {slug = ''} = transition.params.provider;
         const slugLower = slug.toLowerCase();
 
+        this.store.find('preprint-provider', slug).then(() =>{
         if (providerIds.includes(slugLower)) {
             if (slugLower !== slug) {
                 const {pathname} = window.location;
@@ -40,6 +41,11 @@ export default Ember.Route.extend({
                 this.replaceWith('page-not-found');
             }
         }
+        }
+        ).catch(() =>{
+                this.replaceWith('page-not-found');
+
+            });
     },
 
     actions: {
