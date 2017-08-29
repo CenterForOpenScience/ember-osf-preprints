@@ -42,7 +42,7 @@ export default Ember.Component.extend(Analytics, {
                     const providerNames = providers.filter(
                         provider => provider.get('id') !== 'asu'
                     ).map(provider => {
-                        const name = provider.get('name');
+                        const name = provider.get('shareSource') || provider.get('name');
                         // TODO Change this in populate_preprint_providers script to just OSF
                         return name === 'Open Science Framework' ? 'OSF' : name;
                     });
@@ -87,7 +87,7 @@ export default Ember.Component.extend(Analytics, {
                     .sort((a, b) => a.key.toLowerCase() < b.key.toLowerCase() ? -1 : 1)
                     .unshift(
                         ...providers.splice(
-                            providers.findIndex(item => item.key === 'OSF'),
+                            providers.findIndex(item => (/^osf/i).test(item.key)),
                             1
                         )
                     );

@@ -51,6 +51,7 @@ export default Ember.Controller.extend(Analytics, {
         providers: 'sources',
         subjects: 'subjects'
     },
+    //TODO: Add a conversion from shareSource to provider names here if desired
     filterReplace: { // Map filter names for front-end display
         'Open Science Framework': 'OSF',
         'Cognitive Sciences ePrint Archive': 'Cogprints',
