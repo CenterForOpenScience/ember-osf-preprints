@@ -94,5 +94,8 @@
   "bugs": {
     "url": "https://github.com/CenterForOpenScience/ember-preprints/issues"
   },
-  "homepage": "https://github.com/CenterForOpenScience/ember-preprints#readme"
+  "homepage": "https://github.com/CenterForOpenScience/ember-preprints#readme",
+  "dependencies": {
+    "@centerforopenscience/osf-style": "1.4.2"
+  }
 }
