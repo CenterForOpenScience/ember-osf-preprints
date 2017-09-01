@@ -5,14 +5,14 @@
             <div class={{if (not index) "item active" "item"}}>
                 {{#each slide as |provider index|}}
                     <div class={{if (not index) (concat "col-sm-2 " columnOffset) "col-sm-2"}}>
-                        <a href="{{brandedPreprintUrl provider path=(if lightLogo '' '/discover')}}"
+                        <a href="{{branded-preprint-url provider path=(if lightLogo '' '/discover')}}"
                             title={{provider.name}}
                             onclick={{action 'click' 'link' (concat 'Index - Provider Carousel - ' provider.name)}}
                             >
                             {{#if lightLogo}}
-                                <div class="provider-logo provider-{{provider.id}}" style="background-image: url('{{providerAsset provider.id 'wide_white.png'}}')"></div>
+                                <div class="provider-logo provider-{{provider.id}}" style="background-image: url('{{provider-asset provider.id 'wide_white.png'}}')"></div>
                             {{else}}
-                                <div class="discover-provider-logo provider-{{provider.id}}-dark" style="background-image: url('{{providerAsset provider.id 'wide_black.png'}}')"></div>
+                                <div class="discover-provider-logo provider-{{provider.id}}-dark" style="background-image: url('{{provider-asset provider.id 'wide_black.png'}}')"></div>
                             {{/if}}
                         </a>
                     </div>

@@ -1,23 +1,13 @@
-import Ember from 'ember';
+import hbs from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
 
 moduleForComponent('validated-input', 'Integration | Component | validated input', {
     integration: true
 });
 
-function render(context, componentArgs) {
-    return context.render(Ember.HTMLBars.compile(`{{validated-input
-        model=context
-        valuePath='fullName'
-        placeholder='Full Name'
-        value=''
-        ${componentArgs || ''}
-    }}`));
-}
-
 test('this renders', function(assert) {
     // checks that the component renders
-    render(this);
+    this.render(hbs`{{validated-input}}`);
     assert.ok(this.$('div').length);
 
     assert.equal(this.$('.valid-input').length, 0);
@@ -28,7 +18,7 @@ test('this renders', function(assert) {
 
 test('render valid', function(assert) {
     // simulates that the success element renders on success
-    render(this, 'isValid=true');
+    this.render(hbs`{{validated-input isValid=true}}`);
 
     assert.equal(this.$('.valid-input').length, 1);
     assert.equal(this.$('.error').length, 0);
@@ -37,7 +27,7 @@ test('render valid', function(assert) {
 
 test('render error message', function(assert) {
     // checks that the error message renders
-    render(this, 'showErrorMessage=true');
+    this.render(hbs`{{validated-input showErrorMessage=true}}`);
 
     assert.equal(this.$('.valid-input').length, 0);
     assert.equal(this.$('.error').length, 1);

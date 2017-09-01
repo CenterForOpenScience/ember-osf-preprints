@@ -20,8 +20,9 @@ moduleFor('controller:content/index', 'Unit | Controller | content/index', {
         'model:citation',
         'model:license',
         'model:wiki',
+        'service:current-user',
         'service:metrics',
-        'service:theme'
+        'service:theme',
     ]
 });
 

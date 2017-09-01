@@ -1,12 +1,18 @@
 /* Import variables before bootstrap so that boostrap variables can be overridden */
 @import 'variables';
-@import 'bootstrap';
+
+// 3rd parties
+@import 'ember-bootstrap/bootstrap';
 @import 'ember-power-select';
-@import 'base';
-@import 'authors';
-@import 'validated-input';
 @import 'hint';
 @import 'daterangepicker.scss';
+
+// Our 3rd parties
+@import 'osf-style';
+@import 'ember-osf';
+
+@import 'authors';
+@import 'validated-input';
 
 /* Override styles from ember-osf and osf */
 .footer {

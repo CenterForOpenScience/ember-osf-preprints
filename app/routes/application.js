@@ -28,7 +28,7 @@ export default Ember.Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
                         }
                     }
                 ).then(providers => {
-                    if (providers.length) {
+                    if (providers.get('length')) {
                         this.set('theme.id', providers.objectAt(0).get('id'));
                     }
                 });

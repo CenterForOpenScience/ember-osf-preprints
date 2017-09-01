@@ -16,7 +16,7 @@ import permissions from 'ember-osf/const/permissions';
 
 export default Ember.Mixin.create({
     theme: Ember.inject.service(),
-    panelActions: Ember.inject.service('panelActions'),
+    panelActions: Ember.inject.service(),
 
     setupSubmitController(controller, model) {
         //setupController method that will be run for both Add and Edit modes for submit form.

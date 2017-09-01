@@ -5,8 +5,8 @@ import { moduleFor, test } from 'ember-qunit';
 moduleFor('mixin:setup-submit-controller', {
     needs: [
         'service:theme',
-        'service:panelActions',
         'service:session',
+        'service:panel-actions',
     ]
 });
 

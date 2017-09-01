@@ -1,4 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
+import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 
 const taxonomiesQuery = () => Ember.RSVP.resolve(Ember.ArrayProxy.create({
@@ -41,19 +42,14 @@ moduleForComponent('search-facet-taxonomy', 'Integration | Component | search fa
     }
 });
 
-function render(context, componentArgs) {
-    return context.render(Ember.HTMLBars.compile(`{{search-facet-taxonomy
+test('One-level hierarchy taxonomies', function(assert) {
+    this.render(hbs`{{search-facet-taxonomy
         key=key
         options=facet
         updateFilters=(action noop)
         activeFilters=activeFilters
         filterReplace=filterReplace
-        ${componentArgs || ''}
-    }}`));
-}
-
-test('One-level hierarchy taxonomies', function(assert) {
-    render(this);
+    }}`);
     assert.equal(this.$('label')[0].outerText.trim(), 'Arts and Humanities');
     assert.equal(this.$('label')[1].outerText.trim(), 'Education');
 });

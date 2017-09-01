@@ -12,9 +12,9 @@ test('it renders', function(assert) {
 
 test('clicking on header triggers isOpen', function(assert){
     this.render(hbs`
-        {{#preprint-form-section allowOpen=true}}
-            {{#preprint-form-header name='Upload'}}Title{{/preprint-form-header}}
-            {{#preprint-form-body}}Body{{/preprint-form-body}}
+        {{#preprint-form-section allowOpen=true as |section|}}
+            {{#section.header name='Upload'}}Title{{/section.header}}
+            {{#section.body}}Body{{/section.body}}
         {{/preprint-form-section}}
     `);
     assert.ok(this.$('.preprint-header-preview').length);

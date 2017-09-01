@@ -22,9 +22,9 @@ test('it renders 124', function(assert) {
 test('allow handleToggle when allowOpen is true', function(assert){
     this.set('allowOpen', true);
     this.render(hbs`
-        {{#preprint-form-section allowOpen=allowOpen}}
-            {{#preprint-form-header}}Title{{/preprint-form-header}}
-            {{#preprint-form-body}}Body{{/preprint-form-body}}
+        {{#preprint-form-section allowOpen=allowOpen as |section|}}
+            {{#section.header}}Title{{/section.header}}
+            {{#section.body}}Body{{/section.body}}
         {{/preprint-form-section}}
     `);
     assert.ok(this.$('.cp-is-closed').length);
@@ -39,9 +39,9 @@ test('allow handleToggle when allowOpen is true', function(assert){
 test('does note allow handleToggle when allowOpen is false', function(assert){
     this.set('allowOpen', false);
     this.render(hbs`
-        {{#preprint-form-section allowOpen=allowOpen}}
-            {{#preprint-form-header}}Title{{/preprint-form-header}}
-            {{#preprint-form-body}}Body{{/preprint-form-body}}
+        {{#preprint-form-section allowOpen=allowOpen as |section|}}
+            {{#section.header}}Title{{/section.header}}
+            {{#section.body}}Body{{/section.body}}
         {{/preprint-form-section}}
     `);
     assert.ok(this.$('.cp-is-closed').length);

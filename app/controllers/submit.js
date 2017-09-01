@@ -46,7 +46,7 @@ const BasicsValidations = buildValidations({
         validators: [
             validator('format', {
                 // Simplest regex- try not to diverge too much from the backend
-                regex: /\b(10\.\d{4,}(?:\.\d+)*\/\S+(?:(?!["&\'<>])\S))\b/,
+                regex: /\b(10\.\d{4,}(?:\.\d+)*\/\S+(?:(?!["&'<>])\S))\b/,
                 allowBlank: true,
                 message: 'Please use a valid {description}'
             })
@@ -127,9 +127,9 @@ function subjectIdMap(subjectArray) {
 export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
     i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
-    fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
-    panelActions: Ember.inject.service('panelActions'),
+    fileManager: Ember.inject.service(),
+    panelActions: Ember.inject.service(),
     _State: State, // Project states - new project or existing project
     filePickerState: State.START, // Selected upload state (initial decision on form) - new or existing project? (is poorly named)
     _existingState: existingState, // File states - new file or existing file

@@ -3,8 +3,9 @@ import {moduleFor, test} from 'ember-qunit';
 moduleFor('controller:application', 'Unit | Controller | application', {
     needs: [
         'service:metrics',
+        'service:session',
+        'service:theme',
         'service:toast',
-        'service:theme'
     ]
 });
 

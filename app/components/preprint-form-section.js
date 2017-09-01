@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
+import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel/component';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
@@ -78,22 +78,26 @@ export default CpPanelComponent.extend(Analytics, {
             $body.height('');
         }
     }),
-    // Called when panel is toggled
-    handleToggle() {
-        // Prevent closing all views
-        if (!this.get('isOpen')) {
-            if (this.get('allowOpen')) {
-                // Crude mechanism to prevent opening a panel if conditions are not met
-                Ember.get(this, 'metrics')
-                    .trackEvent({
-                        category: 'div',
-                        action: 'click',
-                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.name} section`
-                    });
-                this._super(...arguments);
-            } else {
+
+    actions: {
+        // Called when panel is toggled
+        toggleIsOpen() {
+            // Prevent closing all views
+            if (this.get('isOpen')) return;
+
+            if (!this.get('allowOpen')) {
                 this.sendAction('errorAction', 'Please complete upload section before continuing');
+                return;
             }
-        }
-    },
+
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'div',
+                    action: 'click',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.name} section`
+                });
+            this._super(...arguments);
+            // this.get('panelActions').toggle(this.get('name'));
+        },
+    }
 });

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
+import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body/component';
 import { permissionSelector } from 'ember-osf/const/permissions';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
@@ -288,33 +288,33 @@ export default CpPanelBodyComponent.extend(Analytics, {
         }
     },
     // TODO find alternative to jquery selectors. Temporary popover content for authors page.
-    didInsertElement: function() {
-        this.$('#permissions-popover').popover({
-            container: 'body',
-            content: '<dl>' +
-                '<dt>Read</dt>' +
-                    '<dd><ul><li>View preprint</li></ul></dd>' +
-                '<dt>Read + Write</dt>' +
-                    '<dd><ul><li>Read privileges</li> ' +
-                        '<li>Add and configure preprint</li> ' +
-                        '<li>Add and edit content</li></ul></dd>' +
-                '<dt>Administrator</dt><dd><ul>' +
-                    '<li>Read and write privileges</li>' +
-                    '<li>Manage authors</li>' +
-                    '<li>Public-private settings</li></ul></dd>' +
-                '</dl>'
-        });
-        this.$('#bibliographic-popover').popover({
-            container: 'body',
-            content: 'Only checked authors will be included in preprint citations. ' +
-            'Authors not in the citation can read and modify the preprint as normal.'
-        });
-        this.$('#author-popover').popover({
-            container: 'body',
-            content: 'Preprints must have at least one registered administrator and one author showing in the citation at all times.  ' +
-            'A registered administrator is a user who has both confirmed their account and has administrator privileges.'
-        });
-    },
+    // didInsertElement: function() {
+        // this.$('#permissions-popover').popover({
+        //     container: 'body',
+        //     content: '<dl>' +
+        //         '<dt>Read</dt>' +
+        //             '<dd><ul><li>View preprint</li></ul></dd>' +
+        //         '<dt>Read + Write</dt>' +
+        //             '<dd><ul><li>Read privileges</li> ' +
+        //                 '<li>Add and configure preprint</li> ' +
+        //                 '<li>Add and edit content</li></ul></dd>' +
+        //         '<dt>Administrator</dt><dd><ul>' +
+        //             '<li>Read and write privileges</li>' +
+        //             '<li>Manage authors</li>' +
+        //             '<li>Public-private settings</li></ul></dd>' +
+        //         '</dl>'
+        // });
+        // this.$('#bibliographic-popover').popover({
+        //     container: 'body',
+        //     content: 'Only checked authors will be included in preprint citations. ' +
+        //     'Authors not in the citation can read and modify the preprint as normal.'
+        // });
+        // this.$('#author-popover').popover({
+        //     container: 'body',
+        //     content: 'Preprints must have at least one registered administrator and one author showing in the citation at all times.  ' +
+        //     'A registered administrator is a user who has both confirmed their account and has administrator privileges.'
+        // });
+    // },
 
     /* If user removes their own admin permissions, many things on the page must become
     disabled.  Changing the isAdmin flag to false will remove many of the options

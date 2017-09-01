@@ -2,27 +2,25 @@
 
 'use strict';
 
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const Funnel = require('broccoli-funnel');
+const configFunc = require('./config/environment');
 const fs = require('fs');
 const path = require('path');
-const EmberApp = require('ember-cli/lib/broccoli/ember-app');
-const configFunc = require('./config/environment');
 
-const nonCdnEnvironments = ['development', 'test'];
-
-const {
-    EMBER_ENV
-} = process.env;
 
 module.exports = function(defaults) {
-    const config = configFunc(EMBER_ENV);
-    const useCdn = !nonCdnEnvironments.includes(EMBER_ENV);
+    const EMBER_VERSION = defaults.project.addonPackages['ember-source'].pkg.version;
+    const JQUERY_VERSION = require('jquery/package.json').version;
 
-    const css = {
-        'app': '/assets/preprint-service.css'
-    };
+    // Values chosen abritrarily, feel free to change
+    const LEAN_BUILD = ['production'].includes(EmberApp.env());
 
+    // EmberApp.env() will pull from the envvar EMBER_ENV or the command line flags
+    const config = configFunc(EmberApp.env());
+
+    const css = {app: '/assets/preprint-service.css'};
     const brands = fs.readdirSync('./app/styles/brands');
-
     for (const brand of brands) {
         if (/^_/.test(brand))
             continue;
@@ -37,47 +35,53 @@ module.exports = function(defaults) {
             enabled: true,
             extensions: ['js']
         },
-        vendorFiles: {
-            // next line is needed to prevent ember-cli to load
-            // handlebars (it happens automatically in 0.1.x)
-            'handlebars.js': {production: null},
-            [useCdn ? 'ember.js' : '']: false,
-            [useCdn ? 'jquery.js' : '']: false,
+        minifyJS: {enabled: LEAN_BUILD},
+        minifyCSS: {enabled: LEAN_BUILD},
+        vendorFiles: !LEAN_BUILD ? {} : {
+            // These will be CDN'd in via "inlineContent"
+            // Ember doesn't like it when these are set to true for some reason
+            'handlebars.js': false,
+            'ember.js': false,
+            'jquery.js': false,
         },
         'ember-bootstrap': {
-            importBootstrapCSS: false
+              bootstrapVersion: 3,
+              importBootstrapCSS: false,
+              importBootstrapFont: true
+        },
+        'ember-font-awesome': {
+            includeFontAwesomeAssets: false,
+            includeFontFiles: false,
         },
         // Needed for branded themes
         fingerprint: {
             customHash: config.ASSET_SUFFIX
         },
         outputPaths: {
-            app: {
-                css
-            }
+            app: { css }
         },
         sassOptions: {
             includePaths: [
-                'node_modules/@centerforopenscience/ember-osf/addon/styles',
-                'bower_components/bootstrap-sass/assets/stylesheets',
-                'bower_components/osf-style/sass',
-                'bower_components/hint.css',
-                'bower_components/c3',
                 'bower_components/bootstrap-daterangepicker',
+                'node_modules/@centerforopenscience/ember-osf/addon/styles',
+                'node_modules/@centerforopenscience/osf-style/sass',
+                'node_modules/hint.css/src',
             ]
         },
         inlineContent: {
             raven: {
-                enabled: useCdn,
+                // Only include raven in production builds, because why not
+                enabled: EmberApp.env() === 'production',
                 content: `
-                    <script src="https://cdn.ravenjs.com/3.5.1/ember/raven.min.js"></script>
-                    <script>Raven.config("${config.sentryDSN}", {}).install();</script>`.trim()
+                <script src="https://cdn.ravenjs.com/3.5.1/ember/raven.min.js"></script>
+                <script>Raven.config("${config.sentryDSN}", {}).install();</script>`
             },
             cdn: {
-                enabled: useCdn,
+                enabled: LEAN_BUILD,
                 content: `
-                    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-                    <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.7.1/ember.prod.js"></script>`.trim()
+                <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/${JQUERY_VERSION}/jquery.min.js"></script>
+                <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/${EMBER_VERSION}/ember.prod.js"></script>
+                `
             },
         },
         postcssOptions: {
@@ -105,11 +109,6 @@ module.exports = function(defaults) {
                 }]
             }
         },
-        // bable options included to fix issue with testing discover controller
-        // http://stackoverflow.com/questions/32231773/ember-tests-passing-in-chrome-not-in-phantomjs
-        'ember-cli-babel': {
-            includePolyfill: true
-        },
     });
 
     // Use `app.import` to add additional libraries to the generated
@@ -125,17 +124,6 @@ module.exports = function(defaults) {
     // please specify an object with the list of modules as keys
     // along with the exports of each module as its value.
 
-    // osf-style
-    app.import(path.join(app.bowerDirectory, 'osf-style/vendor/prism/prism.css'));
-    app.import(path.join(app.bowerDirectory, 'osf-style/page.css'));
-    app.import(path.join(app.bowerDirectory, 'osf-style/css/base.css'));
-    app.import(path.join(app.bowerDirectory, 'loaders.css/loaders.min.css'));
-
-
-    app.import(path.join(app.bowerDirectory, 'osf-style/img/cos-white2.png'), {
-        destDir: 'img'
-    });
-
     // app.import('bower_components/dropzone/dist/dropzone.js');
     app.import({
         development: path.join(app.bowerDirectory, 'dropzone/dist/dropzone.css'),
@@ -144,20 +132,14 @@ module.exports = function(defaults) {
 
     app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
     app.import(path.join(app.bowerDirectory, 'bootstrap-daterangepicker/daterangepicker.js'));
-    app.import(path.join(app.bowerDirectory, 'c3/c3.js'));
-    app.import(path.join(app.bowerDirectory, 'd3/d3.js'));
+    app.import('vendor/bootstrap-carousel.js');
 
-    app.import({
-        development: path.join(app.bowerDirectory, 'hint.css/hint.css'),
-        production: path.join(app.bowerDirectory, 'hint.css/hint.css')
-    });
+    const assets = [
+        new Funnel('node_modules/@centerforopenscience/osf-style/img', {
+            srcDir: '/',
+            destDir: 'img',
+        })
+    ];
 
-    app.import({
-        test: path.join(app.bowerDirectory, 'ember/ember-template-compiler.js')
-    });
-
-    // Import component styles from addon
-    app.import('vendor/assets/ember-osf.css');
-
-    return app.toTree();
+    return app.toTree(assets);
 };
