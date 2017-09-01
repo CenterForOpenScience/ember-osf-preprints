@@ -80,7 +80,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     provider,
                     node,
                     preprint.get('license'),
-                    loadAll(node, 'contributors', contributors)
+                    loadAll(node, 'contributors', contributors, { filter: { bibliographic: true } })
                 ]);
             })
             .then(([provider, node, license]) => {
