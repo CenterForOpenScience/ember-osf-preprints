@@ -116,10 +116,6 @@ module.exports = function(environment) {
                     permissionLanguage: 'no_trademark'
                 },
                 {
-                    id: 'medarxiv',
-                    permissionLanguage: 'no_trademark'
-                },
-                {
                     id: 'experimentalprotocols',
                     permissionLanguage: 'no_trademark'
                 }
