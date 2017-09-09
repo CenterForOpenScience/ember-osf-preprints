@@ -20,9 +20,9 @@
         <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "submit.body.save_continue"}}</button>
     </div>
 {{else}}
-    {{#preprint-form-section editMode=editMode class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}  {{!UPLOAD NEW FILE SECTION}}
-        {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false}}
-        {{#preprint-form-body}}
+    {{#preprint-form-section editMode=editMode class="upload-section-block" allowOpen=true name='uploadNewFile' open=false as |section|}}  {{!UPLOAD NEW FILE SECTION}}
+        {{section.header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false}}
+        {{#section.body}}
             {{#if nodeLocked}}
                 <p class='text-muted m-v-sm text-smaller'> {{t "components.file-uploader.update_version"}}</p>
             {{else}}
@@ -48,19 +48,19 @@
                 defaultMessage=(t 'components.file-uploader.dropzone_message')
                 maxfilesexceeded=(action 'maxfilesexceeded')
             }}
-        {{/preprint-form-body}}
+        {{/section.body}}
     {{/preprint-form-section}}
 
     {{#if (and selectedNode (or hasFile osfFile)) use='crossFade'}}
         {{#if nodeLocked}}
-            {{#preprint-form-section editMode=editMode class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}} {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
-                {{preprint-form-header nodeTitle=nodeTitle name='title_of_preprint' showValidationIndicator=false}}
-                {{#preprint-form-body}}
+            {{#preprint-form-section editMode=editMode class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false as |section|}} {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
+                {{section.header nodeTitle=nodeTitle name='title_of_preprint' showValidationIndicator=false}}
+                {{#section.body}}
                     <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                     <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Edit title') (action 'track' 'input' 'onchange' 'Submit - Edit title')}}>
                         {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action 'uploadFileToExistingNode')}}
                     </form>
-                {{/preprint-form-body}}
+                {{/section.body}}
             {{/preprint-form-section}}
             <div class="m-v-md text-center">
                 <p>{{t "components.preprint-form-project-select.edit_organize_section"}}  </p>
@@ -68,16 +68,16 @@
                 <button class="btn btn-primary" disabled={{not (and hasFile titleValid)}} {{action 'uploadFileToExistingNode'}}>Save and continue</button>
             </div>
         {{else}}
-            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}} {{!ORGANIZE DECISION SECTION}}
-                {{preprint-form-header name='organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false}}
-                {{#preprint-form-body}}
+            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false as |section|}} {{!ORGANIZE DECISION SECTION}}
+                {{section.header name='organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false}}
+                {{#section.body}}
                     {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
-                {{/preprint-form-body}}
+                {{/section.body}}
             {{/preprint-form-section}}
             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
-                {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}} {{!FINALIZE UPLOAD SECTION - NEW FILE}}
-                    {{preprint-form-header name='finalize_upload' nodeTitle=nodeTitle showValidationIndicator=false}}
-                    {{#preprint-form-body}}
+                {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false as |section|}} {{!FINALIZE UPLOAD SECTION - NEW FILE}}
+                    {{section.header name='finalize_upload' nodeTitle=nodeTitle showValidationIndicator=false}}
+                    {{#section.body}}
                         {{#if (eq convertOrCopy 'convert')}}
                             {{#if convertProjectConfirmed}}
                                 <label class="text-muted title-label text-smaller"> {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
@@ -91,7 +91,7 @@
                             <p> {{t "components.preprint-form-project-select.initiate_preprint_process"}} </p>
                             <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>Save and continue</button>
                         </div>
-                    {{/preprint-form-body}}
+                    {{/section.body}}
                 {{/preprint-form-section}}
             {{/if}}
         {{/if}}

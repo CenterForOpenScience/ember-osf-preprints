@@ -5,7 +5,7 @@ export default function buildProviderAssetPath(config, providerId, assetName, is
         return pathJoin(config.providerAssetsURL, providerId, assetName);
     }
     if (config.ASSET_SUFFIX) {
-        assetName = assetName.replace(/\.[^\.]+$/, `-${config.ASSET_SUFFIX}$&`);
+        assetName = assetName.replace(/\.[^.]+$/, `-${config.ASSET_SUFFIX}$&`);
     }
     if (isDomain) {
         return pathJoin('/assets', config.providerAssetsPath, providerId, assetName);

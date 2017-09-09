@@ -5,8 +5,11 @@ moduleFor('route:provider/submit', 'Unit | Route | provider/submit', {
     needs: [
         'controller:submit',
         'route:submit',
+        'service:current-user',
         'service:metrics',
-        'service:theme'
+        'service:panel-actions',
+        'service:session',
+        'service:theme',
     ]
 });
 

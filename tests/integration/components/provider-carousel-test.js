@@ -23,5 +23,5 @@ test('it renders', function(assert) {
       providers=providers
   }}`);
 
-  assert.equal(this.$().context.innerText, 'PreviousNext');
+  assert.equal(this.$().text().replace(/\s+/g, ' '), ' Previous Next ');
 });

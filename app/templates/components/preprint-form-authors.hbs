@@ -23,7 +23,7 @@
                             <tr id={{result.id}}>
                                 <td class="p-v-xs">
                                     <img class="m-l-xs" src={{result.links.profile_image}} height=30 width=30>
-                                    <a href={{result.links.html}} target="_blank"> {{result.fullName}} </a>
+                                    <a href={{result.links.html}} target="_blank" rel="noopener"> {{result.fullName}} </a>
                                     {{#if (eq currentUser result)}}
                                         <span class="small"> {{t "components.preprint-form-authors.yourself"}} </span>
                                     {{/if}}
@@ -63,13 +63,11 @@
         <div class="author-header">
             <h2 class="header-inline"> {{t "global.authors"}} </h2>
             <span>
-                <i class="fa fa-question-circle permission-info"
-                    data-toggle="popover"
-                    data-title="{{t "components.preprint-form-authors.authors.title"}}"
-                    data-trigger="hover"
-                    data-html="true"
-                    data-placement="bottom"
-                    id="author-popover">
+                <i class="fa fa-question-circle permission-info">
+                    {{#bs-popover triggerEvents="hover focus" placement="bottom" title=(t "components.preprint-form-authors.authors.title")}}
+                        Preprints must have at least one registered administrator and one author showing in the citation at all times.
+                        A registered administrator is a user who has both confirmed their account and has administrator privileges.
+                    {{/bs-popover}}
                 </i>
             </span>
             {{#if (and (gt numParentContributors 1) (not parentContributorsAdded))}}
@@ -85,13 +83,27 @@
                     <th class="contrib-column-header">
                         {{t "components.preprint-form-authors.authors.permissions"}}
                         <span>
-                            <i class="fa fa-question-circle permission-info"
-                                data-toggle="popover"
-                                data-title="{{t "components.preprint-form-authors.authors.permission_info"}}"
-                                data-trigger="hover"
-                                data-html="true"
-                                data-placement="bottom"
-                                id="permissions-popover">
+                            <i class="fa fa-question-circle permission-info">
+                                {{#bs-popover triggerEvents="hover focus" placement="bottom" title=(t "components.preprint-form-authors.authors.permission_info")}}
+                                    <dl>
+                                        <dt>Read</dt>
+                                        <dd><ul>
+                                            <li>View preprint</li>
+                                        </ul></dd>
+                                        <dt>Read + Write</dt>
+                                        <dd><ul>
+                                            <li>Read privileges</li> 
+                                            <li>Add and configure preprint</li> 
+                                            <li>Add and edit content</li>
+                                        </ul></dd>
+                                        <dt>Administrator</dt>
+                                        <dd><ul>
+                                            <li>Read and write privileges</li>
+                                            <li>Manage authors</li>
+                                            <li>Public-private settings</li>
+                                        </ul></dd>
+                                    </dl>
+                                {{/bs-popover}}
                             </i>
                         </span>
                         <br>
@@ -99,13 +111,11 @@
                     <th class="bib-padding">
                         {{t "components.preprint-form-authors.authors.citation"}}
                         <span>
-                            <i class="fa fa-question-circle permission-info"
-                                data-toggle="popover"
-                                data-title="{{t "components.preprint-form-authors.authors.citation_info"}}"
-                                data-trigger="hover"
-                                data-html="true"
-                                data-placement="bottom"
-                                id="bibliographic-popover">
+                            <i class="fa fa-question-circle permission-info">
+                                {{#bs-popover triggerEvents="hover focus" placement="bottom" title=(t "components.preprint-form-authors.authors.citation_info")}}
+                                    Only checked authors will be included in preprint citations.
+                                    Authors not in the citation can read and modify the preprint as normal.
+                                {{/bs-popover}}
                             </i>
                         </span>
                         <br>
@@ -123,10 +133,10 @@
                                         {{#if contrib.unregisteredContributor}}
                                             {{contrib.unregisteredContributor}}
                                         {{else}}
-                                            <a href={{contrib.users.links.html}} target="_blank"> {{contrib.users.fullName}} </a>
+                                            <a href={{contrib.users.links.html}} target="_blank" rel="noopener"> {{contrib.users.fullName}} </a>
                                         {{/if}}
                                         <span class="pull-right remove-contributor-padding-xs">
-                                            {{#if (and (permissionToRemoveContributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors authorModification))}}
+                                            {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors authorModification))}}
                                                 <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
                                                     <i class="fa fa-times"> </i>
                                                 </button>
@@ -140,7 +150,7 @@
                                     {{#if contrib.unregisteredContributor}}
                                         {{contrib.unregisteredContributor}}
                                     {{else}}
-                                        <a href={{contrib.users.links.html}} target="_blank"> {{contrib.users.fullName}} </a>
+                                        <a href={{contrib.users.links.html}} target="_blank" rel="noopener"> {{contrib.users.fullName}} </a>
                                     {{/if}}
                                 </div>
                             </td>

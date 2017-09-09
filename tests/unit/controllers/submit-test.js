@@ -42,6 +42,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'service:theme',
         'service:toast',
         'service:i18n',
+        'service:file-manager',
         'model:file',
         'model:file-version',
         'model:comment',
@@ -119,7 +120,7 @@ test('Initial properties', function (assert) {
     const propKeys = Object.keys(expected);
     const actual = ctrl.getProperties(propKeys);
 
-    assert.ok(propKeys.every(key => expected[key] === actual[key]));
+    assert.ok(propKeys.every(key => Ember.get(expected, key) === Ember.get(actual, key)));
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -178,12 +179,14 @@ test('doiValid computed property', function(assert) {
 
 test('basicsValid computed property', function(assert) {
     const ctrl = this.subject();
-    ctrl.set('abstractValid', false);
-    ctrl.set('doiValid', false);
+
+    ctrl.set('basicsAbstract', null);
+    ctrl.set('basicsDOI', null);
     ctrl.set('licenseValid', false);
     assert.equal(ctrl.get('basicsValid'), false);
-    ctrl.set('abstractValid', true);
-    ctrl.set('doiValid', true);
+
+    ctrl.set('basicsAbstract', 'Abstract of sufficient length');
+    ctrl.set('basicsDOI', '10.1234/hello');
     ctrl.set('licenseValid', true);
     assert.equal(ctrl.get('basicsValid'), true);
 });

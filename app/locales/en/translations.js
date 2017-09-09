@@ -33,6 +33,8 @@ export default {
         copy_inside_project: `The {{preprintWords.preprint}} will be organized in a new component`,
         open_science_framework: `Open Science Framework`,
         license: 'License',
+        pre_moderation: `pre-moderation`,
+        post_moderation: `post-moderation`,
     },
     application: {
         separator: ` | `
@@ -40,6 +42,10 @@ export default {
     content: {
         header: {
             last_edited: `Last edited`
+        },
+        date_label: {
+            created_on: `Created on`,
+            submitted_on: `Submitted on`
         },
         share: {
             download: `Download`,
@@ -149,11 +155,12 @@ export default {
         message: `User has deleted this content.`
     },
     submit: {
-        add_heading: `Add {{preprintWords.Preprint}}`,
+        create_heading: `Create {{preprintWords.Preprint}}`,
+        submit_heading: `Submit {{preprintWords.Preprint}}`,
         edit_heading: `Edit {{preprintWords.Preprint}}`,
         body: {
-            p_add: `Follow these five easy steps to add your {{preprintWords.preprint}} to the {{name}} {{preprintWords.preprint}} repository.`,
-            p_edit: `Edit your {{preprintWords.preprint}} sections below.`,
+            p_add: `For each section below, "Save and continue" will directly update the OSF project.`,
+            p_edit: `For each section below, "Save and continue" will directly update the {{preprintWords.preprint}} and the OSF project.`,
             upload: `Upload new {{preprintWords.preprint}}`,
             connect: `Connect {{preprintWords.preprint}} to existing OSF project`,
             file: `{{preprintWords.Preprint}} file`,
@@ -180,19 +187,43 @@ export default {
                 paragraph: `Add {{preprintWords.preprint}} authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the {{preprintWords.preprint}}.`
             },
             submit: {
-                paragraph: {
-                    line1: `When you share this {{preprintWords.preprint}}, the DOI will be created and the {{preprintWords.preprint}} will become publicly accessible via {{name}} {{preprintWords.Preprints}}. You will be unable to delete the {{preprintWords.preprint}} file, but you can update or modify it. This also creates an OSF project in case you would like to attach other content to your {{preprintWords.preprint}} such as supplementary materials, appendices, data, or protocols. If posting this {{preprintWords.preprint}} is your first exposure to the OSF, you will receive an email introducing OSF to you.`,
-                    line2: `By clicking Share, you confirm that all Contributors agree with sharing this {{preprintWords.preprint}}, and that you have the right to share it.`
+                information: {
+                    line1: {
+                        default: `When you create this {{preprintWords.preprint}}, it will be assigned a DOI and become publicly accessible via {{name}}. The {{preprintWords.preprint}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{preprintWords.preprint}}.`,
+                        moderation: `When you submit this {{preprintWords.preprint}}, it will be assigned a DOI. The {{preprintWords.preprint}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{preprintWords.preprint}}.`,
+                    },
+                    line2: {
+                        create: `By creating this {{preprintWords.preprint}}, you confirm that all Contributors agree with sharing it, and that you have the right to share this {{preprintWords.preprint}}.`,
+                        submit: `By submitting this {{preprintWords.preprint}}, you confirm that all Contributors agree with sharing it, and that you have the right to share this {{preprintWords.preprint}}.`
+                    },
+                    line3: {
+                        pre: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>, therefore your {{preprintWords.preprint}} will not become publicly accessible until a moderator accepts the submission.`,
+                        post: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>, therefore your {{preprintWords.preprint}} will become publicly accessible after creation and will only become private if rejected by a moderator.`,
+                    }
                 },
                 invalid: {
-                    description: `The following section(s) must be completed before sharing this {{preprintWords.preprint}}.`,
+                    description: `The following section(s) must be completed before submitting this {{preprintWords.preprint}}.`,
                     discipline: `Discipline`,
                     basics: `Basics`,
                     upload: `Upload`
-                }
+                },
+                submit_button: `Submit {{preprintWords.preprint}}`,
+                create_button: `Create {{preprintWords.preprint}}`,
             },
-            update: {
-                paragraph: `Edits to this {{preprintWords.preprint}} will update both the {{preprintWords.preprint}} and the OSF project and will become publicly accessible via {{name}} {{preprintWords.Preprints}}.`
+            edit: {
+                information: {
+                    line1: {
+                        pre: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>, therefore your {{preprintWords.preprint}} will not become publicly accessible until a moderator accepts the submission.`,
+                        post_rejected: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Your {{preprintWords.preprint}} was rejected by a moderator so it will remain private.`,
+                    },
+                    line2: {
+                        pre_pending: `Resubmitting may affect your position in the moderation queue.`,
+                        pre_rejected: `Once you have addressed any moderator concerns, you may resubmit for review.`,
+                        post_rejected: `If you have addressed all moderator concerns or believe there has been a mistake, please email <a>{{email}}</a> to discuss resubmission.`
+                    }
+                },
+                resubmit_button: `Resubmit`,
+                return_button: `Return to {{preprintWords.preprint}}`
             },
             save_continue: `Save and continue`,
         },
@@ -221,8 +252,12 @@ export default {
             body: `Are you sure you want to restart this {{preprintWords.preprint}}? Your uploaded file and supplemental information will be deleted.`
         },
         'confirm-share-preprint': {
-            title: `Share {{preprintWords.Preprint}}`,
-            body: `Once this {{preprintWords.preprint}} is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.`
+            body: `Once this {{preprintWords.preprint}} is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.`,
+            title: {
+                submit: `Submit {{preprintWords.Preprint}}`,
+                create: `Create {{preprintWords.Preprint}}`,
+                resubmit: `Resubmit {{preprintWords.Preprint}}`
+            }
         },
         'convert-or-copy': {
             organize_language_project: `You can organize your {{preprintWords.preprint}} by storing the file in this project or in its own new component.  If you select ‘Make a new component’,
@@ -343,6 +378,23 @@ export default {
         'preprint-navbar-branded': {
             my_projects: `My OSF Projects`,
             headline: `On the OSF`,
+        },
+        'preprint-status-banner': {
+            message: {
+                base: `{{name}} uses {{reviewsWorkflow}}, therefore this preprint is`,
+                pending_pre: `not publicly available or searchable until approved by a moderator`,
+                pending_post: `publicly available and searchable but is subject to removal by a moderator`,
+                accepted: `publicly available and searchable`,
+                rejected: `not publicly available or searchable`,
+            },
+            pending: `pending`,
+            accepted: `accepted`,
+            rejected: `rejected`,
+            feedback: {
+                moderator_feedback: `Moderator feedback`,
+                moderator: `Moderator`,
+                base: `This {{preprintWords.preprint}} is`,
+            },
         },
         'project-chooser': {
             file_upload_create: `Upload a file and create an OSF project`,

@@ -25,7 +25,9 @@
                             {{/if}}
                         </ul>
                     </h5>
-                    <h6 class='preprint-added-on'>{{t "global.added_on"}}: {{moment-format model.datePublished "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}} </h6>
+                    <h6 class='preprint-added-on'>
+                        {{t logDateLabel}}: {{moment-format model.dateLastTransitioned "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}}
+                    </h6>
                 </div>
                 <div class="col-xs-12 col-sm-2 edit-button-and-logo text-center">
                     {{#if isAdmin}}
@@ -44,6 +46,9 @@
             </div>
         </div> {{!END CONTAINER DIV}}
     </div> {{!END HEADER ROW}}
+    {{#if (and isAdmin model.provider.reviewsWorkflow)}}
+        {{preprint-status-banner submission=model}}
+    {{/if}}
     <div id="view-page" class="container">{{!CONTAINER DIV}}
         <div class="row p-md"> {{!CONTENT ROW}}
             <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}"> {{!LEFT COL DIV}}

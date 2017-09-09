@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { moduleForComponent, test, skip } from 'ember-qunit';
+import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('supplementary-file-browser', 'Integration | Component | supplementary file browser', {
     integration: true,
@@ -43,18 +44,9 @@ moduleForComponent('supplementary-file-browser', 'Integration | Component | supp
     }
 });
 
-function render(context, componentArgs) {
-    return context.render(Ember.HTMLBars.compile(`{{supplementary-file-browser
-        preprint=preprint
-        node=node
-        ${componentArgs || ''}
-        dualTrackNonContributors=(action dualTrackNonContributors)
-    }}`));
-}
-
 test('it renders', function(assert) {
     // Tests that the page renders
-    render(this, 'hasAdditionalFiles=false');
+    this.render(hbs`{{supplementary-file-browser preprint=preprint node=node hasAdditionalFiles=false dualTrackNonContributors=(action dualTrackNonContributors)}}`);
     assert.equal(this.$('.osf-box').length, 0);
     assert.equal(this.$('.row p').text(), 'test file');
     assert.equal(this.$('.supplemental-downloads span').text(), ' Version: 1.12');
@@ -63,7 +55,7 @@ test('it renders', function(assert) {
 
 skip('has additional files', function(assert) {
     // Tests that additional file section renders
-    render(this, 'hasAdditionalFiles=true hasPrev=true hasNext=true');
+    this.render(hbs`{{supplementary-file-browser node=node preprint=preprint hasAdditionalFiles=true hasPrev=true hasNext=true dualTrackNonContributors=(action dualTrackNonContributors)}}`);
 
     // Checks for elements to render
     assert.equal(this.$('.osf-box').length, 1);
@@ -79,7 +71,7 @@ skip('has additional files', function(assert) {
 });
 
 skip('fileDownloadURL computed property', function (assert) {
-    render(this);
+    this.render(hbs`{{supplementary-file-browser}}`);
 
     let url = this.$('.supplemental-downloads > a').attr('href')
     assert.ok(url);

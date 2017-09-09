@@ -46,13 +46,70 @@ const BasicsValidations = buildValidations({
         validators: [
             validator('format', {
                 // Simplest regex- try not to diverge too much from the backend
-                regex: /\b(10\.\d{4,}(?:\.\d+)*\/\S+(?:(?!["&\'<>])\S))\b/,
+                regex: /\b(10\.\d{4,}(?:\.\d+)*\/\S+(?:(?!["&'<>])\S))\b/,
                 allowBlank: true,
                 message: 'Please use a valid {description}'
             })
         ]
     }
 });
+
+const PENDING = 'pending';
+const ACCEPTED = 'accepted';
+const REJECTED = 'rejected';
+
+const PRE_MODERATION = 'pre-moderation';
+const POST_MODERATION = 'post-moderation';
+
+const MODAL_TITLE = {
+    create: 'components.confirm-share-preprint.title.create',
+    submit: 'components.confirm-share-preprint.title.submit',
+    resubmit: 'components.confirm-share-preprint.title.resubmit'
+};
+
+const SUBMIT_MESSAGES = {
+    default: 'submit.body.submit.information.line1.default',
+    moderation: 'submit.body.submit.information.line1.moderation',
+    [PRE_MODERATION]: 'submit.body.submit.information.line3.pre',
+    [POST_MODERATION]: 'submit.body.submit.information.line3.post',
+};
+
+const PERMISSION_MESSAGES = {
+    create: 'submit.body.submit.information.line2.create',
+    submit: 'submit.body.submit.information.line2.submit'
+}
+
+const EDIT_MESSAGES = {
+    line1: {
+        [PRE_MODERATION]: 'submit.body.edit.information.line1.pre',
+        [POST_MODERATION]: 'submit.body.edit.information.line1.post_rejected'
+    },
+    line2: {
+        [PENDING]: {
+            [PRE_MODERATION]: 'submit.body.edit.information.line2.pre_pending',
+        },
+        [REJECTED]: {
+            [PRE_MODERATION]: 'submit.body.edit.information.line2.pre_rejected',
+            [POST_MODERATION]: 'submit.body.edit.information.line2.post_rejected'
+        }
+    }
+};
+
+const WORKFLOW = {
+    [PRE_MODERATION]: 'global.pre_moderation',
+    [POST_MODERATION]: 'global.post_moderation'
+};
+
+const ACTION = {
+    create: {
+        heading: 'submit.create_heading',
+        button: 'submit.body.submit.create_button'
+    },
+    submit: {
+        heading: 'submit.submit_heading',
+        button: 'submit.body.submit.submit_button'
+    }
+};
 
 function subjectIdMap(subjectArray) {
     // Maps array of arrays of disciplines into array of arrays of discipline ids.
@@ -70,14 +127,14 @@ function subjectIdMap(subjectArray) {
 export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
     i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
-    fileManager: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
-    panelActions: Ember.inject.service('panelActions'),
+    fileManager: Ember.inject.service(),
+    panelActions: Ember.inject.service(),
     _State: State, // Project states - new project or existing project
     filePickerState: State.START, // Selected upload state (initial decision on form) - new or existing project? (is poorly named)
     _existingState: existingState, // File states - new file or existing file
     existingState: existingState.CHOOSE, // Selected file state - new or existing file (poorly named)
-    _names: ['upload', 'discipline', 'basics', 'authors', 'submit'].map(str => str.capitalize()), // Form section headers
+    _names: ['upload', 'discipline', 'basics', 'authors'].map(str => str.capitalize()), // Form section headers
 
     // Data for project picker; tracked internally on load
     user: null,
@@ -122,7 +179,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
         this.get('panelActions').open('Upload');
-        this.get('panelActions').close('Submit');
 
         this.setProperties(Ember.merge(
             this.get('_names').reduce((acc, name) => Ember.merge(acc, {[`${name.toLowerCase()}SaveState`]: false}), {}), {
@@ -357,6 +413,70 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     // True if the current user is and admin and the node is not a registration.
     canEdit: Ember.computed('isAdmin', 'node', function() {
         return this.get('isAdmin') && !(this.get('node.registration'));
+    }),
+
+    ///////////////////////////////////////////////////
+    // Language about submission and moderation.
+    ////////////////////////////////////////////////////
+
+    moderationType: Ember.computed.alias('theme.provider.reviewsWorkflow'),
+    workflow: Ember.computed('moderationType', function () {
+        return WORKFLOW[this.get('moderationType')];
+    }),
+    providerName: Ember.computed('theme.isProvider', function() {
+        return this.get('theme.isProvider') ?
+            this.get('theme.provider.name') :
+            this.get('i18n').t('global.brand_name');
+    }),
+    modalTitle: Ember.computed('moderationType', function() {
+        if (this.get('editMode')) {
+            return MODAL_TITLE['resubmit'];
+        }
+        return this.get('moderationType') === PRE_MODERATION ?
+            MODAL_TITLE['submit'] :
+            MODAL_TITLE['create'];
+    }),
+
+    // submission
+    heading: Ember.computed('moderationType', function() {
+        return this.get('moderationType') === PRE_MODERATION ?
+            ACTION['submit']['heading'] :
+            ACTION['create']['heading'];
+    }),
+    buttonLabel: Ember.computed('moderationType', function() {
+        return this.get('moderationType') === PRE_MODERATION ?
+            ACTION['submit']['button'] :
+            ACTION['create']['button'];
+    }),
+    generalInformation: Ember.computed('moderationType', function() {
+        return this.get('moderationType') ?
+            SUBMIT_MESSAGES['moderation'] :
+            SUBMIT_MESSAGES['default'];
+    }),
+    permissionInformation: Ember.computed('moderationType', function() {
+        return this.get('moderationType') === PRE_MODERATION ?
+            PERMISSION_MESSAGES['submit'] :
+            PERMISSION_MESSAGES['create'];
+    }),
+    moderationInformation: Ember.computed('moderationType', function() {
+        return SUBMIT_MESSAGES[this.get('moderationType')];
+    }),
+
+    // edit
+    showInformation: Ember.computed('moderationType', 'model.reviewsState', function() {
+        let state = this.get('model.reviewsState');
+        let modType = this.get('moderationType');
+        return !(state === ACCEPTED || (modType === POST_MODERATION && state === PENDING));
+    }),
+    editInformation1: Ember.computed('moderationType', function() {
+        return EDIT_MESSAGES['line1'][this.get('moderationType')];
+    }),
+    editInformation2: Ember.computed('moderationType', 'model.reviewsState', function() {
+        return EDIT_MESSAGES['line2'][this.get('model.reviewsState')][this.get('moderationType')];
+    }),
+    canResubmit: Ember.computed('moderationType', 'model.reviewsState', function() {
+        let state = this.get('model.reviewsState');
+        return this.get('moderationType') === PRE_MODERATION && (state === PENDING || state === REJECTED);
     }),
 
     actions: {
@@ -899,15 +1019,57 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             const node = this.get('node');
             this.set('savingPreprint', true);
             this.toggleProperty('shareButtonDisabled');
-            model.set('isPublished', true);
+
+            let log = null;
+            if (this.get('moderationType')) {
+                log = this.get('store').createRecord('reviewLog', {
+                   action: 'submit',
+                   reviewable: this.get('model')
+                });
+            } else {
+                model.set('isPublished', true);
+            }
             node.set('public', true);
 
-            return model.save()
-                .then(() => node.save())
+            let save_changes = null;
+            if (log) {
+                save_changes = model.save().then(() => node.save()).then(() => log.save());
+            } else {
+                save_changes = model.save().then(() => node.save());
+            }
+
+            return save_changes
+                .then(() => {
+                        this.transitionToRoute(
+                            `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
+                            model.reload()
+                        );
+                })
+                .catch(() => {
+                    this.toggleProperty('shareButtonDisabled');
+                    return this.get('toast')
+                        .error(this.get('i18n')
+                            .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`)
+                        );
+                });
+        },
+        cancel() {
+            this.transitionToRoute('index');
+        },
+        resubmit() {
+            this.set('savingPreprint', true);
+            this.toggleProperty('shareButtonDisabled');
+
+            let log = this.get('store').createRecord('reviewLog', {
+               action: 'submit',
+               reviewable: this.get('model')
+            });
+
+            return log.save()
                 .then(() => {
                     this.transitionToRoute(
                         `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
-                        model
+                        this.get('model')
                     );
                 })
                 .catch(() => {
@@ -917,6 +1079,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                             .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`)
                         );
                 });
+        },
+        returnToSubmission() {
+            this.transitionToRoute(
+                `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
+                this.get('model')
+            );
         },
     }
 });
