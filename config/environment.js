@@ -49,60 +49,6 @@ module.exports = function(environment) {
                         width: 363,
                         height: 242
                     }
-                },
-                {
-                    id: 'engrxiv'
-                },
-                {
-                    id: 'socarxiv'
-                },
-                {
-                    id: 'psyarxiv'
-                },
-                {
-                    id: 'bitss'
-                },
-                {
-                    id: 'scielo'
-                },
-                {
-                    id: 'agrixiv'
-                },
-                {
-                    id: 'lawarxiv'
-                },
-                {
-                    id: 'focusarchive'
-                },
-                {
-                    id: 'paleorxiv'
-                },
-                {
-                    id: 'mindrxiv'
-                },
-                {
-                    id: 'lissa'
-                },
-                {
-                    id: 'sportrxiv'
-                },
-                {
-                    id: 'thesiscommons'
-                },
-                {
-                    id: 'asu'
-                },
-                {
-                    id: 'nutrixiv'
-                },
-                {
-                    id: 'inarxiv'
-                },
-                {
-                    id: 'medarxiv'
-                },
-                {
-                    id: 'experimentalprotocols'
                 }
             ],
         },
@@ -141,7 +87,7 @@ module.exports = function(environment) {
             'PeerJ',
             'Research Papers in Economics',
             'Preprints.org'
-        ].map(item => item.toLowerCase()),
+        ],
     };
 
     if (environment === 'development') {
