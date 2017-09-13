@@ -29,7 +29,8 @@
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@centerforopenscience/ember-osf": "0.10.2",
+    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#develop#2017-09-13T14:33:43Z",
+    "@centerforopenscience/osf-style": "1.5.0",
     "autoprefixer": "6.3.7",
     "broccoli-asset-rev": "2.4.2",
     "coveralls": "2.11.16",
@@ -94,8 +95,5 @@
   "bugs": {
     "url": "https://github.com/CenterForOpenScience/ember-preprints/issues"
   },
-  "homepage": "https://github.com/CenterForOpenScience/ember-preprints#readme",
-  "dependencies": {
-    "@centerforopenscience/osf-style": "1.4.2"
-  }
+  "homepage": "https://github.com/CenterForOpenScience/ember-preprints#readme"
 }
