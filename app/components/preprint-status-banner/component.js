@@ -59,10 +59,10 @@ export default Ember.Component.extend({
 
     didReceiveAttrs() {
         if (!this.get('submission.provider.reviewsCommentsPrivate')) {
-            this.get('submission.reviewLogs').then(reviewLogs => {
-                let firstLog = reviewLogs.toArray()[0];
-                this.set('reviewerComment', firstLog.get('comment'));
-                firstLog.get('creator').then(user => {
+            this.get('submission.actions').then(actions => {
+                let firstAction = actions.toArray()[0];
+                this.set('reviewerComment', firstAction.get('comment'));
+                firstAction.get('creator').then(user => {
                     this.set('reviewerName', user.get('fullName'));
                 })
             });

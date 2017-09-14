@@ -1020,11 +1020,11 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('savingPreprint', true);
             this.toggleProperty('shareButtonDisabled');
 
-            let log = null;
+            let submitAction = null;
             if (this.get('moderationType')) {
-                log = this.get('store').createRecord('reviewLog', {
-                   action: 'submit',
-                   reviewable: this.get('model')
+                submitAction = this.get('store').createRecord('action', {
+                   actionTrigger: 'submit',
+                   target: this.get('model')
                 });
             } else {
                 model.set('isPublished', true);
@@ -1032,8 +1032,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             node.set('public', true);
 
             let save_changes = null;
-            if (log) {
-                save_changes = model.save().then(() => node.save()).then(() => log.save());
+            if (submitAction) {
+                save_changes = model.save().then(() => node.save()).then(() => submitAction.save());
             } else {
                 save_changes = model.save().then(() => node.save());
             }
@@ -1060,12 +1060,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('savingPreprint', true);
             this.toggleProperty('shareButtonDisabled');
 
-            let log = this.get('store').createRecord('reviewLog', {
-               action: 'submit',
-               reviewable: this.get('model')
+            let submitAction = this.get('store').createRecord('action', {
+               trigger: 'submit',
+               target: this.get('model')
             });
 
-            return log.save()
+            return submitAction.save()
                 .then(() => {
                     this.transitionToRoute(
                         `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
