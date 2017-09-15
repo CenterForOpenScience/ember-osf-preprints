@@ -81,7 +81,7 @@ test('Initial properties', function (assert) {
         '_existingState.EXISTINGFILE': 'existing',
         '_existingState.NEWFILE': 'new',
         'existingState': 'choose',
-        '_names.length': 5,
+        '_names.length': 4,
         'user': null,
         'userNodes.length': 0,
         'userNodesLoaded': false,
