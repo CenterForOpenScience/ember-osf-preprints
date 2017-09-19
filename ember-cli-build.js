@@ -71,13 +71,19 @@ module.exports = function(defaults) {
                 enabled: useCdn,
                 content: `
                     <script src="https://cdn.ravenjs.com/3.5.1/ember/raven.min.js"></script>
-                    <script>Raven.config("${config.sentryDSN}", {}).install();</script>`.trim()
+                    <script>
+                        var encodedConfig = document.head.querySelector("meta[name$='/config/environment']").content;
+                        var config = JSON.parse(unescape(encodedConfig));
+                        Raven.config(config.sentryDSN, {}).install();
+                    </script>
+                `.trim()
             },
             cdn: {
                 enabled: useCdn,
                 content: `
                     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-                    <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.7.1/ember.prod.js"></script>`.trim()
+                    <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.7.1/ember.prod.js"></script>
+                `.trim()
             },
         },
         postcssOptions: {
