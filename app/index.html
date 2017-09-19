@@ -31,7 +31,7 @@
     <script>
         (function() {
             var encodedConfig = document.head.querySelector("meta[name$='/config/environment']").content;
-            var config = JSON.parse(decodeURIComponent(encodedConfig));
+            var config = JSON.parse(unescape(encodedConfig));
             var assetSuffix = config.ASSET_SUFFIX ? '-' + config.ASSET_SUFFIX : '';
             var origin = window.location.origin;
             window.isProviderDomain = !~config.OSF.url.indexOf(origin);
