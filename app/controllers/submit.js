@@ -1061,8 +1061,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.toggleProperty('shareButtonDisabled');
 
             let submitAction = this.get('store').createRecord('action', {
-               trigger: 'submit',
-               target: this.get('model')
+                actionTrigger: 'submit',
+                target: this.get('model')
             });
 
             return submitAction.save()
