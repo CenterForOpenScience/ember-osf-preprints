@@ -227,7 +227,12 @@
                         <div>
                             {{#if showInformation}}
                                 <p>{{t editInformation1 name=providerName reviewsWorkflow=(t workflow)}}</p>
-                                <p>{{t editInformation2 name=providerName reviewsWorkflow=(t workflow)}}</p>
+                                <p>
+                                  {{t editInformation2
+                                      name=providerName
+                                      reviewsWorkflow=(t workflow)
+                                      email=theme.provider.emailSupport}}
+                                </p>
                             {{/if}}
                             {{#if canResubmit}}
                                 <button class="btn btn-success btn-md m-t-md pull-right" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>
