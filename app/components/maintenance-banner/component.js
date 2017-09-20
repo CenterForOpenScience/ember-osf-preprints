@@ -1,19 +1,15 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
 
-var levelMap = {
+const levelMap = {
     1: 'info',
     2: 'warning',
     3: 'danger'
 };
 
 export default Ember.Component.extend({
-    classNamesBindings: [
-        'alert',
-        '_info:alertInfo',
-        '_warning:alertWarning',
-        '_danger:alertDanger'
-    ],
+    classNames: ['alert'],
+    classNameBindings: ['alertClass'],
 
     attributeBindings: [
         'hidden'
@@ -21,10 +17,7 @@ export default Ember.Component.extend({
 
     hidden: 'true',
 
-    alert: true,
-    _info: true,
-    _warning: false,
-    _danger: false,
+    alertClass: 'alert-info',
 
     maintenance: {
         start: new Date(),
@@ -45,8 +38,7 @@ export default Ember.Component.extend({
                             hidden: false,
                             maintenance
                         });
-                        this.set('_info', false);
-                        this.set(`_${levelMap[maintenance.level]}`, true);
+                        this.set('alertClass', `alert-${levelMap[maintenance.level] || 'info'}`);
                     }
                 });
         }
