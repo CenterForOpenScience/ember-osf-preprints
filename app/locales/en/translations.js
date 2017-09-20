@@ -378,6 +378,7 @@ export default {
         'preprint-navbar-branded': {
             my_projects: `My OSF Projects`,
             headline: `On the OSF`,
+            reviews: `My Reviewing`,
         },
         'preprint-status-banner': {
             message: {
