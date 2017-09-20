@@ -8,7 +8,7 @@ const levelMap = {
 };
 
 export default Ember.Component.extend({
-    classNames: ['alert'],
+    classNames: ['alert', 'alert-dismissible', 'alert-maintenance'],
     classNameBindings: ['alertClass'],
 
     attributeBindings: [
