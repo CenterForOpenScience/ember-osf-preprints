@@ -67,10 +67,15 @@ export default Ember.Controller.extend(Analytics, {
         chosenFile: 'file'
     },
 
-    logDateLabel: Ember.computed('model.provider.reviewsWorkflow', function() {
+    dateLabel: Ember.computed('model.provider.reviewsWorkflow', function() {
         return this.get('model.provider.reviewsWorkflow') === PRE_MODERATION ?
             DATE_LABEL['submitted'] :
             DATE_LABEL['created'];
+    }),
+    relevantDate: Ember.computed('model.provider.reviewsWorkflow', function() {
+        return this.get('model.provider.reviewsWorkflow') ?
+            this.get('model.dateLastTransitioned') :
+            this.get('model.dateCreated');
     }),
 
     isAdmin: Ember.computed('node', function() {
