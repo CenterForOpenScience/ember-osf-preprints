@@ -4,7 +4,7 @@
 
 "@centerforopenscience/ember-osf@https://github.com/aaxelb/ember-osf.git#feature/reviews-minimal":
   version "0.10.2"
-  resolved "https://github.com/aaxelb/ember-osf.git#6ad3b8944160045b45ca3081ea77249460c18eb5"
+  resolved "https://github.com/aaxelb/ember-osf.git#25e59138a63fc255969ebfe96b40940e9d0a4da6"
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
