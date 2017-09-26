@@ -235,7 +235,7 @@
                                 </p>
                             {{/if}}
                             {{#if canResubmit}}
-                                <button class="btn btn-success btn-md m-t-md pull-right" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>
+                                <button class="btn btn-success btn-md m-t-md pull-right" disabled={{unless allSectionsValid true}} {{action 'clickSubmit'}}>
                                     {{t "submit.body.edit.resubmit_button"}}
                                 </button>
                                 <div>
@@ -261,7 +261,7 @@
                             </p>
                         {{/if}}
                         <div class="text-center">
-                            {{#unless allSectionsValid}}
+                            {{#if showValidationErrors}}
                                 <span id="validation-errors">
                                     <p class="m-t-md"><strong>{{t "submit.body.submit.invalid.description"}}</strong></p>
                                     <p class="text-danger">{{unless (and savedTitle savedFile) (t "submit.body.submit.invalid.upload")}}</p>
@@ -269,8 +269,8 @@
                                     <p class="text-danger">{{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
                                     <p class="text-danger">{{unless authorsValid (t "global.authors")}}</p>
                                 </span>
-                            {{/unless}}
-                            <button class="btn btn-success btn-md m-t-md pull-right" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>
+                            {{/if}}
+                            <button class="btn btn-success btn-md m-t-md pull-right" disabled={{showValidationErrors}} {{action 'clickSubmit'}}>
                                 {{t buttonLabel}}
                             </button>
                             <button class="btn btn-default btn-md m-t-md pull-right" {{action 'cancel'}}>

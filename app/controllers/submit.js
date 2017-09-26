@@ -172,6 +172,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     editMode: false, // Edit mode is false by default.
     shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
 
+    attemptedSubmit: false, // True when user has tried to submit with validation errors
+
     isTopLevelNode: Ember.computed.not('node.parent.id'),
 
     hasFile: Ember.computed.or('file', 'selectedFile'),
@@ -219,7 +221,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             subjectsList: Ember.A(),
             availableLicenses: Ember.A(),
             applyLicense: false,
-            newNode: false
+            newNode: false,
+            attemptedSubmit: false,
         }));
     },
 
@@ -257,6 +260,11 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     // Preprint can be published once all required sections have been saved.
     allSectionsValid: Ember.computed.and('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid'),
+
+    // Are there validation errors which should be displayed right now?
+    showValidationErrors: Ember.computed('attemptedSubmit', 'allSectionsValid', function() {
+        return this.get('attemptedSubmit') && !this.get('allSectionsValid');
+    }),
 
     ////////////////////////////////////////////////////
     // Fields used in the "upload" section of the form.
@@ -996,15 +1004,25 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         /*
           Submit tab actions
          */
-        toggleSharePreprintModal() {
-            // Toggles display of share preprint modal
-            Ember.get(this, 'metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: 'Submit - Open Share Preprint Modal'
-                });
-            this.toggleProperty('showModalSharePreprint');
+        clickSubmit() {
+            if (this.get('allSectionsValid')) {
+                // Toggles display of share preprint modal
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: 'Submit - Open Share Preprint Modal'
+                    });
+                this.toggleProperty('showModalSharePreprint');
+            } else {
+                Ember.get(this, 'metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: 'Submit - Display validation errors'
+                    });
+                this.set('attemptedSubmit', true);
+            }
         },
         savePreprint() {
             // Finalizes saving of preprint.  Publishes preprint and turns node public.
