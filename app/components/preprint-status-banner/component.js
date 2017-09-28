@@ -58,29 +58,33 @@ export default Ember.Component.extend({
     }),
 
     didReceiveAttrs() {
-        if (!this.get('submission.provider.reviewsCommentsPrivate')) {
+        if (this.get('submission.provider.reviewsCommentsPrivate')) {
+            this.set('latestAction', null);
+        } else {
             this.get('submission.actions').then(actions => {
-                let firstAction = actions.toArray()[0];
-                this.set('reviewerComment', firstAction.get('comment'));
-                firstAction.get('creator').then(user => {
-                    this.set('reviewerName', user.get('fullName'));
-                })
+                if (actions.length) {
+                    this.set('latestAction', actions.get('firstObject'));
+                } else {
+                    this.set('latestAction', null);
+                }
             });
         }
     },
 
-    reviewerComment:'',
-    reviewerName: '',
+    latestAction: null,
+    reviewerComment: Ember.computed.alias('latestAction.comment'),
+    reviewerName: Ember.computed.alias('latestAction.creator.fullName'),
 
-    bannerContent: Ember.computed('statusExplanation', 'workflow', function() {
-        let tName = this.get('theme.isProvider') ?
+    bannerContent: Ember.computed('statusExplanation', 'workflow', 'theme.{isProvider,provider.name}', function() {
+        const i18n = this.get('i18n');
+        const tName = this.get('theme.isProvider') ?
             this.get('theme.provider.name') :
-            this.get('i18n').t('global.brand_name');
+            i18n.t('global.brand_name');
 
-        let tWorkflow = this.get('i18n').t(this.get('workflow'));
-        let tStatusExplanation = this.get('i18n').t(this.get('statusExplanation'));
+        const tWorkflow = i18n.t(this.get('workflow'));
+        const tStatusExplanation = i18n.t(this.get('statusExplanation'));
 
-        return `${this.get('i18n').t(this.get('baseMessage'), {name: tName, reviewsWorkflow: tWorkflow})} ${tStatusExplanation}.`;
+        return `${i18n.t(this.get('baseMessage'), {name: tName, reviewsWorkflow: tWorkflow})} ${tStatusExplanation}.`;
     }),
 
     statusExplanation: Ember.computed('submission.provider.reviewsWorkflow', 'submission.reviewsState', function() {
