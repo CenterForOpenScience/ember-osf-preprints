@@ -4,7 +4,7 @@
 
 "@centerforopenscience/ember-osf@https://github.com/aaxelb/ember-osf.git#feature/reviews-minimal":
   version "0.10.2"
-  resolved "https://github.com/aaxelb/ember-osf.git#447e5e4b5dfbb082181c4832bcb3babbc6452d4f"
+  resolved "https://github.com/aaxelb/ember-osf.git#f1ebddffe3b73377a507ab92a175fed8206262d2"
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
@@ -16,7 +16,7 @@
     ember-cli-moment-shim "^3.3.1"
     ember-cli-node-assets "0.1.6"
     ember-cli-shims "1.0.2"
-    ember-data-has-many-query "^0.2.0"
+    ember-data-has-many-query "https://github.com/cos-forks/ember-data-has-many-query#master"
     ember-get-config "0.2.1"
     ember-i18n "5.0.1"
     ember-moment "7.3.1"
@@ -3124,6 +3124,12 @@ ember-data-factory-guy@2.11.6:
 ember-data-has-many-query@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/ember-data-has-many-query/-/ember-data-has-many-query-0.2.0.tgz#97ae2c29d6d7f77d3837cca9f165c26bf6e6fb0a"
+  dependencies:
+    ember-cli-babel "^5.1.6"
+
+"ember-data-has-many-query@https://github.com/cos-forks/ember-data-has-many-query#master":
+  version "0.2.0"
+  resolved "https://github.com/cos-forks/ember-data-has-many-query#7e41ea918af97d174526f9468dd29a47ad0eff5c"
   dependencies:
     ember-cli-babel "^5.1.6"
 
