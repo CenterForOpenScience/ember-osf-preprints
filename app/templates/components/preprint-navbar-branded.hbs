@@ -19,6 +19,13 @@
             {{#if theme.provider.allowSubmissions}}
                 <li><a href={{concat theme.pathPrefix 'submit'}} onbeforeclick={{action "click" "link" "Navbar - Add preprint"}}>{{t "global.add_preprint"}}</a></li>
             {{/if}}
+            {{#if currentUser.user.canViewReviews}}
+                <li>
+                    <a href="{{host}}reviews/" onbeforeclick={{action "click" "link" "Navbar - My Reviewing"}}>
+                        {{t "components.preprint-navbar-branded.reviews"}}
+                    </a>
+                </li>
+            {{/if}}
             <li><a class="" href='{{theme.pathPrefix}}discover' onclick={{action "click" "link" "Navbar - Search"}}>{{t "global.search"}}</a></li>
             {{navbar-auth-dropdown
                 signupUrl=theme.signupUrl

@@ -1,6 +1,6 @@
 {{#bs-modal open=isOpen body=false header=false footer=false}}
     {{#bs-modal-header}}
-        <h3 class="modal-title">{{t "components.confirm-share-preprint.title"}}</h3>
+        <h3 class="modal-title">{{t title}}</h3>
     {{/bs-modal-header}}
     {{#bs-modal-body}}
         {{t "components.confirm-share-preprint.body"}}
@@ -9,7 +9,7 @@
     {{#bs-modal-footer}}
         <div align="right">
             <button {{action 'close'}} class="btn btn-default">{{t "global.cancel"}}</button>
-            <button class="btn btn-success"  autofocus disabled={{shareButtonDisabled}} {{action savePreprint}}>{{t "global.share"}}</button>
+            <button class="btn btn-success" autofocus disabled={{shareButtonDisabled}} {{action savePreprint}}>{{t buttonLabel}}</button>
         </div>
     {{/bs-modal-footer}}
 {{/bs-modal}}

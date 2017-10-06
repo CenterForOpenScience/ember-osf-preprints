@@ -337,6 +337,142 @@ $logo-dir: 'img/provider_logos/';
     }
 }
 
+/* Moderation */
+
+$color-alert-bg-warning: #FCF8E3;
+$color-alert-border-warning: #FAEBCC;
+$color-alert-text-warning: #8A6D3B;
+
+$color-alert-bg-success: #DFF0D8;
+$color-alert-border-success: #D6E9C6;
+$color-alert-text-success: #3C763D;
+
+$color-alert-bg-danger: #F2DEDE;
+$color-alert-border-danger: #EBCCD1;
+$color-alert-text-danger: #A94442;
+
+$color-alert-bg-info: #D9EDF7;
+$color-alert-border-info: #BCE8F1;
+$color-alert-text-info: #31708F;
+
+$color-bg-color-grey: #333333;
+$color-bg-color-light: #EEEEEE;
+$color-border-light: #DDDDDD;
+
+.preprint-status-pending-pre {
+    background-color: $color-alert-bg-warning;
+    border: 1px solid $color-alert-border-warning;
+    color: $color-alert-text-warning;
+
+    .status-icon {
+        -webkit-text-stroke: 1px $color-alert-text-warning;
+        font-size: 14px;
+    }
+}
+
+.preprint-status-pending-post {
+    background-color: $color-alert-bg-info;
+    border: 1px solid $color-alert-border-info;
+    color: $color-alert-text-info;
+
+    .status-icon {
+        -webkit-text-stroke: 1px $color-alert-text-info;
+        font-size: 14px;
+    }
+}
+
+.preprint-status-accepted {
+    background-color: $color-alert-bg-success;
+    border: 1px solid $color-alert-border-success;
+    color: $color-alert-text-success;
+
+    .status-icon {
+        -webkit-text-stroke: 0px;
+        font-size: 16px;
+    }
+}
+
+.preprint-status-rejected {
+    background-color: $color-alert-bg-danger;
+    border: 1px solid $color-alert-border-danger;
+    color: $color-alert-text-danger;
+
+    .status-icon {
+        -webkit-text-stroke: 0px;
+        font-size: 16px;
+    }
+}
+
+.preprint-status-component {
+    margin-top: -15px;
+    margin-bottom: 15px;
+}
+
+#preprint-status {
+    .flex-container {
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        align-content: space-between;
+
+        strong {
+            display: inline-block;  // required for the text-transform
+        }
+        strong::first-letter {
+            text-transform: uppercase;
+        }
+        .status-explanation {
+            padding-right: 15px;
+        }
+        .reviewer-feedback {
+            margin-left: auto;
+            padding-right: 15px;
+
+            .dropdown-menu {
+                font-size:62.5%;
+                background-color: $color-bg-color-light;
+                color: $color-bg-color-grey;
+                border: 1px solid $color-border-light;
+                width: 445px;
+                left: auto;
+                right: 15px;
+                margin-top: 0px;
+                z-index: 98;  // prevent dropdown from scrolling over navbar
+
+                .status {
+                    font-size: 1.4em;
+                }
+
+                .moderator-comment {
+                    font-size: 1.8em;
+                    background-color: white;
+                    padding: 30px 15px;
+
+                    p {
+                        padding-bottom: 5px;
+                    }
+                }
+
+                .feedback-header {
+                    font-size: 2.0em;
+                    border-bottom: 1px solid $color-border-light;
+                    padding: 5px 15px 8px 15px;
+
+                    a {
+                        color: grey;
+                        float: right;
+                    }
+                }
+
+                .feedback-footer {
+                    border-top: 1px solid $color-border-light;
+                }
+            }
+        }
+    }
+}
+
 /* SUBMIT page */
 
 .preprint-submit-header {
@@ -351,6 +487,28 @@ $logo-dir: 'img/provider_logos/';
     background-color: #f8f8f8;
     border-bottom: 1px solid #dddddd;
     padding-bottom: 50px;
+
+    .instructions {
+        font-size: 18px;
+    }
+
+    .submit-section {
+        font-size: 18px;
+        padding-top: 20px;
+
+        #validation-errors {
+            margin-bottom: 10px;
+        }
+
+        .information {
+            margin-bottom: 15px;
+        }
+
+        button {
+            font-size: 18px;
+            margin-left: 15px;
+        }
+    }
 }
 
 .preprint-form-block {
