@@ -2,7 +2,36 @@ import Ember from 'ember';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 
-var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"terms": {"types": ["preprint", "thesis"]}}]}},"aggregations": {"sources": {"terms": {"field": "sources","size": 200}}}}';
+var getProvidersPayload = ```
+{
+	"from": 0,
+	"query": {
+		"bool": {
+			"must": {
+				"query_string": {
+					"query": "*"
+				}
+			}, "filter": [
+				{
+					"bool": {
+						"should": [
+							{"terms": {"types": ["preprint"]} },
+							{"terms": {"sources": ["Thesis Commons"]} }
+						]
+					}
+				}
+			]
+		}
+	},"aggregations": {
+		"sources": {
+			"terms": {
+				"field": "sources",
+				"size": 200
+			}
+		}
+	}
+}
+```;
 
 /**
  * @module ember-preprints
