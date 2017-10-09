@@ -59,7 +59,14 @@ export default Ember.Controller.extend(Analytics, {
     },
     lockedParams: Ember.computed('additionalProviders', function() { // Query parameters that cannot be changed.
         // if additionalProviders, open up search results to all types of results instead of just preprints.
-        return this.get('additionalProviders') ? {} : {types: ['preprint', 'thesis']};
+        return this.get('additionalProviders') ? {} : {
+			bool: {
+				should: [
+					{terms: {types: ["preprint"]} },
+					{terms: {sources: ["Thesis Commons"]} }
+				]
+			}
+		};
     }),
     page: 1, // Page query param. Must be passed to component, so can be reflected in URL
     provider: '', // Provider query param. Must be passed to component, so can be reflected in URL
