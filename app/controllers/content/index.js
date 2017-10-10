@@ -62,9 +62,18 @@ export default Ember.Controller.extend(Analytics, {
     currentUser: Ember.inject.service(),
     expandedAuthors: true,
     showLicenseText: false,
+    currentUserId: '',
     expandedAbstract: navigator.userAgent.includes('Prerender'),
     queryParams: {
         chosenFile: 'file'
+    },
+
+    init() {
+        this._super(...arguments);
+        this.get('currentUser').load()
+            .then(user => {
+                this.set('currentUserId', user.id);
+            });
     },
 
     dateLabel: Ember.computed('model.provider.reviewsWorkflow', function() {
@@ -82,6 +91,19 @@ export default Ember.Controller.extend(Analytics, {
         // True if the current user has admin permissions for the node that contains the preprint
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
+
+    userIsContrib: Ember.computed('authors.[]', 'isAdmin', function() {
+        if (this.get('isAdmin')) {
+            return true;
+        } else if (this.get('authors').length) {
+            const authorIds = this.get('authors').map((author) => {
+                return author.get('userId');
+            });
+            return this.get('currentUserId') ? authorIds.includes(this.get('currentUserId')) : false;
+        }
+        return false;
+    }),
+
     twitterHref: Ember.computed('node', function() {
         const queryParams = {
             url: window.location.href,
@@ -232,8 +254,6 @@ export default Ember.Controller.extend(Analytics, {
         // to track non contributor preprint downloads specifically.
         dualTrackNonContributors(category, label, url, primary) {
             this.send('click', category, label, url); // Sends event to both Google Analytics and Keen.
-            const authors = this.get('authors');
-            let userIsContrib = false;
 
             const eventData = {
                 download_info: {
@@ -261,23 +281,11 @@ export default Ember.Controller.extend(Analytics, {
                 node: this.get('node'),
             };
 
-            this.get('currentUser').load()
-                .then(user => {
-                    if (user) {
-                        const userId = user.id;
-                        authors.forEach((author) => {
-                            if (author.get('userId') === userId) {
-                                userIsContrib = true;
-                            }
-                        });
-                    }
-                    if (!userIsContrib) {
-                        Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor
-                    }
-                })
-                .catch(() => {
-                    Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen for non-authenticated user
-                });
+            if (!this.get('userIsContrib')) {
+                Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor
+            } else {
+                Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen for non-authenticated user
+            }
         }
     },
 });
