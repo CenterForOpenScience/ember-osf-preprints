@@ -48,76 +48,7 @@ module.exports = function(environment) {
                         type: 'image/png',
                         width: 363,
                         height: 242
-                    },
-                    permissionLanguage: 'no_trademark'
-                },
-                {
-                    id: 'engrxiv',
-                    permissionLanguage: 'arxiv_non_endorsement'
-                },
-                {
-                    id: 'socarxiv',
-                    permissionLanguage: 'arxiv_trademark_license'
-                },
-                {
-                    id: 'psyarxiv',
-                    permissionLanguage: 'arxiv_trademark_license'
-                },
-                {
-                    id: 'bitss',
-                    permissionLanguage: 'no_trademark'
-                },
-                {
-                    id: 'scielo',
-                    permissionLanguage: 'no_trademark'
-                },
-                {
-                    id: 'agrixiv',
-                    permissionLanguage: 'arxiv_non_endorsement'
-                },
-                {
-                    id: 'lawarxiv',
-                    permissionLanguage: 'arxiv_non_endorsement'
-                },
-                {
-                    id: 'focusarchive',
-                    permissionLanguage: 'no_trademark'
-                },
-                {
-                    id: 'paleorxiv',
-                    permissionLanguage: 'arxiv_non_endorsement'
-                },
-                {
-                    id: 'mindrxiv',
-                    permissionLanguage: 'no_trademark'
-                },
-                {
-                    id: 'lissa',
-                    permissionLanguage: 'no_trademark'
-                },
-                {
-                    id: 'sportrxiv',
-                    permissionLanguage: 'no_trademark'
-                },
-                {
-                    id: 'thesiscommons',
-                    permissionLanguage: 'no_trademark'
-                },
-                {
-                    id: 'asu',
-                    permissionLanguage: 'no_trademark'
-                },
-                {
-                    id: 'nutrixiv',
-                    permissionLanguage: 'no_trademark'
-                },
-                {
-                    id: 'inarxiv',
-                    permissionLanguage: 'no_trademark'
-                },
-                {
-                    id: 'experimentalprotocols',
-                    permissionLanguage: 'no_trademark'
+                    }
                 }
             ],
         },
@@ -156,7 +87,7 @@ module.exports = function(environment) {
             'PeerJ',
             'Research Papers in Economics',
             'Preprints.org'
-        ].map(item => item.toLowerCase()),
+        ],
     };
 
     if (environment === 'development') {

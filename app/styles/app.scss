@@ -2,7 +2,7 @@
 @import 'variables';
 @import 'bootstrap';
 @import 'ember-power-select';
-@import 'base';
+@import 'osf-style';
 @import 'authors';
 @import 'validated-input';
 @import 'hint';
@@ -1209,12 +1209,6 @@ nav.branded-navbar {
         margin: 0;
     }
 }
-
-.permission-footer-language {
-    margin-top: 1em;
-    margin-bottom: 1em;
-    line-height: 28px;
-  }
 
 .branded-footer-links {
     margin-bottom: 1em;

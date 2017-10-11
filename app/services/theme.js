@@ -121,13 +121,4 @@ export default Ember.Service.extend({
     redirectUrl: Ember.computed('currentLocation', function() {
         return this.get('currentLocation');
     }),
-
-    // The translation key for the provider's permission language
-    permissionLanguage: Ember.computed('id', function() {
-        const id = this.get('id');
-
-        return config.PREPRINTS.providers
-            .find(provider => provider.id === id)
-            .permissionLanguage;
-    }),
 });

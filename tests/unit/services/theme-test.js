@@ -16,6 +16,5 @@ test('themes have proper config', function(assert) {
     let providers = config.PREPRINTS.providers;
     for (var provider of providers) {
         assert.ok(typeof provider.id !== 'undefined');
-        assert.ok(typeof provider.permissionLanguage !== 'undefined');
     }
 });
