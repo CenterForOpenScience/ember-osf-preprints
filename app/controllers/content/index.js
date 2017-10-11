@@ -62,18 +62,9 @@ export default Ember.Controller.extend(Analytics, {
     currentUser: Ember.inject.service(),
     expandedAuthors: true,
     showLicenseText: false,
-    currentUserId: '',
     expandedAbstract: navigator.userAgent.includes('Prerender'),
     queryParams: {
         chosenFile: 'file'
-    },
-
-    init() {
-        this._super(...arguments);
-        this.get('currentUser').load()
-            .then(user => {
-                this.set('currentUserId', user.id);
-            });
     },
 
     dateLabel: Ember.computed('model.provider.reviewsWorkflow', function() {
@@ -92,14 +83,14 @@ export default Ember.Controller.extend(Analytics, {
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
 
-    userIsContrib: Ember.computed('authors.[]', 'isAdmin', function() {
+    userIsContrib: Ember.computed('authors.[]', 'isAdmin', 'currentUser.currentUserId', function() {
         if (this.get('isAdmin')) {
             return true;
         } else if (this.get('authors').length) {
             const authorIds = this.get('authors').map((author) => {
                 return author.get('userId');
             });
-            return this.get('currentUserId') ? authorIds.includes(this.get('currentUserId')) : false;
+            return this.get('currentUser.currentUserId') ? authorIds.includes(this.get('currentUser.currentUserId')) : false;
         }
         return false;
     }),
@@ -282,9 +273,7 @@ export default Ember.Controller.extend(Analytics, {
             };
 
             if (!this.get('userIsContrib')) {
-                Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor
-            } else {
-                Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen for non-authenticated user
+                Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor or non-authenticated user
             }
         }
     },
