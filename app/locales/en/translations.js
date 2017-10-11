@@ -382,11 +382,11 @@ export default {
         },
         'preprint-status-banner': {
             message: {
-                base: `{{name}} uses {{reviewsWorkflow}}, therefore this preprint is`,
-                pending_pre: `not publicly available or searchable until approved by a moderator`,
-                pending_post: `publicly available and searchable but is subject to removal by a moderator`,
-                accepted: `publicly available and searchable`,
-                rejected: `not publicly available or searchable`,
+                base: `{{name}} uses {{reviewsWorkflow}}. This {{preprintWords.preprint}}`,
+                pending_pre: `is not publicly available or searchable until approved by a moderator`,
+                pending_post: `is publicly available and searchable but is subject to removal by a moderator`,
+                accepted: `has been accepted by a moderator and is publicly available and searchable`,
+                rejected: `has been rejected by a moderator and is not publicly available or searchable`,
             },
             pending: `pending`,
             accepted: `accepted`,
@@ -394,7 +394,7 @@ export default {
             feedback: {
                 moderator_feedback: `Moderator feedback`,
                 moderator: `Moderator`,
-                base: `This {{preprintWords.preprint}} is`,
+                base: `This {{preprintWords.preprint}}`,
             },
         },
         'project-chooser': {
