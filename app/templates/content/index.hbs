@@ -46,7 +46,7 @@
             </div>
         </div> {{!END CONTAINER DIV}}
     </div> {{!END HEADER ROW}}
-    {{#if (and isAdmin model.provider.reviewsWorkflow)}}
+    {{#if (and userIsContrib model.provider.reviewsWorkflow)}}
         {{preprint-status-banner submission=model}}
     {{/if}}
     <div id="view-page" class="container">{{!CONTAINER DIV}}
