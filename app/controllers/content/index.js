@@ -95,6 +95,15 @@ export default Ember.Controller.extend(Analytics, {
         return false;
     }),
 
+    showStatusBanner: Ember.computed('model.{provider.reviewsWorkflow,reviewsState}', 'userIsContrib', 'node.public', function() {
+        return (
+            this.get('model.provider.reviewsWorkflow')
+            && this.get('node.public')
+            && this.get('userIsContrib')
+            && this.get('model.reviewsState') !== 'initial'
+        );
+    }),
+
     twitterHref: Ember.computed('node', function() {
         const queryParams = {
             url: window.location.href,
