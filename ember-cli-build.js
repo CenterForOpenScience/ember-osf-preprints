@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 const configFunc = require('./config/environment');
+const Funnel = require('broccoli-funnel');
 
 const nonCdnEnvironments = ['development', 'test'];
 
@@ -60,7 +61,7 @@ module.exports = function(defaults) {
             includePaths: [
                 'node_modules/@centerforopenscience/ember-osf/addon/styles',
                 'bower_components/bootstrap-sass/assets/stylesheets',
-                'bower_components/osf-style/sass',
+                'node_modules/@centerforopenscience/osf-style/sass',
                 'bower_components/hint.css',
                 'bower_components/c3',
                 'bower_components/bootstrap-daterangepicker',
@@ -132,15 +133,7 @@ module.exports = function(defaults) {
     // along with the exports of each module as its value.
 
     // osf-style
-    app.import(path.join(app.bowerDirectory, 'osf-style/vendor/prism/prism.css'));
-    app.import(path.join(app.bowerDirectory, 'osf-style/page.css'));
-    app.import(path.join(app.bowerDirectory, 'osf-style/css/base.css'));
     app.import(path.join(app.bowerDirectory, 'loaders.css/loaders.min.css'));
-
-
-    app.import(path.join(app.bowerDirectory, 'osf-style/img/cos-white2.png'), {
-        destDir: 'img'
-    });
 
     // app.import('bower_components/dropzone/dist/dropzone.js');
     app.import({
@@ -165,5 +158,12 @@ module.exports = function(defaults) {
     // Import component styles from addon
     app.import('vendor/assets/ember-osf.css');
 
-    return app.toTree();
+    const assets = [
+        new Funnel('node_modules/@centerforopenscience/osf-style/img', {
+            srcDir: '/',
+            destDir: 'img',
+        })
+    ];
+
+    return app.toTree(assets);
 };

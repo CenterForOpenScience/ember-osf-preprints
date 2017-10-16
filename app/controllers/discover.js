@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 
 /**
@@ -51,6 +52,7 @@ export default Ember.Controller.extend(Analytics, {
         providers: 'sources',
         subjects: 'subjects'
     },
+    //TODO: Add a conversion from shareSource to provider names here if desired
     filterReplace: { // Map filter names for front-end display
         'Open Science Framework': 'OSF',
         'Cognitive Sciences ePrint Archive': 'Cogprints',
@@ -106,6 +108,7 @@ export default Ember.Controller.extend(Analytics, {
         return themeProvider;
     }),
     type: '', //Type query param. Must be passed to component, so can be reflected in URL
+    whiteListedProviders: config.whiteListedProviders,
     _clearFilters() {
         this.set('activeFilters', {
             providers: [],

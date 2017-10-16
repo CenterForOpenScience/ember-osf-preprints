@@ -1,9 +1,6 @@
 import Ember, { Logger } from 'ember';
 import config from 'ember-get-config';
 
-const providers = config.PREPRINTS.providers.slice(1);
-const providerIds = providers.map(p => p.id);
-
 /**
  * @module ember-preprints
  * @submodule routes
@@ -19,19 +16,21 @@ export default Ember.Route.extend({
         const {slug = ''} = transition.params.provider;
         const slugLower = slug.toLowerCase();
 
-        if (providerIds.includes(slugLower)) {
-            if (slugLower !== slug) {
-                const {pathname} = window.location;
-                const pathRegex = new RegExp(`^/preprints/${slug}`);
+        return this.get('store').findRecord(
+            'preprint-provider',
+            slugLower
+        ).then(() => {
+            const {pathname} = window.location;
+            const pathRegex = new RegExp(`^/preprints/${slug}`);
 
+            if (slug !== slugLower) {
                 window.location.pathname = pathname.replace(
                     pathRegex,
                     `/preprints/${slugLower}`
                 );
             }
-
-            this.set('theme.id', slug);
-        } else {
+            this.set('theme.id', slugLower);
+        }).catch(() => {
             this.set('theme.id', config.PREPRINTS.defaultProvider);
 
             if (slug.length === 5) {
@@ -39,7 +38,7 @@ export default Ember.Route.extend({
             } else {
                 this.replaceWith('page-not-found');
             }
-        }
+        });
     },
 
     actions: {
