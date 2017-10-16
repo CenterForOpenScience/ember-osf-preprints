@@ -720,6 +720,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     },
                     license: this.get('basicsLicense.licenseType')
                 });
+                node.setProperties({
+                    description: currentAbstract,
+                    tags: currentTags,
+                    license: this.get('basicsLicense.licenseType'),
+                    nodeLicense: this.get('basicsLicense.licenseType'),
+                });
                 Ember.get(this, 'metrics')
                     .trackEvent({
                         category: 'dropdown',
@@ -734,7 +740,6 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     license: currentLicenseType,
                     doi: currentDOI,
                 });
-
                 node.setProperties({
                     description: currentAbstract,
                     tags: currentTags,
