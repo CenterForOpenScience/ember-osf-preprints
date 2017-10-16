@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Get the sentryDSN from the ember config
 - Point Bower to new Bower registry (https://registry.bower.io)
 - Update to @centerforopenscience/ember-osf@0.11.0
+- Update node when license data is changed
 
 ### Removed
 - arXiv license permission language
