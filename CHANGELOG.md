@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.114.1] - 2017-10-16
+### Changed
+- Discover page locked parameters to "type: preprints" or "source: Thesis Commons"
+
 ## [0.114.0] - 2017-10-11
 ### Added
 - Dockerfile-alpine for small production builds
