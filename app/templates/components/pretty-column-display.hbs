@@ -1,0 +1,12 @@
+<div class='row'>
+    {{#each topItems as |item|}}
+        <div class='col-xs-{{columnLength}}'>
+            {{yield item}}
+        </div>
+    {{/each}}
+</div>
+<div class='row'>
+    {{#each bottomItems as |item|}}
+        {{yield item}}
+    {{/each}}
+</div>
