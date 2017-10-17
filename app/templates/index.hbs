@@ -82,9 +82,15 @@
             </div>
             <div class="row p-v-md">{{!BRANDED ROW}}
                 {{!CAROUSEL WITH PREPRINT PROVIDERS}}
-                {{provider-carousel
-                    providers=model.brandedProviders
-                }}
+                {{#pretty-column-display length=5 items=model.brandedProviders}}
+                    <a href="{{brandedPreprintUrl item path=''}}"
+                        title={{item.name}}
+                        onclick={{action 'click' 'link' (concat 'Index - Provider Carousel - ' item.name)}}
+                        >
+                        <div class="provider-logo provider-{{item.id}}" style="background-image: url('{{providerAsset item.id 'wide_white.png'}}')"></div>
+                    </a>
+                {{/pretty-column-display}}
+
             </div>
             <div class="row p-v-md">
                 <div class="col-md-12 text-center">
