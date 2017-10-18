@@ -76,7 +76,7 @@
             </div>
             <div class="row p-v-md">{{!BRANDED ROW}}
                 {{!CAROUSEL WITH PREPRINT PROVIDERS}}
-                {{#pretty-column-display length=5 items=model.brandedProviders as |provider|}}
+                {{#pretty-column-display length=4 items=model.brandedProviders as |provider|}}
                     <a href="{{brandedPreprintUrl provider path=''}}"
                         title={{provider.name}}
                         onclick={{action 'click' 'link' (concat 'Index - Provider Carousel - ' item.name)}}
