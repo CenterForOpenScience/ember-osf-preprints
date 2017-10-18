@@ -12,7 +12,6 @@ export default Ember.Component.extend({
     }),
     columnLength: Ember.computed('length', function() {
         if (12 % this.get('length')) {
-            console.warn('Only supports length\'s that can divide 12');
             this.set('length', 4);
             return 3;
         }
