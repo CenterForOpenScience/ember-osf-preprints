@@ -1448,3 +1448,15 @@ nav.branded-navbar {
     margin-left: 15px;
     text-decoration: underline;
 }
+
+.container.pretty-column {
+    .row {
+        padding-left: 20px;
+        .pretty-column-item {
+            padding-left: 20px;
+            &.pretty-column-top {
+                margin-bottom: 30px;
+            }
+        }
+    }
+}

@@ -1,12 +1,20 @@
-<div class='row'>
-    {{#each topItems as |item|}}
-        <div class='col-xs-{{columnLength}}'>
-            {{yield item}}
+<div class='container pretty-column'>
+    {{#if topItems.length}}
+        <div class='row'>
+            {{#each topItems as |item|}}
+                <div class='col-xs-{{columnLength}} pretty-column-item pretty-column-top'>
+                    {{yield item}}
+                </div>
+            {{/each}}
         </div>
-    {{/each}}
-</div>
-<div class='row'>
-    {{#each bottomItems as |item|}}
-        {{yield item}}
-    {{/each}}
+    {{/if}}
+    {{#if bottomItems.length}}
+        <div class='row'>
+            {{#each bottomItems as |item|}}
+                <div class='col-xs-{{bottomColumnLength}} pretty-column-item'>
+                    {{yield item}}
+                </div>
+            {{/each}}
+        </div>
+    {{/if}}
 </div>

@@ -17,5 +17,8 @@ export default Ember.Component.extend({
             return 3;
         }
         return 12/this.get('length');
+    }),
+    bottomColumnLength: Ember.computed('bottomItems', function() {
+        return 12/this.get('bottomItems.length');
     })
 });
