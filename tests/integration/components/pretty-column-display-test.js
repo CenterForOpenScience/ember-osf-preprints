@@ -6,20 +6,12 @@ moduleForComponent('pretty-column-display', 'Integration | Component | pretty co
 });
 
 test('it renders', function(assert) {
-
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
-
-  this.render(hbs`{{pretty-column-display}}`);
-
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
+  this.set('items', ['1', '2'])
   this.render(hbs`
-    {{#pretty-column-display}}
-      template block text
+    {{#pretty-column-display items=items as |item|}}
+      {{item}}
     {{/pretty-column-display}}
   `);
 
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$().text().trim(), '1 2');
 });
