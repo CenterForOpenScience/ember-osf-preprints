@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.114.3] - 2017-10-20
+### Added
+- hotfix script
+
+### Changed
+- Improve update-assets-hotfix script
+- Update assets
+
 ## [0.114.2] - 2017-10-17
 ### Changed
 - Update cdn to use ember.js version 2.8.3
