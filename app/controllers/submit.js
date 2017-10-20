@@ -1085,6 +1085,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             return submitAction.save()
                 .then(() => {
+                    this.get('model').reload();
                     this.transitionToRoute(
                         `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
                         this.get('model')
