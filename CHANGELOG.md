@@ -16,6 +16,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 
+## [0.114.3] - 2017-10-20
+### Added
+- hotfix script
+
+### Changed
+- Improve update-assets-hotfix script
+- Update assets
+
+## [0.114.2] - 2017-10-17
+### Changed
+- Update cdn to use ember.js version 2.8.3
+
+## [0.114.1] - 2017-10-16
+### Changed
+- Discover page locked parameters to "type: preprints" or "source: Thesis Commons"
+
 ## [0.114.0] - 2017-10-11
 ### Added
 - Dockerfile-alpine for small production builds

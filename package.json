@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.114.0",
+  "version": "0.114.3",
   "description": "Center for Open Science Preprint Service",
   "private": true,
   "directories": {
@@ -15,8 +15,9 @@
     "test:cover": "COVERAGE=true yarn test",
     "postinstall": "npm rebuild node-sass",
     "update-assets": "git submodule update --remote",
-    "update-assets-hotfix": "git checkout -b hotfix/update-assets && npm run update-assets && git ci public/assets/osf-assets -m 'Updated assets'",
-    "use-ember-osf-develop": "yarn upgrade @centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop#$(date -u +%FT%TZ)"
+    "update-assets-hotfix": "yarn hotfix && yarn update-assets && git ci public/assets/osf-assets -m 'Updated assets'",
+    "use-ember-osf-develop": "yarn upgrade @centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop#$(date -u +%FT%TZ)",
+    "hotfix": "git flow hotfix start rename-me && npm --no-git-tag-version version patch && git ci package.json -m 'Bump version' && git br -m \"hotfix/$(npm version | head -1 | grep -o '[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+')\""
   },
   "repository": {
     "type": "git",
