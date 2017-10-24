@@ -30,7 +30,7 @@
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#develop#2017-10-23T21:02:46Z",
+    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#develop#2017-10-24T19:54:19Z",
     "@centerforopenscience/osf-style": "1.5.1",
     "autoprefixer": "6.3.7",
     "broccoli-asset-rev": "2.4.2",
