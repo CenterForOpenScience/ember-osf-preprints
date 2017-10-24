@@ -23,6 +23,8 @@ import config from 'ember-get-config';
 export default Ember.Component.extend(OSFAgnosticAuthControllerMixin, Analytics, {
     session: Ember.inject.service(),
     theme: Ember.inject.service(),
+    currentUser: Ember.inject.service(),
+
     tagName: 'nav',
     classNames: ['navbar', 'branded-navbar', 'preprint-navbar'],
     host: config.OSF.url,
