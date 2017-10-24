@@ -121,7 +121,7 @@ export default Ember.Service.extend({
             }
         }]
     }),
-    idChanged: Ember.observer('id', function() {
+    themeObserver: Ember.observer('id', function() {
         this.get('headTagsService').collectHeadTags();
     }),
 });
