@@ -159,8 +159,8 @@ export default {
         submit_heading: `Submit {{preprintWords.Preprint}}`,
         edit_heading: `Edit {{preprintWords.Preprint}}`,
         body: {
-            p_add: `For each section below, "Save and continue" will directly update the OSF project.`,
-            p_edit: `For each section below, "Save and continue" will directly update the {{preprintWords.preprint}} and the OSF project.`,
+            p_add: `For each section below, "Save and continue" will update your {{preprintWords.preprint}}'s associated OSF project.`,
+            p_edit: `For each section below, "Save and continue" will update your {{preprintWords.preprint}} and the associated OSF project.`,
             upload: `Upload new {{preprintWords.preprint}}`,
             connect: `Connect {{preprintWords.preprint}} to existing OSF project`,
             file: `{{preprintWords.Preprint}} file`,
@@ -193,12 +193,12 @@ export default {
                         moderation: `When you submit this {{preprintWords.preprint}}, it will be assigned a DOI. The {{preprintWords.preprint}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{preprintWords.preprint}}.`,
                     },
                     line2: {
-                        create: `By creating this {{preprintWords.preprint}}, you confirm that all Contributors agree with sharing it, and that you have the right to share this {{preprintWords.preprint}}.`,
-                        submit: `By submitting this {{preprintWords.preprint}}, you confirm that all Contributors agree with sharing it, and that you have the right to share this {{preprintWords.preprint}}.`
+                        create: `By creating this {{preprintWords.preprint}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{preprintWords.preprint}}.`,
+                        submit: `By submitting this {{preprintWords.preprint}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{preprintWords.preprint}}.`
                     },
                     line3: {
-                        pre: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>, therefore your {{preprintWords.preprint}} will not become publicly accessible until a moderator accepts the submission.`,
-                        post: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>, therefore your {{preprintWords.preprint}} will become publicly accessible after creation and will only become private if rejected by a moderator.`,
+                        pre: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore your {{preprintWords.preprint}} will not become publicly accessible until a moderator accepts the submission.`,
+                        post: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore your {{preprintWords.preprint}} will become publicly accessible after creation and will only become private if rejected by a moderator.`,
                     }
                 },
                 invalid: {
