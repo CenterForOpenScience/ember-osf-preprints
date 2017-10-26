@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 
+## [0.114.5] - 2017-10-26
+### Changed
+- Update to ember-osf@0.11.4
+
 ## [0.114.4] - 2017-10-25
 ### Changed
 - Update to ember-osf@0.11.3
