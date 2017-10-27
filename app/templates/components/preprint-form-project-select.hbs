@@ -72,7 +72,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                {{file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
+                                {{old-file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                         {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}

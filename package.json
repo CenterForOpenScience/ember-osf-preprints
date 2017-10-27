@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.114.5",
+  "version": "0.115.0",
   "description": "Center for Open Science Preprint Service",
   "private": true,
   "directories": {
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CenterForOpenScience/ember-preprints.git"
+    "url": "git+https://github.com/CenterForOpenScience/ember-osf-preprints.git"
   },
   "engineStrict": true,
   "engines": {
@@ -30,7 +30,7 @@
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@centerforopenscience/ember-osf": "0.11.4",
+    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#develop#2017-10-26T20:10:53Z",
     "@centerforopenscience/osf-style": "1.5.1",
     "autoprefixer": "6.3.7",
     "broccoli-asset-rev": "2.4.2",
@@ -94,7 +94,7 @@
     "postcss": "5.1.0"
   },
   "bugs": {
-    "url": "https://github.com/CenterForOpenScience/ember-preprints/issues"
+    "url": "https://github.com/CenterForOpenScience/ember-osf-preprints/issues"
   },
-  "homepage": "https://github.com/CenterForOpenScience/ember-preprints#readme"
+  "homepage": "https://github.com/CenterForOpenScience/ember-osf-preprints#readme"
 }
