@@ -199,8 +199,8 @@ export default {
                         submit: `By submitting this {{preprintWords.preprint}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{preprintWords.preprint}}.`
                     },
                     line3: {
-                        pre: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore your {{preprintWords.preprint}} will not become publicly accessible until a moderator accepts the submission.`,
-                        post: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore your {{preprintWords.preprint}} will become publicly accessible after creation and will only become private if rejected by a moderator.`,
+                        pre: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore, your {{preprintWords.preprint}} will not become publicly accessible until a moderator accepts the submission.`,
+                        post: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore, your {{preprintWords.preprint}} will become publicly accessible after creation and will only become private if rejected by a moderator.`,
                     }
                 },
                 invalid: {

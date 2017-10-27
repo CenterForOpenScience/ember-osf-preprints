@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [Unreleased]	
+### Added		 
+  - DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
+
+## [0.115.0] - 2017-10-27
 ### Added
 - `preprint-status-banner` component, used on the preprint detail page to show contributors the state of their preprint in a reviews workflow
 - "My Reviewing" link in navbar, if the user is a moderator for a preprint provider
@@ -14,7 +18,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Update language depending on the provider's workflow
   - Create `action` on preprint submission, instead of setting `is_published: true`
 
-### Removed
+## [0.114.5] - 2017-10-26
+### Changed
+- Update to ember-osf@0.11.4
 
 ## [0.114.4] - 2017-10-25
 ### Changed
