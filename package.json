@@ -13,7 +13,6 @@
     "check-style": "eslint .",
     "test": "yarn run check-style && ember test",
     "test:cover": "COVERAGE=true yarn test",
-    "postinstall": "npm rebuild node-sass",
     "update-assets": "git submodule update --remote",
     "update-assets-hotfix": "yarn hotfix && yarn update-assets && git ci public/assets/osf-assets -m 'Updated assets'",
     "use-ember-osf-develop": "yarn upgrade @centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop#$(date -u +%FT%TZ)",
