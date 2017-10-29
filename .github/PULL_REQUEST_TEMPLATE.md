@@ -4,21 +4,21 @@
      - For new features and non-hotfix bugfixes, select "develop" as the target branch
      - For release feature fixes, select the relevant release branch (release/X.Y.Z) as the target branch -->
 
-## Ticket
-
-https://openscience.atlassian.net/browse/EOSF-
-
 ## Purpose
 
 
 
-## Summary of changes
+## Summary of Changes
 
 
 
-## Testing notes
+## Side Effects / Testing Notes
 
 
+
+## Ticket
+
+https://openscience.atlassian.net/browse/EOSF-
 
 # Reviewer Checklist
 
