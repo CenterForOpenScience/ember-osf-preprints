@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Use yarn --frozen-lockfile instead of --pure-lockfile
-- Update Dockerfiles
+- Use COS ember-base image and multi-stage build
+  - Notify DevOps prior to merging into master to update Jenkins
 
 
 ## [0.115.0] - 2017-10-27
