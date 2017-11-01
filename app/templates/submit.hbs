@@ -165,6 +165,12 @@
                                                 {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
                                             </form>
                                         </div>
+                                        <div>
+                                            <label>{{t "submit.body.basics.original_publication_date.label"}}:</label>
+                                            <form>
+                                                {{validated-date-input model=this valuePath='basicsOriginalPublicationDate' value=basicsOriginalPublicationDate}}
+                                            </form>
+                                        </div>
                                         <div class="clearfix">
                                             <label>{{t "submit.body.basics.keywords.label"}}:</label>
                                             <p class="text-smaller">{{t "submit.body.basics.keywords.paragraph"}}</p>
