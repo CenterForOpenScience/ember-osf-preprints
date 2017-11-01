@@ -4,9 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]	
-### Added		 
-  - DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
+## [Unreleased]
+### Added
+- DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
+- Headless Firefox
+
+### Changed
+- Use yarn --frozen-lockfile instead of --pure-lockfile
+- Update Dockerfiles
+
 
 ## [0.115.0] - 2017-10-27
 ### Added

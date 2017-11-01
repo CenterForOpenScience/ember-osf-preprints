@@ -18,13 +18,12 @@ You will need the following things properly installed on your computer.
 * [Yarn](https://yarnpkg.com/)
 * [Bower](http://bower.io/)
 * [Ember CLI](http://ember-cli.com/)
-* [PhantomJS](http://phantomjs.org/)
 
 ## Installation
 
 * `git clone` this repository
   * To pull in local preprint provider assets as well, use `git clone --recursive` instead (assuming you are using git >= 1.6.5).
-* `yarn install --pure-lockfile`
+* `yarn install --frozen-lockfile`
 * `bower install`
 
 ## Preprint Provider Assets
