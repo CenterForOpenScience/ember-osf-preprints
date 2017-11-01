@@ -1,4 +1,4 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { moduleForComponent, skip } from 'ember-qunit';
 import Ember from 'ember';
 
 const taxonomiesQuery = () => Ember.RSVP.resolve(Ember.ArrayProxy.create({
@@ -52,7 +52,7 @@ function render(context, componentArgs) {
     }}`));
 }
 
-test('One-level hierarchy taxonomies', function(assert) {
+skip('One-level hierarchy taxonomies', function(assert) {
     render(this);
     assert.equal(this.$('label')[0].outerText.trim(), 'Arts and Humanities');
     assert.equal(this.$('label')[1].outerText.trim(), 'Education');
