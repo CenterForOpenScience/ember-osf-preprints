@@ -178,6 +178,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     hasFile: Ember.computed.or('file', 'selectedFile'),
 
+    hasDirtyFields: Ember.computed.or('uploadChanged', 'basicsChanged', 'disciplineChanged'), // True when fields have been changed
+
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
         this.get('panelActions').open('Upload');
@@ -364,6 +366,34 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     // Fields used in the "discipline" section of the form.
     ////////////////////////////////////////////////////
 
+    disciplineArraysEqual(a, b) {
+        // Returns if both arrays are equal OR
+        // if both arrays are null OR
+        // if the length of both arrays are not the same
+        if (a === b) return true;
+        if (a == null || b == null) return false;
+        if (a.length !== b.length) return false;
+
+        // For each array in the arrays, compare the length.  Return if not equal.
+        // For each individual item in that array, compare the value.  Return if not equal.
+        for (var i = 0; i < a.length; ++i) {
+            if (a[i].length !== b[i].length) return false;
+            for (var j = 0; j < a[i].length; ++j) {
+                if (a[i][j] !== b[i][j]) return false;
+            }
+        }
+        return true;
+    },
+
+    subjectIdMap(subjectArray) {
+        // Maps array of arrays of disciplines into array of arrays of discipline ids.
+        return subjectArray.map(function (subjectBlock) {
+            return subjectBlock.map(function (subject) {
+                return subject.id;
+            });
+        });
+    },
+
     // Pending subjects
     subjectsList: Ember.computed('model.subjects.@each', function() {
         return this.get('model.subjects') ? Ember.$.extend(true, [], this.get('model.subjects')) : Ember.A();
@@ -372,6 +402,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     // Flattened subject list
     disciplineReduced: Ember.computed('model.subjects', function() {
         return Ember.$.extend(true, [], this.get('model.subjects')).reduce((acc, val) => acc.concat(val), []).uniqBy('id');
+    }),
+
+    // Compares the model's and current subjectLists's array of arrays of discipline ids
+    // to determine if there has been a change.
+    disciplineChanged: Ember.computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle', function () {
+        return !this.disciplineArraysEqual(subjectIdMap(this.get('model.subjects')), subjectIdMap(this.get('subjectsList')));
     }),
 
     // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
