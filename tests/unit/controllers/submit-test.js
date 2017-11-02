@@ -1,6 +1,7 @@
 import { moduleFor, test, skip } from 'ember-qunit';
 import Ember from 'ember';
 import wait from 'ember-test-helpers/wait';
+import moment from 'moment';
 
 const panelNames = [
     'Discipline',
@@ -37,6 +38,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'validator:presence',
         'validator:length',
         'validator:format',
+        'validator:date',
         'service:metrics',
         'service:panel-actions',
         'service:theme',
@@ -174,6 +176,15 @@ test('doiValid computed property', function(assert) {
     ctrl.set('basicsDOI', '10.1234/hello');
     assert.equal(ctrl.get('doiValid'), true);
 });
+test('originalPublicationDateValid computed property', function(assert) {
+    const ctrl = this.subject();
+    let tomorrow = moment().add(1, 'days');
+    let yesterday = moment().subtract(1, 'days');
+    ctrl.set('basicsOriginalPublicationDate', tomorrow);
+    assert.equal(ctrl.get('originalPublicationDateValid'), false);
+    ctrl.set('basicsOriginalPublicationDate', yesterday);
+    assert.equal(ctrl.get('originalPublicationDateValid'), true);
+});
 
 // TODO licenseValid
 
@@ -182,10 +193,12 @@ test('basicsValid computed property', function(assert) {
     ctrl.set('abstractValid', false);
     ctrl.set('doiValid', false);
     ctrl.set('licenseValid', false);
+    ctrl.set('originalPublcationDateValid', false);
     assert.equal(ctrl.get('basicsValid'), false);
     ctrl.set('abstractValid', true);
     ctrl.set('doiValid', true);
     ctrl.set('licenseValid', true);
+    ctrl.set('originalPublicationDateValid', true);
     assert.equal(ctrl.get('basicsValid'), true);
 });
 
@@ -521,6 +534,37 @@ test('basicsLicense with multiple copyrightHolders', function(assert) {
     });
 });
 
+test('basicsOriginalPublicationDate', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    const store = this.store;
+    Ember.run(() => {
+        let today = moment();
+        const preprint = store.createRecord('preprint', {
+            'originalPublicationDate': today
+        });
+        assert.equal(ctrl.get('basicsOriginalPublicationDate'), null);
+        ctrl.set('model', preprint);
+        assert.equal(ctrl.get('basicsOriginalPublicationDate'), today);
+    });
+});
+
+test('originalPublicationDateChanged', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+    const store = this.store;
+    Ember.run(() => {
+        const preprint = store.createRecord('preprint', {
+            'originalPublicationDate': moment()
+        });
+        assert.equal(ctrl.get('originalPublicationDateChanged'), undefined);
+        ctrl.set('model', preprint);
+        assert.equal(ctrl.get('originalPublicationDateChanged'), false);
+        ctrl.set('basicsOriginalPublicationDate', moment());
+        assert.equal(ctrl.get('originalPublicationDateChanged'), true);
+    });
+});
+
 test('discardBasics properly joins copyrightHolders', function(assert) {
     assert.expect(1);
     const ctrl = this.subject();
@@ -552,11 +596,13 @@ test('basicsChanged computed property', function(assert) {
     ctrl.set('abstractChanged', false);
     ctrl.set('doiChanged', false);
     ctrl.set('licenseChanged', false);
+    ctrl.set('originalPublicationDateChanged', false);
     assert.equal(ctrl.get('basicsChanged'), false);
     ctrl.set('tagsChanged', true);
     ctrl.set('abstractChanged', true);
     ctrl.set('doiChanged', true);
     ctrl.set('licenseChanged', true);
+    ctrl.set('originalPublicationDateChanged', true);
     assert.equal(ctrl.get('basicsChanged'), true);
 });
 
@@ -935,7 +981,8 @@ test('discardBasics', function(assert) {
                 'year': '2016',
                 'copyright_holders': ['Amelia Earhart']
             },
-            license: 'No License'
+            license: 'No License',
+            originalPublicationDate: moment()
         });
 
         ctrl.set('node', node);
@@ -944,10 +991,12 @@ test('discardBasics', function(assert) {
         ctrl.set('basicsAbstract', 'Test abstract');
         ctrl.set('basicsDOI', null);
         ctrl.set('basicsLicense', 'Test license');
+        ctrl.set('basicsOriginalPublicationDate', moment().add(1, 'days'));
         ctrl.send('discardBasics');
         assert.equal(ctrl.get('basicsTags')[0], node.get('tags')[0]);
         assert.equal(ctrl.get('basicsAbstract'), node.get('description'));
         assert.equal(ctrl.get('basicsDOI'), preprint.get('doi'));
+        assert.equal(ctrl.get('basicsOriginalPublicationDate'), preprint.get('originalPublicationDate'));
         // TODO promise hasn't resolved so this is incorrect.
         // assert.equal(ctrl.get('basicsLicense.year'), preprint.get('licenseRecord.year'));
     });

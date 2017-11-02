@@ -372,7 +372,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     basicsOriginalPublicationDate: Ember.computed.or('model.originalPublicationDate'),
 
     originalPublicationDateChanged: Ember.computed('model.originalPublicationDate', 'basicsOriginalPublicationDate', function () {
-        return true
+        let basicsOriginalPublicationDate = this.get('basicsOriginalPublicationDate');
+        let modelOriginalPublicationDate = this.get('model.originalPublicationDate');
+        return (basicsOriginalPublicationDate || modelOriginalPublicationDate) && basicsOriginalPublicationDate !== modelOriginalPublicationDate;
     }),
 
     // Are there any unsaved changes in the basics section?
