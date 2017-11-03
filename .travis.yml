@@ -26,4 +26,4 @@ script:
   - yarn test:cover
 
 after_success:
-  - cat ./coverage/lcov.info | ./node_modules/.bin/coveralls.js
+  - cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
