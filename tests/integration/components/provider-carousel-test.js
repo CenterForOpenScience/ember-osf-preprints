@@ -1,4 +1,4 @@
-import {moduleForComponent, skip} from 'ember-qunit';
+import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 
@@ -6,7 +6,7 @@ moduleForComponent('provider-carousel', 'Integration | Component | provider caro
     integration: true
 });
 
-skip('it renders', function (assert) {
+test('it renders', function (assert) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.on('myAction', function(val) { ... });
     this.set('provider1', Ember.Object.create({id: 'asu'}));
@@ -23,5 +23,5 @@ skip('it renders', function (assert) {
       providers=providers
     }}`);
 
-    assert.equal(this.$().context.innerText, 'PreviousNext');
+    assert.ok(/^\s*Previous\s*Next\s*$/.test(this.$().context.innerText));
 });
