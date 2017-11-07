@@ -5,7 +5,51 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
 - Favicons are updated to reflect their provider, on a branded domain or on a /preprints/provider page
+- DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
+- Headless Firefox
+
+### Changed
+- Use yarn --frozen-lockfile instead of --pure-lockfile
+- Use COS ember-base image and multi-stage build
+  - Notify DevOps prior to merging into master to update Jenkins
+
+### Fixed
+- component integration tests to work in Firefox
+  - provider-carousel
+  - search-facet-taxonomy
+
+## [0.115.1] - 2017-11-07
+## Changed
+- ASU LiveData id from `asu` to `livedata` in search-facet-provider and provider-carousel
+- Update preprint provider assets submodule
+
+## [0.115.0] - 2017-10-27
+### Added
+- `preprint-status-banner` component, used on the preprint detail page to show contributors the state of their preprint in a reviews workflow
+- "My Reviewing" link in navbar, if the user is a moderator for a preprint provider
+
+### Changed
+- Update submit/edit page to support reviews workflows
+  - Update language depending on the provider's workflow
+  - Create `action` on preprint submission, instead of setting `is_published: true`
+
+## [0.114.5] - 2017-10-26
+### Changed
+- Update to ember-osf@0.11.4
+
+## [0.114.4] - 2017-10-25
+### Changed
+- Update to ember-osf@0.11.3
+
+## [0.114.3] - 2017-10-20
+### Added
+- hotfix script
+
+### Changed
+- Improve update-assets-hotfix script
+- Update assets
 
 ## [0.114.2] - 2017-10-17
 ### Changed
