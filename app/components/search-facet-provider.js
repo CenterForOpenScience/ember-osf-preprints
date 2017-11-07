@@ -41,7 +41,7 @@ export default Ember.Component.extend(Analytics, {
                 .findAll('preprint-provider')
                 .then(providers => {
                     const providerNames = providers.filter(
-                        provider => provider.get('id') !== 'asu'
+                        provider => provider.get('id') !== 'livedata'
                     ).map(provider => {
                         const name = provider.get('shareSource') || provider.get('name');
                         // TODO Change this in populate_preprint_providers script to just OSF
