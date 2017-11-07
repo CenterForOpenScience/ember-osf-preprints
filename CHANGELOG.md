@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update tests to work with model.queryHasMany
 - Get pagination info directly from meta in preprint-form-authors component
 - Check for `has_highlighted_subjects` flag to determine what wording should be used on index page
+- Favicons are updated to reflect their provider, on a branded domain or on a /preprints/provider page
 
 ## [0.116.3] - 2018-01-12
 ### Added
@@ -122,6 +123,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Improve update-assets-hotfix script
 - Update assets
+
 
 ## [0.114.2] - 2017-10-17
 ### Changed
