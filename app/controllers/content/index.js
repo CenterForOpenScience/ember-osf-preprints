@@ -45,8 +45,10 @@ function queryStringify(queryParams) {
 const DATE_LABEL = {
     created: 'content.date_label.created_on',
     submitted: 'content.date_label.submitted_on'
-}
+};
 const PRE_MODERATION = 'pre-moderation';
+const REJECTED = 'rejected';
+const INITIAL = 'initial';
 
 /**
  * @module ember-preprints
@@ -78,6 +80,15 @@ export default Ember.Controller.extend(Analytics, {
             this.get('model.dateCreated');
     }),
 
+    editButtonLabel: Ember.computed('model.provider.reviewsWorkflow', 'model.reviewsState', function () {
+        const edit_preprint = 'content.project_button.edit_preprint';
+        const edit_resubmit_preprint = 'content.project_button.edit_resubmit_preprint';
+        return (
+            this.get('model.provider.reviewsWorkflow') === PRE_MODERATION
+            && this.get('model.reviewsState') == REJECTED
+        ) ? edit_resubmit_preprint : edit_preprint
+    }),
+
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
@@ -100,7 +111,7 @@ export default Ember.Controller.extend(Analytics, {
             this.get('model.provider.reviewsWorkflow')
             && this.get('node.public')
             && this.get('userIsContrib')
-            && this.get('model.reviewsState') !== 'initial'
+            && this.get('model.reviewsState') !== INITIAL
         );
     }),
 
