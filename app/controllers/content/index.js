@@ -85,8 +85,8 @@ export default Ember.Controller.extend(Analytics, {
         const edit_resubmit_preprint = 'content.project_button.edit_resubmit_preprint';
         return (
             this.get('model.provider.reviewsWorkflow') === PRE_MODERATION
-            && this.get('model.reviewsState') == REJECTED
-        ) ? edit_resubmit_preprint : edit_preprint
+            && this.get('model.reviewsState') === REJECTED
+        ) ? edit_resubmit_preprint : edit_preprint;
     }),
 
     isAdmin: Ember.computed('node', function() {
