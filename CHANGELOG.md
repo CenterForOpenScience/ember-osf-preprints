@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - provider-carousel
   - search-facet-taxonomy
 
+## [0.115.2] - 2017-11-15
+## Changed
+- Update preprint provider assets submodule
+
 ## [0.115.1] - 2017-11-07
 ## Changed
 - ASU LiveData id from `asu` to `livedata` in search-facet-provider and provider-carousel
