@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Show a message on detail page when a DOI is created but not yet minted that it takes up to 24 hours to be minted.
 - Confirmation message when user tries to reload or navigate away from the preprint submission page after adding/selecting a node
 - `Computed` to check if there has been user changes on the discipline field on the preprint submission/edit form
+- Translations for `Browse by featured subjects`, `Browse by subjects`, and `Browse by providers`
 
 ### Changed
 - Use yarn --frozen-lockfile instead of --pure-lockfile
@@ -26,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Removed footer styling
 - Updated `meta.total` to `meta.total_pages` in preprint-form-authors component
 - Modified `preprint-status-banner` component for review action rename.
+- Check for `has_highlighted_subjects` flag to determine what wording should be used on index page
 
 ### Fixed
 - component integration tests to work in Firefox

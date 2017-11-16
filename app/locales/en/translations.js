@@ -119,7 +119,11 @@ export default {
             example: `See an example`
         },
         subjects: {
-            heading: `Browse <small>by {{browse-by}}</small>`
+            heading: {
+                provider: `Browse <small>by provider</small>`,
+                hasHighlightedSubjects: `Browse <small>by featured subjects</small>`,
+                noHighlightedSubjects: `Browse <small>by subjects</small>`,
+            },
         },
         services: {
             top: {
