@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Notify DevOps prior to merging into master to update Jenkins
 - Wording on `Edit preprint` button to `Edit and resubmit` on preprint detail page if the preprint is rejected
  and the workflow is pre-moderation.
- 
+- Removed footer styling
+
 
 ### Fixed
 - component integration tests to work in Firefox
