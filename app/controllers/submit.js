@@ -87,7 +87,7 @@ const SUBMIT_MESSAGES = {
 const PERMISSION_MESSAGES = {
     create: 'submit.body.submit.information.line2.create',
     submit: 'submit.body.submit.information.line2.submit'
-}
+};
 
 const EDIT_MESSAGES = {
     line1: {

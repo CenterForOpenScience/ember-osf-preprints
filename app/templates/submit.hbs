@@ -168,7 +168,7 @@
                                         <div>
                                             <label>{{t "submit.body.basics.original_publication_date.label"}}:</label>
                                             <form>
-                                                {{validated-date-input model=this valuePath='basicsOriginalPublicationDate' value=basicsOriginalPublicationDate}}
+                                                {{validated-input inputType='date' model=this valuePath='basicsOriginalPublicationDate' value=basicsOriginalPublicationDate}}
                                             </form>
                                         </div>
                                         <div class="clearfix">
@@ -182,7 +182,7 @@
                                             <span class="required">{{t "global.abstract"}}:</span>
                                         </label>
                                         <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Abstract Text Change') (action 'track' 'input' 'onchange' 'Submit - Abstract Text Change')}}>
-                                            {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract large=true}}
+                                            {{validated-input model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract inputType='textarea'}}
                                         </form>
                                     </div>
                                 </div>
