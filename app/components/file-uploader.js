@@ -230,7 +230,11 @@ export default Component.extend(Analytics, {
         },
         mustModifyCurrentPreprintFile() {
             // Can only upload a new version of a preprint file once the preprint has been created.
-            this.get('toast').error(this.get('i18n').t('components.file-uploader.version_error'));
+            this.get('toast').error(this.get('i18n').t('components.file-uploader.version_error',
+                {
+                    documentType: this.get('provider.documentType'),
+                })
+            );
             this.send('formatDropzoneAfterPreUpload', false);
             this.set('file', null);
             this.set('fileVersion', this.get('osfFile.currentVersion'));
@@ -294,7 +298,11 @@ export default Component.extend(Analytics, {
                         // will revert if user uploaded a new version of the same file
                         this.set('fileVersion', resp.data.attributes.extra.version);
                         if (this.get('nodeLocked')) { // Edit mode
-                            if (this.get('osfFile.currentVersion') !== resp.data.attributes.extra.version) this.get('toast').info(this.get('i18n').t('components.file-uploader.preprint_file_updated'));
+                            if (this.get('osfFile.currentVersion') !== resp.data.attributes.extra.version) this.get('toast').info(this.get('i18n').t('components.file-uploader.preprint_file_updated',
+                                {
+                                    documentType: this.get('provider.documentType'),
+                                })
+                            );
                             this.sendAction('finishUpload');
                             if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
                         } else { // Add mode
@@ -302,7 +310,11 @@ export default Component.extend(Analytics, {
                         }
                     })
                     .catch(() => {
-                        this.get('toast').error(this.get('i18n').t('components.file-uploader.preprint_file_error'));
+                        this.get('toast').error(this.get('i18n').t('components.file-uploader.preprint_file_error',
+                            {
+                                documentType: this.get('provider.documentType'),
+                            })
+                        );
                         this.set('uploadInProgress', false);
                     });
                 /* eslint-enable ember/closure-actions,ember/named-functions-in-promises */
@@ -322,7 +334,11 @@ export default Component.extend(Analytics, {
             // Replaces dropzone message, highlights green or red, depending on preupload success.
             if (success) {
                 this.$('.dz-default.dz-message').before(this.$('.dz-preview.dz-file-preview'));
-                this.$('.dz-message span').contents().replaceWith(this.get('i18n').t('components.file-uploader.dropzone_text_override').string);
+                this.$('.dz-message span').contents().replaceWith(this.get('i18n').t('components.file-uploader.dropzone_text_override',
+                    {
+                        documentType: this.get('provider.documentType'),
+                    }
+                ).string);
                 this.$('.dropzone').addClass('successHighlightGreenGray');
 
                 setTimeout(() => {

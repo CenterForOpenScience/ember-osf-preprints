@@ -73,8 +73,7 @@ export default Component.extend({
 
         const tWorkflow = i18n.t(this.get('workflow'));
         const tStatusExplanation = i18n.t(this.get('statusExplanation'));
-
-        return `${i18n.t(this.get('baseMessage'), { name: tName, reviewsWorkflow: tWorkflow })} ${tStatusExplanation}.`;
+        return `${i18n.t(this.get('baseMessage'), { name: tName, reviewsWorkflow: tWorkflow, documentType: this.get('submission.provider.documentType') })} ${tStatusExplanation}.`;
     }),
 
     statusExplanation: computed('submission.{provider.reviewsWorkflow,reviewsState}', function() {

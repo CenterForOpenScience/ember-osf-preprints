@@ -2,8 +2,8 @@
     <div class="navbar-header">
         <a class="navbar-brand" href='{{theme.pathPrefix}}'
             onclick={{action "click" "link" "Navbar - Brand"}}>
-            <span class="navbar-image" style={{safe-markup (concat "background-image: url('" (provider-asset theme.id 'square_color_transparent.png') "')")}}></span>
-            <span class="navbar-title">{{model.name}}{{#if theme.preprintWordInTitle}} {{t "global.preprints"}}{{/if}}</span>
+            <span class="navbar-image" style="background-image: url('{{provider-asset theme.id 'square_color_transparent.png'}}')"></span>
+            <span class="navbar-title">{{model.name}}{{#if theme.preprintWordInTitle}} {{t "global.preprints" documentType=theme.provider.content.documentType}}{{/if}}</span>
         </a>
         <a type="button" role="button" class="navbar-toggle collapsed" id="preprint-branded-collapse-button" data-toggle="collapse" data-target="#secondary-navigation" aria-label={{t 'components.preprint-navbar.toggle'}}>
             <span class="icon-bar"></span>
@@ -17,7 +17,7 @@
                 <li><a href="{{host}}myprojects/" class="" onbeforeclick={{action "click" "link" "Navbar - My OSF Projects"}}>{{t "components.preprint-navbar-branded.my_projects"}}</a></li>
             {{/if}}
             {{#if theme.provider.allowSubmissions}}
-                <li><a href={{concat theme.pathPrefix 'submit'}} onbeforeclick={{action "click" "link" "Navbar - Add preprint"}}>{{t "global.add_preprint"}}</a></li>
+                <li><a href={{concat theme.pathPrefix 'submit'}} onbeforeclick={{action "click" "link" "Navbar - Add preprint"}}>{{t "global.add_preprint" documentType=theme.provider.documentType}}</a></li>
             {{/if}}
             {{#if currentUser.user.canViewReviews}}
                 <li>

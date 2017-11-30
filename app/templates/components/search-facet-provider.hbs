@@ -10,7 +10,7 @@
             </li>
         {{/each}}
         {{#if theme.isProvider}}
-            <a href="{{osfUrl}}preprints/discover" onbeforeclick={{action 'click' 'link' 'Discover - Other Preprint Repositories'}}>{{t "discover.main.otherRepositories"}}</a>
+            <a href="{{osfUrl}}preprints/discover" onbeforeclick={{action 'click' 'link' 'Discover - Other Preprint Repositories'}}>{{t "discover.main.otherRepositories" documentType=theme.provider.content.documentType}}</a>
         {{/if}}
     </ul>
 </div>

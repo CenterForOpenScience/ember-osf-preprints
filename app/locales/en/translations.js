@@ -1,5 +1,5 @@
-const preprints = '{{preprintWords.Preprints}}';
-const brand = 'OSF Preprints';
+const preprints = `{{documentType.pluralCapitalized}}`;
+const brand = `OSF Preprints`;
 const arxivTrademarkLicense = 'arXiv is a trademark of Cornell University, used under license.';
 
 export default {
@@ -19,19 +19,19 @@ export default {
         preprints,
         brand,
         brand_name: 'OSF',
-        provider_brand: '{{name}} {{preprintWords.Preprints}}',
-        add_preprint: 'Add a {{preprintWords.preprint}}',
-        title: 'Title',
-        search_preprints: 'Search {{preprintWords.preprints}}...',
-        added_on: 'Added on',
-        add: 'Add',
-        restart: 'Restart',
-        no_results_found: 'No results found.',
-        authors: 'Authors',
-        convert_project: 'The {{preprintWords.preprint}} will be organized in the current project',
-        convert_component: 'The {{preprintWords.preprint}} will be organized in the current component',
-        copy_inside_project: 'The {{preprintWords.preprint}} will be organized in a new component',
-        open_science_framework: 'Open Science Framework',
+        provider_brand: `{{name}} {{documentType.pluralCapitalized}}`,
+        add_preprint: `Add a {{documentType.singularCapitalized}}`,
+        title: `Title`,
+        search_preprints: `Search {{documentType.plural}}...`,
+        added_on: `Added on`,
+        add: `Add`,
+        restart: `Restart`,
+        no_results_found: `No results found.`,
+        authors: `Authors`,
+        convert_project: `The {{documentType.singular}} will be organized in the current project`,
+        convert_component: `The {{documentType.singular}} will be organized in the current component`,
+        copy_inside_project: `The {{documentType.singular}} will be organized in a new component`,
+        open_science_framework: `Open Science Framework`,
         license: 'License',
         pre_moderation: 'pre-moderation',
         post_moderation: 'post-moderation',
@@ -48,46 +48,46 @@ export default {
             submitted_on: 'Submitted on',
         },
         share: {
-            download: 'Download',
-            downloads: 'Downloads',
-            download_file: 'Download file',
-            download_preprint: 'Download {{preprintWords.preprint}}',
+            download: `Download`,
+            downloads: `Downloads`,
+            download_file: `Download file`,
+            download_preprint: `Download {{documentType.singular}}`
         },
         see_more: 'See more',
         see_less: 'See less',
         version: 'Version',
-        preprint_doi: '{{preprintWords.Preprint}} DOI',
-        article_doi: 'Peer-reviewed Publication DOI',
-        preprint_pending_doi: 'DOI created after {{preprintWords.preprint}} is made public',
-        preprint_pending_doi_moderation: 'DOI created after moderator approval',
-        preprint_pending_doi_minted: 'DOIs are minted by a third party, and may take up to 24 hours to be registered.',
-        original_publication_date: 'Original publication date',
-        citations: 'Citations',
-        disciplines: 'Disciplines',
+        preprint_doi: `{{documentType.singularCapitalized}} DOI`,
+        article_doi: `Peer-reviewed Publication DOI`,
+        preprint_pending_doi: `DOI created after {{documentType.singular}} is made public`,
+        preprint_pending_doi_moderation: `DOI created after moderator approval`,
+        preprint_pending_doi_minted: `DOIs are minted by a third party, and may take up to 24 hours to be registered.`,
+        original_publication_date: `Original publication date`,
+        citations: `Citations`,
+        disciplines: `Disciplines`,
         project_button: {
-            paragraph: 'The project for this paper is available on the OSF.',
-            button: 'Visit project',
-            edit_preprint: 'Edit {{preprintWords.preprint}}',
-            edit_resubmit_preprint: 'Edit and resubmit',
+            paragraph: `The project for this paper is available on the OSF.`,
+            button: `Visit project`,
+            edit_preprint:  `Edit {{documentType.singular}}`,
+            edit_resubmit_preprint: `Edit and resubmit`
         },
-        orphan_preprint: 'The user has removed this file.',
-        private_preprint_warning: 'This {{preprintWords.Preprint}} is private. Make it discoverable by making',
-        public: 'public',
+        orphan_preprint: `The user has removed this file.`,
+        private_preprint_warning: `This {{documentType.singularCapitalized}} is private. Make it discoverable by making`,
+        public: `public`
     },
     discover: {
         search: {
-            heading: '{{preprintWords.Preprint}} Archive Search',
-            heading_repository_search: 'Repository Search',
-            paragraph: 'powered by',
-            partner: 'Partner Repositories',
-            placeholder: 'Search {{preprintWords.preprints}}...',
-            repository_placeholder: 'Search repository...',
+            heading: `{{documentType.singularCapitalized}} Archive Search`,
+            heading_repository_search: `Repository Search`,
+            paragraph: `powered by`,
+            partner: `Partner Repositories`,
+            placeholder: `Search {{documentType.plural}}...`,
+            repository_placeholder: `Search repository...`
         },
-        sort_by: 'Sort by',
-        sort_newest_oldest: 'Modified Date (newest to oldest)',
-        sort_oldest_newest: 'Modified Date (oldest to newest)',
-        modified_on: 'Modified on',
-        relevance: 'Relevance',
+        sort_by: `Sort by`,
+        sort_newest_oldest: `Modified Date (newest to oldest)`,
+        sort_oldest_newest: `Modified Date (oldest to newest)`,
+        modified_on: `Modified on`,
+        relevance: `Relevance`,
         main: {
             active_filters: {
                 heading: 'Active Filters',
@@ -101,21 +101,18 @@ export default {
             type: 'Type',
             tag: 'Tag',
             box: {
-                paragraph: 'Do you want to add your own research as a {{preprintWords.preprint}}?',
-                button: 'Add your {{preprintWords.preprint}}',
+                paragraph: `Do you want to add your own research as a {{documentType.singular}}?`,
+                button: `Add your {{documentType.singular}}`
             },
             results: {
                 of: 'of',
                 no_results: 'Try broadening your search terms',
             },
-            otherRepositories: 'Other {{preprintWords.preprint}} repositories',
-        },
+            otherRepositories: `Other {{documentType.singular}} repositories`,
+        }
     },
     index: {
         header: {
-            title: {
-                paragraph: 'The <span class="f-w-lg">open</span> {{preprintWords.preprint}} repository network',
-            },
             powered_by: `Powered by ${brand}`,
             or: 'or',
             as_of: 'as of',
@@ -133,11 +130,11 @@ export default {
         },
         services: {
             top: {
-                heading: '{{preprintWords.Preprint}} Services',
-                paragraph: 'Leading {{preprintWords.preprint}} service providers use this open source infrastructure to support their communities.',
+                heading: `{{documentType.singularCapitalized}} Services`,
+                paragraph: `Leading {{documentType.singular}} service providers use this open source infrastructure to support their communities.`
             },
             bottom: {
-                p1: 'Create your own branded {{preprintWords.preprint}} servers backed by the OSF.',
+                p1: `Create your own branded {{documentType.singular}} servers backed by the OSF.`,
                 div: {
                     line1: 'Check out the',
                     linkText1: 'open source code',
@@ -167,72 +164,70 @@ export default {
         message: 'User has deleted this content.',
     },
     submit: {
-        create_heading: 'Create {{preprintWords.Preprint}}',
-        submit_heading: 'Submit {{preprintWords.Preprint}}',
-        edit_heading: 'Edit {{preprintWords.Preprint}}',
+        create_heading: `Create {{documentType.singularCapitalized}}`,
+        submit_heading: `Submit {{documentType.singularCapitalized}}`,
+        edit_heading: `Edit {{documentType.singularCapitalized}}`,
         body: {
-            p_add: 'For each section below, "Save and continue" will update your {{preprintWords.preprint}}\'s associated OSF project.',
-            p_edit: 'For each section below, "Save and continue" will update your {{preprintWords.preprint}} and the associated OSF project.',
-            upload: 'Upload new {{preprintWords.preprint}}',
-            connect: 'Connect {{preprintWords.preprint}} to existing OSF project',
-            file: '{{preprintWords.Preprint}} file',
-            title: '{{preprintWords.Preprint}} title',
-            subjects_description: 'Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.',
-            remove_subject_aria: 'Remove subject',
+            p_add: `For each section below, "Save and continue" will update your {{documentType.singular}}'s associated OSF project.`,
+            p_edit: `For each section below, "Save and continue" will update your {{documentType.singular}} and the associated OSF project.`,
+            upload: `Upload new {{documentType.singular}}`,
+            connect: `Connect {{documentType.singular}} to existing OSF project`,
+            subjects_description: `Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.`,
+            remove_subject_aria: `Remove subject`,
             basics: {
                 doi: {
                     label: 'Peer-reviewed publication DOI (optional)',
                 },
                 keywords: {
-                    label: 'Keywords',
-                    paragraph: 'Add keywords to increase discoverability of your {{preprintWords.preprint}}',
+                    label: `Keywords`,
+                    paragraph: `Add keywords to increase discoverability of your {{documentType.singular}}`
                 },
                 abstract: {
-                    placeholder: 'Add a brief summary of your {{preprintWords.preprint}}',
+                    placeholder: `Add a brief summary of your {{documentType.singular}}`
                 },
                 tags: {
                     placeholder: 'add a tag',
                 },
                 license: {
-                    apply_license_title: 'Apply this license to my OSF Project.',
-                    apply_license_text: 'Selecting a license for your {{preprintWords.preprint}} does not automatically apply the license to your OSF project.',
+                    apply_license_title: `Apply this license to my OSF Project.`,
+                    apply_license_text: `Selecting a license for your {{documentType.singular}} does not automatically apply the license to your OSF project.`
                 },
                 original_publication_date: {
                     label: 'Original publication date',
                 },
             },
             authors: {
-                paragraph: 'Add {{preprintWords.preprint}} authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the {{preprintWords.preprint}}.',
+                paragraph: `Add {{documentType.singular}} authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the {{documentType.singular}}.`
             },
             submit: {
                 information: {
                     line1: {
-                        default: 'When you create this {{preprintWords.preprint}}, it will be assigned a DOI and become publicly accessible via {{name}}. The {{preprintWords.preprint}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{preprintWords.preprint}}.',
-                        moderation: 'When you submit this {{preprintWords.preprint}}, it will be assigned a DOI. The {{preprintWords.preprint}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{preprintWords.preprint}}.',
+                        default: `When you create this {{documentType.singular}}, it will be assigned a DOI and become publicly accessible via {{name}}. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.`,
+                        moderation: `When you submit this {{documentType.singular}}, it will be assigned a DOI. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.`,
                     },
                     line2: {
-                        create: 'By creating this {{preprintWords.preprint}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{preprintWords.preprint}}.',
-                        submit: 'By submitting this {{preprintWords.preprint}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{preprintWords.preprint}}.',
+                        create: `By creating this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.`,
+                        submit: `By submitting this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.`
                     },
                     line3: {
-                        pre: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore, your {{preprintWords.preprint}} will not become publicly accessible until a moderator accepts the submission.',
-                        post: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore, your {{preprintWords.preprint}} will become publicly accessible after creation and will only become private if rejected by a moderator.',
-                    },
+                        pre: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore, your {{documentType.singular}} will not become publicly accessible until a moderator accepts the submission.`,
+                        post: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore, your {{documentType.singular}} will become publicly accessible after creation and will only become private if rejected by a moderator.`,
+                    }
                 },
                 invalid: {
-                    description: 'The following section(s) must be completed before submitting this {{preprintWords.preprint}}.',
-                    discipline: 'Discipline',
-                    basics: 'Basics',
-                    upload: 'Upload',
+                    description: `The following section(s) must be completed before submitting this {{documentType.singular}}.`,
+                    discipline: `Discipline`,
+                    basics: `Basics`,
+                    upload: `Upload`
                 },
-                submit_button: 'Submit {{preprintWords.preprint}}',
-                create_button: 'Create {{preprintWords.preprint}}',
+                submit_button: `Submit {{documentType.singular}}`,
+                create_button: `Create {{documentType.singular}}`,
             },
             edit: {
                 information: {
                     line1: {
-                        pre: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>, therefore your {{preprintWords.preprint}} will not become publicly accessible until a moderator accepts the submission.',
-                        post_rejected: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Your {{preprintWords.preprint}} was rejected by a moderator so it will remain private.',
+                        pre: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>, therefore your {{documentType.singular}} will not become publicly accessible until a moderator accepts the submission.`,
+                        post_rejected: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Your {{documentType.singular}} was rejected by a moderator so it will remain private.`,
                     },
                     line2: {
                         pre_pending: 'Resubmitting may affect your position in the moderation queue.',
@@ -240,53 +235,47 @@ export default {
                         post_rejected: 'If you have addressed all moderator concerns or believe there has been a mistake, please email <a>{{email}}</a> to discuss resubmission.',
                     },
                 },
-                resubmit_button: 'Resubmit',
-                return_button: 'Return to {{preprintWords.preprint}}',
+                resubmit_button: `Resubmit`,
+                return_button: `Return to {{documentType.singular}}`
             },
-            save_continue: 'Save and continue',
+            save_continue: `Save and continue`,
         },
-        could_not_update_title: 'Error updating title. Please try again.',
-        error_copying_file: 'Error copying file; please try again.',
-        error_accessing_parent_files: 'Error accessing parent files. Please try again.',
-        could_not_create_component: 'Could not create component. Please try again.',
-        abandoned_preprint_error: 'Error with abandoned {{preprintWords.preprint}}.',
-        abandon_preprint_confirmation: 'Are you sure you want to abandon changes to this preprint?',
-        preprint_file_uploaded: '{{preprintWords.Preprint}} file uploaded!',
-        preprint_author_added: '{{preprintWords.Preprint}} author added!',
-        preprint_author_removed: '{{preprintWords.Preprint}} author removed!',
-        preprint_unregistered_author_added: '{{preprintWords.Preprint}} unregistered author added!',
-        error_adding_author: 'Could not add author. Please try again.',
-        error_adding_unregistered_author: 'Could not add unregistered author. Please try again.',
-        error_initiating_preprint: 'Could not initiate {{preprintWords.preprint}}. Please try again.',
-        doi_error: 'Error saving DOI',
-        basics_error: 'Error saving basics fields.',
-        disciplines_error: 'Error saving discipline(s).',
-        search_contributors_error: 'Could not perform search query.',
-        error_completing_preprint: 'Error completing {{preprintWords.preprint}}.',
-        error_saving_preprint: 'Could not save {{preprintWords.preprint}}; please try again later',
-        server_locked: 'You cannot change the {{preprintWords.preprint}} service after a file has been uploaded',
-        please_select_server: 'Please select a {{preprintWords.preprint}} service before continuing',
-        please_complete_upload: 'Please complete upload section before continuing',
+        could_not_update_title: `Error updating title. Please try again.`,
+        error_copying_file: `Error copying file; please try again.`,
+        error_accessing_parent_files: `Error accessing parent files. Please try again.`,
+        could_not_create_component: `Could not create component. Please try again.`,
+        abandoned_preprint_error: `Error with abandoned {{documentType.singular}}.`,
+        abandon_preprint_confirmation: `Are you sure you want to abandon changes to this preprint?`,
+        preprint_file_uploaded: `{{documentType.singularCapitalized}} file uploaded!`,
+        preprint_author_added: `{{documentType.singularCapitalized}} author added!`,
+        preprint_author_removed: `{{doucmentType.singularCapitalized}} author removed!`,
+        preprint_unregistered_author_added: `{{documentType.singularCaptalized}} unregistered author added!`,
+        error_adding_author: `Could not add author. Please try again.`,
+        error_adding_unregistered_author: `Could not add unregistered author. Please try again.`,
+        error_initiating_preprint: `Could not initiate {{documentType.singular}}. Please try again.`,
+        doi_error: `Error saving DOI`,
+        basics_error: `Error saving basics fields.`,
+        disciplines_error: `Error saving discipline(s).`,
+        search_contributors_error: `Could not perform search query.`,
+        server_locked: `You cannot change the {{documentType.singular}} service after a file has been uploaded`,
+        please_select_server: `Please select a {{documentType.singular}} service before continuing`,
+        please_complete_upload: `Please complete upload section before continuing`,
     },
     components: {
-        'confirm-restart-submit-preprint': {
-            title: 'Restart {{preprintWords.Preprint}}',
-            body: 'Are you sure you want to restart this {{preprintWords.preprint}}? Your uploaded file and supplemental information will be deleted.',
-        },
         'confirm-share-preprint': {
-            body: 'Once this {{preprintWords.preprint}} is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.',
+            body: `Once this {{documentType.singular}} is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.`,
             title: {
-                submit: 'Submit {{preprintWords.Preprint}}',
-                create: 'Create {{preprintWords.Preprint}}',
-                resubmit: 'Resubmit {{preprintWords.Preprint}}',
-            },
+                submit: `Submit {{documentType.singularCapitalized}}`,
+                create: `Create {{documentType.singularCapitalized}}`,
+                resubmit: `Resubmit {{documentType.singularCapitalized}}`
+            }
         },
         'convert-or-copy': {
-            organize_language_project: `You can organize your {{preprintWords.preprint}} by storing the file in this project or in its own new component.  If you select ‘Make a new component’,
-            the {{preprintWords.preprint}} file will be stored in a new component inside this project.  If you select ‘Use the current project’, the {{preprintWords.preprint}} file will be stored in this project.
+            organize_language_project: `You can organize your {{documentType.singular}} by storing the file in this project or in its own new component.  If you select ‘Make a new component’,
+            the {{documentType.singular}} file will be stored in a new component inside this project.  If you select ‘Use the current project’, the {{documentType.singular}} file will be stored in this project.
             If you are unsure, select ‘Make a new component’.`,
-            organize_language_component: `You can organize your {{preprintWords.preprint}} by storing the file in this component or in its own new component.  If you select ‘Make a new component’,
-            the {{preprintWords.preprint}} file will be stored in a new component inside this component.  If you select ‘Use the current component’, the {{preprintWords.preprint}} file will be stored in this component.
+            organize_language_component: `You can organize your {{documentType.singular}} by storing the file in this component or in its own new component.  If you select ‘Make a new component’,
+            the {{documentType.singular}} file will be stored in a new component inside this component.  If you select ‘Use the current component’, the {{documentType.singular}} file will be stored in this component.
             If you are unsure, select ‘Make a new component’.`,
             copy: 'Make a new component',
             convert_project: 'Use the current project',
@@ -304,18 +293,18 @@ export default {
             go_to: 'Go to {{brand}}',
         },
         'file-uploader': {
-            dropzone_message: 'Drop {{preprintWords.preprint}} file here to upload',
-            title_placeholder: 'Enter {{preprintWords.preprint}} title',
-            update_version: 'Update {{preprintWords.preprint}} file version.  File must have the same name as the original.',
-            could_not_create_project: 'Could not create project. Please try again.',
-            could_not_create_component: 'Could not create component. Please try again.',
-            could_not_update_title: 'Could not update title. Please try again.',
-            version_error: 'This is not a version of the current {{preprintWords.preprint}} file.',
-            preprint_file_updated: '{{preprintWords.Preprint}} file updated!',
-            preprint_file_error: 'Could not set {{preprintWords.preprint}} file. Please try again.',
-            file_exists_error: 'A file with that name already exists',
-            upload_error: 'Upload Failed',
-            dropzone_text_override: 'Click or drag another {{preprintWords.preprint}} file to replace',
+            dropzone_message: `Drop {{documentType.singular}} file here to upload`,
+            title_placeholder: `Enter {{documentType.singular}} title`,
+            update_version: `Update {{documentType.singular}} file version.  File must have the same name as the original.`,
+            could_not_create_project: `Could not create project. Please try again.`,
+            could_not_create_component: `Could not create component. Please try again.`,
+            could_not_update_title: `Could not update title. Please try again.`,
+            version_error: `This is not a version of the current {{documentType.singular}} file.`,
+            preprint_file_updated: `{{documentType.singularCapitalized}} file updated!`,
+            preprint_file_error: `Could not set {{documentType.singular}} file. Please try again.`,
+            file_exists_error: `A file with that name already exists`,
+            upload_error: `Upload Failed` ,
+            dropzone_text_override: `Click or drag another {{documentType.singular}} file to replace`,
         },
         'preprint-footer-branded': {
             twitter: 'Twitter',
@@ -359,14 +348,14 @@ export default {
             // Nothing to translate
         },
         'preprint-form-header': {
-            changes_saved: 'Changes Saved!',
-            file: '{{preprintWords.Preprint}} file',
-            title: '{{preprintWords.Preprint}} title',
-            location: '{{preprintWords.Preprint}} location',
-            click_edit: 'Click to Edit',
-            server: '{{preprintWords.Preprint}} service',
+            changes_saved: `Changes Saved!`,
+            file: `{{documentType.singularCapitalized}} file`,
+            title: `{{documentType.singularCapitalized}} title`,
+            location: `{{documentType.singularCapitalized}} location`,
+            click_edit: `Click to Edit`,
+            server: `{{documentType.singularCapitalized}} service`,
             name: {
-                Server: 'Select a {{preprintWords.preprint}} service',
+                Server: 'Select a {{documentType.singular}} service',
                 Upload: 'Upload',
                 Discipline: 'Discipline',
                 Basics: 'Basics',
@@ -377,21 +366,20 @@ export default {
                 choose_file: 'Choose File',
                 organize: 'Organize',
                 finalize_upload: 'Finalize Upload',
-                location_of_preprint: '{{preprintWords.Preprint}} Location',
-                title_of_preprint: '{{preprintWords.Preprint}} Title',
-                preprint_file: '{{preprintWords.Preprint}} File',
+                location_of_preprint: '{{documentType.singularCapitalized}} Location',
+                title_of_preprint: '{{documentType.singularCapitalized}} Title',
+                preprint_file: '{{documentType.singularCapitalized}} File'
             },
         },
         'preprint-form-project-select': {
-            existing_project_selector: 'The list of projects appearing in the selector are projects and components for which you have admin access.  Registrations are not included here.',
-            no_valid_existing_nodes: 'You have no available projects that can be converted into a {{preprintWords.preprint}}.  Go back to upload a new {{preprintWords.preprint}}.',
-            upload_preprint: 'Upload {{preprintWords.preprint}}',
-            select_existing_file: 'Select existing file as {{preprintWords.preprint}}',
-            edit_preprint_title_project: 'Edit {{preprintWords.preprint}} title (will also become the name of the project)',
-            edit_preprint_title_component: 'Edit {{preprintWords.preprint}} title (will also become the name of the component)',
-            initiate_preprint_process: 'You have selected and organized your {{preprintWords.preprint}} file. Clicking "Save and continue" will immediately make changes to your OSF project. You will not be able to delete your {{preprintWords.Preprint}} file, but you will be able to update or modify it.',
-            edit_organize_section: 'Edits to this {{preprintWords.preprint}} will update both the {{preprintWords.preprint}} and the OSF project.',
-            admin_only: 'You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.',
+            existing_project_selector: `The list of projects appearing in the selector are projects and components for which you have admin access.  Registrations are not included here.`,
+            upload_preprint: `Upload {{documentType.singular}}`,
+            select_existing_file: `Select existing file as {{documentType.singular}}`,
+            edit_preprint_title_project: `Edit {{documentType.singular}} title (will also become the name of the project)`,
+            edit_preprint_title_component: `Edit {{documentType.singular}} title (will also become the name of the component)`,
+            initiate_preprint_process: `You have selected and organized your {{documentType.singular}} file. Clicking "Save and continue" will immediately make changes to your OSF project. You will not be able to delete your {{documentType.singularCapitalized}} file, but you will be able to update or modify it.`,
+            edit_organize_section: `Edits to this {{documentType.singular}} will update both the {{documentType.singular}} and the OSF project.`,
+            admin_only: `You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.`,
         },
         'preprint-form-section': {
             // Nothing to translate
@@ -407,19 +395,19 @@ export default {
         },
         'preprint-status-banner': {
             message: {
-                base: '{{name}} uses {{reviewsWorkflow}}. This {{preprintWords.preprint}}',
-                pending_pre: 'is not publicly available or searchable until approved by a moderator',
-                pending_post: 'is publicly available and searchable but is subject to removal by a moderator',
-                accepted: 'has been accepted by a moderator and is publicly available and searchable',
-                rejected: 'has been rejected by a moderator and is not publicly available or searchable',
+                base: `{{name}} uses {{reviewsWorkflow}}. This {{documentType.singular}}`,
+                pending_pre: `is not publicly available or searchable until approved by a moderator`,
+                pending_post: `is publicly available and searchable but is subject to removal by a moderator`,
+                accepted: `has been accepted by a moderator and is publicly available and searchable`,
+                rejected: `has been rejected by a moderator and is not publicly available or searchable`,
             },
             pending: 'pending',
             accepted: 'accepted',
             rejected: 'rejected',
             feedback: {
-                moderator_feedback: 'Moderator feedback',
-                moderator: 'Moderator',
-                base: 'This {{preprintWords.preprint}}',
+                moderator_feedback: `Moderator feedback`,
+                moderator: `Moderator`,
+                base: `This {{documentType.singular}}`,
             },
         },
         'project-chooser': {
@@ -454,10 +442,9 @@ export default {
             // Nothing to translate
         },
         'unregistered-contributor-form': {
-            full_name: 'Full Name',
-            email: 'Email',
-            paragraph: 'We will notify the user that they have been added to your {{preprintWords.preprint}}.',
-
+            full_name: `Full Name`,
+            email: `Email`,
+            paragraph: `We will notify the user that they have been added to your {{documentType.singular}}.`,
         },
         'validated-input': {
             // Nothing to translate
