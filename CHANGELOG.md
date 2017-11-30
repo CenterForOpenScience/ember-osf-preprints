@@ -16,7 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Wording on `Edit preprint` button to `Edit and resubmit` on preprint detail page if the preprint is rejected
  and the workflow is pre-moderation.
 - Removed footer styling
-- Unified version of ember-osf for preprints and reviews apps.
+- Update preprints to work with a new unified version of ember-osf (works with both preprints and reviews apps)
+
 
 ### Fixed
 - component integration tests to work in Firefox
