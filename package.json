@@ -87,7 +87,7 @@
     "ember-toastr": "^1.7.0",
     "ember-truth-helpers": "1.2.0",
     "ember-welcome-page": "1.0.1",
-    "eslint": "^4.4.1",
+    "eslint": "3.18.0",
     "faker": "4.1.0",
     "liquid-fire": "0.27.3",
     "loader.js": "^4.2.3",
