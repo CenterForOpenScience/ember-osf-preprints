@@ -179,9 +179,12 @@ test('doiValid computed property', function(assert) {
 test('originalPublicationDateValid computed property', function(assert) {
     const ctrl = this.subject();
     let tomorrow = moment().add(1, 'days');
+    let today = moment();
     let yesterday = moment().subtract(1, 'days');
     ctrl.set('basicsOriginalPublicationDate', tomorrow);
     assert.equal(ctrl.get('originalPublicationDateValid'), false);
+    ctrl.set('basicsOriginalPublicationDate', today);
+    assert.equal(ctrl.get('originalPublicationDateValid'), true);
     ctrl.set('basicsOriginalPublicationDate', yesterday);
     assert.equal(ctrl.get('originalPublicationDateValid'), true);
 });
