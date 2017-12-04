@@ -15,7 +15,6 @@ export default Ember.Controller.extend(OSFAgnosticAuthControllerMixin, {
     toast: Ember.inject.service(),
     theme: Ember.inject.service(),
     init() {
-        // Hack to make the Add Preprint button work.
         this.get('i18n').addGlobals({
             preprintWords: {
                 preprint: this.get('i18n').t('documentType.preprint.singularCapitalized'),
