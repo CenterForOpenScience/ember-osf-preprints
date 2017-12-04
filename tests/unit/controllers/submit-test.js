@@ -993,7 +993,7 @@ test('addTag', function(assert) {
 test('removeTag', function(assert) {
     const ctrl = this.subject();
     ctrl.set('basicsTags', ['firstTag', 'secondTag']);
-    ctrl.send('removeTag', 'secondTag');
+    ctrl.send('removeTag', 1);
     assert.equal(ctrl.get('basicsTags').length, 1);
     assert.equal(ctrl.get('basicsTags')[0], 'firstTag');
 });
