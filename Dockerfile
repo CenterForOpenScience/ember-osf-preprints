@@ -42,13 +42,14 @@ WORKDIR /code
 COPY ./package.json ./yarn.lock /code/
 RUN yarn --pure-lockfile --ignore-engines
 
-RUN git submodule update --init
-
 COPY ./.bowerrc /code/.bowerrc
 COPY ./bower.json /code/bower.json
 RUN ./node_modules/bower/bin/bower install --allow-root --config.interactive=false
 
 COPY ./ /code/
+
+RUN cd ./public/assets/ \
+    && git clone https://github.com/CenterForOpenScience/osf-assets.git
 
 ARG GIT_COMMIT=
 ENV GIT_COMMIT ${GIT_COMMIT}
