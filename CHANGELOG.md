@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - provider-carousel
   - search-facet-taxonomy
 
+## [0.115.6] - 2017-12-04
+### Changed
+- Update to ember-osf@0.12.4
+
 ## [0.115.5] - 2017-11-29
 ### Changed
 - Update to ember-osf@0.12.3
