@@ -213,6 +213,9 @@ export default {
                 abstract: {
                     placeholder: `Add a brief summary of your {{preprintWords.preprint}}`
                 },
+                tags: {
+                    placeholder: `add a tag`
+                },
                 license: {
                     apply_license_title: `Apply this license to my OSF Project.`,
                     apply_license_text: `Selecting a license for your {{preprintWords.preprint}} does not automatically apply the license to your OSF project.`

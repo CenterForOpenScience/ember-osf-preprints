@@ -906,7 +906,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         },
 
         // Custom removeATag method that removes tag from list instead of auto-saving
-        removeTag(tag) {
+        removeTag(index) {
             Ember.get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
@@ -914,7 +914,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Tag`
                 });
 
-            this.get('basicsTags').removeObject(tag);
+            this.get('basicsTags').removeAt(index);
         },
 
         /*
