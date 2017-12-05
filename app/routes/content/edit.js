@@ -16,10 +16,14 @@ import ConfirmationMixin from 'ember-onbeforeunload/mixins/confirmation';
  * @class Edit Route Handler
  */
 export default Ember.Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
+    i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
     headTagsService: Ember.inject.service('head-tags'),
     currentUser: Ember.inject.service('currentUser'),
-    confirmationMessage: 'Are you sure you want to abandon changes to this preprint?', // Confirmation message when navigating away from preprint
+
+    confirmationMessage: Ember.computed('i18n', function() {
+        return this.get('i18n').t('submit.abandon_preprint_confirmation');
+    }),
 
     editMode: true,
 

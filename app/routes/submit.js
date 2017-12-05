@@ -16,9 +16,12 @@ import ConfirmationMixin from 'ember-onbeforeunload/mixins/confirmation';
  * @class Submit Route Handler
  */
 export default Ember.Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, CasAuthenticatedRouteMixin, SetupSubmitControllerMixin, {
+    i18n: Ember.inject.service(),
     currentUser: Ember.inject.service('currentUser'),
     panelActions: Ember.inject.service('panelActions'),
-    confirmationMessage: 'Are you sure you want to abandon this preprint?', // Confirmation message when navigating away from preprint
+    confirmationMessage: Ember.computed('i18n', function() {
+        return this.get('i18n').t('submit.abandon_preprint_confirmation');
+    }),
 
     model() {
         // Store the empty preprint to be created on the model hook for page. Node will be fetched
@@ -44,7 +47,7 @@ export default Ember.Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin
         return this.controller.get('hasDirtyFields');
     },
     shouldCheckIsPageDirty(transition) {
-        // Allows the 'provider.content.index' route as an acception 
+        // Allows the 'provider.content.index' route as an acception
         // to the dirty message upon preprint submit
         const isChildRouteTransition = this._super(...arguments);
         const submitRoute = `${this.controller.get('theme.isSubRoute') ? 'provider.' : ''}content`;
