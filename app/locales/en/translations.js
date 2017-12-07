@@ -382,6 +382,7 @@ export default {
             my_projects: `My OSF Projects`,
             headline: `On the OSF`,
             reviews: `My Reviewing`,
+            donate: `Donate`,
         },
         'preprint-status-banner': {
             message: {
