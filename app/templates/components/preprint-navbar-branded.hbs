@@ -27,6 +27,11 @@
                 </li>
             {{/if}}
             <li><a class="" href='{{theme.pathPrefix}}discover' onclick={{action "click" "link" "Navbar - Search"}}>{{t "global.search"}}</a></li>
+            <li>
+                <a href="https://cos.io/donate" onclick={{action "click" "link" (concat "Navbar - Donate")}}>
+                    {{t "components.preprint-navbar-branded.donate"}}
+                </a>
+            </li>
             {{navbar-auth-dropdown
                 signupUrl=theme.signupUrl
                 loginAction=(action 'login')
