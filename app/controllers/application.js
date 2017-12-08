@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import OSFAgnosticAuthControllerMixin from 'ember-osf/mixins/osf-agnostic-auth-controller';
+import preprintWord from 'ember-osf/utils/preprint-word';
 
 /**
  * @module ember-preprints
@@ -15,11 +16,20 @@ export default Ember.Controller.extend(OSFAgnosticAuthControllerMixin, {
     toast: Ember.inject.service(),
     theme: Ember.inject.service(),
     init() {
-        this.get('i18n').addGlobals({
-            preprintWords: {
-                preprint: this.get('i18n').t('documentType.preprint.singularCapitalized'),
-            },
+        const documentType = preprintWord();
+        const i18n = this.get('i18n');
+
+        let preprintWords = {};
+        Object.keys(documentType).forEach(function(key1) {
+            const entry = documentType[key1];
+            Object.keys(entry).forEach(function(key2) {
+                const word = entry[key2];
+                preprintWords[`${word}`] = i18n.t(`documentType.${key1}.${key2}`);
+            });
         });
+
+        this.get('i18n').addGlobals({preprintWords: preprintWords});
+
         this._super(...arguments);
     },
 });
