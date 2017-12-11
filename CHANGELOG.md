@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Favicons are updated to reflect their provider, on a branded domain or on a /preprints/provider page
 
 ### Added
+- Favicons are updated to reflect their provider, on a branded domain or on a /preprints/provider page
 - DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
 - Headless Firefox
 
