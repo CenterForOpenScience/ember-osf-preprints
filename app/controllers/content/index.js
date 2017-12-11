@@ -42,6 +42,14 @@ function queryStringify(queryParams) {
     return query.join('&');
 }
 
+const DATE_LABEL = {
+    created: 'content.date_label.created_on',
+    submitted: 'content.date_label.submitted_on'
+};
+const PRE_MODERATION = 'pre-moderation';
+const REJECTED = 'rejected';
+const INITIAL = 'initial';
+
 /**
  * @module ember-preprints
  * @submodule controllers
@@ -60,10 +68,53 @@ export default Ember.Controller.extend(Analytics, {
     queryParams: {
         chosenFile: 'file'
     },
+
+    dateLabel: Ember.computed('model.provider.reviewsWorkflow', function() {
+        return this.get('model.provider.reviewsWorkflow') === PRE_MODERATION ?
+            DATE_LABEL['submitted'] :
+            DATE_LABEL['created'];
+    }),
+    relevantDate: Ember.computed('model.provider.reviewsWorkflow', function() {
+        return this.get('model.provider.reviewsWorkflow') ?
+            this.get('model.dateLastTransitioned') :
+            this.get('model.dateCreated');
+    }),
+
+    editButtonLabel: Ember.computed('model.provider.reviewsWorkflow', 'model.reviewsState', function () {
+        const edit_preprint = 'content.project_button.edit_preprint';
+        const edit_resubmit_preprint = 'content.project_button.edit_resubmit_preprint';
+        return (
+            this.get('model.provider.reviewsWorkflow') === PRE_MODERATION
+            && this.get('model.reviewsState') === REJECTED
+        ) ? edit_resubmit_preprint : edit_preprint;
+    }),
+
     isAdmin: Ember.computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
+
+    userIsContrib: Ember.computed('authors.[]', 'isAdmin', 'currentUser.currentUserId', function() {
+        if (this.get('isAdmin')) {
+            return true;
+        } else if (this.get('authors').length) {
+            const authorIds = this.get('authors').map((author) => {
+                return author.get('userId');
+            });
+            return this.get('currentUser.currentUserId') ? authorIds.includes(this.get('currentUser.currentUserId')) : false;
+        }
+        return false;
+    }),
+
+    showStatusBanner: Ember.computed('model.{provider.reviewsWorkflow,reviewsState}', 'userIsContrib', 'node.public', function() {
+        return (
+            this.get('model.provider.reviewsWorkflow')
+            && this.get('node.public')
+            && this.get('userIsContrib')
+            && this.get('model.reviewsState') !== INITIAL
+        );
+    }),
+
     twitterHref: Ember.computed('node', function() {
         const queryParams = {
             url: window.location.href,
@@ -214,8 +265,6 @@ export default Ember.Controller.extend(Analytics, {
         // to track non contributor preprint downloads specifically.
         dualTrackNonContributors(category, label, url, primary) {
             this.send('click', category, label, url); // Sends event to both Google Analytics and Keen.
-            const authors = this.get('authors');
-            let userIsContrib = false;
 
             const eventData = {
                 download_info: {
@@ -243,23 +292,9 @@ export default Ember.Controller.extend(Analytics, {
                 node: this.get('node'),
             };
 
-            this.get('currentUser').load()
-                .then(user => {
-                    if (user) {
-                        const userId = user.id;
-                        authors.forEach((author) => {
-                            if (author.get('userId') === userId) {
-                                userIsContrib = true;
-                            }
-                        });
-                    }
-                    if (!userIsContrib) {
-                        Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor
-                    }
-                })
-                .catch(() => {
-                    Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen for non-authenticated user
-                });
+            if (!this.get('userIsContrib')) {
+                Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor or non-authenticated user
+            }
         }
     },
 });
