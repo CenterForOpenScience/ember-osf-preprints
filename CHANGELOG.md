@@ -21,7 +21,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Wording on `Edit preprint` button to `Edit and resubmit` on preprint detail page if the preprint is rejected
  and the workflow is pre-moderation.
 - Removed footer styling
-- Change preprint content page to show prompt if DOI is not yet minted.
 
 ### Fixed
 - component integration tests to work in Firefox
