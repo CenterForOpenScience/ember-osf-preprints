@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
 - Headless Firefox
 
 ### Changed
