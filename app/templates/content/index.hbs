@@ -97,18 +97,12 @@
                         </div>
                     {{/if}}
 
-                    <div class="p-t-xs">
-                        {{#if model.doi}}
-                            <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi"}}</strong></h4>
-                            <a href={{doiUrl}} onlick={{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
-                        {{else if (not node.public)}}
-                            {{t 'content.preprint_pending_doi'}}
-                        {{else if (and model.provider.reviewsWorkflow (not model.isPublished))}}
+                    {{#if model.doi}}
+                        <div class="p-t-xs">
                             <h4 class="p-v-md f-w-md"><strong>{{t "content.article_doi"}}</strong></h4>
-                            {{t 'content.preprint_pending_doi_moderation'}}
-                        {{/if}}
-                    </div>
-
+                            <a href={{doiUrl}} onlick={{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
+                        </div>
+                    {{/if}}
 
                     {{#if model.license.name}}
                         <div class="p-t-xs">
