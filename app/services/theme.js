@@ -17,6 +17,7 @@ import buildProviderAssetPath from '../utils/build-provider-asset-path';
 export default Ember.Service.extend({
     store: Ember.inject.service(),
     session: Ember.inject.service(),
+    headTagsService: Ember.inject.service('head-tags'),
 
     // If we're using a provider domain
     isDomain: window.isProviderDomain,
@@ -120,5 +121,18 @@ export default Ember.Service.extend({
 
     redirectUrl: Ember.computed('currentLocation', function() {
         return this.get('currentLocation');
+    }),
+
+    headTags: Ember.computed('id', function() {
+        return [{
+            type: 'link',
+            attrs: {
+                rel: 'shortcut icon',
+                href: buildProviderAssetPath(config, this.get('id'), 'favicon.ico', window.isProviderDomain)
+            }
+        }]
+    }),
+    idChanged: Ember.observer('id', function() {
+        this.get('headTagsService').collectHeadTags();
     }),
 });

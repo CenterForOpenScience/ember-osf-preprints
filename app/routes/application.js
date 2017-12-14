@@ -1,7 +1,6 @@
 import Ember from 'ember';
-
-import OSFAgnosticAuthRouteMixin from 'ember-osf/mixins/osf-agnostic-auth-route';
 import Analytics from 'ember-osf/mixins/analytics';
+import OSFAgnosticAuthRouteMixin from 'ember-osf/mixins/osf-agnostic-auth-route';
 
 /**
  * @module ember-preprints
@@ -15,7 +14,9 @@ export default Ember.Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
     i18n: Ember.inject.service(),
     store: Ember.inject.service(),
     theme: Ember.inject.service(),
-
+    headTags: function() {
+        return this.get('theme.headTags');
+    },
     beforeModel: function () {
         let detectBrandedDomain = () => {
             // Set the provider ID from the current origin
