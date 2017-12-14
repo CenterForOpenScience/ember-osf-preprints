@@ -58,8 +58,6 @@ export default {
         version: 'Version',
         preprint_doi: `{{preprintWords.Preprint}} DOI`,
         article_doi: `Peer-reviewed Publication DOI`,
-        preprint_pending_doi: `DOI created after preprint is made public`,
-        preprint_pending_doi_moderation: `DOI created after moderator approval`,
         citations: `Citations`,
         disciplines: `Disciplines`,
         project_button: {
