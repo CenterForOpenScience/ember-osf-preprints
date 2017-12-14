@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
 - Headless Firefox
 - Auto-expansion on selected subjects on the Discover page
+- `noscript` message if JavaScript is disabled
 
 ### Changed
 - Use yarn --frozen-lockfile instead of --pure-lockfile
