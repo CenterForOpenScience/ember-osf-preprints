@@ -96,7 +96,7 @@ export default Ember.Service.extend({
             type: 'image/png',
             width: 1200,
             height: 630
-        }
+        };
         return logo;
     }),
 
