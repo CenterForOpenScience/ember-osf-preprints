@@ -91,19 +91,11 @@ export default Ember.Service.extend({
     logoSharing: Ember.computed('id', 'isDomain', function() {
         const id = this.get('id');
         let logo = {};
-        if (id === 'osf') {
-            logo = config.PREPRINTS.providers
-                .find(provider => provider.id === id)
-                .logoSharing;
-
-            logo.path = pathJoin('/preprints', logo.path);
-        } else {
-            logo = {
-                path: buildProviderAssetPath(config, id, 'sharing.png', this.get('isDomain')),
-                type: 'image/png',
-                width: 1200,
-                height: 630
-            }
+        logo = {
+            path: buildProviderAssetPath(config, id, 'sharing.png', this.get('isDomain')),
+            type: 'image/png',
+            width: 1200,
+            height: 630
         }
         return logo;
     }),
