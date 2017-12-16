@@ -57,7 +57,7 @@ export default Ember.Component.extend({
             CLASS_NAMES[this.get('submission.reviewsState')];
     }),
 
-    didReceiveAttrs() {
+    didInsertElement() {
         if (this.get('submission.provider.reviewsCommentsPrivate')) {
             this.set('latestAction', null);
         } else {
