@@ -57,17 +57,22 @@ export default Ember.Component.extend({
             CLASS_NAMES[this.get('submission.reviewsState')];
     }),
 
-    didInsertElement() {
+    didReceiveAttrs() {
         if (this.get('submission.provider.reviewsCommentsPrivate')) {
             this.set('latestAction', null);
         } else {
-            this.get('submission.actions').then(actions => {
-                if (actions.length) {
-                    this.set('latestAction', actions.get('firstObject'));
-                } else {
-                    this.set('latestAction', null);
-                }
-            });
+            const submissionActions = this.get('submission.actions');
+            if (submissionActions) {
+                submissionActions.then(actions => {
+                    if (actions.length) {
+                        this.set('latestAction', actions.get('firstObject'));
+                    } else {
+                        this.set('latestAction', null);
+                    }
+                });
+            } else {
+                this.set('latestAction', null);
+            }
         }
     },
 
