@@ -58,7 +58,7 @@ export default {
         version: 'Version',
         preprint_doi: `{{preprintWords.Preprint}} DOI`,
         article_doi: `Peer-reviewed Publication DOI`,
-        preprint_pending_doi: `DOI created after preprint is made public`,
+        preprint_pending_doi: `DOI created after {{preprintWords.preprint}} is made public`,
         preprint_pending_doi_moderation: `DOI created after moderator approval`,
         preprint_pending_doi_minted: `DOIs are minted by a third party, and may take up to 24 hours to be registered.`,
         citations: `Citations`,

@@ -92,7 +92,7 @@
 
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi"}}</strong></h4>
-                        {{#if model.links.preprint_doi}}
+                        {{#if model.preprintDoiUrl}}
                             {{#if model.preprintDoiCreated}}
                                 <a href={{model.links.preprint_doi}} onclick={{action "click" "link" "Content - Preprint DOI" model.links.preprint_doi}}>{{extract-doi model.links.preprint_doi}}</a>
                             {{else}}
@@ -108,7 +108,7 @@
                         {{/if}}
                     </div>
 
-                    {{#if model.doi}}
+                    {{#if model.articleDoiUrl}}
                         <div class="p-t-xs">
                             <h4 class="p-v-md f-w-md"><strong>{{t "content.article_doi"}}</strong></h4>
                             <a href={{doiUrl}} onlick={{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
