@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - provider-carousel
   - search-facet-taxonomy
 
+## [0.115.9] - 2017-12-19
+### Added
+- Settings for prerender
+
 ## [0.115.8] - 2017-12-07
 ### Added
 - Donate button to branded navbar
