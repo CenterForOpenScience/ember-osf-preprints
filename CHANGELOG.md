@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - component integration tests to work in Firefox
   - provider-carousel
   - search-facet-taxonomy
+- CSS contrast issue for support email link on some branded provider error pages.
 
 ## [0.115.8] - 2017-12-07
 ### Added
