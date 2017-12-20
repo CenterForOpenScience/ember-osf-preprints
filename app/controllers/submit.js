@@ -973,18 +973,25 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Search for Authors`
                 });
-            return this.store.query('user', {
-                filter: {
-                    'full_name,given_name,middle_names,family_name': query
-                },
-                page: page
-            }).then((contributors) => {
-                this.set('searchResults', contributors);
-                return contributors;
-            }).catch(() => {
-                this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
-                this.highlightSuccessOrFailure('author-search-box', this, 'error');
-            });
+            const url = `/api/v1/user/search/?query=${query}&page=${page - 1}`;
+            return Ember.$.ajax({
+                type: 'GET',
+                url: url
+            }).then(resp => {
+                let query = [];
+                for (let user of resp.users) { query.push(user.id) }
+                this.store.query('user', {
+                    filter: {
+                        'id': query.join(',')
+                    }
+                }).then((contributors) => {
+                    this.set('searchResults', contributors);
+                    return contributors;
+                }).catch(() => {
+                    this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
+                    this.highlightSuccessOrFailure('author-search-box', this, 'error');
+                });
+            })
         },
         /**
         * highlightSuccessOrFailure method. Element with specified ID flashes green or red depending on response success.
