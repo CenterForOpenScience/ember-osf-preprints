@@ -42,7 +42,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'service:theme',
         'service:toast',
         'service:i18n',
-        'model:action',
+        'model:review-action',
         'model:file',
         'model:file-version',
         'model:comment',
