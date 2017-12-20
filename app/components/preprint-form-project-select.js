@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Permissions from 'ember-osf/const/permissions';
+import {loadPage} from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
 import {stripDiacritics} from 'ember-power-select/utils/group-utils';
 /**
@@ -64,10 +65,57 @@ import {stripDiacritics} from 'ember-power-select/utils/group-utils';
 export default Ember.Component.extend(Analytics, {
     userNodes: Ember.A(),
     selectedNode: null,
+    currentPage: 1,
+    canLoadMore: false,
+    isLoading: false,
     isAdmin: Ember.computed('selectedNode', function() {
         return this.get('selectedNode') ? (this.get('selectedNode.currentUserPermissions') || []).includes(Permissions.ADMIN) : false;
     }),
+
+    init() {
+        this._super(...arguments);
+        this.getInitialUserNodes();
+    },
+
+    getInitialUserNodes() {
+        let currentUser = this.get('currentUser');
+        loadPage(currentUser, 'nodes', 10, 1, {
+            filter: {
+                preprint: false,
+            },
+        }).then(results => {
+            // TODO Hack: API does not support filtering current_user_permissions in the way we desire, so filter
+            // on front end for now until filtering support can be added to backend
+            let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
+            if (results.hasRemaining){
+                this.set('canLoadMore', true);
+            }
+            this.set('userNodes', onlyAdminNodes);
+        });
+    },
+
     actions: {
+        getMoreUserNodes() {
+            this.set('isLoading', true);
+            let currentPage = this.get('currentPage');
+            let currentUser = this.get('currentUser');
+            loadPage(currentUser, 'nodes', 10, currentPage + 1, {
+                filter: {
+                    preprint: false,
+                },
+            }).then(results => {
+                let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
+                this.get('userNodes').pushObjects(onlyAdminNodes);
+                this.set('isLoading', false);
+                if (results.hasRemaining){
+                    this.set('canLoadMore', true);
+                    this.set('currentPage', currentPage + 1)
+                } else {
+                    this.set('canLoadMore', false);
+                }
+            });
+        },
+
         nodeSelected(node) {
             // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded, file-browser component can be loaded.
             this.attrs.clearDownstreamFields('belowNode');

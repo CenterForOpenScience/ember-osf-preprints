@@ -9,23 +9,11 @@
         {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}} {{!CHOOSE PROJECT SECTION}}
             {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
             {{#preprint-form-body}}
-                {{#if (not userNodesLoaded)}}
-                    <div class="ball-pulse text-center">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                {{else}}
-                    {{#if userNodes}}
-                        <div class="m-t-sm">
-                            {{#power-select options=userNodes placeholder="Click to select" matcher=titleMatcher selected=selectedNode onchange=(action "nodeSelected") as |node|}}
-                                {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
-                            {{/power-select}}
-                        </div>
-                    {{else}}
-                        <p class="m-t-md text-danger"> {{t "components.preprint-form-project-select.no_valid_existing_nodes"}} </p>
-                    {{/if}}
-                {{/if}}
+                <div class="m-t-sm">
+                    {{#power-select optionsComponent=(component 'lazy-options' loadMore=(action "getMoreUserNodes") isLoading=isLoading canLoadMore=canLoadMore) options=userNodes placeholder="Click to select" matcher=titleMatcher selected=selectedNode onchange=(action "nodeSelected") as |node|}}
+                        {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
+                    {{/power-select}}
+                </div>
                 <p class="text-muted text-smaller m-t-xs">
                     {{t "components.preprint-form-project-select.existing_project_selector"}}
                 </p>
