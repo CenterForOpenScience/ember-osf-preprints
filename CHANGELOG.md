@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
  and the workflow is pre-moderation.
 - Removed footer styling
 - Updated `meta.total` to `meta.total_pages` in preprint-form-authors component
+- Modified `preprint-status-banner` component for review action rename.
 
 ### Fixed
 - component integration tests to work in Firefox
