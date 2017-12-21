@@ -973,19 +973,22 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Search for Authors`
                 });
-            const url = `/api/v1/user/search/?query=${query}&page=${page - 1}`;
+            const url = `/api/v1/user/search/?query=${query}&page=${page - 1}&size=10`;
+            let metaPages;
             return Ember.$.ajax({
                 type: 'GET',
                 url: url
             }).then(resp => {
                 let query = [];
                 for (let user of resp.users) { query.push(user.id) }
-                this.store.query('user', {
+                metaPages = resp.pages;
+                return this.store.query('user', {
                     filter: {
                         'id': query.join(',')
                     }
                 }).then((contributors) => {
                     this.set('searchResults', contributors);
+                    this.get('searchResults').set('meta.total', metaPages);
                     return contributors;
                 }).catch(() => {
                     this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
