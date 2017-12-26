@@ -3,6 +3,7 @@ import Permissions from 'ember-osf/const/permissions';
 import {loadPage} from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
 import {stripDiacritics} from 'ember-power-select/utils/group-utils';
+import { task, timeout } from 'ember-concurrency';
 /**
  * @module ember-preprints
  * @submodule components
@@ -66,6 +67,7 @@ export default Ember.Component.extend(Analytics, {
     userNodes: Ember.A(),
     selectedNode: null,
     currentPage: 1,
+    searchTerm: '',
     canLoadMore: false,
     isLoading: false,
     isAdmin: Ember.computed('selectedNode', function() {
@@ -74,38 +76,50 @@ export default Ember.Component.extend(Analytics, {
 
     init() {
         this._super(...arguments);
-        this.getInitialUserNodes();
+        this.get('getInitialUserNodes').perform();
     },
 
-    getInitialUserNodes() {
+    // Only make a request every 600 ms to let user finish typing.
+    getInitialUserNodes: task(function* (searchTerm) {
+        yield timeout(600);
+        this.set('currentPage', 1);
+        let userNodes = this.get('userNodes');
         let currentUser = this.get('currentUser');
         loadPage(currentUser, 'nodes', 10, 1, {
             filter: {
                 preprint: false,
+                title: searchTerm,
             },
         }).then(results => {
-            // TODO Hack: API does not support filtering current_user_permissions in the way we desire, so filter
-            // on front end for now until filtering support can be added to backend
+            // When the promise finishes, set the searchTerm
+            this.set('searchTerm', searchTerm);
             let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
             if (results.hasRemaining){
                 this.set('canLoadMore', true);
+            } else {
+                this.set('canLoadMore', false);
             }
-            this.set('userNodes', onlyAdminNodes);
+            userNodes.clear();
+            userNodes.pushObjects(onlyAdminNodes);
         });
-    },
+    }),
 
     actions: {
         getMoreUserNodes() {
             this.set('isLoading', true);
             let currentPage = this.get('currentPage');
             let currentUser = this.get('currentUser');
+            let searchTerm = this.get('searchTerm');
             loadPage(currentUser, 'nodes', 10, currentPage + 1, {
                 filter: {
                     preprint: false,
+                    title: searchTerm,
                 },
             }).then(results => {
+                let userNodes = this.get('userNodes');
                 let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
-                this.get('userNodes').pushObjects(onlyAdminNodes);
+                onlyAdminNodes = onlyAdminNodes.filter(item => !userNodes.contains(item));
+                userNodes.pushObjects(onlyAdminNodes);
                 this.set('isLoading', false);
                 if (results.hasRemaining){
                     this.set('canLoadMore', true);
