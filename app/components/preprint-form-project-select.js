@@ -105,6 +105,12 @@ export default Ember.Component.extend(Analytics, {
     }),
 
     actions: {
+        getDefaultUserNodes(term) {
+            if (term == ''){
+                this.get('getInitialUserNodes').perform(term);
+            }
+        },
+
         getMoreUserNodes() {
             this.set('isLoading', true);
             let currentPage = this.get('currentPage');

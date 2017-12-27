@@ -10,7 +10,7 @@
             {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
             {{#preprint-form-body}}
                 <div class="m-t-sm">
-                    {{#power-select search=(perform getInitialUserNodes) optionsComponent=(component 'lazy-options' loadMore=(action "getMoreUserNodes") isLoading=isLoading canLoadMore=canLoadMore) options=userNodes noMatchesMessage='' placeholder="Click to select" selected=selectedNode onchange=(action "nodeSelected") as |node|}}
+                    {{#power-select search=(perform getInitialUserNodes) optionsComponent=(component 'lazy-options' loadMore=(action "getMoreUserNodes") isLoading=isLoading canLoadMore=canLoadMore) oninput=(action "getDefaultUserNodes") options=userNodes placeholder="Click to select" selected=selectedNode onchange=(action "nodeSelected") as |node|}}
                         {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
                     {{/power-select}}
                 </div>
