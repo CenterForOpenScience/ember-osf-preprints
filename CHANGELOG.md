@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Headless Firefox
 - Auto-expansion on selected subjects on the Discover page
+- Default auto-expansion on top level subjects when there are no more than 3.
 - `noscript` message if JavaScript is disabled
 - Favicons are updated to reflect their provider, on a branded domain or on a /preprints/provider page
 - DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
