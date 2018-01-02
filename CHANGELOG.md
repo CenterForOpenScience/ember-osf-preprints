@@ -22,12 +22,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Wording on `Edit preprint` button to `Edit and resubmit` on preprint detail page if the preprint is rejected
  and the workflow is pre-moderation.
 - Removed footer styling
+- Updated `meta.total` to `meta.total_pages` in preprint-form-authors component
+- Modified `preprint-status-banner` component for review action rename.
 
 ### Fixed
 - component integration tests to work in Firefox
   - provider-carousel
   - search-facet-taxonomy
 - CSS contrast issue for support email link on some branded provider error pages.
+
+## [0.115.9] - 2017-12-19
+### Added
+- Settings for prerender
 
 ## [0.115.8] - 2017-12-07
 ### Added
