@@ -90,14 +90,12 @@ export default Ember.Service.extend({
     // The logo object for social sharing
     logoSharing: Ember.computed('id', 'isDomain', function() {
         const id = this.get('id');
-        let logo = {};
-        logo = {
+        return {
             path: buildProviderAssetPath(config, id, 'sharing.png', this.get('isDomain')),
             type: 'image/png',
             width: 1200,
             height: 630
         };
-        return logo;
     }),
 
     // The url to redirect users to sign up to
