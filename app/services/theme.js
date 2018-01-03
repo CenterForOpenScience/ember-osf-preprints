@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
-import pathJoin from '../utils/path-join';
 import buildProviderAssetPath from '../utils/build-provider-asset-path';
 
 /**
