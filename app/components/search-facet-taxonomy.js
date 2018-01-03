@@ -105,7 +105,7 @@ export default Ember.Component.extend(Analytics, {
         if (topLevelItem.length <= 3){
             topLevelItem.forEach(item => {
                 this._expand(item).then(() =>{
-                    if (item.childCount <= 3){
+                    if (item.children && item.childCount <= 3){
                         item.children.forEach(item => {
                            this._expand(item);
                         });
