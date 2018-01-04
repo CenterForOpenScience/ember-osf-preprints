@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop#2017-12-20T20:54:27Z":
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop#2018-01-04T14:38:57Z":
   version "0.12.4"
   resolved "https://github.com/CenterForOpenScience/ember-osf.git#8329921fc1b38bf8744d379185527d4d8b8dffa3"
   dependencies:
