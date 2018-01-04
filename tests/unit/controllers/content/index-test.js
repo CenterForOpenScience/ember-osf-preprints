@@ -4,7 +4,7 @@ import config from 'ember-get-config';
 
 moduleFor('controller:content/index', 'Unit | Controller | content/index', {
     needs: [
-        'model:action',
+        'model:review-action',
         'model:file',
         'model:file-version',
         'model:comment',

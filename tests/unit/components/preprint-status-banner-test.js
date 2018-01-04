@@ -9,7 +9,7 @@ moduleForComponent('preprint-status-banner', 'Unit | Component | preprint status
     // needs: ['component:foo', 'helper:bar'],
     unit: true,
     needs: [
-        'model:action',
+        'model:review-action',
         'model:node',
         'model:user',
         'model:preprint',

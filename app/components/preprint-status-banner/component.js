@@ -61,11 +61,11 @@ export default Ember.Component.extend({
         if (this.get('submission.provider.reviewsCommentsPrivate')) {
             this.set('latestAction', null);
         } else {
-            const submissionActions = this.get('submission.actions');
+            const submissionActions = this.get('submission.reviewActions');
             if (submissionActions) {
-                submissionActions.then(actions => {
-                    if (actions.length) {
-                        this.set('latestAction', actions.get('firstObject'));
+                submissionActions.then(reviewActions => {
+                    if (reviewActions.length) {
+                        this.set('latestAction', reviewActions.get('firstObject'));
                     } else {
                         this.set('latestAction', null);
                     }
