@@ -1040,7 +1040,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             let submitAction = null;
             if (this.get('moderationType')) {
-                submitAction = this.get('store').createRecord('action', {
+                submitAction = this.get('store').createRecord('review-action', {
                    actionTrigger: 'submit',
                    target: this.get('model')
                 });
