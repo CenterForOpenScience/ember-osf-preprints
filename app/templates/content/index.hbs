@@ -94,9 +94,9 @@
                         <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi"}}</strong></h4>
                         {{#if model.preprintDoiUrl}}
                             {{#if model.preprintDoiCreated}}
-                                <a href={{model.links.preprint_doi}} onclick={{action "click" "link" "Content - Preprint DOI" model.links.preprint_doi}}>{{extract-doi model.links.preprint_doi}}</a>
+                                <a href={{model.preprintDoiUrl}} onclick={{action "click" "link" "Content - Preprint DOI" model.preprintDoiUrl}}>{{extract-doi model.preprintDoiUrl}}</a>
                             {{else}}
-                                <p> {{extract-doi model.links.preprint_doi}} </p>
+                                <p> {{extract-doi model.preprintDoiUrl}} </p>
                                 <p> {{t "content.preprint_pending_doi_minted"}} </p>
                             {{/if}}
                         {{else}}
@@ -111,7 +111,7 @@
                     {{#if model.articleDoiUrl}}
                         <div class="p-t-xs">
                             <h4 class="p-v-md f-w-md"><strong>{{t "content.article_doi"}}</strong></h4>
-                            <a href={{doiUrl}} onlick={{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
+                            <a href={{model.articleDoiUrl}} onlick={{action "click" "link" "Content - DOI" model.articleDoiUrl}}>{{model.articleDoiUrl}}</a>
                         </div>
                     {{/if}}
 
