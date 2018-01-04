@@ -370,7 +370,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     }),
 
     //This is done to initialize basicsOriginalPublicationDate to the date fetched from an existing preprint, similar to how basicsDOI is initialized.
-    basicsOriginalPublicationDate: Ember.computed.alias('model.originalPublicationDate'),
+    basicsOriginalPublicationDate: Ember.computed.or('model.originalPublicationDate'),
 
     originalPublicationDateChanged: Ember.computed('model.originalPublicationDate', 'basicsOriginalPublicationDate', function () {
         let basicsOriginalPublicationDate = this.get('basicsOriginalPublicationDate');
