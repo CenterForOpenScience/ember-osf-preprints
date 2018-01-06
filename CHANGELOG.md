@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Favicons are updated to reflect their provider, on a branded domain or on a /preprints/provider page
 - DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
 - Show a message on detail page when a DOI is created but not yet minted that it takes up to 24 hours to be minted.
+- Confirmation message when user tries to reload or navigate away from the preprint submission page after adding/selecting a node
+- `Computed` to check if there has been user changes on the discipline field on the preprint submission/edit form
 
 ### Changed
 - Use yarn --frozen-lockfile instead of --pure-lockfile

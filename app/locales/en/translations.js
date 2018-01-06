@@ -234,6 +234,7 @@ export default {
         error_accessing_parent_files: `Error accessing parent files. Please try again.`,
         could_not_create_component: `Could not create component. Please try again.`,
         abandoned_preprint_error: `Error with abandoned {{preprintWords.preprint}}.`,
+        abandon_preprint_confirmation: `Are you sure you want to abandon changes to this preprint?`,
         preprint_file_uploaded: `{{preprintWords.Preprint}} file uploaded!`,
         preprint_author_added: `{{preprintWords.Preprint}} author added!`,
         preprint_author_removed: `{{preprintWords.Preprint}} author removed!`,
