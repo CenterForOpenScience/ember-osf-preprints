@@ -111,7 +111,7 @@
                     {{#if model.articleDoiUrl}}
                         <div class="p-t-xs">
                             <h4 class="p-v-md f-w-md"><strong>{{t "content.article_doi"}}</strong></h4>
-                            <a href={{model.articleDoiUrl}} onlick={{action "click" "link" "Content - DOI" model.articleDoiUrl}}>{{model.articleDoiUrl}}</a>
+                            <a href={{model.articleDoiUrl}} onlick={{action "click" "link" "Content - DOI" model.articleDoiUrl}}>{{extract-doi model.articleDoiUrl}}</a>
                         </div>
                     {{/if}}
 
