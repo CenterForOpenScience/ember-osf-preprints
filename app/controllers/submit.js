@@ -1078,7 +1078,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('savingPreprint', true);
             this.toggleProperty('shareButtonDisabled');
 
-            let submitAction = this.get('store').createRecord('action', {
+            let submitAction = this.get('store').createRecord('review-action', {
                 actionTrigger: 'submit',
                 target: this.get('model')
             });
