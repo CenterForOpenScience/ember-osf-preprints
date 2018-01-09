@@ -54,6 +54,9 @@
                             {{if theme.provider.hasHighlightedSubjects (t "index.subjects.heading.hasHighlightedSubjects") (t "index.subjects.heading.noHighlightedSubjects")}}
                         {{/if}}
                     </h2>
+                    {{#if theme.provider.hasHighlightedSubjects}}
+                        {{#link-to "provider.discover" class="seeAllSubjects"}}{{t 'index.subjects.links.seeAllSubjects'}}{{/link-to}}
+                    {{/if}}
                     <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
                         {{#if theme.provider.additionalProviders}}
                             {{additional-provider-list additionalProviders=theme.provider.additionalProviders}}

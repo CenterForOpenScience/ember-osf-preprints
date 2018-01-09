@@ -124,6 +124,9 @@ export default {
                 hasHighlightedSubjects: `Browse <small>by featured subjects</small>`,
                 noHighlightedSubjects: `Browse <small>by subjects</small>`,
             },
+            links: {
+                seeAllSubjects: `See all subjects available`,
+            },
         },
         services: {
             top: {
