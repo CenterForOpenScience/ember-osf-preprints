@@ -9,6 +9,9 @@ RUN ./node_modules/.bin/bower install --allow-root --config.interactive=false
 
 COPY ./ ./
 
+RUN cd ./public/assets/ \
+    && git clone https://github.com/CenterForOpenScience/osf-assets.git
+
 ARG GIT_COMMIT=
 ENV GIT_COMMIT ${GIT_COMMIT}
 

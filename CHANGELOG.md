@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
 - Headless Firefox
 
 ### Changed
@@ -17,12 +16,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
  and the workflow is pre-moderation.
 - Removed footer styling
 - Update preprints to work with a new unified version of ember-osf (works with both preprints and reviews apps)
-
+- Updated `meta.total` to `meta.total_pages` in preprint-form-authors component
+- Modified `preprint-status-banner` component for review action rename.
 
 ### Fixed
 - component integration tests to work in Firefox
   - provider-carousel
   - search-facet-taxonomy
+
+## [0.115.9] - 2017-12-19
+### Added
+- Settings for prerender
+
+## [0.115.8] - 2017-12-07
+### Added
+- Donate button to branded navbar
+
+### Changed
+- Removed conditional to show donate banner on branded preprints
+
+## [0.115.7] - 2017-12-05
+### Changed
+- For unbranded preprints, use advisor board from API rather than hard-coded
+
+## [0.115.6] - 2017-12-04
+### Changed
+- Update to ember-osf@0.12.4
 
 ## [0.115.5] - 2017-11-29
 ### Changed

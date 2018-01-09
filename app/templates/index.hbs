@@ -1,6 +1,4 @@
-{{#unless theme.isProvider}}
-    {{donate-banner}}
-{{/unless}}
+{{donate-banner}}
 
 <div class="preprints-page"> {{!INDEX}}
 
@@ -106,37 +104,13 @@
 
 
     {{!ADVISORY GROUP}}
-    <div class="preprint-advisory p-v-md">
-        <div class="container">
-            <div class="row">
-                {{#if (and theme.isProvider theme.provider.advisoryBoard.length)}}
+    {{#if theme.provider.advisoryBoard.length}}
+        <div class="preprint-advisory p-v-md">
+            <div class="container">
+                <div class="row">
                     {{sanitize-html theme.provider.advisoryBoard "advisory-board"}}
-                {{else if (not theme.isProvider)}}
-                    <div class="col-xs-12">
-                        <h2>{{t "index.advisory.heading"}}</h2>
-                        <p class="m-b-lg">{{t "index.advisory.paragraph"}}</p>
-                    </div>
-                    <div class="col-xs-6">
-                        <ul>
-                            <li><b>Devin Berg :</b> engrXiv, University of Wisconsin-Stout</li>
-                            <li><b>Pete Binfield :</b> PeerJ PrePrints</li>
-                            <li><b>Benjamin Brown :</b> PsyArXiv, Georgia Gwinnett College</li>
-                            <li><b>Philip Cohen :</b> SocArXiv, University of Maryland</li>
-                            <li><b>Kathleen Fitzpatrick :</b> Modern Language Association</li>
-                            <li><b>John Inglis :</b> bioRxiv, Cold Spring Harbor Laboratory Press</li>
-                        </ul>
-                    </div>
-                    <div class="col-xs-6">
-                        <ul>
-                            <li><b>Rebecca Kennison :</b> K|N Consultants</li>
-                            <li><b>Bethany Nowviskie :</b> Digital Library Federation, University of Virginia</li>
-                            <li><b>Kristen Ratan :</b> CoKo Foundation</li>
-                            <li><b>Oya Rieger :</b> arXiv, Cornell University</li>
-                            <li><b>Judy Ruttenberg :</b> SHARE, Association of Research Libraries</li>
-                        </ul>
-                    </div>
-                {{/if}}
+                </div>
             </div>
         </div>
-    </div>
+    {{/if}}
 </div> {{!END INDEX}}

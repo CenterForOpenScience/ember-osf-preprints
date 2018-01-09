@@ -78,7 +78,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
     pages: Ember.computed('searchResults.[]', function() {
         let searchResults = this.get('searchResults');
         if (searchResults && searchResults.links) {
-            return searchResults.meta.total;
+            return searchResults.meta.total_pages;
         } else {
             return;
         }
