@@ -196,7 +196,7 @@ test('basicsValid computed property', function(assert) {
     ctrl.set('abstractValid', false);
     ctrl.set('doiValid', false);
     ctrl.set('licenseValid', false);
-    ctrl.set('originalPublcationDateValid', false);
+    ctrl.set('originalPublicationDateValid', false);
     assert.equal(ctrl.get('basicsValid'), false);
     ctrl.set('abstractValid', true);
     ctrl.set('doiValid', true);

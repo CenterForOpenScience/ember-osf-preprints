@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - Headless Firefox
-<<<<<<< HEAD
 - Auto-expansion on selected subjects on the Discover page
 - `noscript` message if JavaScript is disabled
 - Favicons are updated to reflect their provider, on a branded domain or on a /preprints/provider page
