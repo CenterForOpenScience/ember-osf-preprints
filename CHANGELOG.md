@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.116.1] - 2018-01-11
+### Changed
+- Update CHANGELOG to reflect 0.116.0 release
+
+## [0.116.0] - 2018-01-10
 ### Added
 - Headless Firefox
 
@@ -17,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Removed footer styling
 - Updated `meta.total` to `meta.total_pages` in preprint-form-authors component
 - Modified `preprint-status-banner` component for review action rename.
+- Update to ember-osf@0.13.0
 
 ### Fixed
 - component integration tests to work in Firefox
