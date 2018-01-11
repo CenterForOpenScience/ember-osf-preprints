@@ -15,7 +15,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
 - Show a message on detail page when a DOI is created but not yet minted that it takes up to 24 hours to be minted.
 - Original Publication Date is added to preprint.
-  - `validated-input` component is moved to ember-osf repo
 - Confirmation message when user tries to reload or navigate away from the preprint submission page after adding/selecting a node
 - `Computed` to check if there has been user changes on the discipline field on the preprint submission/edit form
 
@@ -34,6 +33,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - provider-carousel
   - search-facet-taxonomy
 - CSS contrast issue for support email link on some branded provider error pages.
+
+### Removed
+- `validated-input` component is moved to ember-osf repo
 
 ## [0.115.9] - 2017-12-19
 ### Added
