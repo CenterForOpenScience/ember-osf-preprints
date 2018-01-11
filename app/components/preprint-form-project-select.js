@@ -76,64 +76,66 @@ export default Ember.Component.extend(Analytics, {
 
     init() {
         this._super(...arguments);
-        this.get('getInitialUserNodes').perform();
+        this.get('_getInitialUserNodes').perform();
     },
 
-    // Only make a request every 600 ms to let user finish typing.
-    getInitialUserNodes: task(function* (searchTerm) {
-        yield timeout(600);
-        this.set('currentPage', 1);
+    // Only make a request every 500 ms to let user finish typing.
+    _getInitialUserNodes: task(function* (searchTerm) {
         let userNodes = this.get('userNodes');
+        userNodes.clear();
+        yield timeout(500);
+        this.set('currentPage', 1);
         let currentUser = this.get('currentUser');
-        loadPage(currentUser, 'nodes', 10, 1, {
+        let results = yield loadPage(currentUser, 'nodes', 10, 1, {
             filter: {
                 preprint: false,
                 title: searchTerm,
             },
-        }).then(results => {
-            // When the promise finishes, set the searchTerm
-            this.set('searchTerm', searchTerm);
-            let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
-            if (results.hasRemaining){
-                this.set('canLoadMore', true);
-            } else {
-                this.set('canLoadMore', false);
-            }
-            userNodes.clear();
-            userNodes.pushObjects(onlyAdminNodes);
         });
-    }),
+        // When the promise finishes, set the searchTerm
+        this.set('searchTerm', searchTerm);
+        let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
+        if (results.hasRemaining){
+            this.set('canLoadMore', true);
+        } else {
+            this.set('canLoadMore', false);
+        }
+        userNodes.pushObjects(onlyAdminNodes);
+    }).restartable(),
+
+    _getMoreUserNodes: task(function* () {
+        this.set('isLoading', true);
+        let currentPage = this.get('currentPage');
+        let currentUser = this.get('currentUser');
+        let searchTerm = this.get('searchTerm');
+        let results = yield loadPage(currentUser, 'nodes', 10, currentPage + 1, {
+            filter: {
+                preprint: false,
+                title: searchTerm,
+            },
+        });
+        let userNodes = this.get('userNodes');
+        let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
+        onlyAdminNodes = onlyAdminNodes.filter(item => !userNodes.contains(item));
+        userNodes.pushObjects(onlyAdminNodes);
+        if (results.hasRemaining){
+            this.set('canLoadMore', true);
+            this.set('currentPage', currentPage + 1)
+        } else {
+            this.set('canLoadMore', false);
+        }
+        this.set('isLoading', false);
+    }).enqueue(),
 
     actions: {
         getDefaultUserNodes(term) {
             if (term == ''){
-                this.get('getInitialUserNodes').perform(term);
+                this.get('_getInitialUserNodes').perform(term);
             }
         },
 
         getMoreUserNodes() {
-            this.set('isLoading', true);
-            let currentPage = this.get('currentPage');
-            let currentUser = this.get('currentUser');
-            let searchTerm = this.get('searchTerm');
-            loadPage(currentUser, 'nodes', 10, currentPage + 1, {
-                filter: {
-                    preprint: false,
-                    title: searchTerm,
-                },
-            }).then(results => {
-                let userNodes = this.get('userNodes');
-                let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
-                onlyAdminNodes = onlyAdminNodes.filter(item => !userNodes.contains(item));
-                userNodes.pushObjects(onlyAdminNodes);
-                this.set('isLoading', false);
-                if (results.hasRemaining){
-                    this.set('canLoadMore', true);
-                    this.set('currentPage', currentPage + 1)
-                } else {
-                    this.set('canLoadMore', false);
-                }
-            });
+            this.get('_getMoreUserNodes').perform();
         },
 
         nodeSelected(node) {
