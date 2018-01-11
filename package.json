@@ -77,7 +77,7 @@
     "ember-metrics": "0.6.3",
     "ember-moment": "7.3.1",
     "ember-page-title": "3.0.6",
-    "ember-power-select": "1.8.4",
+    "ember-power-select": "1.0.0-beta.7",
     "ember-read-more": "0.0.13",
     "ember-resolver": "2.1.0",
     "ember-sanitize": "2.0.2",
@@ -96,7 +96,5 @@
     "url": "https://github.com/CenterForOpenScience/ember-osf-preprints/issues"
   },
   "homepage": "https://github.com/CenterForOpenScience/ember-osf-preprints#readme",
-  "dependencies": {
-    "ember-concurrency": "^0.8.12"
-  }
+  "dependencies": {}
 }
