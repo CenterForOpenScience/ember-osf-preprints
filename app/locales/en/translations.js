@@ -63,7 +63,8 @@ export default {
         project_button: {
             paragraph: `The project for this paper is available on the OSF.`,
             button: `Visit project`,
-            edit_preprint:  `Edit {{preprintWords.preprint}}`
+            edit_preprint:  `Edit {{preprintWords.preprint}}`,
+            edit_resubmit_preprint: `Edit and resubmit`
         },
         orphan_preprint: `The user has removed this file.`,
         private_preprint_warning: `This {{preprintWords.Preprint}} is private. Make it discoverable by making`,

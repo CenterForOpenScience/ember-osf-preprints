@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Headless Firefox
+
+### Changed
+- Use yarn --frozen-lockfile instead of --pure-lockfile
+- Use COS ember-base image and multi-stage build
+  - Notify DevOps prior to merging into master to update Jenkins
+- Wording on `Edit preprint` button to `Edit and resubmit` on preprint detail page if the preprint is rejected
+ and the workflow is pre-moderation.
+- Removed footer styling
+- Updated `meta.total` to `meta.total_pages` in preprint-form-authors component
+- Modified `preprint-status-banner` component for review action rename.
+
+### Fixed
+- component integration tests to work in Firefox
+  - provider-carousel
+  - search-facet-taxonomy
+
 ## [0.115.9] - 2017-12-19
 ### Added
 - Settings for prerender
