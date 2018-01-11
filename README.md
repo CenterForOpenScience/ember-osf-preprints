@@ -9,6 +9,87 @@
 This is the codebase for OSF preprints.
 This guide will help you get started if you're interested.
 
+# Setup using Docker via osf.io
+
+## Prerequisites
+
+* Follow the [docker setup instructions](https://github.com/CenterForOpenScience/osf.io/blob/develop/README-docker-compose.md) for [osf.io](https://github.com/centerforopenscience/osf.io) repo
+
+* Follow the instructions for installing the [ember-osf](https://github.com/CenterForOpenScience/ember-osf/) repo
+
+## Installation
+
+* `git clone` the ember-osf-preprints repo into the same directory as your osf.io and ember-osf repos
+
+e.g.,
+```
++-- osf_projects
+|   +-- osf.io
+|   +-- ember-osf
+|   +-- ember-osf-preprints
+```
+
+## Modify docker-sync.yml
+In your osf.io [docker-sync.yml](https://github.com/CenterForOpenScience/osf.io/blob/develop/docker-sync.yml) uncomment the `preprints-sync` section:
+
+```
+preprints-sync:
+  src: '../ember-osf-preprints'
+  sync_strategy: 'native_osx'
+  sync_args: [ '-prefer newer' ]
+  sync_excludes_type: 'Name'
+  sync_excludes: ['.DS_Store', '*.map', '*.pyc', '*.tmp', '.git', '.idea', 'bower_components', 'node_modules', 'tmp', 'dist']
+  watch_excludes: ['.*\.DS_Store', '.*\.map', '.*\.pyc', '.*\.tmp', '.*/\.git', '.*/\.idea', '.*/bower_components', '.*/node_modules', '.*/tmp', '.*/dist']
+```
+
+## Modify docker-compose.override.yml
+In your osf.io [docker-compose.override.yml](https://github.com/CenterForOpenScience/osf.io/blob/develop/docker-compose.override.yml) uncomment the `preprints` section:
+
+```
+preprints:
+  volumes:
+    - preprints-sync:/code:nocopy
+
+    # Use this for ember-osf linked development (with docker-sync):
+    - preprints_dist_vol:/code/dist
+    - emberosf-sync:/ember-osf
+  depends_on:
+    - emberosf
+  command:
+    - /bin/bash
+    - -c
+    - cd /ember-osf &&
+      yarn link &&
+      cd /code &&
+      (rm -r node_modules || true) &&
+      yarn --frozen-lockfile &&
+      yarn link @centerforopenscience/ember-osf &&
+      (rm -r bower_components || true) &&
+      ./node_modules/.bin/bower install --allow-root --config.interactive=false &&
+      yarn start --host 0.0.0.0 --port 4201 --live-reload-port 41954
+```
+
+Also uncomment the `preprints-sync` section:
+
+```
+preprints-sync:
+  external: true
+```
+
+## Rebuild docker containers and reset sync
+If you have used docker-sync or used the quay preprints images with the osf.io repo before:
+
+* In the OSF repo, run `docker-compose down` to remove all images
+* Run `docker-sync stop`
+* Run `docker-sync clean`
+* Run `docker-sync start` to start the new sync services
+* Bring back up all docker containers (NOTE: This may take a while) e.g., `docker-compose up -d --force-recreate --no-deps` for daemon mode
+
+Once the containers are back up everything should be ready for development.
+
+# Setup without Docker 
+## NOTE: These instructions are likely out of date, Docker method preferred
+
 ## Prerequisites
 
 You will need the following things properly installed on your computer.
