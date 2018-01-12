@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.116.3] - 2018-01-12
+### Added
+- return true to content/index route didTransition so it bubbles to application didTransition (fix for prerender)
+
 ## [0.116.2] - 2018-01-11
 ### Changed
 - Updated to latest branded provider assets
