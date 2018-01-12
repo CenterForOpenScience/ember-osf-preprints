@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
-import pathJoin from '../utils/path-join';
 import buildProviderAssetPath from '../utils/build-provider-asset-path';
 
 /**
@@ -91,22 +90,12 @@ export default Ember.Service.extend({
     // The logo object for social sharing
     logoSharing: Ember.computed('id', 'isDomain', function() {
         const id = this.get('id');
-        let logo = {};
-        if (id === 'osf') {
-            logo = config.PREPRINTS.providers
-                .find(provider => provider.id === id)
-                .logoSharing;
-
-            logo.path = pathJoin('/preprints', logo.path);
-        } else {
-            logo = {
-                path: buildProviderAssetPath(config, id, 'sharing.png', this.get('isDomain')),
-                type: 'image/png',
-                width: 1200,
-                height: 630
-            }
-        }
-        return logo;
+        return {
+            path: buildProviderAssetPath(config, id, 'sharing.png', this.get('isDomain')),
+            type: 'image/png',
+            width: 1200,
+            height: 630
+        };
     }),
 
     // The url to redirect users to sign up to
