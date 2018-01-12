@@ -32,6 +32,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - provider-carousel
   - search-facet-taxonomy
 - CSS contrast issue for support email link on some branded provider error pages.
+- `og:image` meta tag for OSF Preprint refer to incorrect asset
+  - Removed `providers` list in `environment.js`
 
 ## [0.115.9] - 2017-12-19
 ### Added
