@@ -48,7 +48,15 @@
         <div class="container"> {{!CONTAINER DIV}}
             <div class="row p-v-md">{{!SUBJECTS ROW}}
                 <div class="col-xs-12">
-                    <h2>{{if theme.provider.additionalProviders (t "index.subjects.heading" browse-by="provider") (t "index.subjects.heading" browse-by="subject")}}</h2>
+                    <h2>{{#if theme.provider.additionalProviders}}
+                            {{t "index.subjects.heading.provider"}}
+                        {{else}}
+                            {{if theme.provider.hasHighlightedSubjects (t "index.subjects.heading.hasHighlightedSubjects") (t "index.subjects.heading.noHighlightedSubjects")}}
+                        {{/if}}
+                    </h2>
+                    {{#if theme.provider.hasHighlightedSubjects}}
+                        {{#link-to "provider.discover" class="seeAllSubjects"}}{{t 'index.subjects.links.seeAllSubjects'}}{{/link-to}}
+                    {{/if}}
                     <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
                         {{#if theme.provider.additionalProviders}}
                             {{additional-provider-list additionalProviders=theme.provider.additionalProviders}}

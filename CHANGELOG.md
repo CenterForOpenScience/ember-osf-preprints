@@ -5,7 +5,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- Favicons are updated to reflect their provider, on a branded domain or on a /preprints/provider page
 
 ### Added
 - Headless Firefox
@@ -17,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Original Publication Date is added to preprint.
 - Confirmation message when user tries to reload or navigate away from the preprint submission page after adding/selecting a node
 - `Computed` to check if there has been user changes on the discipline field on the preprint submission/edit form
+- Translations for `Browse by featured subjects`, `Browse by subjects`, and `Browse by providers`
 
 ### Changed
 - Use yarn --frozen-lockfile instead of --pure-lockfile
@@ -27,12 +27,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Removed footer styling
 - Updated `meta.total` to `meta.total_pages` in preprint-form-authors component
 - Modified `preprint-status-banner` component for review action rename.
+- Check for `has_highlighted_subjects` flag to determine what wording should be used on index page
 
 ### Fixed
 - component integration tests to work in Firefox
   - provider-carousel
   - search-facet-taxonomy
 - CSS contrast issue for support email link on some branded provider error pages.
+- `og:image` meta tag for OSF Preprint refer to incorrect asset
+  - Removed `providers` list in `environment.js`
 
 ### Removed
 - `validated-input` component is moved to ember-osf repo

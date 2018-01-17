@@ -182,10 +182,6 @@ export default Ember.Controller.extend(Analytics, {
         });
     }),
 
-    doiUrl: Ember.computed('model.doi', function() {
-        return `https://dx.doi.org/${this.get('model.doi')}`;
-    }),
-
     fullLicenseText: Ember.computed('model.license.text', 'model.licenseRecord', function() {
         const text = this.get('model.license.text') || '';
         const {year = '', copyright_holders = []} = this.get('model.licenseRecord');
