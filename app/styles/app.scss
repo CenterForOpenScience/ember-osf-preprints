@@ -1460,3 +1460,24 @@ nav.branded-navbar {
     margin-left: 15px;
     text-decoration: underline;
 }
+
+.provider-logos {
+	display: flex;
+	flex-wrap: wrap;
+    padding: 20px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url(https://staging.osf.io/preprints/assets/img/index-tool-bg.jpg);
+}
+
+.provider-logos .provider-logo-item {
+	flex: 1 0 25%;
+    box-sizing: border-box;
+    height: 120px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-width: 200px;
+    margin: 15px;
+}
