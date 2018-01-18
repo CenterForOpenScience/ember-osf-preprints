@@ -28,7 +28,7 @@ export default Ember.Component.extend(Analytics, {
         return this
             .get('theme.provider')
             .then(provider => provider
-                .query('taxonomies', {
+                .queryHasMany('taxonomies', {
                     filter: { parents },
                     page: { size: pageSize }
                 })
