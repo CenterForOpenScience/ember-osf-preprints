@@ -4,6 +4,7 @@ import config from 'ember-get-config';
 
 moduleFor('controller:content/index', 'Unit | Controller | content/index', {
     needs: [
+        'model:review-action',
         'model:file',
         'model:file-version',
         'model:comment',
@@ -20,6 +21,7 @@ moduleFor('controller:content/index', 'Unit | Controller | content/index', {
         'model:citation',
         'model:license',
         'model:wiki',
+        'model:taxonomy',
         'service:metrics',
         'service:theme'
     ]
@@ -265,6 +267,41 @@ test('fullLicenseText computed property', function (assert) {
             ctrl.get('fullLicenseText'),
             'The year is 2000.'
         );
+    });
+});
+
+test('editButtonLabel computed property', function (assert) {
+    this.inject.service('store');
+
+    const store = this.store;
+    const ctrl = this.subject();
+
+    Ember.run(() => {
+        const provider = store.createRecord('preprint-provider', {
+            reviewsWorkflow: 'pre-moderation',
+        });
+
+        const model = store.createRecord('preprint', {
+            provider,
+            reviewsState: 'initial',
+        });
+
+        ctrl.setProperties({model});
+
+        const workflowTypes = ['pre-moderation', 'post-moderation'];
+        const stateTypes = ['pending', 'accepted', 'rejected'];
+        for (let i = 0; i < workflowTypes.length; i++) {
+            for (let j = 0; j < stateTypes.length; j++) {
+                ctrl.set('model.provider.reviewsWorkflow', workflowTypes[i]);
+                ctrl.set('model.reviewsState', stateTypes[j]);
+                if (workflowTypes[i] == 'pre-moderation' && stateTypes[j] == 'rejected') {
+                    assert.strictEqual( ctrl.get('editButtonLabel'), 'content.project_button.edit_resubmit_preprint');
+                } else {
+                    assert.strictEqual( ctrl.get('editButtonLabel'), 'content.project_button.edit_preprint');
+                }
+
+            }
+        }
     });
 });
 

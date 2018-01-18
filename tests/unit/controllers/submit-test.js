@@ -42,6 +42,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'service:theme',
         'service:toast',
         'service:i18n',
+        'model:review-action',
         'model:file',
         'model:file-version',
         'model:comment',
@@ -81,7 +82,7 @@ test('Initial properties', function (assert) {
         '_existingState.EXISTINGFILE': 'existing',
         '_existingState.NEWFILE': 'new',
         'existingState': 'choose',
-        '_names.length': 5,
+        '_names.length': 4,
         'user': null,
         'userNodes.length': 0,
         'userNodesLoaded': false,
@@ -1013,11 +1014,25 @@ skip('highlightSuccessOrFailure', function() {
     //TODO
 });
 
-test('toggleSharePreprintModal', function(assert) {
+test('clickSubmit', function(assert) {
     const ctrl = this.subject();
-    assert.equal(ctrl.get('showModalSharePreprint'), false);
-    ctrl.send('toggleSharePreprintModal');
-    assert.equal(ctrl.get('showModalSharePreprint'), true);
+    assert.equal(ctrl.get('showModalSharePreprint'), false, 'showModalSharePreprint initial value');
+    assert.equal(ctrl.get('attemptedSubmit'), false, 'attemptedSubmit initial value');
+    assert.equal(ctrl.get('showValidationErrors'), false, 'showValidationErrors initial value');
+    assert.equal(ctrl.get('allSectionsValid'), false, 'allSectionsValid initial value');
+
+    ctrl.send('clickSubmit');
+
+    assert.equal(ctrl.get('showModalSharePreprint'), false, 'showModalSharePreprint after failed submit');
+    assert.equal(ctrl.get('attemptedSubmit'), true, 'attemptedSubmit after failed submit');
+    assert.equal(ctrl.get('showValidationErrors'), true, 'showValidationErrors after failed submit');
+    assert.equal(ctrl.get('allSectionsValid'), false, 'allSectionsValid after failed submit');
+
+    ctrl.set('allSectionsValid', true);
+    ctrl.send('clickSubmit');
+
+    assert.equal(ctrl.get('showModalSharePreprint'), true, 'showModalSharePreprint after valid submit');
+    assert.equal(ctrl.get('showValidationErrors'), false, 'showValidationErrors after valid submit');
 });
 
 skip('savePreprint', function() {

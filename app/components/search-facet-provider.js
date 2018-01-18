@@ -2,7 +2,8 @@ import Ember from 'ember';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 
-var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"terms": {"types": ["preprint", "thesis"]}}]}},"aggregations": {"sources": {"terms": {"field": "sources","size": 200}}}}';
+var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string": {"query": "*"}}, "filter": [{"bool": {"should": [{"terms": {"types": ["preprint"]} },{"terms": {"sources": ["Thesis Commons"]} }]}}]}},"aggregations": {"sources": {"terms": {"field": "sources","size": 200}}}}';
+
 
 /**
  * @module ember-preprints
@@ -40,7 +41,7 @@ export default Ember.Component.extend(Analytics, {
                 .findAll('preprint-provider')
                 .then(providers => {
                     const providerNames = providers.filter(
-                        provider => provider.get('id') !== 'asu'
+                        provider => provider.get('id') !== 'livedata'
                     ).map(provider => {
                         const name = provider.get('shareSource') || provider.get('name');
                         // TODO Change this in populate_preprint_providers script to just OSF

@@ -1,10 +1,10 @@
-# ember-preprints
+# ember-osf-preprints
 
-`master` Build Status: [![Build Status](https://travis-ci.org/CenterForOpenScience/ember-preprints.svg?branch=master)](https://travis-ci.org/CenterForOpenScience/ember-preprints)
+`master` Build Status: [![Build Status](https://travis-ci.org/CenterForOpenScience/ember-osf-preprints.svg?branch=master)](https://travis-ci.org/CenterForOpenScience/ember-osf-preprints)
 
-`develop` Build Status: [![Build Status](https://travis-ci.org/CenterForOpenScience/ember-preprints.svg?branch=develop)](https://travis-ci.org/CenterForOpenScience/ember-preprints)
+`develop` Build Status: [![Build Status](https://travis-ci.org/CenterForOpenScience/ember-osf-preprints.svg?branch=develop)](https://travis-ci.org/CenterForOpenScience/ember-osf-preprints)
 
-[![Coverage Status](https://coveralls.io/repos/github/CenterForOpenScience/ember-preprints/badge.svg?branch=develop)](https://coveralls.io/github/CenterForOpenScience/ember-preprints?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/CenterForOpenScience/ember-osf-preprints/badge.svg?branch=develop)](https://coveralls.io/github/CenterForOpenScience/ember-osf-preprints?branch=develop)
 
 This is the codebase for OSF preprints.
 This guide will help you get started if you're interested.
@@ -18,13 +18,12 @@ You will need the following things properly installed on your computer.
 * [Yarn](https://yarnpkg.com/)
 * [Bower](http://bower.io/)
 * [Ember CLI](http://ember-cli.com/)
-* [PhantomJS](http://phantomjs.org/)
 
 ## Installation
 
 * `git clone` this repository
   * To pull in local preprint provider assets as well, use `git clone --recursive` instead (assuming you are using git >= 1.6.5).
-* `yarn install --pure-lockfile`
+* `yarn install --frozen-lockfile`
 * `bower install`
 
 ## Preprint Provider Assets
