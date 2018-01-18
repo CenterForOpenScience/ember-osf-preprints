@@ -80,17 +80,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row p-v-md">{{!BRANDED ROW}}
-                {{!CAROUSEL WITH PREPRINT PROVIDERS}}
-                {{#pretty-column-display length=4 items=model.brandedProviders as |provider|}}
-                    <a href="{{brandedPreprintUrl provider path=''}}"
-                        title={{provider.name}}
-                        onclick={{action 'click' 'link' (concat 'Index - Provider Carousel - ' item.name)}}
-                        >
-                        <div class="provider-logo provider-{{provider.id}}" style="background-image: url('{{providerAsset provider.id 'wide_white.png'}}')"></div>
-                    </a>
-                {{/pretty-column-display}}
-
+            <div class="row p-v-md">
+                <div class="provider-logos">
+                    {{#each model.brandedProviders as |provider| }}
+                        <div class="provider-logo-item" style="background-image: url({{provider-asset provider.id 'wide_white.png'}});"></div>
+                    {{/each}}
+                </div>
             </div>
             <div class="row p-v-md">
                 <div class="col-md-12 text-center">
