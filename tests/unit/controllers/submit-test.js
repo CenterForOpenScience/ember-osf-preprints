@@ -68,6 +68,9 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
     beforeEach: function () {
        this.register('service:panel-actions', panelActionsStub);
        this.inject.service('panel-actions', { as: 'panelActions' });
+       //Stub out observers as they call loadAll(), which uses queryHasMany() and does not work well for tests.
+       this.subject().set('getContributors', () => undefined);
+       this.subject().set('getParentContributors', () => undefined);
    }
 
 });
