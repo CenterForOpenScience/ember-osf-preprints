@@ -58,6 +58,8 @@ export default {
         version: 'Version',
         preprint_doi: `{{preprintWords.Preprint}} DOI`,
         article_doi: `Peer-reviewed Publication DOI`,
+        preprint_pending_doi: `DOI created after {{preprintWords.preprint}} is made public`,
+        preprint_pending_doi_moderation: `DOI created after moderator approval`,
         preprint_pending_doi_minted: `DOIs are minted by a third party, and may take up to 24 hours to be registered.`,
         citations: `Citations`,
         disciplines: `Disciplines`,
@@ -119,7 +121,14 @@ export default {
             example: `See an example`
         },
         subjects: {
-            heading: `Browse <small>by {{browse-by}}</small>`
+            heading: {
+                provider: `Browse <small>by provider</small>`,
+                hasHighlightedSubjects: `Browse <small>by featured subjects</small>`,
+                noHighlightedSubjects: `Browse <small>by subjects</small>`,
+            },
+            links: {
+                seeAllSubjects: `See all subjects available`,
+            },
         },
         services: {
             top: {
@@ -234,6 +243,7 @@ export default {
         error_accessing_parent_files: `Error accessing parent files. Please try again.`,
         could_not_create_component: `Could not create component. Please try again.`,
         abandoned_preprint_error: `Error with abandoned {{preprintWords.preprint}}.`,
+        abandon_preprint_confirmation: `Are you sure you want to abandon changes to this preprint?`,
         preprint_file_uploaded: `{{preprintWords.Preprint}} file uploaded!`,
         preprint_author_added: `{{preprintWords.Preprint}} author added!`,
         preprint_author_removed: `{{preprintWords.Preprint}} author removed!`,

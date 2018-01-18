@@ -60,5 +60,12 @@ export default Ember.Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
 
         if (locale)
             this.set('i18n.locale', locale);
-    }
+    },
+
+    actions: {
+        didTransition: function() {
+          window.prerenderReady = true;
+          return true; // Bubble the didTransition event
+        }
+    },
 });
