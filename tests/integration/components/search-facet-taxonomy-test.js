@@ -22,8 +22,7 @@ const themeStub = Ember.Service.extend({
     isProvider: true,
     provider: Ember.RSVP.resolve({
         name: 'OSF',
-        query: taxonomiesQuery,
-
+        queryHasMany: taxonomiesQuery,
     })
 });
 
