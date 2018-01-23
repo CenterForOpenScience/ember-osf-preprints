@@ -7,6 +7,7 @@
 @import 'validated-input';
 @import 'hint';
 @import 'daterangepicker.scss';
+@import 'error-page.scss';
 
 /* GLOBAL to PREPRINTS, these may be used in multiple pages */
 .pointer {
@@ -1441,4 +1442,9 @@ nav.branded-navbar {
     .taxonomy-left-padding {
         padding-left: 40px;
     }
+}
+
+.seeAllSubjects {
+    margin-left: 15px;
+    text-decoration: underline;
 }

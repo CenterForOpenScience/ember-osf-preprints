@@ -199,26 +199,6 @@ skip('authors computed property', function (assert) {
     });
 });
 
-test('doiUrl computed property', function (assert) {
-    this.inject.service('store');
-
-    const store = this.store;
-    const ctrl = this.subject();
-
-    Ember.run(() => {
-        const model = store.createRecord('preprint', {
-            doi: '10.1037/rmh0000008'
-        });
-
-        ctrl.setProperties({model});
-
-        assert.strictEqual(
-            ctrl.get('doiUrl'),
-            'https://dx.doi.org/10.1037/rmh0000008'
-        );
-    });
-});
-
 test('fullLicenseText computed property', function (assert) {
     this.inject.service('store');
 
