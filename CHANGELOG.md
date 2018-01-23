@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Update to latest ember-osf (TODO: change this to ember-osf release version before release)
+- Update to use model.queryHasMany in place of model.query
+- Update tests to work with model.queryHasMany
+- Get pagination info directly from meta in preprint-form-authors component
 
 ## [0.116.3] - 2018-01-12
 ### Added
