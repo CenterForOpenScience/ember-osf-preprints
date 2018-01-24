@@ -55,7 +55,7 @@ export default Ember.Component.extend(Analytics, {
 
         this.get('theme.provider')
             .then(provider => provider
-                .query('taxonomies', {
+                .queryHasMany('taxonomies', {
                     filter: {
                         parents
                     },
