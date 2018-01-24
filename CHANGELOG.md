@@ -5,9 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
 ### Added
-- Headless Firefox
 - Auto-expansion on selected subjects on the Discover page
 - `noscript` message if JavaScript is disabled
 - Favicons are updated to reflect their provider, on a branded domain or on a /preprints/provider page
@@ -19,6 +17,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Translations for `Browse by featured subjects`, `Browse by subjects`, and `Browse by providers`
 
 ### Changed
+- Update to latest ember-osf (TODO: change this to ember-osf release version before release)
+- Update to use model.queryHasMany in place of model.query
+- Update tests to work with model.queryHasMany
+- Get pagination info directly from meta in preprint-form-authors component
+- Check for `has_highlighted_subjects` flag to determine what wording should be used on index page
+
+## [0.116.3] - 2018-01-12
+### Added
+- return true to content/index route didTransition so it bubbles to application didTransition (fix for prerender)
+
+## [0.116.2] - 2018-01-11
+### Changed
+- Updated to latest branded provider assets
+
+## [0.116.1] - 2018-01-11
+### Changed
+- Update CHANGELOG to reflect 0.116.0 release
+
+## [0.116.0] - 2018-01-10
+### Added
+- Headless Firefox
+
+### Changed
 - Use yarn --frozen-lockfile instead of --pure-lockfile
 - Use COS ember-base image and multi-stage build
   - Notify DevOps prior to merging into master to update Jenkins
@@ -27,7 +48,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Removed footer styling
 - Updated `meta.total` to `meta.total_pages` in preprint-form-authors component
 - Modified `preprint-status-banner` component for review action rename.
-- Check for `has_highlighted_subjects` flag to determine what wording should be used on index page
+- Update to ember-osf@0.13.0
 
 ### Fixed
 - component integration tests to work in Firefox
