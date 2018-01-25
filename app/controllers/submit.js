@@ -179,7 +179,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     hasFile: Ember.computed.or('file', 'selectedFile'),
 
     // True if fields have been changed
-    hasDirtyFields: Ember.computed.or('uploadChanged', 'basicsChanged', 'disciplineChanged'),
+    // If adding a preprint, hasDirtyFields will always be true to prevent leaving the page at all unless clicking submit
+    hasDirtyFields: Ember.computed.or('uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint'),
+
+    isAddingPreprint: Ember.computed.not('editMode'),
 
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.

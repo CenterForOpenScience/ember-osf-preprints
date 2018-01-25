@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Confirmation message when user tries to reload or navigate away from the preprint submission page after adding/selecting a node
 - `Computed` to check if there has been user changes on the discipline field on the preprint submission/edit form
 - Translations for `Browse by featured subjects`, `Browse by subjects`, and `Browse by providers`
+- Add to `computed` to prevent redirect at any point on preprint submission
 
 ### Changed
 - Update to latest ember-osf (TODO: change this to ember-osf release version before release)
