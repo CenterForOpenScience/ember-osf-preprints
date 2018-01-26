@@ -36,38 +36,6 @@ export default {
         pre_moderation: `pre-moderation`,
         post_moderation: `post-moderation`,
     },
-    documentType: {
-        default: {
-            plural: 'documents',
-            pluralCapitalized: 'Documents',
-            singular: 'document',
-            singularCapitalized: 'Document',
-        },
-        paper: {
-            plural: 'papers',
-            pluralCapitalized: 'Papers',
-            singular: 'paper',
-            singularCapitalized: 'Paper',
-        },
-        preprint: {
-            plural: 'preprints',
-            pluralCapitalized: 'Preprints',
-            singular: 'preprint',
-            singularCapitalized: 'Preprint',
-        },
-        none: {
-            plural: '',
-            pluralCapitalized: '',
-            singular: '',
-            singularCapitalized: '',
-        },
-        thesis: {
-            plural: 'theses',
-            pluralCapitalized: 'Theses',
-            singular: 'thesis',
-            singularCapitalized: 'Thesis',
-        },
-    },
     application: {
         separator: ` | `
     },

@@ -13,7 +13,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  * @class Index Route Handler
  */
 export default Ember.Route.extend(Analytics, ResetScrollMixin, {
-    // store: Ember.inject.service(),
+    store: Ember.inject.service(),
     theme: Ember.inject.service(),
     model() {
         return Ember.RSVP.hash({

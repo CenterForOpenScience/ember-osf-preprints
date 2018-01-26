@@ -8,11 +8,6 @@ export default I18nService.extend({
         const mutableData = merge(this.get('_globals'), data);
         return this._super(key, mutableData);
     },
-
-    addGlobal(key, value) {
-        this.set(`_globals.${key}`, value);
-    },
-
     addGlobals(globals) {
         this.set('_globals', merge(this.get('_globals'), globals));
     },
