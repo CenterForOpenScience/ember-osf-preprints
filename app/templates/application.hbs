@@ -1,4 +1,5 @@
 {{title (if theme.isProvider (if theme.preprintWordInTitle (t 'global.provider_brand' name=theme.provider.name) theme.provider.name) (t 'global.brand')) separator=(t 'application.separator')}}
+{{head-tags headTags=headTags}}
 
 {{#if theme.isProvider}}
     <style>

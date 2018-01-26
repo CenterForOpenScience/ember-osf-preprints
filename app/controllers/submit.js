@@ -178,6 +178,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     hasFile: Ember.computed.or('file', 'selectedFile'),
 
+    // True if fields have been changed
+    hasDirtyFields: Ember.computed.or('uploadChanged', 'basicsChanged', 'disciplineChanged'),
+
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
         this.get('panelActions').open('Upload');
@@ -372,6 +375,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     // Flattened subject list
     disciplineReduced: Ember.computed('model.subjects', function() {
         return Ember.$.extend(true, [], this.get('model.subjects')).reduce((acc, val) => acc.concat(val), []).uniqBy('id');
+    }),
+
+    // Compares the model's and current subjectLists's array of arrays of discipline ids
+    // to determine if there has been a change.
+    disciplineChanged: Ember.computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle', function () {
+        return JSON.stringify(this.get('model.subjects')) !== JSON.stringify(this.get('subjectsList'));
     }),
 
     // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
