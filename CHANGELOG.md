@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Get pagination info directly from meta in preprint-form-authors component
 - Check for `has_highlighted_subjects` flag to determine what wording should be used on index page
 
+## [0.116.4] - 2018-01-29
+### Changed
+- Updated to latest branded provider assets
+
 ## [0.116.3] - 2018-01-12
 ### Added
 - return true to content/index route didTransition so it bubbles to application didTransition (fix for prerender)
