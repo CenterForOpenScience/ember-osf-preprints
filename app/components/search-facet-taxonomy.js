@@ -86,7 +86,9 @@ export default Ember.Component.extend(Analytics, {
                     })
                 });
                 this._expandMany(items);
-                this._expandDefault();
+                //Only auto-expand if no subjects are selected.
+                if (!items.length > 0)
+                    this._expandDefault();
             });
     },
     actions: {
