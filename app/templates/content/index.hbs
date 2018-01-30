@@ -14,7 +14,7 @@
                                         {{#if author.unregisteredContributor}}
                                             <li>{{author.unregisteredContributor}}</li>
                                         {{else}}
-                                            <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.fullName}}</a></li>
+                                            <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{contributor-name author.users.givenName author.users.familyName author.users.fullName}}</a></li>
                                         {{/if}}
                                     {{/if}}
                                 {{~/each}}
