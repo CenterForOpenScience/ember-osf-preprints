@@ -13,8 +13,6 @@ test('it exists', function(assert) {
 });
 
 test('themes have proper config', function(assert) {
-    let providers = config.PREPRINTS.providers;
-    for (var provider of providers) {
-        assert.ok(typeof provider.id !== 'undefined');
-    }
+    let defaultProvider = config.PREPRINTS.defaultProvider;
+    assert.equal(defaultProvider, 'osf');
 });
