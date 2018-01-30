@@ -149,6 +149,15 @@
                         {{/if}}
                     </div>
 
+                    {{#if model.originalPublicationDate}}
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md f-w-md"><strong>{{t "content.original_publication_date"}}</strong></h4>
+                            <p>
+                                {{moment-format model.originalPublicationDate "YYYY-MM-DD"}}
+                            </p>
+                        </div>
+                    {{/if}}
+
                     <div class="p-t-xs m-b-lg">
                         <h4 class="p-v-md f-w-md"><strong>{{t "content.citations"}}</strong></h4>
                         {{citation-widget node=model}}
