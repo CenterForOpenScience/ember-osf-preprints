@@ -68,8 +68,8 @@ export default CpPanelBodyComponent.extend(Analytics, {
     // Total contributor search results
     totalSearchResults: Ember.computed('searchResults.[]', function() {
         let searchResults = this.get('searchResults');
-        if (searchResults && searchResults.links) {
-            return searchResults.meta.pagination.total;
+        if (searchResults && searchResults.meta !== undefined) {
+            return searchResults.meta.total;
         } else {
             return;
         }
@@ -77,8 +77,8 @@ export default CpPanelBodyComponent.extend(Analytics, {
     // Total pages of contributor search results
     pages: Ember.computed('searchResults.[]', function() {
         let searchResults = this.get('searchResults');
-        if (searchResults && searchResults.links) {
-            return searchResults.meta.total;
+        if (searchResults && searchResults.meta !== undefined) {
+            return searchResults.meta.total_pages;
         } else {
             return;
         }

@@ -58,6 +58,10 @@ export default {
         version: 'Version',
         preprint_doi: `{{preprintWords.Preprint}} DOI`,
         article_doi: `Peer-reviewed Publication DOI`,
+        preprint_pending_doi: `DOI created after {{preprintWords.preprint}} is made public`,
+        preprint_pending_doi_moderation: `DOI created after moderator approval`,
+        preprint_pending_doi_minted: `DOIs are minted by a third party, and may take up to 24 hours to be registered.`,
+        original_publication_date: `Original Publication Date`,
         citations: `Citations`,
         disciplines: `Disciplines`,
         project_button: {
@@ -118,7 +122,14 @@ export default {
             example: `See an example`
         },
         subjects: {
-            heading: `Browse <small>by {{browse-by}}</small>`
+            heading: {
+                provider: `Browse <small>by provider</small>`,
+                hasHighlightedSubjects: `Browse <small>by featured subjects</small>`,
+                noHighlightedSubjects: `Browse <small>by subjects</small>`,
+            },
+            links: {
+                seeAllSubjects: `See all subjects available`,
+            },
         },
         services: {
             top: {
@@ -182,7 +193,10 @@ export default {
                 license: {
                     apply_license_title: `Apply this license to my OSF Project.`,
                     apply_license_text: `Selecting a license for your {{preprintWords.preprint}} does not automatically apply the license to your OSF project.`
-                }
+                },
+                original_publication_date: {
+                    label: `Original Publication Date`
+                },
             },
             authors: {
                 paragraph: `Add {{preprintWords.preprint}} authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the {{preprintWords.preprint}}.`
@@ -233,6 +247,7 @@ export default {
         error_accessing_parent_files: `Error accessing parent files. Please try again.`,
         could_not_create_component: `Could not create component. Please try again.`,
         abandoned_preprint_error: `Error with abandoned {{preprintWords.preprint}}.`,
+        abandon_preprint_confirmation: `Are you sure you want to abandon changes to this preprint?`,
         preprint_file_uploaded: `{{preprintWords.Preprint}} file uploaded!`,
         preprint_author_added: `{{preprintWords.Preprint}} author added!`,
         preprint_author_removed: `{{preprintWords.Preprint}} author removed!`,
