@@ -53,7 +53,7 @@ const BasicsValidations = buildValidations({
         ]
     },
     basicsOriginalPublicationDate: {
-        description: 'Original Publication Date',
+        description: 'Original publication date',
         validators: [
             validator('date', {
                 onOrBefore: 'now',
