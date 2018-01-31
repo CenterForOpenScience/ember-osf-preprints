@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Wording on `Edit preprint` button to `Edit and resubmit` on preprint detail page if the preprint is rejected
  and the workflow is pre-moderation.
 - Removed footer styling
+- Searching for contributors also searches their social links (such as their twitter handle)
 
 ### Fixed
 - component integration tests to work in Firefox
