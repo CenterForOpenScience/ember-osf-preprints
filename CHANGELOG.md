@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update tests to work with model.queryHasMany
 - Get pagination info directly from meta in preprint-form-authors component
 - Check for `has_highlighted_subjects` flag to determine what wording should be used on index page
+- Use newly added `name` field for preprint detail page contributors
 
 ## [0.116.4] - 2018-01-29
 ### Changed
