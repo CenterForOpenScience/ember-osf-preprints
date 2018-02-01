@@ -1453,12 +1453,11 @@ nav.branded-navbar {
     display: flex;
     flex-wrap: wrap;
     padding: 20px;
-    max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
 
     .provider-logo-item {
-        flex: 1 0 25%;
+        flex: 1 0 auto;
         box-sizing: border-box;
         height: 120px;
         background-size: contain;
