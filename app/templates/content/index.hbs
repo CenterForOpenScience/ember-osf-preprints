@@ -90,17 +90,28 @@
                         </button>
                     </div>
 
-                    {{#if model.links.preprint_doi}}
-                        <div class="p-t-xs">
-                            <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi"}}</strong></h4>
-                            <a href={{model.links.preprint_doi}} onclick={{action "click" "link" "Content - Preprint DOI" model.links.preprint_doi}}>{{extract-doi model.links.preprint_doi}}</a>
-                        </div>
-                    {{/if}}
+                    <div class="p-t-xs">
+                        <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi"}}</strong></h4>
+                        {{#if model.preprintDoiUrl}}
+                            {{#if model.preprintDoiCreated}}
+                                <a href={{model.preprintDoiUrl}} onclick={{action "click" "link" "Content - Preprint DOI" model.preprintDoiUrl}}>{{extract-doi model.preprintDoiUrl}}</a>
+                            {{else}}
+                                <p> {{extract-doi model.preprintDoiUrl}} </p>
+                                <p> {{t "content.preprint_pending_doi_minted"}} </p>
+                            {{/if}}
+                        {{else}}
+                            {{#if (not node.public)}}
+                                {{t 'content.preprint_pending_doi'}}
+                            {{else if (and model.provider.reviewsWorkflow (not model.isPublished))}}
+                                {{t 'content.preprint_pending_doi_moderation'}}
+                            {{/if}}
+                        {{/if}}
+                    </div>
 
-                    {{#if model.doi}}
+                    {{#if model.articleDoiUrl}}
                         <div class="p-t-xs">
                             <h4 class="p-v-md f-w-md"><strong>{{t "content.article_doi"}}</strong></h4>
-                            <a href={{doiUrl}} onlick={{action "click" "link" "Content - DOI" doiUrl}}>{{model.doi}}</a>
+                            <a href={{model.articleDoiUrl}} onlick={{action "click" "link" "Content - DOI" model.articleDoiUrl}}>{{extract-doi model.articleDoiUrl}}</a>
                         </div>
                     {{/if}}
 
@@ -137,6 +148,15 @@
                             {{t "global.none"}}
                         {{/if}}
                     </div>
+
+                    {{#if model.originalPublicationDate}}
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md f-w-md"><strong>{{t "content.original_publication_date"}}</strong></h4>
+                            <p>
+                                {{moment-format model.originalPublicationDate "YYYY-MM-DD"}}
+                            </p>
+                        </div>
+                    {{/if}}
 
                     <div class="p-t-xs m-b-lg">
                         <h4 class="p-v-md f-w-md"><strong>{{t "content.citations"}}</strong></h4>

@@ -28,7 +28,7 @@ export default Ember.Component.extend(Analytics, {
         return this
             .get('theme.provider')
             .then(provider => provider
-                .query('taxonomies', {
+                .queryHasMany('taxonomies', {
                     filter: { parents },
                     page: { size: pageSize }
                 })
@@ -41,6 +41,7 @@ export default Ember.Component.extend(Analytics, {
                     showChildren: false,
                     childCount: result.get('child_count'),
                     shareTitle: result.get('shareTitle'),
+                    path: result.get('path'),
                 }))
                 .sort((prev, next) => {
                     if (prev.text > next.text) {
@@ -52,13 +53,40 @@ export default Ember.Component.extend(Analytics, {
                 })
             );
     },
+    // Creates a list of all of the subject paths that need to be selected
+    expandedList: Ember.computed('activeFilters.subjects', function() {
+        const filters = this.get('activeFilters.subjects');
+        let expandList = [];
+        filters.forEach(filter => {
+            let filterStr = '';
+            filter.split('|').forEach(item => {
+                if (item !== '') { filterStr += '|' + item; }
+                if (!expandList.includes(filterStr) && filterStr) {
+                    expandList.push(filterStr);
+                }
+            });
+        });
+        return expandList;
+    }),
     init() {
         this._super(...arguments);
+        const component = this;
+        let items = [];
 
         this._getTaxonomies()
-            .then(results => this
-                .set('topLevelItem', results)
-            );
+            .then(results => {
+                this.set('topLevelItem', results);
+                results.forEach(result => {
+                    component.get('expandedList').forEach(element => {
+                        if (element.includes(result.path + '|')) {
+                            if (!items.includes(result)) {
+                                items.push(result);
+                            }
+                        }
+                    })
+                });
+                this._expandMany(items);
+            });
     },
     actions: {
         expand(item) {
@@ -68,25 +96,45 @@ export default Ember.Component.extend(Analytics, {
                     action: item.showChildren ? 'contract' : 'expand',
                     label: `Discover - ${item.text}`
                 });
+            this._expand(item);
+        }
+    },
+    _expand(item) {
+        if (item.showChildren) {
+            Ember.set(item, 'showChildren', false);
+            return;
+        }
+        let children = item.children;
 
-            if (item.showChildren) {
-                Ember.set(item, 'showChildren', false);
-                return;
-            }
-
-            const children = item.children;
-
-            if (children && children.length > 0) {
+        if (children && children.length > 0) {
+            Ember.set(item, 'showChildren', true);
+            return;
+        }
+        return this._getTaxonomies(item.id)
+            .then((results) => {
+                Ember.set(item, 'children', results);
                 Ember.set(item, 'showChildren', true);
-                return;
-            }
+                return results;
+            });
+    },
+    // Runs through the expandedList.  If the subject's path is in the list,
+    // then add it to the list.  Recursively runs through the list and expands.
+    _expandMany(items) {
+        const component = this;
 
-            this._getTaxonomies(item.id)
-                .then(results => {
-                    Ember.set(item, 'children', results);
-                    Ember.set(item, 'showChildren', true);
-                }
-            );
+        if (items.length) {
+            this._expand(items.shift()).then(results => {
+                results.forEach(result => {
+                    component.get('expandedList').forEach(element => {
+                        if (element.includes(result.path + '|')) {
+                            if (!items.includes(result)) {
+                                items.push(result);
+                            }
+                        }
+                    });
+                });
+                component._expandMany(items);
+            });
         }
     }
 });

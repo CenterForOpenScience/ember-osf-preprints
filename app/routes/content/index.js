@@ -86,7 +86,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             .then(([provider, node, license]) => {
                 const title = node.get('title');
                 const description = node.get('description');
-                const mintDoi = extractDoiFromString(preprint.get('links.preprint_doi'));
+                const mintDoi = extractDoiFromString(preprint.get('preprintDoiUrl'));
                 const peerDoi = preprint.get('doi');
                 const doi = peerDoi ? peerDoi : mintDoi;
                 const image = this.get('theme.logoSharing');
