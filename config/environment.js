@@ -11,6 +11,9 @@ module.exports = function(environment) {
         locationType: 'auto',
         authorizationType: authorizationType,
         sentryDSN: 'http://test@localhost/80' || process.env.SENTRY_DSN,
+        sentryOptions: {
+            release: process.env.GIT_COMMIT,
+        },
         'ember-simple-auth': {
             authorizer: `authorizer:osf-${authorizationType}`,
             authenticator: `authenticator:osf-${authorizationType}`
