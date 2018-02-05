@@ -90,15 +90,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 const peerDoi = preprint.get('doi');
                 const doi = peerDoi ? peerDoi : mintDoi;
                 const image = this.get('theme.logoSharing');
-                let imageUrl;
-                let secure_url;
-                if (image.path.indexOf('http://') < 0 || image.path.indexOf('https://') < 0) {
-                    imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
-                    secure_url = `${origin}${image.path}`;
-                } else {
-                    imageUrl = image.path.replace(/^https/, 'http');
-                    secure_url = image.path;
-                }
+                const imageUrl = /^https?:\/\//.test(image.path) ? image.path : origin + image.path;
                 const dateCreated = new Date(preprint.get('dateCreated') || null);
                 const dateModified = new Date(preprint.get('dateModified') || dateCreated);
                 if (!preprint.get('datePublished'))
@@ -113,7 +105,6 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     ['fb:app_id', config.FB_APP_ID],
                     ['og:title', title],
                     ['og:image', imageUrl],
-                    ['og:image:secure_url', secure_url], // We should always be on https in staging/prod
                     ['og:image:width', image.width.toString()],
                     ['og:image:height', image.height.toString()],
                     ['og:image:type', image.type],
