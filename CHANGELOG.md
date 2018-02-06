@@ -25,6 +25,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Check for `has_highlighted_subjects` flag to determine what wording should be used on index page
 - Use flexbox to show all provider logos in pretty rows
 
+### Fixed
+- Skipped tests in `convert-or-copy-project-test` and `supplementary-file-browser` to run properly
+
 ## [0.116.4] - 2018-01-29
 ### Changed
 - Updated to latest branded provider assets
