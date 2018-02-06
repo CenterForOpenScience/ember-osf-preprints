@@ -1,11 +1,11 @@
-{{title node.title}}
+{{title model.title}}
 
 <div id="view-page">
     <div class="p-t-xl p-b-md m-b-md dark-overlay-header-background header-row">{{!HEADER ROW}}
         <div class="container">{{!CONTAINER DIV}}
             <div class="row">
                 <div class="col-xs-12 col-sm-10">
-                    <h1 id="preprintTitle" class="p-b-md">{{node.title}}</h1>
+                    <h1 id="preprintTitle" class="p-b-md">{{model.title}}</h1>
                     <h5 class="view-authors">
                         <ul class="comma-list">
                             {{#if authors}}
@@ -59,7 +59,7 @@
                 {{else}}
                     {{#if (not node.public)}}
                         <div class="alert alert-danger m-r-md" role="alert">
-                            {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{node.title}} </a> {{t "content.public"}}.
+                            {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{model.title}} </a> {{t "content.public"}}.
                         </div>
                     {{/if}}
                     {{supplementary-file-browser chosenFile=chosenFile preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile') dualTrackNonContributors=(action 'dualTrackNonContributors')}}

@@ -266,7 +266,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     disciplineValid: Ember.computed.notEmpty('subjectsList'),
 
     // Does node have a saved title?
-    savedTitle: Ember.computed.notEmpty('node.title'),
+    savedTitle: Ember.computed.notEmpty('model.title'),
 
     // Does preprint have a saved primaryFile?
     savedFile: Ember.computed.notEmpty('model.primaryFile.content'),
@@ -295,8 +295,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     }),
 
     // Does the pending title differ from the title already saved?
-    titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
-        return this.get('node.title') !== this.get('nodeTitle');
+    titleChanged: Ember.computed('model.title', 'nodeTitle', function() {
+        return this.get('model.title') !== this.get('nodeTitle');
     }),
 
     // Are there any unsaved changes in the upload section?
@@ -630,24 +630,19 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     label: 'Submit - Save and Continue, Existing Node Existing File'
                 });
 
-            const node = this.get('node');
-            const currentTitle = node.get('title');
+            const model = this.get('model');
+            const currentTitle = model.get('title');
             const nodeTitle = this.get('nodeTitle');
 
             this.set('basicsAbstract', this.get('node.description') || null);
 
             return Promise.resolve()
                 .then(() => {
-                    if (currentTitle === nodeTitle) {
-                        return;
-                    }
-
-                    node.set('title', nodeTitle);
-                    return node.save();
+                    if (currentTitle !== nodeTitle)
+                        model.set('title', nodeTitle);
                 })
                 .then(() => this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint'))
                 .catch(() => {
-                    node.set('title', currentTitle);
                     this.get('toast').error(
                         this.get('i18n').t('submit.could_not_update_title')
                     );
@@ -755,7 +750,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.setProperties({
                 file: null,
                 selectedFile: this.get('store').peekRecord('file', this.get('model.primaryFile.id')),
-                nodeTitle: this.get('node.title'),
+                nodeTitle: this.get('model.title'),
                 titleValid: true,
             });
         },
@@ -1092,9 +1087,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             let save_changes = null;
             if (submitAction) {
-                save_changes = model.save().then(() => node.save()).then(() => submitAction.save());
+                save_changes = model.save().then(() => submitAction.save());
             } else {
-                save_changes = model.save().then(() => node.save());
+                save_changes = model.save();
             }
 
             return save_changes

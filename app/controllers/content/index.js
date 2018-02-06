@@ -115,10 +115,10 @@ export default Ember.Controller.extend(Analytics, {
         );
     }),
 
-    twitterHref: Ember.computed('node', function() {
+    twitterHref: Ember.computed('model', function() {
         const queryParams = {
             url: window.location.href,
-            text: this.get('node.title'),
+            text: this.get('model.title'),
             via: 'OSFramework'
         };
         return `https://twitter.com/intent/tweet?${queryStringify(queryParams)}`;
@@ -148,9 +148,9 @@ export default Ember.Controller.extend(Analytics, {
 
         return `https://www.linkedin.com/shareArticle?${queryStringify(queryParams)}`;
     }),
-    emailHref: Ember.computed('node', function() {
+    emailHref: Ember.computed('model', function() {
         const queryParams = {
-            subject: this.get('node.title'),
+            subject: this.get('model.title'),
             body: window.location.href
         };
 
@@ -167,17 +167,13 @@ export default Ember.Controller.extend(Analytics, {
 
     hasTag: Ember.computed.bool('node.tags.length'),
 
-    authors: Ember.computed('node', function() {
+    authors: Ember.computed('model', function() {
         // Cannot be called until node has loaded!
-        const node = this.get('node');
-
-        if (!node)
-            return [];
-
+        const model = this.get('model');
         const contributors = Ember.A();
 
         return DS.PromiseArray.create({
-            promise: loadAll(node, 'contributors', contributors)
+            promise: loadAll(model, 'contributors', contributors)
                 .then(() => contributors)
         });
     }),
