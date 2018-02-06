@@ -69,11 +69,11 @@ test('twitterHref computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'test title'
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         const location = encodeURIComponent(window.location.href);
 
@@ -126,11 +126,11 @@ test('emailHref computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'test title'
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         const location = encodeURIComponent(window.location.href);
 

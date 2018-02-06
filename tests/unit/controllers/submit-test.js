@@ -220,13 +220,13 @@ test('savedTitle computed property', function(assert) {
     const store = this.store;
     const ctrl = this.subject();
     Ember.run(() => {
-        const node = store.createRecord('node', {});
-        const nodeWithTitle = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {});
+        const preprintWithTitle = store.createRecord('preprint', {
             'title': 'Node title'
         });
-        ctrl.set('node', node);
+        ctrl.set('model', preprint);
         assert.equal(ctrl.get('savedTitle'), false);
-        ctrl.set('node', nodeWithTitle);
+        ctrl.set('model', preprintWithTitle);
         assert.equal(ctrl.get('savedTitle'), true);
         Ember.run.cancelTimers();
     });
@@ -332,10 +332,10 @@ test('titleChanged computed property', function(assert) {
     this.inject.service('store');
     const store = this.store;
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             'title': 'Test title'
         });
-        ctrl.set('node', node);
+        ctrl.set('model', preprint);
         ctrl.set('nodeTitle', 'Test title');
         assert.equal(ctrl.get('titleChanged'), false);
         ctrl.set('nodeTitle', 'Changed title');
@@ -841,14 +841,12 @@ test('discardUploadChanges', function(assert) {
             'id': '12345'
         });
         const preprint = store.createRecord('preprint', {
-            'primaryFile': file
-        });
-        const node = store.createRecord('node', {
-            title: 'hello'
+            'primaryFile': file,
+            'title': 'hello',
         });
         const ctrl = this.subject();
+
         ctrl.set('model', preprint);
-        ctrl.set('node', node);
         assert.equal(ctrl.get('file'), null);
         assert.equal(ctrl.get('selectedFile'), null);
         assert.equal(ctrl.get('nodeTitle'), null);
