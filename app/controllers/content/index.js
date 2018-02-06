@@ -4,6 +4,7 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
+import trunc from 'npm:unicode-byte-truncate'
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -141,8 +142,8 @@ export default Ember.Controller.extend(Analytics, {
         const queryParams = {
             url: [window.location.href, 1024],          // required
             mini: ['true', 4],                          // required
-            title: [this.get('node.title'), 200],      // optional
-            summary: [this.get('node.description'), 256], // optional
+            title: trunc(this.get('node.title'), 200),      // optional
+            summary: trunc(this.get('node.description'), 256), // optional
             source: ['Open Science Framework', 200]     // optional
         };
 
