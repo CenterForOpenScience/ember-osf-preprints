@@ -23,6 +23,7 @@ moduleFor('controller:application', 'Unit | Controller | application', {
         'service:toast',
         'service:theme',
         'service:i18n',
+        'service:preprintWord',
     ],
     beforeEach() {
         this.registry.register('helper:t', tHelper);

@@ -61,6 +61,7 @@ export default {
         preprint_pending_doi: `DOI created after {{preprintWords.preprint}} is made public`,
         preprint_pending_doi_moderation: `DOI created after moderator approval`,
         preprint_pending_doi_minted: `DOIs are minted by a third party, and may take up to 24 hours to be registered.`,
+        original_publication_date: `Original Publication Date`,
         citations: `Citations`,
         disciplines: `Disciplines`,
         project_button: {
@@ -195,7 +196,10 @@ export default {
                 license: {
                     apply_license_title: `Apply this license to my OSF Project.`,
                     apply_license_text: `Selecting a license for your {{preprintWords.preprint}} does not automatically apply the license to your OSF project.`
-                }
+                },
+                original_publication_date: {
+                    label: `Original Publication Date`
+                },
             },
             authors: {
                 paragraph: `Add {{preprintWords.preprint}} authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the {{preprintWords.preprint}}.`

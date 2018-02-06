@@ -51,7 +51,17 @@ const BasicsValidations = buildValidations({
                 message: 'Please use a valid {description}'
             })
         ]
+    },
+    basicsOriginalPublicationDate: {
+        description: 'Original Publication Date',
+        validators: [
+            validator('date', {
+                onOrBefore: 'now',
+                precision: 'day',
+            })
+        ]
     }
+
 });
 
 const PENDING = 'pending';
@@ -77,7 +87,7 @@ const SUBMIT_MESSAGES = {
 const PERMISSION_MESSAGES = {
     create: 'submit.body.submit.information.line2.create',
     submit: 'submit.body.submit.information.line2.submit'
-}
+};
 
 const EDIT_MESSAGES = {
     line1: {
@@ -179,7 +189,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     hasFile: Ember.computed.or('file', 'selectedFile'),
 
     // True if fields have been changed
-    hasDirtyFields: Ember.computed.or('uploadChanged', 'basicsChanged', 'disciplineChanged'),
+    // If adding a preprint, hasDirtyFields will always be true to prevent leaving the page at all unless clicking submit
+    hasDirtyFields: Ember.computed.or('uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint'),
+
+    isAddingPreprint: Ember.computed.not('editMode'),
 
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
@@ -220,6 +233,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             basicsTags: Ember.A(),
             basicsAbstract: null,
             basicsDOI: null,
+            basicsOriginalPublicationDate: null,
             basicsLicense: null,
             subjectsList: Ember.A(),
             availableLicenses: Ember.A(),
@@ -236,12 +250,13 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     uploadValid: Ember.computed.alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
+    originalPublicationDateValid: Ember.computed.alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
 
     // Must have year and copyrightHolders filled if those are required by the licenseType selected
     licenseValid: false,
 
     // Basics fields that are being validated are abstract, license and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
-    basicsValid: Ember.computed.and('abstractValid', 'doiValid', 'licenseValid'),
+    basicsValid: Ember.computed.and('abstractValid', 'doiValid', 'licenseValid', 'originalPublicationDateValid'),
 
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: Ember.computed.bool('contributors.length'),
@@ -360,8 +375,17 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         return changed;
     }),
 
+    //This is done to initialize basicsOriginalPublicationDate to the date fetched from an existing preprint, similar to how basicsDOI is initialized.
+    basicsOriginalPublicationDate: Ember.computed.or('model.originalPublicationDate'),
+
+    originalPublicationDateChanged: Ember.computed('model.originalPublicationDate', 'basicsOriginalPublicationDate', function () {
+        let basicsOriginalPublicationDate = this.get('basicsOriginalPublicationDate');
+        let modelOriginalPublicationDate = this.get('model.originalPublicationDate');
+        return (basicsOriginalPublicationDate || modelOriginalPublicationDate) && basicsOriginalPublicationDate !== modelOriginalPublicationDate;
+    }),
+
     // Are there any unsaved changes in the basics section?
-    basicsChanged: Ember.computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged'),
+    basicsChanged: Ember.computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
 
     ////////////////////////////////////////////////////
     // Fields used in the "discipline" section of the form.
@@ -419,7 +443,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         let parent = this.get('parentNode');
         let contributors = Ember.A();
         loadAll(parent, 'contributors', contributors).then(()=>
-             this.set('parentContributors', contributors));
+            this.set('parentContributors', contributors));
     }),
 
     // True if the current user has admin permissions
@@ -777,6 +801,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('basicsTags', this.get('node.tags').slice(0).map(fixSpecialChar));
             this.set('basicsAbstract', this.get('node.description'));
             this.set('basicsDOI', this.get('model.doi'));
+            this.set('basicsOriginalPublicationDate', this.get('model.originalPublicationDate'));
             let date = new Date();
             this.get('model.license').then(license => {
                 this.set('basicsLicense', {
@@ -818,6 +843,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             const currentAbstract = node.get('description');
             const currentTags = node.get('tags').slice();
             const currentDOI = model.get('doi');
+            const currentOriginalPublicationDate = model.get('originalPublicationDate');
             const currentLicenseType = model.get('license');
             const currentLicenseRecord = model.get('licenseRecord');
             const currentNodeLicenseType = node.get('license');
@@ -849,6 +875,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 model.set('doi', this.get('basicsDOI') || null);
             }
 
+            if (this.get('originalPublicationDateChanged')) {
+                model.set('originalPublicationDate', this.get('basicsOriginalPublicationDate') || null);
+            }
+
             if (this.get('licenseChanged') || !this.get('model.license.name')) {
                 model.setProperties({
                     licenseRecord: {
@@ -870,6 +900,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     licenseRecord: currentLicenseRecord,
                     license: currentLicenseType,
                     doi: currentDOI,
+                    originalPublicationDate: currentOriginalPublicationDate,
                 });
 
                 node.setProperties({
