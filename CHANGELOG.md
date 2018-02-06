@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Get pagination info directly from meta in preprint-form-authors component
 - Check for `has_highlighted_subjects` flag to determine what wording should be used on index page
 - Use flexbox to show all provider logos in pretty rows
+- 'Powered by Preprints' link stay on current server
 
 ## [0.116.4] - 2018-01-29
 ### Changed
