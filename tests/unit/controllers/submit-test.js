@@ -1,6 +1,5 @@
 import { moduleFor, test, skip } from 'ember-qunit';
 import Ember from 'ember';
-import wait from 'ember-test-helpers/wait';
 import moment from 'moment';
 
 const panelNames = [
@@ -592,7 +591,11 @@ test('discardBasics properly joins copyrightHolders', function(assert) {
         ctrl.set('node', node);
         ctrl.set('model', model);
         ctrl.send('discardBasics');
-        return wait().then(() => assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest'));
+        let done = assert.async();
+        setTimeout(function() {
+            assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest');
+            done();
+        }, 500 );
     });
 });
 
@@ -1048,7 +1051,7 @@ test('addTag', function(assert) {
 test('removeTag', function(assert) {
     const ctrl = this.subject();
     ctrl.set('basicsTags', ['firstTag', 'secondTag']);
-    ctrl.send('removeTag', 'secondTag');
+    ctrl.send('removeTag', 1);
     assert.equal(ctrl.get('basicsTags').length, 1);
     assert.equal(ctrl.get('basicsTags')[0], 'firstTag');
 });

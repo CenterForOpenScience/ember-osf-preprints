@@ -174,7 +174,9 @@
                                         <div class="clearfix">
                                             <label>{{t "submit.body.basics.keywords.label"}}:</label>
                                             <p class="text-smaller">{{t "submit.body.basics.keywords.paragraph"}}</p>
-                                            {{tags-widget addATag=(action 'addTag') removeATag=(action 'removeTag') tags=basicsTags}}
+                                            {{#tag-input tags=basicsTags  addTag=(action 'addTag') removeTagAtIndex=(action 'removeTag') placeholder=(t "submit.body.basics.tags.placeholder") as |tag|}}
+                                                {{tag}}
+                                            {{/tag-input}}
                                         </div>
                                     </div>
                                     <div class="col-md-6">

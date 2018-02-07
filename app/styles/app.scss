@@ -550,6 +550,25 @@ $color-border-light: #DDDDDD;
         border-radius: 2px;
     }
 }
+.emberTagInput-tag {
+    background: #DEF;
+    border-radius: 0;
+    color: #333333;
+    font-size: 13px;
+    cursor: pointer;
+    &:hover {
+        background: #337ab7;
+        color: #E0EBF3;
+        & > a {
+            color: #E0EBF3;
+        }
+    }
+}
+.emberTagInput-new {
+    & > input {
+        width: inherit;
+    }
+}
 .file-browser-header {
     display: none;
 }
