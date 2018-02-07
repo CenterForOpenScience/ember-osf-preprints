@@ -1,6 +1,5 @@
 import { moduleFor, test, skip } from 'ember-qunit';
 import Ember from 'ember';
-import wait from 'ember-test-helpers/wait';
 import moment from 'moment';
 
 const panelNames = [
