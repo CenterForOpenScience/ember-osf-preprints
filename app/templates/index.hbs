@@ -55,7 +55,7 @@
                         {{/if}}
                     </h2>
                     {{#if theme.provider.hasHighlightedSubjects}}
-                        {{#link-to "provider.discover" class="seeAllSubjects"}}{{t 'index.subjects.links.seeAllSubjects'}}{{/link-to}}
+                        {{#link-to (route-prefix 'discover') class="seeAllSubjects"}}{{t 'index.subjects.links.seeAllSubjects'}}{{/link-to}}
                     {{/if}}
                     <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
                         {{#if theme.provider.additionalProviders}}
