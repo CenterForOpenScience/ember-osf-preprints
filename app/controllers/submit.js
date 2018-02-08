@@ -189,8 +189,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     hasFile: Ember.computed.or('file', 'selectedFile'),
 
     // True if fields have been changed
-    // If adding a preprint, hasDirtyFields will always be true to prevent leaving the page at all unless clicking submit
-    hasDirtyFields: Ember.computed.or('uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint'),
+    hasDirtyFields: Ember.computed('hasFile', 'uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint', function() {
+        return this.get('isAddingPreprint') && this.get('hasFile') || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged');
+    }),
 
     isAddingPreprint: Ember.computed.not('editMode'),
 
