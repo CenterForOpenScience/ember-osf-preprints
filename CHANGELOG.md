@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.117.0] - 2018-02-09
 ### Added
 - Auto-expansion on selected subjects on the Discover page
 - `noscript` message if JavaScript is disabled
@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add to `computed` to prevent redirect at any point on preprint submission
 
 ### Changed
-- Update to latest ember-osf (TODO: change this to ember-osf release version before release)
+- Update to ember-osf 0.14.0
 - Update to use model.queryHasMany in place of model.query
 - Update tests to work with model.queryHasMany
 - Get pagination info directly from meta in preprint-form-authors component
