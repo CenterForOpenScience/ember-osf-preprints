@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.117.1] - 2018-02-09
+### Added
+- Exclusion for livedata provider on index page template
+
 ## [0.117.0] - 2018-02-09
 ### Added
 - Auto-expansion on selected subjects on the Discover page
