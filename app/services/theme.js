@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import config from 'ember-get-config';
-import pathJoin from '../utils/path-join';
 import buildProviderAssetPath from '../utils/build-provider-asset-path';
 
 /**
@@ -17,6 +16,7 @@ import buildProviderAssetPath from '../utils/build-provider-asset-path';
 export default Ember.Service.extend({
     store: Ember.inject.service(),
     session: Ember.inject.service(),
+    headTagsService: Ember.inject.service('head-tags'),
 
     // If we're using a provider domain
     isDomain: window.isProviderDomain,
@@ -90,22 +90,12 @@ export default Ember.Service.extend({
     // The logo object for social sharing
     logoSharing: Ember.computed('id', 'isDomain', function() {
         const id = this.get('id');
-        let logo = {};
-        if (id === 'osf') {
-            logo = config.PREPRINTS.providers
-                .find(provider => provider.id === id)
-                .logoSharing;
-
-            logo.path = pathJoin('/preprints', logo.path);
-        } else {
-            logo = {
-                path: buildProviderAssetPath(config, id, 'sharing.png', this.get('isDomain')),
-                type: 'image/png',
-                width: 1200,
-                height: 630
-            }
-        }
-        return logo;
+        return {
+            path: buildProviderAssetPath(config, id, 'sharing.png', this.get('isDomain')),
+            type: 'image/png',
+            width: 1200,
+            height: 630
+        };
     }),
 
     // The url to redirect users to sign up to
@@ -120,5 +110,18 @@ export default Ember.Service.extend({
 
     redirectUrl: Ember.computed('currentLocation', function() {
         return this.get('currentLocation');
+    }),
+
+    headTags: Ember.computed('id', function() {
+        return [{
+            type: 'link',
+            attrs: {
+                rel: 'shortcut icon',
+                href: buildProviderAssetPath(config, this.get('id'), 'favicon.ico', window.isProviderDomain)
+            }
+        }]
+    }),
+    idChanged: Ember.observer('id', function() {
+        this.get('headTagsService').collectHeadTags();
     }),
 });
