@@ -259,13 +259,13 @@ test('savedAbstract computed property', function(assert) {
     const store = this.store;
     const ctrl = this.subject();
     Ember.run(() => {
-        const node = store.createRecord('node', {});
-        const nodeWithDescription = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {});
+        const preprintWithDescription = store.createRecord('preprint', {
             'description': 'The Best Description'
         });
-        ctrl.set('node', node);
+        ctrl.set('model', preprint);
         assert.equal(ctrl.get('savedAbstract'), false);
-        ctrl.set('node', nodeWithDescription);
+        ctrl.set('model', preprintWithDescription);
         assert.equal(ctrl.get('savedAbstract'), true);
         Ember.run.cancelTimers();
     });
@@ -361,10 +361,10 @@ test('basicsAbstract computed property', function(assert) {
     this.inject.service('store');
     const store = this.store;
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             'description': 'A great abstract'
         });
-        ctrl.set('node', node);
+        ctrl.set('model', preprint);
         assert.equal(ctrl.get('basicsAbstract'), 'A great abstract');
         Ember.run.cancelTimers();
     });
@@ -376,12 +376,12 @@ test('abstractChanged computed property', function(assert) {
     this.inject.service('store');
     const store = this.store;
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const model = store.createRecord('preprint', {
             'description': 'A great abstract'
         });
-        ctrl.set('node', node);
+        ctrl.set('model', model);
         assert.equal(ctrl.get('abstractChanged'), true);
-        node.set('description', 'Abstract with whitespace');
+        model.set('description', 'Abstract with whitespace');
         assert.equal(ctrl.get('abstractChanged'), false);
     });
 });
@@ -391,11 +391,11 @@ test('basicsTags computed property', function(assert) {
     this.inject.service('store');
     const store = this.store;
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             'tags': ['firstTag', 'secondTag']
         });
         assert.equal(ctrl.get('basicsTags').length, 0);
-        ctrl.set('node', node);
+        ctrl.set('model', preprint);
         assert.equal(ctrl.get('basicsTags').length, 2);
     });
 });
@@ -406,11 +406,11 @@ test('tagsChanged computed property', function(assert) {
     const store = this.store;
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             'tags': ['firstTag', 'secondTag']
         });
 
-        ctrl.set('node', node);
+        ctrl.set('model', preprint);
         assert.equal(ctrl.get('tagsChanged'), false);
 
         ctrl.get('basicsTags').pushObject('newTag');
@@ -577,10 +577,8 @@ test('discardBasics properly joins copyrightHolders', function(assert) {
     this.inject.service('store');
     const store = this.store;
     Ember.run(() => {
-        const node =  store.createRecord('node', {
-            tags: ['tags']
-        });
         const model = store.createRecord('preprint', {
+            tags: ['tags'],
             licenseRecord: {
                 copyright_holders: ['Frank', 'Everest']
             }
@@ -589,7 +587,6 @@ test('discardBasics properly joins copyrightHolders', function(assert) {
             'name': 'No license'
         });
         model.set('license', license);
-        ctrl.set('node', node);
         ctrl.set('model', model);
         ctrl.send('discardBasics');
         return wait().then(() => assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest'));
@@ -866,11 +863,11 @@ test('clearDownstreamFields action - belowConvertOrCopy', function(assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'hello'
         });
 
-        ctrl.set('node', node);
+        ctrl.set('model', preprint);
         ctrl.set('selectedFile', 'Test file');
         ctrl.set('file', 'file');
         ctrl.set('convertOrCopy', 'copy');
@@ -878,7 +875,7 @@ test('clearDownstreamFields action - belowConvertOrCopy', function(assert) {
 
         ctrl.send('clearDownstreamFields', 'belowConvertOrCopy');
 
-        assert.equal(ctrl.get('node'), node);
+        assert.equal(ctrl.get('model'), preprint);
         assert.equal(ctrl.get('selectedFile'), 'Test file');
         assert.equal(ctrl.get('file'), 'file');
         assert.equal(ctrl.get('convertOrCopy'), 'copy');
@@ -893,11 +890,11 @@ test('clearDownstreamFields action - belowFile', function(assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'hello'
         });
 
-        ctrl.set('node', node);
+        ctrl.set('model', preprint);
         ctrl.set('selectedFile', 'Test file');
         ctrl.set('file', 'file');
         ctrl.set('convertOrCopy', 'copy');
@@ -905,7 +902,7 @@ test('clearDownstreamFields action - belowFile', function(assert) {
 
         ctrl.send('clearDownstreamFields', 'belowFile');
 
-        assert.equal(ctrl.get('node'), node);
+        assert.equal(ctrl.get('model'), preprint);
         assert.equal(ctrl.get('selectedFile'), 'Test file');
         assert.equal(ctrl.get('file'), 'file');
         assert.equal(ctrl.get('convertOrCopy'), null);
@@ -920,11 +917,11 @@ test('clearDownstreamFields action - belowNode', function(assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'hello'
         });
 
-        ctrl.set('node', node);
+        ctrl.set('model', preprint);
         ctrl.set('selectedFile', 'Test file');
         ctrl.set('file', 'file');
         ctrl.set('convertOrCopy', 'copy');
@@ -932,7 +929,7 @@ test('clearDownstreamFields action - belowNode', function(assert) {
 
         ctrl.send('clearDownstreamFields', 'belowNode');
 
-        assert.equal(ctrl.get('node'), node);
+        assert.equal(ctrl.get('model'), preprint);
         assert.equal(ctrl.get('selectedFile'), null);
         assert.equal(ctrl.get('file'), null);
         assert.equal(ctrl.get('convertOrCopy'), null);
@@ -947,11 +944,11 @@ test('clearDownstreamFields action - allUpload', function(assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'hello'
         });
 
-        ctrl.set('node', node);
+        ctrl.set('model', preprint);
         ctrl.set('selectedFile', 'Test file');
         ctrl.set('file', 'file');
         ctrl.set('convertOrCopy', 'copy');
@@ -959,7 +956,6 @@ test('clearDownstreamFields action - allUpload', function(assert) {
 
         ctrl.send('clearDownstreamFields', 'allUpload');
 
-        assert.equal(ctrl.get('node'), null);
         assert.equal(ctrl.get('selectedFile'), null);
         assert.equal(ctrl.get('file'), null);
         assert.equal(ctrl.get('convertOrCopy'), null);
@@ -973,13 +969,10 @@ test('discardBasics', function(assert) {
     const store = this.store;
     const ctrl = this.subject();
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'hello',
             tags: ['first tag'],
-            description: 'The best abstract'
-        });
-
-        const preprint = store.createRecord('preprint', {
+            description: 'The best abstract',
             doi: '10.1234/test_doi',
             licenseRecord: {
                 'year': '2016',
@@ -989,7 +982,6 @@ test('discardBasics', function(assert) {
             originalPublicationDate: moment()
         });
 
-        ctrl.set('node', node);
         ctrl.set('model', preprint);
         ctrl.set('basicsTags', ['second Tag']);
         ctrl.set('basicsAbstract', 'Test abstract');
@@ -997,8 +989,8 @@ test('discardBasics', function(assert) {
         ctrl.set('basicsLicense', 'Test license');
         ctrl.set('basicsOriginalPublicationDate', moment().add(1, 'days'));
         ctrl.send('discardBasics');
-        assert.equal(ctrl.get('basicsTags')[0], node.get('tags')[0]);
-        assert.equal(ctrl.get('basicsAbstract'), node.get('description'));
+        assert.equal(ctrl.get('basicsTags')[0], preprint.get('tags')[0]);
+        assert.equal(ctrl.get('basicsAbstract'), preprint.get('description'));
         assert.equal(ctrl.get('basicsDOI'), preprint.get('doi'));
         assert.equal(ctrl.get('basicsOriginalPublicationDate'), preprint.get('originalPublicationDate'));
         // TODO promise hasn't resolved so this is incorrect.
@@ -1018,16 +1010,13 @@ skip('saveBasics', function(assert) {
     const store = this.store;
     const ctrl = this.subject();
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'hello',
             tags: ['tags'],
-            description: 'This is an abstract.'
-        });
-        const preprint = store.createRecord('preprint', {
+            description: 'This is an abstract.',
             primaryFile: 'Test file',
             'doi': '10.1234/test'
         });
-        ctrl.set('node', node);
         ctrl.set('model', preprint);
         ctrl.send('saveBasics');
         Ember.run.cancelTimers();

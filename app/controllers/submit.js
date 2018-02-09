@@ -272,7 +272,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     savedFile: Ember.computed.notEmpty('model.primaryFile.content'),
 
     // Does node have a saved description?
-    savedAbstract: Ember.computed.notEmpty('node.description'),
+    savedAbstract: Ember.computed.notEmpty('model.description'),
 
     // Does preprint have saved subjects?
     savedSubjects: Ember.computed.notEmpty('model.subjects'),
@@ -307,28 +307,26 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     ////////////////////////////////////////////////////
 
     // Pending abstract
-    basicsAbstract:  Ember.computed('node.description', function() {
-        let node = this.get('node');
-        return node ? node.get('description') : null;
+    basicsAbstract:  Ember.computed('model.description', function() {
+        return this.get('model.description') || null;
     }),
 
     // Does the pending abstract differ from the saved abstract in the db?
-    abstractChanged: Ember.computed('basicsAbstract', 'node.description', function() {
+    abstractChanged: Ember.computed('basicsAbstract', 'model.description', function() {
         let basicsAbstract = this.get('basicsAbstract');
-        return basicsAbstract !== null && basicsAbstract.trim() !== this.get('node.description');
+        return basicsAbstract !== null && basicsAbstract.trim() !== this.get('model.description');
     }),
 
     // Pending tags
-    basicsTags: Ember.computed('node', function() {
-        const node = this.get('node');
-
-        return node ? node.get('tags').map(fixSpecialChar) : Ember.A();
+    basicsTags: Ember.computed('model.tags', function() {
+        let tags = this.get('model.tags');
+        return (tags && tags.map(fixSpecialChar)) || Ember.A();
     }),
 
     // Does the list of pending tags differ from the saved tags in the db?
-    tagsChanged: Ember.computed('basicsTags.@each', 'node.tags', function() {
+    tagsChanged: Ember.computed('basicsTags.@each', 'model.tags', function() {
         const basicsTags = this.get('basicsTags');
-        const nodeTags = this.get('node.tags');
+        const nodeTags = this.get('model.tags');
 
         return basicsTags && nodeTags &&
             (
@@ -794,8 +792,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Basics Changes`
                 });
-            this.set('basicsTags', this.get('node.tags').slice(0).map(fixSpecialChar));
-            this.set('basicsAbstract', this.get('node.description'));
+            this.set('basicsTags', this.get('model.tags').slice(0).map(fixSpecialChar));
+            this.set('basicsAbstract', this.get('model.description'));
             this.set('basicsDOI', this.get('model.doi'));
             this.set('basicsOriginalPublicationDate', this.get('model.originalPublicationDate'));
             let date = new Date();
@@ -836,8 +834,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             const node = this.get('node');
             const model = this.get('model');
             // Saves off current server-state basics fields, so UI can be restored in case of failure
-            const currentAbstract = node.get('description');
-            const currentTags = node.get('tags').slice();
+            const currentAbstract = model.get('description');
+            const currentTags = model.get('tags').slice();
             const currentDOI = model.get('doi');
             const currentOriginalPublicationDate = model.get('originalPublicationDate');
             const currentLicenseType = model.get('license');
@@ -849,10 +847,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .map(item => item.trim());
 
             if (this.get('abstractChanged'))
-                node.set('description', this.get('basicsAbstract'));
+                model.set('description', this.get('basicsAbstract'));
 
             if (this.get('tagsChanged'))
-                node.set('tags', this.get('basicsTags'));
+                model.set('tags', this.get('basicsTags'));
 
             if (this.get('applyLicense')) {
                 if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || (node.get('nodeLicense.copyrightHolders') || []).join() !== copyrightHolders.join()) {

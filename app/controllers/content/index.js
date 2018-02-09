@@ -137,12 +137,12 @@ export default Ember.Controller.extend(Analytics, {
         return `https://www.facebook.com/dialog/share?${queryStringify(queryParams)}`;
     }),
     // https://developer.linkedin.com/docs/share-on-linkedin
-    linkedinHref: Ember.computed('node', function() {
+    linkedinHref: Ember.computed('model', function() {
         const queryParams = {
             url: [window.location.href, 1024],          // required
             mini: ['true', 4],                          // required
-            title: [this.get('node.title'), 200],      // optional
-            summary: [this.get('node.description'), 256], // optional
+            title: [this.get('model.title'), 200],      // optional
+            summary: [this.get('model.description'), 256], // optional
             source: ['Open Science Framework', 200]     // optional
         };
 
@@ -165,7 +165,7 @@ export default Ember.Controller.extend(Analytics, {
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
 
-    hasTag: Ember.computed.bool('node.tags.length'),
+    hasTag: Ember.computed.bool('model.tags.length'),
 
     authors: Ember.computed('model', function() {
         // Cannot be called until node has loaded!
@@ -187,8 +187,8 @@ export default Ember.Controller.extend(Analytics, {
             .replace(/({{copyrightHolders}})/g, copyright_holders.join(', '));
     }),
 
-    hasShortenedDescription: Ember.computed('node.description', function() {
-        const nodeDescription = this.get('node.description');
+    hasShortenedDescription: Ember.computed('model.description', function() {
+        const nodeDescription = this.get('model.description');
 
         return nodeDescription && nodeDescription.length > 350;
     }),
@@ -197,10 +197,10 @@ export default Ember.Controller.extend(Analytics, {
         return this.get('hasShortenedDescription') && !this.get('expandedAbstract');
     }),
 
-    description: Ember.computed('node.description', function() {
+    description: Ember.computed('model.description', function() {
         // Get a shortened version of the abstract, but doesn't cut in the middle of word by going
         // to the last space.
-        return this.get('node.description')
+        return this.get('model.description')
             .slice(0, 350)
             .replace(/\s+\S*$/, '');
     }),

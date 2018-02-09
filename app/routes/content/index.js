@@ -83,9 +83,9 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                     loadAll(node, 'contributors', contributors, { filter: { bibliographic: true } })
                 ]);
             })
-            .then(([provider, node, license]) => {
-                const title = node.get('title');
-                const description = node.get('description');
+            .then(([provider, license]) => {
+                const title = preprint.get('title');
+                const description = preprint.get('description');
                 const mintDoi = extractDoiFromString(preprint.get('preprintDoiUrl'));
                 const peerDoi = preprint.get('doi');
                 const doi = peerDoi ? peerDoi : mintDoi;
@@ -160,7 +160,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
 
                 const tags = [
                     ...preprint.get('subjects').map(subjectBlock => subjectBlock.map(subject => subject.text)),
-                    ...node.get('tags')
+                    ...preprint.get('tags')
                 ];
 
                 for (const tag of tags) {

@@ -83,7 +83,7 @@
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
                         <p class="abstract {{if useShortenedDescription 'abstract-truncated'}}">
-                            {{~if useShortenedDescription description node.description~}}
+                            {{~if useShortenedDescription description model.description~}}
                         </p>
                         <button class='btn-link' hidden={{not hasShortenedDescription}} {{action 'expandAbstract'}}>
                             {{~t (if expandedAbstract 'content.see_less' 'content.see_more')~}}
@@ -141,7 +141,7 @@
                     <div class="p-t-xs">
                         <h4 class=" f-w-md p-v-md"><strong>{{t "global.tags"}}</strong></h4>
                         {{#if hasTag}}
-                            {{#each node.tags as |tag|}}
+                            {{#each model.tags as |tag|}}
                                 <span class="badge">{{fix-special-char tag}}</span>
                             {{/each}}
                         {{else}}
