@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.117.2] - 2018-02-09
+### Changed
+- Also fingerprint .ico files
+- Update to latest provider assets
+
 ## [0.117.1] - 2018-02-09
 ### Added
 - Exclusion for livedata provider on index page template
