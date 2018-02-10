@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.117.2] - 2018-02-09
+### Changed
+- Also fingerprint .ico files
+- Update to latest provider assets
+
 ## [0.117.1] - 2018-02-09
 ### Added
 - Exclusion for livedata provider on index page template
