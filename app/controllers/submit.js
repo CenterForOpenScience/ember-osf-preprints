@@ -53,7 +53,7 @@ const BasicsValidations = buildValidations({
         ]
     },
     basicsOriginalPublicationDate: {
-        description: 'Original Publication Date',
+        description: 'Original publication date',
         validators: [
             validator('date', {
                 onOrBefore: 'now',
@@ -189,7 +189,11 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     hasFile: Ember.computed.or('file', 'selectedFile'),
 
     // True if fields have been changed
-    hasDirtyFields: Ember.computed.or('uploadChanged', 'basicsChanged', 'disciplineChanged'),
+    hasDirtyFields: Ember.computed('hasFile', 'uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint', function() {
+        return this.get('isAddingPreprint') && this.get('hasFile') || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged');
+    }),
+
+    isAddingPreprint: Ember.computed.not('editMode'),
 
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.

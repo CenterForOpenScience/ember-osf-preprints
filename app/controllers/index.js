@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Analytics from 'ember-osf/mixins/analytics';
+import config from 'ember-get-config';
 
 /**
  * @module ember-preprints
@@ -11,6 +12,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 export default Ember.Controller.extend(Analytics, {
     theme: Ember.inject.service(),
+    host: config.OSF.url,
     actions: {
         contactLink(href, category, action, label) {
             const metrics = Ember.get(this, 'metrics');

@@ -1448,3 +1448,23 @@ nav.branded-navbar {
     margin-left: 15px;
     text-decoration: underline;
 }
+
+.provider-logos {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+
+    .provider-logo-item {
+        display: block;
+        flex: 1 0 auto;
+        box-sizing: border-box;
+        height: 120px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-width: 200px;
+        margin: 15px;
+    }
+}
