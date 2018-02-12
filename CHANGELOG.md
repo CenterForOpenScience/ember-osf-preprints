@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.117.2] - 2018-02-09
+### Changed
+- Also fingerprint .ico files
+- Update to latest provider assets
+
+## [0.117.1] - 2018-02-09
+### Added
+- Exclusion for livedata provider on index page template
+
+## [0.117.0] - 2018-02-09
 ### Added
 - Auto-expansion on selected subjects on the Discover page
 - Default auto-expansion on top level subjects when there are no more than 3.
@@ -16,9 +27,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Confirmation message when user tries to reload or navigate away from the preprint submission page after adding/selecting a node
 - `Computed` to check if there has been user changes on the discipline field on the preprint submission/edit form
 - Translations for `Browse by featured subjects`, `Browse by subjects`, and `Browse by providers`
+- Add to `computed` to prevent redirect at any point on preprint submission
 
 ### Changed
-- Update to latest ember-osf (TODO: change this to ember-osf release version before release)
+- Update to ember-osf 0.14.0
 - Update to use model.queryHasMany in place of model.query
 - Update tests to work with model.queryHasMany
 - Get pagination info directly from meta in preprint-form-authors component

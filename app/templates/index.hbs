@@ -55,7 +55,7 @@
                         {{/if}}
                     </h2>
                     {{#if theme.provider.hasHighlightedSubjects}}
-                        {{#link-to "provider.discover" class="seeAllSubjects"}}{{t 'index.subjects.links.seeAllSubjects'}}{{/link-to}}
+                        {{#link-to (route-prefix 'discover') class="seeAllSubjects"}}{{t 'index.subjects.links.seeAllSubjects'}}{{/link-to}}
                     {{/if}}
                     <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
                         {{#if theme.provider.additionalProviders}}
@@ -79,33 +79,35 @@
                         <p class="m-b-lg">{{t "index.services.top.paragraph"}}</p>
                     </div>
                 </div>
-            </div>
-            <div class="row p-v-md">
-                <div class="provider-logos">
-                    {{#each model.brandedProviders as |provider| }}
-                        <div class="provider-logo-item" style="background-image: url({{provider-asset provider.id 'wide_white.png'}});"></div>
-                    {{/each}}
+                <div class="row p-v-md">
+                    <div class="provider-logos">
+                        {{#each model.brandedProviders as |provider| }}
+                            {{#unless (eq provider.id 'livedata')}}
+                                <a href="{{brandedPreprintUrl provider}}" title="{{provider.name}}" class="provider-logo-item" style="background-image: url({{provider-asset provider.id 'wide_white.png'}});"></a>
+                            {{/unless}}
+                        {{/each}}
+                    </div>
                 </div>
-            </div>
-            <div class="row p-v-md">
-                <div class="col-md-12 text-center">
-                    <p class="lead">
-                        {{t "index.services.bottom.p1"}}
-                        <div class="p-t-sm">
-                            {{t "index.services.bottom.div.line1"}}
-                            <a class="source_code_link" href="https://github.com/CenterForOpenScience/ember-preprints"
-                                onclick={{action "click" "link" "Index - GitHub Repo" "https://github.com/CenterForOpenScience/ember-preprints"}}>
-                                {{t "index.services.bottom.div.linkText1"}}
-                            </a>
-                            {{t "index.services.bottom.div.line2"}}
-                            <a class="source_code_link" href="https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"
-                                onclick={{action "click" "link" "Index - Requirements and Roadmap" "https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"}}>
-                                {{t "index.services.bottom.div.linkText2"}}
-                            </a>
-                            {{t "index.services.bottom.div.line3"}}
-                        </div>
-                    </p>
-                    <a href="mailto:contact@osf.io" class="btn btn-info btn-lg" onclick={{action 'contactLink' emailHref 'link' 'click' 'Index - contact email'}}>{{t "index.services.bottom.contact"}}</a>
+                <div class="row p-v-md">
+                    <div class="col-md-12 text-center">
+                        <p class="lead">
+                            {{t "index.services.bottom.p1"}}
+                            <div class="p-t-sm">
+                                {{t "index.services.bottom.div.line1"}}
+                                <a class="source_code_link" href="https://github.com/CenterForOpenScience/ember-preprints"
+                                    onclick={{action "click" "link" "Index - GitHub Repo" "https://github.com/CenterForOpenScience/ember-preprints"}}>
+                                    {{t "index.services.bottom.div.linkText1"}}
+                                </a>
+                                {{t "index.services.bottom.div.line2"}}
+                                <a class="source_code_link" href="https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"
+                                    onclick={{action "click" "link" "Index - Requirements and Roadmap" "https://docs.google.com/spreadsheets/d/1SocElbBjc_Nhme4-SJv2_zytBd1ys8R5aZDb3POe94c/edit#gid=1340026270"}}>
+                                    {{t "index.services.bottom.div.linkText2"}}
+                                </a>
+                                {{t "index.services.bottom.div.line3"}}
+                            </div>
+                        </p>
+                        <a href="mailto:contact@osf.io" class="btn btn-info btn-lg" onclick={{action 'contactLink' emailHref 'link' 'click' 'Index - contact email'}}>{{t "index.services.bottom.contact"}}</a>
+                    </div>
                 </div>
             </div>
         </div>
