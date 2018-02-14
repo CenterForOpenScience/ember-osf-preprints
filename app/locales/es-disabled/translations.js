@@ -210,6 +210,9 @@ export default {
         search_contributors_error: `No se pudo realizar la búsqueda.`,
         error_completing_preprint: `Error completando el preprint.`,
         error_saving_preprint: `No se pudo grabar el preprint; por favor, trate de nuevo`,
+        server_locked: `No se puede cambiar el servidor después de que se ha cargado un archivo`,
+        please_select_server: `Por favor seleccione el servidor antes de continuar`,
+        please_complete_upload: `Por favor complete la sección de subir antes de continuar`,
     },
     components: {
         'confirm-restart-submit-preprint': {
@@ -294,7 +297,9 @@ export default {
             title: `Título del preprint`,
             location: `Ubicación preprint`,
             click_edit: `Cliquear para Editar`,
+            server: 'Servidor de preprints',
             name: {
+                Server: 'Seleccione un servidor de preprints',
                 Upload: 'Cargar',
                 Discipline: 'Disciplinas',
                 Basics: 'Campos Básicos',
