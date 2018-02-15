@@ -193,6 +193,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     currentProvider: undefined,
     selectedProvider: undefined,
     providerSaved: false,
+    preprintSaved: false,
 
     init() {
         let controller = this;
@@ -211,8 +212,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     },
 
     // True if fields have been changed
-    hasDirtyFields: Ember.computed('hasFile', 'uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint', 'preprintSaved', function() {
-        return !this.get('preprintSaved') && (this.get('isAddingPreprint') && this.get('hasFile') || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged'));
+    hasDirtyFields: Ember.computed('preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
+        return !this.get('preprintSaved') && (this.get('isAddingPreprint') && this.get('providerSaved') || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged'));
     }),
 
     isAddingPreprint: Ember.computed.not('editMode'),
