@@ -190,7 +190,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     // True if fields have been changed
     hasDirtyFields: Ember.computed('hasFile', 'uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint', function() {
-        return this.get('isAddingPreprint') && this.get('hasFile') || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged');
+        if (this.get('isAddingPreprint') && !this.get('hasFile') && !this.get('node')) {
+            return false;
+        }
+        return this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged');
     }),
 
     isAddingPreprint: Ember.computed.not('editMode'),
