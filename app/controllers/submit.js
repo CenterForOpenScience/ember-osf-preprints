@@ -487,13 +487,13 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     // Language about submission and moderation.
     ////////////////////////////////////////////////////
 
-    moderationType: Ember.computed.alias('theme.provider.reviewsWorkflow'),
+    moderationType: Ember.computed.alias('currentProvider.reviewsWorkflow'),
     workflow: Ember.computed('moderationType', function () {
         return WORKFLOW[this.get('moderationType')];
     }),
-    providerName: Ember.computed('theme.isProvider', function() {
-        return this.get('theme.isProvider') ?
-            this.get('theme.provider.name') :
+    providerName: Ember.computed('currentProvider', function() {
+        return this.get('currentProvider.id') !== 'osf' ?
+            this.get('currentProvider.name') :
             this.get('i18n').t('global.brand_name');
     }),
     modalTitle: Ember.computed('moderationType', function() {
