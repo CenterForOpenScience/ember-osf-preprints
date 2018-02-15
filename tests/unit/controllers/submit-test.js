@@ -1,7 +1,7 @@
 import { moduleFor, test, skip } from 'ember-qunit';
 import Ember from 'ember';
-import wait from 'ember-test-helpers/wait';
 import moment from 'moment';
+import { manualSetup, mockFindAll } from 'ember-data-factory-guy';
 
 const panelNames = [
     'Discipline',
@@ -66,12 +66,14 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'transform:fixstring'
     ],
     beforeEach: function () {
+        manualSetup(this.container);
+        mockFindAll('preprint-provider');
         this.register('service:panel-actions', panelActionsStub);
         this.inject.service('panel-actions', { as: 'panelActions' });
         // Overwrite these observers with no-ops. They call loadAll(), which uses queryHasMany() and does not work well for tests.
         this.subject().set('getContributors', () => undefined);
         this.subject().set('getParentContributors', () => undefined);
-   }
+    }
 
 });
 
@@ -87,7 +89,7 @@ test('Initial properties', function (assert) {
         '_existingState.EXISTINGFILE': 'existing',
         '_existingState.NEWFILE': 'new',
         'existingState': 'choose',
-        '_names.length': 4,
+        '_names.length': 5,
         'user': null,
         'userNodes.length': 0,
         'userNodesLoaded': false,
@@ -125,7 +127,13 @@ test('Initial properties', function (assert) {
     const propKeys = Object.keys(expected);
     const actual = ctrl.getProperties(propKeys);
 
-    assert.ok(propKeys.every(key => expected[key] === actual[key]));
+    propKeys.forEach(
+        key => assert.strictEqual(
+            expected[key],
+            actual[key],
+            'Initial value for "' + key + '" does not match expected value'
+        )
+    );
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -589,7 +597,7 @@ test('discardBasics properly joins copyrightHolders', function(assert) {
         model.set('license', license);
         ctrl.set('model', model);
         ctrl.send('discardBasics');
-        return wait().then(() => assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest'));
+        assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest');
     });
 });
 
