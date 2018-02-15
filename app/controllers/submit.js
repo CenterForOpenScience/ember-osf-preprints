@@ -1131,8 +1131,16 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             return save_changes
                 .then(() => {
                         this.set('preprintSaved', true);
+                        let useProviderRoute = false;
+                        if (this.get('theme.isProvider')) {
+                            useProviderRoute = this.get('theme.isSubRoute');
+                        } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
+                            window.location.replace(`${this.get('currentProvider.domain')}${model.id}`);
+                        } else if (this.get('currentProvider.id') !== 'osf') {
+                            useProviderRoute = true;
+                        }
                         this.transitionToRoute(
-                            `${this.get('currentProvider.id') !== 'osf' ? 'provider.' : ''}content`,
+                            `${useProviderRoute ? 'provider.' : ''}content`,
                             model.reload()
                         );
                 })
