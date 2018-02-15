@@ -208,12 +208,14 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 const currentProvider = providers.filter(item => item.id === controller.get('theme.id') || config.PREPRINTS.provider)[0];
                 controller.set('currentProvider', currentProvider);
                 controller.set('selectedProvider', currentProvider);
+                this.get('theme.isProvider') && this.set('providerSaved', true);
             });
     },
 
     // True if fields have been changed
-    hasDirtyFields: Ember.computed('preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
-        return !this.get('preprintSaved') && (this.get('isAddingPreprint') && this.get('providerSaved') || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged'));
+    hasDirtyFields: Ember.computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
+        const preprintStarted = this.get('theme.isProvider') ? this.get('hasFile') : this.get('providerSaved');
+        return !this.get('preprintSaved') && (this.get('isAddingPreprint') && preprintStarted || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged'));
     }),
 
     isAddingPreprint: Ember.computed.not('editMode'),
