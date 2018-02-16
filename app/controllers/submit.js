@@ -188,12 +188,11 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     hasFile: Ember.computed.or('file', 'selectedFile'),
 
+    preprintSaved: false,
+
     // True if fields have been changed
-    hasDirtyFields: Ember.computed('hasFile', 'uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint', function() {
-        if (this.get('isAddingPreprint') && !this.get('hasFile') && !this.get('node')) {
-            return false;
-        }
-        return this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged');
+    hasDirtyFields: Ember.computed('hasFile', 'uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint', 'preprintSaved', function() {
+        return !this.get('preprintSaved') && (this.get('isAddingPreprint') && this.get('hasFile') || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged'));
     }),
 
     isAddingPreprint: Ember.computed.not('editMode'),
@@ -299,7 +298,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     // Does the pending title differ from the title already saved?
     titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
-        return this.get('node.title') !== this.get('nodeTitle');
+        return (this.get('node.title') || this.get('nodeTitle')) && this.get('node.title') !== this.get('nodeTitle');
     }),
 
     // Are there any unsaved changes in the upload section?
@@ -1102,6 +1101,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             return save_changes
                 .then(() => {
+                        this.set('preprintSaved', true);
                         this.transitionToRoute(
                             `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
                             model.reload()
@@ -1129,6 +1129,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             return submitAction.save()
                 .then(() => {
+                    this.set('preprintSaved', true);
                     this.get('model').reload();
                     this.transitionToRoute(
                         `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
