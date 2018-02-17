@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 - Warning modal on submit page to only show after changes have been made
+- Improve the appearance of the preprint provider logos on the OSFPreprints landing page
 
 ## [0.117.2] - 2018-02-09
 ### Changed
