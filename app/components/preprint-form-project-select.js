@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import Permissions from 'ember-osf/const/permissions';
-import {loadPage} from 'ember-osf/utils/load-relationship';
+import { loadPage } from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
-import {stripDiacritics} from 'ember-power-select/utils/group-utils';
+import { stripDiacritics } from 'ember-power-select/utils/group-utils';
 import { task, timeout } from 'ember-concurrency';
 /**
  * @module ember-preprints
@@ -95,7 +95,7 @@ export default Ember.Component.extend(Analytics, {
         // When the promise finishes, set the searchTerm
         this.set('searchTerm', searchTerm);
         let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
-        if (results.hasRemaining){
+        if (results.hasRemaining) {
             this.set('canLoadMore', true);
         } else {
             this.set('canLoadMore', false);
@@ -108,7 +108,8 @@ export default Ember.Component.extend(Analytics, {
         let currentPage = this.get('currentPage');
         let currentUser = this.get('currentUser');
         let searchTerm = this.get('searchTerm');
-        let results = yield loadPage(currentUser, 'nodes', 10, currentPage + 1, {
+        let nextPage = currentPage + 1;
+        let results = yield loadPage(currentUser, 'nodes', 10, nextPage, {
             filter: {
                 preprint: false,
                 title: searchTerm,
@@ -118,9 +119,9 @@ export default Ember.Component.extend(Analytics, {
         let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
         onlyAdminNodes = onlyAdminNodes.filter(item => !userNodes.contains(item));
         userNodes.pushObjects(onlyAdminNodes);
-        if (results.hasRemaining){
+        if (results.hasRemaining) {
             this.set('canLoadMore', true);
-            this.set('currentPage', currentPage + 1)
+            this.set('currentPage', nextPage)
         } else {
             this.set('canLoadMore', false);
         }
@@ -129,7 +130,7 @@ export default Ember.Component.extend(Analytics, {
 
     actions: {
         getDefaultUserNodes(term) {
-            if (term == ''){
+            if (term === '') {
                 this.get('_getInitialUserNodes').perform(term);
             }
         },
