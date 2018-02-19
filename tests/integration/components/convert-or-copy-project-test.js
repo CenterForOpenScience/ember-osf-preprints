@@ -32,20 +32,20 @@ skip('choosing copy changes mode to copy', function(assert){
     assert.equal(this.get('convertOrCopy'), 'copy');
 });
 
-skip('choosing copy makes nodeTitle null and requires a title change', function(assert){
-    this.set('nodeTitle', 'Como nossos pais');
+skip('choosing copy makes title null and requires a title change', function(assert){
+    this.set('title', 'Como nossos pais');
     this.set('titleValid', true);
 
     this.render(hbs`{{convert-or-copy-project
         clearDownstreamFields=(action noop)
         nextUploadSection=(action noop)
-        nodeTitle=nodeTitle titleValid=titleValid
+        title=title titleValid=titleValid
     }}`);
 
     this.$('#copy').click();
 
     assert.ok(!this.get('titleValid'));
-    assert.equal(this.get('nodeTitle'), null);
+    assert.equal(this.get('title'), null);
 });
 
 skip('choosing convert displays converting options and changes mode to convert', function(assert){
@@ -66,8 +66,8 @@ skip('choosing convert displays converting options and changes mode to convert',
     assert.ok(this.$('.exclamation-confirm-convert').length);
 });
 
-skip('choosing convert makes nodeTitle the title of the node about to be converted and does not require change', function(assert){
-    this.set('nodeTitle', null);
+skip('choosing convert makes title the title of the node about to be converted and does not require change', function(assert){
+    this.set('title', null);
     this.set('titleValid', null);
     this.set('node', {
         title: 'Mas, que Nada!'
@@ -76,13 +76,13 @@ skip('choosing convert makes nodeTitle the title of the node about to be convert
     this.render(hbs`{{convert-or-copy-project
         clearDownstreamFields=(action noop)
         nextUploadSection=(action noop)
-        node=node nodeTitle=nodeTitle titleValid=titleValid
+        node=node title=title titleValid=titleValid
     }}`);
 
     this.$('#convert').click();
 
     assert.ok(this.get('titleValid'));
-    assert.equal(this.get('nodeTitle'), 'Mas, que Nada!');
+    assert.equal(this.get('title'), 'Mas, que Nada!');
 });
 
 skip('can confirm conversion and passes the convertProjectConfirmed flag up', function(assert){

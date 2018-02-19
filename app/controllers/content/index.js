@@ -188,9 +188,9 @@ export default Ember.Controller.extend(Analytics, {
     }),
 
     hasShortenedDescription: Ember.computed('model.description', function() {
-        const nodeDescription = this.get('model.description');
+        const description = this.get('model.description');
 
-        return nodeDescription && nodeDescription.length > 350;
+        return description && description.length > 350;
     }),
 
     useShortenedDescription: Ember.computed('expandedAbstract', 'hasShortenedDescription', function() {

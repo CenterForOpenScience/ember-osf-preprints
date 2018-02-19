@@ -160,7 +160,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     file: null, // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
     selectedFile: null, // File that will be the preprint (already uploaded to node or selected from existing node)
     contributors: Ember.A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
-    nodeTitle: null, // Preprint title
+    title: null, // Preprint title
     nodeLocked: false, // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
@@ -210,7 +210,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             file: null,
             selectedFile: null,
             contributors: Ember.A(),
-            nodeTitle: null,
+            title: null,
             nodeLocked: false, // Will be set to true if edit?
             searchResults: [],
             savingPreprint: false,
@@ -247,7 +247,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     ///////////////////////////////////////
     // Validation rules and changed states for form sections
 
-    // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
+    // In order to advance from upload state, node and selectedFile must have been defined, and title must be set.
     uploadValid: Ember.computed.alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
@@ -295,8 +295,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     }),
 
     // Does the pending title differ from the title already saved?
-    titleChanged: Ember.computed('model.title', 'nodeTitle', function() {
-        return this.get('model.title') !== this.get('nodeTitle');
+    titleChanged: Ember.computed('model.title', 'title', function() {
+        return this.get('model.title') !== this.get('title');
     }),
 
     // Are there any unsaved changes in the upload section?
@@ -326,13 +326,13 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     // Does the list of pending tags differ from the saved tags in the db?
     tagsChanged: Ember.computed('basicsTags.@each', 'model.tags', function() {
         const basicsTags = this.get('basicsTags');
-        const nodeTags = this.get('model.tags');
+        const tags = this.get('model.tags');
 
-        return basicsTags && nodeTags &&
+        return basicsTags && tags &&
             (
-                basicsTags.length !== nodeTags.length ||
+                basicsTags.length !== tags.length ||
                 basicsTags.some(
-                    (v, i) => fixSpecialChar(v) !== fixSpecialChar(nodeTags[i])
+                    (v, i) => fixSpecialChar(v) !== fixSpecialChar(tags[i])
                 )
             );
     }),
@@ -630,14 +630,14 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             const model = this.get('model');
             const currentTitle = model.get('title');
-            const nodeTitle = this.get('nodeTitle');
+            const title = this.get('title');
 
             this.set('basicsAbstract', this.get('node.description') || null);
 
             return Promise.resolve()
                 .then(() => {
-                    if (currentTitle !== nodeTitle)
-                        model.set('title', nodeTitle);
+                    if (currentTitle !== title)
+                        model.set('title', title);
                 })
                 .then(() => this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint'))
                 .catch(() => {
@@ -656,7 +656,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     action: 'click',
                     label: 'Submit - Save and Continue, New Component, Copy File'
                 });
-            node.addChild(this.get('nodeTitle'))
+            node.addChild(this.get('title'))
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
@@ -748,7 +748,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.setProperties({
                 file: null,
                 selectedFile: this.get('store').peekRecord('file', this.get('model.primaryFile.id')),
-                nodeTitle: this.get('model.title'),
+                title: this.get('model.title'),
                 titleValid: true,
             });
         },
@@ -770,7 +770,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 case 'belowFile':
                     props.push('convertOrCopy');
                 case 'belowConvertOrCopy':
-                    props.push('nodeTitle');
+                    props.push('title');
                     break;
             }
 
