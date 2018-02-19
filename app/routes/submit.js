@@ -45,17 +45,5 @@ export default Ember.Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin
         // If true, shows a confirmation message when leaving the page
         // True if the user already created/chosen a project node
         return this.controller.get('hasDirtyFields');
-    },
-    shouldCheckIsPageDirty(transition) {
-        // Allows the 'provider.content.index' route as an acception
-        // to the dirty message upon preprint submit
-        const isChildRouteTransition = this._super(...arguments);
-        const submitRoute = `${this.controller.get('theme.isSubRoute') ? 'provider.' : ''}content`;
-
-        if (transition.targetName === submitRoute + '.index') {
-            return true;
-        } else {
-            return isChildRouteTransition;
-        }
     }
 });

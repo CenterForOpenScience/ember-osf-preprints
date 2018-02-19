@@ -321,7 +321,7 @@ test('preprintFileChanged computed property', function(assert) {
         ctrl.set('file', null);
         assert.equal(ctrl.get('preprintFileChanged'), false);
         ctrl.set('model', preprint);
-        assert.equal(ctrl.get('preprintFileChanged'), true);
+        assert.equal(ctrl.get('preprintFileChanged'), false);
         ctrl.set('selectedFile', file);
         assert.equal(ctrl.get('preprintFileChanged'), false);
     });
