@@ -4,6 +4,7 @@ import SetupSubmitControllerMixin from '../../mixins/setup-submit-controller';
 import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
 import permissions from 'ember-osf/const/permissions';
+import ConfirmationMixin from 'ember-onbeforeunload/mixins/confirmation';
 
 /**
  * @module ember-preprints
@@ -14,10 +15,15 @@ import permissions from 'ember-osf/const/permissions';
  * Fetches current preprint. Redirects to preprint provider route if necessary.
  * @class Edit Route Handler
  */
-export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
+export default Ember.Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
+    i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
     headTagsService: Ember.inject.service('head-tags'),
     currentUser: Ember.inject.service('currentUser'),
+
+    confirmationMessage: Ember.computed('i18n', function() {
+        return this.get('i18n').t('submit.abandon_preprint_confirmation');
+    }),
 
     editMode: true,
 
@@ -61,4 +67,9 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 }
             });
     },
+    isPageDirty() {
+        // If true, shows a confirmation message when leaving the page
+        // True if the user has any unsaved changes
+        return this.controller.get('hasDirtyFields');
+    }
 });

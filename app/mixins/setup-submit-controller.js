@@ -30,7 +30,7 @@ export default Ember.Mixin.create({
             }
         );
         this.get('theme.provider').then(provider => {
-            provider.query('licensesAcceptable', {'page[size]': 20}).then(licenses => {
+            provider.queryHasMany('licensesAcceptable', {'page[size]': 20}).then(licenses => {
                 controller.set('availableLicenses', licenses);
             });
         });

@@ -7,6 +7,50 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 - Modified `preprint-form-project-select` component to use `lazy-options` for lazy loading user nodes.
+- Warning modal on submit page to only show after changes have been made
+- Improve the appearance of the preprint provider logos on the OSFPreprints landing page
+
+## [0.117.2] - 2018-02-09
+### Changed
+- Also fingerprint .ico files
+- Update to latest provider assets
+
+## [0.117.1] - 2018-02-09
+### Added
+- Exclusion for livedata provider on index page template
+
+## [0.117.0] - 2018-02-09
+### Added
+- Auto-expansion on selected subjects on the Discover page
+- `noscript` message if JavaScript is disabled
+- Favicons are updated to reflect their provider, on a branded domain or on a /preprints/provider page
+- DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
+- Show a message on detail page when a DOI is created but not yet minted that it takes up to 24 hours to be minted.
+- Original Publication Date is added to preprint.
+- Confirmation message when user tries to reload or navigate away from the preprint submission page after adding/selecting a node
+- `Computed` to check if there has been user changes on the discipline field on the preprint submission/edit form
+- Translations for `Browse by featured subjects`, `Browse by subjects`, and `Browse by providers`
+- Add to `computed` to prevent redirect at any point on preprint submission
+
+### Changed
+- Update to ember-osf 0.14.0
+- Update to use model.queryHasMany in place of model.query
+- Update tests to work with model.queryHasMany
+- Get pagination info directly from meta in preprint-form-authors component
+- Check for `has_highlighted_subjects` flag to determine what wording should be used on index page
+- Use flexbox to show all provider logos in pretty rows
+
+## [0.116.4] - 2018-01-29
+### Changed
+- Updated to latest branded provider assets
+
+## [0.116.3] - 2018-01-12
+### Added
+- return true to content/index route didTransition so it bubbles to application didTransition (fix for prerender)
+
+## [0.116.2] - 2018-01-11
+### Changed
+- Updated to latest branded provider assets
 
 ## [0.116.1] - 2018-01-11
 ### Changed
@@ -31,6 +75,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - component integration tests to work in Firefox
   - provider-carousel
   - search-facet-taxonomy
+- CSS contrast issue for support email link on some branded provider error pages.
+- `og:image` meta tag for OSF Preprint refer to incorrect asset
+  - Removed `providers` list in `environment.js`
+
+### Removed
+- `validated-input` component is moved to ember-osf repo
 
 ## [0.115.9] - 2017-12-19
 ### Added

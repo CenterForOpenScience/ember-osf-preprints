@@ -3,7 +3,7 @@ import Analytics from 'ember-osf/mixins/analytics';
 
 export default Ember.Component.extend(Analytics, {
     theme: Ember.inject.service(),
-    classNames: ['preprint-error-page'],
+    classNames: ['preprint-header', 'preprint-header-error'],
     label: '',
     translationKey: '',
     supportEmail: Ember.computed('theme.isProvider', 'theme.provider.emailSupport', function() {
