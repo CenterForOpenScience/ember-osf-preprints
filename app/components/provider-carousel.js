@@ -106,7 +106,7 @@ export default Ember.Component.extend(Analytics, {
         this._resizeListener = Ember.run.bind(this, this.setSlideItems);
         Ember.$(window).on('resize', this._resizeListener);
     },
-    didReceiveAttrs: function () {
+    didReceiveAttrs: function() {
         this.setSlideItems();
     },
     willDestroy: function() {
