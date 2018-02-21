@@ -53,7 +53,7 @@ const BasicsValidations = buildValidations({
         ]
     },
     basicsOriginalPublicationDate: {
-        description: 'Original Publication Date',
+        description: 'Original publication date',
         validators: [
             validator('date', {
                 onOrBefore: 'now',
@@ -188,8 +188,14 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     hasFile: Ember.computed.or('file', 'selectedFile'),
 
+    preprintSaved: false,
+
     // True if fields have been changed
-    hasDirtyFields: Ember.computed.or('uploadChanged', 'basicsChanged', 'disciplineChanged'),
+    hasDirtyFields: Ember.computed('hasFile', 'uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint', 'preprintSaved', function() {
+        return !this.get('preprintSaved') && (this.get('isAddingPreprint') && this.get('hasFile') || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged'));
+    }),
+
+    isAddingPreprint: Ember.computed.not('editMode'),
 
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
@@ -287,12 +293,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     // Does the pending primaryFile differ from the primary file already saved?
     preprintFileChanged: Ember.computed('model.primaryFile', 'selectedFile', 'file', function() {
-        return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('file') !== null;
+        return this.get('selectedFile.id') && (this.get('model.primaryFile.id') !== this.get('selectedFile.id')) || this.get('file') !== null;
     }),
 
     // Does the pending title differ from the title already saved?
     titleChanged: Ember.computed('node.title', 'nodeTitle', function() {
-        return this.get('node.title') !== this.get('nodeTitle');
+        return (this.get('node.title') || this.get('nodeTitle')) && this.get('node.title') !== this.get('nodeTitle');
     }),
 
     // Are there any unsaved changes in the upload section?
@@ -1010,18 +1016,28 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Search for Authors`
                 });
-            return this.store.query('user', {
-                filter: {
-                    'full_name,given_name,middle_names,family_name': query
-                },
-                page: page
-            }).then((contributors) => {
-                this.set('searchResults', contributors);
-                return contributors;
-            }).catch(() => {
-                this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
-                this.highlightSuccessOrFailure('author-search-box', this, 'error');
-            });
+            const url = `/api/v1/user/search/?query=${query}&page=${page - 1}&size=10`;
+            let metaPages;
+            return Ember.$.ajax({
+                type: 'GET',
+                url: url
+            }).then(resp => {
+                let query = [];
+                for (let user of resp.users) { query.push(user.id) }
+                metaPages = resp.pages;
+                return this.store.query('user', {
+                    filter: {
+                        'id': query.join(',')
+                    }
+                }).then((contributors) => {
+                    this.set('searchResults', contributors);
+                    this.get('searchResults').set('meta.total_pages', metaPages);
+                    return contributors;
+                }).catch(() => {
+                    this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
+                    this.highlightSuccessOrFailure('author-search-box', this, 'error');
+                });
+            })
         },
         /**
         * highlightSuccessOrFailure method. Element with specified ID flashes green or red depending on response success.
@@ -1095,6 +1111,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             return save_changes
                 .then(() => {
+                        this.set('preprintSaved', true);
                         this.transitionToRoute(
                             `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
                             model.reload()
@@ -1122,6 +1139,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             return submitAction.save()
                 .then(() => {
+                    this.set('preprintSaved', true);
                     this.get('model').reload();
                     this.transitionToRoute(
                         `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
