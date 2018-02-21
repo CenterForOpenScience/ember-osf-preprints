@@ -57,10 +57,10 @@ export default Ember.Component.extend(Analytics, {
             .then(provider => provider
                 .queryHasMany('taxonomies', {
                     filter: {
-                        parents
+                        parents,
                     },
                     page: {
-                        size: 100
+                        size: 150,  // Law category has 117 (Jan 2018)
                     }
                 })
             )
