@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop#2018-01-31T20:51:40Z":
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces":
   version "0.13.1"
-  resolved "https://github.com/CenterForOpenScience/ember-osf.git#1f2b1cf646662cc69374645e9b15f99be60e60f6"
+  resolved "https://github.com/CenterForOpenScience/ember-osf.git#b05df49e5dbd6daf062c367ff60007cd6051c419"
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
@@ -20,6 +20,7 @@
     ember-cli-node-assets "0.1.6"
     ember-cli-shims "1.0.2"
     ember-collapsible-panel "^2.1.1"
+    ember-concurrency "0.8.12"
     ember-cp-validations "^3.5.0"
     ember-diff-attrs "^0.2.0"
     ember-get-config "0.2.1"
@@ -3280,6 +3281,15 @@ ember-computed-decorators@0.2.2:
   dependencies:
     ember-cli-babel "^5.1.5"
 
+ember-concurrency@0.8.12:
+  version "0.8.12"
+  resolved "https://registry.yarnpkg.com/ember-concurrency/-/ember-concurrency-0.8.12.tgz#fb91180e5efeb1024cfa2cfb99d2fe6721930c91"
+  dependencies:
+    babel-core "^6.24.1"
+    ember-cli-babel "^6.8.2"
+    ember-getowner-polyfill "^2.0.0"
+    ember-maybe-import-regenerator "^0.1.5"
+
 ember-concurrency@^0.8.12:
   version "0.8.14"
   resolved "https://registry.yarnpkg.com/ember-concurrency/-/ember-concurrency-0.8.14.tgz#4017133e5fbb9d088082ef6ab5b91839ed33107b"
@@ -3422,7 +3432,7 @@ ember-getowner-polyfill@^1.0.0, ember-getowner-polyfill@^1.0.1, ember-getowner-p
     ember-cli-version-checker "^1.2.0"
     ember-factory-for-polyfill "^1.1.0"
 
-ember-getowner-polyfill@^2.0.1:
+ember-getowner-polyfill@^2.0.0, ember-getowner-polyfill@^2.0.1:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/ember-getowner-polyfill/-/ember-getowner-polyfill-2.2.0.tgz#38e7dccbcac69d5ec694000329ec0b2be651d2b2"
   dependencies:

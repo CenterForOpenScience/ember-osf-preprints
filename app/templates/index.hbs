@@ -18,7 +18,7 @@
                             {{sanitize-html theme.provider.description "description"}}
                             <br>
                             <small>
-                                <a href="https://osf.io/preprints/" onbeforeclick={{action "click" "link" "Index - Powered By"}}>{{t "index.header.powered_by"}}</a>
+                                <a href="{{host}}preprints" onbeforeclick={{action "click" "link" "Index - Powered By"}}>{{t "index.header.powered_by"}}</a>
                             </small>
                         {{/if}}
                     </p>
@@ -55,7 +55,7 @@
                         {{/if}}
                     </h2>
                     {{#if theme.provider.hasHighlightedSubjects}}
-                        {{#link-to "provider.discover" class="seeAllSubjects"}}{{t 'index.subjects.links.seeAllSubjects'}}{{/link-to}}
+                        {{#link-to (route-prefix 'discover') class="seeAllSubjects"}}{{t 'index.subjects.links.seeAllSubjects'}}{{/link-to}}
                     {{/if}}
                     <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
                         {{#if theme.provider.additionalProviders}}
@@ -82,7 +82,9 @@
                 <div class="row p-v-md">
                     <div class="provider-logos">
                         {{#each model.brandedProviders as |provider| }}
-                            <a href="{{brandedPreprintUrl provider}}" title="{{provider.name}}" class="provider-logo-item" style="background-image: url({{provider-asset provider.id 'wide_white.png'}});"></a>
+                            {{#unless (eq provider.id 'livedata')}}
+                                <a href="{{brandedPreprintUrl provider}}" title="{{provider.name}}" class="provider-logo-item" style="background-image: url({{provider-asset provider.id 'wide_white.png'}});"></a>
+                            {{/unless}}
                         {{/each}}
                     </div>
                 </div>

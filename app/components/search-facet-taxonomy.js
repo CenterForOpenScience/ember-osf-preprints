@@ -86,6 +86,10 @@ export default Ember.Component.extend(Analytics, {
                     })
                 });
                 this._expandMany(items);
+                //Only auto-expand if no subjects are selected.
+                if (items.length === 0) {
+                    this._expandDefault();
+                }
             });
     },
     actions: {
@@ -97,6 +101,20 @@ export default Ember.Component.extend(Analytics, {
                     label: `Discover - ${item.text}`
                 });
             this._expand(item);
+        }
+    },
+    _expandDefault() {
+        let topLevelItem = this.get('topLevelItem');
+        if (topLevelItem.length <= 3) {
+            topLevelItem.forEach(item => {
+                this._expand(item).then(() => {
+                    if (item.children && item.childCount <= 3) {
+                        item.children.forEach(item => {
+                           this._expand(item);
+                        });
+                    }
+                });
+            });
         }
     },
     _expand(item) {

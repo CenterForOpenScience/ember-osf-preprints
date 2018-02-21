@@ -128,8 +128,9 @@ export default Ember.Controller.extend(Analytics, {
      * https://developers.facebook.com/docs/sharing/reference/share-dialog
      */
     facebookHref: Ember.computed('model', function() {
+        const facebookAppId = this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
         const queryParams = {
-            app_id: config.FB_APP_ID,
+            app_id: facebookAppId,
             display: 'popup',
             href: window.location.href,
             redirect_uri: window.location.href

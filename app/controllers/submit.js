@@ -53,7 +53,7 @@ const BasicsValidations = buildValidations({
         ]
     },
     basicsOriginalPublicationDate: {
-        description: 'Original Publication Date',
+        description: 'Original publication date',
         validators: [
             validator('date', {
                 onOrBefore: 'now',
@@ -189,8 +189,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     hasFile: Ember.computed.or('file', 'selectedFile'),
 
     // True if fields have been changed
-    // If adding a preprint, hasDirtyFields will always be true to prevent leaving the page at all unless clicking submit
-    hasDirtyFields: Ember.computed.or('uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint'),
+    hasDirtyFields: Ember.computed('hasFile', 'uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint', function() {
+        if (this.get('isAddingPreprint') && !this.get('hasFile') && !this.get('node')) {
+            return false;
+        }
+        return this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged');
+    }),
 
     isAddingPreprint: Ember.computed.not('editMode'),
 
@@ -1013,18 +1017,28 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Search for Authors`
                 });
-            return this.store.query('user', {
-                filter: {
-                    'full_name,given_name,middle_names,family_name': query
-                },
-                page: page
-            }).then((contributors) => {
-                this.set('searchResults', contributors);
-                return contributors;
-            }).catch(() => {
-                this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
-                this.highlightSuccessOrFailure('author-search-box', this, 'error');
-            });
+            const url = `/api/v1/user/search/?query=${query}&page=${page - 1}&size=10`;
+            let metaPages;
+            return Ember.$.ajax({
+                type: 'GET',
+                url: url
+            }).then(resp => {
+                let query = [];
+                for (let user of resp.users) { query.push(user.id) }
+                metaPages = resp.pages;
+                return this.store.query('user', {
+                    filter: {
+                        'id': query.join(',')
+                    }
+                }).then((contributors) => {
+                    this.set('searchResults', contributors);
+                    this.get('searchResults').set('meta.total_pages', metaPages);
+                    return contributors;
+                }).catch(() => {
+                    this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
+                    this.highlightSuccessOrFailure('author-search-box', this, 'error');
+                });
+            })
         },
         /**
         * highlightSuccessOrFailure method. Element with specified ID flashes green or red depending on response success.

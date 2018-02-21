@@ -84,13 +84,14 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
                 ]);
             })
             .then(([provider, node, license]) => {
+                const facebookAppId = provider.get('facebookAppId') ? provider.get('facebookAppId') : config.FB_APP_ID;
                 const title = node.get('title');
                 const description = node.get('description');
                 const mintDoi = extractDoiFromString(preprint.get('preprintDoiUrl'));
                 const peerDoi = preprint.get('doi');
                 const doi = peerDoi ? peerDoi : mintDoi;
                 const image = this.get('theme.logoSharing');
-                const imageUrl = `${origin.replace(/^https/, 'http')}${image.path}`;
+                const imageUrl = /^https?:\/\//.test(image.path) ? image.path : origin + image.path;
                 const dateCreated = new Date(preprint.get('dateCreated') || null);
                 const dateModified = new Date(preprint.get('dateModified') || dateCreated);
                 if (!preprint.get('datePublished'))
@@ -102,10 +103,9 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
 
                 // Open Graph Protocol
                 const openGraph = [
-                    ['fb:app_id', config.FB_APP_ID],
+                    ['fb:app_id', facebookAppId],
                     ['og:title', title],
                     ['og:image', imageUrl],
-                    ['og:image:secure_url', `${origin}${image.path}`], // We should always be on https in staging/prod
                     ['og:image:width', image.width.toString()],
                     ['og:image:height', image.height.toString()],
                     ['og:image:type', image.type],
