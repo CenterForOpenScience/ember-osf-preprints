@@ -84,16 +84,58 @@ test('twitterHref computed property', function (assert) {
     });
 });
 
-test('facebookHref computed property', function (assert) {
+test('facebookHref computed property - has facebookAppId', function (assert) {
+    this.inject.service('store');
+
+    const store = this.store;
+    const ctrl = this.subject();
+    const facebookAppId = 112233445566;
+
+    Ember.run(() => {
+        const provider = store.createRecord('preprint-provider', {
+            facebookAppId: facebookAppId,
+        });
+
+        const model = store.createRecord('preprint', {
+            provider,
+        });
+
+        ctrl.setProperties({ model });
+
+        const location = encodeURIComponent(window.location.href);
+
+        assert.strictEqual(
+            ctrl.get('facebookHref'),
+            `https://www.facebook.com/dialog/share?app_id=${facebookAppId.toString()}&display=popup&href=${location}&redirect_uri=${location}`
+        );
+    });
+});
+
+test('facebookHref computed property - does not have facebookAppId', function(assert) {
+    this.inject.service('store');
+
+    const store = this.store;
     const ctrl = this.subject();
 
-    const {FB_APP_ID} = config;
-    const location = encodeURIComponent(window.location.href);
+    Ember.run(() => {
+        const provider = store.createRecord('preprint-provider', {
+            facebookAppId: '',
+        });
 
-    assert.strictEqual(
-        ctrl.get('facebookHref'),
-        `https://www.facebook.com/dialog/share?app_id=${FB_APP_ID}&display=popup&href=${location}&redirect_uri=${location}`
-    );
+        const model = store.createRecord('preprint', {
+            provider,
+        });
+
+        ctrl.setProperties({ model });
+
+        const { FB_APP_ID } = config;
+        const location = encodeURIComponent(window.location.href);
+
+        assert.strictEqual(
+            ctrl.get('facebookHref'),
+            `https://www.facebook.com/dialog/share?app_id=${FB_APP_ID}&display=popup&href=${location}&redirect_uri=${location}`
+        );
+    });
 });
 
 test('linkedinHref computed property', function (assert) {

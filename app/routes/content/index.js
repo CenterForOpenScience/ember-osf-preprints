@@ -86,6 +86,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             .then(([provider, license]) => {
                 const title = preprint.get('title');
                 const description = preprint.get('description');
+                const facebookAppId = provider.get('facebookAppId') || config.FB_APP_ID;
                 const mintDoi = extractDoiFromString(preprint.get('preprintDoiUrl'));
                 const peerDoi = preprint.get('doi');
                 const doi = peerDoi ? peerDoi : mintDoi;
@@ -102,7 +103,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
 
                 // Open Graph Protocol
                 const openGraph = [
-                    ['fb:app_id', config.FB_APP_ID],
+                    ['fb:app_id', facebookAppId],
                     ['og:title', title],
                     ['og:image', imageUrl],
                     ['og:image:width', image.width.toString()],
