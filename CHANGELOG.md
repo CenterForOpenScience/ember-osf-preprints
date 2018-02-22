@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.117.5] - 2018-02-22
+### Changed
+- Update to latest provider assets
+
 ## [0.117.4] - 2018-02-21
 ### Fixed
 - Increase taxonomies page size from 100 to 150
