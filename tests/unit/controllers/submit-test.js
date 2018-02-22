@@ -131,7 +131,7 @@ test('Initial properties', function (assert) {
         key => assert.strictEqual(
             expected[key],
             actual[key],
-            'Initial value for "' + key + '" does not match expected value'
+            `Initial value for "${key}" does not match expected value`
         )
     );
 });
