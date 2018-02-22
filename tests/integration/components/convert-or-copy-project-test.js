@@ -18,7 +18,7 @@ test('it renders', function(assert) {
     assert.equal(this.$('#convertExistingOrCreateComponent label').first().text().trim(), 'Make a new component');
 });
 
-test('choosing copy changes mode to copy', function(assert){
+test('choosing copy changes mode to copy', function(assert) {
     this.set('convertOrCopy', null);
 
     this.render(hbs`{{convert-or-copy-project
@@ -32,7 +32,7 @@ test('choosing copy changes mode to copy', function(assert){
     assert.equal(this.get('convertOrCopy'), 'copy');
 });
 
-test('choosing copy makes the preprint title null and requires a title change', function(assert){
+test('choosing copy makes the preprint title null and requires a title change', function(assert) {
     this.set('title', 'Como nossos pais');
     this.set('titleValid', true);
 
@@ -48,7 +48,7 @@ test('choosing copy makes the preprint title null and requires a title change', 
     assert.equal(this.get('title'), null);
 });
 
-test('choosing convert displays converting options and changes mode to convert', function(assert){
+test('choosing convert displays converting options and changes mode to convert', function(assert) {
     this.set('convertOrCopy', null);
 
     this.render(hbs`{{convert-or-copy-project
@@ -66,7 +66,7 @@ test('choosing convert displays converting options and changes mode to convert',
     assert.ok(this.$('.exclamation-confirm-convert').length);
 });
 
-test('choosing convert makes the preprint title the title of the node about to be converted and does not require change', function(assert){
+test('choosing convert makes the preprint title the title of the node about to be converted and does not require change', function(assert) {
     this.set('title', null);
     this.set('titleValid', null);
     this.set('node', {
@@ -85,7 +85,7 @@ test('choosing convert makes the preprint title the title of the node about to b
     assert.equal(this.get('title'), 'Mas, que Nada!');
 });
 
-test('can confirm conversion and passes the convertProjectConfirmed flag up', function(assert){
+test('can confirm conversion and passes the convertProjectConfirmed flag up', function(assert) {
     this.set('convertProjectConfirmed', false);
 
     this.render(hbs`{{convert-or-copy-project

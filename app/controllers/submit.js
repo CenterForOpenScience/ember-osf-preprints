@@ -638,8 +638,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             return Promise.resolve()
                 .then(() => {
-                    if (currentTitle !== title)
+                    if (currentTitle !== title) {
                         model.set('title', title);
+                    }
                 })
                 .then(() => this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint'))
                 .catch(() => {
