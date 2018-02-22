@@ -5,8 +5,27 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Added
+- Default auto-expansion on top level subjects when there are no more than 3.
+- Check to use `facebookAppId` if branded providers have an app id
+
 ### Changed
+- 'Powered by Preprints' link stay on current server
+- Searching for contributors also searches their social links (such as their twitter handle)
 - Pull more preprint data (`title`, `description`, `tags`, etc.) from the preprint model instead of the node model.
+
+### Fixed
+- Skipped tests in `convert-or-copy-project-test` and `supplementary-file-browser` to run properly
+
+## [0.117.5] - 2018-02-22
+### Changed
+- Update to latest provider assets
+
+## [0.117.4] - 2018-02-21
+### Fixed
+- Increase taxonomies page size from 100 to 150
+
 
 ## [0.117.3] - 2018-02-20
 ### Changed
@@ -25,7 +44,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.117.0] - 2018-02-09
 ### Added
 - Auto-expansion on selected subjects on the Discover page
-- Default auto-expansion on top level subjects when there are no more than 3.
 - `noscript` message if JavaScript is disabled
 - Favicons are updated to reflect their provider, on a branded domain or on a /preprints/provider page
 - DOI message, used on the preprint detail page to show users when they will have a DOI for their preprint.
@@ -35,7 +53,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `Computed` to check if there has been user changes on the discipline field on the preprint submission/edit form
 - Translations for `Browse by featured subjects`, `Browse by subjects`, and `Browse by providers`
 - Add to `computed` to prevent redirect at any point on preprint submission
-- Check to use `facebookAppId` if branded providers have an app id
 
 ### Changed
 - Update to ember-osf 0.14.0
@@ -44,10 +61,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Get pagination info directly from meta in preprint-form-authors component
 - Check for `has_highlighted_subjects` flag to determine what wording should be used on index page
 - Use flexbox to show all provider logos in pretty rows
-- 'Powered by Preprints' link stay on current server
-
-### Fixed
-- Skipped tests in `convert-or-copy-project-test` and `supplementary-file-browser` to run properly
 
 ## [0.116.4] - 2018-01-29
 ### Changed
@@ -76,7 +89,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Wording on `Edit preprint` button to `Edit and resubmit` on preprint detail page if the preprint is rejected
  and the workflow is pre-moderation.
 - Removed footer styling
-- Searching for contributors also searches their social links (such as their twitter handle)
 - Updated `meta.total` to `meta.total_pages` in preprint-form-authors component
 - Modified `preprint-status-banner` component for review action rename.
 - Update to ember-osf@0.13.0
