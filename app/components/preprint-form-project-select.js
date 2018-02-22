@@ -32,7 +32,7 @@ import { task, timeout } from 'ember-concurrency';
  *     startState=_State.START
  *     existingState=existingState
  *     _existingState=_existingState
- *     nodeTitle=nodeTitle
+ *     title=title
  *     currentUser=user
  *     selectedFile=selectedFile
  *     hasFile=hasFile

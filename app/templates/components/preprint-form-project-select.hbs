@@ -67,12 +67,12 @@
                             {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}} {{!ORGANIZE DECISION SECTION}}
                                 {{preprint-form-header isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy name='organize' showValidationIndicator=false}}
                                 {{#preprint-form-body}}
-                                    {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields nodeTitle=nodeTitle node=node isTopLevelNode=isTopLevelNode titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
+                                    {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields title=title node=node isTopLevelNode=isTopLevelNode titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
                             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
                                 {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}} {{!FINALIZE UPLOAD SECTION - EXISTING FILE}}
-                                    {{preprint-form-header nodeTitle=nodeTitle name='finalize_upload' showValidationIndicator=false}}
+                                    {{preprint-form-header title=title name='finalize_upload' showValidationIndicator=false}}
                                     {{#preprint-form-body}}
                                         {{#if (eq convertOrCopy 'convert')}}
                                             {{#if convertProjectConfirmed}}
@@ -80,7 +80,7 @@
                                             {{/if}}
                                         {{/if}}
                                         <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Connect preprint to existing project'}}>
-                                            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name)}}
+                                            {{preprint-title-editor title=title titleValid=titleValid pressSubmit=(action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name)}}
                                         </form>
                                         <div class="text-center m-v-md">
                                             <p> {{t "components.preprint-form-project-select.initiate_preprint_process"}} </p>
@@ -101,7 +101,7 @@
                     finishUpload=finishUpload
                     startPreprint=startPreprint
                     startState=startState
-                    nodeTitle=nodeTitle
+                    title=title
                     currentUser=currentUser
                     osfFile=selectedFile
                     hasFile=hasFile
