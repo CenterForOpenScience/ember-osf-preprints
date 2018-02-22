@@ -18,7 +18,7 @@ test('it renders', function(assert) {
     assert.equal(this.$('#convertExistingOrCreateComponent label').first().text().trim(), 'Make a new component');
 });
 
-test('choosing copy changes mode to copy', function(assert){
+test('choosing copy changes mode to copy', function(assert) {
     this.set('convertOrCopy', null);
 
     this.render(hbs`{{convert-or-copy-project
@@ -32,23 +32,23 @@ test('choosing copy changes mode to copy', function(assert){
     assert.equal(this.get('convertOrCopy'), 'copy');
 });
 
-test('choosing copy makes nodeTitle null and requires a title change', function(assert){
-    this.set('nodeTitle', 'Como nossos pais');
+test('choosing copy makes the preprint title null and requires a title change', function(assert) {
+    this.set('title', 'Como nossos pais');
     this.set('titleValid', true);
 
     this.render(hbs`{{convert-or-copy-project
         clearDownstreamFields=(action noop)
         nextUploadSection=(action noop)
-        nodeTitle=nodeTitle titleValid=titleValid
+        title=title titleValid=titleValid
     }}`);
 
     this.$('#copy').click();
 
     assert.ok(!this.get('titleValid'));
-    assert.equal(this.get('nodeTitle'), null);
+    assert.equal(this.get('title'), null);
 });
 
-test('choosing convert displays converting options and changes mode to convert', function(assert){
+test('choosing convert displays converting options and changes mode to convert', function(assert) {
     this.set('convertOrCopy', null);
 
     this.render(hbs`{{convert-or-copy-project
@@ -66,8 +66,8 @@ test('choosing convert displays converting options and changes mode to convert',
     assert.ok(this.$('.exclamation-confirm-convert').length);
 });
 
-test('choosing convert makes nodeTitle the title of the node about to be converted and does not require change', function(assert){
-    this.set('nodeTitle', null);
+test('choosing convert makes the preprint title the title of the node about to be converted and does not require change', function(assert) {
+    this.set('title', null);
     this.set('titleValid', null);
     this.set('node', {
         title: 'Mas, que Nada!'
@@ -76,16 +76,16 @@ test('choosing convert makes nodeTitle the title of the node about to be convert
     this.render(hbs`{{convert-or-copy-project
         clearDownstreamFields=(action noop)
         nextUploadSection=(action noop)
-        node=node nodeTitle=nodeTitle titleValid=titleValid
+        node=node title=title titleValid=titleValid
     }}`);
 
     this.$('#convert').click();
 
     assert.ok(this.get('titleValid'));
-    assert.equal(this.get('nodeTitle'), 'Mas, que Nada!');
+    assert.equal(this.get('title'), 'Mas, que Nada!');
 });
 
-test('can confirm conversion and passes the convertProjectConfirmed flag up', function(assert){
+test('can confirm conversion and passes the convertProjectConfirmed flag up', function(assert) {
     this.set('convertProjectConfirmed', false);
 
     this.render(hbs`{{convert-or-copy-project
