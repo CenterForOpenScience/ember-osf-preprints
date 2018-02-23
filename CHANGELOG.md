@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Default auto-expansion on top level subjects when there are no more than 3.
 - Check to use `facebookAppId` if branded providers have an app id
 - Choose preprint provider during unbranded submission
+- Add `unicode-byte-truncate` as a dependency
 
 ### Changed
 - 'Powered by Preprints' link stay on current server
@@ -18,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Skipped tests in `convert-or-copy-project-test` and `supplementary-file-browser` to run properly
+- Do unicode-aware truncating for LinkedIn sharing using `unicode-byte-truncate`
 
 ## [0.117.5] - 2018-02-22
 ### Changed
