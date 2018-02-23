@@ -30,7 +30,7 @@
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces",
+    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-02-23T15:25:30Z",
     "@centerforopenscience/osf-style": "1.5.1",
     "autoprefixer": "6.3.7",
     "broccoli-asset-rev": "2.4.2",
@@ -79,7 +79,7 @@
     "ember-moment": "7.3.1",
     "ember-onbeforeunload": "1.1.2",
     "ember-page-title": "3.0.6",
-    "ember-power-select": "1.0.0-beta.7",
+    "ember-power-select": "1.8.4",
     "ember-read-more": "0.0.13",
     "ember-resolver": "2.1.0",
     "ember-sanitize": "2.0.2",
