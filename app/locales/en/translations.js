@@ -325,7 +325,7 @@ export default {
         },
         'preprint-form-authors': {
             search: {
-                placeholder: `Search by name`
+                placeholder: `Search by name or user profile information`
             },
             unregistered_users: {
                 paragraph: `Can't find the user you're looking for?`,
