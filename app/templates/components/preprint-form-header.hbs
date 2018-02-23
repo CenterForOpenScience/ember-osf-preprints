@@ -12,6 +12,7 @@
 
 <div class="preprint-section-status pull-right">
     {{#if (or
+        (and serverSaveState (eq name 'Server'))
         (and uploadSaveState (eq name 'Upload'))
         (and basicsSaveState (eq name 'Basics'))
         (and authorsSaveState (eq name 'Authors'))
@@ -23,13 +24,29 @@
     {{/if}}
 </div>
 
+{{#if (and (not isOpen) (eq name 'Server'))}}
+    <div class="m-t-md preprint-header-preview">
+        <p>
+            <em class="m-r-md"> {{t "components.preprint-form-header.server"}}: </em>
+            {{#if currentProvider}}
+                <img class="current-provider" title="{{currentProvider.name}}" src={{safe-markup (concat providerAssetsURL currentProvider.id "/square_color_no_transparent.png")}}>
+                {{currentProvider.name}}
+            {{/if}}
+        </p>
+    </div>
+{{/if}}
+
 {{#if (and (not isOpen) (eq name 'Upload'))}}
     <div class="m-t-md preprint-header-preview">
         {{#if preprintNode}}
             <p><em class="m-r-md"> {{t "components.preprint-form-header.location"}}: </em> {{get-ancestor-descriptor preprintNode}} {{preprintNode.title}}</p>
         {{/if}}
-        <p><em class="m-r-md"> {{t "components.preprint-form-header.file"}}: </em> {{preprintFile.name}} <em>(Version: {{preprintFile.currentVersion}})</em>  </p>
-        <p><em class="m-r-md"> {{t "components.preprint-form-header.title"}}: </em> {{preprintTitle}} </p>
+        {{#if preprintFile}}
+            <p><em class="m-r-md"> {{t "components.preprint-form-header.file"}}: </em> {{preprintFile.name}} <em>(Version: {{preprintFile.currentVersion}})</em>  </p>
+        {{/if}}
+        {{#if preprintTitle}}
+            <p><em class="m-r-md"> {{t "components.preprint-form-header.title"}}: </em> {{preprintTitle}} </p>
+        {{/if}}
     </div>
 {{/if}}
 

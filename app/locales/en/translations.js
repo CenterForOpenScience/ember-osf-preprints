@@ -261,6 +261,9 @@ export default {
         search_contributors_error: `Could not perform search query.`,
         error_completing_preprint: `Error completing {{preprintWords.preprint}}.`,
         error_saving_preprint: `Could not save {{preprintWords.preprint}}; please try again later`,
+        server_locked: `You cannot change the {{preprintWords.preprint}} service after a file has been uploaded`,
+        please_select_server: `Please select a {{preprintWords.preprint}} service before continuing`,
+        please_complete_upload: `Please complete upload section before continuing`,
     },
     components: {
         'confirm-restart-submit-preprint': {
@@ -358,7 +361,9 @@ export default {
             title: `{{preprintWords.Preprint}} title`,
             location: `{{preprintWords.Preprint}} location`,
             click_edit: `Click to Edit`,
+            server: `{{preprintWords.Preprint}} service`,
             name: {
+                Server: 'Select a {{preprintWords.preprint}} service',
                 Upload: 'Upload',
                 Discipline: 'Discipline',
                 Basics: 'Basics',
