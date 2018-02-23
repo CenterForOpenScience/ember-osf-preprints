@@ -144,7 +144,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     filePickerState: State.START, // Selected upload state (initial decision on form) - new or existing project? (is poorly named)
     _existingState: existingState, // File states - new file or existing file
     existingState: existingState.CHOOSE, // Selected file state - new or existing file (poorly named)
-    _names: ['upload', 'discipline', 'basics', 'authors'].map(str => str.capitalize()), // Form section headers
+    _names: ['server', 'upload', 'discipline', 'basics', 'authors'].map(str => str.capitalize()), // Form section headers
 
     // Data for project picker; tracked internally on load
     user: null,
@@ -165,6 +165,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
+    serverSaveState: false, // True temporarily when changes have been saved in server section
     uploadSaveState: false, // True temporarily when changes have been saved in upload section
     disciplineSaveState: false, // True temporarily when changes have been saved in discipline section
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
@@ -188,11 +189,33 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     hasFile: Ember.computed.or('file', 'selectedFile'),
 
+    allProviders: [], // Initialize with an empty list of providers
+    currentProvider: undefined,
+    selectedProvider: undefined,
+    providerSaved: false,
     preprintSaved: false,
 
+    init() {
+        let controller = this;
+        this.get('store')
+            .findAll('preprint-provider', { reload: true })
+            .then((providers) => {
+                controller.set(
+                    'allProviders',
+                    // OSF first, then all the rest
+                    providers.filter(item => item.id === 'osf').concat(providers.filter(item => item.id !== 'osf'))
+                );
+                const currentProvider = providers.filter(item => item.id === controller.get('theme.id') || config.PREPRINTS.provider)[0];
+                controller.set('currentProvider', currentProvider);
+                controller.set('selectedProvider', currentProvider);
+                this.get('theme.isProvider') && this.set('providerSaved', true);
+            });
+    },
+
     // True if fields have been changed
-    hasDirtyFields: Ember.computed('hasFile', 'uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint', 'preprintSaved', function() {
-        return !this.get('preprintSaved') && (this.get('isAddingPreprint') && this.get('hasFile') || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged'));
+    hasDirtyFields: Ember.computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
+        const preprintStarted = this.get('theme.isProvider') ? this.get('hasFile') : this.get('providerSaved');
+        return !this.get('preprintSaved') && (this.get('isAddingPreprint') && preprintStarted || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged'));
     }),
 
     isAddingPreprint: Ember.computed.not('editMode'),
@@ -217,6 +240,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             searchResults: [],
             savingPreprint: false,
             showModalSharePreprint: false,
+            serverSaveState: false,
             uploadSaveState: false,
             disciplineSaveState: false,
             basicsSaveState: false,
@@ -248,6 +272,8 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     ///////////////////////////////////////
     // Validation rules and changed states for form sections
+
+    providerChanged: true,
 
     // In order to advance from upload state, node and selectedFile must have been defined, and title must be set.
     uploadValid: Ember.computed.alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
@@ -461,13 +487,13 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     // Language about submission and moderation.
     ////////////////////////////////////////////////////
 
-    moderationType: Ember.computed.alias('theme.provider.reviewsWorkflow'),
+    moderationType: Ember.computed.alias('currentProvider.reviewsWorkflow'),
     workflow: Ember.computed('moderationType', function () {
         return WORKFLOW[this.get('moderationType')];
     }),
-    providerName: Ember.computed('theme.isProvider', function() {
-        return this.get('theme.isProvider') ?
-            this.get('theme.provider.name') :
+    providerName: Ember.computed('currentProvider', function() {
+        return this.get('currentProvider.id') !== 'osf' ?
+            this.get('currentProvider.name') :
             this.get('i18n').t('global.brand_name');
     }),
     modalTitle: Ember.computed('moderationType', function() {
@@ -619,7 +645,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             });
             // Closes section, so all panels closed if Upload section revisited
             this.get('panelActions').close('uploadNewFile');
-            this.send('next', this.get('_names.0'));
+            this.send('next', this.get('_names.1'));
         },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
@@ -708,12 +734,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     this.set('applyLicense', true);
                 }
             });
-            const provider = this.get('store')
-                .peekRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider);
 
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
-            model.set('provider', provider);
+            model.set('provider', this.get('currentProvider'));
 
             return model.save()
                 .then(() => {
@@ -912,7 +936,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             node.save()
                 .then(() => model.save()
-                    .then(() => this.send('next', this.get('_names.2')))
+                    .then(() => this.send('next', this.get('_names.3')))
                     .catch(() => {
                         // If model save fails, do not transition, save original vales
                         this.get('toast').error(
@@ -978,7 +1002,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`
                 });
 
-            const sendNext = () => this.send('next', this.get('_names.1'));
+            const sendNext = () => this.send('next', this.get('_names.2'));
 
             if (!hasChanged) {
                 return sendNext();
@@ -1084,6 +1108,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             const node = this.get('node');
             this.set('savingPreprint', true);
             this.toggleProperty('shareButtonDisabled');
+            model.set('provider', this.get('currentProvider'));
 
             let submitAction = null;
             if (this.get('moderationType')) {
@@ -1106,8 +1131,16 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             return save_changes
                 .then(() => {
                         this.set('preprintSaved', true);
+                        let useProviderRoute = false;
+                        if (this.get('theme.isProvider')) {
+                            useProviderRoute = this.get('theme.isSubRoute');
+                        } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
+                            window.location.replace(`${this.get('currentProvider.domain')}${model.id}`);
+                        } else if (this.get('currentProvider.id') !== 'osf') {
+                            useProviderRoute = true;
+                        }
                         this.transitionToRoute(
-                            `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
+                            `${useProviderRoute ? 'provider.' : ''}content`,
                             model.reload()
                         );
                 })
@@ -1154,5 +1187,23 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 this.get('model')
             );
         },
+        selectProvider(provider) {
+            this.set('selectedProvider', provider);
+            this.set('providerChanged', true);
+        },
+        saveProvider() {
+            this.set('currentProvider', this.get('selectedProvider'));
+            this.get('currentProvider').queryHasMany('licensesAcceptable', {'page[size]': 20}).then(licenses => {
+                this.set('availableLicenses', licenses);
+            });
+            this.set('providerChanged', false);
+            this.set('providerSaved', true);
+            this.send('discardSubjects');
+            this.send('next', this.get('_names.0'));
+        },
+        discardProvider() {
+            this.set('selectedProvider', this.get('currentProvider'));
+            this.set('providerChanged', false);
+        }
     }
 });

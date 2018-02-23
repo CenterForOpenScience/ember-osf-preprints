@@ -170,6 +170,9 @@ $logo-dir: 'img/provider_logos/';
 .provider-osf-dark {
     background-image: url($logo-dir + 'osf-dark-small.png');
 }
+.provider-osf-color {
+    background-image: url($logo-dir + 'osf-color-small.png');
+}
 
 .preprint-advisory  {
     background-color: #f3f5f7;
@@ -1209,7 +1212,8 @@ label.title-label {
 }
 
 .discover-provider-logo,
-.content-provider-logo {
+.content-provider-logo,
+.submit-provider-logo {
     background-position-x: center;
     background-position-y: center;
     background-repeat: no-repeat;
@@ -1297,6 +1301,11 @@ label.title-label {
 .discover-provider-logo {
     min-height: 80px;
     min-width: 100px;
+}
+
+.submit-provider-logo {
+    min-height: 50px;
+    min-width: 50px;
 }
 
 .edit-btn {
@@ -1467,4 +1476,38 @@ nav.branded-navbar {
         min-width: 150px;
         margin: 15px;
     }
+}
+
+button.provider {
+    border: none;
+    background-color: transparent;
+}
+
+button.provider:focus {
+    outline: 0;
+}
+
+button.provider.inactive-provider {
+    opacity: 0.3;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+
+#preprint-form-server .row {
+    margin-top: 20px;
+}
+
+img.current-provider {
+    vertical-align: middle;
+    height: 30px;
+    margin-right: 5px;
+}
+
+#providerCarousel .item > div {
+    text-align: center;
+}
+
+#providerCarousel .carousel-control {
+    color: black;
 }
