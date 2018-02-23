@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import loadAll from 'ember-osf/utils/load-relationship';
-import permissions from 'ember-osf/const/permissions';
 
 /**
  * @module ember-preprints
@@ -25,7 +23,6 @@ export default Ember.Mixin.create({
         controller.set('editMode', this.get('editMode'));
 
         // Fetch values required to operate the page: user and userNodes
-        let userNodes = Ember.A();
 
         this.get('store').findAll('preprint-provider')
             .then((providers) => {
@@ -41,15 +38,7 @@ export default Ember.Mixin.create({
             .then((user) => {
                 controller.set('user', user);
                 return user;
-            }).then((user) => loadAll(user, 'nodes', userNodes, {
-                'filter[preprint]': false
-            }).then(() => {
-                // TODO Hack: API does not support filtering current_user_permissions in the way we desire, so filter
-                // on front end for now until filtering support can be added to backend
-                let onlyAdminNodes = userNodes.filter((item) => item.get('currentUserPermissions').includes(permissions.ADMIN));
-                controller.set('userNodes', onlyAdminNodes);
-                controller.set('userNodesLoaded', true);
-            }));
+            });
 
         // If editMode, these initial fields are set to pre-populate form with preprint/node data.
         if (this.get('editMode')) {
