@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 'Powered by Preprints' link stay on current server
 - Searching for contributors also searches their social links (such as their twitter handle)
 - Pull more preprint data (`title`, `description`, `tags`, etc.) from the preprint model instead of the node model.
+- Modified `preprint-form-project-select` component to use `lazy-options` for lazy loading user nodes.
 
 ### Fixed
 - Skipped tests in `convert-or-copy-project-test` and `supplementary-file-browser` to run properly
@@ -25,7 +26,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.117.4] - 2018-02-21
 ### Fixed
 - Increase taxonomies page size from 100 to 150
-
 
 ## [0.117.3] - 2018-02-20
 ### Changed
