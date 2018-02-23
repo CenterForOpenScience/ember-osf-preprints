@@ -1,7 +1,9 @@
 import Ember from 'ember';
 import Permissions from 'ember-osf/const/permissions';
+import { loadPage } from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
-import {stripDiacritics} from 'ember-power-select/utils/group-utils';
+import { stripDiacritics } from 'ember-power-select/utils/group-utils';
+import { task, timeout } from 'ember-concurrency';
 /**
  * @module ember-preprints
  * @submodule components
@@ -30,7 +32,7 @@ import {stripDiacritics} from 'ember-power-select/utils/group-utils';
  *     startState=_State.START
  *     existingState=existingState
  *     _existingState=_existingState
- *     nodeTitle=nodeTitle
+ *     title=title
  *     currentUser=user
  *     selectedFile=selectedFile
  *     hasFile=hasFile
@@ -64,10 +66,79 @@ import {stripDiacritics} from 'ember-power-select/utils/group-utils';
 export default Ember.Component.extend(Analytics, {
     userNodes: Ember.A(),
     selectedNode: null,
+    currentPage: 1,
+    searchTerm: '',
+    canLoadMore: false,
+    isLoading: false,
     isAdmin: Ember.computed('selectedNode', function() {
         return this.get('selectedNode') ? (this.get('selectedNode.currentUserPermissions') || []).includes(Permissions.ADMIN) : false;
     }),
+
+    init() {
+        this._super(...arguments);
+        this.get('_getInitialUserNodes').perform();
+    },
+
+    // Only make a request every 500 ms to let user finish typing.
+    _getInitialUserNodes: task(function* (searchTerm) {
+        let userNodes = this.get('userNodes');
+        userNodes.clear();
+        yield timeout(500);
+        this.set('currentPage', 1);
+        let currentUser = this.get('currentUser');
+        let results = yield loadPage(currentUser, 'nodes', 10, 1, {
+            filter: {
+                preprint: false,
+                title: searchTerm,
+            },
+        });
+        // When the promise finishes, set the searchTerm
+        this.set('searchTerm', searchTerm);
+        let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
+        if (results.hasRemaining) {
+            this.set('canLoadMore', true);
+        } else {
+            this.set('canLoadMore', false);
+        }
+        userNodes.pushObjects(onlyAdminNodes);
+    }).restartable(),
+
+    _getMoreUserNodes: task(function* () {
+        this.set('isLoading', true);
+        let currentPage = this.get('currentPage');
+        let currentUser = this.get('currentUser');
+        let searchTerm = this.get('searchTerm');
+        let nextPage = currentPage + 1;
+        let results = yield loadPage(currentUser, 'nodes', 10, nextPage, {
+            filter: {
+                preprint: false,
+                title: searchTerm,
+            },
+        });
+        let userNodes = this.get('userNodes');
+        let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
+        onlyAdminNodes = onlyAdminNodes.filter(item => !userNodes.contains(item));
+        userNodes.pushObjects(onlyAdminNodes);
+        if (results.hasRemaining) {
+            this.set('canLoadMore', true);
+            this.set('currentPage', nextPage)
+        } else {
+            this.set('canLoadMore', false);
+        }
+        this.set('isLoading', false);
+    }).enqueue(),
+
     actions: {
+        getDefaultUserNodes(term) {
+            if (term === '') {
+                this.get('_getInitialUserNodes').perform(term);
+            }
+        },
+
+        getMoreUserNodes() {
+            this.get('_getMoreUserNodes').perform();
+        },
+
         nodeSelected(node) {
             // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded, file-browser component can be loaded.
             this.attrs.clearDownstreamFields('belowNode');

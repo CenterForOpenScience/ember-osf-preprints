@@ -70,11 +70,11 @@ test('twitterHref computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'test title'
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         const location = encodeURIComponent(window.location.href);
 
@@ -146,12 +146,12 @@ test('linkedinHref computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'test title',
             description: 'test description'
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         const location = encodeURIComponent(window.location.href);
 
@@ -196,11 +196,11 @@ test('emailHref computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'test title'
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         const location = encodeURIComponent(window.location.href);
 
@@ -218,11 +218,11 @@ test('hasTag computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             tags: []
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('hasTag'),
@@ -231,11 +231,11 @@ test('hasTag computed property', function (assert) {
     });
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             tags: ['a', 'b', 'c']
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('hasTag'),
@@ -253,13 +253,11 @@ skip('authors computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             id: 'abc12'
         });
 
-        ctrl.setProperties({
-            node
-        });
+        ctrl.set('model', preprint);
 
         // TODO figure out how to test with at least one contributor
         ctrl.get('authors')
@@ -363,11 +361,10 @@ test('hasShortenedDescription computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             description: 'Lorem ipsum'
         });
-
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('hasShortenedDescription'),
@@ -376,11 +373,11 @@ test('hasShortenedDescription computed property', function (assert) {
     });
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             description: 'Lorem ipsum'.repeat(35)
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('hasShortenedDescription'),
@@ -419,11 +416,11 @@ test('description computed property', function (assert) {
         const input = 'Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem menandri consequat, tantas dictas quodsi nec eu. Ornatus forensibus vituperatoribus id vix.';
         const expected ='Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem';
 
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             description: input
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('description'),
