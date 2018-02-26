@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { isArray } from '@ember/array';
+import Route from '@ember/routing/route';
 
 // Error handling for API
 const handlers = new Map([
@@ -17,7 +18,7 @@ const handlers = new Map([
 /**
  * @class Content Route Handler
  */
-export default Ember.Route.extend({
+export default Route.extend({
     model(params) {
         return this
             .store
@@ -26,7 +27,7 @@ export default Ember.Route.extend({
     actions: {
         error(error) {
             // Handle API Errors
-            if (error && error.errors && Ember.isArray(error.errors)) {
+            if (error && error.errors && isArray(error.errors)) {
                 const {detail} = error.errors[0];
                 const page = handlers.get(detail) || 'page-not-found';
 

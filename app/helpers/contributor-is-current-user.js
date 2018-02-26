@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
 
 /**
  * @module ember-preprints
@@ -20,4 +20,4 @@ export function contributorIsCurrentUser(params/*, hash*/) {
     return contributor.get('userId') === currentUserId;
 }
 
-export default Ember.Helper.helper(contributorIsCurrentUser);
+export default helper(contributorIsCurrentUser);

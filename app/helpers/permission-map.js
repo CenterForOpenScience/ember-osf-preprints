@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+
 import { permissionSelector } from 'ember-osf/const/permissions';
 /**
  * @module ember-preprints
@@ -22,4 +23,4 @@ export function permissionMap(params/*, hash*/) {
     return map[permission];
 }
 
-export default Ember.Helper.helper(permissionMap);
+export default helper(permissionMap);

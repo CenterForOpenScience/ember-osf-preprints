@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { inject } from '@ember/service';
+import Route from '@ember/routing/route';
 import Analytics from 'ember-osf/mixins/analytics';
 import OSFAgnosticAuthRouteMixin from 'ember-osf/mixins/osf-agnostic-auth-route';
 
@@ -10,10 +11,10 @@ import OSFAgnosticAuthRouteMixin from 'ember-osf/mixins/osf-agnostic-auth-route'
 /**
  * @class Application Route Handler
  */
-export default Ember.Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
-    i18n: Ember.inject.service(),
-    store: Ember.inject.service(),
-    theme: Ember.inject.service(),
+export default Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
+    i18n: inject(),
+    store: inject(),
+    theme: inject(),
     headTags: function() {
         return this.get('theme.headTags');
     },

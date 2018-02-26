@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { get } from '@ember/object';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
@@ -20,11 +21,11 @@ import Analytics from 'ember-osf/mixins/analytics';
  * ```
  * @class confirm-share-preprint
  */
-export default Ember.Component.extend(Analytics, {
+export default Component.extend(Analytics, {
     isOpen: false,
     actions: {
         close() {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',

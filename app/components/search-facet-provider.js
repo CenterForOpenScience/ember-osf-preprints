@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
+import $ from 'jquery';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 
@@ -25,9 +27,9 @@ var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string"
  * ```
  * @class search-facet-provider
  */
-export default Ember.Component.extend(Analytics, {
-    store: Ember.inject.service(),
-    theme: Ember.inject.service(),
+export default Component.extend(Analytics, {
+    store: inject(),
+    theme: inject(),
     otherProviders: [],
     searchUrl: config.OSF.shareSearchUrl,
     whiteListedProviders: config.whiteListedProviders.map(item => item.toLowerCase()),
@@ -51,7 +53,7 @@ export default Ember.Component.extend(Analytics, {
                     return providerNames;
                 }),
             // The providers list from SHARE
-            Ember.$
+            $
                 .ajax({
                     type: 'POST',
                     url: this.get('searchUrl'),

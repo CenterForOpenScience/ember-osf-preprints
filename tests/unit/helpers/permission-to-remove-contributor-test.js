@@ -1,23 +1,23 @@
 import { permissionToRemoveContributor } from 'preprint-service/helpers/permission-to-remove-contributor';
 import { module, test } from 'qunit';
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 
 module('Unit | Helper | permission to remove contributor');
 
 test('cannot remove self as a contributor', function(assert) {
-    var contrib = Ember.Object.create({
+    var contrib = EmberObject.create({
         'userId': '12345',
         'permission': 'admin',
         'unregisteredContributor': null,
         'bibliographic': true
 
     });
-    var currentUser = Ember.Object.create({
+    var currentUser = EmberObject.create({
         id: '12345',
         currentUserId: '12345'
     });
     var isAdmin = false;
-    var node = Ember.Object.create({
+    var node = EmberObject.create({
         'registration': false
     });
 
@@ -27,19 +27,19 @@ test('cannot remove self as a contributor', function(assert) {
 
 
 test('cannot remove contributor if you are not admin', function(assert) {
-    var contrib = Ember.Object.create({
+    var contrib = EmberObject.create({
         'userId': 'abcde',
         'permission': 'admin',
         'unregisteredContributor': null,
         'bibliographic': true
 
     });
-    var currentUser = Ember.Object.create({
+    var currentUser = EmberObject.create({
         id: '12345',
         currentUserId: '12345'
     });
     var isAdmin = false;
-    var node = Ember.Object.create({
+    var node = EmberObject.create({
         'registration': false
     });
 
@@ -49,19 +49,19 @@ test('cannot remove contributor if you are not admin', function(assert) {
 
 
 test('can remove another contributor if you are admin', function(assert) {
-    var contrib = Ember.Object.create({
+    var contrib = EmberObject.create({
         'userId': 'abcde',
         'permission': 'admin',
         'unregisteredContributor': null,
         'bibliographic': true
 
     });
-    var currentUser = Ember.Object.create({
+    var currentUser = EmberObject.create({
         id: '12345',
         currentUserId: '12345'
     });
     var isAdmin = true;
-    var node = Ember.Object.create({
+    var node = EmberObject.create({
         'registration': false
     });
 
@@ -71,19 +71,19 @@ test('can remove another contributor if you are admin', function(assert) {
 
 test('cannot remove contributor from registration', function(assert) {
     // This scenario should never be happening.
-    var contrib = Ember.Object.create({
+    var contrib = EmberObject.create({
         'userId': 'abcde',
         'permission': 'admin',
         'unregisteredContributor': null,
         'bibliographic': true
 
     });
-    var currentUser = Ember.Object.create({
+    var currentUser = EmberObject.create({
         id: '12345',
         currentUserId: '12345'
     });
     var isAdmin = true;
-    var node = Ember.Object.create({
+    var node = EmberObject.create({
         'registration': true
     });
 

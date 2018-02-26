@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import { moduleFor, test, skip } from 'ember-qunit';
 import config from 'ember-get-config';
 
@@ -44,12 +44,12 @@ test('Initial properties', function (assert) {
 });
 
 test('isAdmin computed property', function (assert) {
-    this.inject.service('store');
+    this.inject('store');
 
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             currentUserPermissions: ['admin']
         });
@@ -63,12 +63,12 @@ test('isAdmin computed property', function (assert) {
 });
 
 test('twitterHref computed property', function (assert) {
-    this.inject.service('store');
+    this.inject('store');
 
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             title: 'test title'
         });
@@ -97,12 +97,12 @@ test('facebookHref computed property', function (assert) {
 });
 
 test('linkedinHref computed property', function (assert) {
-    this.inject.service('store');
+    this.inject('store');
 
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             title: 'test title',
             description: 'test description'
@@ -120,12 +120,12 @@ test('linkedinHref computed property', function (assert) {
 });
 
 test('emailHref computed property', function (assert) {
-    this.inject.service('store');
+    this.inject('store');
 
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             title: 'test title'
         });
@@ -142,12 +142,12 @@ test('emailHref computed property', function (assert) {
 });
 
 test('hasTag computed property', function (assert) {
-    this.inject.service('store');
+    this.inject('store');
 
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             tags: []
         });
@@ -160,7 +160,7 @@ test('hasTag computed property', function (assert) {
         );
     });
 
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             tags: ['a', 'b', 'c']
         });
@@ -177,12 +177,12 @@ test('hasTag computed property', function (assert) {
 //TODO: unskip test when loadAll() is removed/refactored.
 skip('authors computed property', function (assert) {
     assert.expect(1);
-    this.inject.service('store');
+    this.inject('store');
 
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             id: 'abc12'
         });
@@ -200,12 +200,12 @@ skip('authors computed property', function (assert) {
 });
 
 test('fullLicenseText computed property', function (assert) {
-    this.inject.service('store');
+    this.inject('store');
 
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const license = store.createRecord('license', {
             text: 'The year is {{year}} and the copyright holders are {{copyrightHolders}}.'
         });
@@ -230,7 +230,7 @@ test('fullLicenseText computed property', function (assert) {
         );
     });
 
-    Ember.run(() => {
+    run(() => {
         const license = store.createRecord('license', {
             text: 'The year is {{year}}.'
         });
@@ -252,12 +252,12 @@ test('fullLicenseText computed property', function (assert) {
 });
 
 test('editButtonLabel computed property', function (assert) {
-    this.inject.service('store');
+    this.inject('store');
 
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const provider = store.createRecord('preprint-provider', {
             reviewsWorkflow: 'pre-moderation',
         });
@@ -287,12 +287,12 @@ test('editButtonLabel computed property', function (assert) {
 });
 
 test('hasShortenedDescription computed property', function (assert) {
-    this.inject.service('store');
+    this.inject('store');
 
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             description: 'Lorem ipsum'
         });
@@ -305,7 +305,7 @@ test('hasShortenedDescription computed property', function (assert) {
         );
     });
 
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             description: 'Lorem ipsum'.repeat(35)
         });
@@ -340,12 +340,12 @@ test('useShortenedDescription computed property', function (assert) {
 });
 
 test('description computed property', function (assert) {
-    this.inject.service('store');
+    this.inject('store');
 
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const input = 'Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem menandri consequat, tantas dictas quodsi nec eu. Ornatus forensibus vituperatoribus id vix.';
         const expected ='Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem';
 
@@ -396,12 +396,12 @@ test('expandAbstract action', function (assert) {
 });
 
 test('chooseFile action', function (assert) {
-    this.inject.service('store');
+    this.inject('store');
 
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const fileItem = store.createRecord('file', {
             id: 'test1'
         });

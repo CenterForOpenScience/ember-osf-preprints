@@ -1,15 +1,15 @@
 import { getAncestorDescriptor } from 'preprint-service/helpers/get-ancestor-descriptor';
 import { module, test } from 'qunit';
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 
 
 module('Unit | Helper | get ancestor descriptor');
 
 test('One, two, three, and four-level hierarchies', function(assert) {
-    let root = Ember.Object.create({
+    let root = EmberObject.create({
         'id': '12345',
         'title': 'Great-Grandparent',
-        'root': Ember.Object.create({
+        'root': EmberObject.create({
             'id': '12345',
             'title': 'Great-Grandparent'
         }),
@@ -23,20 +23,20 @@ test('One, two, three, and four-level hierarchies', function(assert) {
         parent: null
     });
 
-    let grandparent = Ember.Object.create({
+    let grandparent = EmberObject.create({
         'id': '67890',
         'title': 'Grandparent',
         'parent': root,
         'root': root
     });
 
-    let parent = Ember.Object.create({
+    let parent = EmberObject.create({
         'id': 'abcde',
         'title': 'Parent',
         'parent': grandparent,
         'root': root
     });
-    let node = Ember.Object.create({
+    let node = EmberObject.create({
         'id': 'fghij',
         'root': root,
         'parent': parent,
@@ -57,7 +57,7 @@ test('One, two, three, and four-level hierarchies', function(assert) {
 });
 
 test('Test private parent', function(assert) {
-    let child = Ember.Object.create({
+    let child = EmberObject.create({
         id: 'abcde',
         title: 'child',
         '_internalModel': {

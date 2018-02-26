@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { inject } from '@ember/service';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
@@ -16,9 +18,9 @@ import Analytics from 'ember-osf/mixins/analytics';
  * ```
  * @class taxonomy-top-list
  */
-export default Ember.Component.extend(Analytics, {
-    theme: Ember.inject.service(),
-    sortedList: Ember.computed('list', 'list.content', function() {
+export default Component.extend(Analytics, {
+    theme: inject(),
+    sortedList: computed('list', 'list.content', function() {
         if (!this.get('list')) {
             return;
         }

@@ -1,5 +1,6 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import { moduleForComponent } from 'ember-qunit';
+import Service from '@ember/service';
 import test from 'ember-sinon-qunit/test-support/test';
 import tHelper from 'ember-i18n/helper';
 
@@ -34,10 +35,10 @@ moduleForComponent('preprint-status-banner', 'Unit | Component | preprint status
 
 
 test('getClassName computed property', function(assert) {
-    this.inject.service('store');
+    this.inject('store');
     const component = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const node = this.store.createRecord('node', {
             title: 'test title',
             description: 'test description',
@@ -60,7 +61,7 @@ test('getClassName computed property', function(assert) {
 });
 
 // Stub i18n service
-const i18nStub = Ember.Service.extend({
+const i18nStub = Service.extend({
     t(key, arg = null) {
         const translated = {
             'global.brand_name': `The Panda Archive of bamboo`,
@@ -79,7 +80,7 @@ const i18nStub = Ember.Service.extend({
 });
 
 // Stub theme service
-const themeStub = Ember.Service.extend({
+const themeStub = Service.extend({
     provider: {
         id: 'pandaXriv',
         name: 'The Panda Archive of bamboo',
@@ -88,7 +89,7 @@ const themeStub = Ember.Service.extend({
 });
 
 test('bannerContent computed property', function(assert) {
-    this.inject.service('store');
+    this.inject('store');
 
     const component = this.subject();
     this.registry.register('helper:t', tHelper);
@@ -96,7 +97,7 @@ test('bannerContent computed property', function(assert) {
     this.register('service:theme', themeStub);
 
 
-    Ember.run(() => {
+    run(() => {
         const node = this.store.createRecord('node', {
             title: 'test title',
             description: 'test description',
@@ -131,10 +132,10 @@ test('bannerContent computed property', function(assert) {
 });
 
 test('status computed property', function(assert) {
-    this.inject.service('store');
+    this.inject('store');
     const component = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const node = this.store.createRecord('node', {
             title: 'test title',
             description: 'test description',
@@ -154,10 +155,10 @@ test('status computed property', function(assert) {
 });
 
 test('icon computed property', function(assert) {
-    this.inject.service('store');
+    this.inject('store');
     const component = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const node = this.store.createRecord('node', {
             title: 'test title',
             description: 'test description',
@@ -178,10 +179,10 @@ test('icon computed property', function(assert) {
 });
 
 test('workflow computed property', function(assert) {
-    this.inject.service('store');
+    this.inject('store');
     const component = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const node = this.store.createRecord('node', {
             title: 'test title',
             description: 'test description',

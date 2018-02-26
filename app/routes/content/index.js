@@ -1,4 +1,9 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import { inject } from '@ember/service';
+import { run } from '@ember/runloop';
+import { isArray } from '@ember/array';
+import Route from '@ember/routing/route';
+import $ from 'jquery';
 import ResetScrollMixin from '../../mixins/reset-scroll';
 import SetupSubmitControllerMixin from '../../mixins/setup-submit-controller';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -29,14 +34,14 @@ const handlers = new Map([
  * Fetches current preprint. Redirects to preprint provider route if necessary.
  * @class Content Route Handler
  */
-export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
-    theme: Ember.inject.service(),
-    headTagsService: Ember.inject.service('head-tags'),
-    currentUser: Ember.inject.service('currentUser'),
+export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
+    theme: inject(),
+    headTagsService: inject('head-tags'),
+    currentUser: inject('currentUser'),
 
     afterModel(preprint) {
         const {location: {origin}} = window;
-        let contributors = Ember.A();
+        let contributors = A();
 
         const downloadUrl = [
             origin,
@@ -241,8 +246,8 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
             fileDownloadURL: this.get('fileDownloadURL'),
         });
 
-        Ember.run.scheduleOnce('afterRender', this, function() {
-            MathJax.Hub.Queue(['Typeset', MathJax.Hub, [Ember.$('.abstract')[0], Ember.$('#preprintTitle')[0]]]);  // jshint ignore:line
+        run.scheduleOnce('afterRender', this, function() {
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, [$('.abstract')[0], $('#preprintTitle')[0]]]);  // jshint ignore:line
         });
 
         return this._super(...arguments);
@@ -251,7 +256,7 @@ export default Ember.Route.extend(Analytics, ResetScrollMixin, SetupSubmitContro
     actions: {
         error(error) {
             // Handle API Errors
-            if (error && error.errors && Ember.isArray(error.errors)) {
+            if (error && error.errors && isArray(error.errors)) {
                 const {detail} = error.errors[0];
                 const page = handlers.get(detail) || 'page-not-found';
 

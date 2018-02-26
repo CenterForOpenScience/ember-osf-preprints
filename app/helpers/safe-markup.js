@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+import { htmlSafe } from '@ember/string';
+
 /**
  * @module ember-preprints
  * @submodule helpers
@@ -13,7 +15,7 @@ import Ember from 'ember';
   * @return {Object} Returns Handlebars.SafeString
   */
 export function safeMarkup(params/*, hash*/) {
-    return Ember.String.htmlSafe(params.join(''));
+    return htmlSafe(params.join(''));
 }
 
-export default Ember.Helper.helper(safeMarkup);
+export default helper(safeMarkup);

@@ -1,4 +1,6 @@
-import Ember, { Logger } from 'ember';
+import { inject } from '@ember/service';
+// import Ember from '@ember/application';
+import Route from '@ember/routing/route';
 import config from 'ember-get-config';
 
 /**
@@ -9,8 +11,8 @@ import config from 'ember-get-config';
 /**
  * @class Provider Route Handler
  */
-export default Ember.Route.extend({
-    theme: Ember.inject.service(),
+export default Route.extend({
+    theme: inject(),
 
     beforeModel(transition) {
         const {slug = ''} = transition.params.provider;
@@ -43,7 +45,7 @@ export default Ember.Route.extend({
 
     actions: {
         error(error) {
-            Logger.error(error);
+            // Ember.Logger.error(error);
 
             // substate implementation when returning `true`
             return true;

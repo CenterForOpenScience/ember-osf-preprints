@@ -1,5 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import Ember from 'ember';
+import { A } from '@ember/array';
+import Ember from '@ember/application';
 
 moduleForComponent('search-facet-provider', 'Integration | Component | search facet provider', {
     integration: true,
@@ -12,7 +13,7 @@ moduleForComponent('search-facet-provider', 'Integration | Component | search fa
             doc_count: 100,
             key: 'AgriXiv'
         };
-        let otherProviders =  Ember.A([
+        let otherProviders = A([
             osfProvider,
             agrixivProvider
         ]);

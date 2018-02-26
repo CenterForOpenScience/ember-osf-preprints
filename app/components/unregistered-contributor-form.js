@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { get } from '@ember/object';
+import { computed } from '@ember/object';
+import Component from '@ember/component';
 import Analytics from 'ember-osf/mixins/analytics';
 
 import {
@@ -24,7 +26,7 @@ const Validations = buildValidations({
             validator('presence', true),
             validator('format', {
                 type: 'email',
-                regex: /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i,
+                regex: /^[-a-z0-9~!$%^&*_=+}{'?]+(\.[-a-z0-9~!$%^&*_=+}{'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i,
             })
        ]
     },
@@ -47,13 +49,13 @@ const Validations = buildValidations({
  * ```
  * @class unregistered-contributor-form
  */
-export default Ember.Component.extend(Validations, Analytics, {
+export default Component.extend(Validations, Analytics, {
     fullName: null,
     username: null,
-    isFormValid: Ember.computed.alias('validations.isValid'),
+    isFormValid: computed.alias('validations.isValid'),
     actions: {
         addUnregistered(fullName, email) {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',

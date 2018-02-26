@@ -1,4 +1,7 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import { computed } from '@ember/object';
+import { get } from '@ember/object';
+import { inject } from '@ember/service';
 import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
 import { permissionSelector } from 'ember-osf/const/permissions';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -36,15 +39,15 @@ import Analytics from 'ember-osf/mixins/analytics';
  * @class preprint-form-authors
  */
 export default CpPanelBodyComponent.extend(Analytics, {
-    i18n: Ember.inject.service(),
-    valid: Ember.computed.alias('newContributorId'),
+    i18n: inject(),
+    valid: computed.alias('newContributorId'),
     authorModification: false,
     currentPage: 1,
     // Permissions labels for dropdown
     permissionOptions: permissionSelector,
     parentContributorsAdded: false,
     // Returns list of user ids associated with current node
-    currentContributorIds: Ember.computed('contributors', function() {
+    currentContributorIds: computed('contributors', function() {
         let contribIds = [];
         this.get('contributors').forEach((contrib) => {
             contribIds.push(contrib.get('userId'));
@@ -53,10 +56,10 @@ export default CpPanelBodyComponent.extend(Analytics, {
     }),
     // In Add mode, contributors are emailed on creation of preprint. In Edit mode,
     // contributors are emailed as soon as they are added to preprint.
-    sendEmail: Ember.computed('editMode', function() {
+    sendEmail: computed('editMode', function() {
         return this.get('editMode') ? 'preprint' : false;
     }),
-    numParentContributors: Ember.computed('parentNode', function() {
+    numParentContributors: computed('parentNode', function() {
         if (this.get('parentNode')) {
             return this.get('parentNode').get('contributors').get('length');
         } else {
@@ -66,7 +69,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
     addState: 'emptyView', // There are 3 view states on left side of Authors panel. Default state just shows search bar.
     query: null,
     // Total contributor search results
-    totalSearchResults: Ember.computed('searchResults.[]', function() {
+    totalSearchResults: computed('searchResults.[]', function() {
         let searchResults = this.get('searchResults');
         if (searchResults && searchResults.meta !== undefined) {
             return searchResults.meta.total;
@@ -75,7 +78,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         }
     }),
     // Total pages of contributor search results
-    pages: Ember.computed('searchResults.[]', function() {
+    pages: computed('searchResults.[]', function() {
         let searchResults = this.get('searchResults');
         if (searchResults && searchResults.meta !== undefined) {
             return searchResults.meta.total_pages;
@@ -86,7 +89,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -105,14 +108,14 @@ export default CpPanelBodyComponent.extend(Analytics, {
         },
         // Adds all contributors from parent project to current component as long as they are not current contributors
         addContributorsFromParentProject() {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
                     label: `Submit - Bulk Add Contributors From Parent`
                 });
             this.set('parentContributorsAdded', true);
-            let contributorsToAdd = Ember.A();
+            let contributorsToAdd = A();
             this.get('parentContributors').toArray().forEach(contributor => {
                 if (this.get('currentContributorIds').indexOf(contributor.get('userId')) === -1) {
                     contributorsToAdd.push({
@@ -171,7 +174,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         // Removes contributor then redraws contributor list view - removal of contributor may change
         // which additional update/remove requests are permitted.
         removeContributor(contrib) {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -191,7 +194,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         // Updates contributor then redraws contributor list view - updating contributor
         // permissions may change which additional update/remove requests are permitted.
         updatePermissions(contributor, permission) {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
@@ -210,7 +213,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         // Updates contributor then redraws contributor list view - updating contributor
         // bibliographic info may change which additional update/remove requests are permitted.
         updateBibliographic(contributor, isBibliographic) {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'checkbox',
                     action: 'select',
@@ -227,7 +230,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         },
         // There are 3 view states on left side of Authors panel.  This switches to add unregistered contrib view.
         unregisteredView() {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -243,7 +246,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         },
         // There are 3 view states on left side of Authors panel.  This switches to empty view and clears search results.
         resetfindContributorsView() {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -254,7 +257,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         // Reorders contributors in UI then sends server request to reorder contributors. If request fails, reverts
         // contributor list in UI back to original.
         reorderItems(itemModels, draggedContrib) {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'div',
                     action: 'drag',

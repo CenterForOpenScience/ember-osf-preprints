@@ -1,5 +1,6 @@
-import Ember from 'ember';
-
+import { computed } from '@ember/object';
+import { inject } from '@ember/service';
+import Route from '@ember/routing/route';
 import CasAuthenticatedRouteMixin from 'ember-osf/mixins/cas-authenticated-route';
 import ResetScrollMixin from '../mixins/reset-scroll';
 import SetupSubmitControllerMixin from '../mixins/setup-submit-controller';
@@ -15,11 +16,11 @@ import ConfirmationMixin from 'ember-onbeforeunload/mixins/confirmation';
  * Creates a preprint record
  * @class Submit Route Handler
  */
-export default Ember.Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, CasAuthenticatedRouteMixin, SetupSubmitControllerMixin, {
-    i18n: Ember.inject.service(),
-    currentUser: Ember.inject.service('currentUser'),
-    panelActions: Ember.inject.service('panelActions'),
-    confirmationMessage: Ember.computed('i18n', function() {
+export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, CasAuthenticatedRouteMixin, SetupSubmitControllerMixin, {
+    i18n: inject(),
+    currentUser: inject('currentUser'),
+    panelActions: inject('panelActions'),
+    confirmationMessage: computed('i18n', function() {
         return this.get('i18n').t('submit.abandon_preprint_confirmation');
     }),
 

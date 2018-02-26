@@ -1,33 +1,37 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import { resolve } from 'rsvp';
 import { moduleForComponent, skip } from 'ember-qunit';
+import ArrayProxy from '@ember/array/proxy';
+import Ember from '@ember/application';
+import EmberObject from '@ember/object';
 
 moduleForComponent('supplementary-file-browser', 'Integration | Component | supplementary file browser', {
     integration: true,
     beforeEach: function() {
-        let providerFiles = () => Ember.RSVP.resolve(Ember.ArrayProxy.create({
-            content: Ember.A([{ name: 'test folder', kind: 'folder'}, { name: 'chosenFile', kind: 'file' }]),
+        let providerFiles = () => resolve(ArrayProxy.create({
+            content: A([{ name: 'test folder', kind: 'folder'}, { name: 'chosenFile', kind: 'file' }]),
             meta: {
                 pagination: {
                     total: 1
                 }
             }}));
-        let providersQuery =  Ember.RSVP.resolve(Ember.A([{
+        let providersQuery = resolve(A([{
                 name: 'osfstorage',
                 query: providerFiles
         }]));
 
-        let node = Ember.Object.create({
+        let node = EmberObject.create({
             dateModified: '10-11-2016',
             title:'My Preprint Title',
             files: providersQuery
         });
 
-        let file = Ember.Object.create({
+        let file = EmberObject.create({
             name: 'test file',
             currentVersion: '1.12',
             id: 890
         });
-        let preprint = Ember.Object.create({
+        let preprint = EmberObject.create({
             primaryFile: file,
             node: node,
             provider: 'osf',

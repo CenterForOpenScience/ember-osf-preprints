@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
+import { computed } from '@ember/object';
 
 const PENDING = 'pending';
 const ACCEPTED = 'accepted';
@@ -38,9 +40,9 @@ const CLASS_NAMES = {
     [REJECTED]: 'preprint-status-rejected'
 };
 
-export default Ember.Component.extend({
-    i18n: Ember.inject.service(),
-    theme: Ember.inject.service(),
+export default Component.extend({
+    i18n: inject(),
+    theme: inject(),
 
     // translations
     labelModeratorFeedback: 'components.preprint-status-banner.feedback.moderator_feedback',
@@ -51,7 +53,7 @@ export default Ember.Component.extend({
     classNames: ['preprint-status-component'],
     classNameBindings: ['getClassName'],
 
-    getClassName: Ember.computed('submission.provider.reviewsWorkflow', 'submission.reviewsState', function() {
+    getClassName: computed('submission.provider.reviewsWorkflow', 'submission.reviewsState', function() {
         return this.get('submission.reviewsState') === PENDING ?
             CLASS_NAMES[this.get('submission.provider.reviewsWorkflow')] :
             CLASS_NAMES[this.get('submission.reviewsState')];
@@ -77,10 +79,10 @@ export default Ember.Component.extend({
     },
 
     latestAction: null,
-    reviewerComment: Ember.computed.alias('latestAction.comment'),
-    reviewerName: Ember.computed.alias('latestAction.creator.fullName'),
+    reviewerComment: computed.alias('latestAction.comment'),
+    reviewerName: computed.alias('latestAction.creator.fullName'),
 
-    bannerContent: Ember.computed('statusExplanation', 'workflow', 'theme.{isProvider,provider.name}', function() {
+    bannerContent: computed('statusExplanation', 'workflow', 'theme.{isProvider,provider.name}', function() {
         const i18n = this.get('i18n');
         const tName = this.get('theme.isProvider') ?
             this.get('theme.provider.name') :
@@ -92,21 +94,21 @@ export default Ember.Component.extend({
         return `${i18n.t(this.get('baseMessage'), {name: tName, reviewsWorkflow: tWorkflow})} ${tStatusExplanation}.`;
     }),
 
-    statusExplanation: Ember.computed('submission.provider.reviewsWorkflow', 'submission.reviewsState', function() {
+    statusExplanation: computed('submission.provider.reviewsWorkflow', 'submission.reviewsState', function() {
         return this.get('submission.reviewsState') === PENDING ?
             MESSAGE[this.get('submission.provider.reviewsWorkflow')] :
             MESSAGE[this.get('submission.reviewsState')];
     }),
 
-    status: Ember.computed('submission.reviewsState', function() {
+    status: computed('submission.reviewsState', function() {
         return STATUS[this.get('submission.reviewsState')];
     }),
 
-    icon: Ember.computed('submission.reviewsState', function() {
+    icon: computed('submission.reviewsState', function() {
         return ICONS[this.get('submission.reviewsState')];
     }),
 
-    workflow: Ember.computed('submission.provider.reviewsWorkflow', function () {
+    workflow: computed('submission.provider.reviewsWorkflow', function () {
         return WORKFLOW[this.get('submission.provider.reviewsWorkflow')];
     }),
 

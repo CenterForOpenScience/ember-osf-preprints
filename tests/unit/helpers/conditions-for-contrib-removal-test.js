@@ -1,17 +1,17 @@
 import { conditionsForContribRemoval } from 'preprint-service/helpers/conditions-for-contrib-removal';
 import { module, test } from 'qunit';
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 
 
 module('Unit | Helper | conditions for contrib removal');
 test('cannot remove last admin contributor', function(assert) {
-    var contribToRemove = Ember.Object.create({
+    var contribToRemove = EmberObject.create({
         'id': '12345',
         'permission': 'admin',
         'bibliographic': true,
         'unregisteredContributor': null
     });
-    var otherContrib = Ember.Object.create({
+    var otherContrib = EmberObject.create({
         'id': 'abcde',
         'bibliographic': true,
         'permission': 'read'
@@ -22,13 +22,13 @@ test('cannot remove last admin contributor', function(assert) {
 });
 
 test('cannot remove last bibliographic contributor', function(assert) {
-    var contribToRemove = Ember.Object.create({
+    var contribToRemove = EmberObject.create({
         'id': '12345',
         'bibliographic': true,
         'permission': 'admin',
         'unregisteredContributor': null
     });
-    var otherContrib = Ember.Object.create({
+    var otherContrib = EmberObject.create({
         'id': 'abcde',
         'bibliographic': false,
         'permission': 'admin'
@@ -39,13 +39,13 @@ test('cannot remove last bibliographic contributor', function(assert) {
 });
 
 test('sole admin contributor must be registered', function(assert) {
-    var contribToRemove = Ember.Object.create({
+    var contribToRemove = EmberObject.create({
         'id': '12345',
         'bibliographic': true,
         'permission': 'admin',
         'unregisteredContributor': null
     });
-    var otherContrib = Ember.Object.create({
+    var otherContrib = EmberObject.create({
         'id': 'abcde',
         'bibliographic': true,
         'permission': 'admin',
@@ -57,13 +57,13 @@ test('sole admin contributor must be registered', function(assert) {
 });
 
 test('can remove contributor if registered admin and bibliographic conditions met', function(assert) {
-    var contribToRemove = Ember.Object.create({
+    var contribToRemove = EmberObject.create({
         'id': '12345',
         'bibliographic': true,
         'admin': true,
         'unregisteredContributor': null
     });
-    var otherContrib = Ember.Object.create({
+    var otherContrib = EmberObject.create({
         'id': 'abcde',
         'bibliographic': true,
         'permission': 'admin',

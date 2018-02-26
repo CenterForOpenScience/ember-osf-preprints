@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -7,7 +7,7 @@ moduleForComponent('additional-provider-list', 'Integration | Component | additi
 });
 
 test('additionalProviderList renders', function(assert) {
-    this.set('additionalProviders', Ember.A(['B Provider', 'A Provider']));
+    this.set('additionalProviders', A(['B Provider', 'A Provider']));
     this.render(hbs`{{additional-provider-list additionalProviders=additionalProviders}}`);
 
     // Should be alphabetically sorted as 'A Provider, B Provider'

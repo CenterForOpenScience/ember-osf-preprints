@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import Helper from '@ember/component/helper';
+import { inject } from '@ember/service';
+import { observer } from '@ember/object';
 
 /**
  * @module ember-preprints
@@ -10,10 +12,10 @@ import Ember from 'ember';
  *
  * @class route-prefix
  */
-export default Ember.Helper.extend({
-    theme: Ember.inject.service(),
+export default Helper.extend({
+    theme: inject(),
 
-    onSubRouteChange: Ember.observer('theme.isSubRoute', function() {
+    onSubRouteChange: observer('theme.isSubRoute', function() {
         this.recompute();
     }),
 

@@ -1,4 +1,8 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { A } from '@ember/array';
+import { computed } from '@ember/object';
+import { run } from '@ember/runloop';
+import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
@@ -19,13 +23,13 @@ import Analytics from 'ember-osf/mixins/analytics';
  * ```
  * @class provider-carousel
  */
-export default Ember.Component.extend(Analytics, {
+export default Component.extend(Analytics, {
     _resizeListener: null,
-    providers: Ember.A(), // Pass in preprint providers
+    providers: A(), // Pass in preprint providers
     itemsPerSlide: 5, // Default
     lightLogo: true, // Light logos by default, for Index page.
-    editedProviders: Ember.computed('providers', function() {
-        let newProviders = Ember.A()
+    editedProviders: computed('providers', function() {
+        let newProviders = A()
         for (const provider of this.get('providers')) {
           if (provider && provider.get('id')!== 'livedata') {
               newProviders.pushObject(provider)
@@ -33,18 +37,18 @@ export default Ember.Component.extend(Analytics, {
         }
         return newProviders;
     }),
-    numProviders: Ember.computed('editedProviders', function() {
+    numProviders: computed('editedProviders', function() {
         return this.get('editedProviders').length;
     }),
-    numSlides: Ember.computed('numProviders', 'itemsPerSlide', function() {
+    numSlides: computed('numProviders', 'itemsPerSlide', function() {
         return Math.ceil(this.get('numProviders') / this.get('itemsPerSlide'));
     }),
-    slides: Ember.computed('numSlides', 'editedProviders', 'itemsPerSlide', function() {
+    slides: computed('numSlides', 'editedProviders', 'itemsPerSlide', function() {
         const numSlides = this.get('numSlides');
         const itemsPerSlide = this.get('itemsPerSlide');
         return new Array(numSlides).fill().map((_, i) => this.get('editedProviders').slice(i * itemsPerSlide, i * itemsPerSlide + itemsPerSlide));
     }),
-    columnOffset: Ember.computed('numProviders', 'itemsPerSlide', function() {
+    columnOffset: computed('numProviders', 'itemsPerSlide', function() {
         // If only one slide of providers, center the provider logos by adding a column offset.
         let offset = 'col-sm-offset-1';
         const numProviders = this.get('numProviders');
@@ -78,19 +82,19 @@ export default Ember.Component.extend(Analytics, {
         }
     },
     didInsertElement: function () {
-        Ember.$('.carousel').carousel();
+        $('.carousel').carousel();
     },
     init: function() {
         // Set resize listener so number of providers per slide can be changed
         this._super(...arguments);
         this.setSlideItems();
-        this._resizeListener = Ember.run.bind(this, this.setSlideItems);
-        Ember.$(window).on('resize', this._resizeListener);
+        this._resizeListener = run.bind(this, this.setSlideItems);
+        $(window).on('resize', this._resizeListener);
     },
     willDestroy: function() {
         // Unbinds _resizeListener
         if (this._resizeListener) {
-            Ember.$(window).off('resize', this._resizeListener);
+            $(window).off('resize', this._resizeListener);
         }
     }
 });

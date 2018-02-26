@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
 import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-toggle';
 /**
  * @module ember-preprints
@@ -29,7 +29,7 @@ export default CpPanelToggleComponent.extend({
     isValidationActive: false,
 
     // Calculated properties
-    invalid: Ember.computed('valid', 'isValidationActive', function() {
+    invalid: computed('valid', 'isValidationActive', function() {
         // If the user hasn't even opened the panel yet, don't run the validation check
         // In other words, not true or null
         if (this.get('isValidationActive')) {

@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import { inject } from '@ember/service';
+import Mixin from '@ember/object/mixin';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
 
@@ -14,9 +16,9 @@ import permissions from 'ember-osf/const/permissions';
  * @class SetupSubmitControllerMixin
  */
 
-export default Ember.Mixin.create({
-    theme: Ember.inject.service(),
-    panelActions: Ember.inject.service('panelActions'),
+export default Mixin.create({
+    theme: inject(),
+    panelActions: inject('panelActions'),
 
     setupSubmitController(controller, model) {
         //setupController method that will be run for both Add and Edit modes for submit form.
@@ -25,7 +27,7 @@ export default Ember.Mixin.create({
         controller.set('editMode', this.get('editMode'));
 
         // Fetch values required to operate the page: user and userNodes
-        let userNodes = Ember.A();
+        let userNodes = A();
 
         this.get('store').findAll('preprint-provider')
             .then((providers) => {

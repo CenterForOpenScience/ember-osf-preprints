@@ -1,14 +1,19 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import Ember from 'ember';
+import { resolve } from 'rsvp';
+import EmberObject from '@ember/object';
+import { A } from '@ember/array';
+import ArrayProxy from '@ember/array/proxy';
+import Service from '@ember/service';
+import Ember from '@ember/application';
 
-const taxonomiesQuery = () => Ember.RSVP.resolve(Ember.ArrayProxy.create({
-    content: Ember.A([
-        Ember.Object.create({
+const taxonomiesQuery = () => resolve(ArrayProxy.create({
+    content: A([
+        EmberObject.create({
             text: 'Arts and Humanities',
             parents: [],
             child_count: 50,
         }),
-        Ember.Object.create({
+        EmberObject.create({
             text: 'Education',
             parents: [],
             child_count: 27,
@@ -18,9 +23,9 @@ const taxonomiesQuery = () => Ember.RSVP.resolve(Ember.ArrayProxy.create({
 
 
 //Stub location service
-const themeStub = Ember.Service.extend({
+const themeStub = Service.extend({
     isProvider: true,
-    provider: Ember.RSVP.resolve({
+    provider: resolve({
         name: 'OSF',
         queryHasMany: taxonomiesQuery,
     })
@@ -30,7 +35,7 @@ moduleForComponent('search-facet-taxonomy', 'Integration | Component | search fa
     integration: true,
     beforeEach: function() {
         this.register('service:theme', themeStub);
-        this.inject.service('theme');
+        this.inject('theme');
         this.set('facet', {key: 'subjects', title: 'Subject', component: 'search-facet-taxonomy'});
         this.set('key', 'subjects');
         let noop = () => {};

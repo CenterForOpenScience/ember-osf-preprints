@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { get } from '@ember/object';
+import { inject } from '@ember/service';
 import Analytics from 'ember-osf/mixins/analytics';
 
 /**
@@ -9,11 +11,11 @@ import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @class Index Controller
  */
-export default Ember.Controller.extend(Analytics, {
-    theme: Ember.inject.service(),
+export default Controller.extend(Analytics, {
+    theme: inject(),
     actions: {
         contactLink(href, category, action, label) {
-            const metrics = Ember.get(this, 'metrics');
+            const metrics = get(this, 'metrics');
 
             // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
             metrics.trackEvent({

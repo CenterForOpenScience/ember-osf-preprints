@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+
 /**
  * @module ember-preprints
  * @submodule helpers
@@ -18,4 +19,4 @@ export function sliceArray(params/*, hash*/) {
     return array.slice(start, finish);
 }
 
-export default Ember.Helper.helper(sliceArray);
+export default helper(sliceArray);

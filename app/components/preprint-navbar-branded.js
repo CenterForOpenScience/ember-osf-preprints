@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject } from '@ember/service';
 import OSFAgnosticAuthControllerMixin from 'ember-osf/mixins/osf-agnostic-auth-controller';
 import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
@@ -20,10 +21,10 @@ import config from 'ember-get-config';
  * ```
  * @class preprint-navbar-branded
  */
-export default Ember.Component.extend(OSFAgnosticAuthControllerMixin, Analytics, {
-    session: Ember.inject.service(),
-    theme: Ember.inject.service(),
-    currentUser: Ember.inject.service(),
+export default Component.extend(OSFAgnosticAuthControllerMixin, Analytics, {
+    session: inject(),
+    theme: inject(),
+    currentUser: inject(),
 
     tagName: 'nav',
     classNames: ['navbar', 'branded-navbar', 'preprint-navbar'],

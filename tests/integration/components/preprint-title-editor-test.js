@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Ember from '@ember/application';
 import { moduleForComponent, test } from 'ember-qunit';
 
 moduleForComponent('preprint-title-editor', 'Integration | Component | preprint title editor', {

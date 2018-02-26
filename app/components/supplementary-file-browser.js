@@ -1,4 +1,7 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { observer } from '@ember/object';
+import { get } from '@ember/object';
 import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
 import fileDownloadPath from '../utils/file-download-path';
@@ -22,7 +25,7 @@ import fileDownloadPath from '../utils/file-download-path';
  * ```
  * @class supplementary-file-browser
  */
-export default Ember.Component.extend(Analytics, {
+export default Component.extend(Analytics, {
     elementId: 'preprint-file-view',
     endIndex: 6,
     startIndex: 0,
@@ -60,7 +63,7 @@ export default Ember.Component.extend(Analytics, {
             });
     }.observes('preprint'),
 
-    selectedFileChanged: Ember.observer('selectedFile', function() {
+    selectedFileChanged: observer('selectedFile', function() {
         const eventData = {
             file_views: {
                 preprint: {
@@ -74,21 +77,21 @@ export default Ember.Component.extend(Analytics, {
                 }
             }
         };
-        Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', {
+        get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', {
             collection: 'preprint-file-views',
             eventData: eventData,
             node: this.get('node'),
         });
     }),
 
-    _chosenFile: Ember.observer('chosenFile', 'indexes', function() {
+    _chosenFile: observer('chosenFile', 'indexes', function() {
         let fid = this.get('chosenFile');
         let index = this.get('indexes').indexOf(fid);
         if (fid && index !== -1) {
             this.set('selectedFile', this.get('files')[index]);
         }
     }),
-    _moveIfNeeded: Ember.observer('selectedFile', function() {
+    _moveIfNeeded: observer('selectedFile', function() {
         let index = this.get('files').indexOf(this.get('selectedFile'));
         if (index < 0) {
             return;
@@ -104,7 +107,7 @@ export default Ember.Component.extend(Analytics, {
             }
         }
     }),
-    fileDownloadURL: Ember.computed('selectedFile', function() {
+    fileDownloadURL: computed('selectedFile', function() {
         return fileDownloadPath(this.get('selectedFile'), this.get('node'));
     }),
 
@@ -115,7 +118,7 @@ export default Ember.Component.extend(Analytics, {
     },
     actions: {
         next(direction) {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
@@ -129,7 +132,7 @@ export default Ember.Component.extend(Analytics, {
             this.set('startIndex', this.get('startIndex') + 5);
         },
         prev(direction) {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
@@ -148,7 +151,7 @@ export default Ember.Component.extend(Analytics, {
             }
         },
         changeFile(file) {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'file browser',
                     action: 'select',

@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 import SetupSubmitControllerMixin from 'preprint-service/mixins/setup-submit-controller';
 import { moduleFor, test } from 'ember-qunit';
 
@@ -12,7 +12,7 @@ moduleFor('mixin:setup-submit-controller', {
 });
 
 test('Setup-submit-controller mixin', function(assert) {
-    let routeObject = Ember.Route.extend(SetupSubmitControllerMixin);
+    let routeObject = Route.extend(SetupSubmitControllerMixin);
     this.registry.register('test:subject', routeObject);
     const routeTest = this.container.lookup('test:subject');
     assert.ok(SetupSubmitControllerMixin.detect(routeTest));

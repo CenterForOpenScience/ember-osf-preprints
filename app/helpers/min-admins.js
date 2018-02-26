@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+
 /**
  * @module ember-preprints
  * @submodule helpers
@@ -30,4 +31,4 @@ export function minAdmins(params/*, hash*/) {
 
 }
 
-export default Ember.Helper.helper(minAdmins);
+export default helper(minAdmins);

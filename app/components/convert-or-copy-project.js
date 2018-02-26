@@ -1,5 +1,6 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import Analytics from 'ember-osf/mixins/analytics';
+import { get } from '@ember/object';
 /**
  * @module ember-preprints
  * @submodule components
@@ -24,7 +25,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  * ```
  * @class convert-or-copy-project
  */
-export default Ember.Component.extend(Analytics, {
+export default Component.extend(Analytics, {
     actions: {
         chooseCopyToComponent() {
             // Decision to create a component to contain the preprint
@@ -34,7 +35,7 @@ export default Ember.Component.extend(Analytics, {
             this.set('titleValid', false);
             this.set('nodeTitle', null);
             this.attrs.nextUploadSection('organize', 'finalizeUpload');
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -50,7 +51,7 @@ export default Ember.Component.extend(Analytics, {
                 this.set('nodeTitle', this.get('node.title'));
                 this.set('titleValid', true);
             }
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -62,7 +63,7 @@ export default Ember.Component.extend(Analytics, {
             // as edits to the preprint will edit the project.
             this.set('convertProjectConfirmed', true);
             this.attrs.nextUploadSection('organize', 'finalizeUpload');
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',

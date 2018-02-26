@@ -1,4 +1,10 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import EmberObject from '@ember/object';
+import { computed } from '@ember/object';
+import { A } from '@ember/array';
+import { get } from '@ember/object';
+import { inject } from '@ember/service';
+import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
 
 function arrayEquals(arr1, arr2) {
@@ -9,12 +15,12 @@ function arrayStartsWith(arr, prefix) {
     return prefix.reduce((acc, val, i) => acc && val && arr[i] && val.id === arr[i].id, true);
 }
 
-const Column = Ember.Object.extend({
+const Column = EmberObject.extend({
     sortDefinition: ['text:asc'],
     filterText: '',
     selection: null,
     subjects: [],
-    subjectsFiltered: Ember.computed('subjects.[]', 'filterText', function() {
+    subjectsFiltered: computed('subjects.[]', 'filterText', function() {
         const filterTextLowerCase = this.get('filterText').toLowerCase();
         const subjects = this.get('subjects');
 
@@ -24,7 +30,7 @@ const Column = Ember.Object.extend({
 
         return subjects.filter(item => item.get('text').toLowerCase().includes(filterTextLowerCase));
     }),
-    subjectsSorted: Ember.computed.sort('subjectsFiltered', 'sortDefinition')
+    subjectsSorted: computed.sort('subjectsFiltered', 'sortDefinition')
 });
 
 /**
@@ -46,9 +52,9 @@ const Column = Ember.Object.extend({
  * ```
  * @class subject-picker
  */
-export default Ember.Component.extend(Analytics, {
-    store: Ember.inject.service(),
-    theme: Ember.inject.service(),
+export default Component.extend(Analytics, {
+    store: inject(),
+    theme: inject(),
 
     querySubjects(parents = 'null', tier = 0) {
         const column = this.get('columns').objectAt(tier);
@@ -74,13 +80,13 @@ export default Ember.Component.extend(Analytics, {
             initialSubjects: [],
             currentSubjects: [],
             hasChanged: false,
-            columns: Ember.A(new Array(3).fill(null).map(() => Column.create())),
+            columns: A(new Array(3).fill(null).map(() => Column.create())),
         });
 
         this.querySubjects();
     },
 
-    isValid: Ember.computed.notEmpty('currentSubjects'),
+    isValid: computed.notEmpty('currentSubjects'),
 
     resetColumnSelections() {
         const columns = this.get('columns');
@@ -97,7 +103,7 @@ export default Ember.Component.extend(Analytics, {
 
     actions: {
         deselect(index) {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -112,7 +118,7 @@ export default Ember.Component.extend(Analytics, {
             allSelections.removeAt(index);
         },
         select(selected, tier) {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -171,7 +177,7 @@ export default Ember.Component.extend(Analytics, {
             this.querySubjects(selected.id, nextTier);
         },
         discard() {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -180,11 +186,11 @@ export default Ember.Component.extend(Analytics, {
 
             this.resetColumnSelections();
 
-            this.set('currentSubjects', Ember.$.extend(true, [], this.get('initialSubjects')));
+            this.set('currentSubjects', $.extend(true, [], this.get('initialSubjects')));
             this.set('hasChanged', false);
         },
         save() {
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',

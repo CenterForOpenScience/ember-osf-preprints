@@ -1,12 +1,10 @@
 import { module } from 'qunit';
-import Ember from 'ember';
+
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
 import FactoryGuy, { manualSetup } from 'ember-data-factory-guy';
 import config from 'ember-get-config';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
-
-const { RSVP: { Promise } } = Ember;
 
 export default function(name, options = {}) {
   module(name, {

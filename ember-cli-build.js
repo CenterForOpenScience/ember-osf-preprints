@@ -60,11 +60,10 @@ module.exports = function(defaults) {
         sassOptions: {
             includePaths: [
                 'node_modules/@centerforopenscience/ember-osf/addon/styles',
-                'bower_components/bootstrap-sass/assets/stylesheets',
                 'node_modules/@centerforopenscience/osf-style/sass',
-                'bower_components/hint.css',
-                'bower_components/c3',
-                'bower_components/bootstrap-daterangepicker',
+                'node_modules/hint.css',
+                'node_modules/c3',
+                'node_modules/bootstrap-daterangepicker',
             ]
         },
         inlineContent: {
@@ -134,27 +133,28 @@ module.exports = function(defaults) {
     // please specify an object with the list of modules as keys
     // along with the exports of each module as its value.
 
+
+    app.import('vendor/ember/ember-template-compiler.js');
     // osf-style
-    app.import(path.join(app.bowerDirectory, 'loaders.css/loaders.min.css'));
 
     // app.import('bower_components/dropzone/dist/dropzone.js');
     app.import({
-        development: path.join(app.bowerDirectory, 'dropzone/dist/dropzone.css'),
-        production: path.join(app.bowerDirectory, 'dropzone/dist/min/dropzone.min.css')
+        development: path.join('node_modules', 'dropzone/dist/dropzone.css'),
+        production: path.join('node_modules', 'dropzone/dist/min/dropzone.min.css')
     });
 
-    app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
-    app.import(path.join(app.bowerDirectory, 'bootstrap-daterangepicker/daterangepicker.js'));
-    app.import(path.join(app.bowerDirectory, 'c3/c3.js'));
-    app.import(path.join(app.bowerDirectory, 'd3/d3.js'));
+    // app.import(path.join('node_modules', 'jquery-tags-input/src/jquery-tags-input.js'));
+    app.import(path.join('node_modules', 'bootstrap-daterangepicker/daterangepicker.js'));
+    app.import(path.join('node_modules', 'c3/c3.js'));
+    app.import(path.join('node_modules', 'd3/build/d3.js'));
 
     app.import({
-        development: path.join(app.bowerDirectory, 'hint.css/hint.css'),
-        production: path.join(app.bowerDirectory, 'hint.css/hint.css')
+        development: path.join('node_modules', 'hint.css/hint.css'),
+        production: path.join('node_modules', 'hint.css/hint.css')
     });
 
     app.import({
-        test: path.join(app.bowerDirectory, 'ember/ember-template-compiler.js')
+        test: path.join('node_modules', 'ember/ember-template-compiler.js')
     });
 
     // Import component styles from addon

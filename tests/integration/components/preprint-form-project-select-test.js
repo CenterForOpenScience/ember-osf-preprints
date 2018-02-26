@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Ember from '@ember/application';
 import { moduleForComponent, test, skip } from 'ember-qunit';
 
 import Permissions from 'ember-osf/const/permissions';

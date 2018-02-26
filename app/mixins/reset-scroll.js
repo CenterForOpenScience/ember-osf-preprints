@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
 
 /**
  * @module ember-preprints
@@ -11,7 +11,7 @@ import Ember from 'ember';
  *
  * @class ResetScrollMixin
  */
-export default Ember.Mixin.create({
+export default Mixin.create({
     scrollTarget: window,
     activate: function() {
         this._super();

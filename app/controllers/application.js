@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { inject } from '@ember/service';
+
 import OSFAgnosticAuthControllerMixin from 'ember-osf/mixins/osf-agnostic-auth-controller';
 /**
  * @module ember-preprints
@@ -9,11 +11,11 @@ import OSFAgnosticAuthControllerMixin from 'ember-osf/mixins/osf-agnostic-auth-c
  * @class Application Controller
  * @extends Ember-OSF.OSFAgnosticAuthControllerMixin
  */
-export default Ember.Controller.extend(OSFAgnosticAuthControllerMixin, {
-    i18n: Ember.inject.service(),
-    toast: Ember.inject.service(),
-    theme: Ember.inject.service(),
-    preprintWord: Ember.inject.service(),
+export default Controller.extend(OSFAgnosticAuthControllerMixin, {
+    i18n: inject(),
+    toast: inject(),
+    theme: inject(),
+    preprintWord: inject(),
     init() {
         const ppWord = this.get('preprintWord');
         const documentType = ppWord.getPreprintWord();

@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
 
 /**
  * @module ember-preprints
@@ -18,4 +18,4 @@ export function isSectionEditable(params/*, hash*/) {
     return !(uneditableSections.includes(section));
 }
 
-export default Ember.Helper.helper(isSectionEditable);
+export default helper(isSectionEditable);

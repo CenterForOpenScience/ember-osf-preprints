@@ -1,5 +1,5 @@
-import Ember from 'ember';
-
+import Component from '@ember/component';
+import { observer } from '@ember/object';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const TitleValidation = buildValidations({
@@ -33,10 +33,10 @@ const TitleValidation = buildValidations({
  * @class preprint-title-editor
  */
 
-export default Ember.Component.extend(TitleValidation, {
+export default Component.extend(TitleValidation, {
     nodeTitle: null,
     titlePlaceholder: 'Enter preprint title',
-    isValid: Ember.observer('nodeTitle', function() {
+    isValid: observer('nodeTitle', function() {
         if (this.get('nodeTitle') && this.get('validations.isValid')) {
             this.set('titleValid', true);
         } else {

@@ -1,4 +1,7 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { A } from '@ember/array';
+import { computed } from '@ember/object';
+import { get } from '@ember/object';
 import Permissions from 'ember-osf/const/permissions';
 import Analytics from 'ember-osf/mixins/analytics';
 import {stripDiacritics} from 'ember-power-select/utils/group-utils';
@@ -61,10 +64,10 @@ import {stripDiacritics} from 'ember-power-select/utils/group-utils';
  * }}
  * @class preprint-form-project-select
  */
-export default Ember.Component.extend(Analytics, {
-    userNodes: Ember.A(),
+export default Component.extend(Analytics, {
+    userNodes: A(),
     selectedNode: null,
-    isAdmin: Ember.computed('selectedNode', function() {
+    isAdmin: computed('selectedNode', function() {
         return this.get('selectedNode') ? (this.get('selectedNode.currentUserPermissions') || []).includes(Permissions.ADMIN) : false;
     }),
     actions: {
@@ -79,7 +82,7 @@ export default Ember.Component.extend(Analytics, {
                 this.set('osfProviderLoaded', true);
             });
             this.attrs.nextUploadSection('chooseProject', 'chooseFile');
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
@@ -93,7 +96,7 @@ export default Ember.Component.extend(Analytics, {
             this.attrs.clearDownstreamFields('belowFile');
             this.attrs.selectFile(file);
             this.attrs.nextUploadSection('selectExistingFile', 'organize');
-            Ember.get(this, 'metrics')
+            get(this, 'metrics')
                 .trackEvent({
                     category: 'file browser',
                     action: 'select',
@@ -108,7 +111,7 @@ export default Ember.Component.extend(Analytics, {
             this.set('existingState', newState);
             if (newState === this.get('_existingState').EXISTINGFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'selectExistingFile');
-                Ember.get(this, 'metrics')
+                get(this, 'metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
@@ -117,7 +120,7 @@ export default Ember.Component.extend(Analytics, {
 
             } else if (newState === this.get('_existingState').NEWFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'uploadNewFile');
-                Ember.get(this, 'metrics')
+                get(this, 'metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
