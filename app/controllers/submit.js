@@ -1123,9 +1123,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             let save_changes = null;
             if (submitAction) {
-                save_changes = model.save().then(() => submitAction.save());
+                save_changes = model.save().then(() => node.save()).then(() => submitAction.save());
             } else {
-                save_changes = model.save();
+                save_changes = model.save().then(() => node.save());
             }
 
             return save_changes
