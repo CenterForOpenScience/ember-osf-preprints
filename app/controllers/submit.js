@@ -1195,6 +1195,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('currentProvider', this.get('selectedProvider'));
             this.get('currentProvider').queryHasMany('licensesAcceptable', {'page[size]': 20}).then(licenses => {
                 this.set('availableLicenses', licenses);
+                this.set('basicsLicense.licenseType', this.get('availableLicenses.firstObject'));
             });
             this.set('providerChanged', false);
             this.set('providerSaved', true);
