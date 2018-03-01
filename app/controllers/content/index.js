@@ -4,6 +4,7 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
+import trunc from 'npm:unicode-byte-truncate'
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -115,10 +116,10 @@ export default Ember.Controller.extend(Analytics, {
         );
     }),
 
-    twitterHref: Ember.computed('node', function() {
+    twitterHref: Ember.computed('model', function() {
         const queryParams = {
             url: window.location.href,
-            text: this.get('node.title'),
+            text: this.get('model.title'),
             via: 'OSFramework'
         };
         return `https://twitter.com/intent/tweet?${queryStringify(queryParams)}`;
@@ -138,20 +139,20 @@ export default Ember.Controller.extend(Analytics, {
         return `https://www.facebook.com/dialog/share?${queryStringify(queryParams)}`;
     }),
     // https://developer.linkedin.com/docs/share-on-linkedin
-    linkedinHref: Ember.computed('node', function() {
+    linkedinHref: Ember.computed('model', function() {
         const queryParams = {
             url: [window.location.href, 1024],          // required
             mini: ['true', 4],                          // required
-            title: [this.get('node.title'), 200],      // optional
-            summary: [this.get('node.description'), 256], // optional
+            title: trunc(this.get('model.title'), 200),      // optional
+            summary: trunc(this.get('model.description'), 256), // optional
             source: ['Open Science Framework', 200]     // optional
         };
 
         return `https://www.linkedin.com/shareArticle?${queryStringify(queryParams)}`;
     }),
-    emailHref: Ember.computed('node', function() {
+    emailHref: Ember.computed('model', function() {
         const queryParams = {
-            subject: this.get('node.title'),
+            subject: this.get('model.title'),
             body: window.location.href
         };
 
@@ -166,19 +167,15 @@ export default Ember.Controller.extend(Analytics, {
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
 
-    hasTag: Ember.computed.bool('node.tags.length'),
+    hasTag: Ember.computed.bool('model.tags.length'),
 
-    authors: Ember.computed('node', function() {
+    authors: Ember.computed('model', function() {
         // Cannot be called until node has loaded!
-        const node = this.get('node');
-
-        if (!node)
-            return [];
-
+        const model = this.get('model');
         const contributors = Ember.A();
 
         return DS.PromiseArray.create({
-            promise: loadAll(node, 'contributors', contributors)
+            promise: loadAll(model, 'contributors', contributors)
                 .then(() => contributors)
         });
     }),
@@ -192,20 +189,20 @@ export default Ember.Controller.extend(Analytics, {
             .replace(/({{copyrightHolders}})/g, copyright_holders.join(', '));
     }),
 
-    hasShortenedDescription: Ember.computed('node.description', function() {
-        const nodeDescription = this.get('node.description');
+    hasShortenedDescription: Ember.computed('model.description', function() {
+        const description = this.get('model.description');
 
-        return nodeDescription && nodeDescription.length > 350;
+        return description && description.length > 350;
     }),
 
     useShortenedDescription: Ember.computed('expandedAbstract', 'hasShortenedDescription', function() {
         return this.get('hasShortenedDescription') && !this.get('expandedAbstract');
     }),
 
-    description: Ember.computed('node.description', function() {
+    description: Ember.computed('model.description', function() {
         // Get a shortened version of the abstract, but doesn't cut in the middle of word by going
         // to the last space.
-        return this.get('node.description')
+        return this.get('model.description')
             .slice(0, 350)
             .replace(/\s+\S*$/, '');
     }),

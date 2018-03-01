@@ -9,7 +9,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  * Convert Or Copy Widget - very simple, just presents decision, do you want to convert this project or copy file to a new component.
  *
  * Will set convertOrCopy to 'convert' or 'copy'.  If convert, will set node title as current node title and titleValid to
- * true. If 'copy', nodeTitle will be set equal to null, and titleValid to false.  Converting a project requires the user confirm their
+ * true. If 'copy', title will be set equal to null, and titleValid to false.  Converting a project requires the user confirm their
  * decision in an additional step.
  *
  * Sample usage:
@@ -17,7 +17,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  * {{convert-or-copy-project
  *  convertOrCopy=convertOrCopy
  *  titleValid=titleValid
- *  nodeTitle=nodeTitle
+ *  title=title
  *  node=node
  *  convertProjectConfirmed=convertProjectConfirmed
  *}}
@@ -32,7 +32,7 @@ export default Ember.Component.extend(Analytics, {
             this.set('convertProjectConfirmed', false);
             this.set('convertOrCopy', 'copy');
             this.set('titleValid', false);
-            this.set('nodeTitle', null);
+            this.set('title', null);
             this.attrs.nextUploadSection('organize', 'finalizeUpload');
             Ember.get(this, 'metrics')
                 .trackEvent({
@@ -47,7 +47,7 @@ export default Ember.Component.extend(Analytics, {
             this.set('convertProjectConfirmed', false);
             this.set('convertOrCopy', 'convert');
             if (this.get('node')) {
-                this.set('nodeTitle', this.get('node.title'));
+                this.set('title', this.get('node.title'));
                 this.set('titleValid', true);
             }
             Ember.get(this, 'metrics')

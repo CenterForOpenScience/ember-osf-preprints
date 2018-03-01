@@ -1,11 +1,11 @@
-{{title node.title}}
+{{title model.title}}
 
 <div id="view-page">
     <div class="p-t-xl p-b-md m-b-md dark-overlay-header-background header-row">{{!HEADER ROW}}
         <div class="container">{{!CONTAINER DIV}}
             <div class="row">
                 <div class="col-xs-12 col-sm-10">
-                    <h1 id="preprintTitle" class="p-b-md">{{node.title}}</h1>
+                    <h1 id="preprintTitle" class="p-b-md">{{model.title}}</h1>
                     <h5 class="view-authors">
                         <ul class="comma-list">
                             {{#if authors}}
@@ -14,7 +14,7 @@
                                         {{#if author.unregisteredContributor}}
                                             <li>{{author.unregisteredContributor}}</li>
                                         {{else}}
-                                            <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.givenName}} {{author.users.familyName}}</a></li>
+                                            <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.name}}</a></li>
                                         {{/if}}
                                     {{/if}}
                                 {{~/each}}
@@ -59,7 +59,7 @@
                 {{else}}
                     {{#if (not node.public)}}
                         <div class="alert alert-danger m-r-md" role="alert">
-                            {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{node.title}} </a> {{t "content.public"}}.
+                            {{t "content.private_preprint_warning"}} <a href={{node.links.html}}>{{model.title}} </a> {{t "content.public"}}.
                         </div>
                     {{/if}}
                     {{supplementary-file-browser chosenFile=chosenFile preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile') dualTrackNonContributors=(action 'dualTrackNonContributors')}}
@@ -83,7 +83,7 @@
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
                         <p class="abstract {{if useShortenedDescription 'abstract-truncated'}}">
-                            {{~if useShortenedDescription description node.description~}}
+                            {{~if useShortenedDescription description model.description~}}
                         </p>
                         <button class='btn-link' hidden={{not hasShortenedDescription}} {{action 'expandAbstract'}}>
                             {{~t (if expandedAbstract 'content.see_less' 'content.see_more')~}}
@@ -141,7 +141,7 @@
                     <div class="p-t-xs">
                         <h4 class=" f-w-md p-v-md"><strong>{{t "global.tags"}}</strong></h4>
                         {{#if hasTag}}
-                            {{#each node.tags as |tag|}}
+                            {{#each model.tags as |tag|}}
                                 <span class="badge">{{fix-special-char tag}}</span>
                             {{/each}}
                         {{else}}

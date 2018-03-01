@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { moduleFor, test, skip } from 'ember-qunit';
 import config from 'ember-get-config';
+import trunc from 'npm:unicode-byte-truncate'
 
 moduleFor('controller:content/index', 'Unit | Controller | content/index', {
     needs: [
@@ -69,11 +70,11 @@ test('twitterHref computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'test title'
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         const location = encodeURIComponent(window.location.href);
 
@@ -145,12 +146,12 @@ test('linkedinHref computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'test title',
             description: 'test description'
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         const location = encodeURIComponent(window.location.href);
 
@@ -161,6 +162,33 @@ test('linkedinHref computed property', function (assert) {
     });
 });
 
+test('trunc() works properly: only unicode', function (assert) {
+    //Each Chinese characters is 3 bytes long in Unicode.
+    let unicodeString = '上下而求索';
+    let expectedTruncatedString = '上下';
+    assert.strictEqual(trunc(unicodeString, 6), expectedTruncatedString);
+    assert.strictEqual(trunc(unicodeString, 7), expectedTruncatedString);
+    assert.strictEqual(trunc(unicodeString, 8), expectedTruncatedString);
+});
+
+test('trunc() works properly: only ASCII', function (assert) {
+    let asciiString = 'ascii string';
+    assert.strictEqual(trunc(asciiString, 5), 'ascii');
+    assert.strictEqual(trunc(asciiString, 6), 'ascii ');
+    assert.strictEqual(trunc(asciiString, 7), 'ascii s');
+});
+
+test('trunc() works properly: ASCII and Unicode', function (assert) {
+    let unicodeString = 'Open Science 开放科学';
+    assert.strictEqual(trunc(unicodeString, 13), 'Open Science ');
+    assert.strictEqual(trunc(unicodeString, 14), 'Open Science ');
+    assert.strictEqual(trunc(unicodeString, 15), 'Open Science ');
+    assert.strictEqual(trunc(unicodeString, 16), 'Open Science 开');
+    assert.strictEqual(trunc(unicodeString, 17), 'Open Science 开');
+    assert.strictEqual(trunc(unicodeString, 18), 'Open Science 开');
+    assert.strictEqual(trunc(unicodeString, 19), 'Open Science 开放');
+});
+
 test('emailHref computed property', function (assert) {
     this.inject.service('store');
 
@@ -168,11 +196,11 @@ test('emailHref computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             title: 'test title'
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         const location = encodeURIComponent(window.location.href);
 
@@ -190,11 +218,11 @@ test('hasTag computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             tags: []
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('hasTag'),
@@ -203,11 +231,11 @@ test('hasTag computed property', function (assert) {
     });
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             tags: ['a', 'b', 'c']
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('hasTag'),
@@ -225,13 +253,11 @@ skip('authors computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             id: 'abc12'
         });
 
-        ctrl.setProperties({
-            node
-        });
+        ctrl.set('model', preprint);
 
         // TODO figure out how to test with at least one contributor
         ctrl.get('authors')
@@ -335,11 +361,10 @@ test('hasShortenedDescription computed property', function (assert) {
     const ctrl = this.subject();
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             description: 'Lorem ipsum'
         });
-
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('hasShortenedDescription'),
@@ -348,11 +373,11 @@ test('hasShortenedDescription computed property', function (assert) {
     });
 
     Ember.run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             description: 'Lorem ipsum'.repeat(35)
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('hasShortenedDescription'),
@@ -391,11 +416,11 @@ test('description computed property', function (assert) {
         const input = 'Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem menandri consequat, tantas dictas quodsi nec eu. Ornatus forensibus vituperatoribus id vix.';
         const expected ='Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem';
 
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             description: input
         });
 
-        ctrl.setProperties({node});
+        ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('description'),
