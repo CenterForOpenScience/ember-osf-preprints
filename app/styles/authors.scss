@@ -1,19 +1,19 @@
 .vert-align-disabled-permissions {
     padding-top: 6px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .vert-align-enabled-permissions {
     padding-top: 2px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .drag-drop-contrib {
     padding-top: 4px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
     color: gray;
 }
 
@@ -23,14 +23,19 @@
 }
 .vert-align {
     padding-top: 4px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .vert-align-contributor-name {
     padding-top: 8px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
 }
 
 .bib-padding {
@@ -125,7 +130,7 @@ span.sortable-bars:hover {
   background:none;
   border:none;
   font-size:1em;
-  padding:0px;
+  padding:0;
 }
 
 @keyframes greenHighlight {
@@ -166,6 +171,11 @@ span.sortable-bars:hover {
 .errorHighlight {
     animation: redHighlight 2s;
 }
+
+.table > tbody > tr > td {
+    padding: 5px;
+}
+
 @media (max-width: 768px) { // Contributors section, XS screen
     .current-authors {
         table, td, tr {
@@ -205,19 +215,19 @@ span.sortable-bars:hover {
         }
 
         .vert-align-disabled-permissions {
-            padding-top: 0px;
+            padding-top: 0;
         }
         .vert-align-enabled-permissions {
-            padding-top: 0px;
+            padding-top: 0;
         }
         .drag-drop-contrib {
-            padding-top: 0px;
+            padding-top: 0;
         }
         .vert-align {
-            padding-top: 0px;
+            padding-top: 0;
         }
         .vert-align-contributor-name {
-            padding-top: 0px;
+            padding-top: 0;
         }
         .contributor-row {
             border-top: 1px solid #EEE !important;
