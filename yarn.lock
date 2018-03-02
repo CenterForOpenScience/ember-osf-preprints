@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-02-23T15:25:30Z":
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-02-28T13:38:22Z":
   version "0.14.0"
-  resolved "https://github.com/CenterForOpenScience/ember-osf.git#b8e449398c44e4b5dcc849fa34b6175c050aeca7"
+  resolved "https://github.com/CenterForOpenScience/ember-osf.git#bf64b659d7644f0b037b78722915b15c9da14644"
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
@@ -5120,7 +5120,7 @@ is-glob@^2.0.0, is-glob@^2.0.1:
   dependencies:
     is-extglob "^1.0.0"
 
-is-integer@^1.0.4:
+is-integer@^1.0.4, is-integer@^1.0.6:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/is-integer/-/is-integer-1.0.7.tgz#6bde81aacddf78b659b6629d629cadc51a886d5c"
   dependencies:
@@ -8462,6 +8462,17 @@ underscore.string@~3.3.4:
 underscore@>=1.8.3:
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.8.3.tgz#4f3fb53b106e6097fcf9cb4109f2a5e9bdfa5022"
+
+unicode-byte-truncate@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/unicode-byte-truncate/-/unicode-byte-truncate-1.0.0.tgz#aa6f0f3475193fe20c320ac9213e36e62e8764a7"
+  dependencies:
+    is-integer "^1.0.6"
+    unicode-substring "^0.1.0"
+
+unicode-substring@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/unicode-substring/-/unicode-substring-0.1.0.tgz#6120ce3c390385dbcd0f60c32b9065c4181d4b36"
 
 unique-filename@~1.1.0:
   version "1.1.0"

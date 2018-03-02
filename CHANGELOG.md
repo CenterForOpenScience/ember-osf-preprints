@@ -8,15 +8,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Default auto-expansion on top level subjects when there are no more than 3.
 - Check to use `facebookAppId` if branded providers have an app id
+- Choose preprint provider during unbranded submission
+- Add `unicode-byte-truncate` as a dependency
 
 ### Changed
 - 'Powered by Preprints' link stay on current server
 - Searching for contributors also searches their social links (such as their twitter handle)
 - Pull more preprint data (`title`, `description`, `tags`, etc.) from the preprint model instead of the node model.
+- Use newly added `name` field for preprint detail page contributors
 - Modified `preprint-form-project-select` component to use `lazy-options` for lazy loading user nodes.
 
 ### Fixed
 - Skipped tests in `convert-or-copy-project-test` and `supplementary-file-browser` to run properly
+- Do unicode-aware truncating for LinkedIn sharing using `unicode-byte-truncate`
 
 ## [0.117.5] - 2018-02-22
 ### Changed
