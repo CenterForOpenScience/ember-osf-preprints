@@ -1201,6 +1201,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('providerSaved', true);
             this.send('discardSubjects');
             this.send('next', this.get('_names.0'));
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Submit - Save and continue, Select ${this.get('currentProvider.name')} preprint service`
+                });
         },
         discardProvider() {
             this.set('selectedProvider', this.get('currentProvider'));
