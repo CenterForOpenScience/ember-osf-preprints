@@ -194,16 +194,19 @@ export default Ember.Component.extend(Analytics, {
             }
 
             let model = this.get('model');
+            let node = this.get('node');
             this.set('basicsAbstract', this.get('model.description') || null);
-            let currentTitle = model.get('title');
-            if (model.get('title') !== this.get('title')) {
+            let currentNodeTitle = node.get('title');
+
+            if (currentNodeTitle !== this.get('title')) {
                 model.set('title', this.get('title'));
-                model.save()
+                node.set('title', this.get('title'));
+                node.save()
                 .then(() => {
                     this.send('upload');
                 })
                 .catch(() => {
-                    model.set('title', currentTitle);
+                    node.set('title', currentNodeTitle);
                     this.set('uploadInProgress', false);
                     this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
                 });
