@@ -431,7 +431,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     // Compares the model's and current subjectLists's array of arrays of discipline ids
     // to determine if there has been a change.
     disciplineChanged: Ember.computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle', function () {
-        return JSON.stringify(this.get('model.subjects')) !== JSON.stringify(this.get('subjectsList'));
+        return JSON.stringify(subjectIdMap(this.get('model.subjects'))) !== JSON.stringify(subjectIdMap(this.get('subjectsList')));
     }),
 
     // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
@@ -660,7 +660,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             const currentTitle = model.get('title');
             const title = this.get('title');
 
-            this.set('basicsAbstract', this.get('node.description') || null);
+            this.set('basicsAbstract', this.get('model.description') || null);
 
             return Promise.resolve()
                 .then(() => {
