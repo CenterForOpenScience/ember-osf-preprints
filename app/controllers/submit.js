@@ -657,19 +657,24 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 });
 
             const model = this.get('model');
-            const currentTitle = model.get('title');
+            const node = this.get('node');
+            const currentNodeTitle = node.get('title');
             const title = this.get('title');
 
             this.set('basicsAbstract', this.get('model.description') || null);
 
             return Promise.resolve()
                 .then(() => {
-                    if (currentTitle !== title) {
-                        model.set('title', title);
+                    if (currentNodeTitle === title) {
+                        return;
                     }
+                    model.set('title', title);
+                    node.set('title', title);
+                    return node.save();
                 })
                 .then(() => this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint'))
                 .catch(() => {
+                    node.set('title', currentNodeTitle);
                     this.get('toast').error(
                         this.get('i18n').t('submit.could_not_update_title')
                     );
