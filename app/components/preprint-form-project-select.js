@@ -139,6 +139,14 @@ export default Ember.Component.extend(Analytics, {
             this.get('_getMoreUserNodes').perform();
         },
 
+        onFocus() {
+            this.get('_getInitialUserNodes').perform('');
+        },
+
+        onBlur() {
+            this.get('userNodes').clear();
+        },
+
         nodeSelected(node) {
             // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded, file-browser component can be loaded.
             this.attrs.clearDownstreamFields('belowNode');
