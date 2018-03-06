@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Check to use `facebookAppId` if branded providers have an app id
 - Choose preprint provider during unbranded submission
 - Add `unicode-byte-truncate` as a dependency
+- Add Event Tracking to `Select a Preprint Provider` on preprint upload
 
 ### Changed
 - 'Powered by Preprints' link stay on current server
