@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.118.0] - 2018-03-06
+### Added
+- Default auto-expansion on top level subjects when there are no more than 3
+- Check to use `facebookAppId` if branded providers have an app id
+- Choose preprint provider during unbranded submission
+- `unicode-byte-truncate` as a dependency
+
+### Changed
+- 'Powered by Preprints' link stay on current server
+- Searching for contributors also searches their social links (such as their twitter handle)
+- Use newly added `name` field for preprint detail page contributors
+- `preprint-form-project-select` component to use `lazy-options` for lazy loading user nodes
+- To pull more data from the preprint model instead of the node model (`title`, `description`, `tags`, etc.)
+
+### Fixed
+- Skipped tests in `convert-or-copy-project-test` and `supplementary-file-browser` to run properly
+- Unicode truncating for LinkedIn sharing using `unicode-byte-truncate`
+
 ## [0.117.5] - 2018-02-22
 ### Changed
 - Update to latest provider assets

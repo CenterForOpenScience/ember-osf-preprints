@@ -32,7 +32,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  *   startState=_State.START
  *   existingState=existingState
  *   _existingState=_existingState
- *   nodeTitle=nodeTitle
+ *   title=title
  *   currentUser=user
  *   osfFile=selectedFile
  *   hasFile=hasFile
@@ -140,7 +140,7 @@ export default Ember.Component.extend(Analytics, {
             this.get('store').createRecord('node', {
                 public: false,
                 category: 'project',
-                title: this.get('nodeTitle'),
+                title: this.get('title'),
             }).save()
                 .then(node => {
                     this.set('node', node);
@@ -165,7 +165,7 @@ export default Ember.Component.extend(Analytics, {
                 });
             let node = this.get('node');
             node
-                .addChild(this.get('nodeTitle'))
+                .addChild(this.get('title'))
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
@@ -192,17 +192,21 @@ export default Ember.Component.extend(Analytics, {
             if (this.get('nodeLocked')) { // Edit mode
                 this.set('uploadInProgress', true);
             }
+
+            let model = this.get('model');
             let node = this.get('node');
-            this.set('basicsAbstract', this.get('node.description') || null);
-            let currentTitle = node.get('title');
-            if (node.get('title') !== this.get('nodeTitle')) {
-                node.set('title', this.get('nodeTitle'));
+            this.set('basicsAbstract', this.get('model.description') || null);
+            let currentNodeTitle = node.get('title');
+
+            if (currentNodeTitle !== this.get('title')) {
+                model.set('title', this.get('title'));
+                node.set('title', this.get('title'));
                 node.save()
                 .then(() => {
                     this.send('upload');
                 })
                 .catch(() => {
-                    node.set('title', currentTitle);
+                    node.set('title', currentNodeTitle);
                     this.set('uploadInProgress', false);
                     this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
                 });

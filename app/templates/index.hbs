@@ -18,7 +18,7 @@
                             {{sanitize-html theme.provider.description "description"}}
                             <br>
                             <small>
-                                <a href="https://osf.io/preprints/" onbeforeclick={{action "click" "link" "Index - Powered By"}}>{{t "index.header.powered_by"}}</a>
+                                <a href="{{host}}preprints" onbeforeclick={{action "click" "link" "Index - Powered By"}}>{{t "index.header.powered_by"}}</a>
                             </small>
                         {{/if}}
                     </p>

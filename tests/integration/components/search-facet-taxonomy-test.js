@@ -12,10 +12,19 @@ const taxonomiesQuery = () => Ember.RSVP.resolve(Ember.ArrayProxy.create({
             text: 'Education',
             parents: [],
             child_count: 27,
-        })
+        }),
+        Ember.Object.create({
+            text: 'Filmography',
+            parents: [],
+            child_count: 13,
+        }),
+        Ember.Object.create({
+            text: 'Gastronomy',
+            parents: [],
+            child_count: 67,
+        }),
     ]),
 }));
-
 
 //Stub location service
 const themeStub = Ember.Service.extend({
@@ -55,4 +64,6 @@ test('One-level hierarchy taxonomies', function(assert) {
     render(this);
     assert.equal(this.$('label')[0].innerText.trim(), 'Arts and Humanities');
     assert.equal(this.$('label')[1].innerText.trim(), 'Education');
+    assert.equal(this.$('label')[2].innerText.trim(), 'Filmography');
+    assert.equal(this.$('label')[3].innerText.trim(), 'Gastronomy');
 });
