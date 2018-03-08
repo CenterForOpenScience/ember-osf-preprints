@@ -9,10 +9,9 @@ import NodeActionsMixin from 'ember-osf/mixins/node-actions';
 import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
 
 import loadAll from 'ember-osf/utils/load-relationship';
-
 import fixSpecialChar from 'ember-osf/utils/fix-special-char';
-
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
+import pathJoin from 'ember-osf/utils/path-join';
 
 // Enum of available upload states > New project or existing project?
 export const State = Object.freeze(Ember.Object.create({
@@ -1039,7 +1038,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Search for Authors`
                 });
-            const url = `/api/v1/user/search/?query=${query}&page=${page - 1}&size=10`;
+            const url = pathJoin(config.OSF.url, `api/v1/user/search/?query=${query}&page=${page - 1}&size=10`);
             let metaPages;
             return Ember.$.ajax({
                 type: 'GET',
