@@ -1054,7 +1054,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     }
                 }).then((contributors) => {
                     this.set('searchResults', contributors);
-                    this.get('searchResults').set('meta.total_pages', metaPages);
+                    this.get('searchResults').set('meta.total', metaPages);
                     return contributors;
                 }).catch(() => {
                     this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
