@@ -11,7 +11,6 @@ import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
 import loadAll from 'ember-osf/utils/load-relationship';
 import fixSpecialChar from 'ember-osf/utils/fix-special-char';
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
-import pathJoin from 'ember-osf/utils/path-join';
 
 // Enum of available upload states > New project or existing project?
 export const State = Object.freeze(Ember.Object.create({
