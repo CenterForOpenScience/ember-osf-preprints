@@ -7,7 +7,7 @@
         </button>
         <a class="navbar-brand" href='{{theme.pathPrefix}}'
             onclick={{action "click" "link" "Navbar - Brand"}}>
-            <span class="navbar-image" style="background-image: url('{{providerAsset theme.id 'square_color_transparent.png'}}')"></span>
+            <span class="navbar-image" style="background-image: url('{{provider-asset theme.id 'square_color_transparent.png'}}')"></span>
             <span class="navbar-title">{{model.name}}{{#if theme.preprintWordInTitle}} {{t "global.preprints"}}{{/if}}</span>
         </a>
     </div>

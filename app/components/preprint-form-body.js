@@ -1,4 +1,4 @@
-import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
+import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body/component';
 /**
  * @module ember-preprints
  * @submodule components

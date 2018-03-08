@@ -1,8 +1,6 @@
 {
   "name": "preprint-service",
   "dependencies": {
-  },
-  "resolutions": {
-    "jquery": "2.2.4"
+    "sanitize.js": "^1.0.0"
   }
 }

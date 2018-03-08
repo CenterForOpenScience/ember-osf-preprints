@@ -15,6 +15,7 @@ export default Route.extend({
     theme: inject(),
 
     beforeModel(transition) {
+        console.log('present');
         const {slug = ''} = transition.params.provider;
         const slugLower = slug.toLowerCase();
 
@@ -44,7 +45,7 @@ export default Route.extend({
     },
 
     actions: {
-        error(error) {
+        error() {
             // Ember.Logger.error(error);
 
             // substate implementation when returning `true`

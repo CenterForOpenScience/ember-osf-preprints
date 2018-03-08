@@ -62,7 +62,6 @@ module.exports = function(defaults) {
                 'node_modules/@centerforopenscience/ember-osf/addon/styles',
                 'node_modules/@centerforopenscience/osf-style/sass',
                 'node_modules/hint.css',
-                'node_modules/c3',
                 'node_modules/bootstrap-daterangepicker',
             ]
         },
@@ -145,8 +144,6 @@ module.exports = function(defaults) {
 
     // app.import(path.join('node_modules', 'jquery-tags-input/src/jquery-tags-input.js'));
     app.import(path.join('node_modules', 'bootstrap-daterangepicker/daterangepicker.js'));
-    app.import(path.join('node_modules', 'c3/c3.js'));
-    app.import(path.join('node_modules', 'd3/build/d3.js'));
 
     app.import({
         development: path.join('node_modules', 'hint.css/hint.css'),

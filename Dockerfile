@@ -4,6 +4,9 @@ FROM quay.io/centerforopenscience/ember-base AS app
 COPY ./package.json ./yarn.lock ./.yarnrc ./
 RUN yarn --frozen-lockfile
 
+COPY ./.bowerrc ./bower.json ./
+RUN ./node_modules/.bin/bower install --allow-root --config.interactive=false
+
 COPY ./ ./
 
 RUN cd ./public/assets/ \

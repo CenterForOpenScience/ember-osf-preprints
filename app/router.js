@@ -29,7 +29,6 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
     this.route('page-not-found', {path: '/*bad_url'});
-
     if (window.isProviderDomain) {
         this.route('index', {path: '/'});
         this.route('submit');

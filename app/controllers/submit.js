@@ -1,7 +1,3 @@
-import config from 'ember-get-config';
-import Analytics from 'ember-osf/mixins/analytics';
-import Controller from '@ember/application'
-
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
 import { get } from '@ember/object';
@@ -9,18 +5,19 @@ import { inject } from '@ember/service';
 import { merge } from '@ember/polyfills';
 import { observer } from '@ember/object';
 import { run } from '@ember/runloop';
+import Controller from '@ember/application'
+import EmberObject from '@ember/object';
+
+import config from 'ember-get-config';
 import { validator, buildValidations } from 'ember-cp-validations';
 import $ from 'jquery';
 
-import EmberObject from '@ember/object';
+import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
 import NodeActionsMixin from 'ember-osf/mixins/node-actions';
 import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
-
 import loadAll from 'ember-osf/utils/load-relationship';
-
 import fixSpecialChar from 'ember-osf/utils/fix-special-char';
-
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
 // Enum of available upload states > New project or existing project?
@@ -149,6 +146,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     fileManager: inject(),
     toast: inject('toast'),
     panelActions: inject('panelActions'),
+
     _State: State, // Project states - new project or existing project
     filePickerState: State.START, // Selected upload state (initial decision on form) - new or existing project? (is poorly named)
     _existingState: existingState, // File states - new file or existing file
@@ -304,6 +302,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     // Does the pending title differ from the title already saved?
     titleChanged: computed('node.title', 'nodeTitle', function() {
+        debugger;
         return this.get('node.title') !== this.get('nodeTitle');
     }),
 

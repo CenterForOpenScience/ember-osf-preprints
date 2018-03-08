@@ -1,7 +1,7 @@
 import { get } from '@ember/object';
 import { observer } from '@ember/object';
 import { on } from '@ember/object/evented';
-import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
+import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel/component';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
