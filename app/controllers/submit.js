@@ -9,9 +9,7 @@ import NodeActionsMixin from 'ember-osf/mixins/node-actions';
 import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
 
 import loadAll from 'ember-osf/utils/load-relationship';
-
 import fixSpecialChar from 'ember-osf/utils/fix-special-char';
-
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
 // Enum of available upload states > New project or existing project?
@@ -431,7 +429,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     // Compares the model's and current subjectLists's array of arrays of discipline ids
     // to determine if there has been a change.
     disciplineChanged: Ember.computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle', function () {
-        return JSON.stringify(this.get('model.subjects')) !== JSON.stringify(this.get('subjectsList'));
+        return JSON.stringify(subjectIdMap(this.get('model.subjects'))) !== JSON.stringify(subjectIdMap(this.get('subjectsList')));
     }),
 
     // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
@@ -657,19 +655,24 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 });
 
             const model = this.get('model');
-            const currentTitle = model.get('title');
+            const node = this.get('node');
+            const currentNodeTitle = node.get('title');
             const title = this.get('title');
 
-            this.set('basicsAbstract', this.get('node.description') || null);
+            this.set('basicsAbstract', this.get('model.description') || null);
 
             return Promise.resolve()
                 .then(() => {
-                    if (currentTitle !== title) {
-                        model.set('title', title);
+                    if (currentNodeTitle === title) {
+                        return;
                     }
+                    model.set('title', title);
+                    node.set('title', title);
+                    return node.save();
                 })
                 .then(() => this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint'))
                 .catch(() => {
+                    node.set('title', currentNodeTitle);
                     this.get('toast').error(
                         this.get('i18n').t('submit.could_not_update_title')
                     );
@@ -1034,28 +1037,18 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Search for Authors`
                 });
-            const url = `/api/v1/user/search/?query=${query}&page=${page - 1}&size=10`;
-            let metaPages;
-            return Ember.$.ajax({
-                type: 'GET',
-                url: url
-            }).then(resp => {
-                let query = [];
-                for (let user of resp.users) { query.push(user.id) }
-                metaPages = resp.pages;
-                return this.store.query('user', {
-                    filter: {
-                        'id': query.join(',')
-                    }
-                }).then((contributors) => {
-                    this.set('searchResults', contributors);
-                    this.get('searchResults').set('meta.total_pages', metaPages);
-                    return contributors;
-                }).catch(() => {
-                    this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
-                    this.highlightSuccessOrFailure('author-search-box', this, 'error');
-                });
-            })
+            return this.store.query('user', {
+                filter: {
+                    'full_name,given_name,middle_names,family_name': query
+                },
+                page: page
+            }).then((contributors) => {
+                this.set('searchResults', contributors);
+                return contributors;
+            }).catch(() => {
+                this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
+                this.highlightSuccessOrFailure('author-search-box', this, 'error');
+            });
         },
         /**
         * highlightSuccessOrFailure method. Element with specified ID flashes green or red depending on response success.
