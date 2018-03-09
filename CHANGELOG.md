@@ -5,13 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Restricted width and centered preprint provider logos on index page
 
 ## [0.118.2] - 2018-03-08
 ### Removed
 - Ability to search by social fields (reverted)
 
 ## [0.118.1] - 2018-03-06
-## Fixed
+### Fixed
 - Provider assets on production
 
 ## [0.118.0] - 2018-03-06
