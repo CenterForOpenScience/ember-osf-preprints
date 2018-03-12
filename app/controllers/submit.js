@@ -9,9 +9,7 @@ import NodeActionsMixin from 'ember-osf/mixins/node-actions';
 import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
 
 import loadAll from 'ember-osf/utils/load-relationship';
-
 import fixSpecialChar from 'ember-osf/utils/fix-special-char';
-
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
 // Enum of available upload states > New project or existing project?
@@ -1196,6 +1194,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('providerSaved', true);
             this.send('discardSubjects');
             this.send('next', this.get('_names.0'));
+            Ember.get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Submit - Save and continue, Select ${this.get('currentProvider.name')} preprint service`
+                });
         },
         discardProvider() {
             this.set('selectedProvider', this.get('currentProvider'));
