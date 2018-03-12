@@ -42,7 +42,6 @@ export default Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
     },
 
     afterModel: function() {
-        console.log('afterModel')
         const availableLocales = this.get('i18n.locales').toArray();
         let locale;
 

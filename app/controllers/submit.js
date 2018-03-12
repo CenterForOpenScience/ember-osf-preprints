@@ -302,7 +302,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     // Does the pending title differ from the title already saved?
     titleChanged: computed('node.title', 'nodeTitle', function() {
-        debugger;
         return this.get('node.title') !== this.get('nodeTitle');
     }),
 

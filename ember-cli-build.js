@@ -33,7 +33,7 @@ module.exports = function(defaults) {
     }
 
     // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
-    const app = new EmberApp(defaults, {
+    let app = new EmberApp(defaults, {
         sourcemaps: {
             enabled: true,
             extensions: ['js']

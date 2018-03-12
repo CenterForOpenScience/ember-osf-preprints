@@ -15,7 +15,6 @@ export default Route.extend({
     theme: inject(),
 
     beforeModel(transition) {
-        console.log('present');
         const {slug = ''} = transition.params.provider;
         const slugLower = slug.toLowerCase();
 
