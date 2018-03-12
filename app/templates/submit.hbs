@@ -33,7 +33,7 @@
                                                 </div>
                                             </div>
                                         {{else if (eq currentState _State.NEW)}}
-                                            {{file-uploader
+                                  {{!--           {{file-uploader
                                                 changeInitialState=(action 'changeInitialState')
                                                 nextUploadSection=nextUploadSection
                                                 finishUpload=(action 'finishUpload')
@@ -65,9 +65,9 @@
                                                 editMode=editMode
                                                 newNode=newNode
                                                 applyLicense=applyLicense
-                                            }}
+                                            }} --}}
                                         {{else if (eq currentState _State.EXISTING)}}
-                                            {{preprint-form-project-select
+                                    {{!--         {{preprint-form-project-select
                                               changeInitialState=(action 'changeInitialState')
                                               finishUpload=(action 'finishUpload')
                                               clearDownstreamFields=(action 'clearDownstreamFields')
@@ -109,7 +109,7 @@
                                               editMode=editMode
                                               newNode=newNode
                                               applyLicense=applyLicense
-                                              }}
+                                              }} --}}
                                         {{/if}}
                                     </div>
                                 {{/liquid-bind}}
@@ -183,7 +183,7 @@
                                         <label>
                                             <span class="required">{{t "global.abstract"}}:</span>
                                         </label>
-                                        <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Abstract Text Change') (action 'track' 'input' 'onchange' 'Submit - Abstract Text Change')}}>
+                                        <form>
                                             {{validated-input inputType='textarea' model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract}}
                                         </form>
                                     </div>
@@ -208,7 +208,7 @@
                                 <p class="text-smaller">
                                     {{t "submit.body.authors.paragraph"}}
                                 </p>
-                                {{preprint-form-authors
+                       {{!--          {{preprint-form-authors
                                     contributors=contributors
                                     parentContributors=parentContributors
                                     node=node
@@ -225,7 +225,7 @@
                                     highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
                                     parentNode=parentNode
                                     editMode=editMode
-                                }}
+                                }} --}}
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
