@@ -314,7 +314,10 @@
                             <p class="information">
                                 {{t moderationInformation documentType=currentProvider.documentType name=providerName reviewsWorkflow=(t workflow)}}
                             </p>
+                        {{else}}
+                            <p class="information">{{t generalInformation name=providerName}}</p>
                         {{/if}}
+                        <p class="information">{{t permissionInformation name=providerName}}</p>
                         <div class="text-center">
                             {{#if showValidationErrors}}
                                 <span id="validation-errors">
