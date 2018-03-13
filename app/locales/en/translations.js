@@ -20,7 +20,7 @@ export default {
         brand,
         brand_name: 'OSF',
         provider_brand: `{{name}} {{preprintWords.Preprints}}`,
-        add_preprint: `Add a {{preprintWords.preprint}}`,
+        add_preprint: `Submit a {{preprintWords.preprint}}`,
         title: `Title`,
         search_preprints: `Search {{preprintWords.preprints}}...`,
         added_on: `Added on`,
@@ -204,17 +204,14 @@ export default {
             submit: {
                 information: {
                     line1: {
-                        default: `When you create this {{preprintWords.preprint}}, it will be assigned a DOI and become publicly accessible via {{name}}. The {{preprintWords.preprint}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{preprintWords.preprint}}.`,
-                        moderation: `When you submit this {{preprintWords.preprint}}, it will be assigned a DOI. The {{preprintWords.preprint}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{preprintWords.preprint}}.`,
-                    },
+                        default: `When you add this {{preprintWords.preprint}}, it will become publicly accessible via {{name}} and assigned a DOI. The {{preprintWords.preprint}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{preprintWords.preprint}}.`,
+                        pre: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. If your {{preprintWords.preprint}} is accepted, it will become publicly accessible via {{name}} and assigned a DOI. The {{preprintWords.preprint}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{preprintWords.preprint}}.`,
+                        post: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. When you submit this {{preprintWords.preprint}}, it will become publicly accessible via {{name}} and assigned a DOI. Your {{preprintWords.preprint}} will only become private if rejected by a moderator. The {{preprintWords.preprint}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{preprintWords.preprint}}.`,
+                        },
                     line2: {
-                        create: `By creating this {{preprintWords.preprint}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{preprintWords.preprint}}.`,
+                        create: `By adding this {{preprintWords.preprint}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{preprintWords.preprint}}.`,
                         submit: `By submitting this {{preprintWords.preprint}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{preprintWords.preprint}}.`
                     },
-                    line3: {
-                        pre: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore, your {{preprintWords.preprint}} will not become publicly accessible until a moderator accepts the submission.`,
-                        post: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore, your {{preprintWords.preprint}} will become publicly accessible after creation and will only become private if rejected by a moderator.`,
-                    }
                 },
                 invalid: {
                     description: `The following section(s) must be completed before submitting this {{preprintWords.preprint}}.`,
@@ -223,12 +220,12 @@ export default {
                     upload: `Upload`
                 },
                 submit_button: `Submit {{preprintWords.preprint}}`,
-                create_button: `Create {{preprintWords.preprint}}`,
+                create_button: `Add {{preprintWords.preprint}}`,
             },
             edit: {
                 information: {
                     line1: {
-                        pre: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>, therefore your {{preprintWords.preprint}} will not become publicly accessible until a moderator accepts the submission.`,
+                        pre: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. If your {{preprintWords.preprint}} is accepted, it will become publicly accessible via {{name}} and assigned a DOI.`,
                         post_rejected: `{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Your {{preprintWords.preprint}} was rejected by a moderator so it will remain private.`,
                     },
                     line2: {
