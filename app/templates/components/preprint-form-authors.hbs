@@ -115,7 +115,7 @@
                 {{#sortable-group tagName="tbody" onChange="reorderItems" as |group|}}
                     {{#each contributors as |contrib|}}
                         {{#sortable-item tagName="tr" model=contrib class="contributor-row" group=group spacing=1 handle=".handle" id=contrib.id}}
-                            <td class="text-nowrap author-cols">
+                            <td class="text-nowrap author-cols" title={{if contrib.unregisteredContributor contrib.unregisteredContributor contrib.users.fullName}}>
                                 <div class="form-group drag-drop-contrib">
                                     <span class="fa fa-bars sortable-bars handle small"></span>
                                     <img class="m-l-xs" src={{contrib.users.profileImage}} height=30 width=30>
@@ -135,7 +135,7 @@
                                     </span>
                                 </div>
                             </td>
-                            <td>
+                            <td title={{if contrib.unregisteredContributor contrib.unregisteredContributor contrib.users.fullName}}>
                                 <div class="vert-align-contributor-name hidden-xs">
                                     {{#if contrib.unregisteredContributor}}
                                         {{contrib.unregisteredContributor}}
