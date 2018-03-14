@@ -1,4 +1,5 @@
-import { moduleFor, test, skip } from 'ember-qunit';
+import { moduleFor, skip } from 'ember-qunit';
+import test from 'ember-sinon-qunit/test-support/test';
 import Ember from 'ember';
 import moment from 'moment';
 import { manualSetup, mockFindAll } from 'ember-data-factory-guy';
@@ -33,6 +34,7 @@ const panelActionsStub = Ember.Service.extend({
     }
 });
 
+
 moduleFor('controller:submit', 'Unit | Controller | submit', {
     needs: [
         'validator:presence',
@@ -49,6 +51,8 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'model:file-version',
         'model:comment',
         'model:node',
+        'model:license',
+        'model:taxonomy',
         'model:preprint',
         'model:preprint-provider',
         'model:institution',
@@ -1087,4 +1091,41 @@ test('clickSubmit', function(assert) {
 
 skip('savePreprint', function() {
     //TODO
+});
+
+test('selectProvider', function(assert) {
+    const ctrl = this.subject();
+    this.inject.service('store');
+
+    Ember.run(() => {
+        const provider = this.store.createRecord('preprint-provider');
+
+        ctrl.set('provider', provider);
+        ctrl.send('selectProvider');
+
+        assert.strictEqual(ctrl.get('providerChanged'), true);
+    });
+
+});
+
+test('cancel', function(assert) {
+    const ctrl = this.subject();
+
+    ctrl.set('transitionToRoute', () => {});
+    const stub = this.stub(ctrl, 'transitionToRoute');
+
+    ctrl.send('cancel');
+    assert.ok(stub.calledOnce);
+
+    assert.ok(stub.calledWithExactly('index'));
+});
+
+test('returnToSubmission', function(assert) {
+    const ctrl = this.subject();
+
+    ctrl.set('transitionToRoute', () => {});
+    const stub = this.stub(ctrl, 'transitionToRoute');
+
+    ctrl.send('cancel');
+    assert.ok(stub.calledOnce);
 });
