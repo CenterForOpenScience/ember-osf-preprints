@@ -7,9 +7,6 @@ moduleForComponent('preprint-navbar-branded', 'Integration | Component | preprin
 });
 
 test('renders preprint navbar branded', function(assert) {
-    this.set('provider', {
-        name: 'OSF',
-    });
-    this.render(hbs`{{preprint-navbar-branded model=provider}}`);
-    assert.equal(this.$().text().replace(/\s+/g, ' ').trim(), 'OSF Search Donate Sign Up Sign In');
+    this.render(hbs`{{preprint-navbar-branded}}`);
+    assert.equal(this.$().text().replace(/\s+/g, ' ').trim(), 'Search Donate Sign Up Sign In');
 });
