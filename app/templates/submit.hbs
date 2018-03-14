@@ -282,13 +282,14 @@
                             </button>
                         </div>
                     {{else}}
-                        <p class="information">{{t generalInformation name=providerName}}</p>
-                        <p class="information">{{t permissionInformation name=providerName}}</p>
                         {{#if moderationType}}
                             <p class="information">
                                 {{t moderationInformation name=providerName reviewsWorkflow=(t workflow)}}
                             </p>
+                        {{else}}
+                            <p class="information">{{t generalInformation name=providerName}}</p>
                         {{/if}}
+                        <p class="information">{{t permissionInformation name=providerName}}</p>
                         <div class="text-center">
                             {{#if showValidationErrors}}
                                 <span id="validation-errors">

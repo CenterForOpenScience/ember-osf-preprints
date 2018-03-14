@@ -78,8 +78,8 @@ const MODAL_TITLE = {
 const SUBMIT_MESSAGES = {
     default: 'submit.body.submit.information.line1.default',
     moderation: 'submit.body.submit.information.line1.moderation',
-    [PRE_MODERATION]: 'submit.body.submit.information.line3.pre',
-    [POST_MODERATION]: 'submit.body.submit.information.line3.post',
+    [PRE_MODERATION]: 'submit.body.submit.information.line1.pre',
+    [POST_MODERATION]: 'submit.body.submit.information.line1.post',
 };
 
 const PERMISSION_MESSAGES = {
@@ -510,7 +510,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             ACTION['create']['heading'];
     }),
     buttonLabel: Ember.computed('moderationType', function() {
-        return this.get('moderationType') === PRE_MODERATION ?
+        return this.get('moderationType') ?
             ACTION['submit']['button'] :
             ACTION['create']['button'];
     }),
@@ -520,7 +520,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             SUBMIT_MESSAGES['default'];
     }),
     permissionInformation: Ember.computed('moderationType', function() {
-        return this.get('moderationType') === PRE_MODERATION ?
+        return this.get('moderationType') ?
             PERMISSION_MESSAGES['submit'] :
             PERMISSION_MESSAGES['create'];
     }),
