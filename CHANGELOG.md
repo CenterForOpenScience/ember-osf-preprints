@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- ember-cli-moment-shim version to `^3.5.3` due to security issues found in `moment` versions before `2.19.3`
 
 ## [0.118.3] - 2018-03-12
 ### Added
