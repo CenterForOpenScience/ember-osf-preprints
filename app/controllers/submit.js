@@ -5,7 +5,7 @@ import { inject } from '@ember/service';
 import { merge } from '@ember/polyfills';
 import { observer } from '@ember/object';
 import { run } from '@ember/runloop';
-import Controller from '@ember/application'
+import Controller from '@ember/controller';
 import EmberObject from '@ember/object';
 
 import config from 'ember-get-config';
