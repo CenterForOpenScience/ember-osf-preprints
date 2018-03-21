@@ -24,7 +24,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  **/
 
 export default CpPanelComponent.extend(Analytics, {
-    i18n: inject.service(),
+    i18n: inject(),
 
     tagName: 'section',
     classNames: ['preprint-form-section'],
