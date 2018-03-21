@@ -52,7 +52,7 @@ test('filterReplace looks up key in mapping', function(assert) {
         doc_count: 99,
         key: 'Open Science Framework'
     };
-    this.set('otherProviders', Ember.A([osfProvider]));
+    this.set('otherProviders', A([osfProvider]));
     render(this, 'otherProviders=otherProviders');
     assert.equal(this.$('label')[0].innerText.trim(), 'OSF (99)');
 });

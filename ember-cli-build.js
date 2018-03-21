@@ -50,7 +50,8 @@ module.exports = function(defaults) {
         },
         // Needed for branded themes
         fingerprint: {
-            customHash: config.ASSET_SUFFIX
+            customHash: config.ASSET_SUFFIX,
+            extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'ico'],
         },
         outputPaths: {
             app: {

@@ -9,23 +9,11 @@
         {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}} {{!CHOOSE PROJECT SECTION}}
             {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
             {{#preprint-form-body}}
-                {{#if (not userNodesLoaded)}}
-                    <div class="ball-pulse text-center">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                {{else}}
-                    {{#if userNodes}}
-                        <div class="m-t-sm">
-                            {{#power-select options=userNodes placeholder="Click to select" matcher=titleMatcher selected=selectedNode onchange=(action "nodeSelected") as |node|}}
-                                {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
-                            {{/power-select}}
-                        </div>
-                    {{else}}
-                        <p class="m-t-md text-danger"> {{t "components.preprint-form-project-select.no_valid_existing_nodes"}} </p>
-                    {{/if}}
-                {{/if}}
+                <div class="m-t-sm">
+                    {{#power-select search=(perform _getInitialUserNodes) optionsComponent=(component 'lazy-options' loadMore=(action "getMoreUserNodes") isLoading=isLoading canLoadMore=canLoadMore) oninput=(action "getDefaultUserNodes") onfocus=(action "onFocus") onblue=(action "onBlur") options=userNodes placeholder="Click to select" selected=selectedNode onchange=(action "nodeSelected") as |node|}}
+                        {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
+                    {{/power-select}}
+                </div>
                 <p class="text-muted text-smaller m-t-xs">
                     {{t "components.preprint-form-project-select.existing_project_selector"}}
                 </p>
@@ -79,12 +67,12 @@
                             {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}} {{!ORGANIZE DECISION SECTION}}
                                 {{preprint-form-header isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy name='organize' showValidationIndicator=false}}
                                 {{#preprint-form-body}}
-                                    {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields nodeTitle=nodeTitle node=node isTopLevelNode=isTopLevelNode titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
+                                    {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields title=title node=node isTopLevelNode=isTopLevelNode titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
                             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
                                 {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}} {{!FINALIZE UPLOAD SECTION - EXISTING FILE}}
-                                    {{preprint-form-header nodeTitle=nodeTitle name='finalize_upload' showValidationIndicator=false}}
+                                    {{preprint-form-header title=title name='finalize_upload' showValidationIndicator=false}}
                                     {{#preprint-form-body}}
                                         {{#if (eq convertOrCopy 'convert')}}
                                             {{#if convertProjectConfirmed}}
@@ -92,7 +80,7 @@
                                             {{/if}}
                                         {{/if}}
                                         <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Connect preprint to existing project'}}>
-                                            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name)}}
+                                            {{preprint-title-editor title=title titleValid=titleValid pressSubmit=(action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name)}}
                                         </form>
                                         <div class="text-center m-v-md">
                                             <p> {{t "components.preprint-form-project-select.initiate_preprint_process"}} </p>
@@ -113,12 +101,13 @@
                     finishUpload=finishUpload
                     startPreprint=startPreprint
                     startState=startState
-                    nodeTitle=nodeTitle
+                    title=title
                     currentUser=currentUser
                     osfFile=selectedFile
                     hasFile=hasFile
                     file=file
                     contributors=contributors
+                    model=model
                     node=node
                     selectedNode=selectedNode
                     parentNode=parentNode

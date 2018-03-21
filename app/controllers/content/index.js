@@ -8,6 +8,7 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
+import trunc from 'npm:unicode-byte-truncate'
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -122,7 +123,7 @@ export default Controller.extend(Analytics, {
     twitterHref: computed('node', function() {
         const queryParams = {
             url: window.location.href,
-            text: this.get('node.title'),
+            text: this.get('model.title'),
             via: 'OSFramework'
         };
         return `https://twitter.com/intent/tweet?${queryStringify(queryParams)}`;
@@ -131,8 +132,9 @@ export default Controller.extend(Analytics, {
      * https://developers.facebook.com/docs/sharing/reference/share-dialog
      */
     facebookHref: computed('model', function() {
+        const facebookAppId = this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
         const queryParams = {
-            app_id: config.FB_APP_ID,
+            app_id: facebookAppId,
             display: 'popup',
             href: window.location.href,
             redirect_uri: window.location.href
@@ -145,8 +147,8 @@ export default Controller.extend(Analytics, {
         const queryParams = {
             url: [window.location.href, 1024],          // required
             mini: ['true', 4],                          // required
-            title: [this.get('node.title'), 200],      // optional
-            summary: [this.get('node.description'), 256], // optional
+            title: trunc(this.get('model.title'), 200),      // optional
+            summary: trunc(this.get('model.description'), 256), // optional
             source: ['Open Science Framework', 200]     // optional
         };
 
@@ -154,7 +156,7 @@ export default Controller.extend(Analytics, {
     }),
     emailHref: computed('node', function() {
         const queryParams = {
-            subject: this.get('node.title'),
+            subject: this.get('model.title'),
             body: window.location.href
         };
 
@@ -169,19 +171,15 @@ export default Controller.extend(Analytics, {
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
 
-    hasTag: computed.bool('node.tags.length'),
+    hasTag: computed.bool('model.tags.length'),
 
-    authors: computed('node', function() {
+    authors: computed('model', function() {
         // Cannot be called until node has loaded!
-        const node = this.get('node');
-
-        if (!node)
-            return [];
-
+        const model = this.get('model');
         const contributors = A();
 
         return DS.PromiseArray.create({
-            promise: loadAll(node, 'contributors', contributors)
+            promise: loadAll(model, 'contributors', contributors)
                 .then(() => contributors)
         });
     }),
@@ -196,19 +194,19 @@ export default Controller.extend(Analytics, {
     }),
 
     hasShortenedDescription: computed('node.description', function() {
-        const nodeDescription = this.get('node.description');
+        const description = this.get('model.description');
 
-        return nodeDescription && nodeDescription.length > 350;
+        return description && description.length > 350;
     }),
 
     useShortenedDescription: computed('expandedAbstract', 'hasShortenedDescription', function() {
         return this.get('hasShortenedDescription') && !this.get('expandedAbstract');
     }),
 
-    description: computed('node.description', function() {
+    description: computed('model.description', function() {
         // Get a shortened version of the abstract, but doesn't cut in the middle of word by going
         // to the last space.
-        return this.get('node.description')
+        return this.get('model.description')
             .slice(0, 350)
             .replace(/\s+\S*$/, '');
     }),

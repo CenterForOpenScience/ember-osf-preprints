@@ -1,4 +1,5 @@
 import { get } from '@ember/object';
+import { inject } from '@ember/service';
 import { observer } from '@ember/object';
 import { on } from '@ember/object/evented';
 import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel/component';
@@ -23,6 +24,8 @@ import Analytics from 'ember-osf/mixins/analytics';
  **/
 
 export default CpPanelComponent.extend(Analytics, {
+    i18n: inject.service(),
+
     tagName: 'section',
     classNames: ['preprint-form-section'],
     animate: false,
@@ -113,8 +116,14 @@ export default CpPanelComponent.extend(Analytics, {
                     });
                 this._super(...arguments);
             } else {
-                this.sendAction('errorAction', 'Please complete upload section before continuing');
+                this.sendAction('errorAction', this.get('denyOpenMessage'));
             }
+        }
+    },
+
+    didReceiveAttrs() {
+        if (this.get('denyOpenMessage') === undefined) {
+            this.set('denyOpenMessage', this.get('i18n').t('submit.please_complete_upload'));
         }
     },
 });

@@ -61,7 +61,7 @@ export default {
         preprint_pending_doi: `DOI created after {{preprintWords.preprint}} is made public`,
         preprint_pending_doi_moderation: `DOI created after moderator approval`,
         preprint_pending_doi_minted: `DOIs are minted by a third party, and may take up to 24 hours to be registered.`,
-        original_publication_date: `Original Publication Date`,
+        original_publication_date: `Original publication date`,
         citations: `Citations`,
         disciplines: `Disciplines`,
         project_button: {
@@ -198,7 +198,7 @@ export default {
                     apply_license_text: `Selecting a license for your {{preprintWords.preprint}} does not automatically apply the license to your OSF project.`
                 },
                 original_publication_date: {
-                    label: `Original Publication Date`
+                    label: `Original publication date`
                 },
             },
             authors: {
@@ -264,6 +264,9 @@ export default {
         search_contributors_error: `Could not perform search query.`,
         error_completing_preprint: `Error completing {{preprintWords.preprint}}.`,
         error_saving_preprint: `Could not save {{preprintWords.preprint}}; please try again later`,
+        server_locked: `You cannot change the {{preprintWords.preprint}} service after a file has been uploaded`,
+        please_select_server: `Please select a {{preprintWords.preprint}} service before continuing`,
+        please_complete_upload: `Please complete upload section before continuing`,
     },
     components: {
         'confirm-restart-submit-preprint': {
@@ -361,7 +364,9 @@ export default {
             title: `{{preprintWords.Preprint}} title`,
             location: `{{preprintWords.Preprint}} location`,
             click_edit: `Click to Edit`,
+            server: `{{preprintWords.Preprint}} service`,
             name: {
+                Server: 'Select a {{preprintWords.preprint}} service',
                 Upload: 'Upload',
                 Discipline: 'Discipline',
                 Basics: 'Basics',

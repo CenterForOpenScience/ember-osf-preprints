@@ -45,6 +45,7 @@ export default Route.extend({
 
     actions: {
         error() {
+            // TODO: this should be uncommented and import fixed.
             // Ember.Logger.error(error);
 
             // substate implementation when returning `true`
