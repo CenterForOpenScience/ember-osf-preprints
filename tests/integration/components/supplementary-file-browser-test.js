@@ -1,6 +1,6 @@
 import { A } from '@ember/array';
 import { resolve } from 'rsvp';
-import { moduleForComponent, skip } from 'ember-qunit';
+import { moduleForComponent, test } from 'ember-qunit';
 import ArrayProxy from '@ember/array/proxy';
 import Ember from '@ember/application';
 import EmberObject from '@ember/object';
@@ -17,7 +17,7 @@ moduleForComponent('supplementary-file-browser', 'Integration | Component | supp
             }}));
         let providersQuery = resolve(A([{
                 name: 'osfstorage',
-                query: providerFiles
+                queryHasMany: providerFiles
         }]));
 
         let node = EmberObject.create({
@@ -56,8 +56,7 @@ function render(context, componentArgs) {
     }}`));
 }
 
-//TODO: unskip test when loadAll() is removed/refactored.
-skip('it renders', function(assert) {
+test('it renders', function(assert) {
     // Tests that the page renders
     render(this, 'hasAdditionalFiles=false');
     assert.equal(this.$('.osf-box').length, 0);
@@ -66,7 +65,7 @@ skip('it renders', function(assert) {
 
 });
 
-skip('has additional files', function(assert) {
+test('has additional files', function(assert) {
     // Tests that additional file section renders
     render(this, 'hasAdditionalFiles=true hasPrev=true hasNext=true');
 
@@ -83,7 +82,7 @@ skip('has additional files', function(assert) {
     assert.ok(this.$('i.fa-file-text').length);
 });
 
-skip('fileDownloadURL computed property', function (assert) {
+test('fileDownloadURL computed property', function (assert) {
     render(this);
 
     let url = this.$('.supplemental-downloads > a').attr('href')

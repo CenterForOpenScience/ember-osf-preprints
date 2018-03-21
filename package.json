@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.116.4",
+  "version": "0.118.3",
   "description": "Center for Open Science Preprint Service",
   "license": "Apache-2.0",
   "author": "",
@@ -21,6 +21,7 @@
     "update-assets": "git submodule update --remote",
     "update-assets-hotfix": "yarn hotfix && yarn update-assets && git ci public/assets/osf-assets -m 'Updated assets'",
     "use-ember-osf-develop": "yarn upgrade @centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop#$(date -u +%FT%TZ)",
+    "use-ember-osf-next-interfaces": "yarn upgrade @centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#$(date -u +%FT%TZ)",
     "hotfix": "git flow hotfix start rename-me && npm --no-git-tag-version version patch && git ci package.json -m 'Bump version' && git br -m \"hotfix/$(npm version | head -1 | grep -o '[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+')\""
   },
   "devDependencies": {
@@ -80,7 +81,8 @@
     "eslint-plugin-ember": "^5.0.0",
     "liquid-fire": "^0.27.2",
     "loader.js": "^4.2.3",
-    "postcss": "^5.1.0"
+    "postcss": "^5.1.0",
+    "unicode-byte-truncate": "^1.0.0"
   },
   "engineStrict": true,
   "engines": {

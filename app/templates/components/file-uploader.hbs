@@ -11,7 +11,7 @@
     }}
     {{#if hasFile}}
         <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Upload new preprint'}}>
-            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action 'setNodeAndFile')}}
+            {{preprint-title-editor title=title titleValid=titleValid pressSubmit=(action 'setNodeAndFile')}}
         </form>
     {{/if}}
 
@@ -54,11 +54,11 @@
     {{#if (and selectedNode (or hasFile osfFile)) use='crossFade'}}
         {{#if nodeLocked}}
             {{#preprint-form-section editMode=editMode class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}} {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
-                {{preprint-form-header nodeTitle=nodeTitle name='title_of_preprint' showValidationIndicator=false}}
+                {{preprint-form-header title=title name='title_of_preprint' showValidationIndicator=false}}
                 {{#preprint-form-body}}
                     <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
                     <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Edit title') (action 'track' 'input' 'onchange' 'Submit - Edit title')}}>
-                        {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action 'uploadFileToExistingNode')}}
+                        {{preprint-title-editor title=title titleValid=titleValid pressSubmit=(action 'uploadFileToExistingNode')}}
                     </form>
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
@@ -71,12 +71,12 @@
             {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}} {{!ORGANIZE DECISION SECTION}}
                 {{preprint-form-header name='organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false}}
                 {{#preprint-form-body}}
-                    {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy nodeTitle=nodeTitle node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
+                    {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy title=title node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
                 {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}} {{!FINALIZE UPLOAD SECTION - NEW FILE}}
-                    {{preprint-form-header name='finalize_upload' nodeTitle=nodeTitle showValidationIndicator=false}}
+                    {{preprint-form-header name='finalize_upload' title=title showValidationIndicator=false}}
                     {{#preprint-form-body}}
                         {{#if (eq convertOrCopy 'convert')}}
                             {{#if convertProjectConfirmed}}
@@ -84,7 +84,7 @@
                             {{/if}}
                         {{/if}}
                         <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Connect preprint to existing project'}}>
-                            {{preprint-title-editor nodeTitle=nodeTitle titleValid=titleValid pressSubmit=(action 'setNodeAndFile')}}
+                            {{preprint-title-editor title=title titleValid=titleValid pressSubmit=(action 'setNodeAndFile')}}
                         </form>
 
                         <div class="row text-center m-v-md">

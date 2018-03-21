@@ -5,6 +5,63 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.118.3] - 2018-03-12
+### Added
+- Event Tracking to `Select a Preprint Provider` on preprint upload
+
+### Changed
+- Restricted width and centered preprint provider logos on index page
+
+## [0.118.2] - 2018-03-08
+### Removed
+- Ability to search by social fields (reverted)
+
+## [0.118.1] - 2018-03-06
+### Fixed
+- Provider assets on production
+
+## [0.118.0] - 2018-03-06
+### Added
+- Default auto-expansion on top level subjects when there are no more than 3
+- Check to use `facebookAppId` if branded providers have an app id
+- Choose preprint provider during unbranded submission
+- `unicode-byte-truncate` as a dependency
+
+### Changed
+- 'Powered by Preprints' link stay on current server
+- Searching for contributors also searches their social links (such as their twitter handle)
+- Use newly added `name` field for preprint detail page contributors
+- `preprint-form-project-select` component to use `lazy-options` for lazy loading user nodes
+- To pull more data from the preprint model instead of the node model (`title`, `description`, `tags`, etc.)
+
+### Fixed
+- Skipped tests in `convert-or-copy-project-test` and `supplementary-file-browser` to run properly
+- Unicode truncating for LinkedIn sharing using `unicode-byte-truncate`
+
+## [0.117.5] - 2018-02-22
+### Changed
+- Update to latest provider assets
+
+## [0.117.4] - 2018-02-21
+### Fixed
+- Increase taxonomies page size from 100 to 150
+
+## [0.117.3] - 2018-02-20
+### Changed
+- Warning modal on submit page to only show after changes have been made
+- Improve the appearance of the preprint provider logos on the OSFPreprints landing page
+
+## [0.117.2] - 2018-02-09
+### Changed
+- Also fingerprint .ico files
+- Update to latest provider assets
+
+## [0.117.1] - 2018-02-09
+### Added
+- Exclusion for livedata provider on index page template
+
+## [0.117.0] - 2018-02-09
 ### Added
 - Auto-expansion on selected subjects on the Discover page
 - `noscript` message if JavaScript is disabled
@@ -18,7 +75,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add to `computed` to prevent redirect at any point on preprint submission
 
 ### Changed
-- Update to latest ember-osf (TODO: change this to ember-osf release version before release)
+- Update to ember-osf 0.14.0
 - Update to use model.queryHasMany in place of model.query
 - Update tests to work with model.queryHasMany
 - Get pagination info directly from meta in preprint-form-authors component

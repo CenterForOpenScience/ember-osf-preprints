@@ -48,6 +48,7 @@ const Column = EmberObject.extend({
  *      initialSubjects=subjectsList
  *      currentSubjects=subjectsListReflected
  *      saveSubjects=(action 'setSubjects')
+ *      provider=provider
  *}}
  * ```
  * @class subject-picker
@@ -59,18 +60,17 @@ export default Component.extend(Analytics, {
     querySubjects(parents = 'null', tier = 0) {
         const column = this.get('columns').objectAt(tier);
 
-        this.get('theme.provider')
-            .then(provider => provider
-                .queryHasMany('taxonomies', {
-                    filter: {
-                        parents
-                    },
-                    page: {
-                        size: 100
-                    }
-                })
-            )
+        if (this.get('provider')) {
+            this.get('provider').queryHasMany('taxonomies', {
+                filter: {
+                    parents,
+                },
+                page: {
+                    size: 150, // Law category has 117 (Jan 2018)
+                }
+            })
             .then(results => column.set('subjects', results ? results.toArray() : []));
+        }
     },
 
     init() {
@@ -84,6 +84,13 @@ export default Component.extend(Analytics, {
         });
 
         this.querySubjects();
+    },
+
+    didReceiveAttrs() {
+        if (this.get('provider') !== this.get('lastProvider')) {
+            this.querySubjects();
+            this.set('lastProvider', this.get('provider'));
+        }
     },
 
     isValid: computed.notEmpty('currentSubjects'),

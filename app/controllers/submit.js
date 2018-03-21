@@ -59,7 +59,7 @@ const BasicsValidations = buildValidations({
         ]
     },
     basicsOriginalPublicationDate: {
-        description: 'Original Publication Date',
+        description: 'Original publication date',
         validators: [
             validator('date', {
                 onOrBefore: 'now',
@@ -151,7 +151,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     filePickerState: State.START, // Selected upload state (initial decision on form) - new or existing project? (is poorly named)
     _existingState: existingState, // File states - new file or existing file
     existingState: existingState.CHOOSE, // Selected file state - new or existing file (poorly named)
-    _names: ['upload', 'discipline', 'basics', 'authors'].map(str => str.capitalize()), // Form section headers
+    _names: ['server', 'upload', 'discipline', 'basics', 'authors'].map(str => str.capitalize()), // Form section headers
 
     // Data for project picker; tracked internally on load
     user: null,
@@ -167,11 +167,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     file: null, // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
     selectedFile: null, // File that will be the preprint (already uploaded to node or selected from existing node)
     contributors: A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
-    nodeTitle: null, // Preprint title
+    title: null, // Preprint title
     nodeLocked: false, // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
+    serverSaveState: false, // True temporarily when changes have been saved in server section
     uploadSaveState: false, // True temporarily when changes have been saved in upload section
     disciplineSaveState: false, // True temporarily when changes have been saved in discipline section
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
@@ -195,9 +196,34 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     hasFile: computed.or('file', 'selectedFile'),
 
+    allProviders: [], // Initialize with an empty list of providers
+    currentProvider: undefined,
+    selectedProvider: undefined,
+    providerSaved: false,
+    preprintSaved: false,
+
+    init() {
+        let controller = this;
+        this.get('store')
+            .findAll('preprint-provider', { reload: true })
+            .then((providers) => {
+                controller.set(
+                    'allProviders',
+                    // OSF first, then all the rest
+                    providers.filter(item => item.id === 'osf').concat(providers.filter(item => item.id !== 'osf'))
+                );
+                const currentProvider = providers.filter(item => item.id === controller.get('theme.id') || config.PREPRINTS.provider)[0];
+                controller.set('currentProvider', currentProvider);
+                controller.set('selectedProvider', currentProvider);
+                this.get('theme.isProvider') && this.set('providerSaved', true);
+            });
+    },
+
     // True if fields have been changed
-    // If adding a preprint, hasDirtyFields will always be true to prevent leaving the page at all unless clicking submit
-    hasDirtyFields: computed.or('uploadChanged', 'basicsChanged', 'disciplineChanged', 'isAddingPreprint'),
+    hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
+        const preprintStarted = this.get('theme.isProvider') ? this.get('hasFile') : this.get('providerSaved');
+        return !this.get('preprintSaved') && (this.get('isAddingPreprint') && preprintStarted || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged'));
+    }),
 
     isAddingPreprint: computed.not('editMode'),
 
@@ -216,11 +242,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             file: null,
             selectedFile: null,
             contributors: A(),
-            nodeTitle: null,
+            title: null,
             nodeLocked: false, // Will be set to true if edit?
             searchResults: [],
             savingPreprint: false,
             showModalSharePreprint: false,
+            serverSaveState: false,
             uploadSaveState: false,
             disciplineSaveState: false,
             basicsSaveState: false,
@@ -253,7 +280,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     ///////////////////////////////////////
     // Validation rules and changed states for form sections
 
-    // In order to advance from upload state, node and selectedFile must have been defined, and nodeTitle must be set.
+    providerChanged: true,
+
+    // In order to advance from upload state, node and selectedFile must have been defined, and title must be set.
     uploadValid: computed.alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: computed.alias('validations.attrs.basicsAbstract.isValid'),
     doiValid: computed.alias('validations.attrs.basicsDOI.isValid'),
@@ -272,13 +301,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     disciplineValid: computed.notEmpty('subjectsList'),
 
     // Does node have a saved title?
-    savedTitle: computed.notEmpty('node.title'),
+    savedTitle: computed.notEmpty('model.title'),
 
     // Does preprint have a saved primaryFile?
     savedFile: computed.notEmpty('model.primaryFile.content'),
 
     // Does node have a saved description?
-    savedAbstract: computed.notEmpty('node.description'),
+    savedAbstract: computed.notEmpty('model.description'),
 
     // Does preprint have saved subjects?
     savedSubjects: computed.notEmpty('model.subjects'),
@@ -297,12 +326,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     // Does the pending primaryFile differ from the primary file already saved?
     preprintFileChanged: computed('model.primaryFile', 'selectedFile', 'file', function() {
-        return this.get('model.primaryFile.id') !== this.get('selectedFile.id') || this.get('file') !== null;
+        return this.get('selectedFile.id') && (this.get('model.primaryFile.id') !== this.get('selectedFile.id')) || this.get('file') !== null;
     }),
 
     // Does the pending title differ from the title already saved?
-    titleChanged: computed('node.title', 'nodeTitle', function() {
-        return this.get('node.title') !== this.get('nodeTitle');
+    titleChanged: computed('model.title', 'title', function() {
+        return this.get('model.title') != this.get('title');
     }),
 
     // Are there any unsaved changes in the upload section?
@@ -313,34 +342,33 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     ////////////////////////////////////////////////////
 
     // Pending abstract
-    basicsAbstract:  computed('node.description', function() {
-        let node = this.get('node');
-        return node ? node.get('description') : null;
+
+    basicsAbstract:  computed('model.description', function() {
+        return this.get('model.description') || null;
     }),
 
     // Does the pending abstract differ from the saved abstract in the db?
-    abstractChanged: computed('basicsAbstract', 'node.description', function() {
+    abstractChanged: computed('basicsAbstract', 'model.description', function() {
         let basicsAbstract = this.get('basicsAbstract');
-        return basicsAbstract !== null && basicsAbstract.trim() !== this.get('node.description');
+        return basicsAbstract !== null && basicsAbstract.trim() !== this.get('model.description');
     }),
 
     // Pending tags
-    basicsTags: computed('node', function() {
-        const node = this.get('node');
-
-        return node ? node.get('tags').map(fixSpecialChar) : A();
+    basicsTags: computed('model.tags', function() {
+        let tags = this.get('model.tags');
+        return (tags && tags.map(fixSpecialChar)) || A();
     }),
 
     // Does the list of pending tags differ from the saved tags in the db?
-    tagsChanged: computed('basicsTags.@each', 'node.tags', function() {
+    tagsChanged: computed('basicsTags.@each', 'model.tags', function() {
         const basicsTags = this.get('basicsTags');
-        const nodeTags = this.get('node.tags');
+        const tags = this.get('model.tags');
 
-        return basicsTags && nodeTags &&
+        return basicsTags && tags &&
             (
-                basicsTags.length !== nodeTags.length ||
+                basicsTags.length !== tags.length ||
                 basicsTags.some(
-                    (v, i) => fixSpecialChar(v) !== fixSpecialChar(nodeTags[i])
+                    (v, i) => fixSpecialChar(v) !== fixSpecialChar(tags[i])
                 )
             );
     }),
@@ -411,7 +439,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Compares the model's and current subjectLists's array of arrays of discipline ids
     // to determine if there has been a change.
     disciplineChanged: computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle', function () {
-        return JSON.stringify(this.get('model.subjects')) !== JSON.stringify(this.get('subjectsList'));
+        return JSON.stringify(subjectIdMap(this.get('model.subjects'))) !== JSON.stringify(subjectIdMap(this.get('subjectsList')));
     }),
 
     // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
@@ -467,13 +495,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Language about submission and moderation.
     ////////////////////////////////////////////////////
 
-    moderationType: computed.alias('theme.provider.reviewsWorkflow'),
+    moderationType: computed.alias('currentProvider.reviewsWorkflow'),
     workflow: computed('moderationType', function () {
         return WORKFLOW[this.get('moderationType')];
     }),
-    providerName: computed('theme.isProvider', function() {
-        return this.get('theme.isProvider') ?
-            this.get('theme.provider.name') :
+    providerName: computed('currentProvider', function() {
+        return this.get('currentProvider.id') !== 'osf' ?
+            this.get('currentProvider.name') :
             this.get('i18n').t('global.brand_name');
     }),
     modalTitle: computed('moderationType', function() {
@@ -625,7 +653,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             });
             // Closes section, so all panels closed if Upload section revisited
             this.get('panelActions').close('uploadNewFile');
-            this.send('next', this.get('_names.0'));
+            this.send('next', this.get('_names.1'));
         },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
@@ -636,24 +664,25 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     label: 'Submit - Save and Continue, Existing Node Existing File'
                 });
 
+            const model = this.get('model');
             const node = this.get('node');
-            const currentTitle = node.get('title');
-            const nodeTitle = this.get('nodeTitle');
+            const currentNodeTitle = node.get('title');
+            const title = this.get('title');
 
-            this.set('basicsAbstract', this.get('node.description') || null);
+            this.set('basicsAbstract', this.get('model.description') || null);
 
             return Promise.resolve()
                 .then(() => {
-                    if (currentTitle === nodeTitle) {
+                    if (currentNodeTitle === title) {
                         return;
                     }
-
-                    node.set('title', nodeTitle);
+                    model.set('title', title);
+                    node.set('title', title);
                     return node.save();
                 })
                 .then(() => this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint'))
                 .catch(() => {
-                    node.set('title', currentTitle);
+                    node.set('title', currentNodeTitle);
                     this.get('toast').error(
                         this.get('i18n').t('submit.could_not_update_title')
                     );
@@ -669,7 +698,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     action: 'click',
                     label: 'Submit - Save and Continue, New Component, Copy File'
                 });
-            node.addChild(this.get('nodeTitle'))
+            node.addChild(this.get('title'))
                 .then(child => {
                     this.set('parentNode', node);
                     this.set('node', child);
@@ -718,12 +747,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     this.set('applyLicense', true);
                 }
             });
-            const provider = this.get('store')
-                .peekRecord('preprint-provider', this.get('theme.id') || config.PREPRINTS.provider);
 
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
-            model.set('provider', provider);
+            model.set('provider', this.get('currentProvider'));
 
             return model.save()
                 .then(() => {
@@ -761,7 +788,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.setProperties({
                 file: null,
                 selectedFile: this.get('store').peekRecord('file', this.get('model.primaryFile.id')),
-                nodeTitle: this.get('node.title'),
+                title: this.get('model.title'),
                 titleValid: true,
             });
         },
@@ -783,7 +810,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 case 'belowFile':
                     props.push('convertOrCopy');
                 case 'belowConvertOrCopy':
-                    props.push('nodeTitle');
+                    props.push('title');
                     break;
             }
 
@@ -805,8 +832,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Basics Changes`
                 });
-            this.set('basicsTags', this.get('node.tags').slice(0).map(fixSpecialChar));
-            this.set('basicsAbstract', this.get('node.description'));
+            this.set('basicsTags', this.get('model.tags').slice(0).map(fixSpecialChar));
+            this.set('basicsAbstract', this.get('model.description'));
             this.set('basicsDOI', this.get('model.doi'));
             this.set('basicsOriginalPublicationDate', this.get('model.originalPublicationDate'));
             let date = new Date();
@@ -847,8 +874,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             const node = this.get('node');
             const model = this.get('model');
             // Saves off current server-state basics fields, so UI can be restored in case of failure
-            const currentAbstract = node.get('description');
-            const currentTags = node.get('tags').slice();
+            const currentAbstract = model.get('description');
+            const currentTags = model.get('tags').slice();
             const currentDOI = model.get('doi');
             const currentOriginalPublicationDate = model.get('originalPublicationDate');
             const currentLicenseType = model.get('license');
@@ -860,10 +887,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 .map(item => item.trim());
 
             if (this.get('abstractChanged'))
-                node.set('description', this.get('basicsAbstract'));
+                model.set('description', this.get('basicsAbstract'));
 
             if (this.get('tagsChanged'))
-                node.set('tags', this.get('basicsTags'));
+                model.set('tags', this.get('basicsTags'));
 
             if (this.get('applyLicense')) {
                 if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || (node.get('nodeLicense.copyrightHolders') || []).join() !== copyrightHolders.join()) {
@@ -922,7 +949,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
             node.save()
                 .then(() => model.save()
-                    .then(() => this.send('next', this.get('_names.2')))
+                    .then(() => this.send('next', this.get('_names.3')))
                     .catch(() => {
                         // If model save fails, do not transition, save original vales
                         this.get('toast').error(
@@ -988,7 +1015,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`
                 });
 
-            const sendNext = () => this.send('next', this.get('_names.1'));
+            const sendNext = () => this.send('next', this.get('_names.2'));
 
             if (!hasChanged) {
                 return sendNext();
@@ -1084,6 +1111,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             const node = this.get('node');
             this.set('savingPreprint', true);
             this.toggleProperty('shareButtonDisabled');
+            model.set('provider', this.get('currentProvider'));
 
             let submitAction = null;
             if (this.get('moderationType')) {
@@ -1105,8 +1133,17 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
             return save_changes
                 .then(() => {
+                        this.set('preprintSaved', true);
+                        let useProviderRoute = false;
+                        if (this.get('theme.isProvider')) {
+                            useProviderRoute = this.get('theme.isSubRoute');
+                        } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
+                            window.location.replace(`${this.get('currentProvider.domain')}${model.id}`);
+                        } else if (this.get('currentProvider.id') !== 'osf') {
+                            useProviderRoute = true;
+                        }
                         this.transitionToRoute(
-                            `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
+                            `${useProviderRoute ? 'provider.' : ''}content`,
                             model.reload()
                         );
                 })
@@ -1132,6 +1169,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
             return submitAction.save()
                 .then(() => {
+                    this.set('preprintSaved', true);
                     this.get('model').reload();
                     this.transitionToRoute(
                         `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
@@ -1152,5 +1190,30 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 this.get('model')
             );
         },
+        selectProvider(provider) {
+            this.set('selectedProvider', provider);
+            this.set('providerChanged', true);
+        },
+        saveProvider() {
+            this.set('currentProvider', this.get('selectedProvider'));
+            this.get('currentProvider').queryHasMany('licensesAcceptable', {'page[size]': 20}).then(licenses => {
+                this.set('availableLicenses', licenses);
+                this.set('basicsLicense.licenseType', this.get('availableLicenses.firstObject'));
+            });
+            this.set('providerChanged', false);
+            this.set('providerSaved', true);
+            this.send('discardSubjects');
+            this.send('next', this.get('_names.0'));
+            get(this, 'metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Submit - Save and continue, Select ${this.get('currentProvider.name')} preprint service`
+                });
+        },
+        discardProvider() {
+            this.set('selectedProvider', this.get('currentProvider'));
+            this.set('providerChanged', false);
+        }
     }
 });
