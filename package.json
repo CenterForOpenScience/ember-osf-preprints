@@ -27,6 +27,7 @@
   "devDependencies": {
     "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-05-04T20:19:28Z",
     "@centerforopenscience/osf-style": "https://github.com/CenterForOpenScience/osf-style#b09451d759c8544d2fab4bd7dbd5ca8b6dc242b8",
+    "@centerforopenscience/eslint-config": "^2.0.0",
     "autoprefixer": "^7.1.2",
     "bootstrap-daterangepicker": "^2.1.23",
     "bootstrap-sass": "^3.3.7",
@@ -86,7 +87,6 @@
     "ember-toastr": "^1.7.0",
     "ember-truth-helpers": "^1.2.0",
     "eslint": "^4.4.1",
-    "eslint-plugin-ember": "^5.0.0",
     "font-awesome": "^4.7.0",
     "hint.css": "^2.5.0",
     "liquid-fire": "^0.27.3",
@@ -104,5 +104,19 @@
   "bugs": {
     "url": "https://github.com/CenterForOpenScience/ember-osf-preprints/issues"
   },
-  "homepage": "https://github.com/CenterForOpenScience/ember-osf-preprints#readme"
+  "homepage": "https://github.com/CenterForOpenScience/ember-osf-preprints#readme",
+  "dependencies": {
+    "autoprefixer": "^7.1.2",
+    "bootstrap-daterangepicker": "^2.1.23",
+    "bootstrap-sass": "^3.3.7",
+    "bower": "^1.8.2",
+    "dropzone": "^5.3.0",
+    "ember-cli-sass": "^7.0.0",
+    "ember-collection": "^1.0.0-alpha.7",
+    "ember-font-awesome": "^3.0.0",
+    "font-awesome": "^4.7.0",
+    "hint.css": "^2.5.0",
+    "pagination-pager": "^3.0.0",
+    "toastr": "^2.1.2"
+  }
 }

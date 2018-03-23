@@ -67,7 +67,6 @@
                                         {{else if (eq currentState _State.NEW)}}
                                             {{file-uploader
                                                 changeInitialState=(action 'changeInitialState')
-                                                nextUploadSection=nextUploadSection
                                                 finishUpload=(action 'finishUpload')
                                                 clearDownstreamFields=(action 'clearDownstreamFields')
                                                 nextUploadSection=(action 'nextUploadSection')

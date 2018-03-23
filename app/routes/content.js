@@ -7,7 +7,7 @@ const handlers = new Map([
     ['Authentication credentials were not provided.', 'page-not-found'], // 401
     ['You do not have permission to perform this action.', 'page-not-found'], // 403
     ['Not found.', 'page-not-found'], // 404
-    ['The requested node is no longer available.', 'resource-deleted'] // 410
+    ['The requested node is no longer available.', 'resource-deleted'], // 410
 ]);
 
 /**
@@ -28,11 +28,11 @@ export default Route.extend({
         error(error) {
             // Handle API Errors
             if (error && error.errors && isArray(error.errors)) {
-                const {detail} = error.errors[0];
+                const { detail } = error.errors[0];
                 const page = handlers.get(detail) || 'page-not-found';
 
                 return this.intermediateTransitionTo(page);
             }
-        }
-    }
+        },
+    },
 });

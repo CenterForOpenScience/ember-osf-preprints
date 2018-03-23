@@ -4,28 +4,28 @@ import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('search-facet-provider', 'Integration | Component | search facet provider', {
     integration: true,
-    beforeEach: function() {
-        let osfProvider = {
+    beforeEach() {
+        const osfProvider = {
             doc_count: 99,
-            key: 'OSF'
+            key: 'OSF',
         };
-        let agrixivProvider = {
+        const agrixivProvider = {
             doc_count: 100,
-            key: 'AgriXiv'
+            key: 'AgriXiv',
         };
-        let otherProviders = A([
+        const otherProviders = A([
             osfProvider,
-            agrixivProvider
+            agrixivProvider,
         ]);
 
         this.set('otherProviders', otherProviders);
         this.set('facet', { key: 'sources', title: 'Providers', component: 'search-facet-provider' });
         this.set('key', 'sources');
-        let noop = () => {};
+        const noop = () => {};
         this.set('noop', noop);
         this.set('activeFilters', { providers: [], subjects: [] });
-        this.set('filterReplace',  {'Open Science Framework': 'OSF'});
-    }
+        this.set('filterReplace', { 'Open Science Framework': 'OSF' });
+    },
 });
 
 // These tests are failing randomly in chrome
@@ -44,9 +44,9 @@ skip('preprint providers and counts are listed', function(assert) {
 
 // These tests are failing randomly in chrome
 skip('filterReplace looks up key in mapping', function(assert) {
-   let osfProvider = {
+    const osfProvider = {
         doc_count: 99,
-        key: 'Open Science Framework'
+        key: 'Open Science Framework',
     };
     this.set('otherProviders', A([osfProvider]));
     this.render(hbs`{{search-facet-provider

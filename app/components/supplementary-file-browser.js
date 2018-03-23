@@ -30,7 +30,7 @@ export default Component.extend(Analytics, {
 
     scrollAnim: '',
     selectedFile: null,
-
+    /* eslint-disable ember/no-function-prototype-extensions */
     hasAdditionalFiles: function() {
         return this.get('files.length') > 1;
     }.property('files'),
@@ -42,14 +42,16 @@ export default Component.extend(Analytics, {
     hasNext: function() {
         return this.get('endIndex') < this.get('files.length');
     }.property('files', 'endIndex', 'startIndex'),
+    /* eslint-enable ember/no-function-prototype-extensions */
 
     __files: function() {
         this.set('files', []);
         this.set('selectedFile', null);
+        /* eslint-disable ember/named-functions-in-promises */
         this.get('node').get('files')
-            .then(providers => {
+            .then((providers) => {
                 this.set('provider', providers.findBy('name', 'osfstorage'));
-                return loadAll(this.get('provider'), 'files', this.get('files'), {'page[size]': 50});
+                return loadAll(this.get('provider'), 'files', this.get('files'), { 'page[size]': 50 });
             })
             .then(() => this.get('preprint').get('primaryFile'))
             .then((pf) => {
@@ -61,41 +63,42 @@ export default Component.extend(Analytics, {
             });
     }.observes('preprint'),
 
+    /* eslint-enable ember/named-functions-in-promises */
     selectedFileChanged: computed('selectedFile', function() {
         const eventData = {
             file_views: {
                 preprint: {
                     type: 'preprint',
-                    id: this.get('preprint.id')
+                    id: this.get('preprint.id'),
                 },
                 file: {
                     id: this.get('selectedFile.id'),
                     primaryFile: this.get('preprint.primaryFile.id') === this.get('selectedFile.id'),
-                    version: this.get('selectedFile.currentVersion')
-                }
-            }
+                    version: this.get('selectedFile.currentVersion'),
+                },
+            },
         };
         this.get('metrics').invoke('trackSpecificCollection', 'Keen', {
             collection: 'preprint-file-views',
-            eventData: eventData,
+            eventData,
             node: this.get('node'),
         });
     }),
 
     _chosenFile: computed('chosenFile', 'indexes', function() {
-        let fid = this.get('chosenFile');
-        let index = this.get('indexes').indexOf(fid);
+        const fid = this.get('chosenFile');
+        const index = this.get('indexes').indexOf(fid);
         if (fid && index !== -1) {
             this.set('selectedFile', this.get('files')[index]);
         }
     }),
     _moveIfNeeded: computed('selectedFile', function() {
-        let index = this.get('files').indexOf(this.get('selectedFile'));
+        const index = this.get('files').indexOf(this.get('selectedFile'));
         if (index < 0) {
             return;
         }
         if (index >= this.get('endIndex') || index < this.get('startIndex')) {
-            let max = this.get('files').length - 6;
+            const max = this.get('files').length - 6;
             if (index > max) {
                 this.set('startIndex', max);
                 this.set('endIndex', this.get('files').length);
@@ -112,7 +115,6 @@ export default Component.extend(Analytics, {
     init() {
         this._super(...arguments);
         this.__files();
-
     },
     actions: {
         next(direction) {
@@ -120,7 +122,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
-                    label: 'Content - Next'
+                    label: 'Content - Next',
                 });
 
             if (this.get('endIndex') > this.get('files.length')) return;
@@ -134,9 +136,9 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
-                    label: 'Content - Prev'
+                    label: 'Content - Prev',
                 });
-            let start = this.get('startIndex');
+            const start = this.get('startIndex');
             if (start <= 0) return;
 
             this.set('scrollAnim', `to${direction}`);
@@ -153,12 +155,12 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'select',
-                    label: 'Content - File'
+                    label: 'Content - File',
                 });
 
             this.set('selectedFile', file);
             if (this.attrs.chooseFile) {
-                this.sendAction('chooseFile', file);
+                this.sendAction('chooseFile', file); /* eslint-disable-line ember/closure-actions */
             }
         },
     },

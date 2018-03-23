@@ -14,8 +14,8 @@ import { helper } from '@ember/component/helper';
  * @param {Integer} stopIndex
  * @return {Array} sliced array
  */
-export function sliceArray(params/*, hash*/) {
-    var [array, start, finish] = params;
+export function sliceArray(params/* , hash */) {
+    const [array, start, finish] = params;
     return array.slice(start, finish);
 }
 

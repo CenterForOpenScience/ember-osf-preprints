@@ -14,7 +14,7 @@ import { htmlSafe } from '@ember/string';
   * @param {string} string
   * @return {Object} Returns Handlebars.SafeString
   */
-export function safeMarkup(params/*, hash*/) {
+export function safeMarkup(params/* , hash */) {
     return htmlSafe(params.join(''));
 }
 

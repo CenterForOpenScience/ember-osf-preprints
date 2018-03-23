@@ -1,6 +1,5 @@
 import { computed } from '@ember/object';
-import { inject as service } from '@ember/service';
-import Service from '@ember/service';
+import Service, { inject as service } from '@ember/service';
 import $ from 'jquery';
 import config from 'ember-get-config';
 import buildProviderAssetPath from '../utils/build-provider-asset-path';
@@ -11,7 +10,8 @@ import buildProviderAssetPath from '../utils/build-provider-asset-path';
  */
 
 /**
- * Detects preprint provider and allows you to inject that provider's theme into parts of your application
+ * Detects preprint provider and allows you to inject that
+ * provider's theme into parts of your application
  *
  * @class theme
  * @extends Service
@@ -37,19 +37,32 @@ export default Service.extend({
         // Check if redirect is enabled for the current provider
         if (!window.isProviderDomain && this.get('isProvider')) {
             store.findRecord('preprint-provider', id)
-                .then(provider => {
-                    if (provider.get('domainRedirectEnabled')) {
-                        const domain = provider.get('domain');
-                        const {href, origin} = window.location;
-                        const url = href.replace(new RegExp(`^${origin}/preprints/${id}/?`), domain);
-
-                        window.location.replace(url);
-                    }
-                });
+                .then(this._getproviderDomain.bind(this));
         }
 
         return store.findRecord('preprint-provider', id);
     }),
+
+    _getproviderDomain(provider) {
+        if (provider.get('domainRedirectEnabled')) {
+            const domain = provider.get('domain');
+            const { href, origin } = window.location;
+            const id = this.get('id');
+            const url = href.replace(new RegExp(`^${origin}/preprints/${id}/?`), domain);
+
+            window.location.replace(url);
+        }
+    },
+
+    providerCallback(provider, id) {
+        if (provider.get('domainRedirectEnabled')) {
+            const domain = provider.get('domain');
+            const { href, origin } = window.location;
+            const url = href.replace(new RegExp(`^${origin}/preprints/${id}/?`), domain);
+
+            window.location.replace(url);
+        }
+    },
 
     // If we're using a branded provider
     isProvider: computed('id', function() {
@@ -97,7 +110,7 @@ export default Service.extend({
             path: buildProviderAssetPath(config, id, 'sharing.png', this.get('isDomain')),
             type: 'image/png',
             width: 1200,
-            height: 630
+            height: 630,
         };
     }),
 
@@ -105,7 +118,7 @@ export default Service.extend({
     signupUrl: computed('id', function() {
         const query = $.param({
             campaign: `${this.get('id')}-preprints`,
-            next: window.location.href
+            next: window.location.href,
         });
 
         return `${config.OSF.url}register?${query}`;
@@ -120,9 +133,9 @@ export default Service.extend({
             type: 'link',
             attrs: {
                 rel: 'shortcut icon',
-                href: buildProviderAssetPath(config, this.get('id'), 'favicon.ico', window.isProviderDomain)
-            }
-        }]
+                href: buildProviderAssetPath(config, this.get('id'), 'favicon.ico', window.isProviderDomain),
+            },
+        }];
     }),
     idChanged: computed('id', function() {
         this.get('headTagsService').collectHeadTags();

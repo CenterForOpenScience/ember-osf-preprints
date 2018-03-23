@@ -1,4 +1,4 @@
-import {moduleFor, test} from 'ember-qunit';
+import { moduleFor, test } from 'ember-qunit';
 import EmberService from '@ember/service';
 import { merge } from '@ember/polyfills';
 import tHelper from 'ember-i18n/helper';
@@ -34,5 +34,5 @@ moduleFor('controller:application', 'Unit | Controller | application', {
 test('controller application it exists', function (assert) {
     const controller = this.subject();
     assert.ok(controller);
-    assert.strictEqual(controller.get('i18n').t(`documentType.preprint.singularCapitalized`), 'Preprint');
+    assert.strictEqual(controller.get('i18n').t('documentType.preprint.singularCapitalized'), 'Preprint');
 });

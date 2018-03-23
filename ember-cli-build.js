@@ -7,6 +7,8 @@ const path = require('path');
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 const configFunc = require('./config/environment');
 const Funnel = require('broccoli-funnel');
+const autoprefixer = require('autoprefixer');
+const postcss = require('postcss');
 
 const nonCdnEnvironments = ['development', 'test'];
 
@@ -96,18 +98,19 @@ module.exports = function(defaults) {
             filter: {
                 enabled: true,
                 plugins: [{
-                    module: require('autoprefixer'),
+                    module: autoprefixer,
                     options: {
                         browsers: ['last 4 versions'],
                         cascade: false
                     }
                 }, {
                     // Wrap progid declarations with double-quotes
-                    module: require('postcss').plugin('progid-wrapper', () => {
+                    module: postcss.plugin('progid-wrapper', () => {
                         return css =>
                             css.walkDecls(declaration => {
                                 if (declaration.value.startsWith('progid')) {
-                                    return declaration.value = `"${declaration.value}"`;
+                                    const declarationValue = `"${declaration.value}"`;
+                                    return declarationValue;
                                 }
                             });
                     })
