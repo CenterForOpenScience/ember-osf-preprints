@@ -16,20 +16,20 @@ export default Route.extend({
     theme: service(),
 
     beforeModel(transition) {
-        const {slug = ''} = transition.params.provider;
+        const { slug = '' } = transition.params.provider;
         const slugLower = slug.toLowerCase();
 
         return this.get('store').findRecord(
             'preprint-provider',
-            slugLower
+            slugLower,
         ).then(() => {
-            const {pathname} = window.location;
+            const { pathname } = window.location;
             const pathRegex = new RegExp(`^/preprints/${slug}`);
 
             if (slug !== slugLower) {
                 window.location.pathname = pathname.replace(
                     pathRegex,
-                    `/preprints/${slugLower}`
+                    `/preprints/${slugLower}`,
                 );
             }
             this.set('theme.id', slugLower);
@@ -48,6 +48,6 @@ export default Route.extend({
         error(error) {
             console.error(error);
             return true;
-        }
-    }
+        },
+    },
 });

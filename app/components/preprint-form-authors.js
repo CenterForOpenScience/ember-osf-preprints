@@ -48,7 +48,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
     parentContributorsAdded: false,
     // Returns list of user ids associated with current node
     currentContributorIds: computed('contributors', function() {
-        let contribIds = [];
+        const contribIds = [];
         this.get('contributors').forEach((contrib) => {
             contribIds.push(contrib.get('userId'));
         });
@@ -70,20 +70,16 @@ export default CpPanelBodyComponent.extend(Analytics, {
     query: null,
     // Total contributor search results
     totalSearchResults: computed('searchResults.[]', function() {
-        let searchResults = this.get('searchResults');
+        const searchResults = this.get('searchResults');
         if (searchResults && searchResults.meta !== undefined) {
             return searchResults.meta.total;
-        } else {
-            return;
         }
     }),
     // Total pages of contributor search results
     pages: computed('searchResults.[]', function() {
-        let searchResults = this.get('searchResults');
+        const searchResults = this.get('searchResults');
         if (searchResults && searchResults.meta !== undefined) {
             return searchResults.meta.total_pages;
-        } else {
-            return;
         }
     }),
     actions: {
@@ -93,7 +89,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Add Author`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Add Author`,
                 });
             this.attrs.addContributor(user.id, 'write', true, this.get('sendEmail'), undefined, undefined, true).then((res) => {
                 this.toggleAuthorModification();
@@ -112,11 +108,11 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Submit - Bulk Add Contributors From Parent`
+                    label: 'Submit - Bulk Add Contributors From Parent',
                 });
             this.set('parentContributorsAdded', true);
-            let contributorsToAdd = A();
-            this.get('parentContributors').toArray().forEach(contributor => {
+            const contributorsToAdd = A();
+            this.get('parentContributors').toArray().forEach((contributor) => {
                 if (this.get('currentContributorIds').indexOf(contributor.get('userId')) === -1) {
                     contributorsToAdd.push({
                         permission: contributor.get('permission'),
@@ -140,7 +136,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
             if (fullName && email) {
-                let res = this.attrs.addContributor(null, 'write', true, this.get('sendEmail'), fullName, email, true);
+                const res = this.attrs.addContributor(null, 'write', true, this.get('sendEmail'), fullName, email, true);
                 res.then((contributor) => {
                     this.get('contributors').pushObject(contributor);
                     this.toggleAuthorModification();
@@ -161,7 +157,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         },
         // Requests a particular page of user results
         findContributors(page) {
-            let query = this.get('query');
+            const query = this.get('query');
             if (query) {
                 this.attrs.findContributors(query, page).then(() => {
                     this.set('addState', 'searchView');
@@ -178,7 +174,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Author`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Author`,
                 });
             this.attrs.removeContributor(contrib).then(() => {
                 this.toggleAuthorModification();
@@ -198,7 +194,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Change Author Permissions`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Change Author Permissions`,
                 });
             this.attrs.editContributor(contributor, permission, '').then(() => {
                 this.toggleAuthorModification();
@@ -217,7 +213,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'checkbox',
                     action: 'select',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Update Bibliographic Author`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Update Bibliographic Author`,
                 });
             this.attrs.editContributor(contributor, '', isBibliographic).then(() => {
                 this.toggleAuthorModification();
@@ -234,7 +230,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Go to Add Author by Email Form`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Go to Add Author by Email Form`,
                 });
             this.set('addState', 'unregisteredView');
         },
@@ -250,7 +246,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Cancel Add Author By Email`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Cancel Add Author By Email`,
                 });
             this.set('addState', 'searchView');
         },
@@ -261,11 +257,11 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 .trackEvent({
                     category: 'div',
                     action: 'drag',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Reorder Authors`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Reorder Authors`,
                 });
-            let originalOrder = this.get('contributors');
+            const originalOrder = this.get('contributors');
             this.set('contributors', itemModels);
-            let newIndex = itemModels.indexOf(draggedContrib);
+            const newIndex = itemModels.indexOf(draggedContrib);
             this.attrs.reorderContributors(draggedContrib, newIndex, itemModels).then(() => {
                 this.highlightSuccessOrFailure(draggedContrib.id, this, 'success');
             }, () => {
@@ -277,21 +273,21 @@ export default CpPanelBodyComponent.extend(Analytics, {
         },
         // Action used by the pagination-pager component to the handle user-click event.
         pageChanged(current) {
-            let query = this.get('query');
+            const query = this.get('query');
             if (query) {
                 this.attrs.findContributors(query, current).then(() => {
                     this.set('addState', 'searchView');
                     this.set('currentPage', current);
                 })
-                .catch(() => {
+                    .catch(() => {
                         this.get('toast').error('Could not perform search query.');
                         this.highlightSuccessOrFailure('author-search-box', this, 'error');
                     });
             }
-        }
+        },
     },
     // TODO find alternative to jquery selectors. Temporary popover content for authors page.
-    didInsertElement: function() {
+    didInsertElement() {
         this.$('#permissions-popover').popover({
             container: 'body',
             content: '<dl>' +
@@ -305,17 +301,17 @@ export default CpPanelBodyComponent.extend(Analytics, {
                     '<li>Read and write privileges</li>' +
                     '<li>Manage authors</li>' +
                     '<li>Public-private settings</li></ul></dd>' +
-                '</dl>'
+                '</dl>',
         });
         this.$('#bibliographic-popover').popover({
             container: 'body',
             content: 'Only checked authors will be included in preprint citations. ' +
-            'Authors not in the citation can read and modify the preprint as normal.'
+            'Authors not in the citation can read and modify the preprint as normal.',
         });
         this.$('#author-popover').popover({
             container: 'body',
             content: 'Preprints must have at least one registered administrator and one author showing in the citation at all times.  ' +
-            'A registered administrator is a user who has both confirmed their account and has administrator privileges.'
+            'A registered administrator is a user who has both confirmed their account and has administrator privileges.',
         });
     },
 
@@ -331,5 +327,5 @@ export default CpPanelBodyComponent.extend(Analytics, {
     others, depending on what requests are permitted */
     toggleAuthorModification() {
         this.toggleProperty('authorModification');
-    }
+    },
 });

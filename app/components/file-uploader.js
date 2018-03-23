@@ -74,7 +74,7 @@ export default Component.extend(Analytics, {
         // Helps communicate to user that there may be a pending, unsaved version
         return this.get('osfFile.currentVersion') || 1;
     }),
-
+    /* eslint-disable-next-line ember/avoid-leaking-state-in-components */
     dropzoneOptions: {
         maxFiles: 1,
         method: 'PUT',
@@ -109,17 +109,17 @@ export default Component.extend(Analytics, {
 
         uploadNewFileUrl(files) {
             // Add mode - creates url for uploading a new file
-            this.set('url', files.findBy('name', 'osfstorage').get('links.upload')  + '?' + $.param({
+            this.set('url', `${files.findBy('name', 'osfstorage').get('links.upload')}?${$.param({
                 kind: 'file',
                 name: this.get('file.name'),
-            }));
+            })}`);
         },
 
         uploadNewVersionUrl(files) {
             // Edit mode - creates url for uploading a new version of a file
-            this.set('url', files.findBy('name', 'osfstorage').get('links.upload') + this.get('osfFile.id') + '?' + $.param({
+            this.set('url', `${files.findBy('name', 'osfstorage').get('links.upload') + this.get('osfFile.id')}?${$.param({
                 kind: 'file',
-            }));
+            })}`);
         },
 
         upload() {
@@ -127,7 +127,7 @@ export default Component.extend(Analytics, {
             if (this.get('file') === null) { // No new file to upload.
                 this.sendAction('finishUpload');
             } else {
-                return this.get('node.files').then(files => {
+                return this.get('node.files').then((files) => {
                     if (this.get('nodeLocked')) { // Edit mode, fetch URL for uploading new version
                         this.send('uploadNewVersionUrl', files);
                     } else { // Add mode, fetch URL for uploading new file
@@ -157,14 +157,14 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Save and Continue, New Node New File'
+                    label: 'Submit - Save and Continue, New Node New File',
                 });
             this.get('store').createRecord('node', {
                 public: false,
                 category: 'project',
                 title: this.get('title'),
             }).save()
-                .then(node => {
+                .then((node) => {
                     this.set('node', node);
                     this.getContributors(node);
                     this.send('upload');
@@ -184,12 +184,12 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Save and Continue, New Component New File'
+                    label: 'Submit - Save and Continue, New Component New File',
                 });
-            let node = this.get('node');
+            const node = this.get('node');
             node
                 .addChild(this.get('title'))
-                .then(child => {
+                .then((child) => {
                     this.set('parentNode', node);
                     this.set('node', child);
                     this.set('basicsAbstract', this.get('node.description') || null);
@@ -210,29 +210,29 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('nodeLocked') ? 'Save File/Title Edits' : 'Existing Node New File'}`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('nodeLocked') ? 'Save File/Title Edits' : 'Existing Node New File'}`,
                 });
             if (this.get('nodeLocked')) { // Edit mode
                 this.set('uploadInProgress', true);
             }
 
-            let model = this.get('model');
-            let node = this.get('node');
+            const model = this.get('model');
+            const node = this.get('node');
             this.set('basicsAbstract', this.get('model.description') || null);
-            let currentNodeTitle = node.get('title');
+            const currentNodeTitle = node.get('title');
 
             if (currentNodeTitle !== this.get('title')) {
                 model.set('title', this.get('title'));
                 node.set('title', this.get('title'));
                 node.save()
-                .then(() => {
-                    this.send('upload');
-                })
-                .catch(() => {
-                    node.set('title', currentNodeTitle);
-                    this.set('uploadInProgress', false);
-                    this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
-                });
+                    .then(() => {
+                        this.send('upload');
+                    })
+                    .catch(() => {
+                        node.set('title', currentNodeTitle);
+                        this.set('uploadInProgress', false);
+                        this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
+                    });
             } else {
                 this.send('upload');
             }
@@ -240,10 +240,12 @@ export default Component.extend(Analytics, {
 
         // Dropzone hooks
         sending(_, dropzone, file, xhr/* formData */) {
-            let _send = xhr.send;
+            const _send = xhr.send;
+            /* eslint-disable-next-line no-param-reassign */
             xhr.send = function() {
                 _send.call(xhr, file);
             };
+            /* eslint-disable-next-line no-param-reassign */
             xhr.withCredentials = true;
         },
         mustModifyCurrentPreprintFile() {
@@ -301,10 +303,10 @@ export default Component.extend(Analytics, {
 
             if (Math.floor(file.xhr.status / 100) === 2) {
                 // File upload success
-                let resp = JSON.parse(file.xhr.response);
+                const resp = JSON.parse(file.xhr.response);
                 this.get('store')
                     .findRecord('file', resp.data.id.split('/')[1])
-                    .then(file => {
+                    .then((file) => {
                         this.set('osfFile', file);
                         // Set current version - will revert if user uploaded a new version of the same file
                         this.set('fileVersion', resp.data.attributes.extra.version);
@@ -313,7 +315,7 @@ export default Component.extend(Analytics, {
                             this.sendAction('finishUpload');
                             if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
                         } else { // Add mode
-                            return this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint',  this.get('parentNode'));
+                            return this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint', this.get('parentNode'));
                         }
                     })
                     .catch(() => {
@@ -321,14 +323,13 @@ export default Component.extend(Analytics, {
                         this.set('uploadInProgress', false);
                     });
             } else {
-                //File upload failure
+                // File upload failure
                 dropzone.removeAllFiles();
                 this.set('file', null);
                 // Error uploading file. Clear downstream fields.
                 this.attrs.clearDownstreamFields('belowNode');
                 this.set('uploadInProgress', false);
-                this.get('toast').error(
-                    file.xhr.status === 409 ?
+                this.get('toast').error(file.xhr.status === 409 ?
                     this.get('i18n').t('components.file-uploader.file_exists_error')
                     : this.get('i18n').t('components.file-uploader.upload_error'));
             }
@@ -352,23 +353,20 @@ export default Component.extend(Analytics, {
             }
         },
         preUploadMetrics() {
-            let eventData = {
+            const eventData = {
                 category: 'dropzone',
-                action: 'drop'
+                action: 'drop',
             };
 
             if (this.get('newNodeNewFile')) {
                 eventData.label = 'Submit - Drop File, New Node';
+            } else if (this.get('nodeLocked')) {
+                eventData.label = `${this.get('editMode') ? 'Edit' : 'Submit'} - Drop File, New Version`;
             } else {
-                if (this.get('nodeLocked')) {
-                    eventData.label = `${this.get('editMode') ? 'Edit' : 'Submit'} - Drop File, New Version`;
-                } else {
-                    eventData.label = 'Submit - Drop File, Existing Node';
-                }
+                eventData.label = 'Submit - Drop File, Existing Node';
             }
             this.get('metrics')
                 .trackEvent(eventData);
-
-        }
-    }
+        },
+    },
 });

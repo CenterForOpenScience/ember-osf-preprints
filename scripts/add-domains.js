@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
+/* eslint-disable */    
 /* eslint-env node */
 /* eslint no-console: ["error", { allow: ["error", "info", "warn"] }] */
 
 const fs = require('fs');
 const http = require('http');
 
-const {argv} = process;
+const { argv } = process;
 
 if (argv.includes('--help') || argv.includes('-h')) {
     console.info(`Usage: ${__filename.slice(__dirname.length + 1)} [-h|--help] [--dry]`);
@@ -16,7 +17,7 @@ if (argv.includes('--help') || argv.includes('-h')) {
 const isDry = argv.includes('--dry');
 const hostsFileName = '/etc/hosts';
 const hostIP = '127.0.0.1';
-const hostsFile = fs.readFileSync(hostsFileName, {encoding: 'utf8'});
+const hostsFile = fs.readFileSync(hostsFileName, { encoding: 'utf8' });
 const sectionHeader = '## EMBER-PREPRINTS ##\n';
 const sectionFooter = '\n## /EMBER-PREPRINTS ##';
 const rgx = new RegExp(`(?:${sectionHeader})(.|\\s)*(?:${sectionFooter})`, 'm');
@@ -30,7 +31,7 @@ new Promise((resolve, reject) => {
         res.setEncoding('utf8');
         let rawData = '';
 
-        res.on('data', (chunk) => rawData += chunk);
+        res.on('data', chunk => rawData += chunk);
 
         res.on('end', () => {
             try {
@@ -42,20 +43,20 @@ new Promise((resolve, reject) => {
         });
     }).on('error', e => reject(e.message));
 })
-    .then(({data}) => {
+    .then(({ data }) => {
         const domainProviders = data
             .filter(({ id, attributes: { domain } }) => id !== 'osf' && domain)
             .map(({ id, attributes: { domain } }) => ({
                 id,
-                domain: domain.replace(/^https?:\/\/|(:\d+)?(\/.*)?$/g, '')
+                domain: domain.replace(/^https?:\/\/|(:\d+)?(\/.*)?$/g, ''),
             }));
 
         const maxLength = domainProviders
             .map(provider => provider.domain.length)
-            .reduce((acc, val) => acc < val ? val : acc, 0);
+            .reduce((acc, val) => (acc < val ? val : acc), 0);
 
         const lines = domainProviders
-            .map(({ id, domain}) => `${hostIP}\t${domain}${' '.repeat(maxLength - domain.length)}\t# ${id}`)
+            .map(({ id, domain }) => `${hostIP}\t${domain}${' '.repeat(maxLength - domain.length)}\t# ${id}`)
             .join('\n');
 
         const section = `${sectionHeader}${lines}${sectionFooter}`;

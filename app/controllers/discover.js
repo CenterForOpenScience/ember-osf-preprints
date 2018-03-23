@@ -38,48 +38,48 @@ export default Controller.extend(Analytics, {
     facets: computed('i18n.locale', 'additionalProviders', function() { // List of facets available for preprints
         if (this.get('additionalProviders')) { // if additionalProviders exist, use subset of SHARE facets
             return [
-                { key: 'sources', title: this.get('i18n').t('discover.main.source'), component: 'search-facet-source'},
-                { key: 'date', title: this.get('i18n').t('discover.main.date'), component: 'search-facet-daterange'},
-                { key: 'type', title: this.get('i18n').t('discover.main.type'), component: 'search-facet-worktype'},
-                { key: 'tags', title: this.get('i18n').t('discover.main.tag'), component: 'search-facet-typeahead'},
+                { key: 'sources', title: this.get('i18n').t('discover.main.source'), component: 'search-facet-source' },
+                { key: 'date', title: this.get('i18n').t('discover.main.date'), component: 'search-facet-daterange' },
+                { key: 'type', title: this.get('i18n').t('discover.main.type'), component: 'search-facet-worktype' },
+                { key: 'tags', title: this.get('i18n').t('discover.main.tag'), component: 'search-facet-typeahead' },
             ];
         } else { // Regular preprints and branded preprints get provider and taxonomy facets
             return [
                 { key: 'sources', title: `${this.get('i18n').t('discover.main.providers')}`, component: 'search-facet-provider' },
-                { key: 'subjects', title: `${this.get('i18n').t('discover.main.subject')}`, component: 'search-facet-taxonomy' }
-            ]
+                { key: 'subjects', title: `${this.get('i18n').t('discover.main.subject')}`, component: 'search-facet-taxonomy' },
+            ];
         }
     }),
     filterMap: { // Map active filters to facet names expected by SHARE
         providers: 'sources',
-        subjects: 'subjects'
+        subjects: 'subjects',
     },
-    //TODO: Add a conversion from shareSource to provider names here if desired
+    // TODO: Add a conversion from shareSource to provider names here if desired
     filterReplace: { // Map filter names for front-end display
         'Open Science Framework': 'OSF',
         'Cognitive Sciences ePrint Archive': 'Cogprints',
         OSF: 'OSF Preprints',
-        'Research Papers in Economics': 'RePEc'
+        'Research Papers in Economics': 'RePEc',
     },
     lockedParams: computed('additionalProviders', function() { // Query parameters that cannot be changed.
         // if additionalProviders, open up search results to all types of results instead of just preprints.
         return this.get('additionalProviders') ? {} : {
-			bool: {
-				should: [
-					{terms: {types: ["preprint"]} },
-					{terms: {sources: ["Thesis Commons"]} }
-				]
-			}
-		};
+            bool: {
+                should: [
+                    { terms: { types: ['preprint'] } },
+                    { terms: { sources: ['Thesis Commons'] } },
+                ],
+            },
+        };
     }),
     page: 1, // Page query param. Must be passed to component, so can be reflected in URL
     provider: '', // Provider query param. Must be passed to component, so can be reflected in URL
     q: '', // q query param.  Must be passed to component, so can be reflected in URL
     queryParams: ['page', 'q', 'sources', 'tags', 'type', 'start', 'end', 'subject', 'provider'], // Pass in the list of queryParams for this component
     searchPlaceholder: computed('additionalProviders', function() { // Search bar placeholder
-        return this.get('additionalProviders') ? 'discover.search.repository_placeholder': 'discover.search.placeholder';
+        return this.get('additionalProviders') ? 'discover.search.repository_placeholder' : 'discover.search.placeholder';
     }),
-    showActiveFilters: computed('additionalProviders', function() {  // Whether Active Filters should be displayed.
+    showActiveFilters: computed('additionalProviders', function() { // Whether Active Filters should be displayed.
         // additionalProviders are using SHARE facets which do not work with Active Filters at this time
         return !this.get('additionalProviders');
     }),
@@ -87,13 +87,13 @@ export default Controller.extend(Analytics, {
         const i18n = this.get('i18n');
         return [{
             display: i18n.t('discover.relevance'),
-            sortBy: ''
+            sortBy: '',
         }, {
             display: i18n.t('discover.sort_oldest_newest'),
-            sortBy: 'date_updated'
+            sortBy: 'date_updated',
         }, {
             display: i18n.t('discover.sort_newest_oldest'),
-            sortBy: '-date_updated'
+            sortBy: '-date_updated',
         }];
     }),
     sources: '', // Sources query param. Must be passed to component, so can be reflected in the URL
@@ -102,24 +102,24 @@ export default Controller.extend(Analytics, {
     tags: '', // Tags query param.  Must be passed to component, so can be reflected in URL
     themeProvider: computed('model', function() { // Pulls the preprint provider from the already loaded model
         let themeProvider = null;
-        this.get('model').forEach(provider => {
+        this.get('model').forEach((provider) => {
             if (provider.id === this.get('theme.id')) {
                 themeProvider = provider;
             }
         });
         return themeProvider;
     }),
-    type: '', //Type query param. Must be passed to component, so can be reflected in URL
+    type: '', // Type query param. Must be passed to component, so can be reflected in URL
     whiteListedProviders: config.whiteListedProviders,
     _clearFilters() {
         this.set('activeFilters', {
             providers: [],
-            subjects: []
+            subjects: [],
         });
         this.set('provider', '');
         this.set('subject', '');
     },
     _clearQueryString() {
         this.set('q', '');
-    }
+    },
 });

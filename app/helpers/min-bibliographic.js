@@ -13,11 +13,12 @@ import { helper } from '@ember/component/helper';
  * @class minBibliographic
  * @param {Object} contrib contributor that you intend to modify bibliographic information
  * @param {Array} contributors list of all contributors on the preprint
- * @return {Boolean} Does updating this contributor leave minimum number of bibliographic contributors?
+ * @return {Boolean} Does updating this contributor leave minimum
+ * number of bibliographic contributors?
  */
-export function minBibliographic(params/*, hash*/) {
-    var [contrib, contributors] = params;
-    var numBib = 0;
+export function minBibliographic(params/* , hash */) {
+    const [contrib, contributors] = params;
+    let numBib = 0;
     contributors.forEach(function(contributor) {
         if (contributor.get('bibliographic')) {
             numBib++;

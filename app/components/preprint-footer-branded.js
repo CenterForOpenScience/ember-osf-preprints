@@ -19,5 +19,5 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 export default Component.extend(Analytics, {
     theme: service(),
-    classNames: ['branded-footer']
+    classNames: ['branded-footer'],
 });

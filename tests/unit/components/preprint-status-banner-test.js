@@ -69,16 +69,16 @@ test('getClassName computed property', function(assert) {
 const i18nStub = Service.extend({
     t(key, arg = null) {
         const translated = {
-            'global.brand_name': `The Panda Archive of bamboo`,
-            'global.pre_moderation': `pre-moderation`,
-            'global.post_moderation': `post-moderation`,
-            'components.preprint-status-banner.message.pending_pre': `is not publicly available or searchable until approved by a moderator`,
-            'components.preprint-status-banner.message.pending_post': `is publicly available and searchable but is subject to removal by a moderator`,
-            'components.preprint-status-banner.message.accepted': `has been accepted by a moderator and is publicly available and searchable`,
-            'components.preprint-status-banner.message.rejected': `has been rejected by a moderator and is not publicly available or searchable`,
+            'global.brand_name': 'The Panda Archive of bamboo',
+            'global.pre_moderation': 'pre-moderation',
+            'global.post_moderation': 'post-moderation',
+            'components.preprint-status-banner.message.pending_pre': 'is not publicly available or searchable until approved by a moderator',
+            'components.preprint-status-banner.message.pending_post': 'is publicly available and searchable but is subject to removal by a moderator',
+            'components.preprint-status-banner.message.accepted': 'has been accepted by a moderator and is publicly available and searchable',
+            'components.preprint-status-banner.message.rejected': 'has been rejected by a moderator and is not publicly available or searchable',
         };
         if (arg) {
-            translated['components.preprint-status-banner.message.base']= `${arg.name} uses pre-moderation. This ${arg.reviewsWorkflow}`;
+            translated['components.preprint-status-banner.message.base'] = `${arg.name} uses pre-moderation. This ${arg.reviewsWorkflow}`;
         }
         return translated[key];
     },
@@ -120,7 +120,7 @@ test('bannerContent computed property', function(assert) {
         assert.strictEqual(
             component.get('bannerContent'),
             'The Panda Archive of bamboo uses pre-moderation. ' +
-            'This pre-moderation is not publicly available or searchable until approved by a moderator.'
+            'This pre-moderation is not publicly available or searchable until approved by a moderator.',
         );
 
         component.set('submission.reviewsState', 'accepted');
@@ -128,7 +128,7 @@ test('bannerContent computed property', function(assert) {
         assert.strictEqual(
             component.get('bannerContent'),
             'The Panda Archive of bamboo uses pre-moderation.' +
-            ' This pre-moderation has been accepted by a moderator and is publicly available and searchable.'
+            ' This pre-moderation has been accepted by a moderator and is publicly available and searchable.',
         );
     });
 });
@@ -149,7 +149,7 @@ test('status computed property', function(assert) {
 
         const statusList = ['pending', 'accepted', 'rejected'];
 
-        for (let i = 0; i< statusList.length; i++) {
+        for (let i = 0; i < statusList.length; i++) {
             component.set('submission.reviewsState', statusList[i]);
             assert.strictEqual(component.get('status'), `components.preprint-status-banner.${statusList[i]}`);
         }

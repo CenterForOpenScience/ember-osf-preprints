@@ -9,8 +9,8 @@ const TitleValidation = buildValidations({
             validator('length', {
                 // minimum length for title?
                 max: 200,
-            })
-        ]
+            }),
+        ],
     },
 });
 /**

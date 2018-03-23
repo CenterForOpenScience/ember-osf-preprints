@@ -23,5 +23,5 @@ export default Helper.extend({
         const route = params.join('');
 
         return this.get('theme.isSubRoute') ? `provider.${route}` : route;
-    }
+    },
 });

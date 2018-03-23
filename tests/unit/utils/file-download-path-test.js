@@ -5,6 +5,6 @@ module('Unit | Utility | file download path');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  let result = fileDownloadPath();
-  assert.ok(typeof result === 'undefined');
+    const result = fileDownloadPath();
+    assert.ok(typeof result === 'undefined');
 });

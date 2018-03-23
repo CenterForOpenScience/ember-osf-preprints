@@ -3,16 +3,17 @@ import { inject as service } from '@ember/service';
 import { run } from '@ember/runloop';
 import Route from '@ember/routing/route';
 import $ from 'jquery';
-import ResetScrollMixin from '../../mixins/reset-scroll';
-import SetupSubmitControllerMixin from '../../mixins/setup-submit-controller';
 import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
+import ResetScrollMixin from '../../mixins/reset-scroll';
+import SetupSubmitControllerMixin from '../../mixins/setup-submit-controller';
+
 const {
-    OSF: {url: osfUrl}
+    OSF: { url: osfUrl },
 } = config;
 
 // Error handling for API
@@ -21,7 +22,7 @@ const handlers = new Map([
     ['Authentication credentials were not provided.', 'page-not-found'], // 401
     ['You do not have permission to perform this action.', 'page-not-found'], // 403
     ['Not found.', 'page-not-found'], // 404
-    ['The requested node is no longer available.', 'resource-deleted'] // 410
+    ['The requested node is no longer available.', 'resource-deleted'], // 410
 ]);
 
 /**
@@ -39,14 +40,14 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
     currentUser: service('currentUser'),
 
     afterModel(preprint) {
-        const {location: {origin}} = window;
-        let contributors = A();
+        const { location: { origin } } = window;
+        const contributors = A();
 
         const downloadUrl = [
             origin,
             this.get('theme.isSubRoute') ? `preprints/${this.get('theme.id')}` : null,
             preprint.get('id'),
-            'download'
+            'download',
         ]
             .filter(part => !!part)
             .join('/');
@@ -54,17 +55,18 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         this.set('fileDownloadURL', downloadUrl);
 
         return preprint.get('provider')
-            .then(provider => {
+            .then((provider) => {
                 const providerId = provider.get('id');
                 const themeId = this.get('theme.id');
                 const isOSF = providerId === 'osf';
 
                 // If we're on the proper branded site, stay here.
-                if (themeId === providerId)
+                if (themeId === providerId) {
                     return Promise.all([
                         provider,
-                        preprint.get('node')
+                        preprint.get('node'),
                     ]);
+                }
 
                 window.location.replace(`${osfUrl}${isOSF ? '' : `preprints/${providerId}/`}${preprint.get('id')}/`);
                 return Promise.reject();
@@ -84,7 +86,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
                     provider,
                     node,
                     preprint.get('license'),
-                    loadAll(node, 'contributors', contributors, { filter: { bibliographic: true } })
+                    loadAll(node, 'contributors', contributors, { filter: { bibliographic: true } }),
                 ]);
             })
             .then(([provider, license]) => {
@@ -93,13 +95,12 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
                 const facebookAppId = provider.get('facebookAppId') || config.FB_APP_ID;
                 const mintDoi = extractDoiFromString(preprint.get('preprintDoiUrl'));
                 const peerDoi = preprint.get('doi');
-                const doi = peerDoi ? peerDoi : mintDoi;
+                const doi = peerDoi || mintDoi;
                 const image = this.get('theme.logoSharing');
                 const imageUrl = /^https?:\/\//.test(image.path) ? image.path : origin + image.path;
                 const dateCreated = new Date(preprint.get('dateCreated') || null);
                 const dateModified = new Date(preprint.get('dateModified') || dateCreated);
-                if (!preprint.get('datePublished'))
-                    preprint.set('datePublished', dateCreated);
+                if (!preprint.get('datePublished')) { preprint.set('datePublished', dateCreated); }
                 const providerName = provider.get('name');
                 const canonicalUrl = preprint.get('links.html');
 
@@ -118,20 +119,18 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
                     ['og:site_name', providerName],
                     ['og:type', 'article'],
                     ['article:published_time', dateCreated.toISOString()],
-                    ['article:modified_time', dateModified.toISOString()]
+                    ['article:modified_time', dateModified.toISOString()],
                 ];
 
                 // Highwire Press
-                var highwirePress = [
+                const highwirePress = [
                     ['citation_title', title],
                     ['citation_description', description],
                     ['citation_public_url', canonicalUrl],
                     ['citation_publication_date', `${dateCreated.getFullYear()}/${dateCreated.getMonth() + 1}/${dateCreated.getDate()}`],
                 ];
                 if (doi) {
-                    highwirePress.push(
-                        ['citation_doi', doi]
-                    );
+                    highwirePress.push(['citation_doi', doi]);
                 }
 
                 // TODO map Eprints fields
@@ -147,25 +146,21 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
                 const prism = [];
 
                 // Dublin Core
-                var dublinCore = [
+                const dublinCore = [
                     ['dc.title', title],
                     ['dc.abstract', description],
                     ['dc.identifier', canonicalUrl],
                 ];
                 if (mintDoi) {
-                    dublinCore.push(
-                        ['dc.identifier', 'doi:' + mintDoi]
-                    );
+                    dublinCore.push(['dc.identifier', `doi:${mintDoi}`]);
                 }
                 if (peerDoi) {
-                    dublinCore.push(
-                        ['dc.relation', 'doi:' + peerDoi]
-                    );
+                    dublinCore.push(['dc.relation', `doi:${peerDoi}`]);
                 }
 
                 const tags = [
                     ...preprint.get('subjects').map(subjectBlock => subjectBlock.map(subject => subject.text)),
-                    ...preprint.get('tags')
+                    ...preprint.get('tags'),
                 ];
 
                 for (const tag of tags) {
@@ -180,9 +175,9 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
                     let fullName = contributor.get('users.fullName');
 
                     // If the contributor is unregistered, use the unregistered_contributor field for first/last/middle names
-                    if(contributor.get('unregisteredContributor')) {
-                        let unregisteredName = contributor.get('unregisteredContributor').split(" ");
-                        givenName = unregisteredName[0];
+                    if (contributor.get('unregisteredContributor')) {
+                        const unregisteredName = contributor.get('unregisteredContributor').split(' ');
+                        [givenName] = unregisteredName;
                         familyName = unregisteredName.length > 1 ? unregisteredName.pop() : '';
                         fullName = contributor.get('unregisteredContributor');
                     }
@@ -190,7 +185,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
                     openGraph.push(
                         ['og:type', 'article:author'],
                         ['profile:first_name', givenName],
-                        ['profile:last_name', familyName]
+                        ['profile:last_name', familyName],
                     );
                     highwirePress.push(['citation_author', fullName]);
                     dublinCore.push(['dc.creator', fullName]);
@@ -199,7 +194,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
                 highwirePress.push(['citation_publisher', providerName]);
                 dublinCore.push(
                     ['dc.publisher', providerName],
-                    ['dc.license', license ? license.get('name') : 'No license']
+                    ['dc.license', license ? license.get('name') : 'No license'],
                 );
 
                 highwirePress.push(['citation_pdf_url', `${downloadUrl}?format=pdf`]);
@@ -207,7 +202,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
                 const openGraphTags = openGraph
                     .map(([property, content]) => ({
                         property,
-                        content
+                        content,
                     }));
 
                 const googleScholarTags = [
@@ -215,22 +210,22 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
                     eprints,
                     bePress,
                     prism,
-                    dublinCore
+                    dublinCore,
                 ]
                     .reduce((a, b) => a.concat(b), [])
                     .map(([name, content]) => ({
                         name,
-                        content
+                        content,
                     }));
 
                 const headTags = [
                     ...openGraphTags,
-                    ...googleScholarTags
+                    ...googleScholarTags,
                 ]
-                    .filter(({content}) => content) // Only show tags with content
+                    .filter(({ content }) => content) // Only show tags with content
                     .map(attrs => ({
                         type: 'meta',
-                        attrs
+                        attrs,
                     }));
 
                 this.set('headTags', headTags);
@@ -255,8 +250,8 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
     actions: {
         error(error) {
             // Handle API Errors
-            if (error && error.errors && Array.isArray(error.errors)) {
-                const {detail} = error.errors[0];
+            if (error && error.errors && isArray(error.errors)) {
+                const { detail } = error.errors[0];
                 const page = handlers.get(detail) || 'page-not-found';
 
                 return this.intermediateTransitionTo(page);
@@ -267,6 +262,6 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
             ev.initEvent('ZoteroItemUpdated', true, true);
             document.dispatchEvent(ev);
             return true; // Bubble the didTransition event
-        }
-    }
+        },
+    },
 });

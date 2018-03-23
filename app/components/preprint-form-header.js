@@ -21,7 +21,7 @@ import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-
  * }}
  * ```
  * @class preprint-form-header
- **/
+ * */
 export default CpPanelToggleComponent.extend({
     tagName: 'header',
     // Variables to pass in
@@ -42,5 +42,5 @@ export default CpPanelToggleComponent.extend({
         }
     }),
     // CSS controls icon color and display. If neither valid nor invalid state applies, don't show icon.
-    classNameBindings: ['enabled::disabled', 'valid:valid', 'invalid:invalid', 'isValidationActive::not-validated']
+    classNameBindings: ['enabled::disabled', 'valid:valid', 'invalid:invalid', 'isValidationActive::not-validated'],
 });

@@ -7,8 +7,9 @@ import Mixin from '@ember/object/mixin';
  */
 
 /**
- * The submit controller/template is used to handle both Add and Edit modes for a preprint.  Contains
- * the setupController items necessary for both Add and Edit Modes.
+ * The submit controller/template is used to handle both Add and
+ * Edit modes for a preprint.  Contains the setupController items
+ * necessary for both Add and Edit Modes.
  *
  * @class SetupSubmitControllerMixin
  */
@@ -18,18 +19,16 @@ export default Mixin.create({
     panelActions: service('panelActions'),
 
     setupSubmitController(controller, model) {
-        //setupController method that will be run for both Add and Edit modes for submit form.
-        if (controller.get('model.isLoaded'))
-            controller.clearFields();
+        // setupController method that will be run for both Add and Edit modes for submit form.
+        if (controller.get('model.isLoaded')) { controller.clearFields(); }
         controller.set('editMode', this.get('editMode'));
 
         this.get('store').findAll('preprint-provider')
             .then((providers) => {
                 controller.set('providers', providers);
-            }
-        );
-        this.get('theme.provider').then(provider => {
-            provider.queryHasMany('licensesAcceptable', {'page[size]': 20}).then(licenses => {
+            });
+        this.get('theme.provider').then((provider) => {
+            provider.queryHasMany('licensesAcceptable', { 'page[size]': 20 }).then((licenses) => {
                 controller.set('availableLicenses', licenses);
             });
         });
@@ -43,7 +42,6 @@ export default Mixin.create({
         if (this.get('editMode')) {
             this.loadEditModeDefaults(controller, model, this.get('node'));
         }
-
     },
     // This function helps prepopulate all the preprint fields in Edit mode.
     loadEditModeDefaults(controller, model, node) {
@@ -58,5 +56,5 @@ export default Mixin.create({
         });
         this.get('panelActions').close('Upload');
         this.get('panelActions').open('Submit');
-    }
+    },
 });

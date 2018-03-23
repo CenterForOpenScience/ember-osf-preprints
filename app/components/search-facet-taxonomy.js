@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { computed, set } from '@ember/object';
+import { computed, get, set } from '@ember/object';
 import Analytics from 'ember-osf/mixins/analytics';
 
 const pageSize = 150;
@@ -32,9 +32,8 @@ export default Component.extend(Analytics, {
             .then(provider => provider
                 .queryHasMany('taxonomies', {
                     filter: { parents },
-                    page: { size: pageSize }
-                })
-            )
+                    page: { size: pageSize },
+                }))
             .then(results => results
                 .map(result => ({
                     id: result.id,
@@ -52,17 +51,16 @@ export default Component.extend(Analytics, {
                         return -1;
                     }
                     return 0;
-                })
-            );
+                }));
     },
     // Creates a list of all of the subject paths that need to be selected
     expandedList: computed('activeFilters.subjects', function() {
         const filters = this.get('activeFilters.subjects');
-        let expandList = [];
-        filters.forEach(filter => {
+        const expandList = [];
+        filters.forEach((filter) => {
             let filterStr = '';
-            filter.split('|').forEach(item => {
-                if (item !== '') { filterStr += '|' + item; }
+            filter.split('|').forEach((item) => {
+                if (item !== '') { filterStr += `|${item}`; }
                 if (!expandList.includes(filterStr) && filterStr) {
                     expandList.push(filterStr);
                 }
@@ -73,22 +71,22 @@ export default Component.extend(Analytics, {
     init() {
         this._super(...arguments);
         const component = this;
-        let items = [];
+        const items = [];
 
         this._getTaxonomies()
-            .then(results => {
+            .then((results) => {
                 this.set('topLevelItem', results);
-                results.forEach(result => {
-                    component.get('expandedList').forEach(element => {
-                        if (element.includes(result.path + '|')) {
+                results.forEach((result) => {
+                    component.get('expandedList').forEach((element) => {
+                        if (element.includes(`${result.path}|`)) {
                             if (!items.includes(result)) {
                                 items.push(result);
                             }
                         }
-                    })
+                    });
                 });
                 this._expandMany(items);
-                //Only auto-expand if no subjects are selected.
+                // Only auto-expand if no subjects are selected.
                 if (items.length === 0) {
                     this._expandDefault();
                 }
@@ -100,19 +98,19 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'tree',
                     action: item.showChildren ? 'contract' : 'expand',
-                    label: `Discover - ${item.text}`
+                    label: `Discover - ${item.text}`,
                 });
             this._expand(item);
-        }
+        },
     },
     _expandDefault() {
-        let topLevelItem = this.get('topLevelItem');
+        const topLevelItem = this.get('topLevelItem');
         if (topLevelItem.length <= 3) {
-            topLevelItem.forEach(item => {
+            topLevelItem.forEach((item) => {
                 this._expand(item).then(() => {
                     if (item.children && item.childCount <= 3) {
-                        item.children.forEach(item => {
-                           this._expand(item);
+                        item.children.forEach((item) => {
+                            this._expand(item);
                         });
                     }
                 });
@@ -124,7 +122,7 @@ export default Component.extend(Analytics, {
             set(item, 'showChildren', false);
             return;
         }
-        let children = item.children;
+        const children = item.children;
 
         if (children && children.length > 0) {
             set(item, 'showChildren', true);
@@ -143,10 +141,10 @@ export default Component.extend(Analytics, {
         const component = this;
 
         if (items.length) {
-            this._expand(items.shift()).then(results => {
-                results.forEach(result => {
-                    component.get('expandedList').forEach(element => {
-                        if (element.includes(result.path + '|')) {
+            this._expand(items.shift()).then((results) => {
+                results.forEach((result) => {
+                    component.get('expandedList').forEach((element) => {
+                        if (element.includes(`${result.path}|`)) {
                             if (!items.includes(result)) {
                                 items.push(result);
                             }
@@ -156,5 +154,5 @@ export default Component.extend(Analytics, {
                 component._expandMany(items);
             });
         }
-    }
+    },
 });

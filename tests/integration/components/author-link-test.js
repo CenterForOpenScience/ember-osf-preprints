@@ -5,16 +5,16 @@ import FactoryGuy, { manualSetup } from 'ember-data-factory-guy';
 
 moduleForComponent('author-link', 'Integration | Component | author link', {
     integration: true,
-    beforeEach: function() {
+    beforeEach() {
         manualSetup(this.container);
-    }
+    },
 });
 
 test('renders non-links', function(assert) {
-    let contributorModel = FactoryGuy.make('contributor');
+    const contributorModel = FactoryGuy.make('contributor');
     // Problem here is that author link expects a share search-result contributor,
     // not a store instance of a contributor and its user(s).
-    let contributor = {users: {identifiers: []}};
+    let contributor = { users: { identifiers: [] } };
     contributor.users.name = contributorModel.get('users.fullName');
     contributor = merge(contributor, contributorModel.serialize().data.attributes);
     this.set('contributor', contributor);
@@ -24,8 +24,8 @@ test('renders non-links', function(assert) {
 });
 
 test('renders links', function(assert) {
-    let contributorModel = FactoryGuy.make('contributor');
-    let contributor = {users: {identifiers: []}};
+    const contributorModel = FactoryGuy.make('contributor');
+    let contributor = { users: { identifiers: [] } };
     contributor.users.name = contributorModel.get('users.fullName');
     contributor = merge(contributor, contributorModel.serialize().data.attributes);
     contributor.users.identifiers.push('https://staging.osf.io/cool');

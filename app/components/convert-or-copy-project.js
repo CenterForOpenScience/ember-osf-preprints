@@ -39,9 +39,8 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Make a New Component Selection'
+                    label: 'Submit - Make a New Component Selection',
                 });
-
         },
         chooseConvertExisting() {
             // Decision to have the existing project contain the preprint
@@ -55,7 +54,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Use the Current Project Selection'
+                    label: 'Submit - Use the Current Project Selection',
                 });
         },
         confirmConvert() {
@@ -67,8 +66,8 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Confirm Continue with the Current Project'
+                    label: 'Submit - Confirm Continue with the Current Project',
                 });
-        }
-    }
+        },
+    },
 });

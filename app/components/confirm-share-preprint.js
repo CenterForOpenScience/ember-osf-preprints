@@ -28,9 +28,9 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Cancel Share Preprint'
+                    label: 'Submit - Cancel Share Preprint',
                 });
             this.set('isOpen', false);
-        }
-    }
+        },
+    },
 });

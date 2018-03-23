@@ -4,6 +4,6 @@ export default function() {
         this.hasClass('translate'),
         this.toValue(value => value === 'start'),
         this.use('toRight'),
-        this.reverse('toLeft')
+        this.reverse('toLeft'),
     );
 }

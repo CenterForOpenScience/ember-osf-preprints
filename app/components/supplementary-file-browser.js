@@ -47,9 +47,9 @@ export default Component.extend(Analytics, {
         this.set('files', []);
         this.set('selectedFile', null);
         this.get('node').get('files')
-            .then(providers => {
+            .then((providers) => {
                 this.set('provider', providers.findBy('name', 'osfstorage'));
-                return loadAll(this.get('provider'), 'files', this.get('files'), {'page[size]': 50});
+                return loadAll(this.get('provider'), 'files', this.get('files'), { 'page[size]': 50 });
             })
             .then(() => this.get('preprint').get('primaryFile'))
             .then((pf) => {
@@ -66,18 +66,18 @@ export default Component.extend(Analytics, {
             file_views: {
                 preprint: {
                     type: 'preprint',
-                    id: this.get('preprint.id')
+                    id: this.get('preprint.id'),
                 },
                 file: {
                     id: this.get('selectedFile.id'),
                     primaryFile: this.get('preprint.primaryFile.id') === this.get('selectedFile.id'),
-                    version: this.get('selectedFile.currentVersion')
-                }
-            }
+                    version: this.get('selectedFile.currentVersion'),
+                },
+            },
         };
         this.get('metrics').invoke('trackSpecificCollection', 'Keen', {
             collection: 'preprint-file-views',
-            eventData: eventData,
+            eventData,
             node: this.get('node'),
         });
     }),
@@ -95,7 +95,7 @@ export default Component.extend(Analytics, {
             return;
         }
         if (index >= this.get('endIndex') || index < this.get('startIndex')) {
-            let max = this.get('files').length - 6;
+            const max = this.get('files').length - 6;
             if (index > max) {
                 this.set('startIndex', max);
                 this.set('endIndex', this.get('files').length);
@@ -112,7 +112,6 @@ export default Component.extend(Analytics, {
     init() {
         this._super(...arguments);
         this.__files();
-
     },
     actions: {
         next(direction) {
@@ -120,7 +119,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
-                    label: 'Content - Next'
+                    label: 'Content - Next',
                 });
 
             if (this.get('endIndex') > this.get('files.length')) return;
@@ -134,9 +133,9 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
-                    label: 'Content - Prev'
+                    label: 'Content - Prev',
                 });
-            let start = this.get('startIndex');
+            const start = this.get('startIndex');
             if (start <= 0) return;
 
             this.set('scrollAnim', `to${direction}`);
@@ -153,7 +152,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'file browser',
                     action: 'select',
-                    label: 'Content - File'
+                    label: 'Content - File',
                 });
 
             this.set('selectedFile', file);

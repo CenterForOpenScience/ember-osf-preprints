@@ -3,7 +3,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('additional-provider-list', 'Integration | Component | additional provider list', {
-    integration: true
+    integration: true,
 });
 
 test('additionalProviderList renders', function(assert) {
@@ -15,5 +15,4 @@ test('additionalProviderList renders', function(assert) {
 
     assert.ok(this.$('.subject-item').length);
     assert.ok(this.$('.subject-item a').length);
-
 });

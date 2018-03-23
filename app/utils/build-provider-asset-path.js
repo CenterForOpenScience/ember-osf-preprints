@@ -1,7 +1,7 @@
 import pathJoin from '../utils/path-join';
 
 export default function buildProviderAssetPath(config, providerId, assetName, isDomain) {
-    if (config.providerAssetsURL != 'local') {
+    if (config.providerAssetsURL !== 'local') {
         return pathJoin(config.providerAssetsURL, providerId, assetName);
     }
     if (config.ASSET_SUFFIX) {

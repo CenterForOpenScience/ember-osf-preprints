@@ -18,5 +18,5 @@ import Analytics from 'ember-osf/mixins/analytics';
  * @class add-preprint-box
  */
 export default Component.extend(Analytics, {
-    theme: service()
+    theme: inject(),
 });

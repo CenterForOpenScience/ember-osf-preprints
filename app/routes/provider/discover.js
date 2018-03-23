@@ -5,9 +5,9 @@ route.reopen({
     renderTemplate(controller, model) {
         this.render('discover', {
             controller,
-            model
+            model,
         });
-    }
+    },
 });
 
 export default route;

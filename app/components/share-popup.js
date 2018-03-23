@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 
 export default Component.extend({
-    didInsertElement: function () {
+    didInsertElement () {
         this.$('#share-popover').popover();
     },
 });

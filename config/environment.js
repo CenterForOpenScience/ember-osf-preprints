@@ -6,17 +6,17 @@ module.exports = function(environment) {
     const ENV = {
         modulePrefix: 'preprint-service',
         appName: 'Preprints',
-        environment: environment,
+        environment,
         rootURL: '/',
         locationType: 'auto',
-        authorizationType: authorizationType,
+        authorizationType,
         sentryDSN: 'http://test@localhost/80' || process.env.SENTRY_DSN,
         sentryOptions: {
             release: process.env.GIT_COMMIT,
         },
         'ember-simple-auth': {
             authorizer: `authorizer:osf-${authorizationType}`,
-            authenticator: `authenticator:osf-${authorizationType}`
+            authenticator: `authenticator:osf-${authorizationType}`,
         },
         // Set to 'local' to use local assets at providerAssetsPath.
         providerAssetsURL: process.env.PROVIDER_ASSETS_URL || 'https://staging-cdn.osf.io/preprints-assets/',
@@ -26,7 +26,7 @@ module.exports = function(environment) {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
                 // e.g. 'with-controller': true
-            }
+            },
         },
         APP: {
             // Here you can pass flags/options to your application instance
@@ -34,24 +34,24 @@ module.exports = function(environment) {
         },
         SHARE: {
             baseUrl: process.env.SHARE_BASE_URL || 'https://staging-share.osf.io/',
-            searchUrl: process.env.SHARE_SEARCH_URL || 'https://staging-share.osf.io/api/v2/search/creativeworks/_search'
+            searchUrl: process.env.SHARE_SEARCH_URL || 'https://staging-share.osf.io/api/v2/search/creativeworks/_search',
         },
         moment: {
-            outputFormat: 'YYYY-MM-DD hh:mm a'
+            outputFormat: 'YYYY-MM-DD hh:mm a',
         },
         PREPRINTS: {
             defaultProvider: 'osf',
         },
         i18n: {
-            defaultLocale: 'en'
+            defaultLocale: 'en',
         },
         metricsAdapters: [
             {
                 name: 'GoogleAnalytics',
                 environments: [process.env.KEEN_ENVIRONMENT] || ['production'],
                 config: {
-                    id: process.env.GOOGLE_ANALYTICS_ID
-                }
+                    id: process.env.GOOGLE_ANALYTICS_ID,
+                },
             },
             {
                 name: 'Keen',
@@ -59,13 +59,13 @@ module.exports = function(environment) {
                 config: {
                     private: {
                         projectId: process.env.PREPRINTS_PRIVATE_PROJECT_ID,
-                        writeKey: process.env.PREPRINTS_PRIVATE_WRITE_KEY
+                        writeKey: process.env.PREPRINTS_PRIVATE_WRITE_KEY,
                     },
                     public: {
                         projectId: process.env.PREPRINTS_PUBLIC_PROJECT_ID,
-                        writeKey: process.env.PREPRINTS_PUBLIC_WRITE_KEY
-                    }
-                }
+                        writeKey: process.env.PREPRINTS_PUBLIC_WRITE_KEY,
+                    },
+                },
             },
 
         ],
@@ -76,7 +76,7 @@ module.exports = function(environment) {
             'Cogprints',
             'PeerJ',
             'Research Papers in Economics',
-            'Preprints.org'
+            'Preprints.org',
         ],
     };
 
@@ -107,7 +107,7 @@ module.exports = function(environment) {
         ENV.OSF = {};
         ENV.OSF.shareSearchUrl = '/nowhere';
 
-        ENV.metricsAdapters[0].config.cookieDomain = 'none'
+        ENV.metricsAdapters[0].config.cookieDomain = 'none';
     }
 
     if (environment === 'production') {
