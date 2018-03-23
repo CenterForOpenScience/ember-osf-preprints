@@ -2921,10 +2921,6 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
-dropzone@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-4.3.0.tgz#48b0b8f2ad092872e4b535b672a7c3f1a1d67c91"
-
 dropzone@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.3.0.tgz#41c7a8a7cc6d237e3b28664e7a0719660d067edc"
@@ -6223,7 +6219,7 @@ linkify-it@^2.0.0:
   dependencies:
     uc.micro "^1.0.1"
 
-liquid-fire@^0.27.2:
+liquid-fire@^0.27.3:
   version "0.27.3"
   resolved "https://registry.yarnpkg.com/liquid-fire/-/liquid-fire-0.27.3.tgz#483e2d4b9492c5ee6dd2c9fda5fe33a85cf0305b"
   dependencies:

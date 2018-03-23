@@ -1,6 +1,5 @@
-import { get } from '@ember/object';
 import { inject } from '@ember/service';
-import { observer } from '@ember/object';
+import { get, computed, observer } from '@ember/object';
 import { on } from '@ember/object/evented';
 import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel/component';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -42,6 +41,13 @@ export default CpPanelComponent.extend(Analytics, {
      */
     hasOpened: false,
 
+    trackOpenState: computed('isOpen', function() {
+        let isOpen = this.get('isOpen');
+        if (isOpen) {
+            this.set('hasOpened', true);
+        }
+    }),
+/*
     trackOpenState: observer('isOpen', function() {
         // Whenever panel is opened (via any means), update the hasOpened state to reflect this fact
         let isOpen = this.get('isOpen');
@@ -49,6 +55,7 @@ export default CpPanelComponent.extend(Analytics, {
             this.set('hasOpened', true);
         }
     }),
+*/
     // WWHAT THE HELL IS ON AND WHY IS IT HERE
     // FIXBEFOREMERGING
     // FIXBEFOREMERGING
@@ -79,7 +86,7 @@ export default CpPanelComponent.extend(Analytics, {
      * because liquid-if will cause elements to be removed from DOM. This is can cause some
      * information to be lost (e.g. dropzone state).
      */
-    slideAnimation: observer('isOpen', function() {
+    slideAnimation: computed('isOpen', function() {
         if (this.get('animate')) {
             // Allow liquid-fire to animate
             return;
@@ -89,7 +96,7 @@ export default CpPanelComponent.extend(Analytics, {
             $body.height('auto');
             $body.height($body.height());
             $body.one('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', () => {
-                $body.addClass('no-transition');
+                $body.addClass('no-transition cp-is-open');
                 $body.height('');
                 $body[0].offsetHeight; // jshint ignore: line
                 $body.removeClass('no-transition');
@@ -102,6 +109,31 @@ export default CpPanelComponent.extend(Analytics, {
             $body.height('');
         }
     }),
+    /*
+    slideAnimation: observer('isOpen', function() {
+        if (this.get('animate')) {
+            // Allow liquid-fire to animate
+            return;
+        }
+        const $body = this.$('.cp-Panel-body');
+        if (this.get('isOpen')) {
+            $body.height('auto');
+            $body.height($body.height());
+            $body.one('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', () => {
+                $body.addClass('no-transition cp-is-open');
+                $body.height('');
+                $body[0].offsetHeight; // jshint ignore: line
+                $body.removeClass('no-transition');
+            });
+        } else {
+            $body.addClass('no-transition');
+            $body.height($body.height());
+            $body[0].offsetHeight; // jshint ignore: line
+            $body.removeClass('no-transition');
+            $body.height('');
+        }
+    }),
+    */
     // Called when panel is toggled
     handleToggle() {
         // Prevent closing all views

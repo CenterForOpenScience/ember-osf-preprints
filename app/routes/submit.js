@@ -16,6 +16,7 @@ import ConfirmationMixin from 'ember-onbeforeunload/mixins/confirmation';
  * @class Submit Route Handler
  */
 export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticatedRouteMixin, SetupSubmitControllerMixin, {
+    store: inject(),
     i18n: inject(),
     currentUser: inject('currentUser'),
     panelActions: inject('panelActions'),
@@ -25,7 +26,7 @@ export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticate
     model() {
         // Store the empty preprint to be created on the model hook for page. Node will be fetched
         //  internally during submission process.
-        return this.store.createRecord('preprint', {
+        return this.get('store').createRecord('preprint', {
             subjects: []
         });
     },

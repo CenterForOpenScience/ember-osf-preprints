@@ -79,7 +79,7 @@
     "ember-truth-helpers": "^1.2.0",
     "eslint": "^4.4.1",
     "eslint-plugin-ember": "^5.0.0",
-    "liquid-fire": "^0.27.2",
+    "liquid-fire": "^0.27.3",
     "loader.js": "^4.2.3",
     "postcss": "^5.1.0",
     "unicode-byte-truncate": "^1.0.0"
@@ -99,7 +99,6 @@
     "bootstrap-daterangepicker": "^2.1.23",
     "bootstrap-sass": "^3.3.7",
     "bower": "^1.8.2",
-    "dropzone": "^4.3.0",
     "ember-font-awesome": "^3.0.0",
     "font-awesome": "^4.7.0",
     "hint.css": "^2.5.0",

@@ -26,6 +26,7 @@ export default CpPanelToggleComponent.extend({
     // Variables to pass in
     enabled: true,
     showValidationIndicator: true,
+    isOpen: false,
     valid: null,
     isValidationActive: false,
     providerAssetsURL: config.providerAssetsURL,

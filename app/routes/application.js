@@ -26,7 +26,8 @@ export default Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
                     'preprint-provider',
                     {
                         filter: {
-                            domain: `${window.location.origin}/`,
+                            /*domain: `${window.location.origin}/`,*/
+                            domain: 'http://local.engrxiv:4201',
                         }
                     }
                 ).then(providers => {

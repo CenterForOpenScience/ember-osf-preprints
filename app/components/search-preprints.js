@@ -24,6 +24,7 @@ export default Component.extend({
     theme: inject(),
     actions: {
         search() {
+            debugger;
             let query = $.trim(this.$('#searchBox').val());
             this.sendAction('search', query);
             get(this, 'metrics').trackEvent({

@@ -1,6 +1,7 @@
 {
   "name": "preprint-service",
   "dependencies": {
+    "dropzone": "4.3.0",
     "sanitize.js": "^1.0.0"
   }
 }

@@ -142,6 +142,7 @@ function subjectIdMap(subjectArray) {
  */
 export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
     i18n: inject(),
+    store: inject(),
     theme: inject(),
     fileManager: inject(),
     toast: inject('toast'),
@@ -588,6 +589,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                         label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Authors Next Button`
                     });
             }
+            this.get('panelActions').close(this.get(`_names.${this.get('_names').indexOf(currentPanelName)}`));
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
             this.send('changesSaved', currentPanelName);
         },
