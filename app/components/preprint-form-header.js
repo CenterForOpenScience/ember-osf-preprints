@@ -1,4 +1,5 @@
 import { computed } from '@ember/object';
+import Component from '@ember/component';
 import config from 'ember-get-config';
 import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-toggle/component';
 /**
@@ -21,12 +22,11 @@ import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-
  * ```
  * @class preprint-form-header
  **/
-export default CpPanelToggleComponent.extend({
+export default Component.extend({
     tagName: 'header',
     // Variables to pass in
     enabled: true,
     showValidationIndicator: true,
-    isOpen: false,
     valid: null,
     isValidationActive: false,
     providerAssetsURL: config.providerAssetsURL,

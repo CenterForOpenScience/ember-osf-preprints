@@ -204,7 +204,7 @@ export default Component.extend(Analytics, {
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`
                 });
 
-            this.sendAction('saveSubjects', this.get('hasChanged'));
+            this.sendAction('saveSubjects', this.get('currentSubjects'), this.get('hasChanged'));
         }
     }
 });

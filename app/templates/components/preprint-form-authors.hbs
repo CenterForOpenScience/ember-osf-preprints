@@ -126,7 +126,7 @@
                                             <a href={{contrib.users.links.html}} target="_blank"> {{contrib.users.fullName}} </a>
                                         {{/if}}
                                         <span class="pull-right remove-contributor-padding-xs">
-                                            {{#if (and (permissionToRemoveContributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors authorModification))}}
+                                            {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin node) (conditions-for-contrib-removal contrib contributors authorModification))}}
                                                 <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
                                                     <i class="fa fa-times"> </i>
                                                 </button>

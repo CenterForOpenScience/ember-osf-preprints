@@ -42,36 +42,12 @@ export default CpPanelComponent.extend(Analytics, {
     hasOpened: false,
 
     trackOpenState: computed('isOpen', function() {
-        let isOpen = this.get('isOpen');
-        if (isOpen) {
-            this.set('hasOpened', true);
-        }
-    }),
-/*
-    trackOpenState: observer('isOpen', function() {
         // Whenever panel is opened (via any means), update the hasOpened state to reflect this fact
         let isOpen = this.get('isOpen');
         if (isOpen) {
             this.set('hasOpened', true);
         }
     }),
-*/
-    // WWHAT THE HELL IS ON AND WHY IS IT HERE
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
-    // FIXBEFOREMERGING
 
     // see if this can be done in the init hook instead
     // this might be better as a computed property, maybe? (computed alias)
@@ -109,31 +85,6 @@ export default CpPanelComponent.extend(Analytics, {
             $body.height('');
         }
     }),
-    /*
-    slideAnimation: observer('isOpen', function() {
-        if (this.get('animate')) {
-            // Allow liquid-fire to animate
-            return;
-        }
-        const $body = this.$('.cp-Panel-body');
-        if (this.get('isOpen')) {
-            $body.height('auto');
-            $body.height($body.height());
-            $body.one('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', () => {
-                $body.addClass('no-transition cp-is-open');
-                $body.height('');
-                $body[0].offsetHeight; // jshint ignore: line
-                $body.removeClass('no-transition');
-            });
-        } else {
-            $body.addClass('no-transition');
-            $body.height($body.height());
-            $body[0].offsetHeight; // jshint ignore: line
-            $body.removeClass('no-transition');
-            $body.height('');
-        }
-    }),
-    */
     // Called when panel is toggled
     handleToggle() {
         // Prevent closing all views

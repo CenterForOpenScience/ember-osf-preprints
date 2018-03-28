@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { get } from '@ember/object';
 import { inject } from '@ember/service';
-import { schedule } from '@ember/runloop';
+import { later } from '@ember/runloop';
 import { defer } from 'rsvp';
 import $ from 'jquery';
 import {State} from '../controllers/submit';
@@ -260,7 +260,7 @@ export default Component.extend(Analytics, {
             this.set('callback', defer());
             // Delays so user can see that file has been preuploaded before
             // advancing to next panel
-            schedule.later(() => {
+            later(() => {
                 this.attrs.nextUploadSection('uploadNewFile', 'organize');
             }, 1500);
             return this.get('callback.promise');
