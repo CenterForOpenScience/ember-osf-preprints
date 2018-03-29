@@ -429,7 +429,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     // Pending subjects
     subjectsList: computed('model.subjects.@each', function() {
-        debugger;
         return this.get('model.subjects') ? $.extend(true, [], this.get('model.subjects')) : A();
     }),
 
@@ -998,6 +997,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
           Discipline section
         */
 
+        updateSubjects(subjectsList) {
+            this.set('subjectsList', $.extend(true, [], subjectsList));
+        },
+
         discardSubjects() {
             // Discards changes to subjects. (No requests sent, front-end only.)
             get(this, 'metrics')
@@ -1034,7 +1037,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     model.set('subjects', $.extend(true, [], this.get('model.subjects')));
                     this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
                 });
-            debugger;
         },
         /**
          * findContributors method.  Queries APIv2 users endpoint on any of a set of name fields.  Fetches specified page of results.

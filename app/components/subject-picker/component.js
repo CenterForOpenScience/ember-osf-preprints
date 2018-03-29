@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 import EmberObject from '@ember/object';
+import { sort, notEmpty } from '@ember/object/computed';
 import { computed } from '@ember/object';
 import { A } from '@ember/array';
 import { get } from '@ember/object';
@@ -30,7 +31,7 @@ const Column = EmberObject.extend({
 
         return subjects.filter(item => item.get('text').toLowerCase().includes(filterTextLowerCase));
     }),
-    subjectsSorted: computed.sort('subjectsFiltered', 'sortDefinition')
+    subjectsSorted: sort('subjectsFiltered', 'sortDefinition')
 });
 
 /**
@@ -93,7 +94,7 @@ export default Component.extend(Analytics, {
         }
     },
 
-    isValid: computed.notEmpty('currentSubjects'),
+    isValid: notEmpty('currentSubjects'),
 
     resetColumnSelections() {
         const columns = this.get('columns');
@@ -182,6 +183,7 @@ export default Component.extend(Analytics, {
 
             // TODO: Fires a network request every time clicking here, instead of only when needed?
             this.querySubjects(selected.id, nextTier);
+            //this.updateSubjects(this.get('currentSubjects'));
         },
         discard() {
             get(this, 'metrics')
@@ -204,7 +206,7 @@ export default Component.extend(Analytics, {
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`
                 });
 
-            this.sendAction('saveSubjects', this.get('currentSubjects'), this.get('hasChanged'));
+            this.saveSubjects(this.get('hasChanged'));
         }
     }
 });
