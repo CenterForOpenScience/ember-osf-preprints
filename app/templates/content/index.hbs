@@ -75,10 +75,13 @@
                         <div class=" p-v-xs pull-right">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}} </div>
                     </div>
                     <div class="p-t-md pull-right">
-                        <a class="m-r-xs text-smaller" href={{twitterHref}} onclick={{action 'shareLink' twitterHref 'Twitter' 'click' 'Content - tweet' model.id}}>{{fa-icon 'twitter-square' size=2 }}</a>
-                        <a class="m-r-xs text-smaller" href={{facebookHref}} onclick={{action 'shareLink' facebookHref 'Facebook' 'click' 'Content - share' model.id}}>{{fa-icon 'facebook-square' size=2 }}</a>
-                        <a class="m-r-xs text-smaller" href={{linkedinHref}} onclick={{action 'shareLink' linkedinHref 'LinkedIn' 'click' 'Content - share' model.id}}>{{fa-icon 'linkedin-square' size=2 }}</a>
-                        <a class="text-smaller" href={{emailHref}} onclick={{action 'shareLink' emailHref 'link' 'click' 'Content - email' model.id}}>{{fa-icon 'envelope' size=2 }}</a>
+                        {{sharing-icons
+                            title=title
+                            description=fullDescription
+                            hyperlink=hyperlink
+                            facebookAppId=facebookAppId
+                            metricsExtra=metricsExtra
+                        }}
                     </div>
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>

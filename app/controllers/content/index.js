@@ -4,7 +4,6 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
-import trunc from 'npm:unicode-byte-truncate'
 
 /**
  * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
@@ -16,32 +15,6 @@ import trunc from 'npm:unicode-byte-truncate'
  * @param queryParams.key[1] {int}
  * @return {string}
  */
-function queryStringify(queryParams) {
-    const query = [];
-
-    // TODO set up ember to transpile Object.entries
-    for (const param in queryParams) {
-        let value = queryParams[param];
-        let maxLength = null;
-
-        if (Array.isArray(value)) {
-            maxLength = value[1];
-            value = value[0];
-        }
-
-        if (!value)
-            continue;
-
-        value = encodeURIComponent(value);
-
-        if (maxLength)
-            value = value.slice(0, maxLength);
-
-        query.push(`${param}=${value}`);
-    }
-
-    return query.join('&');
-}
 
 const DATE_LABEL = {
     created: 'content.date_label.created_on',
@@ -69,7 +42,21 @@ export default Ember.Controller.extend(Analytics, {
     queryParams: {
         chosenFile: 'file'
     },
-
+    metricsExtra: Ember.computed('model', function() {
+        return this.get('model.id');
+    }),
+    title: Ember.computed('model', function() {
+        return this.get('model.title');
+    }),
+    fullDescription: Ember.computed('model', function() {
+        return this.get('model.description');
+    }),
+    hyperlink: Ember.computed('model', function() {
+        return window.location.href;
+    }),
+    facebookAppId: Ember.computed('model', function() {
+        return this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
+    }),
     dateLabel: Ember.computed('model.provider.reviewsWorkflow', function() {
         return this.get('model.provider.reviewsWorkflow') === PRE_MODERATION ?
             DATE_LABEL['submitted'] :
@@ -116,48 +103,6 @@ export default Ember.Controller.extend(Analytics, {
         );
     }),
 
-    twitterHref: Ember.computed('model', function() {
-        const queryParams = {
-            url: window.location.href,
-            text: this.get('model.title'),
-            via: 'OSFramework'
-        };
-        return `https://twitter.com/intent/tweet?${queryStringify(queryParams)}`;
-    }),
-    /* TODO: Update this with new Facebook Share Dialog, but an App ID is required
-     * https://developers.facebook.com/docs/sharing/reference/share-dialog
-     */
-    facebookHref: Ember.computed('model', function() {
-        const facebookAppId = this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
-        const queryParams = {
-            app_id: facebookAppId,
-            display: 'popup',
-            href: window.location.href,
-            redirect_uri: window.location.href
-        };
-
-        return `https://www.facebook.com/dialog/share?${queryStringify(queryParams)}`;
-    }),
-    // https://developer.linkedin.com/docs/share-on-linkedin
-    linkedinHref: Ember.computed('model', function() {
-        const queryParams = {
-            url: [window.location.href, 1024],          // required
-            mini: ['true', 4],                          // required
-            title: trunc(this.get('model.title'), 200),      // optional
-            summary: trunc(this.get('model.description'), 256), // optional
-            source: ['Open Science Framework', 200]     // optional
-        };
-
-        return `https://www.linkedin.com/shareArticle?${queryStringify(queryParams)}`;
-    }),
-    emailHref: Ember.computed('model', function() {
-        const queryParams = {
-            subject: this.get('model.title'),
-            body: window.location.href
-        };
-
-        return `mailto:?${queryStringify(queryParams)}`;
-    }),
     // The currently selected file (defaults to primary)
     activeFile: null,
     chosenFile: null,
