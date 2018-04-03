@@ -129,7 +129,6 @@ const ACTION = {
 
 function subjectIdMap(subjectArray) {
     // Maps array of arrays of disciplines into array of arrays of discipline ids.
-    debugger;
     return subjectArray.map(subjectBlock => subjectBlock.map(subject => subject.id));
 }
 
@@ -1026,16 +1025,18 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 return sendNext();
             }
 
-            let subjectArray = A();
+            let subjectsArray = this.get('subjectsList');
+            
             currentSubjects.forEach(function(subjects) {
                 let tempSubjectArr = A();
                 subjects.forEach(function(subject) {
-                    tempSubjectArr.pushObject({'text': subject.get('text'), 'id': subject.id});
+                    tempSubjectArr.push({'text': subject.get('text'), 'id': subject.id});
                 });
-                subjectArray.pushObject(tempSubjectArr);
+                subjectsArray.push(tempSubjectArr);
             });
-            debugger;
-            this.get('subjectsList').pushObject(subjectArray);
+
+            this.set('subjectsList', subjectsArray);
+
             const model = this.get('model');
 
             model.set('subjects', subjectIdMap(this.get('subjectsList')));

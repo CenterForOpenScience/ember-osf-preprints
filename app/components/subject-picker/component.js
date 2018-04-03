@@ -183,7 +183,6 @@ export default Component.extend(Analytics, {
 
             // TODO: Fires a network request every time clicking here, instead of only when needed?
             this.querySubjects(selected.id, nextTier);
-//            this.updateSubjects(this.get('currentSubjects'));
         },
         discard() {
             get(this, 'metrics')
