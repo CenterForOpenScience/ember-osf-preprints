@@ -839,6 +839,12 @@ hr {
         font-weight: normal;
         float: right;
     }
+    textarea {
+        height: 258px;
+    }
+    .emberTagInput {
+        height: 100px;
+    }
 }
 
 .right-arrow {

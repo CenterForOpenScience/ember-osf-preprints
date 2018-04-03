@@ -183,7 +183,7 @@ export default Component.extend(Analytics, {
 
             // TODO: Fires a network request every time clicking here, instead of only when needed?
             this.querySubjects(selected.id, nextTier);
-            //this.updateSubjects(this.get('currentSubjects'));
+//            this.updateSubjects(this.get('currentSubjects'));
         },
         discard() {
             get(this, 'metrics')
@@ -206,7 +206,7 @@ export default Component.extend(Analytics, {
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`
                 });
 
-            this.saveSubjects(this.get('hasChanged'));
+            this.saveSubjects(this.get('currentSubjects'), this.get('hasChanged'));
         }
     }
 });

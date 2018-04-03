@@ -129,6 +129,7 @@ const ACTION = {
 
 function subjectIdMap(subjectArray) {
     // Maps array of arrays of disciplines into array of arrays of discipline ids.
+    debugger;
     return subjectArray.map(subjectBlock => subjectBlock.map(subject => subject.id));
 }
 
@@ -190,6 +191,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     abandonedPreprint: null, // Abandoned(draft) preprint on the current node
     editMode: false, // Edit mode is false by default.
     shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
+    currentSubjectList: A(), // List of new subjects before being added to the model
 
     attemptedSubmit: false, // True when user has tried to submit with validation errors
 
@@ -271,6 +273,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             basicsOriginalPublicationDate: null,
             basicsLicense: null,
             subjectsList: A(),
+            currentSubjectList: A(),
             availableLicenses: A(),
             applyLicense: false,
             newNode: false,
@@ -997,10 +1000,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
           Discipline section
         */
 
-        updateSubjects(subjectsList) {
-            this.set('subjectsList', $.extend(true, [], subjectsList));
-        },
-
         discardSubjects() {
             // Discards changes to subjects. (No requests sent, front-end only.)
             get(this, 'metrics')
@@ -1012,7 +1011,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('subjectsList', $.extend(true, [], this.get('model.subjects')));
         },
 
-        saveSubjects(hasChanged) {
+        saveSubjects(currentSubjects, hasChanged) {
             // Saves subjects (disciplines) and then moves to next section.
             get(this, 'metrics')
                 .trackEvent({
@@ -1027,6 +1026,16 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 return sendNext();
             }
 
+            let subjectArray = A();
+            currentSubjects.forEach(function(subjects) {
+                let tempSubjectArr = A();
+                subjects.forEach(function(subject) {
+                    tempSubjectArr.pushObject({'text': subject.get('text'), 'id': subject.id});
+                });
+                subjectArray.pushObject(tempSubjectArr);
+            });
+            debugger;
+            this.get('subjectsList').pushObject(subjectArray);
             const model = this.get('model');
 
             model.set('subjects', subjectIdMap(this.get('subjectsList')));

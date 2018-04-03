@@ -1,7 +1,7 @@
 import { computed } from '@ember/object';
 import Component from '@ember/component';
 import config from 'ember-get-config';
-import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-toggle/component';
+// import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-toggle/component';
 /**
  * @module ember-preprints
  * @submodule components
