@@ -151,10 +151,6 @@ module.exports = function(defaults) {
         production: path.join('node_modules', 'hint.css/hint.css')
     });
 
-    app.import({
-        test: path.join('node_modules', 'ember/ember-template-compiler.js')
-    });
-
     // Import component styles from addon
     app.import('vendor/assets/ember-osf.css');
 

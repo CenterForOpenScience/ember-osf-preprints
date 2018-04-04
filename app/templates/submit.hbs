@@ -42,7 +42,7 @@
                     {{/unless}}
 
                     {{#with _names.[1] as |name|}}
-                        {{#panels.panel id='preprint-form-upload' class='preprint-form-block preprint-form-section' name=name animate=true as |panel|}}
+                        {{#panels.panel id='preprint-form-upload' class='preprint-form-block preprint-form-section' open=(and theme.isProvider (not editMode)) name=name animate=true as |panel|}}
                             {{#panel.toggle tagName='header'}}
                                 {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isOpen=panel.isOpen isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged)}}
                             {{/panel.toggle}}

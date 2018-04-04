@@ -20,6 +20,14 @@
         <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "submit.body.save_continue"}}</button>
     </div>
 {{else}}
+    {{#panels.panel as |panel|}}
+        {{#panel.toggle}}
+            oh hai
+        {{/panel.toggle}}
+        {{#panel.body}}
+            jalskdjfklahfj
+        {{/panel.body}}
+    {{/panels.panel}}
     {{#preprint-form-section editMode=editMode class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}  {{!UPLOAD NEW FILE SECTION}}
         {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false}}
         {{#preprint-form-body}}

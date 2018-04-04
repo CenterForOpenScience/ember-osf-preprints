@@ -169,7 +169,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     selectedFile: null, // File that will be the preprint (already uploaded to node or selected from existing node)
     contributors: A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
     title: null, // Preprint title
-    nodeLocked: false, // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
+    nodeLocked: computed.alias('editMode'), // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
@@ -190,7 +190,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     abandonedPreprint: null, // Abandoned(draft) preprint on the current node
     editMode: false, // Edit mode is false by default.
     shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
-    currentSubjectList: A(), // List of new subjects before being added to the model
 
     attemptedSubmit: false, // True when user has tried to submit with validation errors
 
@@ -272,7 +271,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             basicsOriginalPublicationDate: null,
             basicsLicense: null,
             subjectsList: A(),
-            currentSubjectList: A(),
             availableLicenses: A(),
             applyLicense: false,
             newNode: false,
@@ -1026,7 +1024,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             }
 
             let subjectsArray = this.get('subjectsList');
-            
+
             currentSubjects.forEach(function(subjects) {
                 let tempSubjectArr = A();
                 subjects.forEach(function(subject) {
