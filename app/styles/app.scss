@@ -1513,3 +1513,14 @@ img.current-provider {
 #providerCarousel .carousel-control {
     color: black;
 }
+
+.dl-description dt {
+    overflow: inherit;
+    text-overflow: inherit;
+    width: 180px;
+}
+
+.dl-description dd {
+    text-align: left;
+    margin-left: 192px;
+}
