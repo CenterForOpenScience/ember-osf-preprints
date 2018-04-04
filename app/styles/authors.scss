@@ -31,11 +31,17 @@
     padding-top: 8px;
     margin-top: 0;
     margin-bottom: 0;
-    width: 60px;
+    max-width: 120px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     display: inline-block;
+}
+// More room for name when single column
+@media (max-width: 992px) {
+    .vert-align-contributor-name {
+        max-width: 300px;
+    }
 }
 
 .bib-padding {
