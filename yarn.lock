@@ -71,9 +71,9 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@https://github.com/laurenbarker/ember-osf#feature/upgrade-ember":
-  version "0.14.0"
-  resolved "https://github.com/laurenbarker/ember-osf#4323daadfadea0ae1c7c46a97b47b7f49ad236b7"
+"@centerforopenscience/ember-osf@https://github.com/laurenbarker/ember-osf#feature/upgrade-ember#7bf39a5595ba72d6f34791c902214d7aba3c98ed":
+  version "0.15.0"
+  resolved "https://github.com/laurenbarker/ember-osf#7bf39a5595ba72d6f34791c902214d7aba3c98ed"
   dependencies:
     bootstrap-daterangepicker "^2.1.3"
     bootstrap-sass "^3.3.7"
