@@ -66,6 +66,7 @@ export default Component.extend(Analytics, {
     i18n: inject(),
     store: inject(),
     toast: inject(),
+    panelActions: inject('panelActions'),
 
     url: null,
     node: null,
@@ -87,6 +88,12 @@ export default Component.extend(Analytics, {
     },
 
     actions: {
+        toggleIsOpen(panelName) {
+            if (this.get('editMode')) {
+                this.get('panelActions').open(panelName);
+            }
+        },
+
         getUrl() {
             return this.get('url');
         },

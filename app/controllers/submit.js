@@ -169,7 +169,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     selectedFile: null, // File that will be the preprint (already uploaded to node or selected from existing node)
     contributors: A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
     title: null, // Preprint title
-    nodeLocked: computed.alias('editMode'), // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
+    nodeLocked: false, // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
     searchResults: [], // List of users matching search query
     savingPreprint: false, // True when Share button is pressed on Add Preprint page
     showModalSharePreprint: false, // True when sharing preprint confirmation modal is displayed
@@ -190,6 +190,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     abandonedPreprint: null, // Abandoned(draft) preprint on the current node
     editMode: false, // Edit mode is false by default.
     shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
+    currentPanelName: computed('editMode', 'theme.isProvider', function() {
+        if (!this.get('editMode') && !this.get('theme.isProvider')) {
+            return this.get('_names[0]');
+        } else {
+            return null;
+        }
+    }),
 
     attemptedSubmit: false, // True when user has tried to submit with validation errors
 
@@ -557,6 +564,16 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     actions: {
+        toggleIsOpen(panelName) {
+            if (panelName !== 'Server' || !this.get('selectedFile')) {
+                if (this.get('currentPanelName')) {
+                    this.get('panelActions').close(this.get(`_names.${this.get('_names').indexOf(this.get('currentPanelName'))}`));
+                }
+
+                this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(panelName)}`));
+                this.set('currentPanelName', panelName);
+            }
+        },
         // This gets called by the save method of the license-widget, which in autosave mode
         // gets called every time a change is observed in the widget.
         editLicense(basicsLicense, licenseValid) {
@@ -591,6 +608,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             }
             this.get('panelActions').close(this.get(`_names.${this.get('_names').indexOf(currentPanelName)}`));
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
+            this.set('currentPanelName', currentPanelName);
             this.send('changesSaved', currentPanelName);
         },
         nextUploadSection(currentUploadPanel, nextUploadPanel) {

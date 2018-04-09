@@ -1,14 +1,14 @@
-{{#cp-panels accordion=true as |panels|}}
+{{#cp-panels accordion=true}}
     {{#if nodeLocked}}
-        {{#panels.panel class="upload-section-block" allowOpen=false name='locationOfPreprint' open=false as |panel|}}
-            {{preprint-form-header id="locked-section" name="location_of_preprint" node=node selectedNode=selectedNode showValidationIndicator=false}}
-            {{#panel.body}}
-            {{/panel.body}}
-        {{/panels.panel}}
+        {{#preprint-form-section class="upload-section-block" allowOpen=false name='locationOfPreprint' open=false}} {{!PROJECT LOCKED (EDIT MODE)}}
+            {{preprint-form-header id='locked-section' name='location_of_preprint' node=node selectedNode=selectedNode showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" 'location_of_preprint')}}
+            {{#preprint-form-body}}
+            {{/preprint-form-body}}
+        {{/preprint-form-section}}
     {{else}}
-        {{#panels.panel class="upload-section-block" allowOpen=true name='chooseProject' open=true as |panel|}}
-            {{preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}}
-            {{#panel.body}}
+        {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}} {{!CHOOSE PROJECT SECTION}}
+            {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
+            {{#preprint-form-body}}
                 <div class="m-t-sm">
                     {{#power-select search=(perform _getInitialUserNodes) optionsComponent=(component 'lazy-options' loadMore=(action "getMoreUserNodes") isLoading=isLoading canLoadMore=canLoadMore) oninput=(action "getDefaultUserNodes") onfocus=(action "onFocus") onblue=(action "onBlur") options=userNodes placeholder="Click to select" selected=selectedNode onchange=(action "nodeSelected") as |node|}}
                         {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
@@ -17,15 +17,15 @@
                 <p class="text-muted text-smaller m-t-xs">
                     {{t "components.preprint-form-project-select.existing_project_selector"}}
                 </p>
-            {{/panel.body}}
-        {{/panels.panel}}
+            {{/preprint-form-body}}
+        {{/preprint-form-section}}
     {{/if}}
     {{#if selectedNode}}
         {{#if isAdmin}}
             {{#if (and fileSelect (eq existingState _existingState.CHOOSE))}} {{!FILE DECISION SECTION - UPLOAD OR CHOOSE EXISTING}}
-                {{#panels.panel class="upload-section-block" allowOpen=true name='chooseFile' open=false as |panel|}}
-                    {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false}}
-                    {{#panel.body}}
+                {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseFile' open=false}}
+                    {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" name)}}
+                    {{#preprint-form-body}}
                         <form class="form">
                             <div class="toggle-button">
                                 <div class="row">
@@ -40,15 +40,15 @@
                                 </div>
                             </div>
                         </form>
-                    {{/panel.body}}
-                {{/panels.panel}}
+                    {{/preprint-form-body}}
+                {{/preprint-form-section}}
             {{/if}}
             {{#if (eq existingState _existingState.EXISTINGFILE)}}
                 <div>
                     {{#if osfProviderLoaded}}
-                        {{#panels.panel class="upload-section-block" allowOpen=true name='selectExistingFile' open=false as |panel|}}
-                            {{preprint-form-header name=(if nodeLocked 'preprint_file' choose_file) selectedFile=selectedFile showValidationIndicator=false}}
-                            {{#panel.body}}
+                        {{#preprint-form-section class="upload-section-block" allowOpen=true name='selectExistingFile' open=false}} {{!CHOOSE EXISTING FILE SECTION}}
+                            {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false}}
+                            {{#preprint-form-body}}
                                 <div class="m-t-sm">
                                     <form class="form">
                                         <div class="toggle-button">
@@ -61,19 +61,19 @@
                                     </form>
                                 </div>
                                 {{old-file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
-                            {{/panel.body}}
-                        {{/panels.panel}}
+                            {{/preprint-form-body}}
+                        {{/preprint-form-section}}
                         {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-                            {{#panels.panel class="upload-section-block" allowOpen=true  name='organize' open=false as |panel|}}
+                            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}} {{!ORGANIZE DECISION SECTION}}
                                 {{preprint-form-header isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy name='organize' showValidationIndicator=false}}
-                                {{#panel.body}}
+                                {{#preprint-form-body}}
                                     {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields title=title node=node isTopLevelNode=isTopLevelNode titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
-                                {{/panel.body}}
-                            {{/panels.panel}}
+                                {{/preprint-form-body}}
+                            {{/preprint-form-section}}
                             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
-                                {{#panels.panel class="upload-section-block" allowOpen=true name='finalizeUpload' open=false as |panel|}}
+                                {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}} {{!FINALIZE UPLOAD SECTION - EXISTING FILE}}
                                     {{preprint-form-header title=title name='finalize_upload' showValidationIndicator=false}}
-                                    {{#panel.body}}
+                                    {{#preprint-form-body}}
                                         {{#if (eq convertOrCopy 'convert')}}
                                             {{#if convertProjectConfirmed}}
                                                 <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project") (t "components.preprint-form-project-select.edit_preprint_title_component")}} </label>
@@ -86,8 +86,8 @@
                                             <p> {{t "components.preprint-form-project-select.initiate_preprint_process"}} </p>
                                             <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>{{t "submit.body.save_continue"}}</button>
                                         </div>
-                                    {{/panel.body}}
-                                {{/panels.panel}}
+                                    {{/preprint-form-body}}
+                                {{/preprint-form-section}}
                             {{/if}}
                         {{/if}}
                     {{/if}}

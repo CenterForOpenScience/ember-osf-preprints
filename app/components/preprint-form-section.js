@@ -104,6 +104,10 @@ export default CpPanelComponent.extend(Analytics, {
         }
     },
 
+    toggleIsOpen() {
+        alert('alart');
+    },
+
     didReceiveAttrs() {
         if (this.get('denyOpenMessage') === undefined) {
             this.set('denyOpenMessage', this.get('i18n').t('submit.please_complete_upload'));

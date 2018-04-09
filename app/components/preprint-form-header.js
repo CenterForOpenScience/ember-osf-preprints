@@ -1,6 +1,7 @@
 import { computed } from '@ember/object';
-import Component from '@ember/component';
 import config from 'ember-get-config';
+import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-toggle/component';
+
 /**
  * @module ember-preprints
  * @submodule components
@@ -21,7 +22,7 @@ import config from 'ember-get-config';
  * ```
  * @class preprint-form-header
  **/
-export default Component.extend({
+export default CpPanelToggleComponent.extend({
     tagName: 'header',
     // Variables to pass in
     enabled: true,
@@ -41,5 +42,9 @@ export default Component.extend({
         }
     }),
     // CSS controls icon color and display. If neither valid nor invalid state applies, don't show icon.
-    classNameBindings: ['enabled::disabled', 'valid:valid', 'invalid:invalid', 'isValidationActive::not-validated']
+    classNameBindings: ['enabled::disabled', 'valid:valid', 'invalid:invalid', 'isValidationActive::not-validated'],
+
+    click() {
+        this.toggleIsOpen(this.get('name'));
+    },
 });

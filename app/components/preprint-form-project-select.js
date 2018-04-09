@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
 import { get } from '@ember/object';
+import { inject } from '@ember/service';
 import Permissions from 'ember-osf/const/permissions';
 import { loadPage } from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -67,12 +68,14 @@ import { task, timeout } from 'ember-concurrency';
  * @class preprint-form-project-select
  */
 export default Component.extend(Analytics, {
+    panelActions: inject('panelActions'),
     userNodes: A(),
     selectedNode: null,
     currentPage: 1,
     searchTerm: '',
     canLoadMore: false,
     isLoading: false,
+    currentPanelName: null,
     isAdmin: computed('selectedNode', function() {
         return this.get('selectedNode') ? (this.get('selectedNode.currentUserPermissions') || []).includes(Permissions.ADMIN) : false;
     }),
@@ -132,6 +135,14 @@ export default Component.extend(Analytics, {
     }).enqueue(),
 
     actions: {
+        toggleIsOpen(panelName) {
+            debugger;
+            if (this.get('editMode')) {
+                debugger;
+                this.get('panelActions').open(panelName);
+                this.set('currentPanelName', panelName);
+            }
+        },
         getDefaultUserNodes(term) {
             if (term === '') {
                 this.get('_getInitialUserNodes').perform(term);

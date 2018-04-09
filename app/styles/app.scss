@@ -518,6 +518,9 @@ $color-border-light: #DDDDDD;
             white-space: pre-line;
         }
     }
+    &.cp-is-open > .cp-Panel-toggle > .preprint-header-preview {
+        display: none;
+    }
 }
 #preprint-form-upload {
     .btn-big {
@@ -755,6 +758,7 @@ hr {
 .cp-Panel.cp-is-closed .cp-Panel-body {
     height: 0;
     overflow: hidden;
+    display: none;
 }
 
 .preprint-form-section {

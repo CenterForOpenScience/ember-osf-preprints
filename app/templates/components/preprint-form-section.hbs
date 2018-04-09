@@ -1,1 +1,7 @@
-{{yield hasOpened}}
+{{yield (hash
+    toggle=(component 'preprint-form-header' on-click=(action 'toggleIsOpen') isOpen=isOpen)
+    body=(component 'preprint-form-body' shouldAnimate=shouldAnimate isOpen=isOpen)
+    name=name
+    isOpen=isOpen
+    hasOpened=hasOpened
+)}}
