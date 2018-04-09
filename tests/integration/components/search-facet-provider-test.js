@@ -1,6 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import { A } from '@ember/array';
-import Ember from '@ember/application';
+import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('search-facet-provider', 'Integration | Component | search facet provider', {
     integration: true,
@@ -28,21 +28,15 @@ moduleForComponent('search-facet-provider', 'Integration | Component | search fa
     }
 });
 
-function render(context, componentArgs) {
-    return context.render(Ember.HTMLBars.compile(`{{search-facet-provider
+test('preprint providers and counts are listed', function(assert) {
+    this.render(hbs`{{search-facet-provider
         key=key
         options=facet
         updateFilters=(action noop)
         activeFilters=activeFilters
         filterReplace=filterReplace
         otherProviders=otherProviders
-        ${componentArgs || ''}
-    }}`));
-}
-
-
-test('preprint providers and counts are listed', function(assert) {
-    render(this);
+    }}`);
     assert.equal(this.$('label')[0].innerText.trim(), 'OSF (99)');
     assert.equal(this.$('label')[1].innerText.trim(), 'AgriXiv (100)');
 });
@@ -53,6 +47,13 @@ test('filterReplace looks up key in mapping', function(assert) {
         key: 'Open Science Framework'
     };
     this.set('otherProviders', A([osfProvider]));
-    render(this, 'otherProviders=otherProviders');
+    this.render(hbs`{{search-facet-provider
+        key=key
+        options=facet
+        updateFilters=(action noop)
+        activeFilters=activeFilters
+        filterReplace=filterReplace
+        otherProviders=otherProviders
+    }}`);
     assert.equal(this.$('label')[0].innerText.trim(), 'OSF (99)');
 });

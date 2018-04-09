@@ -4,7 +4,7 @@ import EmberObject from '@ember/object';
 import { A } from '@ember/array';
 import ArrayProxy from '@ember/array/proxy';
 import Service from '@ember/service';
-import Ember from '@ember/application';
+import hbs from 'htmlbars-inline-precompile';
 
 const taxonomiesQuery = () => resolve(ArrayProxy.create({
     content: A([
@@ -44,7 +44,7 @@ moduleForComponent('search-facet-taxonomy', 'Integration | Component | search fa
     integration: true,
     beforeEach: function() {
         this.register('service:theme', themeStub);
-        this.inject('theme');
+        this.inject.service('theme');
         this.set('facet', {key: 'subjects', title: 'Subject', component: 'search-facet-taxonomy'});
         this.set('key', 'subjects');
         let noop = () => {};
@@ -54,19 +54,14 @@ moduleForComponent('search-facet-taxonomy', 'Integration | Component | search fa
     }
 });
 
-function render(context, componentArgs) {
-    return context.render(Ember.HTMLBars.compile(`{{search-facet-taxonomy
+test('One-level hierarchy taxonomies', function(assert) {
+    this.render(hbs`{{search-facet-taxonomy
         key=key
         options=facet
         updateFilters=(action noop)
         activeFilters=activeFilters
         filterReplace=filterReplace
-        ${componentArgs || ''}
-    }}`));
-}
-
-test('One-level hierarchy taxonomies', function(assert) {
-    render(this);
+    }}`)
     assert.equal(this.$('label')[0].innerText.trim(), 'Arts and Humanities');
     assert.equal(this.$('label')[1].innerText.trim(), 'Education');
     assert.equal(this.$('label')[2].innerText.trim(), 'Filmography');

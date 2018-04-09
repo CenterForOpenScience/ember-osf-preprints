@@ -4,7 +4,8 @@ moduleFor('route:provider', 'Unit | Route | provider', {
   // Specify the other units that are required for this test.
     needs: [
         'service:metrics',
-        'service:theme'
+        'service:theme',
+        'service:session'
     ]
 });
 

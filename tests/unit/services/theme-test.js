@@ -3,7 +3,10 @@ import { moduleFor, test } from 'ember-qunit';
 
 moduleFor('service:theme', 'Unit | Service | theme', {
   // Specify the other units that are required for this test.
-  // needs: ['service:foo']
+  needs: [
+      'service:session',
+      'service:head-tags'
+    ]
 });
 
 // Replace this with your real tests.

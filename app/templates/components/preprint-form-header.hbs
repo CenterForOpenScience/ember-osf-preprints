@@ -25,7 +25,7 @@
         <p>
             <em class="m-r-md"> {{t "components.preprint-form-header.server"}}: </em>
             {{#if currentProvider}}
-                <img class="current-provider" title="{{currentProvider.name}}" src={{provider-asset currentProvider.id 'square_color_no_transparent.png'}}>
+                <img alt="provider logo" class="current-provider" title="{{currentProvider.name}}" src={{provider-asset currentProvider.id 'square_color_no_transparent.png'}}>
                 {{currentProvider.name}}
             {{/if}}
         </p>
@@ -135,13 +135,13 @@
 
         {{#if (eq name 'finalize_upload')}}
             {{#if title}}
-                 <p>{{t "components.preprint-form-header.title"}}: {{title}} </p>
+                <p>{{t "components.preprint-form-header.title"}}: {{title}} </p>
             {{/if}}
         {{/if}}
 
         {{#if (eq name 'title_of_preprint')}}
             {{#if title}}
-                 <p> {{title}} </p>
+                <p> {{title}} </p>
             {{/if}}
         {{/if}}
 

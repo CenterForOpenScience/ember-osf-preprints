@@ -1,4 +1,5 @@
-import { moduleFor, test, skip } from 'ember-qunit';
+import { moduleFor, skip } from 'ember-qunit';
+import test from 'ember-sinon-qunit/test-support/test';
 import { run } from '@ember/runloop';
 import EmberObject from '@ember/object';
 import Service from '@ember/service';
@@ -45,6 +46,9 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'validator:date',
         'service:metrics',
         'service:panel-actions',
+        'service:session',
+        'service:fileManager',
+        'service:head-tags',
         'service:theme',
         'service:toast',
         'service:i18n',
@@ -75,7 +79,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         manualSetup(this.container);
         mockFindAll('preprint-provider');
         this.register('service:panel-actions', panelActionsStub);
-        this.inject('panel-actions', { as: 'panelActions' });
+        this.inject.service('panel-actions', { as: 'panelActions' });
         // Overwrite these observers with no-ops. They call loadAll(), which uses queryHasMany() and does not work well for tests.
         this.subject().set('getContributors', () => undefined);
         this.subject().set('getParentContributors', () => undefined);
@@ -146,7 +150,7 @@ test('Initial properties', function (assert) {
 // Test COMPUTED PROPERTIES > SUBMIT CONTROLLER
 
 test('isTopLevelNode computed property', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
     run(() => {
@@ -230,7 +234,7 @@ test('authorsValid computed property', function(assert) {
 });
 
 test('savedTitle computed property', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
     run(() => {
@@ -247,7 +251,7 @@ test('savedTitle computed property', function(assert) {
 });
 
 test('savedFile computed property', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
     run(() => {
@@ -269,7 +273,7 @@ test('savedFile computed property', function(assert) {
 });
 
 test('savedAbstract computed property', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
     run(() => {
@@ -286,7 +290,7 @@ test('savedAbstract computed property', function(assert) {
 });
 
 test('savedSubjects computed property', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
     run(() => {
@@ -321,7 +325,7 @@ test('allSectionsValid computed property', function(assert) {
 
 test('preprintFileChanged computed property', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const file = store.createRecord('file', {
@@ -343,7 +347,7 @@ test('preprintFileChanged computed property', function(assert) {
 
 test('titleChanged computed property', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const preprint = store.createRecord('preprint', {
@@ -372,7 +376,7 @@ test('uploadChanged computed property', function(assert) {
 test('basicsAbstract computed property', function(assert) {
     const ctrl = this.subject();
     assert.equal(ctrl.get('basicsAbstract'), null);
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const preprint = store.createRecord('preprint', {
@@ -387,7 +391,7 @@ test('basicsAbstract computed property', function(assert) {
 test('abstractChanged computed property', function(assert) {
     const ctrl = this.subject();
     ctrl.set('basicsAbstract', 'Abstract with whitespace ');
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const model = store.createRecord('preprint', {
@@ -402,7 +406,7 @@ test('abstractChanged computed property', function(assert) {
 
 test('basicsTags computed property', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const preprint = store.createRecord('preprint', {
@@ -416,7 +420,7 @@ test('basicsTags computed property', function(assert) {
 
 test('tagsChanged computed property', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
 
     run(() => {
@@ -434,7 +438,7 @@ test('tagsChanged computed property', function(assert) {
 
 test('basicsDOI', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const preprint = store.createRecord('preprint', {
@@ -448,7 +452,7 @@ test('basicsDOI', function(assert) {
 
 test('doiChanged', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const preprint = store.createRecord('preprint', {
@@ -464,7 +468,7 @@ test('doiChanged', function(assert) {
 
 test('basicsLicense', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const license = store.createRecord('license', {
@@ -486,7 +490,7 @@ test('basicsLicense', function(assert) {
 
 test('licenseChanged with model set', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const license = store.createRecord('license', {
@@ -522,7 +526,7 @@ test('licenseChanged with model set', function(assert) {
 
 test('licenseChanged with no model set', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const license = store.createRecord('license', {
@@ -556,7 +560,7 @@ test('basicsLicense with multiple copyrightHolders', function(assert) {
 
 test('basicsOriginalPublicationDate', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         let today = moment();
@@ -571,7 +575,7 @@ test('basicsOriginalPublicationDate', function(assert) {
 
 test('originalPublicationDateChanged', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const preprint = store.createRecord('preprint', {
@@ -588,7 +592,7 @@ test('originalPublicationDateChanged', function(assert) {
 test('discardBasics properly joins copyrightHolders', function(assert) {
     assert.expect(1);
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const model = store.createRecord('preprint', {
@@ -625,7 +629,7 @@ test('basicsChanged computed property', function(assert) {
 
 test('subjectsList', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const preprint = store.createRecord('preprint', {
@@ -640,7 +644,7 @@ test('subjectsList', function(assert) {
 
 test('disciplineReduced', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     const engineeringDisciplines = [[{id: '12345'},{'id':'56789'}], [{id: '12345'}], [{id: '12250'}] ];
     run(() => {
@@ -657,7 +661,7 @@ test('disciplineReduced', function(assert) {
 
 test('isAdmin', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const node = store.createRecord('node', {
@@ -675,7 +679,7 @@ test('isAdmin', function(assert) {
 
 test('canEdit', function(assert) {
     const ctrl = this.subject();
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const node = store.createRecord('node', {
@@ -786,7 +790,7 @@ test('finishUpload', function(assert) {
 skip('existingNodeExistingFile', function(assert) {
     // TODO Many actions get called by this action. Sending POST to localhost:7357/nodeTags
     // Getting Assertion Failed: You can only unload a record which is not inFlight
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
 
@@ -814,7 +818,7 @@ skip('existingNodeExistingFile', function(assert) {
 skip('createComponentCopyFile', function() {
     // TODO - same error with You can only unload a record which is not inFlight.
     // Assert that node has a child
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
     run(() => {
@@ -845,7 +849,7 @@ test('selectExistingFile', function(assert) {
 });
 
 test('discardUploadChanges', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     run(() => {
         const file = store.createRecord('file', {
@@ -871,7 +875,7 @@ test('discardUploadChanges', function(assert) {
 });
 
 test('clearDownstreamFields action - belowConvertOrCopy', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -898,7 +902,7 @@ test('clearDownstreamFields action - belowConvertOrCopy', function(assert) {
 });
 
 test('clearDownstreamFields action - belowFile', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -925,7 +929,7 @@ test('clearDownstreamFields action - belowFile', function(assert) {
 });
 
 test('clearDownstreamFields action - belowNode', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -952,7 +956,7 @@ test('clearDownstreamFields action - belowNode', function(assert) {
 });
 
 test('clearDownstreamFields action - allUpload', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -979,7 +983,7 @@ test('clearDownstreamFields action - allUpload', function(assert) {
 
 test('discardBasics', function(assert) {
     // assert.expect(4);
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
     run(() => {
@@ -1020,7 +1024,7 @@ test('stripDOI', function(assert) {
 });
 
 skip('saveBasics', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
     run(() => {
