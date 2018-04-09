@@ -4,7 +4,8 @@ moduleFor('route:provider/page-not-found', 'Unit | Route | provider/page not fou
   // Specify the other units that are required for this test.
     needs: [
         'service:metrics',
-        'service:theme'
+        'service:theme',
+        'service:session'
     ]
 });
 

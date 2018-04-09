@@ -2,7 +2,7 @@ import { A } from '@ember/array';
 import { resolve } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
 import ArrayProxy from '@ember/array/proxy';
-import Ember from '@ember/application';
+import hbs from 'htmlbars-inline-precompile';
 import EmberObject from '@ember/object';
 
 moduleForComponent('supplementary-file-browser', 'Integration | Component | supplementary file browser', {
@@ -47,18 +47,22 @@ moduleForComponent('supplementary-file-browser', 'Integration | Component | supp
     }
 });
 
-function render(context, componentArgs) {
-    return context.render(Ember.HTMLBars.compile(`{{supplementary-file-browser
+function render(context) {
+    return context.render(hbs`{{supplementary-file-browser
         preprint=preprint
         node=node
-        ${componentArgs || ''}
         dualTrackNonContributors=(action dualTrackNonContributors)
-    }}`));
+    }}`);
 }
 
 test('it renders', function(assert) {
     // Tests that the page renders
-    render(this, 'hasAdditionalFiles=false');
+    this.render(hbs`{{supplementary-file-browser
+        preprint=preprint
+        node=node
+        hasAdditionalFiles=false    
+        dualTrackNonContributors=(action dualTrackNonContributors)
+    }}`);
     assert.equal(this.$('.osf-box').length, 0);
     assert.equal(this.$('.row p').text(), 'test file');
     assert.equal(this.$('.supplemental-downloads span').text(), ' Version: 1.12');
@@ -67,8 +71,14 @@ test('it renders', function(assert) {
 
 test('has additional files', function(assert) {
     // Tests that additional file section renders
-    render(this, 'hasAdditionalFiles=true hasPrev=true hasNext=true');
-
+    this.render(hbs`{{supplementary-file-browser
+        preprint=preprint
+        node=node
+        hasAdditionalFiles=true
+        hasPrev=true
+        hasNext=true
+        dualTrackNonContributors=(action dualTrackNonContributors)
+    }}`);
     // Checks for elements to render
     assert.equal(this.$('.osf-box').length, 1);
     assert.equal(this.$('#leftArrow').length, 1);

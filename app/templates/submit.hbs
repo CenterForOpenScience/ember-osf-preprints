@@ -59,7 +59,7 @@
                                                 </div>
                                             </div>
                                         {{else if (eq currentState _State.NEW)}}
-                                             {{file-uploader
+                                            {{file-uploader
                                                 changeInitialState=(action 'changeInitialState')
                                                 finishUpload=(action 'finishUpload')
                                                 clearDownstreamFields=(action 'clearDownstreamFields')
@@ -189,7 +189,7 @@
                                     <div class="col-md-6">
                                         <div>
                                             <label>{{t "submit.body.basics.doi.label"}}:</label>
-                                            <form onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
+                                            <form role="button" Fonchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
                                                 {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
                                             </form>
                                         </div>

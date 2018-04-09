@@ -16,7 +16,7 @@ moduleForComponent('error-page', 'Integration | Component | error page', {
         this.register('service:theme', themeStub);
         // Calling inject puts the service instance in the test's context,
         // making it accessible as "locationService" within each test
-        this.inject('theme');
+        this.inject.service('theme');
     }
 });
 

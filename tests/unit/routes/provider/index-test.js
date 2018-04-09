@@ -6,7 +6,8 @@ moduleFor('route:provider/index', 'Unit | Route | provider/index', {
         'controller:submit',
         'route:index',
         'service:metrics',
-        'service:theme'
+        'service:theme',
+        'service:session'
     ]
 });
 

@@ -120,7 +120,7 @@ export default Controller.extend(Analytics, {
         );
     }),
 
-    twitterHref: computed('node', function() {
+    twitterHref: computed('model', function() {
         const queryParams = {
             url: window.location.href,
             text: this.get('model.title'),
@@ -143,7 +143,7 @@ export default Controller.extend(Analytics, {
         return `https://www.facebook.com/dialog/share?${queryStringify(queryParams)}`;
     }),
     // https://developer.linkedin.com/docs/share-on-linkedin
-    linkedinHref: computed('node', function() {
+    linkedinHref: computed('model', function() {
         const queryParams = {
             url: [window.location.href, 1024],          // required
             mini: ['true', 4],                          // required
@@ -154,7 +154,7 @@ export default Controller.extend(Analytics, {
 
         return `https://www.linkedin.com/shareArticle?${queryStringify(queryParams)}`;
     }),
-    emailHref: computed('node', function() {
+    emailHref: computed('model', function() {
         const queryParams = {
             subject: this.get('model.title'),
             body: window.location.href
@@ -193,7 +193,7 @@ export default Controller.extend(Analytics, {
             .replace(/({{copyrightHolders}})/g, copyright_holders.join(', '));
     }),
 
-    hasShortenedDescription: computed('node.description', function() {
+    hasShortenedDescription: computed('model.description', function() {
         const description = this.get('model.description');
 
         return description && description.length > 350;
