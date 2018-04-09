@@ -6,7 +6,8 @@ moduleFor('route:provider/content', 'Unit | Route | provider/content', {
         'controller:submit',
         'route:content',
         'service:metrics',
-        'service:theme'
+        'service:theme',
+        'service:session'
     ]
 });
 

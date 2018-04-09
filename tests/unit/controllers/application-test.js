@@ -22,7 +22,7 @@ moduleFor('controller:application', 'Unit | Controller | application', {
         'service:metrics',
         'service:toast',
         'service:theme',
-        'service:i18n',
+        'service:session',
         'service:preprintWord',
     ],
     beforeEach() {

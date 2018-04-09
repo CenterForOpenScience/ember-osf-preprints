@@ -7,7 +7,6 @@ import tHelper from 'ember-i18n/helper';
 
 moduleForComponent('preprint-status-banner', 'Unit | Component | preprint status banner', {
     // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar'],
     unit: true,
     needs: [
         'model:review-action',
@@ -31,11 +30,17 @@ moduleForComponent('preprint-status-banner', 'Unit | Component | preprint status
         'service:session',
         'service:head-tags',
     ],
+    beforeEach() {
+        this.registry.register('helper:t', tHelper);
+        this.register('service:i18n', i18nStub);
+        this.register('service:theme', themeStub);
+    },
+
 });
 
 
 test('getClassName computed property', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
     const component = this.subject();
 
     run(() => {
@@ -89,12 +94,9 @@ const themeStub = Service.extend({
 });
 
 test('bannerContent computed property', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const component = this.subject();
-    this.registry.register('helper:t', tHelper);
-    this.register('service:i18n', i18nStub);
-    this.register('service:theme', themeStub);
 
 
     run(() => {
@@ -132,7 +134,7 @@ test('bannerContent computed property', function(assert) {
 });
 
 test('status computed property', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
     const component = this.subject();
 
     run(() => {
@@ -155,7 +157,7 @@ test('status computed property', function(assert) {
 });
 
 test('icon computed property', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
     const component = this.subject();
 
     run(() => {
@@ -179,7 +181,7 @@ test('icon computed property', function(assert) {
 });
 
 test('workflow computed property', function(assert) {
-    this.inject('store');
+    this.inject.service('store');
     const component = this.subject();
 
     run(() => {

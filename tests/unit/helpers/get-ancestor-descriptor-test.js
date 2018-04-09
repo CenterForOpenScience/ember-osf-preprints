@@ -22,7 +22,8 @@ test('One, two, three, and four-level hierarchies', function(assert) {
         },
         parent: null
     });
-
+    console.log('AAAAAAAAAAAAAAAAAAAA')
+    console.log(typeof root);
     let grandparent = EmberObject.create({
         'id': '67890',
         'title': 'Grandparent',

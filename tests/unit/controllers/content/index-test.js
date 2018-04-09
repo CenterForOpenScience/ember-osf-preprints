@@ -24,7 +24,9 @@ moduleFor('controller:content/index', 'Unit | Controller | content/index', {
         'model:wiki',
         'model:taxonomy',
         'service:metrics',
-        'service:theme'
+        'service:theme',
+        'service:session',
+        'service:currentUser'
     ]
 });
 
@@ -45,7 +47,7 @@ test('Initial properties', function (assert) {
 });
 
 test('isAdmin computed property', function (assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -64,7 +66,7 @@ test('isAdmin computed property', function (assert) {
 });
 
 test('twitterHref computed property', function (assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -140,7 +142,7 @@ test('facebookHref computed property - does not have facebookAppId', function(as
 });
 
 test('linkedinHref computed property', function (assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -190,7 +192,7 @@ test('trunc() works properly: ASCII and Unicode', function (assert) {
 });
 
 test('emailHref computed property', function (assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -212,7 +214,7 @@ test('emailHref computed property', function (assert) {
 });
 
 test('hasTag computed property', function (assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -247,7 +249,7 @@ test('hasTag computed property', function (assert) {
 //TODO: unskip test when loadAll() is removed/refactored.
 skip('authors computed property', function (assert) {
     assert.expect(1);
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -268,7 +270,7 @@ skip('authors computed property', function (assert) {
 });
 
 test('fullLicenseText computed property', function (assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -320,7 +322,7 @@ test('fullLicenseText computed property', function (assert) {
 });
 
 test('editButtonLabel computed property', function (assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -355,7 +357,7 @@ test('editButtonLabel computed property', function (assert) {
 });
 
 test('hasShortenedDescription computed property', function (assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -407,7 +409,7 @@ test('useShortenedDescription computed property', function (assert) {
 });
 
 test('description computed property', function (assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();
@@ -463,7 +465,7 @@ test('expandAbstract action', function (assert) {
 });
 
 test('chooseFile action', function (assert) {
-    this.inject('store');
+    this.inject.service('store');
 
     const store = this.store;
     const ctrl = this.subject();

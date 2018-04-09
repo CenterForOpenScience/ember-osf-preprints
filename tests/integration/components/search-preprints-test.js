@@ -18,7 +18,7 @@ moduleForComponent('search-preprints', 'Integration | Component | search preprin
   integration: true,
   beforeEach: function() {
       this.register('service:theme', themeStub);
-      this.inject('theme');
+      this.inject.service('theme');
   }
 });
 

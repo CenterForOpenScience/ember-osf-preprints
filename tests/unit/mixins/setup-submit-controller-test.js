@@ -7,7 +7,8 @@ moduleFor('mixin:setup-submit-controller', {
         'service:theme',
         'service:panelActions',
         'service:session',
-        'service:head-tags'
+        'service:head-tags',
+        'service:i18n'
     ]
 });
 

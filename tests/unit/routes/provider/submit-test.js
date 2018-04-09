@@ -6,7 +6,13 @@ moduleFor('route:provider/submit', 'Unit | Route | provider/submit', {
         'controller:submit',
         'route:submit',
         'service:metrics',
-        'service:theme'
+        'service:panelActions',
+        'service:session',
+        'service:i18n',
+        'service:theme',
+        'service:head-tags',
+        'service:session',
+        'service:currentUser'
     ]
 });
 
