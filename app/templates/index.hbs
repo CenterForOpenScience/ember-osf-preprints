@@ -97,7 +97,7 @@
                     <div class="provider-logos">
                         {{#each model.brandedProviders as |provider| }}
                             {{#unless (eq provider.id 'livedata')}}
-                                <a href="{{brandedPreprintUrl provider}}" title="{{provider.name}}" class="provider-logo-item" style="background-image: url({{provider-asset provider.id 'wide_white.png'}});"></a>
+                                <a href="{{branded-preprint-url provider}}" title="{{provider.name}}" class="provider-logo-item" style="background-image: url({{provider-asset provider.id 'wide_white.png'}});"></a>
                             {{/unless}}
                         {{/each}}
                     </div>

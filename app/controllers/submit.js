@@ -1041,18 +1041,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 return sendNext();
             }
 
-            let subjectsArray = this.get('subjectsList');
-
-            currentSubjects.forEach(function(subjects) {
-                let tempSubjectArr = A();
-                subjects.forEach(function(subject) {
-                    tempSubjectArr.push({'text': subject.get('text'), 'id': subject.id});
-                });
-                subjectsArray.push(tempSubjectArr);
-            });
-
-            this.set('subjectsList', subjectsArray);
-
             const model = this.get('model');
 
             model.set('subjects', subjectIdMap(this.get('subjectsList')));

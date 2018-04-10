@@ -14,7 +14,7 @@
                         </div>
                     {{else}}
                         <div class={{if (not index) (concat "col-sm-2 " columnOffset) "col-sm-2"}}>
-                            <a href="{{brandedPreprintUrl provider path=(if lightLogo '' '/discover')}}"
+                            <a href="{{branded-preprint-url provider path=(if lightLogo '' '/discover')}}"
                                 title={{provider.name}}
                                 onclick={{action 'click' 'link' (concat 'Index - Provider Carousel - ' provider.name)}}
                                 >
