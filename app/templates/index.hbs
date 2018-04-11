@@ -12,8 +12,7 @@
                 {{!TITLE}}
                 <div class="text-center m-t-lg col-xs-12">
                     {{#if theme.isProvider}}
-                        <div class="provider-brand"
-                            style={{safe-markup (concat "background-image: url('" (provider-asset provider.id 'wide_color.png') "');")}}></div>
+                        <div class="provider-brand" style="background-image: url('{{provider-asset theme.id 'wide_color.png'}}')"></div>
                     {{else}}
                         <div class="provider-brand"></div>
                     {{/if}}
@@ -97,10 +96,9 @@
                 <div class="row p-v-md">
                     <div class="provider-logos">
                         {{#each model.brandedProviders as |provider| }}
-                            {{#if (not-eq provider.id 'livedata')}}
-                                <a href="{{branded-preprint-url provider}}" title="{{provider.name}}" class="provider-logo-item" 
-                                    style={{safe-markup (concat "background-image: url('" (provider-asset provider.id 'wide_white.png') "');")}}></a>
-                            {{/if}}
+                            {{#unless (eq provider.id 'livedata')}}
+                                <a href="{{branded-preprint-url provider}}" title="{{provider.name}}" class="provider-logo-item" style="background-image: url({{provider-asset provider.id 'wide_white.png'}});"></a>
+                            {{/unless}}
                         {{/each}}
                     </div>
                 </div>
