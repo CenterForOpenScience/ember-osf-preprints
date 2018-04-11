@@ -23,12 +23,15 @@ import fileDownloadPath from '../utils/file-download-path';
  * @class supplementary-file-browser
  */
 export default Ember.Component.extend(Analytics, {
+    theme: Ember.inject.service(),
+
     elementId: 'preprint-file-view',
     endIndex: 6,
     startIndex: 0,
 
     scrollAnim: '',
     selectedFile: null,
+    allowCommenting: false,
 
     hasAdditionalFiles: function() {
         return this.get('files.length') > 1;
@@ -111,8 +114,14 @@ export default Ember.Component.extend(Analytics, {
     init() {
         this._super(...arguments);
         this.__files();
-
     },
+
+    didReceiveAttrs() {
+        this.get('theme.provider').then( provider => {
+            this.set('allowCommenting', provider.get('allowCommenting'));
+        });
+    },
+
     actions: {
         next(direction) {
             Ember.get(this, 'metrics')
