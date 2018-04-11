@@ -1,12 +1,14 @@
 {{#cp-panels accordion=true}}
     {{#if nodeLocked}}
-        {{#preprint-form-section class="upload-section-block" allowOpen=false name='locationOfPreprint' open=false}} {{!PROJECT LOCKED (EDIT MODE)}}
+        {{!PROJECT LOCKED (EDIT MODE)}}
+        {{#preprint-form-section class="upload-section-block" allowOpen=false name='locationOfPreprint' open=false}}
             {{preprint-form-header id='locked-section' name='location_of_preprint' node=node selectedNode=selectedNode showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" 'location_of_preprint')}}
             {{#preprint-form-body}}
             {{/preprint-form-body}}
         {{/preprint-form-section}}
     {{else}}
-        {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}} {{!CHOOSE PROJECT SECTION}}
+        {{!CHOOSE PROJECT SECTION}}
+        {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}}
             {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
             {{#preprint-form-body}}
                 <div class="m-t-sm">
@@ -47,7 +49,8 @@
             {{#if (eq existingState _existingState.EXISTINGFILE)}}
                 <div>
                     {{#if osfProviderLoaded}}
-                        {{#preprint-form-section class="upload-section-block" allowOpen=true name='selectExistingFile' open=false}} {{!CHOOSE EXISTING FILE SECTION}}
+                        {{!CHOOSE EXISTING FILE SECTION}}
+                        {{#preprint-form-section class="upload-section-block" allowOpen=true name='selectExistingFile' open=false}}
                             {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false}}
                             {{#preprint-form-body}}
                                 <div class="m-t-sm">
@@ -65,14 +68,16 @@
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                         {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-                            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}} {{!ORGANIZE DECISION SECTION}}
+                            {{!ORGANIZE DECISION SECTION}}
+                            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
                                 {{preprint-form-header isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy name='organize' showValidationIndicator=false}}
                                 {{#preprint-form-body}}
                                     {{convert-or-copy-project nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields title=title node=node isTopLevelNode=isTopLevelNode titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
                             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
-                                {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}} {{!FINALIZE UPLOAD SECTION - EXISTING FILE}}
+                                {{!FINALIZE UPLOAD SECTION - EXISTING FILE}}
+                                {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
                                     {{preprint-form-header title=title name='finalize_upload' showValidationIndicator=false}}
                                     {{#preprint-form-body}}
                                         {{#if (eq convertOrCopy 'convert')}}
@@ -132,11 +137,11 @@
                 }}
             {{/if}}
         {{else}}
-            {{#unless (eq currentState 'start')}}
+            {{#if (not-eq currentState 'start')}}
                 <p class="alert alert-danger" role="alert">
                     {{t "components.preprint-form-project-select.admin_only"}}
                 </p>
-            {{/unless}}
+            {{/if}}
         {{/if}}
     {{/if}}
 {{/cp-panels}}

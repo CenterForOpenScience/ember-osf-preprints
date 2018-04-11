@@ -23,6 +23,5 @@ test('it renders', function (assert) {
     this.render(hbs`{{provider-carousel
       providers=providers
     }}`);
-
-    assert.ok(/^\s*Previous\s*Next\s*$/.test(this.$().context.innerText));
+    assert.ok(/^\s*Previous\s*Next\s*$/.test(this.$().text()));
 });

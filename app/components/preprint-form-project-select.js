@@ -136,9 +136,7 @@ export default Component.extend(Analytics, {
 
     actions: {
         toggleIsOpen(panelName) {
-            debugger;
             if (this.get('editMode')) {
-                debugger;
                 this.get('panelActions').open(panelName);
                 this.set('currentPanelName', panelName);
             }

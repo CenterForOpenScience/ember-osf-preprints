@@ -12,5 +12,5 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{add-preprint-box}}`);
 
-  assert.strictEqual(this.$('p')[0].textContent, 'Do you want to add your own research as a preprint?'); //preprint words needs to be run with ember osf
+  assert.strictEqual(this.$('p')[0].textContent, 'Do you want to add your own research as a ?'); //preprint words needs to be run with ember osf
 });

@@ -214,15 +214,18 @@ test('originalPublicationDateValid computed property', function(assert) {
 
 test('basicsValid computed property', function(assert) {
     const ctrl = this.subject();
-    ctrl.set('abstractValid', false);
-    ctrl.set('doiValid', false);
+    let invalidDate = moment().add(1, 'days');
+    let validDate = moment().subtract(1, 'days');
+
+    ctrl.set('basicsAbstract', 'too short');
+    ctrl.set('basicsDOI', 'Invalid DOI');
     ctrl.set('licenseValid', false);
-    ctrl.set('originalPublicationDateValid', false);
+    ctrl.set('basicsOriginalPublicationDate', invalidDate);
     assert.equal(ctrl.get('basicsValid'), false);
-    ctrl.set('abstractValid', true);
-    ctrl.set('doiValid', true);
+    ctrl.set('basicsAbstract', 'Abstract onif sufficient length');
+    ctrl.set('basicsDOI', '10.1234/hello');
     ctrl.set('licenseValid', true);
-    ctrl.set('originalPublicationDateValid', true);
+    ctrl.set('basicsOriginalPublicationDate', validDate);
     assert.equal(ctrl.get('basicsValid'), true);
 });
 
