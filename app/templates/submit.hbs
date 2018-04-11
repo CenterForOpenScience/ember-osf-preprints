@@ -17,23 +17,23 @@
                     {{if editMode (t "submit.body.p_edit") (t "submit.body.p_add" name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}
                 </p>
                 {{#cp-panels accordion=true}}
-                    {{#unless (or editMode theme.isProvider)}}
+                    {{#if (not (or editMode theme.isProvider))}}
                         {{#with _names.[0] as |name|}}
                             {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=(not uploadValid) denyOpenMessage=(t 'submit.server_locked') errorAction=(action 'error')}}
                                 {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=(and providerSaved (not uploadValid)) currentProvider=currentProvider valid=(not providerChanged) toggleIsOpen=(action "toggleIsOpen" name)}}
                                 {{#preprint-form-body}}
                                     {{provider-carousel itemsPerSlide=10 providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider')}}
 
-                                    {{#unless uploadValid}}
+                                    {{#if (not uploadValid)}}
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="pull-right">
-                                                    <button {{action 'discardProvider'}} class="btn btn-default" disabled={{unless (and providerSaved providerChanged) true}} >{{t "global.discard"}}</button>
+                                                    <button {{action 'discardProvider'}} class="btn btn-default" disabled={{if (not (and providerSaved providerChanged)) true}} >{{t "global.discard"}}</button>
                                                     <button {{action 'saveProvider'}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
                                                 </div>
                                             </div>
                                         </div>
-                                    {{/unless}}
+                                    {{/if}}
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
 
@@ -57,7 +57,7 @@
                                 {{/panel.body}}
                             {{/panels.panel}} !-->
                         {{/with}}
-                    {{/unless}}
+                    {{/if}}
 
                     {{#with _names.[1] as |name|}}
                         {{#preprint-form-section
@@ -214,7 +214,7 @@
                                     <div class="col-md-6">
                                         <div>
                                             <label>{{t "submit.body.basics.doi.label"}}:</label>
-                                            <form onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
+                                            <form role="button" onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
                                                 {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
                                             </form>
                                         </div>
@@ -324,7 +324,7 @@
                             {{#if showValidationErrors}}
                                 <span id="validation-errors">
                                     <p class="m-t-md"><strong>{{t "submit.body.submit.invalid.description"}}</strong></p>
-                                    <p class="text-danger">{{unless (and savedTitle savedFile) (t "submit.body.submit.invalid.upload")}}</p>
+                                    <p class="text-danger">{{if (not (and savedTitle savedFile)) (t "submit.body.submit.invalid.upload")}}</p>
                                     <p class="text-danger">{{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
                                     <p class="text-danger">{{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
                                     <p class="text-danger">{{unless authorsValid (t "global.authors")}}</p>

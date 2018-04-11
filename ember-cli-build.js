@@ -143,7 +143,7 @@ module.exports = function(defaults) {
         production: path.join('node_modules', 'dropzone/dist/min/dropzone.min.css')
     });
 
-    // app.import(path.join('node_modules', 'jquery-tags-input/src/jquery-tags-input.js'));
+    app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
     app.import(path.join('node_modules', 'bootstrap-daterangepicker/daterangepicker.js'));
 
     app.import({
