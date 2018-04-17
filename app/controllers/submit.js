@@ -564,6 +564,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     actions: {
+        /*
         toggleIsOpen(panelName) {
             if (panelName !== 'Server' || !this.get('selectedFile')) {
                 if (this.get('currentPanelName')) {
@@ -574,6 +575,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 this.set('currentPanelName', panelName);
             }
         },
+        */
         // This gets called by the save method of the license-widget, which in autosave mode
         // gets called every time a change is observed in the widget.
         editLicense(basicsLicense, licenseValid) {

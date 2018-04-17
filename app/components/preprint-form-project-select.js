@@ -135,12 +135,6 @@ export default Component.extend(Analytics, {
     }).enqueue(),
 
     actions: {
-        toggleIsOpen(panelName) {
-            if (this.get('editMode')) {
-                this.get('panelActions').open(panelName);
-                this.set('currentPanelName', panelName);
-            }
-        },
         getDefaultUserNodes(term) {
             if (term === '') {
                 this.get('_getInitialUserNodes').perform(term);

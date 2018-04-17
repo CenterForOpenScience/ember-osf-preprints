@@ -17,25 +17,27 @@
                     {{if editMode (t "submit.body.p_edit") (t "submit.body.p_add" name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}
                 </p>
                 {{#cp-panels accordion=true}}
-                    {{#if (not (or editMode theme.isProvider))}}
+                    {{#unless (or editMode theme.isProvider)}}
                         {{#with _names.[0] as |name|}}
-                            {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=(not uploadValid) denyOpenMessage=(t 'submit.server_locked') errorAction=(action 'error')}}
-                                {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=(and providerSaved (not uploadValid)) currentProvider=currentProvider valid=(not providerChanged) toggleIsOpen=(action "toggleIsOpen" name)}}
+                            {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=(not uploadValid) denyOpenMessage=(t 'submit.server_locked') errorAction=(action 'error') as |hasOpened|}}
+                                {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=(and providerSaved (not uploadValid)) currentProvider=currentProvider valid=(not providerChanged)}}
                                 {{#preprint-form-body}}
                                     {{provider-carousel itemsPerSlide=10 providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider')}}
 
-                                    {{#if (not uploadValid)}}
+                                    {{#unless uploadValid}}
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="pull-right">
-                                                    <button {{action 'discardProvider'}} class="btn btn-default" disabled={{if (not (and providerSaved providerChanged)) true}} >{{t "global.discard"}}</button>
+                                                    <button {{action 'discardProvider'}} class="btn btn-default" disabled={{unless (and providerSaved providerChanged) true}} >{{t "global.discard"}}</button>
                                                     <button {{action 'saveProvider'}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
                                                 </div>
                                             </div>
                                         </div>
-                                    {{/if}}
+                                    {{/unless}}
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
+                        {{/with}}
+                    {{/unless}}
 
                             <!-- {{#panels.panel id='preprint-form-server' class='preprint-form-block preprint-form-section' open=true name=name as |panel|}}
                                 {{#panel.toggle tagName='header'}}
@@ -56,8 +58,6 @@
                                     {{/unless}}
                                 {{/panel.body}}
                             {{/panels.panel}} !-->
-                        {{/with}}
-                    {{/if}}
 
                     {{#with _names.[1] as |name|}}
                         {{#preprint-form-section
@@ -71,7 +71,7 @@
                             errorAction=(action 'error')
                             as |hasOpened|
                         }}
-                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged) toggleIsOpen=(action "toggleIsOpen" name)}}
+                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged)}}
                             {{#preprint-form-body}}
                                 {{#liquid-bind filePickerState class='translate' as |currentState|}}
                                     <div class={{currentState}}>
@@ -171,7 +171,7 @@
 
                     {{#with _names.[2] as |name|}}
                         {{#preprint-form-section id='preprint-form-subjects' editMode=editMode class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened toggleIsOpen=(action "toggleIsOpen" name)}}
+                            {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="m-b-lg text-smaller">{{t "submit.body.subjects_description"}}</p>
 
@@ -189,7 +189,7 @@
 
                     {{#with _names.[3] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' editMode=editMode class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=model.tags abstract=model.description name=name valid=(not basicsChanged) license=model.license isValidationActive=hasOpened toggleIsOpen=(action "toggleIsOpen" name)}}
+                            {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=model.tags abstract=model.description name=name valid=(not basicsChanged) license=model.license isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class='row'>
                                     <div class='col-xs-12'>
@@ -254,7 +254,7 @@
 
                     {{#with _names.[4] as |name|}}
                         {{#preprint-form-section id='preprint-form-authors' editMode=editMode class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened toggleIsOpen=(action "toggleIsOpen" name)}}
+                            {{preprint-form-header editMode=editMode authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="text-smaller">
                                     {{t "submit.body.authors.paragraph"}}

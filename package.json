@@ -54,7 +54,7 @@
     "ember-cli-sri": "^2.1.0",
     "ember-cli-template-lint": "^0.7.5",
     "ember-cli-uglify": "^1.2.0",
-    "ember-collapsible-panel": "^2.1.1",
+    "ember-collapsible-panel": "~1.0.0",
     "ember-cp-validations": "^3.5.1",
     "ember-data": "2.18.0",
     "ember-data-factory-guy": "^2.11.6",

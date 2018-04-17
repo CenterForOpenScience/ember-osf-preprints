@@ -1,7 +1,7 @@
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import { get, computed, observer } from '@ember/object';
 import { on } from '@ember/object/evented';
-import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel/component';
+import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
@@ -23,7 +23,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  **/
 
 export default CpPanelComponent.extend(Analytics, {
-    i18n: inject(),
+    i18n: service(),
 
     tagName: 'section',
     classNames: ['preprint-form-section'],
@@ -41,16 +41,13 @@ export default CpPanelComponent.extend(Analytics, {
      */
     hasOpened: false,
 
-    trackOpenState: computed('isOpen', function() {
+    trackOpenState: observer('isOpen', function() {
         // Whenever panel is opened (via any means), update the hasOpened state to reflect this fact
         let isOpen = this.get('isOpen');
         if (isOpen) {
             this.set('hasOpened', true);
         }
     }),
-
-    // see if this can be done in the init hook instead
-    // this might be better as a computed property, maybe? (computed alias)
 
     // Fix deprecation warning
     _setup: on('init', observer('open', function() {
@@ -62,7 +59,7 @@ export default CpPanelComponent.extend(Analytics, {
      * because liquid-if will cause elements to be removed from DOM. This is can cause some
      * information to be lost (e.g. dropzone state).
      */
-    slideAnimation: computed('isOpen', function() {
+    slideAnimation: observer('isOpen', function() {
         if (this.get('animate')) {
             // Allow liquid-fire to animate
             return;
@@ -72,7 +69,7 @@ export default CpPanelComponent.extend(Analytics, {
             $body.height('auto');
             $body.height($body.height());
             $body.one('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', () => {
-                $body.addClass('no-transition cp-is-open');
+                $body.addClass('no-transition');
                 $body.height('');
                 $body[0].offsetHeight; // jshint ignore: line
                 $body.removeClass('no-transition');
@@ -102,10 +99,6 @@ export default CpPanelComponent.extend(Analytics, {
                 this.sendAction('errorAction', this.get('denyOpenMessage'));
             }
         }
-    },
-
-    toggleIsOpen() {
-        alert('alart');
     },
 
     didReceiveAttrs() {

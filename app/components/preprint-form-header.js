@@ -1,6 +1,6 @@
 import { computed } from '@ember/object';
 import config from 'ember-get-config';
-import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-toggle/component';
+import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-toggle';
 
 /**
  * @module ember-preprints
@@ -42,9 +42,5 @@ export default CpPanelToggleComponent.extend({
         }
     }),
     // CSS controls icon color and display. If neither valid nor invalid state applies, don't show icon.
-    classNameBindings: ['enabled::disabled', 'valid:valid', 'invalid:invalid', 'isValidationActive::not-validated'],
-
-    click() {
-        this.toggleIsOpen(this.get('name'));
-    },
+    classNameBindings: ['enabled::disabled', 'valid:valid', 'invalid:invalid', 'isValidationActive::not-validated']
 });

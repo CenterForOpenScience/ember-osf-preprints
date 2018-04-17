@@ -2,7 +2,7 @@ import { A } from '@ember/array';
 import { computed } from '@ember/object';
 import { get } from '@ember/object';
 import { inject } from '@ember/service';
-import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body/component';
+import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
 import { permissionSelector } from 'ember-osf/const/permissions';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
