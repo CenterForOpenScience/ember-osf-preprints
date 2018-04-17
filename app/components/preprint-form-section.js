@@ -1,5 +1,5 @@
 import { inject as service } from '@ember/service';
-import { get, computed, observer } from '@ember/object';
+import { get, observer } from '@ember/object';
 import { on } from '@ember/object/evented';
 import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
 import Analytics from 'ember-osf/mixins/analytics';

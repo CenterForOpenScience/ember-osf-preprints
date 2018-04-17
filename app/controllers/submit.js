@@ -191,11 +191,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     editMode: false, // Edit mode is false by default.
     shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
     currentPanelName: computed('editMode', 'theme.isProvider', function() {
-        if (!this.get('editMode') && !this.get('theme.isProvider')) {
-            return this.get('_names[0]');
-        } else {
-            return null;
-        }
+        return this.get('isAddingPreprint') ? this.get('_names')[0] : null;
     }),
 
     attemptedSubmit: false, // True when user has tried to submit with validation errors
@@ -543,6 +539,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             PERMISSION_MESSAGES['create'];
     }),
     moderationInformation: computed('moderationType', function() {
+        debugger;
         return SUBMIT_MESSAGES[this.get('moderationType')];
     }),
 
@@ -564,16 +561,39 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     actions: {
+        // Determines whether or not the panels can be toggled based on where the user is at in the form
         /*
         toggleIsOpen(panelName) {
-            if (panelName !== 'Server' || !this.get('selectedFile')) {
-                if (this.get('currentPanelName')) {
-                    this.get('panelActions').close(this.get(`_names.${this.get('_names').indexOf(this.get('currentPanelName'))}`));
+            const currentPanelName = this.get('currentPanelName');
+            if (this.get('isAddingPreprint')) {
+                if (currentPanelName == 'Server' && !this.get('providerSaved') && panelName == 'Upload') {
+                    this.send('error', this.get('i18n').t('submit.please_select_server'));
+                } else if (currentPanelName == 'Server' && !this.get('providerSaved')) {
+                    this.send('error', this.get('i18n').t('submit.please_complete_upload'));
+                } else if (currentPanelName == 'Upload' && !this.get('selectedFile') && panelName !== 'Server') {
+                    this.send('error', this.get('i18n').t('submit.please_complete_upload'));
+                } else if (currentPanelName !== 'Server' && currentPanelName !== 'Upload' && panelName == 'Server') {
+                    this.send('error', this.get('i18n').t('submit.server_locked'));
+                } else {
+                    this.send('togglePanel', currentPanelName, panelName);
                 }
-
-                this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(panelName)}`));
-                this.set('currentPanelName', panelName);
+            } else {
+                this.send('togglePanel', currentPanelName, panelName);
             }
+        },
+        // Actually toggles the panels
+        togglePanel(currentPanel, nextPanel) {
+            if (currentPanel) {
+                this.get('panelActions').close(this.get(`_names.${this.get('_names').indexOf(currentPanel)}`));
+            }
+            this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(nextPanel)}`));
+            get(this, 'metrics')
+                .trackEvent({
+                    category: 'div',
+                    action: 'click',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.nextPanel} section`
+                });
+            this.set('currentPanelName', nextPanel);
         },
         */
         // This gets called by the save method of the license-widget, which in autosave mode
@@ -610,7 +630,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             }
             this.get('panelActions').close(this.get(`_names.${this.get('_names').indexOf(currentPanelName)}`));
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
-            this.set('currentPanelName', currentPanelName);
+            this.set('currentPanelName', this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
+//            this.set('currentPanelName', currentPanelName);
             this.send('changesSaved', currentPanelName);
         },
         nextUploadSection(currentUploadPanel, nextUploadPanel) {

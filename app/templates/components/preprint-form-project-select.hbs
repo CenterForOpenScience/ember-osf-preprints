@@ -2,7 +2,7 @@
     {{#if nodeLocked}}
         {{!PROJECT LOCKED (EDIT MODE)}}
         {{#preprint-form-section class="upload-section-block" allowOpen=false name='locationOfPreprint' open=false}}
-            {{preprint-form-header id='locked-section' name='location_of_preprint' node=node selectedNode=selectedNode showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" 'location_of_preprint')}}
+            {{preprint-form-header id='locked-section' name='location_of_preprint' node=node selectedNode=selectedNode showValidationIndicator=false}}
             {{#preprint-form-body}}
             {{/preprint-form-body}}
         {{/preprint-form-section}}
@@ -27,7 +27,7 @@
             {{!FILE DECISION SECTION - UPLOAD OR CHOOSE EXISTING}}
             {{#if (and fileSelect (eq existingState _existingState.CHOOSE))}}
                 {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseFile' open=false}}
-                    {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" name)}}
+                    {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false}}
                     {{#preprint-form-body}}
                         <form class="form">
                             <div class="toggle-button">

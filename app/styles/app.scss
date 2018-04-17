@@ -518,9 +518,6 @@ $color-border-light: #DDDDDD;
             white-space: pre-line;
         }
     }
-    &.cp-is-open > .cp-Panel-toggle > .preprint-header-preview {
-        display: none;
-    }
 }
 #preprint-form-upload {
     .btn-big {
@@ -554,25 +551,6 @@ $color-border-light: #DDDDDD;
     .radio-option {
         background: #f5f5f5;
         border-radius: 2px;
-    }
-}
-.emberTagInput-tag {
-    background: #DEF;
-    border-radius: 0;
-    color: #333333;
-    font-size: 13px;
-    cursor: pointer;
-    &:hover {
-        background: #337ab7;
-        color: #E0EBF3;
-        & > a {
-            color: #E0EBF3;
-        }
-    }
-}
-.emberTagInput-new {
-    & > input {
-        width: inherit;
     }
 }
 .file-browser-header {
@@ -758,7 +736,6 @@ hr {
 .cp-Panel.cp-is-closed .cp-Panel-body {
     height: 0;
     overflow: hidden;
-    display: none;
 }
 
 .preprint-form-section {
@@ -807,7 +784,7 @@ hr {
         }
     }
     .cp-Panel-body {
-        //opacity: 0;
+        opacity: 0;
         overflow: hidden;
         transition: {
             property: height, opacity;
@@ -842,9 +819,6 @@ hr {
         color: lighten(red, 30%);
         font-weight: normal;
         float: right;
-    }
-    .emberTagInput {
-        height: 100px;
     }
 }
 

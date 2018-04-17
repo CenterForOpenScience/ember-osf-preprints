@@ -90,7 +90,17 @@ export default Component.extend(Analytics, {
     actions: {
         toggleIsOpen(panelName) {
             if (this.get('editMode')) {
+                if (this.get('currentPanelName')) {
+                    this.get('panelActions').close(this.get('currentPanelName'));
+                }
+                get(this, 'metrics')
+                    .trackEvent({
+                        category: 'div',
+                        action: 'click',
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.panelName} section`
+                    });
                 this.get('panelActions').open(panelName);
+                this.set('currentPanelName', panelName);
             }
         },
 

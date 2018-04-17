@@ -17,9 +17,9 @@
                     {{if editMode (t "submit.body.p_edit") (t "submit.body.p_add" name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}
                 </p>
                 {{#cp-panels accordion=true}}
-                    {{#unless (or editMode theme.isProvider)}}
+                    {{#if (not (or editMode theme.isProvider))}}
                         {{#with _names.[0] as |name|}}
-                            {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=(not uploadValid) denyOpenMessage=(t 'submit.server_locked') errorAction=(action 'error') as |hasOpened|}}
+                            {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=(not uploadValid) denyOpenMessage=(t 'submit.server_locked') errorAction=(action 'error')}}
                                 {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=(and providerSaved (not uploadValid)) currentProvider=currentProvider valid=(not providerChanged)}}
                                 {{#preprint-form-body}}
                                     {{provider-carousel itemsPerSlide=10 providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider')}}
@@ -28,7 +28,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="pull-right">
-                                                    <button {{action 'discardProvider'}} class="btn btn-default" disabled={{unless (and providerSaved providerChanged) true}} >{{t "global.discard"}}</button>
+                                                    <button {{action 'discardProvider'}} class="btn btn-default" disabled={{if (not (and providerSaved providerChanged)) true}}>{{t "global.discard"}}</button>
                                                     <button {{action 'saveProvider'}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
                                                 </div>
                                             </div>
@@ -37,27 +37,7 @@
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
                         {{/with}}
-                    {{/unless}}
-
-                            <!-- {{#panels.panel id='preprint-form-server' class='preprint-form-block preprint-form-section' open=true name=name as |panel|}}
-                                {{#panel.toggle tagName='header'}}
-                                    {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=(and providerSaved (not uploadValid)) currentProvider=currentProvider isOpen=panel.isOpen valid=(not providerChanged)}}
-                                {{/panel.toggle}}
-                                {{#panel.body}}
-                                    {{provider-carousel itemsPerSlide=10 providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider')}}
-
-                                    {{#unless uploadValid}}
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="pull-right">
-                                                    <button {{action 'discardProvider'}} class="btn btn-default" disabled={{unless (and providerSaved providerChanged) true}} >{{t "global.discard"}}</button>
-                                                    <button {{action 'saveProvider'}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {{/unless}}
-                                {{/panel.body}}
-                            {{/panels.panel}} !-->
+                    {{/if}}
 
                     {{#with _names.[1] as |name|}}
                         {{#preprint-form-section
