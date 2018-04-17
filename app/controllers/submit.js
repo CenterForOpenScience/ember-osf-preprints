@@ -539,7 +539,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             PERMISSION_MESSAGES['create'];
     }),
     moderationInformation: computed('moderationType', function() {
-        debugger;
         return SUBMIT_MESSAGES[this.get('moderationType')];
     }),
 

@@ -3118,13 +3118,15 @@ ember-cli-babel@^6.4.1:
     ember-cli-version-checker "^2.1.0"
     semver "^5.4.1"
 
-ember-cli-bootstrap-sassy@0.5.6:
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/ember-cli-bootstrap-sassy/-/ember-cli-bootstrap-sassy-0.5.6.tgz#d4a557c91acdcac3241f53d7fd14005a714d1217"
+ember-cli-bootstrap-sassy@0.5.8:
+  version "0.5.8"
+  resolved "https://registry.yarnpkg.com/ember-cli-bootstrap-sassy/-/ember-cli-bootstrap-sassy-0.5.8.tgz#9bb6d4c3f7f8a634fc51b0f2a29983d82e88b404"
   dependencies:
     bootstrap-sass "^3.0.0"
-    broccoli-funnel "^1.0.1"
-    ember-cli-babel "^5.1.7"
+    broccoli-funnel "^1.2.0"
+    broccoli-merge-trees "^2.0.0"
+    broccoli-stew "^1.5.0"
+    ember-cli-babel "^6.6.0"
     resolve "^1.1.7"
 
 ember-cli-broccoli-sane-watcher@^2.0.4:
@@ -3319,7 +3321,7 @@ ember-cli-meta-tags@4.0.0:
     ember-cli-htmlbars "^1.1.1"
     ember-runtime-enumerable-includes-polyfill "^2.0.0"
 
-ember-cli-moment-shim@^3.4.0:
+ember-cli-moment-shim@^3.5.3:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/ember-cli-moment-shim/-/ember-cli-moment-shim-3.6.0.tgz#a6ce858e99b285eb9c539c8cebb698435f8d043a"
   dependencies:
