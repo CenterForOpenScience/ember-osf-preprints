@@ -10,14 +10,14 @@ import { manualSetup, mockFindAll } from 'ember-data-factory-guy';
 const panelNames = [
     'Discipline',
     'Basics',
-    'uploadNewFile'
+    'uploadNewFile',
 ];
 
 const panels = EmberObject.create();
 
 for (const panelName of panelNames) {
     panels.set(panelName, EmberObject.create({
-        isOpen: panelName === 'Discipline'
+        isOpen: panelName === 'Discipline',
     }));
 }
 
@@ -34,7 +34,7 @@ const panelActionsStub = Service.extend({
     toggle(name) {
         const panel = panels[name];
         return panel.get('isOpen') ? panel.set('isOpen', false) : panel.set('isOpen', true);
-    }
+    },
 });
 
 
@@ -73,17 +73,18 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'model:wiki',
         'transform:links',
         'transform:embed',
-        'transform:fixstring'
+        'transform:fixstring',
     ],
-    beforeEach: function () {
+    beforeEach () {
         manualSetup(this.container);
         mockFindAll('preprint-provider');
         this.register('service:panel-actions', panelActionsStub);
         this.inject.service('panel-actions', { as: 'panelActions' });
-        // Overwrite these observers with no-ops. They call loadAll(), which uses queryHasMany() and does not work well for tests.
+        // Overwrite these observers with no-ops. They call loadAll(),
+        // which uses queryHasMany() and does not work well for tests.
         this.subject().set('getContributors', () => undefined);
         this.subject().set('getParentContributors', () => undefined);
-    }
+    },
 
 });
 
@@ -94,71 +95,69 @@ test('Initial properties', function (assert) {
         '_State.START': 'start',
         '_State.NEW': 'new',
         '_State.EXISTING': 'existing',
-        'filePickerState': 'start',
+        filePickerState: 'start',
         '_existingState.CHOOSE': 'choose',
         '_existingState.EXISTINGFILE': 'existing',
         '_existingState.NEWFILE': 'new',
-        'existingState': 'choose',
+        existingState: 'choose',
         '_names.length': 5,
-        'user': null,
+        user: null,
         'userNodes.length': 0,
-        'userNodesLoaded': false,
+        userNodesLoaded: false,
         'availableLicenses.length': 0,
-        'applyLicense': false,
-        'newNode': false,
-        'node': null,
-        'file': null,
-        'selectedFile': null,
+        applyLicense: false,
+        newNode: false,
+        node: null,
+        file: null,
+        selectedFile: null,
         'contributors.length': 0,
-        'title': null,
-        'nodeLocked': false,
+        title: null,
+        nodeLocked: false,
         'searchResults.length': 0,
-        'savingPreprint': false,
-        'showModalSharePreprint': false,
-        'uploadSaveState': false,
-        'disciplineSaveState': false,
-        'basicsSaveState': false,
-        'authorsSaveState': false,
-        'parentNode': null,
+        savingPreprint: false,
+        showModalSharePreprint: false,
+        uploadSaveState: false,
+        disciplineSaveState: false,
+        basicsSaveState: false,
+        authorsSaveState: false,
+        parentNode: null,
         'parentContributors.length': 0,
-        'convertProjectConfirmed': false,
-        'convertOrCopy': null,
-        'osfStorageProvider': null,
-        'osfProviderLoaded': false,
-        'titleValid': null,
-        'uploadInProgress': false,
+        convertProjectConfirmed: false,
+        convertOrCopy: null,
+        osfStorageProvider: null,
+        osfProviderLoaded: false,
+        titleValid: null,
+        uploadInProgress: false,
         'existingPreprints.length': 0,
-        'abandonedPreprint': null,
-        'editMode': false,
-        'shareButtonDisabled': false,
-        'licenseValid': false,
+        abandonedPreprint: null,
+        editMode: false,
+        shareButtonDisabled: false,
+        licenseValid: false,
     };
 
     const propKeys = Object.keys(expected);
     const actual = ctrl.getProperties(propKeys);
 
-    propKeys.forEach(
-        key => assert.strictEqual(
-            expected[key],
-            actual[key],
-            `Initial value for "${key}" does not match expected value`
-        )
-    );
+    propKeys.forEach(key => assert.strictEqual(
+        expected[key],
+        actual[key],
+        `Initial value for "${key}" does not match expected value`,
+    ));
 });
 
-///////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 // Test COMPUTED PROPERTIES > SUBMIT CONTROLLER
 
 test('isTopLevelNode computed property', function(assert) {
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
     run(() => {
         const node = store.createRecord('node', {
             parent: store.createRecord('node', {
-                id: '12345'
+                id: '12345',
             }),
-            contributors: []
+            contributors: [],
         });
         assert.equal(ctrl.get('isTopLevelNode'), true);
         ctrl.set('node', node);
@@ -199,9 +198,9 @@ test('doiValid computed property', function(assert) {
 });
 test('originalPublicationDateValid computed property', function(assert) {
     const ctrl = this.subject();
-    let tomorrow = moment().add(1, 'days');
-    let today = moment();
-    let yesterday = moment().subtract(1, 'days');
+    const tomorrow = moment().add(1, 'days');
+    const today = moment();
+    const yesterday = moment().subtract(1, 'days');
     ctrl.set('basicsOriginalPublicationDate', tomorrow);
     assert.equal(ctrl.get('originalPublicationDateValid'), false);
     ctrl.set('basicsOriginalPublicationDate', today);
@@ -214,8 +213,8 @@ test('originalPublicationDateValid computed property', function(assert) {
 
 test('basicsValid computed property', function(assert) {
     const ctrl = this.subject();
-    let invalidDate = moment().add(1, 'days');
-    let validDate = moment().subtract(1, 'days');
+    const invalidDate = moment().add(1, 'days');
+    const validDate = moment().subtract(1, 'days');
 
     ctrl.set('basicsAbstract', 'too short');
     ctrl.set('basicsDOI', 'Invalid DOI');
@@ -238,12 +237,12 @@ test('authorsValid computed property', function(assert) {
 
 test('savedTitle computed property', function(assert) {
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
     run(() => {
         const preprint = store.createRecord('preprint', {});
         const preprintWithTitle = store.createRecord('preprint', {
-            'title': 'Node title'
+            title: 'Node title',
         });
         ctrl.set('model', preprint);
         assert.equal(ctrl.get('savedTitle'), false);
@@ -255,17 +254,17 @@ test('savedTitle computed property', function(assert) {
 
 test('savedFile computed property', function(assert) {
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
     run(() => {
         const file = store.createRecord('file', {
-            'id': '12345'
+            id: '12345',
         });
         const preprint = store.createRecord('preprint', {
-            primaryFile: null
+            primaryFile: null,
         });
         const preprintWithFile = store.createRecord('preprint', {
-            primaryFile: file
+            primaryFile: file,
         });
         ctrl.set('model', preprint);
         assert.equal(ctrl.get('savedFile'), false);
@@ -277,12 +276,12 @@ test('savedFile computed property', function(assert) {
 
 test('savedAbstract computed property', function(assert) {
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
     run(() => {
         const preprint = store.createRecord('preprint', {});
         const preprintWithDescription = store.createRecord('preprint', {
-            'description': 'The Best Description'
+            description: 'The Best Description',
         });
         ctrl.set('model', preprint);
         assert.equal(ctrl.get('savedAbstract'), false);
@@ -294,14 +293,14 @@ test('savedAbstract computed property', function(assert) {
 
 test('savedSubjects computed property', function(assert) {
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
     run(() => {
         const model = store.createRecord('preprint', {
-            'subjects': []
+            subjects: [],
         });
         const modelWithSubjects = store.createRecord('preprint', {
-            'subjects': [['Test subject']]
+            subjects: [['Test subject']],
         });
         ctrl.set('model', model);
         assert.equal(ctrl.get('savedSubjects'), false);
@@ -329,13 +328,13 @@ test('allSectionsValid computed property', function(assert) {
 test('preprintFileChanged computed property', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const file = store.createRecord('file', {
-            'id': '12345'
+            id: '12345',
         });
         const preprint = store.createRecord('preprint', {
-            'primaryFile': file
+            primaryFile: file,
         });
         ctrl.set('file', file);
         assert.equal(ctrl.get('preprintFileChanged'), true);
@@ -351,10 +350,10 @@ test('preprintFileChanged computed property', function(assert) {
 test('titleChanged computed property', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const preprint = store.createRecord('preprint', {
-            'title': 'Test title'
+            title: 'Test title',
         });
         ctrl.set('model', preprint);
         ctrl.set('title', 'Test title');
@@ -380,10 +379,10 @@ test('basicsAbstract computed property', function(assert) {
     const ctrl = this.subject();
     assert.equal(ctrl.get('basicsAbstract'), null);
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const preprint = store.createRecord('preprint', {
-            'description': 'A great abstract'
+            description: 'A great abstract',
         });
         ctrl.set('model', preprint);
         assert.equal(ctrl.get('basicsAbstract'), 'A great abstract');
@@ -395,10 +394,10 @@ test('abstractChanged computed property', function(assert) {
     const ctrl = this.subject();
     ctrl.set('basicsAbstract', 'Abstract with whitespace ');
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const model = store.createRecord('preprint', {
-            'description': 'A great abstract'
+            description: 'A great abstract',
         });
         ctrl.set('model', model);
         assert.equal(ctrl.get('abstractChanged'), true);
@@ -410,10 +409,10 @@ test('abstractChanged computed property', function(assert) {
 test('basicsTags computed property', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const preprint = store.createRecord('preprint', {
-            'tags': ['firstTag', 'secondTag']
+            tags: ['firstTag', 'secondTag'],
         });
         assert.equal(ctrl.get('basicsTags').length, 0);
         ctrl.set('model', preprint);
@@ -424,11 +423,11 @@ test('basicsTags computed property', function(assert) {
 test('tagsChanged computed property', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
 
     run(() => {
         const preprint = store.createRecord('preprint', {
-            'tags': ['firstTag', 'secondTag']
+            tags: ['firstTag', 'secondTag'],
         });
 
         ctrl.set('model', preprint);
@@ -442,10 +441,10 @@ test('tagsChanged computed property', function(assert) {
 test('basicsDOI', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const preprint = store.createRecord('preprint', {
-            'doi': '10.1234/hello'
+            doi: '10.1234/hello',
         });
         assert.equal(ctrl.get('basicsDOI'), null);
         ctrl.set('model', preprint);
@@ -456,10 +455,10 @@ test('basicsDOI', function(assert) {
 test('doiChanged', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const preprint = store.createRecord('preprint', {
-            'doi': '10.1234/hello'
+            doi: '10.1234/hello',
         });
         assert.equal(ctrl.get('doiChanged'), undefined);
         ctrl.set('model', preprint);
@@ -472,16 +471,16 @@ test('doiChanged', function(assert) {
 test('basicsLicense', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const license = store.createRecord('license', {
-            'name': 'No license'
+            name: 'No license',
         });
         const preprint = store.createRecord('preprint', {
-            license: license,
+            license,
             licenseRecord: {
-                'year': '2016',
-                'copyright_holders': ['Sally Ride']
+                year: '2016',
+                copyright_holders: ['Sally Ride'],
             },
         });
         ctrl.set('model', preprint);
@@ -494,22 +493,22 @@ test('basicsLicense', function(assert) {
 test('licenseChanged with model set', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const license = store.createRecord('license', {
-            'name': 'No license'
+            name: 'No license',
         });
         const preprint = store.createRecord('preprint', {
-            license: license,
+            license,
             licenseRecord: {
-                'year': '2016',
-                'copyright_holders': ['Sally Ride']
+                year: '2016',
+                copyright_holders: ['Sally Ride'],
             },
         });
         const basicsLicense = {
-            year: '2016' ,
+            year: '2016',
             copyrightHolders: 'Sally Ride',
-            licenseType: $.extend(true, {}, license)
+            licenseType: $.extend(true, {}, license),
         };
         ctrl.set('model', preprint);
         assert.equal(ctrl.get('licenseChanged'), false);
@@ -522,7 +521,7 @@ test('licenseChanged with model set', function(assert) {
         assert.equal(ctrl.get('licenseChanged'), true);
         ctrl.set('basicsLicense.year', '2016');
         assert.equal(ctrl.get('licenseChanged'), false);
-        ctrl.set('basicsLicense.licenseType', store.createRecord('license', {'name': 'MIT License'}));
+        ctrl.set('basicsLicense.licenseType', store.createRecord('license', { name: 'MIT License' }));
         assert.equal(ctrl.get('licenseChanged'), true);
     });
 });
@@ -530,15 +529,15 @@ test('licenseChanged with model set', function(assert) {
 test('licenseChanged with no model set', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const license = store.createRecord('license', {
-            'name': 'No license'
+            name: 'No license',
         });
         const basicsLicense = {
-            year: '2016' ,
+            year: '2016',
             copyrightHolders: 'Sally Ride',
-            licenseType: $.extend(true, {}, license)
+            licenseType: $.extend(true, {}, license),
         };
         // TODO is below assertion correct?
         assert.equal(ctrl.get('licenseChanged'), true);
@@ -552,8 +551,8 @@ test('basicsLicense with multiple copyrightHolders', function(assert) {
     const ctrl = this.subject();
     const model = {
         licenseRecord: {
-            copyright_holders: ['Frank', 'Everest']
-        }
+            copyright_holders: ['Frank', 'Everest'],
+        },
     };
     run(() => {
         ctrl.set('model', model);
@@ -564,11 +563,11 @@ test('basicsLicense with multiple copyrightHolders', function(assert) {
 test('basicsOriginalPublicationDate', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
-        let today = moment();
+        const today = moment();
         const preprint = store.createRecord('preprint', {
-            'originalPublicationDate': today
+            originalPublicationDate: today,
         });
         assert.equal(ctrl.get('basicsOriginalPublicationDate'), null);
         ctrl.set('model', preprint);
@@ -579,10 +578,10 @@ test('basicsOriginalPublicationDate', function(assert) {
 test('originalPublicationDateChanged', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const preprint = store.createRecord('preprint', {
-            'originalPublicationDate': moment()
+            originalPublicationDate: moment(),
         });
         assert.equal(ctrl.get('originalPublicationDateChanged'), undefined);
         ctrl.set('model', preprint);
@@ -596,22 +595,22 @@ test('discardBasics properly joins copyrightHolders', function(assert) {
     assert.expect(1);
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const model = store.createRecord('preprint', {
             tags: ['tags'],
             licenseRecord: {
-                copyright_holders: ['Frank', 'Everest']
-            }
+                copyright_holders: ['Frank', 'Everest'],
+            },
         });
         const license = store.createRecord('license', {
-            'name': 'No license'
+            name: 'No license',
         });
         model.set('license', license);
         ctrl.set('model', model);
         ctrl.send('discardBasics');
         assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest');
-   });
+    });
 });
 
 test('basicsChanged computed property', function(assert) {
@@ -633,10 +632,10 @@ test('basicsChanged computed property', function(assert) {
 test('subjectsList', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const preprint = store.createRecord('preprint', {
-            'subjects': [['Subject First Level', 'Subject Second Level']]
+            subjects: [['Subject First Level', 'Subject Second Level']],
         });
         assert.equal(ctrl.get('subjectsList').length, 0);
         ctrl.set('model', preprint);
@@ -648,11 +647,11 @@ test('subjectsList', function(assert) {
 test('disciplineReduced', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
-    const engineeringDisciplines = [[{id: '12345'},{'id':'56789'}], [{id: '12345'}], [{id: '12250'}] ];
+    const { store } = this;
+    const engineeringDisciplines = [[{ id: '12345' }, { id: '56789' }], [{ id: '12345' }], [{ id: '12250' }]];
     run(() => {
         const preprint = store.createRecord('preprint', {
-            'subjects': engineeringDisciplines
+            subjects: engineeringDisciplines,
         });
         ctrl.set('model', preprint);
         assert.equal(ctrl.get('disciplineReduced').length, 3);
@@ -665,13 +664,13 @@ test('disciplineReduced', function(assert) {
 test('isAdmin', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const node = store.createRecord('node', {
-            'currentUserPermissions': 'administrator'
+            currentUserPermissions: 'administrator',
         });
         const readNode = store.createRecord('node', {
-            'currentUserPermissions': 'read'
+            currentUserPermissions: 'read',
         });
         ctrl.set('node', node);
         assert.equal(ctrl.get('isAdmin'), true);
@@ -683,18 +682,18 @@ test('isAdmin', function(assert) {
 test('canEdit', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const node = store.createRecord('node', {
-            'currentUserPermissions': 'administrator',
-            'registration': true
+            currentUserPermissions: 'administrator',
+            registration: true,
         });
         ctrl.set('node', node);
         assert.equal(ctrl.get('canEdit'), false);
     });
 });
 
-///////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 // Test CONTROLLER ACTIONS > SUBMIT CONTROLLER
 test('editLicense sets basicsLicense and licenseValid', function(assert) {
     const ctrl = this.subject();
@@ -724,8 +723,8 @@ test('next opens next panel and flashes changes saved', function(assert) {
 
     run(() => {
         panels.setProperties({
-            Discipline: EmberObject.create({isOpen: true}),
-            Basics: EmberObject.create({isOpen: false})
+            Discipline: EmberObject.create({ isOpen: true }),
+            Basics: EmberObject.create({ isOpen: false }),
         });
 
         assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
@@ -742,8 +741,8 @@ test('nextUploadSection closes current panel and opens next panel', function(ass
     // TODO not really testing anything except the stub
     const ctrl = this.subject();
     panels.setProperties({
-        Discipline: EmberObject.create({isOpen: true}),
-        Basics: EmberObject.create({isOpen: false})
+        Discipline: EmberObject.create({ isOpen: true }),
+        Basics: EmberObject.create({ isOpen: false }),
     });
     ctrl.send('nextUploadSection', 'Discipline', 'Basics');
     assert.equal(panels.get('Discipline.isOpen'), false);
@@ -794,17 +793,16 @@ skip('existingNodeExistingFile', function(assert) {
     // TODO Many actions get called by this action. Sending POST to localhost:7357/nodeTags
     // Getting Assertion Failed: You can only unload a record which is not inFlight
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     const node = store.createRecord('node', {
         title: 'hello',
         // tags: ['first tag'],
-        description: 'The best abstract'
+        description: 'The best abstract',
     });
 
     run(() => {
-
         ctrl.set('nodeTitle', 'New title');
         ctrl.set('node', node);
 
@@ -822,13 +820,13 @@ skip('createComponentCopyFile', function() {
     // TODO - same error with You can only unload a record which is not inFlight.
     // Assert that node has a child
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
     run(() => {
         const node = store.createRecord('node', {
             title: 'hello',
             tags: ['first tag'],
-            description: 'The best abstract'
+            description: 'The best abstract',
         });
         ctrl.set('nodeTitle', 'New title');
         ctrl.set('node', node);
@@ -837,11 +835,11 @@ skip('createComponentCopyFile', function() {
 });
 
 skip('resumeAbandonedPreprint', function() {
-    //TODO class startPreprint, which haven't figured out how to test yet
+    // TODO class startPreprint, which haven't figured out how to test yet
 });
 
 skip('startPreprint', function() {
-    //TODO
+    // TODO
 });
 
 test('selectExistingFile', function(assert) {
@@ -853,14 +851,14 @@ test('selectExistingFile', function(assert) {
 
 test('discardUploadChanges', function(assert) {
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     run(() => {
         const file = store.createRecord('file', {
-            'id': '12345'
+            id: '12345',
         });
         const preprint = store.createRecord('preprint', {
-            'primaryFile': file,
-            'title': 'hello',
+            primaryFile: file,
+            title: 'hello',
         });
         const ctrl = this.subject();
 
@@ -880,12 +878,12 @@ test('discardUploadChanges', function(assert) {
 test('clearDownstreamFields action - belowConvertOrCopy', function(assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const preprint = store.createRecord('preprint', {
-            title: 'hello'
+            title: 'hello',
         });
 
         ctrl.set('model', preprint);
@@ -907,12 +905,12 @@ test('clearDownstreamFields action - belowConvertOrCopy', function(assert) {
 test('clearDownstreamFields action - belowFile', function(assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const preprint = store.createRecord('preprint', {
-            title: 'hello'
+            title: 'hello',
         });
 
         ctrl.set('model', preprint);
@@ -934,12 +932,12 @@ test('clearDownstreamFields action - belowFile', function(assert) {
 test('clearDownstreamFields action - belowNode', function(assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const preprint = store.createRecord('preprint', {
-            title: 'hello'
+            title: 'hello',
         });
 
         ctrl.set('model', preprint);
@@ -961,12 +959,12 @@ test('clearDownstreamFields action - belowNode', function(assert) {
 test('clearDownstreamFields action - allUpload', function(assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const preprint = store.createRecord('preprint', {
-            title: 'hello'
+            title: 'hello',
         });
 
         ctrl.set('model', preprint);
@@ -987,7 +985,7 @@ test('clearDownstreamFields action - allUpload', function(assert) {
 test('discardBasics', function(assert) {
     // assert.expect(4);
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
     run(() => {
         const preprint = store.createRecord('preprint', {
@@ -996,11 +994,11 @@ test('discardBasics', function(assert) {
             description: 'The best abstract',
             doi: '10.1234/test_doi',
             licenseRecord: {
-                'year': '2016',
-                'copyright_holders': ['Amelia Earhart']
+                year: '2016',
+                copyright_holders: ['Amelia Earhart'],
             },
             license: 'No License',
-            originalPublicationDate: moment()
+            originalPublicationDate: moment(),
         });
 
         ctrl.set('model', preprint);
@@ -1028,7 +1026,7 @@ test('stripDOI', function(assert) {
 
 skip('saveBasics', function(assert) {
     this.inject.service('store');
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
     run(() => {
         const preprint = store.createRecord('preprint', {
@@ -1036,7 +1034,7 @@ skip('saveBasics', function(assert) {
             tags: ['tags'],
             description: 'This is an abstract.',
             primaryFile: 'Test file',
-            'doi': '10.1234/test'
+            doi: '10.1234/test',
         });
         ctrl.set('model', preprint);
         ctrl.send('saveBasics');
@@ -1062,19 +1060,19 @@ test('removeTag', function(assert) {
 });
 
 skip('discardSubjects', function() {
-    //TODO
+    // TODO
 });
 
 skip('saveSubjects', function() {
-    //TODO
+    // TODO
 });
 
 skip('findContributors', function() {
-    //TODO
+    // TODO
 });
 
 skip('highlightSuccessOrFailure', function() {
-    //TODO
+    // TODO
 });
 
 test('clickSubmit', function(assert) {
@@ -1099,7 +1097,7 @@ test('clickSubmit', function(assert) {
 });
 
 skip('savePreprint', function() {
-    //TODO
+    // TODO
 });
 
 test('selectProvider', function(assert) {
@@ -1114,7 +1112,6 @@ test('selectProvider', function(assert) {
 
         assert.strictEqual(ctrl.get('providerChanged'), true);
     });
-
 });
 
 test('cancel', function(assert) {

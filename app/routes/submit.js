@@ -27,15 +27,15 @@ export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticate
         // Store the empty preprint to be created on the model hook for page. Node will be fetched
         //  internally during submission process.
         return this.get('store').createRecord('preprint', {
-            subjects: []
+            subjects: [],
         });
     },
     afterModel() {
-        return this.get('theme.provider').then(provider => {
+        return this.get('theme.provider').then((provider) => {
             if (!provider.get('allowSubmissions')) {
                 this.replaceWith('page-not-found');
             }
-        })
+        });
     },
     setupController(controller, model) {
         this.setupSubmitController(controller, model);
@@ -45,5 +45,5 @@ export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticate
         // If true, shows a confirmation message when leaving the page
         // True if the user already created/chosen a project node
         return this.controller.get('hasDirtyFields');
-    }
+    },
 });

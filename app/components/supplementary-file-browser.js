@@ -105,10 +105,6 @@ export default Component.extend(Analytics, {
             }
         }
     }),
-    fileDownloadURL: computed('selectedFile', function() {
-        return fileDownloadPath(this.get('selectedFile'), this.get('node'));
-    }),
-
     init() {
         this._super(...arguments);
         this.__files();

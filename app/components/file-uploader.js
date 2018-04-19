@@ -61,19 +61,15 @@ import Analytics from 'ember-osf/mixins/analytics';
  * @class file-uploader
  */
 export default Component.extend(Analytics, {
-    State,
     i18n: service(),
     store: service(),
     toast: service(),
     panelActions: service('panelActions'),
 
+    State,
     url: null,
     node: null,
     callback: null,
-    fileVersion: computed('osfFile', function() {
-        // Helps communicate to user that there may be a pending, unsaved version
-        return this.get('osfFile.currentVersion') || 1;
-    }),
     /* eslint-disable-next-line ember/avoid-leaking-state-in-components */
     dropzoneOptions: {
         maxFiles: 1,
@@ -81,6 +77,10 @@ export default Component.extend(Analytics, {
         uploadMultiple: false,
     },
 
+    fileVersion: computed('osfFile', function() {
+        // Helps communicate to user that there may be a pending, unsaved version
+        return this.get('osfFile.currentVersion') || 1;
+    }),
     init() {
         this._super(...arguments);
         this.set('callback', null);
@@ -96,7 +96,7 @@ export default Component.extend(Analytics, {
                     .trackEvent({
                         category: 'div',
                         action: 'click',
-                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.panelName} section`
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.panelName} section`,
                     });
                 this.get('panelActions').open(panelName);
                 this.set('currentPanelName', panelName);

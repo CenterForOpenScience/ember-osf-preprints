@@ -26,7 +26,8 @@
   },
   "devDependencies": {
     "@centerforopenscience/ember-osf": "https://github.com/centerforopenscience/ember-osf#release/next-interfaces",
-    "@centerforopenscience/osf-style": "1.5.1",
+    "@centerforopenscience/eslint-config": "^2.0.0",
+    "@centerforopenscience/osf-style": "1.7.0",
     "broccoli-asset-rev": "^2.4.5",
     "coveralls": "2.11.16",
     "ember-ajax": "^2.0.1",
@@ -94,7 +95,6 @@
   },
   "homepage": "https://github.com/CenterForOpenScience/ember-osf-preprints#readme",
   "dependencies": {
-    "@centerforopenscience/osf-style": "1.5.1",
     "autoprefixer": "^7.1.2",
     "bootstrap-daterangepicker": "^2.1.23",
     "bootstrap-sass": "^3.3.7",

@@ -54,30 +54,15 @@ export default Component.extend({
     classNames: ['preprint-status-component'],
     classNameBindings: ['getClassName'],
 
+    latestAction: null,
+    reviewerComment: computed.alias('latestAction.comment'),
+    reviewerName: computed.alias('latestAction.creator.fullName'),
+
     getClassName: computed('submission.{provider.reviewsWorkflow,submission.reviewsState}', function() {
         return this.get('submission.reviewsState') === PENDING ?
             CLASS_NAMES[this.get('submission.provider.reviewsWorkflow')] :
             CLASS_NAMES[this.get('submission.reviewsState')];
     }),
-
-    didReceiveAttrs() {
-        if (this.get('submission.provider.reviewsCommentsPrivate')) {
-            this.set('latestAction', null);
-        } else {
-            const submissionActions = this.get('submission.reviewActions');
-            if (submissionActions) {
-                submissionActions.then((reviewActions) => {
-                    if (reviewActions.length) {
-                        this.set('latestAction', reviewActions.get('firstObject'));
-                    } else {
-                        this.set('latestAction', null);
-                    }
-                });
-            } else {
-                this.set('latestAction', null);
-            }
-        }
-    },
 
     latestAction: null,
     reviewerComment: alias('latestAction.comment'),
@@ -112,5 +97,24 @@ export default Component.extend({
     workflow: computed('submission.provider.reviewsWorkflow', function () {
         return WORKFLOW[this.get('submission.provider.reviewsWorkflow')];
     }),
+
+    didReceiveAttrs() {
+        if (this.get('submission.provider.reviewsCommentsPrivate')) {
+            this.set('latestAction', null);
+        } else {
+            const submissionActions = this.get('submission.reviewActions');
+            if (submissionActions) {
+                submissionActions.then((reviewActions) => {
+                    if (reviewActions.length) {
+                        this.set('latestAction', reviewActions.get('firstObject'));
+                    } else {
+                        this.set('latestAction', null);
+                    }
+                });
+            } else {
+                this.set('latestAction', null);
+            }
+        }
+    },
 
 });

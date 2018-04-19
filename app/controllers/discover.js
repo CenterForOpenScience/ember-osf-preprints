@@ -20,18 +20,47 @@ import Analytics from 'ember-osf/mixins/analytics';
 export default Controller.extend(Analytics, {
     i18n: service(),
     theme: service(),
+    // q query param.  Must be passed to component, so can be reflected in URL
+    queryParams: ['page', 'q', 'sources', 'tags', 'type', 'start', 'end', 'subject', 'provider'],
     activeFilters: { providers: [], subjects: [] },
+    consumingService: 'preprints',
+    // Consuming service - preprints here
+    detailRoute: 'content',
+    end: '',
+    filterMap: { // Map active filters to facet names expected by SHARE
+        providers: 'sources',
+        subjects: 'subjects',
+    },
+    // TODO: Add a conversion from shareSource to provider names here if desired
+    filterReplace: { // Map filter names for front-end display
+        'Open Science Framework': 'OSF',
+        'Cognitive Sciences ePrint Archive': 'Cogprints',
+        OSF: 'OSF Preprints',
+        'Research Papers in Economics': 'RePEc',
+    },
+    page: 1,
+    // Page query param. Must be passed to component, so can be reflected in URL
+    provider: '',
+    // Provider query param. Must be passed to component, so can be reflected in URL
+    q: '',
+    sources: '',
+    // Sources query param. Must be passed to component, so can be reflected in the URL
+    start: '',
+    // Start query param. Must be passed to component, so can be reflected in the URL
+    subject: '',
+    // Subject query param.  Must be passed to component, so can be reflected in URL
+    tags: '',
+    type: '',
     additionalProviders: computed('themeProvider', function() { // Do additionalProviders exist?
         // for now, using this property to alter many pieces of the landing/discover page
         return (this.get('themeProvider.additionalProviders') || []).length > 1;
     }),
-    consumingService: 'preprints', // Consuming service - preprints here
-    detailRoute: 'content', // Name of detail route for this application
+    // Name of detail route for this application
     discoverHeader: computed('additionalProviders', function() { // Header for preprints discover page
         // If additionalProviders, use more generic Repository Search page title
         return this.get('additionalProviders') ? 'discover.search.heading_repository_search' : 'discover.search.heading';
     }),
-    end: '', // End query param. Must be passed to component, so can be reflected in the URL
+    // End query param. Must be passed to component, so can be reflected in the URL
     externalProviders: computed('model', function() {
         return this.get('model').filter(item => item.id !== 'osf');
     }),
@@ -50,17 +79,6 @@ export default Controller.extend(Analytics, {
             ];
         }
     }),
-    filterMap: { // Map active filters to facet names expected by SHARE
-        providers: 'sources',
-        subjects: 'subjects',
-    },
-    // TODO: Add a conversion from shareSource to provider names here if desired
-    filterReplace: { // Map filter names for front-end display
-        'Open Science Framework': 'OSF',
-        'Cognitive Sciences ePrint Archive': 'Cogprints',
-        OSF: 'OSF Preprints',
-        'Research Papers in Economics': 'RePEc',
-    },
     lockedParams: computed('additionalProviders', function() { // Query parameters that cannot be changed.
         // if additionalProviders, open up search results to all types of results instead of just preprints.
         return this.get('additionalProviders') ? {} : {
@@ -72,10 +90,7 @@ export default Controller.extend(Analytics, {
             },
         };
     }),
-    page: 1, // Page query param. Must be passed to component, so can be reflected in URL
-    provider: '', // Provider query param. Must be passed to component, so can be reflected in URL
-    q: '', // q query param.  Must be passed to component, so can be reflected in URL
-    queryParams: ['page', 'q', 'sources', 'tags', 'type', 'start', 'end', 'subject', 'provider'], // Pass in the list of queryParams for this component
+    // Pass in the list of queryParams for this component
     searchPlaceholder: computed('additionalProviders', function() { // Search bar placeholder
         return this.get('additionalProviders') ? 'discover.search.repository_placeholder' : 'discover.search.placeholder';
     }),
@@ -96,10 +111,7 @@ export default Controller.extend(Analytics, {
             sortBy: '-date_updated',
         }];
     }),
-    sources: '', // Sources query param. Must be passed to component, so can be reflected in the URL
-    start: '', // Start query param. Must be passed to component, so can be reflected in the URL
-    subject: '', // Subject query param.  Must be passed to component, so can be reflected in URL
-    tags: '', // Tags query param.  Must be passed to component, so can be reflected in URL
+    // Tags query param.  Must be passed to component, so can be reflected in URL
     themeProvider: computed('model', function() { // Pulls the preprint provider from the already loaded model
         let themeProvider = null;
         this.get('model').forEach((provider) => {
@@ -109,8 +121,6 @@ export default Controller.extend(Analytics, {
         });
         return themeProvider;
     }),
-    type: '', // Type query param. Must be passed to component, so can be reflected in URL
-    whiteListedProviders: config.whiteListedProviders,
     _clearFilters() {
         this.set('activeFilters', {
             providers: [],
@@ -122,4 +132,6 @@ export default Controller.extend(Analytics, {
     _clearQueryString() {
         this.set('q', '');
     },
+    // Type query param. Must be passed to component, so can be reflected in URL
+    whiteListedProviders: config.whiteListedProviders,
 });

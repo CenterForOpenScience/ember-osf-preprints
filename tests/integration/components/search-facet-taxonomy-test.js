@@ -31,27 +31,27 @@ const taxonomiesQuery = () => resolve(ArrayProxy.create({
     ]),
 }));
 
-//Stub location service
+// Stub location service
 const themeStub = Service.extend({
     isProvider: true,
     provider: resolve({
         name: 'OSF',
         queryHasMany: taxonomiesQuery,
-    })
+    }),
 });
 
 moduleForComponent('search-facet-taxonomy', 'Integration | Component | search facet taxonomy', {
     integration: true,
-    beforeEach: function() {
+    beforeEach() {
         this.register('service:theme', themeStub);
         this.inject.service('theme');
-        this.set('facet', {key: 'subjects', title: 'Subject', component: 'search-facet-taxonomy'});
+        this.set('facet', { key: 'subjects', title: 'Subject', component: 'search-facet-taxonomy' });
         this.set('key', 'subjects');
-        let noop = () => {};
+        const noop = () => {};
         this.set('noop', noop);
-        this.set('activeFilters', {providers: [], subjects: []});
-        this.set('filterReplace', {'Open Science Framework': 'OSF'});
-    }
+        this.set('activeFilters', { providers: [], subjects: [] });
+        this.set('filterReplace', { 'Open Science Framework': 'OSF' });
+    },
 });
 
 test('One-level hierarchy taxonomies', function(assert) {
@@ -61,7 +61,7 @@ test('One-level hierarchy taxonomies', function(assert) {
         updateFilters=(action noop)
         activeFilters=activeFilters
         filterReplace=filterReplace
-    }}`)
+    }}`);
     assert.equal(this.$('label')[0].innerText.trim(), 'Arts and Humanities');
     assert.equal(this.$('label')[1].innerText.trim(), 'Education');
     assert.equal(this.$('label')[2].innerText.trim(), 'Filmography');

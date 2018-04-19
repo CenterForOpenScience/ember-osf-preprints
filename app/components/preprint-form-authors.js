@@ -46,6 +46,10 @@ export default CpPanelBodyComponent.extend(Analytics, {
     // Permissions labels for dropdown
     permissionOptions: permissionSelector,
     parentContributorsAdded: false,
+    addState: 'emptyView',
+    // There are 3 view states on left side of Authors panel. Default state just shows search bar.
+    query: null,
+    valid: computed.alias('newContributorId'),
     // Returns list of user ids associated with current node
     currentContributorIds: computed('contributors', function() {
         const contribIds = [];
@@ -66,8 +70,6 @@ export default CpPanelBodyComponent.extend(Analytics, {
             return 0;
         }
     }),
-    addState: 'emptyView', // There are 3 view states on left side of Authors panel. Default state just shows search bar.
-    query: null,
     // Total contributor search results
     totalSearchResults: computed('searchResults.[]', function() {
         const searchResults = this.get('searchResults');
@@ -82,6 +84,35 @@ export default CpPanelBodyComponent.extend(Analytics, {
             return searchResults.meta.total_pages;
         }
     }),
+    // TODO find alternative to jquery selectors. Temporary popover content for authors page.
+    didInsertElement() {
+        this.$('#permissions-popover').popover({
+            container: 'body',
+            content: '<dl>' +
+                '<dt>Read</dt>' +
+                    '<dd><ul><li>View preprint</li></ul></dd>' +
+                '<dt>Read + Write</dt>' +
+                    '<dd><ul><li>Read privileges</li> ' +
+                        '<li>Add and configure preprint</li> ' +
+                        '<li>Add and edit content</li></ul></dd>' +
+                '<dt>Administrator</dt><dd><ul>' +
+                    '<li>Read and write privileges</li>' +
+                    '<li>Manage authors</li>' +
+                    '<li>Public-private settings</li></ul></dd>' +
+                '</dl>',
+        });
+        this.$('#bibliographic-popover').popover({
+            container: 'body',
+            content: 'Only checked authors will be included in preprint citations. ' +
+            'Authors not in the citation can read and modify the preprint as normal.',
+        });
+        this.$('#author-popover').popover({
+            container: 'body',
+            content: 'Preprints must have at least one registered administrator and one author showing in the citation at all times.  ' +
+            'A registered administrator is a user who has both confirmed their account and has administrator privileges.',
+        });
+    },
+
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
@@ -286,35 +317,6 @@ export default CpPanelBodyComponent.extend(Analytics, {
             }
         },
     },
-    // TODO find alternative to jquery selectors. Temporary popover content for authors page.
-    didInsertElement() {
-        this.$('#permissions-popover').popover({
-            container: 'body',
-            content: '<dl>' +
-                '<dt>Read</dt>' +
-                    '<dd><ul><li>View preprint</li></ul></dd>' +
-                '<dt>Read + Write</dt>' +
-                    '<dd><ul><li>Read privileges</li> ' +
-                        '<li>Add and configure preprint</li> ' +
-                        '<li>Add and edit content</li></ul></dd>' +
-                '<dt>Administrator</dt><dd><ul>' +
-                    '<li>Read and write privileges</li>' +
-                    '<li>Manage authors</li>' +
-                    '<li>Public-private settings</li></ul></dd>' +
-                '</dl>',
-        });
-        this.$('#bibliographic-popover').popover({
-            container: 'body',
-            content: 'Only checked authors will be included in preprint citations. ' +
-            'Authors not in the citation can read and modify the preprint as normal.',
-        });
-        this.$('#author-popover').popover({
-            container: 'body',
-            content: 'Preprints must have at least one registered administrator and one author showing in the citation at all times.  ' +
-            'A registered administrator is a user who has both confirmed their account and has administrator privileges.',
-        });
-    },
-
     /* If user removes their own admin permissions, many things on the page must become
     disabled.  Changing the isAdmin flag to false will remove many of the options
     on the page. */

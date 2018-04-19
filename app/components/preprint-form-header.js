@@ -29,8 +29,8 @@ export default CpPanelToggleComponent.extend({
     showValidationIndicator: true,
     valid: null,
     isValidationActive: false,
-    providerAssetsURL: config.providerAssetsURL,
-
+    // CSS controls icon color and display. If neither valid nor invalid state applies, don't show icon.
+    classNameBindings: ['enabled::disabled', 'valid:valid', 'invalid:invalid', 'isValidationActive::not-validated'],
     // Calculated properties
     invalid: computed('valid', 'isValidationActive', function() {
         // If the user hasn't even opened the panel yet, don't run the validation check
@@ -41,6 +41,6 @@ export default CpPanelToggleComponent.extend({
             return false;
         }
     }),
-    // CSS controls icon color and display. If neither valid nor invalid state applies, don't show icon.
-    classNameBindings: ['enabled::disabled', 'valid:valid', 'invalid:invalid', 'isValidationActive::not-validated'],
+    providerAssetsURL: config.providerAssetsURL,
+
 });

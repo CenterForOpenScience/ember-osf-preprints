@@ -1,5 +1,4 @@
-import EmberObject from '@ember/object';
-import { get } from '@ember/object';
+import EmberObject, { get } from '@ember/object';
 import { merge } from '@ember/polyfills';
 import I18nService from 'ember-i18n/services/i18n';
 

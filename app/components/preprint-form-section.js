@@ -18,7 +18,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  * {{/preprint-form-section}}
  * ```
  * @class preprint-form-section
- **/
+ * */
 
 export default CpPanelComponent.extend(Analytics, {
     i18n: service(),
@@ -67,7 +67,7 @@ export default CpPanelComponent.extend(Analytics, {
                     .trackEvent({
                         category: 'div',
                         action: 'click',
-                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.name} section`
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.name} section`,
                     });
                 this._super(...arguments);
             } else {

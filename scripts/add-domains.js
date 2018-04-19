@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
-/* eslint-disable */    
+/* eslint-disable eslint-comments/no-use, prefer-promise-reject-errors, operator-assignment */
+
 /* eslint-env node */
 /* eslint no-console: ["error", { allow: ["error", "info", "warn"] }] */
 
+/* eslint-enable eslint-comments/no-use */
 const fs = require('fs');
 const http = require('http');
 
@@ -31,7 +33,9 @@ new Promise((resolve, reject) => {
         res.setEncoding('utf8');
         let rawData = '';
 
-        res.on('data', chunk => rawData += chunk);
+        res.on('data', (chunk) => {
+            rawData = rawData + chunk;
+        });
 
         res.on('end', () => {
             try {
@@ -72,3 +76,5 @@ new Promise((resolve, reject) => {
         fs.writeFileSync(hostsFileName, resultFile, { encoding: 'utf8' });
     })
     .catch(err => console.error(err, '\n\nAre you sure that the API server is running locally on port 8000?'));
+
+/* eslint-enable prefer-promise-reject-errors, operator-assignment */

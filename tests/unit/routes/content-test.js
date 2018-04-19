@@ -5,11 +5,11 @@ moduleFor('route:content', 'Unit | Route | content', {
     needs: [
         'service:metrics',
         'service:theme',
-        'service:session'
-    ]
+        'service:session',
+    ],
 });
 
 test('it exists', function(assert) {
-    let route = this.subject();
+    const route = this.subject();
     assert.ok(route);
 });

@@ -25,9 +25,15 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 export default Component.extend(Analytics, {
     _resizeListener: null,
-    providers: A(), // Pass in preprint providers
-    itemsPerSlide: 5, // Default
-    lightLogo: true, // Light logos by default, for Index page.
+    // Pass in preprint providers
+    itemsPerSlide: 5,
+    // Default
+    lightLogo: true,
+    selectable: false,
+    // Not selectable by default
+    activeProvider: undefined,
+    lockedMessage: 'Locked',
+    providers: A(), // Light logos by default, for Index page.
     editedProviders: computed('providers', function() {
         const newProviders = A();
         for (const provider of this.get('providers')) {
@@ -37,9 +43,6 @@ export default Component.extend(Analytics, {
         }
         return newProviders;
     }),
-    selectable: false, // Not selectable by default
-    activeProvider: undefined,
-    lockedMessage: 'Locked',
     numProviders: computed('editedProviders', function() {
         return this.get('editedProviders').length;
     }),
@@ -80,6 +83,26 @@ export default Component.extend(Analytics, {
         }
         return offset;
     }),
+    init() {
+        // Set resize listener so number of providers per slide can be changed
+        this._super(...arguments);
+        this.set('originalItemsPerSlide', this.get('itemsPerSlide'));
+        this.setSlideItems();
+        this._resizeListener = run.bind(this, this.setSlideItems);
+        $(window).on('resize', this._resizeListener);
+    },
+    didReceiveAttrs() {
+        this.setSlideItems();
+    },
+    didInsertElement () {
+        $('.carousel').carousel();
+    },
+    actions: {
+        selectProvider(provider) {
+            this.set('activeProvider', provider);
+            this.attrs.selectAction(provider);
+        },
+    },
     setSlideItems() {
         if (this.get('selectable')) {
             if (window.innerWidth < 320) {
@@ -98,30 +121,10 @@ export default Component.extend(Analytics, {
             this.set('itemsPerSlide', this.get('originalItemsPerSlide'));
         }
     },
-    didInsertElement () {
-        $('.carousel').carousel();
-    },
-    init() {
-        // Set resize listener so number of providers per slide can be changed
-        this._super(...arguments);
-        this.set('originalItemsPerSlide', this.get('itemsPerSlide'));
-        this.setSlideItems();
-        this._resizeListener = run.bind(this, this.setSlideItems);
-        $(window).on('resize', this._resizeListener);
-    },
-    didReceiveAttrs() {
-        this.setSlideItems();
-    },
     willDestroy() {
         // Unbinds _resizeListener
         if (this._resizeListener) {
             $(window).off('resize', this._resizeListener);
         }
-    },
-    actions: {
-        selectProvider(provider) {
-            this.set('activeProvider', provider);
-            this.attrs.selectAction(provider);
-        },
     },
 });
