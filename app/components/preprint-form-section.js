@@ -1,5 +1,5 @@
 import { inject as service } from '@ember/service';
-import { get, observer } from '@ember/object';
+import { observer } from '@ember/object';
 import { on } from '@ember/object/evented';
 import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -88,7 +88,7 @@ export default CpPanelComponent.extend(Analytics, {
         if (!this.get('isOpen')) {
             if (this.get('allowOpen')) {
                 // Crude mechanism to prevent opening a panel if conditions are not met
-                get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'div',
                         action: 'click',

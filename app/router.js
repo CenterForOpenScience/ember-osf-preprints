@@ -1,5 +1,4 @@
-import { get } from '@ember/object';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import { run } from '@ember/runloop';
 import EmberRouter from '@ember/routing/router';
 
@@ -8,8 +7,8 @@ import config from 'ember-get-config';
 const Router = EmberRouter.extend({
     location: config.locationType,
     rootURL: config.rootURL,
-    metrics: inject(),
-    theme: inject(),
+    metrics: service(),
+    theme: service(),
 
     didTransition() {
         this._super(...arguments);
@@ -21,7 +20,7 @@ const Router = EmberRouter.extend({
             const page = document.location.pathname;
             const title = this.getWithDefault('currentRouteName', 'unknown');
 
-            get(this, 'metrics').trackPage({ page, title });
+            this.get('metrics').trackPage({ page, title });
             this.set('theme.currentLocation', window.location.href);
         });
     }

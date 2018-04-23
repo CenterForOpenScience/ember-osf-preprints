@@ -1,6 +1,5 @@
 import { computed } from '@ember/object';
-import { observer } from '@ember/object';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import Service from '@ember/service';
 import $ from 'jquery';
 import config from 'ember-get-config';
@@ -18,9 +17,9 @@ import buildProviderAssetPath from '../utils/build-provider-asset-path';
  * @extends Service
  */
 export default Service.extend({
-    store: inject(),
-    session: inject(),
-    headTagsService: inject('head-tags'),
+    store: service(),
+    session: service(),
+    headTagsService: service('head-tags'),
 
     // If we're using a provider domain
     isDomain: window.isProviderDomain,
@@ -125,7 +124,7 @@ export default Service.extend({
             }
         }]
     }),
-    idChanged: observer('id', function() {
+    idChanged: computed('id', function() {
         this.get('headTagsService').collectHeadTags();
     }),
 });

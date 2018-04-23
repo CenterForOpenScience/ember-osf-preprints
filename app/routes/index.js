@@ -1,5 +1,5 @@
-import { hash } from 'rsvp';
-import { inject } from '@ember/service';
+import RSVP from 'rsvp';
+import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import ResetScrollMixin from '../mixins/reset-scroll';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -14,10 +14,10 @@ import Analytics from 'ember-osf/mixins/analytics';
  * @class Index Route Handler
  */
 export default Route.extend(Analytics, ResetScrollMixin, {
-    store: inject(),
-    theme: inject(),
+    store: service(),
+    theme: service(),
     model() {
-        return hash({
+        return RSVP.hash({
             taxonomies: this.get('theme.provider')
                 .then(provider => provider
                     .queryHasMany('highlightedTaxonomies', {

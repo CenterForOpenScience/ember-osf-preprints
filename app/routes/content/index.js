@@ -1,7 +1,6 @@
 import { A } from '@ember/array';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import { run } from '@ember/runloop';
-import { isArray } from '@ember/array';
 import Route from '@ember/routing/route';
 import $ from 'jquery';
 import ResetScrollMixin from '../../mixins/reset-scroll';
@@ -35,9 +34,9 @@ const handlers = new Map([
  * @class Content Route Handler
  */
 export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
-    theme: inject(),
-    headTagsService: inject('head-tags'),
-    currentUser: inject('currentUser'),
+    theme: service(),
+    headTagsService: service('head-tags'),
+    currentUser: service('currentUser'),
 
     afterModel(preprint) {
         const {location: {origin}} = window;
@@ -247,7 +246,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         });
 
         run.scheduleOnce('afterRender', this, function() {
-            MathJax.Hub.Queue(['Typeset', MathJax.Hub, [$('.abstract')[0], $('#preprintTitle')[0]]]);  // jshint ignore:line
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, [$('.abstract')[0], $('#preprintTitle')[0]]]);
         });
 
         return this._super(...arguments);
@@ -256,7 +255,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
     actions: {
         error(error) {
             // Handle API Errors
-            if (error && error.errors && isArray(error.errors)) {
+            if (error && error.errors && Array.isArray(error.errors)) {
                 const {detail} = error.errors[0];
                 const page = handlers.get(detail) || 'page-not-found';
 

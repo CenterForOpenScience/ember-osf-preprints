@@ -1,6 +1,5 @@
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import $ from 'jquery';
-import { get } from '@ember/object';
 import Component from '@ember/component';
 
 /**
@@ -20,13 +19,13 @@ import Component from '@ember/component';
  * @class search-preprints
  */
 export default Component.extend({
-    metrics: inject(),
-    theme: inject(),
+    metrics: service(),
+    theme: service(),
     actions: {
         search() {
             let query = $.trim(this.$('#searchBox').val());
             this.sendAction('search', query);
-            get(this, 'metrics').trackEvent({
+            this.get('metrics').trackEvent({
                 category: 'button',
                 action: 'click',
                 label: 'Index - Search',

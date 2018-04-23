@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
@@ -19,7 +19,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  * @class additional-provider-list
  */
 export default Component.extend(Analytics, {
-    theme: inject(),
+    theme: service(),
     sortedList: computed('additionalProviders', function() {
         if (!this.get('additionalProviders')) {
             return;

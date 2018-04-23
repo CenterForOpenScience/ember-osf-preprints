@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import Analytics from 'ember-osf/mixins/analytics';
-import { get } from '@ember/object';
+
 /**
  * @module ember-preprints
  * @submodule components
@@ -35,7 +35,7 @@ export default Component.extend(Analytics, {
             this.set('titleValid', false);
             this.set('title', null);
             this.attrs.nextUploadSection('organize', 'finalizeUpload');
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -51,7 +51,7 @@ export default Component.extend(Analytics, {
                 this.set('title', this.get('node.title'));
                 this.set('titleValid', true);
             }
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -63,7 +63,7 @@ export default Component.extend(Analytics, {
             // as edits to the preprint will edit the project.
             this.set('convertProjectConfirmed', true);
             this.attrs.nextUploadSection('organize', 'finalizeUpload');
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',

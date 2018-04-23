@@ -1,4 +1,4 @@
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import Analytics from 'ember-osf/mixins/analytics';
 import OSFAgnosticAuthRouteMixin from 'ember-osf/mixins/osf-agnostic-auth-route';
@@ -12,9 +12,9 @@ import OSFAgnosticAuthRouteMixin from 'ember-osf/mixins/osf-agnostic-auth-route'
  * @class Application Route Handler
  */
 export default Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
-    i18n: inject(),
-    store: inject(),
-    theme: inject(),
+    i18n: service(),
+    store: service(),
+    theme: service(),
     headTags: function() {
         return this.get('theme.headTags');
     },

@@ -1,4 +1,4 @@
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import Mixin from '@ember/object/mixin';
 
 /**
@@ -14,8 +14,8 @@ import Mixin from '@ember/object/mixin';
  */
 
 export default Mixin.create({
-    theme: inject(),
-    panelActions: inject('panelActions'),
+    theme: service(),
+    panelActions: service('panelActions'),
 
     setupSubmitController(controller, model) {
         //setupController method that will be run for both Add and Edit modes for submit form.

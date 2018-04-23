@@ -1,7 +1,5 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-import { observer } from '@ember/object';
-import { get } from '@ember/object';
 import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
 import fileDownloadPath from '../utils/file-download-path';
@@ -63,7 +61,7 @@ export default Component.extend(Analytics, {
             });
     }.observes('preprint'),
 
-    selectedFileChanged: observer('selectedFile', function() {
+    selectedFileChanged: computed('selectedFile', function() {
         const eventData = {
             file_views: {
                 preprint: {
@@ -77,21 +75,21 @@ export default Component.extend(Analytics, {
                 }
             }
         };
-        get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', {
+        this.get('metrics').invoke('trackSpecificCollection', 'Keen', {
             collection: 'preprint-file-views',
             eventData: eventData,
             node: this.get('node'),
         });
     }),
 
-    _chosenFile: observer('chosenFile', 'indexes', function() {
+    _chosenFile: computed('chosenFile', 'indexes', function() {
         let fid = this.get('chosenFile');
         let index = this.get('indexes').indexOf(fid);
         if (fid && index !== -1) {
             this.set('selectedFile', this.get('files')[index]);
         }
     }),
-    _moveIfNeeded: observer('selectedFile', function() {
+    _moveIfNeeded: computed('selectedFile', function() {
         let index = this.get('files').indexOf(this.get('selectedFile'));
         if (index < 0) {
             return;
@@ -118,7 +116,7 @@ export default Component.extend(Analytics, {
     },
     actions: {
         next(direction) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
@@ -132,7 +130,7 @@ export default Component.extend(Analytics, {
             this.set('startIndex', this.get('startIndex') + 5);
         },
         prev(direction) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'file browser',
                     action: 'click',
@@ -151,7 +149,7 @@ export default Component.extend(Analytics, {
             }
         },
         changeFile(file) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'file browser',
                     action: 'select',

@@ -1,11 +1,10 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-import { get } from '@ember/object';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import { later } from '@ember/runloop';
 import { defer } from 'rsvp';
 import $ from 'jquery';
-import {State} from '../controllers/submit';
+import { State } from '../controllers/submit';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
@@ -63,10 +62,10 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 export default Component.extend(Analytics, {
     State,
-    i18n: inject(),
-    store: inject(),
-    toast: inject(),
-    panelActions: inject('panelActions'),
+    i18n: service(),
+    store: service(),
+    toast: service(),
+    panelActions: service('panelActions'),
 
     url: null,
     node: null,
@@ -93,7 +92,7 @@ export default Component.extend(Analytics, {
                 if (this.get('currentPanelName')) {
                     this.get('panelActions').close(this.get('currentPanelName'));
                 }
-                get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'div',
                         action: 'click',
@@ -154,7 +153,7 @@ export default Component.extend(Analytics, {
         createProjectAndUploadFile() {
             // Upload case where user starting from scratch - new project/new file.  Creates project and then uploads file to newly
             // created project
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -180,7 +179,7 @@ export default Component.extend(Analytics, {
         createComponentAndUploadFile() {
             // Upload case for using a new component and a new file for the preprint.  Creates component of parent node
             // and then uploads file to newly created component.
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -206,7 +205,7 @@ export default Component.extend(Analytics, {
         uploadFileToExistingNode() {
             // Upload case for using an existing node with a new file for the preprint.  Updates title of existing node and then uploads file to node.
             // Also applicable in edit mode.
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -366,7 +365,7 @@ export default Component.extend(Analytics, {
                     eventData.label = 'Submit - Drop File, Existing Node';
                 }
             }
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent(eventData);
 
         }

@@ -1,5 +1,4 @@
-import { get } from '@ember/object';
-import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import Analytics from 'ember-osf/mixins/analytics';
 
@@ -52,10 +51,10 @@ const Validations = buildValidations({
 export default Component.extend(Validations, Analytics, {
     fullName: null,
     username: null,
-    isFormValid: computed.alias('validations.isValid'),
+    isFormValid: alias('validations.isValid'),
     actions: {
         addUnregistered(fullName, email) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',

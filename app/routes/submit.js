@@ -1,5 +1,5 @@
 import { computed } from '@ember/object';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import CasAuthenticatedRouteMixin from 'ember-osf/mixins/cas-authenticated-route';
 import ResetScrollMixin from '../mixins/reset-scroll';
@@ -16,10 +16,10 @@ import ConfirmationMixin from 'ember-onbeforeunload/mixins/confirmation';
  * @class Submit Route Handler
  */
 export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticatedRouteMixin, SetupSubmitControllerMixin, {
-    store: inject(),
-    i18n: inject(),
-    currentUser: inject('currentUser'),
-    panelActions: inject('panelActions'),
+    store: service(),
+    i18n: service(),
+    currentUser: service('currentUser'),
+    panelActions: service('panelActions'),
     confirmationMessage: computed('i18n', function() {
         return this.get('i18n').t('submit.abandon_preprint_confirmation');
     }),

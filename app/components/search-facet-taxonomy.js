@@ -1,8 +1,6 @@
 import Component from '@ember/component';
-import { inject } from '@ember/service';
-import { computed } from '@ember/object';
-import { get } from '@ember/object';
-import { set } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { computed, set } from '@ember/object';
 import Analytics from 'ember-osf/mixins/analytics';
 
 const pageSize = 150;
@@ -27,7 +25,7 @@ const pageSize = 150;
  * @class search-facet-taxonomy
  */
 export default Component.extend(Analytics, {
-    theme: inject(),
+    theme: service(),
     _getTaxonomies(parents = 'null') {
         return this
             .get('theme.provider')
@@ -98,7 +96,7 @@ export default Component.extend(Analytics, {
     },
     actions: {
         expand(item) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'tree',
                     action: item.showChildren ? 'contract' : 'expand',

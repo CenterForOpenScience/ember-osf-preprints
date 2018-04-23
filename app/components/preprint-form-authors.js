@@ -1,7 +1,7 @@
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
-import { get } from '@ember/object';
-import { inject } from '@ember/service';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
 import { permissionSelector } from 'ember-osf/const/permissions';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -39,8 +39,8 @@ import Analytics from 'ember-osf/mixins/analytics';
  * @class preprint-form-authors
  */
 export default CpPanelBodyComponent.extend(Analytics, {
-    i18n: inject(),
-    valid: computed.alias('newContributorId'),
+    i18n: service(),
+    valid: alias('newContributorId'),
     authorModification: false,
     currentPage: 1,
     // Permissions labels for dropdown
@@ -89,7 +89,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
     actions: {
         // Adds contributor then redraws view - addition of contributor may change which update/remove contributor requests are permitted
         addContributor(user) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -108,7 +108,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         },
         // Adds all contributors from parent project to current component as long as they are not current contributors
         addContributorsFromParentProject() {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -174,7 +174,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         // Removes contributor then redraws contributor list view - removal of contributor may change
         // which additional update/remove requests are permitted.
         removeContributor(contrib) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -194,7 +194,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         // Updates contributor then redraws contributor list view - updating contributor
         // permissions may change which additional update/remove requests are permitted.
         updatePermissions(contributor, permission) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
@@ -213,7 +213,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         // Updates contributor then redraws contributor list view - updating contributor
         // bibliographic info may change which additional update/remove requests are permitted.
         updateBibliographic(contributor, isBibliographic) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'checkbox',
                     action: 'select',
@@ -230,7 +230,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         },
         // There are 3 view states on left side of Authors panel.  This switches to add unregistered contrib view.
         unregisteredView() {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -246,7 +246,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         },
         // There are 3 view states on left side of Authors panel.  This switches to empty view and clears search results.
         resetfindContributorsView() {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -257,7 +257,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
         // Reorders contributors in UI then sends server request to reorder contributors. If request fails, reverts
         // contributor list in UI back to original.
         reorderItems(itemModels, draggedContrib) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'div',
                     action: 'drag',

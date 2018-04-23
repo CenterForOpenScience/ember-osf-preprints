@@ -1,12 +1,11 @@
 import { A } from '@ember/array';
+import EmberObject from '@ember/object';
 import { computed } from '@ember/object';
-import { get } from '@ember/object';
-import { inject } from '@ember/service';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import { merge } from '@ember/polyfills';
-import { observer } from '@ember/object';
 import { run } from '@ember/runloop';
 import Controller from '@ember/controller';
-import EmberObject from '@ember/object';
 
 import config from 'ember-get-config';
 import { validator, buildValidations } from 'ember-cp-validations';
@@ -141,12 +140,12 @@ function subjectIdMap(subjectArray) {
  * @class Submit Controller
  */
 export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
-    i18n: inject(),
-    store: inject(),
-    theme: inject(),
-    fileManager: inject(),
-    toast: inject('toast'),
-    panelActions: inject('panelActions'),
+    i18n: service(),
+    store: service(),
+    theme: service(),
+    fileManager: service(),
+    toast: service('toast'),
+    panelActions: service('panelActions'),
 
     _State: State, // Project states - new project or existing project
     filePickerState: State.START, // Selected upload state (initial decision on form) - new or existing project? (is poorly named)
@@ -287,10 +286,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     providerChanged: true,
 
     // In order to advance from upload state, node and selectedFile must have been defined, and title must be set.
-    uploadValid: computed.alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
-    abstractValid: computed.alias('validations.attrs.basicsAbstract.isValid'),
-    doiValid: computed.alias('validations.attrs.basicsDOI.isValid'),
-    originalPublicationDateValid: computed.alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
+    uploadValid: alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
+    abstractValid: alias('validations.attrs.basicsAbstract.isValid'),
+    doiValid: alias('validations.attrs.basicsDOI.isValid'),
+    originalPublicationDateValid: alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
 
     // Must have year and copyrightHolders filled if those are required by the licenseType selected
     licenseValid: false,
@@ -448,7 +447,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
     // and combines into one array
-    getContributors: observer('node', function() {
+    getContributors: computed('node', function() {
         // Cannot be called until a project has been selected!
         if (!this.get('node')) return;
 
@@ -458,7 +457,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
              this.set('contributors', contributors));
     }),
 
-    getNodePreprints: observer('node', function() {
+    getNodePreprints: computed('node', function() {
         // Returns any existing preprints stored on the current node
 
         // Cannot be called until a project has been selected!
@@ -476,7 +475,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         });
     }),
 
-    getParentContributors: observer('parentNode', function() {
+    getParentContributors: computed('parentNode', function() {
         // Returns all contributors of parentNode if component was created.  User later has option to import
         // parentContributors to component.
         let parent = this.get('parentNode');
@@ -499,7 +498,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Language about submission and moderation.
     ////////////////////////////////////////////////////
 
-    moderationType: computed.alias('currentProvider.reviewsWorkflow'),
+    moderationType: alias('currentProvider.reviewsWorkflow'),
     workflow: computed('moderationType', function () {
         return WORKFLOW[this.get('moderationType')];
     }),
@@ -560,41 +559,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     actions: {
-        // Determines whether or not the panels can be toggled based on where the user is at in the form
-        /*
-        toggleIsOpen(panelName) {
-            const currentPanelName = this.get('currentPanelName');
-            if (this.get('isAddingPreprint')) {
-                if (currentPanelName == 'Server' && !this.get('providerSaved') && panelName == 'Upload') {
-                    this.send('error', this.get('i18n').t('submit.please_select_server'));
-                } else if (currentPanelName == 'Server' && !this.get('providerSaved')) {
-                    this.send('error', this.get('i18n').t('submit.please_complete_upload'));
-                } else if (currentPanelName == 'Upload' && !this.get('selectedFile') && panelName !== 'Server') {
-                    this.send('error', this.get('i18n').t('submit.please_complete_upload'));
-                } else if (currentPanelName !== 'Server' && currentPanelName !== 'Upload' && panelName == 'Server') {
-                    this.send('error', this.get('i18n').t('submit.server_locked'));
-                } else {
-                    this.send('togglePanel', currentPanelName, panelName);
-                }
-            } else {
-                this.send('togglePanel', currentPanelName, panelName);
-            }
-        },
-        // Actually toggles the panels
-        togglePanel(currentPanel, nextPanel) {
-            if (currentPanel) {
-                this.get('panelActions').close(this.get(`_names.${this.get('_names').indexOf(currentPanel)}`));
-            }
-            this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(nextPanel)}`));
-            get(this, 'metrics')
-                .trackEvent({
-                    category: 'div',
-                    action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.nextPanel} section`
-                });
-            this.set('currentPanelName', nextPanel);
-        },
-        */
         // This gets called by the save method of the license-widget, which in autosave mode
         // gets called every time a change is observed in the widget.
         editLicense(basicsLicense, licenseValid) {
@@ -605,7 +569,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         },
         applyLicenseToggle(apply) {
             this.set('applyLicense', apply);
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'radio-button',
                     action: 'select',
@@ -620,7 +584,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 });
             }
             if (currentPanelName === 'Authors') {
-                get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
@@ -630,7 +594,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.get('panelActions').close(this.get(`_names.${this.get('_names').indexOf(currentPanelName)}`));
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
             this.set('currentPanelName', this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
-//            this.set('currentPanelName', currentPanelName);
             this.send('changesSaved', currentPanelName);
         },
         nextUploadSection(currentUploadPanel, nextUploadPanel) {
@@ -658,7 +621,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('filePickerState', newState);
             this.send('clearDownstreamFields', 'allUpload');
             if (newState === this.get('_State').NEW) {
-                get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
@@ -670,14 +633,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 this.get('panelActions').close('uploadNewFile');
                 this.get('panelActions').close('organize');
                 this.get('panelActions').close('finalizeUpload');
-                get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
                         label: 'Submit - Connect preprint to existing OSF Project'
                     });
             } else {
-                get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
@@ -699,7 +662,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -734,7 +697,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
             // file from parent node to new component.
             let node = this.get('node');
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -820,7 +783,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         // Discards upload section changes.  Restores displayed file to current preprint primaryFile
         // and resets displayed title to current node title. (No requests sent, front-end only.)
         discardUploadChanges() {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -868,7 +831,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
          */
         discardBasics() {
             // Discards changes to basic fields. (No requests sent, front-end only.)
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -892,7 +855,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         },
         stripDOI() {
             // Replaces the inputted doi link with just the doi itself
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'input',
                     action: 'onchange',
@@ -902,7 +865,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('basicsDOI', extractDoiFromString(basicsDOI));
         },
         saveBasics() {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -963,7 +926,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     },
                     license: this.get('basicsLicense.licenseType')
                 });
-                get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'dropdown',
                         action: 'select',
@@ -1011,7 +974,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
         // Custom addATag method that appends tag to list instead of auto-saving
         addTag(tag) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'input',
                     action: 'onchange',
@@ -1023,7 +986,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
         // Custom removeATag method that removes tag from list instead of auto-saving
         removeTag(index) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -1039,7 +1002,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
         discardSubjects() {
             // Discards changes to subjects. (No requests sent, front-end only.)
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -1050,7 +1013,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
         saveSubjects(currentSubjects, hasChanged) {
             // Saves subjects (disciplines) and then moves to next section.
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -1083,7 +1046,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
          * @return {User[]} Returns specified page of user records matching query
          */
         findContributors(query, page) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -1123,7 +1086,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         clickSubmit() {
             if (this.get('allSectionsValid')) {
                 // Toggles display of share preprint modal
-                get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
@@ -1131,7 +1094,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     });
                 this.toggleProperty('showModalSharePreprint');
             } else {
-                get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
@@ -1142,7 +1105,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         },
         savePreprint() {
             // Finalizes saving of preprint.  Publishes preprint and turns node public.
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -1246,7 +1209,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('providerSaved', true);
             this.send('discardSubjects');
             this.send('next', this.get('_names.0'));
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',

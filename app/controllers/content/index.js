@@ -1,8 +1,7 @@
 import Controller from '@ember/controller';
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
-import { inject } from '@ember/service';
-import { get } from '@ember/object';
+import { inject as service } from '@ember/service';
 import DS from 'ember-data';
 import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
@@ -64,9 +63,9 @@ const INITIAL = 'initial';
  * @class Content Controller
  */
 export default Controller.extend(Analytics, {
-    theme: inject(),
+    theme: service(),
+    currentUser: service(),
     fullScreenMFR: false,
-    currentUser: inject(),
     expandedAuthors: true,
     showLicenseText: false,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
@@ -214,7 +213,7 @@ export default Controller.extend(Analytics, {
     actions: {
         toggleLicenseText() {
             const licenseState = this.toggleProperty('showLicenseText') ? 'Expand' : 'Contract';
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -225,7 +224,7 @@ export default Controller.extend(Analytics, {
             // State of fullScreenMFR before the transition (what the user perceives as the action)
             const beforeState = this.toggleProperty('fullScreenMFR') ? 'Expand' : 'Contract';
 
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -243,7 +242,7 @@ export default Controller.extend(Analytics, {
             });
         },
         shareLink(href, category, action, label, extra) {
-            const metrics = get(this, 'metrics');
+            const metrics = this.get('metrics');
 
             // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
             metrics.trackEvent({
@@ -291,7 +290,7 @@ export default Controller.extend(Analytics, {
             };
 
             if (!this.get('userIsContrib')) {
-                get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor or non-authenticated user
+                this.get('metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor or non-authenticated user
             }
         }
     },

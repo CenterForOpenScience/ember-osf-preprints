@@ -1,4 +1,4 @@
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import Analytics from 'ember-osf/mixins/analytics';
 
@@ -18,5 +18,5 @@ import Analytics from 'ember-osf/mixins/analytics';
  * @class add-preprint-box
  */
 export default Component.extend(Analytics, {
-    theme: inject()
+    theme: service()
 });

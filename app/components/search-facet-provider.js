@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import $ from 'jquery';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -28,8 +28,8 @@ var getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_string"
  * @class search-facet-provider
  */
 export default Component.extend(Analytics, {
-    store: inject(),
-    theme: inject(),
+    store: service(),
+    theme: service(),
     otherProviders: [],
     searchUrl: config.OSF.shareSearchUrl,
     whiteListedProviders: config.whiteListedProviders.map(item => item.toLowerCase()),
@@ -53,15 +53,14 @@ export default Component.extend(Analytics, {
                     return providerNames;
                 }),
             // The providers list from SHARE
-            $
-                .ajax({
-                    type: 'POST',
-                    url: this.get('searchUrl'),
-                    data: getProvidersPayload,
-                    contentType: 'application/json',
-                    crossDomain: true,
-                })
-                .then(results => results.aggregations.sources.buckets)
+            $.ajax({
+                type: 'POST',
+                url: this.get('searchUrl'),
+                data: getProvidersPayload,
+                contentType: 'application/json',
+                crossDomain: true,
+            })
+            .then(results => results.aggregations.sources.buckets)
         ])
             .then(([osfProviders, hits]) => {
                 // Get the whitelist and add the OSF Providers to it

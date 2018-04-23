@@ -1,8 +1,7 @@
 import Component from '@ember/component';
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
-import { get } from '@ember/object';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import Permissions from 'ember-osf/const/permissions';
 import { loadPage } from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -68,7 +67,7 @@ import { task, timeout } from 'ember-concurrency';
  * @class preprint-form-project-select
  */
 export default Component.extend(Analytics, {
-    panelActions: inject('panelActions'),
+    panelActions: service('panelActions'),
     userNodes: A(),
     selectedNode: null,
     currentPage: 1,
@@ -135,23 +134,6 @@ export default Component.extend(Analytics, {
     }).enqueue(),
 
     actions: {
-/*
-        toggleIsOpen(panelName) {
-            if (this.get('editMode')) {
-                if (this.get('currentPanelName')) {
-                    this.get('panelActions').close(this.get('currentPanelName'));
-                }
-                get(this, 'metrics')
-                    .trackEvent({
-                        category: 'div',
-                        action: 'click',
-                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.panelName} section`
-                    });
-                this.get('panelActions').open(panelName);
-                this.set('currentPanelName', panelName);
-            }
-        },
-*/
         getDefaultUserNodes(term) {
             if (term === '') {
                 this.get('_getInitialUserNodes').perform(term);
@@ -181,7 +163,7 @@ export default Component.extend(Analytics, {
                 this.set('osfProviderLoaded', true);
             });
             this.attrs.nextUploadSection('chooseProject', 'chooseFile');
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
@@ -195,7 +177,7 @@ export default Component.extend(Analytics, {
             this.attrs.clearDownstreamFields('belowFile');
             this.attrs.selectFile(file);
             this.attrs.nextUploadSection('selectExistingFile', 'organize');
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'file browser',
                     action: 'select',
@@ -210,7 +192,7 @@ export default Component.extend(Analytics, {
             this.set('existingState', newState);
             if (newState === this.get('_existingState').EXISTINGFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'selectExistingFile');
-                get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
@@ -219,7 +201,7 @@ export default Component.extend(Analytics, {
 
             } else if (newState === this.get('_existingState').NEWFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'uploadNewFile');
-                get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',

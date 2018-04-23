@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
@@ -18,6 +18,6 @@ import Analytics from 'ember-osf/mixins/analytics';
  * @class preprint-footer-branded
  */
 export default Component.extend(Analytics, {
-    theme: inject(),
+    theme: service(),
     classNames: ['branded-footer']
 });

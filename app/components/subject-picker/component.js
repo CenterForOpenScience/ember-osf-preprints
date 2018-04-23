@@ -1,10 +1,9 @@
 import Component from '@ember/component';
 import EmberObject from '@ember/object';
-import { sort, notEmpty } from '@ember/object/computed';
 import { computed } from '@ember/object';
+import { sort, notEmpty } from '@ember/object/computed';
 import { A } from '@ember/array';
-import { get } from '@ember/object';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
 
@@ -55,8 +54,8 @@ const Column = EmberObject.extend({
  * @class subject-picker
  */
 export default Component.extend(Analytics, {
-    store: inject(),
-    theme: inject(),
+    store: service(),
+    theme: service(),
 
     querySubjects(parents = 'null', tier = 0) {
         const column = this.get('columns').objectAt(tier);
@@ -111,7 +110,7 @@ export default Component.extend(Analytics, {
 
     actions: {
         deselect(index) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -126,7 +125,7 @@ export default Component.extend(Analytics, {
             allSelections.removeAt(index);
         },
         select(selected, tier) {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -185,7 +184,7 @@ export default Component.extend(Analytics, {
             this.querySubjects(selected.id, nextTier);
         },
         discard() {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -198,7 +197,7 @@ export default Component.extend(Analytics, {
             this.set('hasChanged', false);
         },
         save() {
-            get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',

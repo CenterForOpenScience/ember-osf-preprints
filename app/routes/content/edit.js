@@ -1,6 +1,6 @@
 
 import { computed } from '@ember/object';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 
 import ResetScrollMixin from '../../mixins/reset-scroll';
@@ -20,10 +20,10 @@ import ConfirmationMixin from 'ember-onbeforeunload/mixins/confirmation';
  * @class Edit Route Handler
  */
 export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
-    i18n: inject(),
-    theme: inject(),
-    headTagsService: inject('head-tags'),
-    currentUser: inject('currentUser'),
+    i18n: service(),
+    theme: service(),
+    headTagsService: service('head-tags'),
+    currentUser: service('currentUser'),
 
     confirmationMessage: computed('i18n', function() {
         return this.get('i18n').t('submit.abandon_preprint_confirmation');

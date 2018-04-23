@@ -1,6 +1,7 @@
 import Component from '@ember/component';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
 
 const PENDING = 'pending';
 const ACCEPTED = 'accepted';
@@ -41,8 +42,8 @@ const CLASS_NAMES = {
 };
 
 export default Component.extend({
-    i18n: inject(),
-    theme: inject(),
+    i18n: service(),
+    theme: service(),
 
     // translations
     labelModeratorFeedback: 'components.preprint-status-banner.feedback.moderator_feedback',
@@ -79,8 +80,8 @@ export default Component.extend({
     },
 
     latestAction: null,
-    reviewerComment: computed.alias('latestAction.comment'),
-    reviewerName: computed.alias('latestAction.creator.fullName'),
+    reviewerComment: alias('latestAction.comment'),
+    reviewerName: alias('latestAction.creator.fullName'),
 
     bannerContent: computed('statusExplanation', 'workflow', 'theme.{isProvider,provider.name}', function() {
         const i18n = this.get('i18n');

@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { observer } from '@ember/object';
+import { computed } from '@ember/object';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const TitleValidation = buildValidations({
@@ -36,11 +36,11 @@ const TitleValidation = buildValidations({
 export default Component.extend(TitleValidation, {
     title: null,
     titlePlaceholder: 'Enter preprint title',
-    isValid: observer('title', function() {
+    isValid: computed('title', function() {
         if (this.get('title') && this.get('validations.isValid')) {
             this.set('titleValid', true);
         } else {
             this.set('titleValid', false);
         }
-    })
+    }),
 });

@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 
@@ -18,8 +18,8 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 
 export default Controller.extend(Analytics, {
-    i18n: inject(),
-    theme: inject(),
+    i18n: service(),
+    theme: service(),
     activeFilters: { providers: [], subjects: [] },
     additionalProviders: computed('themeProvider', function() { // Do additionalProviders exist?
         // for now, using this property to alter many pieces of the landing/discover page
