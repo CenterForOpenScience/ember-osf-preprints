@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Added
 - Selected provider description in the provider carousel
 
+## [0.118.4] - 2018-04-05
+### Fixed
+- Automatic opening of upload section on branded provider submit page
+
+### Removed
+- Unused image code
+
 ## [0.118.3] - 2018-03-12
 ### Added
 - Event Tracking to `Select a Preprint Provider` on preprint upload
