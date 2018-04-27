@@ -1514,13 +1514,13 @@ img.current-provider {
     color: black;
 }
 
+@media (min-width: 768px) {
+    .dl-description dd {
+        margin-left: 170px;
+    }
+}
+
 .dl-description dt {
     overflow: inherit;
     text-overflow: inherit;
-    width: 180px;
-}
-
-.dl-description dd {
-    text-align: left;
-    margin-left: 192px;
 }

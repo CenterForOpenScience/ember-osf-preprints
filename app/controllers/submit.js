@@ -190,6 +190,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     allProviders: [], // Initialize with an empty list of providers
     currentProvider: undefined,
     selectedProvider: undefined,
+    isOSFPreprints: Ember.computed('selectedProvider', function(){
+        return this.get('selectedProvider') &&  this.get('selectedProvider.name') === 'Open Science Framework';
+    }),
     providerSaved: false,
     preprintSaved: false,
 
