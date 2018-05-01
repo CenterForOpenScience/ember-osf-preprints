@@ -97,6 +97,7 @@
                                                 editMode=editMode
                                                 newNode=newNode
                                                 applyLicense=applyLicense
+                                                getContributors=(action 'getContributors')
                                             }}
                                         {{else if (eq currentState _State.EXISTING)}}
                                             {{preprint-form-project-select
@@ -141,6 +142,8 @@
                                               editMode=editMode
                                               newNode=newNode
                                               applyLicense=applyLicense
+                                              getNodePreprints=(action 'getNodePreprints')
+                                              getContributors=(action 'getContributors')
                                               }}
                                         {{/if}}
                                     </div>

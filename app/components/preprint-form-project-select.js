@@ -170,7 +170,8 @@ export default Component.extend(Analytics, {
                     label: 'Submit - Choose Project',
                     extra: node.id
                 });
-
+            this.getNodePreprints(node);
+            this.getContributors(node);
         },
         selectFile(file) {
             // Select existing file from file-browser

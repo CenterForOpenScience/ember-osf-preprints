@@ -1,4 +1,3 @@
-
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
@@ -48,6 +47,7 @@ export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, Setu
         return this._super(...arguments);
     },
     afterModel(preprint) {
+        const controller = this.controllerFor('submit');
         return preprint.get('provider')
             .then(provider => {
                 const providerId = provider.get('id');
@@ -63,6 +63,8 @@ export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, Setu
             })
             .then(node => {
                 this.set('node', node);
+                controller.set('node', node);
+                controller.send('getContributors', node);
 
                 const userPermissions = this.get('node.currentUserPermissions') || [];
 

@@ -166,6 +166,7 @@ export default Component.extend(Analytics, {
             }).save()
                 .then(node => {
                     this.set('node', node);
+                    this.getContributors(node);
                     this.send('upload');
                     this.set('newNode', true);
                     this.set('applyLicense', true);

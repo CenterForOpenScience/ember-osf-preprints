@@ -445,45 +445,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return JSON.stringify(subjectIdMap(this.get('model.subjects'))) !== JSON.stringify(subjectIdMap(this.get('subjectsList')));
     }),
 
-    // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
-    // and combines into one array
-    getContributors: computed('node', function() {
-        // Cannot be called until a project has been selected!
-        if (!this.get('node')) return;
-
-        let node = this.get('node');
-        let contributors = A();
-        loadAll(node, 'contributors', contributors).then(()=>
-             this.set('contributors', contributors));
-    }),
-
-    getNodePreprints: computed('node', function() {
-        // Returns any existing preprints stored on the current node
-
-        // Cannot be called until a project has been selected!
-        const node = this.get('node');
-        if (!node) return;
-
-        node.get('preprints').then((preprints) => {
-            this.set('existingPreprints', preprints);
-            if (preprints.toArray().length > 0) { // If node already has a preprint
-                let preprint = preprints.toArray()[0]; // TODO once branded is finished, this will change
-                if (!(preprint.get('isPublished'))) { // Preprint exists in abandoned state.
-                    this.set('abandonedPreprint', preprint);
-                }
-            }
-        });
-    }),
-
-    getParentContributors: computed('parentNode', function() {
-        // Returns all contributors of parentNode if component was created.  User later has option to import
-        // parentContributors to component.
-        let parent = this.get('parentNode');
-        let contributors = A();
-        loadAll(parent, 'contributors', contributors).then(()=>
-            this.set('parentContributors', contributors));
-    }),
-
     // True if the current user has admin permissions
     isAdmin: computed('node', function() {
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
@@ -559,6 +520,41 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     actions: {
+        getNodePreprints(node) {
+            // Returns any existing preprints stored on the current node
+
+            // Cannot be called until a project has been selected!
+            if (!this.get('node')) return;
+
+            node.get('preprints').then((preprints) => {
+                this.set('existingPreprints', preprints);
+                if (preprints.toArray().length > 0) { // If node already has a preprint
+                    let preprint = preprints.toArray()[0]; // TODO once branded is finished, this will change
+                    if (!(preprint.get('isPublished'))) { // Preprint exists in abandoned state.
+                        this.set('abandonedPreprint', preprint);
+                    }
+                }
+            });
+        },
+        getContributors(node) {
+            // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
+            // and combines into one array
+            
+            // Cannot be called until a project has been selected!
+            if (!this.get('node')) return;
+
+            let contributors = A();
+            loadAll(node, 'contributors', contributors).then(()=>
+                 this.set('contributors', contributors));
+        },
+        getParentContributors(parentNode) {
+            // Returns all contributors of parentNode if component was created.  User later has option to import
+            // parentContributors to component.
+            let parent = parentNode;
+            let contributors = A();
+            loadAll(parent, 'contributors', contributors).then(()=>
+                this.set('parentContributors', contributors));
+        },
         // This gets called by the save method of the license-widget, which in autosave mode
         // gets called every time a change is observed in the widget.
         editLicense(basicsLicense, licenseValid) {
@@ -676,6 +672,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
             this.set('basicsAbstract', this.get('model.description') || null);
 
+            if (currentNodeTitle !== title) {
+                model.set('title', title);
+                node.set('title', title);
+                node.save();
+            }
+
             return Promise.resolve()
                 .then(() => {
                     if (currentNodeTitle === title) {
@@ -706,6 +708,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             node.addChild(this.get('title'))
                 .then(child => {
                     this.set('parentNode', node);
+                    this.send('getParentContributors', node);
                     this.set('node', child);
                     this.set('basicsAbstract', this.get('node.description') || null);
                     child.get('files')
