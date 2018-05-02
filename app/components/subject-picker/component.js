@@ -76,6 +76,12 @@ export default Component.extend(Analytics, {
     init() {
         this._super(...arguments);
 
+        const tempSubjects = A();
+        
+        this.get('initialSubjects').forEach((subject) => {
+            tempSubjects.push(subject);
+        });
+        
         this.setProperties({
             initialSubjects: [],
             currentSubjects: [],
@@ -84,6 +90,7 @@ export default Component.extend(Analytics, {
         });
 
         this.querySubjects();
+        this.set('currentSubjects', tempSubjects);
     },
 
     didReceiveAttrs() {
@@ -203,7 +210,6 @@ export default Component.extend(Analytics, {
                     action: 'click',
                     label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`
                 });
-
             this.saveSubjects(this.get('currentSubjects'), this.get('hasChanged'));
         }
     }

@@ -1030,8 +1030,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             }
 
             const model = this.get('model');
+            const currentSubjectList = currentSubjects;
 
-            model.set('subjects', subjectIdMap(this.get('subjectsList')));
+            model.set('subjects', subjectIdMap(currentSubjectList));
             model.save()
                 .then(sendNext)
                 .catch(() => {
