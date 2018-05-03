@@ -4,7 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.118.5] - 2018-04-27
+### Changed
+- Updated to use latest provider assets
+
+## [0.118.4] - 2018-04-05
+### Fixed
+- Automatic opening of upload section on branded provider submit page
+
+### Removed
+- Unused image code
 
 ## [0.118.3] - 2018-03-12
 ### Added

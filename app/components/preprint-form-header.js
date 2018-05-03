@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-toggle';
-import config from 'ember-get-config';
 /**
  * @module ember-preprints
  * @submodule components
@@ -28,7 +27,6 @@ export default CpPanelToggleComponent.extend({
     showValidationIndicator: true,
     valid: null,
     isValidationActive: false,
-    providerAssetsURL: config.providerAssetsURL,
 
     // Calculated properties
     invalid: Ember.computed('valid', 'isValidationActive', function() {
