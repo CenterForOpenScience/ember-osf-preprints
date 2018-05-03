@@ -1008,33 +1008,55 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.toggleProperty('shareButtonDisabled');
             model.set('provider', this.get('currentProvider'));
 
-            let submitAction = null;
-            if (this.get('moderationType')) {
-                submitAction = this.get('store').createRecord('review-action', {
-                    actionTrigger: 'submit',
-                    target: this.get('model'),
-                });
-                this.set('submitAction', submitAction);
-            } else {
+            const isModerated = this.get('moderationType');
+            if (!isModerated) {
                 model.set('isPublished', true);
             }
             node.set('public', true);
 
-            this.set('node', node);
-            this.set('model', model);
-
-            let saveChanges = null;
-            if (submitAction) {
-                saveChanges = model.save()
-                    .then(this._saveNode.bind(this))
-                    .then(this._submitAction.bind(this));
-            } else {
-                saveChanges = model.save().then(this._saveNode.bind(this));
-            }
-
-            return saveChanges
-                .then(this._saveChanges.bind(this))
-                .catch(this._saveChangesError.bind(this));
+            return model.save()
+                .then(() => node.save())
+                .then(() => {
+                    const preprintId = model.get('id');
+                    // Fix for IN-271: Terrible kluge to reattach periodically lost primary files
+                    // that is likely due to a backend race condition in celery tasks.
+                    // The OSF api does not return null for empty to one relationships
+                    // which causes ember to not nullify the primaryFile relationship when it gets disconnected.
+                    // So the model needs to be unloaded, reloaded, reassigned, and saved
+                    // This resaving of the preprint should be removed (likely after node-preprint divorce)
+                    model.unloadRecord();
+                    this.get('store').findRecord('preprint', preprintId).then(m => {
+                        if(!this.get('editMode')) { 
+                            m.set('primaryFile', this.get('selectedFile'));
+                        }
+                        m.save().then(() => {
+                            this.set('preprintSaved', true);
+                            if(isModerated) {
+                                const submitAction = this.get('store').createRecord('review-action', {
+                                    actionTrigger: 'submit',
+                                    target: m,
+                                });
+                                submitAction.save();
+                            }
+                            let useProviderRoute = false;
+                            if (this.get('theme.isProvider')) {
+                                useProviderRoute = this.get('theme.isSubRoute');
+                            } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
+                                window.location.replace(`${this.get('currentProvider.domain')}${m.id}`);
+                            } else if (this.get('currentProvider.id') !== 'osf') {
+                                useProviderRoute = true;
+                            }
+                            this.transitionToRoute(`${useProviderRoute ? 'provider.' : ''}content`, m);
+                        })
+                    })
+                })
+                .catch(() => {
+                    this.toggleProperty('shareButtonDisabled');
+                    return this.get('toast')
+                        .error(this.get('i18n')
+                            .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`)
+                        );
+                });
         },
         cancel() {
             this.transitionToRoute('index');
