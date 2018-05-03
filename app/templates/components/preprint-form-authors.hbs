@@ -22,8 +22,8 @@
                         {{#each searchResults as |result|}}
                             <tr id={{result.id}}>
                                 <td class="p-v-xs">
-                                    <img class="m-l-xs" src={{result.links.profile_image}} height=30 width=30>
-                                    <a href={{result.links.html}} target="_blank"> {{result.fullName}} </a>
+                                    <img alt="author profile image" class="m-l-xs" src={{result.links.profile_image}} height=30 width=30>
+                                    <a href={{result.links.html}} target="_blank" rel="noopener"> {{result.fullName}} </a>
                                     {{#if (eq currentUser result)}}
                                         <span class="small"> {{t "components.preprint-form-authors.yourself"}} </span>
                                     {{/if}}
@@ -118,15 +118,16 @@
                             <td class="text-nowrap author-cols">
                                 <div class="form-group drag-drop-contrib">
                                     <span class="fa fa-bars sortable-bars handle small"></span>
-                                    <img class="m-l-xs" src={{contrib.users.profileImage}} height=30 width=30>
-                                    <span class="visible-xs-inline"> {{!CONTRIBUTOR NAME - XS Screen}}
+                                    <img alt="author profile image" class="m-l-xs" src={{contrib.users.profileImage}} height=30 width=30>
+                                    {{!CONTRIBUTOR NAME - XS Screen}}
+                                    <span class="visible-xs-inline">
                                         {{#if contrib.unregisteredContributor}}
                                             {{contrib.unregisteredContributor}}
                                         {{else}}
-                                            <a href={{contrib.users.links.html}} target="_blank"> {{contrib.users.fullName}} </a>
+                                            <a href={{contrib.users.links.html}} target="_blank" rel="noopener"> {{contrib.users.fullName}} </a>
                                         {{/if}}
                                         <span class="pull-right remove-contributor-padding-xs">
-                                            {{#if (and (permissionToRemoveContributor contrib currentUser isAdmin node) (conditionsForContribRemoval contrib contributors authorModification))}}
+                                            {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin node) (conditions-for-contrib-removal contrib contributors authorModification))}}
                                                 <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
                                                     <i class="fa fa-times"> </i>
                                                 </button>
@@ -140,7 +141,7 @@
                                     {{#if contrib.unregisteredContributor}}
                                         {{contrib.unregisteredContributor}}
                                     {{else}}
-                                        <a href={{contrib.users.links.html}} target="_blank"> {{contrib.users.fullName}} </a>
+                                        <a href={{contrib.users.links.html}} target="_blank" rel="noopener"> {{contrib.users.fullName}} </a>
                                     {{/if}}
                                 </div>
                             </td>

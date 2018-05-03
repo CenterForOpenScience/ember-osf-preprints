@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 import ResetScrollMixin from '../mixins/reset-scroll';
 import Analytics from 'ember-osf/mixins/analytics';
 
@@ -11,7 +11,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  * Loads all preprint providers to search page
  * @class Discover Route Handler
  */
-export default Ember.Route.extend(Analytics, ResetScrollMixin, {
+export default Route.extend(Analytics, ResetScrollMixin, {
     queryParams: {
         queryString: {
             replace: true

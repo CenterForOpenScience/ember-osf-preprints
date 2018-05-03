@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import ObjectProxy from '@ember/object/proxy';
+import { helper } from '@ember/component/helper';
 
 function fetchIdFromRelationshipLink(node, relationship) {
     // If id is not embedded in request, Private node ids can be accessed under initializedRelationships.
@@ -27,7 +28,8 @@ export function getAncestorDescriptor(params/*, hash*/) {
     let nodeId = node.get('id');
     let rootId = node.get('root.id');
     let parentId = node.get('parent.id');
-    let parent = (node.get('parent') instanceof Ember.ObjectProxy) ? node.get('parent.content') : node.get('parent');
+    // It is not clear the case where ObjectProxy was needed but ran into this in the 2.18 conversion
+    let parent = (node.get('parent') instanceof ObjectProxy) ? node.get('parent.content') : node.get('parent');
     let parentParentId = parent ? parent.get('parent.id') : undefined;
 
     if (typeof rootId === 'undefined') rootId = fetchIdFromRelationshipLink(node, 'root');
@@ -52,4 +54,4 @@ export function getAncestorDescriptor(params/*, hash*/) {
     return rootDescriptor;
 }
 
-export default Ember.Helper.helper(getAncestorDescriptor);
+export default helper(getAncestorDescriptor);

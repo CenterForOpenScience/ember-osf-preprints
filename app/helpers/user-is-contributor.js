@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+
 /**
  * @module ember-preprints
  * @submodule helpers
@@ -19,4 +20,4 @@ export function userIsContributor(params/*, hash*/) {
     return userIds.indexOf(user.id) > -1;
 }
 
-export default Ember.Helper.helper(userIsContributor);
+export default helper(userIsContributor);

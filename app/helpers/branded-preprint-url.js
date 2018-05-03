@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
 import pathJoin from '../utils/path-join';
 
 /**
@@ -31,4 +31,4 @@ export function brandedPreprintUrl(params, hash) {
     return url;
 }
 
-export default Ember.Helper.helper(brandedPreprintUrl);
+export default helper(brandedPreprintUrl);

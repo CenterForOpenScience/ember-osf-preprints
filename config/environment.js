@@ -91,9 +91,7 @@ module.exports = function(environment) {
     }
 
     if (environment === 'test') {
-        // Testem prefers this...
-        ENV.baseURL = '/';
-        ENV.locationType = 'none';
+        ENV.APP.autoboot = false;
 
         // keep test console output quieter
         ENV.APP.LOG_ACTIVE_GENERATION = false;
@@ -119,6 +117,8 @@ module.exports = function(environment) {
         ENV.metricsAdapters[0].config.id = ENV.metricsAdapters[0].config.id || 'UA-84580271-1';
         ENV.FB_APP_ID = ENV.FB_APP_ID || '1039002926217080';
     }
+
+    ENV.APP.LOG_VIEW_LOOKUPS = true;
 
     return ENV;
 };

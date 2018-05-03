@@ -1,11 +1,11 @@
 import { minBibliographic } from 'preprint-service/helpers/min-bibliographic';
 import { module, test } from 'qunit';
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 
 module('Unit | Helper | min bibliographic');
 
 test('cannot update bibliographic field of last bib contributor', function(assert) {
-   var contrib = Ember.Object.create({
+   var contrib = EmberObject.create({
         'id': '12345',
         'permission': 'admin',
         'unregisteredContributor': null,
@@ -19,7 +19,7 @@ test('cannot update bibliographic field of last bib contributor', function(asser
 });
 
 test('can update bibliographic field on contributor if there is another bib contrib', function(assert) {
-   var contrib = Ember.Object.create({
+   var contrib = EmberObject.create({
         'id': '12345',
         'permission': 'admin',
         'unregisteredContributor': null,
@@ -27,7 +27,7 @@ test('can update bibliographic field on contributor if there is another bib cont
 
     });
 
-    var otherContrib = Ember.Object.create({
+    var otherContrib = EmberObject.create({
         'id': 'abcde',
         'permission': 'read',
         'bibliographic': true
@@ -39,7 +39,7 @@ test('can update bibliographic field on contributor if there is another bib cont
 });
 
 test('cannot update bibliographic field if no other bibliographic contributors', function(assert) {
-   var contrib = Ember.Object.create({
+   var contrib = EmberObject.create({
         'id': '12345',
         'permission': 'admin',
         'unregisteredContributor': null,
@@ -47,7 +47,7 @@ test('cannot update bibliographic field if no other bibliographic contributors',
 
     });
 
-    var otherContrib = Ember.Object.create({
+    var otherContrib = EmberObject.create({
         'id': 'abcde',
         'permission': 'read',
         'bibliographic': false

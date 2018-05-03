@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Mixin from '@ember/object/mixin';
 
 /**
  * @module ember-preprints
@@ -12,17 +13,15 @@ import Ember from 'ember';
  * @class SetupSubmitControllerMixin
  */
 
-export default Ember.Mixin.create({
-    theme: Ember.inject.service(),
-    panelActions: Ember.inject.service('panelActions'),
+export default Mixin.create({
+    theme: service(),
+    panelActions: service('panelActions'),
 
     setupSubmitController(controller, model) {
         //setupController method that will be run for both Add and Edit modes for submit form.
         if (controller.get('model.isLoaded'))
             controller.clearFields();
         controller.set('editMode', this.get('editMode'));
-
-        // Fetch values required to operate the page: user and userNodes
 
         this.get('store').findAll('preprint-provider')
             .then((providers) => {

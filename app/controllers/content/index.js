@@ -1,4 +1,7 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { A } from '@ember/array';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import DS from 'ember-data';
 import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
@@ -59,10 +62,10 @@ const INITIAL = 'initial';
 /**
  * @class Content Controller
  */
-export default Ember.Controller.extend(Analytics, {
-    theme: Ember.inject.service(),
+export default Controller.extend(Analytics, {
+    theme: service(),
+    currentUser: service(),
     fullScreenMFR: false,
-    currentUser: Ember.inject.service(),
     expandedAuthors: true,
     showLicenseText: false,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
@@ -70,18 +73,18 @@ export default Ember.Controller.extend(Analytics, {
         chosenFile: 'file'
     },
 
-    dateLabel: Ember.computed('model.provider.reviewsWorkflow', function() {
+    dateLabel: computed('model.provider.reviewsWorkflow', function() {
         return this.get('model.provider.reviewsWorkflow') === PRE_MODERATION ?
             DATE_LABEL['submitted'] :
             DATE_LABEL['created'];
     }),
-    relevantDate: Ember.computed('model.provider.reviewsWorkflow', function() {
+    relevantDate: computed('model.provider.reviewsWorkflow', function() {
         return this.get('model.provider.reviewsWorkflow') ?
             this.get('model.dateLastTransitioned') :
             this.get('model.dateCreated');
     }),
 
-    editButtonLabel: Ember.computed('model.provider.reviewsWorkflow', 'model.reviewsState', function () {
+    editButtonLabel: computed('model.provider.reviewsWorkflow', 'model.reviewsState', function () {
         const edit_preprint = 'content.project_button.edit_preprint';
         const edit_resubmit_preprint = 'content.project_button.edit_resubmit_preprint';
         return (
@@ -90,12 +93,12 @@ export default Ember.Controller.extend(Analytics, {
         ) ? edit_resubmit_preprint : edit_preprint;
     }),
 
-    isAdmin: Ember.computed('node', function() {
+    isAdmin: computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
 
-    userIsContrib: Ember.computed('authors.[]', 'isAdmin', 'currentUser.currentUserId', function() {
+    userIsContrib: computed('authors.[]', 'isAdmin', 'currentUser.currentUserId', function() {
         if (this.get('isAdmin')) {
             return true;
         } else if (this.get('authors').length) {
@@ -107,7 +110,7 @@ export default Ember.Controller.extend(Analytics, {
         return false;
     }),
 
-    showStatusBanner: Ember.computed('model.{provider.reviewsWorkflow,reviewsState}', 'userIsContrib', 'node.public', function() {
+    showStatusBanner: computed('model.{provider.reviewsWorkflow,reviewsState}', 'userIsContrib', 'node.public', function() {
         return (
             this.get('model.provider.reviewsWorkflow')
             && this.get('node.public')
@@ -116,7 +119,7 @@ export default Ember.Controller.extend(Analytics, {
         );
     }),
 
-    twitterHref: Ember.computed('model', function() {
+    twitterHref: computed('model', function() {
         const queryParams = {
             url: window.location.href,
             text: this.get('model.title'),
@@ -127,7 +130,7 @@ export default Ember.Controller.extend(Analytics, {
     /* TODO: Update this with new Facebook Share Dialog, but an App ID is required
      * https://developers.facebook.com/docs/sharing/reference/share-dialog
      */
-    facebookHref: Ember.computed('model', function() {
+    facebookHref: computed('model', function() {
         const facebookAppId = this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
         const queryParams = {
             app_id: facebookAppId,
@@ -139,7 +142,7 @@ export default Ember.Controller.extend(Analytics, {
         return `https://www.facebook.com/dialog/share?${queryStringify(queryParams)}`;
     }),
     // https://developer.linkedin.com/docs/share-on-linkedin
-    linkedinHref: Ember.computed('model', function() {
+    linkedinHref: computed('model', function() {
         const queryParams = {
             url: [window.location.href, 1024],          // required
             mini: ['true', 4],                          // required
@@ -150,7 +153,7 @@ export default Ember.Controller.extend(Analytics, {
 
         return `https://www.linkedin.com/shareArticle?${queryStringify(queryParams)}`;
     }),
-    emailHref: Ember.computed('model', function() {
+    emailHref: computed('model', function() {
         const queryParams = {
             subject: this.get('model.title'),
             body: window.location.href
@@ -162,17 +165,17 @@ export default Ember.Controller.extend(Analytics, {
     activeFile: null,
     chosenFile: null,
 
-    disciplineReduced: Ember.computed('model.subjects', function() {
+    disciplineReduced: computed('model.subjects', function() {
         // Preprint disciplines are displayed in collapsed form on content page
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
 
-    hasTag: Ember.computed.bool('model.tags.length'),
+    hasTag: computed.bool('model.tags.length'),
 
-    authors: Ember.computed('model', function() {
+    authors: computed('model', function() {
         // Cannot be called until node has loaded!
         const model = this.get('model');
-        const contributors = Ember.A();
+        const contributors = A();
 
         return DS.PromiseArray.create({
             promise: loadAll(model, 'contributors', contributors)
@@ -180,7 +183,7 @@ export default Ember.Controller.extend(Analytics, {
         });
     }),
 
-    fullLicenseText: Ember.computed('model.license.text', 'model.licenseRecord', function() {
+    fullLicenseText: computed('model.license.text', 'model.licenseRecord', function() {
         const text = this.get('model.license.text') || '';
         const {year = '', copyright_holders = []} = this.get('model.licenseRecord');
 
@@ -189,17 +192,17 @@ export default Ember.Controller.extend(Analytics, {
             .replace(/({{copyrightHolders}})/g, copyright_holders.join(', '));
     }),
 
-    hasShortenedDescription: Ember.computed('model.description', function() {
+    hasShortenedDescription: computed('model.description', function() {
         const description = this.get('model.description');
 
         return description && description.length > 350;
     }),
 
-    useShortenedDescription: Ember.computed('expandedAbstract', 'hasShortenedDescription', function() {
+    useShortenedDescription: computed('expandedAbstract', 'hasShortenedDescription', function() {
         return this.get('hasShortenedDescription') && !this.get('expandedAbstract');
     }),
 
-    description: Ember.computed('model.description', function() {
+    description: computed('model.description', function() {
         // Get a shortened version of the abstract, but doesn't cut in the middle of word by going
         // to the last space.
         return this.get('model.description')
@@ -210,7 +213,7 @@ export default Ember.Controller.extend(Analytics, {
     actions: {
         toggleLicenseText() {
             const licenseState = this.toggleProperty('showLicenseText') ? 'Expand' : 'Contract';
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -221,7 +224,7 @@ export default Ember.Controller.extend(Analytics, {
             // State of fullScreenMFR before the transition (what the user perceives as the action)
             const beforeState = this.toggleProperty('fullScreenMFR') ? 'Expand' : 'Contract';
 
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -239,7 +242,7 @@ export default Ember.Controller.extend(Analytics, {
             });
         },
         shareLink(href, category, action, label, extra) {
-            const metrics = Ember.get(this, 'metrics');
+            const metrics = this.get('metrics');
 
             // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
             metrics.trackEvent({
@@ -287,7 +290,7 @@ export default Ember.Controller.extend(Analytics, {
             };
 
             if (!this.get('userIsContrib')) {
-                Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor or non-authenticated user
+                this.get('metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor or non-authenticated user
             }
         }
     },

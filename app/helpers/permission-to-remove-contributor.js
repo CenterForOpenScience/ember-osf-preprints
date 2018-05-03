@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+
 /**
  * @module ember-preprints
  * @submodule helpers
@@ -28,4 +29,4 @@ export function permissionToRemoveContributor(params/*, hash*/) {
 
 }
 
-export default Ember.Helper.helper(permissionToRemoveContributor);
+export default helper(permissionToRemoveContributor);

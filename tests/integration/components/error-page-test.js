@@ -1,9 +1,9 @@
 import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import Ember from 'ember';
+import Service from '@ember/service';
 
 //Stub location service
-const themeStub = Ember.Service.extend({
+const themeStub = Service.extend({
     isProvider: true,
     provider: {
         name: 'Test'

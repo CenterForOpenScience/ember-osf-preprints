@@ -1,4 +1,7 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
+
 import ResetScrollMixin from '../../mixins/reset-scroll';
 import SetupSubmitControllerMixin from '../../mixins/setup-submit-controller';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -15,13 +18,13 @@ import ConfirmationMixin from 'ember-onbeforeunload/mixins/confirmation';
  * Fetches current preprint. Redirects to preprint provider route if necessary.
  * @class Edit Route Handler
  */
-export default Ember.Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
-    i18n: Ember.inject.service(),
-    theme: Ember.inject.service(),
-    headTagsService: Ember.inject.service('head-tags'),
-    currentUser: Ember.inject.service('currentUser'),
+export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
+    i18n: service(),
+    theme: service(),
+    headTagsService: service('head-tags'),
+    currentUser: service('currentUser'),
 
-    confirmationMessage: Ember.computed('i18n', function() {
+    confirmationMessage: computed('i18n', function() {
         return this.get('i18n').t('submit.abandon_preprint_confirmation');
     }),
 
@@ -44,6 +47,7 @@ export default Ember.Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin
         return this._super(...arguments);
     },
     afterModel(preprint) {
+        const controller = this.controllerFor('submit');
         return preprint.get('provider')
             .then(provider => {
                 const providerId = provider.get('id');
@@ -59,6 +63,8 @@ export default Ember.Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin
             })
             .then(node => {
                 this.set('node', node);
+                controller.set('node', node);
+                controller.send('getContributors', node);
 
                 const userPermissions = this.get('node.currentUserPermissions') || [];
 

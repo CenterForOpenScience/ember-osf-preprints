@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+
 /**
  * @module ember-preprints
  * @submodule helpers
@@ -29,4 +30,4 @@ export function minBibliographic(params/*, hash*/) {
     }
 }
 
-export default Ember.Helper.helper(minBibliographic);
+export default helper(minBibliographic);

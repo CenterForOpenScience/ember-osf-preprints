@@ -1,26 +1,33 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import EmberObject from '@ember/object';
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import { merge } from '@ember/polyfills';
+import { run } from '@ember/runloop';
+import Controller from '@ember/controller';
+
 import config from 'ember-get-config';
-import Analytics from 'ember-osf/mixins/analytics';
-
 import { validator, buildValidations } from 'ember-cp-validations';
+import $ from 'jquery';
 
+import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
 import NodeActionsMixin from 'ember-osf/mixins/node-actions';
 import TaggableMixin from 'ember-osf/mixins/taggable-mixin';
-
 import loadAll from 'ember-osf/utils/load-relationship';
 import fixSpecialChar from 'ember-osf/utils/fix-special-char';
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
 // Enum of available upload states > New project or existing project?
-export const State = Object.freeze(Ember.Object.create({
+export const State = Object.freeze(EmberObject.create({
     START: 'start',
     NEW: 'new',
     EXISTING: 'existing'
 }));
 
 // Enum of available file states > New file or existing file?
-export const existingState = Object.freeze(Ember.Object.create({
+export const existingState = Object.freeze(EmberObject.create({
     CHOOSE: 'choose',
     EXISTINGFILE: 'existing',
     NEWFILE: 'new'
@@ -44,7 +51,7 @@ const BasicsValidations = buildValidations({
         validators: [
             validator('format', {
                 // Simplest regex- try not to diverge too much from the backend
-                regex: /\b(10\.\d{4,}(?:\.\d+)*\/\S+(?:(?!["&\'<>])\S))\b/,
+                regex: /\b(10\.\d{4,}(?:\.\d+)*\/\S+(?:(?!["&'<>])\S))\b/,
                 allowBlank: true,
                 message: 'Please use a valid {description}'
             })
@@ -132,12 +139,14 @@ function subjectIdMap(subjectArray) {
 /**
  * @class Submit Controller
  */
-export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
-    i18n: Ember.inject.service(),
-    theme: Ember.inject.service(),
-    fileManager: Ember.inject.service(),
-    toast: Ember.inject.service('toast'),
-    panelActions: Ember.inject.service('panelActions'),
+export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
+    i18n: service(),
+    store: service(),
+    theme: service(),
+    fileManager: service(),
+    toast: service('toast'),
+    panelActions: service('panelActions'),
+
     _State: State, // Project states - new project or existing project
     filePickerState: State.START, // Selected upload state (initial decision on form) - new or existing project? (is poorly named)
     _existingState: existingState, // File states - new file or existing file
@@ -146,10 +155,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     // Data for project picker; tracked internally on load
     user: null,
-    userNodes: Ember.A(),
+    userNodes: A(),
     userNodesLoaded: false,
 
-    availableLicenses: Ember.A(),
+    availableLicenses: A(),
     applyLicense: false,
     newNode: false,
 
@@ -157,7 +166,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     node: null, // Project or component containing the preprint
     file: null, // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
     selectedFile: null, // File that will be the preprint (already uploaded to node or selected from existing node)
-    contributors: Ember.A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
+    contributors: A(), // Contributors on preprint - if creating a component, contributors will be copied over from parent
     title: null, // Preprint title
     nodeLocked: false, // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form, the node is locked.  Is True on Edit.
     searchResults: [], // List of users matching search query
@@ -169,23 +178,26 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     basicsSaveState: false, // True temporarily when changes have been saved in basics section
     authorsSaveState: false, // True temporarily when changes have been saved in authors section
     parentNode: null, // If component created, parentNode will be defined
-    parentContributors: Ember.A(), // Contributors on parent project
+    parentContributors: A(), // Contributors on parent project
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
     osfStorageProvider: null, // Preprint node's osfStorage object
     osfProviderLoaded: false, // Preprint node's osfStorageProvider is loaded.
     titleValid: null,  // If node's pending title is valid.
     uploadInProgress: false, // Set to true when upload step is underway,
-    existingPreprints: Ember.A(), // Existing preprints on the current node
+    existingPreprints: A(), // Existing preprints on the current node
     abandonedPreprint: null, // Abandoned(draft) preprint on the current node
     editMode: false, // Edit mode is false by default.
     shareButtonDisabled: false, // Relevant in Add mode - flag prevents users from sending multiple requests to server
+    currentPanelName: computed('editMode', 'theme.isProvider', function() {
+        return this.get('isAddingPreprint') ? this.get('_names')[0] : null;
+    }),
 
     attemptedSubmit: false, // True when user has tried to submit with validation errors
 
-    isTopLevelNode: Ember.computed.not('node.parent.id'),
+    isTopLevelNode: computed.not('node.parent.id'),
 
-    hasFile: Ember.computed.or('file', 'selectedFile'),
+    hasFile: computed.or('file', 'selectedFile'),
 
     allProviders: [], // Initialize with an empty list of providers
     currentProvider: undefined,
@@ -211,28 +223,28 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     },
 
     // True if fields have been changed
-    hasDirtyFields: Ember.computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
+    hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
         const preprintStarted = this.get('theme.isProvider') ? this.get('hasFile') : this.get('providerSaved');
         return !this.get('preprintSaved') && (this.get('isAddingPreprint') && preprintStarted || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged'));
     }),
 
-    isAddingPreprint: Ember.computed.not('editMode'),
+    isAddingPreprint: computed.not('editMode'),
 
     clearFields() {
         // Restores submit form defaults.  Called when user submits preprint, then hits back button, for example.
         this.get('panelActions').open('Upload');
 
-        this.setProperties(Ember.merge(
-            this.get('_names').reduce((acc, name) => Ember.merge(acc, {[`${name.toLowerCase()}SaveState`]: false}), {}), {
+        this.setProperties(merge(
+            this.get('_names').reduce((acc, name) => merge(acc, {[`${name.toLowerCase()}SaveState`]: false}), {}), {
             filePickerState: State.START,
             existingState: existingState.CHOOSE,
             user: null,
-            userNodes: Ember.A(),
+            userNodes: A(),
             userNodesLoaded: false,
             node: null,
             file: null,
             selectedFile: null,
-            contributors: Ember.A(),
+            contributors: A(),
             title: null,
             nodeLocked: false, // Will be set to true if edit?
             searchResults: [],
@@ -244,24 +256,24 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             basicsSaveState: false,
             authorsSaveState: false,
             parentNode: null,
-            parentContributors: Ember.A(),
+            parentContributors: A(),
             convertProjectConfirmed: false,
             convertOrCopy: null,
             osfStorageProvider: null,
             titleValid: null,
             uploadInProgress: false,
-            existingPreprints: Ember.A(),
+            existingPreprints: A(),
             abandonedPreprint: null,
             editMode: false,
             shareButtonDisabled: false,
             // Basics and subjects fields need to be reset because the Add process overwrites the computed properties as reg properties
-            basicsTags: Ember.A(),
+            basicsTags: A(),
             basicsAbstract: null,
             basicsDOI: null,
             basicsOriginalPublicationDate: null,
             basicsLicense: null,
-            subjectsList: Ember.A(),
-            availableLicenses: Ember.A(),
+            subjectsList: A(),
+            availableLicenses: A(),
             applyLicense: false,
             newNode: false,
             attemptedSubmit: false,
@@ -274,40 +286,40 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     providerChanged: true,
 
     // In order to advance from upload state, node and selectedFile must have been defined, and title must be set.
-    uploadValid: Ember.computed.alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
-    abstractValid: Ember.computed.alias('validations.attrs.basicsAbstract.isValid'),
-    doiValid: Ember.computed.alias('validations.attrs.basicsDOI.isValid'),
-    originalPublicationDateValid: Ember.computed.alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
+    uploadValid: alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
+    abstractValid: alias('validations.attrs.basicsAbstract.isValid'),
+    doiValid: alias('validations.attrs.basicsDOI.isValid'),
+    originalPublicationDateValid: alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
 
     // Must have year and copyrightHolders filled if those are required by the licenseType selected
     licenseValid: false,
 
     // Basics fields that are being validated are abstract, license and doi (title validated in upload section). If validation added for other fields, expand basicsValid definition.
-    basicsValid: Ember.computed.and('abstractValid', 'doiValid', 'licenseValid', 'originalPublicationDateValid'),
+    basicsValid: computed.and('abstractValid', 'doiValid', 'licenseValid', 'originalPublicationDateValid'),
 
     // Must have at least one contributor. Backend enforces admin and bibliographic rules. If this form section is ever invalid, something has gone horribly wrong.
-    authorsValid: Ember.computed.bool('contributors.length'),
+    authorsValid: computed.bool('contributors.length'),
 
     // Must select at least one subject (looking at pending subjects)
-    disciplineValid: Ember.computed.notEmpty('subjectsList'),
+    disciplineValid: computed.notEmpty('subjectsList'),
 
     // Does node have a saved title?
-    savedTitle: Ember.computed.notEmpty('model.title'),
+    savedTitle: computed.notEmpty('model.title'),
 
     // Does preprint have a saved primaryFile?
-    savedFile: Ember.computed.notEmpty('model.primaryFile.content'),
+    savedFile: computed.notEmpty('model.primaryFile.content'),
 
     // Does node have a saved description?
-    savedAbstract: Ember.computed.notEmpty('model.description'),
+    savedAbstract: computed.notEmpty('model.description'),
 
     // Does preprint have saved subjects?
-    savedSubjects: Ember.computed.notEmpty('model.subjects'),
+    savedSubjects: computed.notEmpty('model.subjects'),
 
     // Preprint can be published once all required sections have been saved.
-    allSectionsValid: Ember.computed.and('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid'),
+    allSectionsValid: computed.and('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid'),
 
     // Are there validation errors which should be displayed right now?
-    showValidationErrors: Ember.computed('attemptedSubmit', 'allSectionsValid', function() {
+    showValidationErrors: computed('attemptedSubmit', 'allSectionsValid', function() {
         return this.get('attemptedSubmit') && !this.get('allSectionsValid');
     }),
 
@@ -316,41 +328,42 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     ////////////////////////////////////////////////////
 
     // Does the pending primaryFile differ from the primary file already saved?
-    preprintFileChanged: Ember.computed('model.primaryFile', 'selectedFile', 'file', function() {
+    preprintFileChanged: computed('model.primaryFile', 'selectedFile', 'file', function() {
         return this.get('selectedFile.id') && (this.get('model.primaryFile.id') !== this.get('selectedFile.id')) || this.get('file') !== null;
     }),
 
     // Does the pending title differ from the title already saved?
-    titleChanged: Ember.computed('model.title', 'title', function() {
+    titleChanged: computed('model.title', 'title', function() {
         return this.get('model.title') != this.get('title');
     }),
 
     // Are there any unsaved changes in the upload section?
-    uploadChanged: Ember.computed.or('preprintFileChanged', 'titleChanged'),
+    uploadChanged: computed.or('preprintFileChanged', 'titleChanged'),
 
     ////////////////////////////////////////////////////
     // Fields used in the "basics" section of the form.
     ////////////////////////////////////////////////////
 
     // Pending abstract
-    basicsAbstract:  Ember.computed('model.description', function() {
+
+    basicsAbstract:  computed('model.description', function() {
         return this.get('model.description') || null;
     }),
 
     // Does the pending abstract differ from the saved abstract in the db?
-    abstractChanged: Ember.computed('basicsAbstract', 'model.description', function() {
+    abstractChanged: computed('basicsAbstract', 'model.description', function() {
         let basicsAbstract = this.get('basicsAbstract');
         return basicsAbstract !== null && basicsAbstract.trim() !== this.get('model.description');
     }),
 
     // Pending tags
-    basicsTags: Ember.computed('model.tags', function() {
+    basicsTags: computed('model.tags', function() {
         let tags = this.get('model.tags');
-        return (tags && tags.map(fixSpecialChar)) || Ember.A();
+        return (tags && tags.map(fixSpecialChar)) || A();
     }),
 
     // Does the list of pending tags differ from the saved tags in the db?
-    tagsChanged: Ember.computed('basicsTags.@each', 'model.tags', function() {
+    tagsChanged: computed('basicsTags.@each', 'model.tags', function() {
         const basicsTags = this.get('basicsTags');
         const tags = this.get('model.tags');
 
@@ -363,9 +376,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             );
     }),
 
-    basicsDOI: Ember.computed.or('model.doi'),
+    basicsDOI: computed.or('model.doi'),
 
-    doiChanged: Ember.computed('model.doi', 'basicsDOI', function() {
+    doiChanged: computed('model.doi', 'basicsDOI', function() {
         // Does the pending DOI differ from the saved DOI in the db?
         // If pending DOI and saved DOI are both falsy values, doi has not changed.
         const basicsDOI = extractDoiFromString(this.get('basicsDOI'));
@@ -375,7 +388,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
     // This loads up the current license information if the preprint has one, otherwise initializes the
     // license object with null values
-    basicsLicense: Ember.computed('model', function() {
+    basicsLicense: computed('model', function() {
         let record = this.get('model.licenseRecord');
         let license = this.get('model.license');
         return {
@@ -385,7 +398,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         };
     }),
 
-    licenseChanged: Ember.computed('model.license', 'model.licenseRecord', 'basicsLicense.year', 'basicsLicense.copyrightHolders', 'basicsLicense.licenseType', function() {
+    licenseChanged: computed('model.license', 'model.licenseRecord', 'basicsLicense.year', 'basicsLicense.copyrightHolders', 'basicsLicense.licenseType', function() {
         let changed = false;
         if (this.get('model.licenseRecord') || this.get('model.license.content')) {
             changed |= (this.get('model.license.name') !== this.get('basicsLicense.licenseType.name'));
@@ -401,83 +414,44 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     }),
 
     //This is done to initialize basicsOriginalPublicationDate to the date fetched from an existing preprint, similar to how basicsDOI is initialized.
-    basicsOriginalPublicationDate: Ember.computed.or('model.originalPublicationDate'),
+    basicsOriginalPublicationDate: computed.or('model.originalPublicationDate'),
 
-    originalPublicationDateChanged: Ember.computed('model.originalPublicationDate', 'basicsOriginalPublicationDate', function () {
+    originalPublicationDateChanged: computed('model.originalPublicationDate', 'basicsOriginalPublicationDate', function () {
         let basicsOriginalPublicationDate = this.get('basicsOriginalPublicationDate');
         let modelOriginalPublicationDate = this.get('model.originalPublicationDate');
         return (basicsOriginalPublicationDate || modelOriginalPublicationDate) && basicsOriginalPublicationDate !== modelOriginalPublicationDate;
     }),
 
     // Are there any unsaved changes in the basics section?
-    basicsChanged: Ember.computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
+    basicsChanged: computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
 
     ////////////////////////////////////////////////////
     // Fields used in the "discipline" section of the form.
     ////////////////////////////////////////////////////
 
     // Pending subjects
-    subjectsList: Ember.computed('model.subjects.@each', function() {
-        return this.get('model.subjects') ? Ember.$.extend(true, [], this.get('model.subjects')) : Ember.A();
+    subjectsList: computed('model.subjects.@each', function() {
+        return this.get('model.subjects') ? $.extend(true, [], this.get('model.subjects')) : A();
     }),
 
     // Flattened subject list
-    disciplineReduced: Ember.computed('model.subjects', function() {
-        return Ember.$.extend(true, [], this.get('model.subjects')).reduce((acc, val) => acc.concat(val), []).uniqBy('id');
+    disciplineReduced: computed('model.subjects', function() {
+        return $.extend(true, [], this.get('model.subjects')).reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
 
     // Compares the model's and current subjectLists's array of arrays of discipline ids
     // to determine if there has been a change.
-    disciplineChanged: Ember.computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle', function () {
+    disciplineChanged: computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle', function () {
         return JSON.stringify(subjectIdMap(this.get('model.subjects'))) !== JSON.stringify(subjectIdMap(this.get('subjectsList')));
     }),
 
-    // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
-    // and combines into one array
-    getContributors: Ember.observer('node', function() {
-        // Cannot be called until a project has been selected!
-        if (!this.get('node')) return;
-
-        let node = this.get('node');
-        let contributors = Ember.A();
-        loadAll(node, 'contributors', contributors).then(()=>
-             this.set('contributors', contributors));
-    }),
-
-    getNodePreprints: Ember.observer('node', function() {
-        // Returns any existing preprints stored on the current node
-
-        // Cannot be called until a project has been selected!
-        const node = this.get('node');
-        if (!node) return;
-
-        node.get('preprints').then((preprints) => {
-            this.set('existingPreprints', preprints);
-            if (preprints.toArray().length > 0) { // If node already has a preprint
-                let preprint = preprints.toArray()[0]; // TODO once branded is finished, this will change
-                if (!(preprint.get('isPublished'))) { // Preprint exists in abandoned state.
-                    this.set('abandonedPreprint', preprint);
-                }
-            }
-        });
-    }),
-
-    getParentContributors: Ember.observer('parentNode', function() {
-        // Returns all contributors of parentNode if component was created.  User later has option to import
-        // parentContributors to component.
-        let parent = this.get('parentNode');
-        let contributors = Ember.A();
-        loadAll(parent, 'contributors', contributors).then(()=>
-            this.set('parentContributors', contributors));
-    }),
-
     // True if the current user has admin permissions
-    isAdmin: Ember.computed('node', function() {
+    isAdmin: computed('node', function() {
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
 
     // True if the current user is and admin and the node is not a registration.
-    canEdit: Ember.computed('isAdmin', 'node', function() {
+    canEdit: computed('isAdmin', 'node', function() {
         return this.get('isAdmin') && !(this.get('node.registration'));
     }),
 
@@ -485,16 +459,16 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     // Language about submission and moderation.
     ////////////////////////////////////////////////////
 
-    moderationType: Ember.computed.alias('currentProvider.reviewsWorkflow'),
-    workflow: Ember.computed('moderationType', function () {
+    moderationType: alias('currentProvider.reviewsWorkflow'),
+    workflow: computed('moderationType', function () {
         return WORKFLOW[this.get('moderationType')];
     }),
-    providerName: Ember.computed('currentProvider', function() {
+    providerName: computed('currentProvider', function() {
         return this.get('currentProvider.id') !== 'osf' ?
             this.get('currentProvider.name') :
             this.get('i18n').t('global.brand_name');
     }),
-    modalTitle: Ember.computed('moderationType', function() {
+    modalTitle: computed('moderationType', function() {
         if (this.get('editMode')) {
             return MODAL_TITLE['resubmit'];
         }
@@ -504,48 +478,83 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     }),
 
     // submission
-    heading: Ember.computed('moderationType', function() {
+    heading: computed('moderationType', function() {
         return this.get('moderationType') === PRE_MODERATION ?
             ACTION['submit']['heading'] :
             ACTION['create']['heading'];
     }),
-    buttonLabel: Ember.computed('moderationType', function() {
+    buttonLabel: computed('moderationType', function() {
         return this.get('moderationType') === PRE_MODERATION ?
             ACTION['submit']['button'] :
             ACTION['create']['button'];
     }),
-    generalInformation: Ember.computed('moderationType', function() {
+    generalInformation: computed('moderationType', function() {
         return this.get('moderationType') ?
             SUBMIT_MESSAGES['moderation'] :
             SUBMIT_MESSAGES['default'];
     }),
-    permissionInformation: Ember.computed('moderationType', function() {
+    permissionInformation: computed('moderationType', function() {
         return this.get('moderationType') === PRE_MODERATION ?
             PERMISSION_MESSAGES['submit'] :
             PERMISSION_MESSAGES['create'];
     }),
-    moderationInformation: Ember.computed('moderationType', function() {
+    moderationInformation: computed('moderationType', function() {
         return SUBMIT_MESSAGES[this.get('moderationType')];
     }),
 
     // edit
-    showInformation: Ember.computed('moderationType', 'model.reviewsState', function() {
+    showInformation: computed('moderationType', 'model.reviewsState', function() {
         let state = this.get('model.reviewsState');
         let modType = this.get('moderationType');
         return !(state === ACCEPTED || (modType === POST_MODERATION && state === PENDING));
     }),
-    editInformation1: Ember.computed('moderationType', function() {
+    editInformation1: computed('moderationType', function() {
         return EDIT_MESSAGES['line1'][this.get('moderationType')];
     }),
-    editInformation2: Ember.computed('moderationType', 'model.reviewsState', function() {
+    editInformation2: computed('moderationType', 'model.reviewsState', function() {
         return EDIT_MESSAGES['line2'][this.get('model.reviewsState')][this.get('moderationType')];
     }),
-    canResubmit: Ember.computed('moderationType', 'model.reviewsState', function() {
+    canResubmit: computed('moderationType', 'model.reviewsState', function() {
         let state = this.get('model.reviewsState');
         return this.get('moderationType') === PRE_MODERATION && (state === PENDING || state === REJECTED);
     }),
 
     actions: {
+        getNodePreprints(node) {
+            // Returns any existing preprints stored on the current node
+
+            // Cannot be called until a project has been selected!
+            if (!this.get('node')) return;
+
+            node.get('preprints').then((preprints) => {
+                this.set('existingPreprints', preprints);
+                if (preprints.toArray().length > 0) { // If node already has a preprint
+                    let preprint = preprints.toArray()[0]; // TODO once branded is finished, this will change
+                    if (!(preprint.get('isPublished'))) { // Preprint exists in abandoned state.
+                        this.set('abandonedPreprint', preprint);
+                    }
+                }
+            });
+        },
+        getContributors(node) {
+            // Returns all contributors of node that will be container for preprint.  Makes sequential requests to API until all pages of contributors have been loaded
+            // and combines into one array
+            
+            // Cannot be called until a project has been selected!
+            if (!this.get('node')) return;
+
+            let contributors = A();
+            loadAll(node, 'contributors', contributors).then(()=>
+                 this.set('contributors', contributors));
+        },
+        getParentContributors(parentNode) {
+            // Returns all contributors of parentNode if component was created.  User later has option to import
+            // parentContributors to component.
+            let parent = parentNode;
+            let contributors = A();
+            loadAll(parent, 'contributors', contributors).then(()=>
+                this.set('parentContributors', contributors));
+        },
         // This gets called by the save method of the license-widget, which in autosave mode
         // gets called every time a change is observed in the widget.
         editLicense(basicsLicense, licenseValid) {
@@ -556,7 +565,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         },
         applyLicenseToggle(apply) {
             this.set('applyLicense', apply);
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'radio-button',
                     action: 'select',
@@ -566,19 +575,21 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         next(currentPanelName) {
             // Open next panel
             if (currentPanelName === 'Upload' || currentPanelName === 'Basics') {
-                Ember.run.scheduleOnce('afterRender', this, function() {
-                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, Ember.$(currentPanelName === 'Upload' ? '.preprint-header-preview' : '.abstract')[0]]);  // jshint ignore:line
+                run.scheduleOnce('afterRender', this, function() {
+                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, $(currentPanelName === 'Upload' ? '.preprint-header-preview' : '.abstract')[0]]);  // jshint ignore:line
                 });
             }
             if (currentPanelName === 'Authors') {
-                Ember.get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
                         label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Authors Next Button`
                     });
             }
+            this.get('panelActions').close(this.get(`_names.${this.get('_names').indexOf(currentPanelName)}`));
             this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
+            this.set('currentPanelName', this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
             this.send('changesSaved', currentPanelName);
         },
         nextUploadSection(currentUploadPanel, nextUploadPanel) {
@@ -590,7 +601,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             // Temporarily changes panel save state to true.  Used for flashing 'Changes Saved' in UI.
             let currentPanelSaveState = currentPanelName.toLowerCase() + 'SaveState';
             this.set(currentPanelSaveState, true);
-            Ember.run.later(this, () => {
+            run.later(this, () => {
                 this.set(currentPanelSaveState, false);
             }, 3000);
         },
@@ -606,7 +617,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('filePickerState', newState);
             this.send('clearDownstreamFields', 'allUpload');
             if (newState === this.get('_State').NEW) {
-                Ember.get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
@@ -618,14 +629,14 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 this.get('panelActions').close('uploadNewFile');
                 this.get('panelActions').close('organize');
                 this.get('panelActions').close('finalizeUpload');
-                Ember.get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
                         label: 'Submit - Connect preprint to existing OSF Project'
                     });
             } else {
-                Ember.get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
@@ -647,7 +658,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         },
         existingNodeExistingFile() {
             // Upload case for using existing node and existing file for the preprint.  If title has been edited, updates title.
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -660,6 +671,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             const title = this.get('title');
 
             this.set('basicsAbstract', this.get('model.description') || null);
+
+            if (currentNodeTitle !== title) {
+                model.set('title', title);
+                node.set('title', title);
+                node.save();
+            }
 
             return Promise.resolve()
                 .then(() => {
@@ -682,7 +699,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             // Upload case for using a new component and an existing file for the preprint. Creates a component and then copies
             // file from parent node to new component.
             let node = this.get('node');
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -691,6 +708,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             node.addChild(this.get('title'))
                 .then(child => {
                     this.set('parentNode', node);
+                    this.send('getParentContributors', node);
                     this.set('node', child);
                     this.set('basicsAbstract', this.get('node.description') || null);
                     child.get('files')
@@ -768,7 +786,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         // Discards upload section changes.  Restores displayed file to current preprint primaryFile
         // and resets displayed title to current node title. (No requests sent, front-end only.)
         discardUploadChanges() {
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -816,7 +834,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
          */
         discardBasics() {
             // Discards changes to basic fields. (No requests sent, front-end only.)
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -840,7 +858,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         },
         stripDOI() {
             // Replaces the inputted doi link with just the doi itself
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'input',
                     action: 'onchange',
@@ -850,7 +868,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('basicsDOI', extractDoiFromString(basicsDOI));
         },
         saveBasics() {
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -911,7 +929,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     },
                     license: this.get('basicsLicense.licenseType')
                 });
-                Ember.get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'dropdown',
                         action: 'select',
@@ -959,7 +977,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
         // Custom addATag method that appends tag to list instead of auto-saving
         addTag(tag) {
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'input',
                     action: 'onchange',
@@ -970,15 +988,15 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         },
 
         // Custom removeATag method that removes tag from list instead of auto-saving
-        removeTag(tag) {
-            Ember.get(this, 'metrics')
+        removeTag(index) {
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Tag`
                 });
 
-            this.get('basicsTags').removeObject(tag);
+            this.get('basicsTags').removeAt(index);
         },
 
         /*
@@ -987,18 +1005,18 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
         discardSubjects() {
             // Discards changes to subjects. (No requests sent, front-end only.)
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Discipline Changes`
                 });
-            this.set('subjectsList', Ember.$.extend(true, [], this.get('model.subjects')));
+            this.set('subjectsList', $.extend(true, [], this.get('model.subjects')));
         },
 
-        saveSubjects(hasChanged) {
+        saveSubjects(currentSubjects, hasChanged) {
             // Saves subjects (disciplines) and then moves to next section.
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -1012,13 +1030,14 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             }
 
             const model = this.get('model');
+            const currentSubjectList = currentSubjects;
 
-            model.set('subjects', subjectIdMap(this.get('subjectsList')));
+            model.set('subjects', subjectIdMap(currentSubjectList));
             model.save()
                 .then(sendNext)
                 .catch(() => {
                     // Current subjects saved so UI can be restored in case of failure
-                    model.set('subjects', Ember.$.extend(true, [], this.get('model.subjects')));
+                    model.set('subjects', $.extend(true, [], this.get('model.subjects')));
                     this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
                 });
         },
@@ -1031,7 +1050,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
          * @return {User[]} Returns specified page of user records matching query
          */
         findContributors(query, page) {
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -1063,7 +1082,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
 
             context.$('#' + elementId).addClass(highlightClass);
 
-            Ember.run.later(() => context.$('#' + elementId).removeClass(highlightClass), 2000);
+            run.later(() => context.$('#' + elementId).removeClass(highlightClass), 2000);
         },
         /*
           Submit tab actions
@@ -1071,7 +1090,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         clickSubmit() {
             if (this.get('allSectionsValid')) {
                 // Toggles display of share preprint modal
-                Ember.get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
@@ -1079,7 +1098,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     });
                 this.toggleProperty('showModalSharePreprint');
             } else {
-                Ember.get(this, 'metrics')
+                this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
@@ -1090,7 +1109,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         },
         savePreprint() {
             // Finalizes saving of preprint.  Publishes preprint and turns node public.
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -1194,7 +1213,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('providerSaved', true);
             this.send('discardSubjects');
             this.send('next', this.get('_names.0'));
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',

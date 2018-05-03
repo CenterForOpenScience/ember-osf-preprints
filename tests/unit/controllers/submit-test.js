@@ -1,7 +1,10 @@
 import { moduleFor, skip } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import EmberObject from '@ember/object';
+import Service from '@ember/service';
 import moment from 'moment';
+import $ from 'jquery';
 import { manualSetup, mockFindAll } from 'ember-data-factory-guy';
 
 const panelNames = [
@@ -10,16 +13,16 @@ const panelNames = [
     'uploadNewFile'
 ];
 
-const panels = Ember.Object.create();
+const panels = EmberObject.create();
 
 for (const panelName of panelNames) {
-    panels.set(panelName, Ember.Object.create({
+    panels.set(panelName, EmberObject.create({
         isOpen: panelName === 'Discipline'
     }));
 }
 
 // Stub panelActions service
-const panelActionsStub = Ember.Service.extend({
+const panelActionsStub = Service.extend({
     open(name) {
         const panel = panels[name];
         panel.set('isOpen', true);
@@ -43,6 +46,9 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'validator:date',
         'service:metrics',
         'service:panel-actions',
+        'service:session',
+        'service:fileManager',
+        'service:head-tags',
         'service:theme',
         'service:toast',
         'service:i18n',
@@ -147,7 +153,7 @@ test('isTopLevelNode computed property', function(assert) {
     this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             parent: store.createRecord('node', {
                 id: '12345'
@@ -208,15 +214,18 @@ test('originalPublicationDateValid computed property', function(assert) {
 
 test('basicsValid computed property', function(assert) {
     const ctrl = this.subject();
-    ctrl.set('abstractValid', false);
-    ctrl.set('doiValid', false);
+    let invalidDate = moment().add(1, 'days');
+    let validDate = moment().subtract(1, 'days');
+
+    ctrl.set('basicsAbstract', 'too short');
+    ctrl.set('basicsDOI', 'Invalid DOI');
     ctrl.set('licenseValid', false);
-    ctrl.set('originalPublicationDateValid', false);
+    ctrl.set('basicsOriginalPublicationDate', invalidDate);
     assert.equal(ctrl.get('basicsValid'), false);
-    ctrl.set('abstractValid', true);
-    ctrl.set('doiValid', true);
+    ctrl.set('basicsAbstract', 'Abstract onif sufficient length');
+    ctrl.set('basicsDOI', '10.1234/hello');
     ctrl.set('licenseValid', true);
-    ctrl.set('originalPublicationDateValid', true);
+    ctrl.set('basicsOriginalPublicationDate', validDate);
     assert.equal(ctrl.get('basicsValid'), true);
 });
 
@@ -231,7 +240,7 @@ test('savedTitle computed property', function(assert) {
     this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {});
         const preprintWithTitle = store.createRecord('preprint', {
             'title': 'Node title'
@@ -240,7 +249,7 @@ test('savedTitle computed property', function(assert) {
         assert.equal(ctrl.get('savedTitle'), false);
         ctrl.set('model', preprintWithTitle);
         assert.equal(ctrl.get('savedTitle'), true);
-        Ember.run.cancelTimers();
+        run.cancelTimers();
     });
 });
 
@@ -248,7 +257,7 @@ test('savedFile computed property', function(assert) {
     this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
-    Ember.run(() => {
+    run(() => {
         const file = store.createRecord('file', {
             'id': '12345'
         });
@@ -262,7 +271,7 @@ test('savedFile computed property', function(assert) {
         assert.equal(ctrl.get('savedFile'), false);
         ctrl.set('model', preprintWithFile);
         assert.equal(ctrl.get('savedFile'), true);
-        Ember.run.cancelTimers();
+        run.cancelTimers();
     });
 });
 
@@ -270,7 +279,7 @@ test('savedAbstract computed property', function(assert) {
     this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {});
         const preprintWithDescription = store.createRecord('preprint', {
             'description': 'The Best Description'
@@ -279,7 +288,7 @@ test('savedAbstract computed property', function(assert) {
         assert.equal(ctrl.get('savedAbstract'), false);
         ctrl.set('model', preprintWithDescription);
         assert.equal(ctrl.get('savedAbstract'), true);
-        Ember.run.cancelTimers();
+        run.cancelTimers();
     });
 });
 
@@ -287,7 +296,7 @@ test('savedSubjects computed property', function(assert) {
     this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
-    Ember.run(() => {
+    run(() => {
         const model = store.createRecord('preprint', {
             'subjects': []
         });
@@ -298,7 +307,7 @@ test('savedSubjects computed property', function(assert) {
         assert.equal(ctrl.get('savedSubjects'), false);
         ctrl.set('model', modelWithSubjects);
         assert.equal(ctrl.get('savedSubjects'), true);
-        Ember.run.cancelTimers();
+        run.cancelTimers();
     });
 });
 
@@ -321,7 +330,7 @@ test('preprintFileChanged computed property', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const file = store.createRecord('file', {
             'id': '12345'
         });
@@ -343,7 +352,7 @@ test('titleChanged computed property', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             'title': 'Test title'
         });
@@ -372,13 +381,13 @@ test('basicsAbstract computed property', function(assert) {
     assert.equal(ctrl.get('basicsAbstract'), null);
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             'description': 'A great abstract'
         });
         ctrl.set('model', preprint);
         assert.equal(ctrl.get('basicsAbstract'), 'A great abstract');
-        Ember.run.cancelTimers();
+        run.cancelTimers();
     });
 });
 
@@ -387,7 +396,7 @@ test('abstractChanged computed property', function(assert) {
     ctrl.set('basicsAbstract', 'Abstract with whitespace ');
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const model = store.createRecord('preprint', {
             'description': 'A great abstract'
         });
@@ -402,7 +411,7 @@ test('basicsTags computed property', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             'tags': ['firstTag', 'secondTag']
         });
@@ -417,7 +426,7 @@ test('tagsChanged computed property', function(assert) {
     this.inject.service('store');
     const store = this.store;
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             'tags': ['firstTag', 'secondTag']
         });
@@ -434,7 +443,7 @@ test('basicsDOI', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             'doi': '10.1234/hello'
         });
@@ -448,7 +457,7 @@ test('doiChanged', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             'doi': '10.1234/hello'
         });
@@ -464,7 +473,7 @@ test('basicsLicense', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const license = store.createRecord('license', {
             'name': 'No license'
         });
@@ -486,7 +495,7 @@ test('licenseChanged with model set', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const license = store.createRecord('license', {
             'name': 'No license'
         });
@@ -500,12 +509,12 @@ test('licenseChanged with model set', function(assert) {
         const basicsLicense = {
             year: '2016' ,
             copyrightHolders: 'Sally Ride',
-            licenseType: Ember.$.extend(true, {}, license)
+            licenseType: $.extend(true, {}, license)
         };
         ctrl.set('model', preprint);
         assert.equal(ctrl.get('licenseChanged'), false);
         basicsLicense.copyrightHolders = 'Kalpana Chawla';
-        ctrl.set('basicsLicense', Ember.$.extend(true, {}, basicsLicense));
+        ctrl.set('basicsLicense', $.extend(true, {}, basicsLicense));
         assert.equal(ctrl.get('licenseChanged'), true);
         ctrl.set('basicsLicense.copyrightHolders', 'Sally Ride');
         assert.equal(ctrl.get('licenseChanged'), false);
@@ -522,14 +531,14 @@ test('licenseChanged with no model set', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const license = store.createRecord('license', {
             'name': 'No license'
         });
         const basicsLicense = {
             year: '2016' ,
             copyrightHolders: 'Sally Ride',
-            licenseType: Ember.$.extend(true, {}, license)
+            licenseType: $.extend(true, {}, license)
         };
         // TODO is below assertion correct?
         assert.equal(ctrl.get('licenseChanged'), true);
@@ -546,7 +555,7 @@ test('basicsLicense with multiple copyrightHolders', function(assert) {
             copyright_holders: ['Frank', 'Everest']
         }
     };
-    Ember.run(() => {
+    run(() => {
         ctrl.set('model', model);
         assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest');
     });
@@ -556,7 +565,7 @@ test('basicsOriginalPublicationDate', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         let today = moment();
         const preprint = store.createRecord('preprint', {
             'originalPublicationDate': today
@@ -571,7 +580,7 @@ test('originalPublicationDateChanged', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             'originalPublicationDate': moment()
         });
@@ -588,7 +597,7 @@ test('discardBasics properly joins copyrightHolders', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const model = store.createRecord('preprint', {
             tags: ['tags'],
             licenseRecord: {
@@ -602,7 +611,7 @@ test('discardBasics properly joins copyrightHolders', function(assert) {
         ctrl.set('model', model);
         ctrl.send('discardBasics');
         assert.equal(ctrl.get('basicsLicense').copyrightHolders, 'Frank, Everest');
-    });
+   });
 });
 
 test('basicsChanged computed property', function(assert) {
@@ -625,7 +634,7 @@ test('subjectsList', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             'subjects': [['Subject First Level', 'Subject Second Level']]
         });
@@ -641,7 +650,7 @@ test('disciplineReduced', function(assert) {
     this.inject.service('store');
     const store = this.store;
     const engineeringDisciplines = [[{id: '12345'},{'id':'56789'}], [{id: '12345'}], [{id: '12250'}] ];
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             'subjects': engineeringDisciplines
         });
@@ -657,7 +666,7 @@ test('isAdmin', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             'currentUserPermissions': 'administrator'
         });
@@ -675,7 +684,7 @@ test('canEdit', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             'currentUserPermissions': 'administrator',
             'registration': true
@@ -713,18 +722,18 @@ test('next opens next panel and flashes changes saved', function(assert) {
     const ctrl = this.subject();
     const currentPanelName = 'Discipline';
 
-    Ember.run(() => {
+    run(() => {
         panels.setProperties({
-            Discipline: Ember.Object.create({isOpen: true}),
-            Basics: Ember.Object.create({isOpen: false})
+            Discipline: EmberObject.create({isOpen: true}),
+            Basics: EmberObject.create({isOpen: false})
         });
 
         assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
 
         ctrl.send('next', currentPanelName);
-        Ember.run.cancelTimers();
+        run.cancelTimers();
 
-        assert.equal(panels.get('Discipline.isOpen'), true);
+        assert.equal(panels.get('Discipline.isOpen'), false);
         assert.equal(panels.get('Basics.isOpen'), true);
     });
 });
@@ -733,8 +742,8 @@ test('nextUploadSection closes current panel and opens next panel', function(ass
     // TODO not really testing anything except the stub
     const ctrl = this.subject();
     panels.setProperties({
-        Discipline: Ember.Object.create({isOpen: true}),
-        Basics: Ember.Object.create({isOpen: false})
+        Discipline: EmberObject.create({isOpen: true}),
+        Basics: EmberObject.create({isOpen: false})
     });
     ctrl.send('nextUploadSection', 'Discipline', 'Basics');
     assert.equal(panels.get('Discipline.isOpen'), false);
@@ -748,10 +757,10 @@ skip('changesSaved temporarily changes currentPanelSaveState to true', function(
     const currentPanelName = 'Discipline';
     assert.equal(ctrl.get('disciplineSaveState'), false);
 
-    return Ember.run(() => {
+    return run(() => {
         ctrl.send('changesSaved', currentPanelName);
 
-        Ember.run.next(ctrl, () => {
+        run.next(ctrl, () => {
             assert.equal(ctrl.get('disciplineSaveState'), true);
         });
     });
@@ -767,17 +776,17 @@ skip('changeInitialState', function(assert) {
     assert.ok();
 });
 
-test('finishUpload', function(assert) {
+skip('finishUpload', function(assert) {
     const ctrl = this.subject();
     assert.equal(ctrl.get('nodeLocked'), false);
 
-    Ember.run(() => {
+    run(() => {
         ctrl.send('finishUpload');
 
         assert.equal(ctrl.get('nodeLocked'), true);
         assert.equal(ctrl.get('file'), null);
 
-        Ember.run.cancelTimers();
+        run.cancelTimers();
     });
 });
 
@@ -794,14 +803,14 @@ skip('existingNodeExistingFile', function(assert) {
         description: 'The best abstract'
     });
 
-    Ember.run(() => {
+    run(() => {
 
         ctrl.set('nodeTitle', 'New title');
         ctrl.set('node', node);
 
         ctrl.send('existingNodeExistingFile');
 
-        Ember.run.next(() => {
+        run.next(() => {
             assert.equal(ctrl.get('node.title'), 'New title');
             assert.equal(ctrl.get('basicsAbstract'), node.get('description'));
         });
@@ -815,7 +824,7 @@ skip('createComponentCopyFile', function() {
     this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             title: 'hello',
             tags: ['first tag'],
@@ -845,7 +854,7 @@ test('selectExistingFile', function(assert) {
 test('discardUploadChanges', function(assert) {
     this.inject.service('store');
     const store = this.store;
-    Ember.run(() => {
+    run(() => {
         const file = store.createRecord('file', {
             'id': '12345'
         });
@@ -874,7 +883,7 @@ test('clearDownstreamFields action - belowConvertOrCopy', function(assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             title: 'hello'
         });
@@ -901,7 +910,7 @@ test('clearDownstreamFields action - belowFile', function(assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             title: 'hello'
         });
@@ -928,7 +937,7 @@ test('clearDownstreamFields action - belowNode', function(assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             title: 'hello'
         });
@@ -955,7 +964,7 @@ test('clearDownstreamFields action - allUpload', function(assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             title: 'hello'
         });
@@ -980,7 +989,7 @@ test('discardBasics', function(assert) {
     this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             title: 'hello',
             tags: ['first tag'],
@@ -1021,7 +1030,7 @@ skip('saveBasics', function(assert) {
     this.inject.service('store');
     const store = this.store;
     const ctrl = this.subject();
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             title: 'hello',
             tags: ['tags'],
@@ -1031,7 +1040,7 @@ skip('saveBasics', function(assert) {
         });
         ctrl.set('model', preprint);
         ctrl.send('saveBasics');
-        Ember.run.cancelTimers();
+        run.cancelTimers();
         assert.ok('?');
     });
 });
@@ -1047,7 +1056,7 @@ test('addTag', function(assert) {
 test('removeTag', function(assert) {
     const ctrl = this.subject();
     ctrl.set('basicsTags', ['firstTag', 'secondTag']);
-    ctrl.send('removeTag', 'secondTag');
+    ctrl.send('removeTag', 1);
     assert.equal(ctrl.get('basicsTags').length, 1);
     assert.equal(ctrl.get('basicsTags')[0], 'firstTag');
 });
@@ -1097,7 +1106,7 @@ test('selectProvider', function(assert) {
     const ctrl = this.subject();
     this.inject.service('store');
 
-    Ember.run(() => {
+    run(() => {
         const provider = this.store.createRecord('preprint-provider');
 
         ctrl.set('provider', provider);

@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+
 /**
  * @module ember-preprints
  * @submodule helpers
@@ -18,4 +19,4 @@ export function uploadValidationActive(params/*, hash*/) {
     return editMode ? nodeLocked && hasOpened : nodeLocked;
 }
 
-export default Ember.Helper.helper(uploadValidationActive);
+export default helper(uploadValidationActive);

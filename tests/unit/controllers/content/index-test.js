@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import { moduleFor, test, skip } from 'ember-qunit';
 import config from 'ember-get-config';
 import trunc from 'npm:unicode-byte-truncate'
@@ -24,7 +24,9 @@ moduleFor('controller:content/index', 'Unit | Controller | content/index', {
         'model:wiki',
         'model:taxonomy',
         'service:metrics',
-        'service:theme'
+        'service:theme',
+        'service:session',
+        'service:currentUser'
     ]
 });
 
@@ -50,7 +52,7 @@ test('isAdmin computed property', function (assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const node = store.createRecord('node', {
             currentUserPermissions: ['admin']
         });
@@ -69,7 +71,7 @@ test('twitterHref computed property', function (assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             title: 'test title'
         });
@@ -92,7 +94,7 @@ test('facebookHref computed property - has facebookAppId', function (assert) {
     const ctrl = this.subject();
     const facebookAppId = 112233445566;
 
-    Ember.run(() => {
+    run(() => {
         const provider = store.createRecord('preprint-provider', {
             facebookAppId: facebookAppId,
         });
@@ -118,7 +120,7 @@ test('facebookHref computed property - does not have facebookAppId', function(as
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const provider = store.createRecord('preprint-provider', {
             facebookAppId: '',
         });
@@ -145,7 +147,7 @@ test('linkedinHref computed property', function (assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             title: 'test title',
             description: 'test description'
@@ -195,7 +197,7 @@ test('emailHref computed property', function (assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             title: 'test title'
         });
@@ -217,7 +219,7 @@ test('hasTag computed property', function (assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             tags: []
         });
@@ -230,7 +232,7 @@ test('hasTag computed property', function (assert) {
         );
     });
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             tags: ['a', 'b', 'c']
         });
@@ -252,7 +254,7 @@ skip('authors computed property', function (assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             id: 'abc12'
         });
@@ -273,7 +275,7 @@ test('fullLicenseText computed property', function (assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const license = store.createRecord('license', {
             text: 'The year is {{year}} and the copyright holders are {{copyrightHolders}}.'
         });
@@ -298,7 +300,7 @@ test('fullLicenseText computed property', function (assert) {
         );
     });
 
-    Ember.run(() => {
+    run(() => {
         const license = store.createRecord('license', {
             text: 'The year is {{year}}.'
         });
@@ -325,7 +327,7 @@ test('editButtonLabel computed property', function (assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const provider = store.createRecord('preprint-provider', {
             reviewsWorkflow: 'pre-moderation',
         });
@@ -360,7 +362,7 @@ test('hasShortenedDescription computed property', function (assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             description: 'Lorem ipsum'
         });
@@ -372,7 +374,7 @@ test('hasShortenedDescription computed property', function (assert) {
         );
     });
 
-    Ember.run(() => {
+    run(() => {
         const preprint = store.createRecord('preprint', {
             description: 'Lorem ipsum'.repeat(35)
         });
@@ -412,7 +414,7 @@ test('description computed property', function (assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const input = 'Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem menandri consequat, tantas dictas quodsi nec eu. Ornatus forensibus vituperatoribus id vix.';
         const expected ='Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem';
 
@@ -468,7 +470,7 @@ test('chooseFile action', function (assert) {
     const store = this.store;
     const ctrl = this.subject();
 
-    Ember.run(() => {
+    run(() => {
         const fileItem = store.createRecord('file', {
             id: 'test1'
         });

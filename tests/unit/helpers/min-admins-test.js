@@ -1,12 +1,12 @@
 import { minAdmins } from 'preprint-service/helpers/min-admins';
 import { module, test } from 'qunit';
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 
 
 module('Unit | Helper | min admins');
 
 test('Modifying sole contributor does not leave min number of admins', function(assert) {
-    var contrib = Ember.Object.create({
+    var contrib = EmberObject.create({
         'id': '12345',
         'permission': 'admin',
         'unregisteredContributor': null
@@ -19,14 +19,14 @@ test('Modifying sole contributor does not leave min number of admins', function(
 });
 
 test('Can modify contributor permissions if have other admins', function(assert) {
-    var contrib = Ember.Object.create({
+    var contrib = EmberObject.create({
         'id': '12345',
         'permission': 'admin',
         'unregisteredContributor': null
 
     });
 
-    var otherContrib = Ember.Object.create({
+    var otherContrib = EmberObject.create({
         'id': 'abcde',
         'permission': 'admin',
         'unregisteredContributor': null
@@ -39,14 +39,14 @@ test('Can modify contributor permissions if have other admins', function(assert)
 });
 
 test('Cannot modify contributor permissions if other contributors read-only', function(assert) {
-    var contrib = Ember.Object.create({
+    var contrib = EmberObject.create({
         'id': '12345',
         'permission': 'admin',
         'unregisteredContributor': null
 
     });
 
-    var otherContrib = Ember.Object.create({
+    var otherContrib = EmberObject.create({
         'id': 'abcde',
         'permission': 'read',
         'unregisteredContributor': null

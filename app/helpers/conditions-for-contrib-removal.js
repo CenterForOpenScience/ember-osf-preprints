@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
 import permissions from 'ember-osf/const/permissions';
 
 /**
@@ -36,4 +36,4 @@ export function conditionsForContribRemoval(params/*, hash*/) {
 
 }
 
-export default Ember.Helper.helper(conditionsForContribRemoval);
+export default helper(conditionsForContribRemoval);

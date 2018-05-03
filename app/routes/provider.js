@@ -1,4 +1,7 @@
-import Ember, { Logger } from 'ember';
+/*eslint no-console: ["error", { allow: ["error"] }] */
+
+import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 import config from 'ember-get-config';
 
 /**
@@ -9,8 +12,8 @@ import config from 'ember-get-config';
 /**
  * @class Provider Route Handler
  */
-export default Ember.Route.extend({
-    theme: Ember.inject.service(),
+export default Route.extend({
+    theme: service(),
 
     beforeModel(transition) {
         const {slug = ''} = transition.params.provider;
@@ -43,11 +46,8 @@ export default Ember.Route.extend({
 
     actions: {
         error(error) {
-            Logger.error(error);
-
-            // substate implementation when returning `true`
+            console.error(error);
             return true;
-
         }
     }
 });

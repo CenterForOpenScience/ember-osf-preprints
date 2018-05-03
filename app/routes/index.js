@@ -1,5 +1,6 @@
-import Ember from 'ember';
-
+import RSVP from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import ResetScrollMixin from '../mixins/reset-scroll';
 import Analytics from 'ember-osf/mixins/analytics';
 
@@ -12,11 +13,11 @@ import Analytics from 'ember-osf/mixins/analytics';
  * Loads all disciplines and preprint providers to the index page
  * @class Index Route Handler
  */
-export default Ember.Route.extend(Analytics, ResetScrollMixin, {
-    // store: Ember.inject.service(),
-    theme: Ember.inject.service(),
+export default Route.extend(Analytics, ResetScrollMixin, {
+    store: service(),
+    theme: service(),
     model() {
-        return Ember.RSVP.hash({
+        return RSVP.hash({
             taxonomies: this.get('theme.provider')
                 .then(provider => provider
                     .queryHasMany('highlightedTaxonomies', {

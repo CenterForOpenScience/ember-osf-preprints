@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { merge } from '@ember/polyfills';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import FactoryGuy, { manualSetup } from 'ember-data-factory-guy';
@@ -16,7 +16,7 @@ test('renders non-links', function(assert) {
     // not a store instance of a contributor and its user(s).
     let contributor = {users: {identifiers: []}};
     contributor.users.name = contributorModel.get('users.fullName');
-    contributor = Ember.merge(contributor, contributorModel.serialize().data.attributes);
+    contributor = merge(contributor, contributorModel.serialize().data.attributes);
     this.set('contributor', contributor);
     this.render(hbs`{{author-link contributor=contributor}}`);
     assert.ok(!this.$('a').length, 'Found a link when user has no identifiers');
@@ -27,7 +27,7 @@ test('renders links', function(assert) {
     let contributorModel = FactoryGuy.make('contributor');
     let contributor = {users: {identifiers: []}};
     contributor.users.name = contributorModel.get('users.fullName');
-    contributor = Ember.merge(contributor, contributorModel.serialize().data.attributes);
+    contributor = merge(contributor, contributorModel.serialize().data.attributes);
     contributor.users.identifiers.push('https://staging.osf.io/cool');
     this.set('contributor', contributor);
 

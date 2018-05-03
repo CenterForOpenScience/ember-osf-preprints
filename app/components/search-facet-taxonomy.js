@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject as service } from '@ember/service';
+import { computed, set } from '@ember/object';
 import Analytics from 'ember-osf/mixins/analytics';
 
 const pageSize = 150;
@@ -22,8 +24,8 @@ const pageSize = 150;
  * ```
  * @class search-facet-taxonomy
  */
-export default Ember.Component.extend(Analytics, {
-    theme: Ember.inject.service(),
+export default Component.extend(Analytics, {
+    theme: service(),
     _getTaxonomies(parents = 'null') {
         return this
             .get('theme.provider')
@@ -54,7 +56,7 @@ export default Ember.Component.extend(Analytics, {
             );
     },
     // Creates a list of all of the subject paths that need to be selected
-    expandedList: Ember.computed('activeFilters.subjects', function() {
+    expandedList: computed('activeFilters.subjects', function() {
         const filters = this.get('activeFilters.subjects');
         let expandList = [];
         filters.forEach(filter => {
@@ -94,7 +96,7 @@ export default Ember.Component.extend(Analytics, {
     },
     actions: {
         expand(item) {
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'tree',
                     action: item.showChildren ? 'contract' : 'expand',
@@ -119,19 +121,19 @@ export default Ember.Component.extend(Analytics, {
     },
     _expand(item) {
         if (item.showChildren) {
-            Ember.set(item, 'showChildren', false);
+            set(item, 'showChildren', false);
             return;
         }
         let children = item.children;
 
         if (children && children.length > 0) {
-            Ember.set(item, 'showChildren', true);
+            set(item, 'showChildren', true);
             return;
         }
         return this._getTaxonomies(item.id)
             .then((results) => {
-                Ember.set(item, 'children', results);
-                Ember.set(item, 'showChildren', true);
+                set(item, 'children', results);
+                set(item, 'showChildren', true);
                 return results;
             });
     },

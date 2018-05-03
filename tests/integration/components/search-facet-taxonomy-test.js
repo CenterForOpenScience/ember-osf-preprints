@@ -1,24 +1,29 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import Ember from 'ember';
+import { resolve } from 'rsvp';
+import EmberObject from '@ember/object';
+import { A } from '@ember/array';
+import ArrayProxy from '@ember/array/proxy';
+import Service from '@ember/service';
+import hbs from 'htmlbars-inline-precompile';
 
-const taxonomiesQuery = () => Ember.RSVP.resolve(Ember.ArrayProxy.create({
-    content: Ember.A([
-        Ember.Object.create({
+const taxonomiesQuery = () => resolve(ArrayProxy.create({
+    content: A([
+        EmberObject.create({
             text: 'Arts and Humanities',
             parents: [],
             child_count: 50,
         }),
-        Ember.Object.create({
+        EmberObject.create({
             text: 'Education',
             parents: [],
             child_count: 27,
         }),
-        Ember.Object.create({
+        EmberObject.create({
             text: 'Filmography',
             parents: [],
             child_count: 13,
         }),
-        Ember.Object.create({
+        EmberObject.create({
             text: 'Gastronomy',
             parents: [],
             child_count: 67,
@@ -27,9 +32,9 @@ const taxonomiesQuery = () => Ember.RSVP.resolve(Ember.ArrayProxy.create({
 }));
 
 //Stub location service
-const themeStub = Ember.Service.extend({
+const themeStub = Service.extend({
     isProvider: true,
-    provider: Ember.RSVP.resolve({
+    provider: resolve({
         name: 'OSF',
         queryHasMany: taxonomiesQuery,
     })
@@ -49,19 +54,14 @@ moduleForComponent('search-facet-taxonomy', 'Integration | Component | search fa
     }
 });
 
-function render(context, componentArgs) {
-    return context.render(Ember.HTMLBars.compile(`{{search-facet-taxonomy
+test('One-level hierarchy taxonomies', function(assert) {
+    this.render(hbs`{{search-facet-taxonomy
         key=key
         options=facet
         updateFilters=(action noop)
         activeFilters=activeFilters
         filterReplace=filterReplace
-        ${componentArgs || ''}
-    }}`));
-}
-
-test('One-level hierarchy taxonomies', function(assert) {
-    render(this);
+    }}`)
     assert.equal(this.$('label')[0].innerText.trim(), 'Arts and Humanities');
     assert.equal(this.$('label')[1].innerText.trim(), 'Education');
     assert.equal(this.$('label')[2].innerText.trim(), 'Filmography');

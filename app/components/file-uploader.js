@@ -1,5 +1,10 @@
-import Ember from 'ember';
-import {State} from '../controllers/submit';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { later } from '@ember/runloop';
+import { defer } from 'rsvp';
+import $ from 'jquery';
+import { State } from '../controllers/submit';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
@@ -55,16 +60,17 @@ import Analytics from 'ember-osf/mixins/analytics';
 }}
  * @class file-uploader
  */
-export default Ember.Component.extend(Analytics, {
+export default Component.extend(Analytics, {
     State,
-    i18n: Ember.inject.service(),
-    store: Ember.inject.service(),
-    toast: Ember.inject.service(),
+    i18n: service(),
+    store: service(),
+    toast: service(),
+    panelActions: service('panelActions'),
 
     url: null,
     node: null,
     callback: null,
-    fileVersion: Ember.computed('osfFile', function() {
+    fileVersion: computed('osfFile', function() {
         // Helps communicate to user that there may be a pending, unsaved version
         return this.get('osfFile.currentVersion') || 1;
     }),
@@ -81,13 +87,29 @@ export default Ember.Component.extend(Analytics, {
     },
 
     actions: {
+        toggleIsOpen(panelName) {
+            if (this.get('editMode')) {
+                if (this.get('currentPanelName')) {
+                    this.get('panelActions').close(this.get('currentPanelName'));
+                }
+                this.get('metrics')
+                    .trackEvent({
+                        category: 'div',
+                        action: 'click',
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.panelName} section`
+                    });
+                this.get('panelActions').open(panelName);
+                this.set('currentPanelName', panelName);
+            }
+        },
+
         getUrl() {
             return this.get('url');
         },
 
         uploadNewFileUrl(files) {
             // Add mode - creates url for uploading a new file
-            this.set('url', files.findBy('name', 'osfstorage').get('links.upload')  + '?' + Ember.$.param({
+            this.set('url', files.findBy('name', 'osfstorage').get('links.upload')  + '?' + $.param({
                 kind: 'file',
                 name: this.get('file.name'),
             }));
@@ -95,7 +117,7 @@ export default Ember.Component.extend(Analytics, {
 
         uploadNewVersionUrl(files) {
             // Edit mode - creates url for uploading a new version of a file
-            this.set('url', files.findBy('name', 'osfstorage').get('links.upload') + this.get('osfFile.id') + '?' + Ember.$.param({
+            this.set('url', files.findBy('name', 'osfstorage').get('links.upload') + this.get('osfFile.id') + '?' + $.param({
                 kind: 'file',
             }));
         },
@@ -131,7 +153,7 @@ export default Ember.Component.extend(Analytics, {
         createProjectAndUploadFile() {
             // Upload case where user starting from scratch - new project/new file.  Creates project and then uploads file to newly
             // created project
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -144,6 +166,7 @@ export default Ember.Component.extend(Analytics, {
             }).save()
                 .then(node => {
                     this.set('node', node);
+                    this.getContributors(node);
                     this.send('upload');
                     this.set('newNode', true);
                     this.set('applyLicense', true);
@@ -157,7 +180,7 @@ export default Ember.Component.extend(Analytics, {
         createComponentAndUploadFile() {
             // Upload case for using a new component and a new file for the preprint.  Creates component of parent node
             // and then uploads file to newly created component.
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -183,7 +206,7 @@ export default Ember.Component.extend(Analytics, {
         uploadFileToExistingNode() {
             // Upload case for using an existing node with a new file for the preprint.  Updates title of existing node and then uploads file to node.
             // Also applicable in edit mode.
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
@@ -251,10 +274,10 @@ export default Ember.Component.extend(Analytics, {
                 this.send('setPreUploadedFileAttributes', file, this.get('osfFile.currentVersion'));
             }
             this.send('preUploadMetrics');
-            this.set('callback', Ember.RSVP.defer());
+            this.set('callback', defer());
             // Delays so user can see that file has been preuploaded before
             // advancing to next panel
-            Ember.run.later(() => {
+            later(() => {
                 this.attrs.nextUploadSection('uploadNewFile', 'organize');
             }, 1500);
             return this.get('callback.promise');
@@ -343,7 +366,7 @@ export default Ember.Component.extend(Analytics, {
                     eventData.label = 'Submit - Drop File, Existing Node';
                 }
             }
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent(eventData);
 
         }

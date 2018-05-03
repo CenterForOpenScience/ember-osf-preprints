@@ -1,11 +1,14 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { run } from '@ember/runloop';
+import EmberRouter from '@ember/routing/router';
+
 import config from 'ember-get-config';
 
-const Router = Ember.Router.extend({
+const Router = EmberRouter.extend({
     location: config.locationType,
     rootURL: config.rootURL,
-    metrics: Ember.inject.service(),
-    theme: Ember.inject.service(),
+    metrics: service(),
+    theme: service(),
 
     didTransition() {
         this._super(...arguments);
@@ -13,11 +16,11 @@ const Router = Ember.Router.extend({
     },
 
     _trackPage() {
-        Ember.run.scheduleOnce('afterRender', this, () => {
+        run.scheduleOnce('afterRender', this, () => {
             const page = document.location.pathname;
             const title = this.getWithDefault('currentRouteName', 'unknown');
 
-            Ember.get(this, 'metrics').trackPage({ page, title });
+            this.get('metrics').trackPage({ page, title });
             this.set('theme.currentLocation', window.location.href);
         });
     }
@@ -25,7 +28,6 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
     this.route('page-not-found', {path: '/*bad_url'});
-
     if (window.isProviderDomain) {
         this.route('index', {path: '/'});
         this.route('submit');
