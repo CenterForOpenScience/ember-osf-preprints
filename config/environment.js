@@ -91,7 +91,6 @@ module.exports = function(environment) {
     }
 
     if (environment === 'test') {
-        // Testem prefers this...
         ENV.APP.autoboot = false;
 
         // keep test console output quieter
