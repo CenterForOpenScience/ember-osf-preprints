@@ -26,7 +26,8 @@ moduleFor('controller:content/index', 'Unit | Controller | content/index', {
         'service:metrics',
         'service:theme',
         'service:session',
-        'service:currentUser'
+        'service:currentUser',
+        'service:i18n'
     ]
 });
 
