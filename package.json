@@ -58,6 +58,7 @@
     "ember-cli-qunit": "3.0.0",
     "ember-cli-release": "0.2.9",
     "ember-cli-sass": "5.3.1",
+    "ember-cli-sentry": "3.0.0",
     "ember-cli-shims": "1.0.2",
     "ember-cli-sri": "2.1.0",
     "ember-cli-template-lint": "0.4.12",

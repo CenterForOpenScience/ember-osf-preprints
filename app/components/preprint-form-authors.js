@@ -37,6 +37,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 export default CpPanelBodyComponent.extend(Analytics, {
     i18n: Ember.inject.service(),
+    raven: Ember.inject.service(),
     valid: Ember.computed.alias('newContributorId'),
     authorModification: false,
     currentPage: 1,
@@ -97,10 +98,11 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 this.get('contributors').pushObject(res);
                 this.get('toast').success(this.get('i18n').t('submit.preprint_author_added'));
                 this.highlightSuccessOrFailure(res.id, this, 'success');
-            }, () => {
+            }, (error) => {
                 this.get('toast').error(this.get('i18n').t('submit.error_adding_author'));
                 this.highlightSuccessOrFailure(user.id, this, 'error');
                 user.rollbackAttributes();
+                this.get('raven').captureMessage('Could not add author', { extra: { error }});
             });
         },
         // Adds all contributors from parent project to current component as long as they are not current contributors
@@ -129,8 +131,9 @@ export default CpPanelBodyComponent.extend(Analytics, {
                     });
                     this.toggleAuthorModification();
                 })
-                .catch(() => {
+                .catch((error) => {
                     this.get('toast').error('Some contributors may not have been added. Try adding manually.');
+                    this.get('raven').captureMessage('Could not add some contributors', { extra: { error }});
                 });
         },
         // Adds unregistered contributor, then clears form and switches back to search view.
@@ -151,6 +154,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                         this.get('toast').error(error.errors[0].detail);
                     } else {
                         this.get('toast').error(this.get('i18n').t('submit.error_adding_unregistered_author'));
+                        this.get('raven').captureMessage('Could not add unregistered author', { extra: { error }});
                     }
                     this.highlightSuccessOrFailure('add-unregistered-contributor-form', this, 'error');
                 });
@@ -162,9 +166,10 @@ export default CpPanelBodyComponent.extend(Analytics, {
             if (query) {
                 this.attrs.findContributors(query, page).then(() => {
                     this.set('addState', 'searchView');
-                }, () => {
+                }, (error) => {
                     this.get('toast').error('Could not perform search query.');
                     this.highlightSuccessOrFailure('author-search-box', this, 'error');
+                    this.get('raven').captureMessage('Could not perform search query', { extra: { error }});
                 });
             }
         },
@@ -182,10 +187,11 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 this.removedSelfAsAdmin(contrib, contrib.get('permission'));
                 this.get('contributors').removeObject(contrib);
                 this.get('toast').success(this.get('i18n').t('submit.preprint_author_removed'));
-            }, () => {
+            }, (error) => {
                 this.get('toast').error(this.get('i18n').t('submit.error_adding_author'));
                 this.highlightSuccessOrFailure(contrib.id, this, 'error');
                 contrib.rollbackAttributes();
+                this.get('raven').captureMessage('Could not remove contributor', { extra: { error }});
             });
         },
         // Updates contributor then redraws contributor list view - updating contributor
@@ -201,10 +207,11 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 this.toggleAuthorModification();
                 this.highlightSuccessOrFailure(contributor.id, this, 'success');
                 this.removedSelfAsAdmin(contributor, permission);
-            }, () => {
+            }, (error) => {
                 this.get('toast').error('Could not modify author permissions');
                 this.highlightSuccessOrFailure(contributor.id, this, 'error');
                 contributor.rollbackAttributes();
+                this.get('raven').captureMessage('Could not modify author permissions', { extra: { error }});
             });
         },
         // Updates contributor then redraws contributor list view - updating contributor
@@ -219,10 +226,11 @@ export default CpPanelBodyComponent.extend(Analytics, {
             this.attrs.editContributor(contributor, '', isBibliographic).then(() => {
                 this.toggleAuthorModification();
                 this.highlightSuccessOrFailure(contributor.id, this, 'success');
-            }, () => {
+            }, (error) => {
                 this.get('toast').error('Could not modify citation');
                 this.highlightSuccessOrFailure(contributor.id, this, 'error');
                 contributor.rollbackAttributes();
+                this.get('raven').captureMessage('Could not modify citation', { extra: { error }});
             });
         },
         // There are 3 view states on left side of Authors panel.  This switches to add unregistered contrib view.
@@ -265,11 +273,12 @@ export default CpPanelBodyComponent.extend(Analytics, {
             let newIndex = itemModels.indexOf(draggedContrib);
             this.attrs.reorderContributors(draggedContrib, newIndex, itemModels).then(() => {
                 this.highlightSuccessOrFailure(draggedContrib.id, this, 'success');
-            }, () => {
+            }, (error) => {
                 this.highlightSuccessOrFailure(draggedContrib.id, this, 'error');
                 this.set('contributors', originalOrder);
                 this.get('toast').error('Could not reorder contributors');
                 draggedContrib.rollbackAttributes();
+                this.get('raven').captureMessage('Could not reorder contributors', { extra: { error }});
             });
         },
         // Action used by the pagination-pager component to the handle user-click event.
@@ -280,9 +289,10 @@ export default CpPanelBodyComponent.extend(Analytics, {
                     this.set('addState', 'searchView');
                     this.set('currentPage', current);
                 })
-                .catch(() => {
+                .catch((error) => {
                         this.get('toast').error('Could not perform search query.');
                         this.highlightSuccessOrFailure('author-search-box', this, 'error');
+                        this.get('raven').captureMessage('Could not perform search query', { extra: { error }});
                     });
             }
         }
@@ -328,5 +338,5 @@ export default CpPanelBodyComponent.extend(Analytics, {
     others, depending on what requests are permitted */
     toggleAuthorModification() {
         this.toggleProperty('authorModification');
-    }
+    },
 });

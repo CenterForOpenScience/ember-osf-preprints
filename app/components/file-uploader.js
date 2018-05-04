@@ -60,6 +60,7 @@ export default Ember.Component.extend(Analytics, {
     i18n: Ember.inject.service(),
     store: Ember.inject.service(),
     toast: Ember.inject.service(),
+    raven: Ember.inject.service(),
 
     url: null,
     node: null,
@@ -73,6 +74,7 @@ export default Ember.Component.extend(Analytics, {
         maxFiles: 1,
         method: 'PUT',
         uploadMultiple: false,
+        autoDiscover: false,
     },
 
     init() {
@@ -148,9 +150,10 @@ export default Ember.Component.extend(Analytics, {
                     this.set('newNode', true);
                     this.set('applyLicense', true);
                 })
-                .catch(() => {
+                .catch((error) => {
                     this.set('uploadInProgress', false);
                     this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_project'));
+                    this.get('raven').captureMessage('Could not create project', { extra: { error }});
                 });
         },
 
@@ -174,9 +177,10 @@ export default Ember.Component.extend(Analytics, {
                     this.set('newNode', true);
                     this.set('applyLicense', true);
                 })
-                .catch(() => {
+                .catch((error) => {
                     this.set('uploadInProgress', false);
                     this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_component'));
+                    this.get('raven').captureMessage('Could not create component', { extra: { error }});
                 });
         },
 
@@ -205,10 +209,11 @@ export default Ember.Component.extend(Analytics, {
                 .then(() => {
                     this.send('upload');
                 })
-                .catch(() => {
+                .catch((error) => {
                     node.set('title', currentNodeTitle);
                     this.set('uploadInProgress', false);
                     this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
+                    this.get('raven').captureMessage('Could not update title', { extra: { error }});
                 });
             } else {
                 this.send('upload');
@@ -293,9 +298,10 @@ export default Ember.Component.extend(Analytics, {
                             return this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint',  this.get('parentNode'));
                         }
                     })
-                    .catch(() => {
+                    .catch((error) => {
                         this.get('toast').error(this.get('i18n').t('components.file-uploader.preprint_file_error'));
                         this.set('uploadInProgress', false);
+                        this.get('raven').captureMessage('Could not create component', { extra: { error }});
                     });
             } else {
                 //File upload failure
@@ -347,5 +353,5 @@ export default Ember.Component.extend(Analytics, {
                 .trackEvent(eventData);
 
         }
-    }
+    },
 });

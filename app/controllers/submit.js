@@ -136,6 +136,7 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
     i18n: Ember.inject.service(),
     theme: Ember.inject.service(),
     fileManager: Ember.inject.service(),
+    raven: Ember.inject.service(),
     toast: Ember.inject.service('toast'),
     panelActions: Ember.inject.service('panelActions'),
     _State: State, // Project states - new project or existing project
@@ -535,10 +536,17 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
         return !(state === ACCEPTED || (modType === POST_MODERATION && state === PENDING));
     }),
     editInformation1: Ember.computed('moderationType', function() {
-        return EDIT_MESSAGES['line1'][this.get('moderationType')];
+        let moderationType = this.get('moderationType');
+        if (moderationType) {
+            return EDIT_MESSAGES['line1'][moderationType];
+        }
     }),
     editInformation2: Ember.computed('moderationType', 'model.reviewsState', function() {
-        return EDIT_MESSAGES['line2'][this.get('model.reviewsState')][this.get('moderationType')];
+        let reviewsState = this.get('model.reviewsState'),
+            moderationType = this.get('moderationType');
+        if (reviewsState && moderationType) {
+            return EDIT_MESSAGES['line2'][reviewsState][moderationType];
+        }
     }),
     canResubmit: Ember.computed('moderationType', 'model.reviewsState', function() {
         let state = this.get('model.reviewsState');
@@ -671,11 +679,12 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     return node.save();
                 })
                 .then(() => this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint'))
-                .catch(() => {
+                .catch((error) => {
                     node.set('title', currentNodeTitle);
                     this.get('toast').error(
                         this.get('i18n').t('submit.could_not_update_title')
                     );
+                    this.get('raven').captureMessage('Could not update title', { extra: { error }});
                 });
         },
         createComponentCopyFile() {
@@ -703,14 +712,19 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                                     this.set('applyLicense', true);
                                     this.set('newNode', true);
                                 })
-                                .catch(() => this.get('toast').error(this.get('i18n').t('submit.error_copying_file')));
+                                .catch((error) => {
+                                    this.get('toast').error(this.get('i18n').t('submit.error_copying_file'));
+                                    this.get('raven').captureMessage('Could not copy file', { extra: { error }});
+                                });
                         })
-                        .catch(() => {
+                        .catch((error) => {
                             this.get('toast').error(this.get('i18n').t('submit.error_accessing_parent_files'));
+                            this.get('raven').captureMessage('Could not access parent files', { extra: { error }});
                         });
                 })
-                .catch(() => {
+                .catch((error) => {
                     this.get('toast').error(this.get('i18n').t('submit.could_not_create_component'));
+                    this.get('raven').captureMessage('Could not create component', { extra: { error }});
                 });
 
         },
@@ -721,8 +735,9 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                 .then(() => {
                     this.send('startPreprint');
                 })
-                .catch(() => {
+                .catch((error) => {
                     this.get('toast').error(this.get('i18n').t('submit.abandoned_preprint_error'));
+                    this.get('raven').captureMessage('Could not retrieve abandoned preprint', { extra: { error }});
                 });
         },
         startPreprint(parentNode) {
@@ -750,13 +765,14 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
                     this.get('toast').info(this.get('i18n').t('submit.preprint_file_uploaded'));
                     this.send('finishUpload');
                 })
-                .catch(() => {
+                .catch((error) => {
                     this.set('uploadInProgress', false); // Setting to false allows user to attempt operation again.
                     if (parentNode) { // If creating preprint failed after a component was created, set the node back to the parentNode.
                         // If user tries to initiate preprint again, a separate component will be created under the parentNode.
                         this.set('node', parentNode);
                     }
                     this.get('toast').error(this.get('i18n').t('submit.error_initiating_preprint'));
+                    this.get('raven').captureMessage('Could not initiate preprint', { extra: { error }});
                 });
         },
 
@@ -940,20 +956,23 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             node.save()
                 .then(() => model.save()
                     .then(() => this.send('next', this.get('_names.3')))
-                    .catch(() => {
+                    .catch((error) => {
                         // If model save fails, do not transition, save original vales
                         this.get('toast').error(
                             this.get('i18n').t('submit.basics_error')
                         );
+
                         saveOriginalValues();
+                        this.get('raven').captureMessage('Could not save basics', { extra: { error }});
                     })
                 )
-                .catch(() => {
+                .catch((error) => {
                     // If node save fails, do not transition, save original values
                     this.get('toast').error(
                         this.get('i18n').t('submit.basics_error')
                     );
                     saveOriginalValues();
+                    this.get('raven').captureMessage('Could not save basics', { extra: { error }});
                 });
         },
 
@@ -1016,10 +1035,11 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             model.set('subjects', subjectIdMap(this.get('subjectsList')));
             model.save()
                 .then(sendNext)
-                .catch(() => {
+                .catch((error) => {
                     // Current subjects saved so UI can be restored in case of failure
                     model.set('subjects', Ember.$.extend(true, [], this.get('model.subjects')));
                     this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
+                    this.get('raven').captureMessage('Could not save disciplines', { extra: { error }});
                 });
         },
         /**
@@ -1045,9 +1065,10 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             }).then((contributors) => {
                 this.set('searchResults', contributors);
                 return contributors;
-            }).catch(() => {
+            }).catch((error) => {
                 this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
                 this.highlightSuccessOrFailure('author-search-box', this, 'error');
+                this.get('raven').captureMessage('Could not perform contributor search query', { extra: { error }});
             });
         },
         /**
@@ -1205,5 +1226,5 @@ export default Ember.Controller.extend(Analytics, BasicsValidations, NodeActions
             this.set('selectedProvider', this.get('currentProvider'));
             this.set('providerChanged', false);
         }
-    }
+    },
 });
