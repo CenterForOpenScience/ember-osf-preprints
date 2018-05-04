@@ -15,11 +15,8 @@ export default Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
     i18n: service(),
     store: service(),
     theme: service(),
-    headTags: function() {
-        return this.get('theme.headTags');
-    },
-    beforeModel: function () {
-        let detectBrandedDomain = () => {
+    beforeModel () {
+        const detectBrandedDomain = () => {
             // Set the provider ID from the current origin
             if (window.isProviderDomain) {
                 return this.get('store').query(
@@ -64,6 +61,9 @@ export default Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
             window.prerenderReady = true;
             return true; // Bubble the didTransition event
         },
+    },
+    headTags() {
+        return this.get('theme.headTags');
     },
     setTheme (providers) {
         if (providers.length) {

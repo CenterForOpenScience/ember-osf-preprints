@@ -1,13 +1,11 @@
 import RSVP from 'rsvp';
 import { module } from 'qunit';
-import { resolve } from 'rsvp';
-import config from 'ember-get-config';
-import FactoryGuy, { manualSetup } from 'ember-data-factory-guy';
-import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 
+import FactoryGuy, { manualSetup } from 'ember-data-factory-guy';
+import config from 'ember-get-config';
+import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
-
 
 export default function(name, options = {}) {
     module(name, {
@@ -39,6 +37,7 @@ export default function(name, options = {}) {
                     },
                 });
             });
+
             if (options.beforeEach) {
                 return options.beforeEach.apply(this, arguments);
             }
@@ -46,7 +45,7 @@ export default function(name, options = {}) {
         afterEach() {
             FakeServer.stop();
             const afterEach = options.afterEach && options.afterEach.apply(this, arguments);
-            return resolve(afterEach).then(() => destroyApp(this.application));
+            return RSVP.resolve(afterEach).then(() => destroyApp(this.application));
         },
     });
 }

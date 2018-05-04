@@ -9,6 +9,8 @@ import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
 import trunc from 'npm:unicode-byte-truncate';
 
+const { PromiseArray } = DS;
+
 /**
  * Takes an object with query parameter name as the key and value,
  * or [value, maxLength] as the values.
@@ -22,7 +24,6 @@ import trunc from 'npm:unicode-byte-truncate';
  */
 function queryStringify(queryParams) {
     const query = [];
-
     // TODO set up ember to transpile Object.entries
     queryParams.array.forEach((param) => {
         let value = queryParams[param];
@@ -173,11 +174,18 @@ export default Controller.extend(Analytics, {
         // Cannot be called until node has loaded!
         const model = this.get('model');
         const contributors = A();
+
+        return PromiseArray.create({
+            promise: loadAll(model, 'contributors', contributors)
+                .then(this._returnContributors.bind(this)),
+        });
+    /*
         const dsPromiseArray = new DS.PromiseArray();
         return dsPromiseArray.create({
             promise: loadAll(model, 'contributors', contributors)
-                .then(() => contributors),
+                .then(this._returnContributors.bind(this)),
         });
+    */
     }),
 
     fullLicenseText: computed('model.{license.text,licenseRecord}', function() {
@@ -291,5 +299,9 @@ export default Controller.extend(Analytics, {
                 this.get('metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor or non-authenticated user
             }
         },
+    },
+
+    _returnContributors(contributors) {
+        return contributors;
     },
 });

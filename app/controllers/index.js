@@ -13,7 +13,6 @@ import config from 'ember-get-config';
  */
 export default Controller.extend(Analytics, {
     theme: service(),
-    host: config.OSF.url,
     actions: {
         contactLink(href, category, action, label) {
             const metrics = this.get('metrics');

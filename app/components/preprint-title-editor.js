@@ -19,7 +19,9 @@ const TitleValidation = buildValidations({
  */
 
 /**
- * Preprint-title-editor widget - allows you to add a title if none exists, or edit existing title. Adds validation. Will modify title and titleValid.
+ * Preprint-title-editor widget -
+ * allows you to add a title if none exists, or edit existing title.
+ * Adds validation. Will modify title and titleValid.
  *
  * Sample usage:
  * ```handlebars

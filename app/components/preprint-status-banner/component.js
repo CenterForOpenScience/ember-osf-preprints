@@ -55,18 +55,15 @@ export default Component.extend({
     classNameBindings: ['getClassName'],
 
     latestAction: null,
-    reviewerComment: computed.alias('latestAction.comment'),
-    reviewerName: computed.alias('latestAction.creator.fullName'),
+
+    reviewerComment: alias('latestAction.comment'),
+    reviewerName: alias('latestAction.creator.fullName'),
 
     getClassName: computed('submission.{provider.reviewsWorkflow,submission.reviewsState}', function() {
         return this.get('submission.reviewsState') === PENDING ?
             CLASS_NAMES[this.get('submission.provider.reviewsWorkflow')] :
             CLASS_NAMES[this.get('submission.reviewsState')];
     }),
-
-    latestAction: null,
-    reviewerComment: alias('latestAction.comment'),
-    reviewerName: alias('latestAction.creator.fullName'),
 
     bannerContent: computed('statusExplanation', 'workflow', 'theme.{isProvider,provider.name}', function() {
         const i18n = this.get('i18n');

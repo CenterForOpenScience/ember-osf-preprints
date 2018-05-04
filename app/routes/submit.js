@@ -2,9 +2,9 @@ import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import CasAuthenticatedRouteMixin from 'ember-osf/mixins/cas-authenticated-route';
+import ConfirmationMixin from 'ember-onbeforeunload/mixins/confirmation';
 import ResetScrollMixin from '../mixins/reset-scroll';
 import SetupSubmitControllerMixin from '../mixins/setup-submit-controller';
-import ConfirmationMixin from 'ember-onbeforeunload/mixins/confirmation';
 
 /**
  * @module ember-preprints
@@ -15,7 +15,7 @@ import ConfirmationMixin from 'ember-onbeforeunload/mixins/confirmation';
  * Creates a preprint record
  * @class Submit Route Handler
  */
-export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticatedRouteMixin, SetupSubmitControllerMixin, {
+export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticatedRouteMixin, SetupSubmitControllerMixin, { // eslint-disable-line max-len
     store: service(),
     i18n: service(),
     currentUser: service('currentUser'),
@@ -31,11 +31,7 @@ export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticate
         });
     },
     afterModel() {
-        return this.get('theme.provider').then((provider) => {
-            if (!provider.get('allowSubmissions')) {
-                this.replaceWith('page-not-found');
-            }
-        });
+        return this.get('theme.provider').then(this._getPageNotFound.bind(this));
     },
     setupController(controller, model) {
         this.setupSubmitController(controller, model);
@@ -45,5 +41,10 @@ export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticate
         // If true, shows a confirmation message when leaving the page
         // True if the user already created/chosen a project node
         return this.controller.get('hasDirtyFields');
+    },
+    _getPageNotFound(provider) {
+        if (!provider.get('allowSubmissions')) {
+            this.replaceWith('page-not-found');
+        }
     },
 });

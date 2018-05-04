@@ -1,6 +1,5 @@
 import { computed } from '@ember/object';
-import { inject as service } from '@ember/service';
-import Service from '@ember/service';
+import Service, { inject as service } from '@ember/service';
 import $ from 'jquery';
 import config from 'ember-get-config';
 import buildProviderAssetPath from '../utils/build-provider-asset-path';
@@ -32,18 +31,28 @@ export default Service.extend({
 
     // The provider object
     provider: computed('id', function() {
-        const self = this;
-        const id = self.get('id');
-        const store = self.get('store');
-        // BAYLEE I MODIFIED THIS USING self = this and adding the providerCallback below, can you confirm that's the write way to solve this lint?
+        const id = this.get('id');
+        const store = this.get('store');
+
         // Check if redirect is enabled for the current provider
-        if (!window.isProviderDomain && self.get('isProvider')) {
+        if (!window.isProviderDomain && this.get('isProvider')) {
             store.findRecord('preprint-provider', id)
-                .then(self.providerCallback(this, id));
+                .then(this._getproviderDomain.bind(this));
         }
 
         return store.findRecord('preprint-provider', id);
     }),
+
+    _getproviderDomain(provider) {
+        if (provider.get('domainRedirectEnabled')) {
+            const domain = provider.get('domain');
+            const { href, origin } = window.location;
+            const id = this.get('id');
+            const url = href.replace(new RegExp(`^${origin}/preprints/${id}/?`), domain);
+
+            window.location.replace(url);
+        }
+    },
 
     providerCallback(provider, id) {
         if (provider.get('domainRedirectEnabled')) {

@@ -1,6 +1,5 @@
 import Component from '@ember/component';
-import EmberObject from '@ember/object';
-import { computed } from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import { sort, notEmpty } from '@ember/object/computed';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
@@ -8,18 +7,20 @@ import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
 
 function arrayEquals(arr1, arr2) {
-    return arr1.length === arr2.length && arr1.reduce((acc, val, i) => acc && val === arr2[i], true);
+    return arr1.length === arr2.length
+        && arr1.reduce((acc, val, i) => acc && val === arr2[i], true);
 }
 
 function arrayStartsWith(arr, prefix) {
-    return prefix.reduce((acc, val, i) => acc && val && arr[i] && val.id === arr[i].id, true);
+    return prefix.reduce((acc, val, i) => acc && val
+        && arr[i] && val.id === arr[i].id, true);
 }
 
 const Column = EmberObject.extend({
-    sortDefinition: ['text:asc'],
+    sortDefinition: ['text:asc'], // eslint-disable-line ember/avoid-leaking-state-in-components
     filterText: '',
     selection: null,
-    subjects: [],
+    subjects: [], // eslint-disable-line ember/avoid-leaking-state-in-components
     subjectsSorted: sort('subjectsFiltered', 'sortDefinition'),
     subjectsFiltered: computed('subjects.[]', 'filterText', function() {
         const filterTextLowerCase = this.get('filterText').toLowerCase();
@@ -63,11 +64,11 @@ export default Component.extend(Analytics, {
         this._super(...arguments);
 
         const tempSubjects = A();
-        
+
         this.get('initialSubjects').forEach((subject) => {
             tempSubjects.push(subject);
         });
-        
+
         this.setProperties({
             initialSubjects: [],
             currentSubjects: [],
@@ -129,13 +130,16 @@ export default Component.extend(Analytics, {
                 .slice(0, nextTier)
                 .map(column => column.get('selection'));
 
-            // An existing tag has this prefix, and this is the lowest level of the taxonomy, so no need to fetch child results
-            if (nextTier === totalColumns || !allSelections.some(item => arrayStartsWith(item, currentSelection))) {
+            // An existing tag has this prefix, and this is the lowest level of the taxonomy,
+            // so no need to fetch child results
+            if (nextTier === totalColumns
+                || !allSelections.some(item => arrayStartsWith(item, currentSelection))) {
                 let existingParent;
 
                 for (let i = 1; i <= currentSelection.length; i++) {
                     const sub = currentSelection.slice(0, i);
-                    existingParent = allSelections.find(item => arrayEquals(item, sub)); // jshint ignore:line
+                    existingParent = allSelections
+                        .find(item => arrayEquals(item, sub)); // jshint ignore:line
 
                     // The parent exists, append the subject to it
                     if (existingParent) {

@@ -7,7 +7,9 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 
 /**
- * Preprints footer - can have branding for a particular provider - use in application.hbs to drop footer onto every page
+ * Preprints footer -
+ * can have branding for a particular provider -
+ * use in application.hbs to drop footer onto every page
  *
  * Sample usage:
  * ```handlebars

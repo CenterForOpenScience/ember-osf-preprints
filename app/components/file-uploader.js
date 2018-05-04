@@ -4,24 +4,33 @@ import { inject as service } from '@ember/service';
 import { later } from '@ember/runloop';
 import { defer } from 'rsvp';
 import $ from 'jquery';
-import { State } from '../controllers/submit';
 import Analytics from 'ember-osf/mixins/analytics';
+import { State } from '../controllers/submit';
 /**
  * @module ember-preprints
  * @submodule components
  */
 
 /**
- * File uploader widget - handles all cases where uploading a new file as your preprint, or uploading a new version of your preprint.
+ * File uploader widget
  *
- *  Currently used for the following ADD mode scenarios: 1) Upload file to a new project 2) Upload file to a new component 3) Upload
- *  file to an existing node.  Also used in EDIT mode because your only option to change a preprint file is to upload a new version.
+ *  Handles all cases where uploading a new file as your preprint,
+ *  or uploading a new version of your preprint.
  *
- *  Contains dropzone-widget where you can drag and drop preprint file. 'file' will be set to the preuploaded file. 'node' will
- *  either become the newly created project or component, or the existing node.  After file is uploaded to the designated 'node',
+ *  Currently used for the following ADD mode scenarios:
+ *  1) Upload file to a new project
+ *  2) Upload file to a new component
+ *  3) Upload file to an existing node.
+ *  Also used in EDIT mode because your only option to change a preprint file is
+ *  to upload a new version.
+ *
+ *  Contains dropzone-widget where you can drag and drop preprint file.
+ *  'file' will be set to the preuploaded file. 'node' will either become the newly created project
+ *  or component, or the existing node.  After file is uploaded to the designated 'node',
  *  'osfFile' is set to the uploadedFile.
  *
- *  NOTE: file-uploader is used in two places in the preprints application - on the submit page and inside the preprint-form-project-select component.
+ *  NOTE: file-uploader is used in two places in the preprints application:
+ *  on the submit page and inside the preprint-form-project-select component.
  *  If new properties need to be passed to this component, be sure to update in both places.
  *
  * ```handlebars
@@ -70,6 +79,7 @@ export default Component.extend(Analytics, {
     url: null,
     node: null,
     callback: null,
+    currentNodeTitle: null,
     /* eslint-disable-next-line ember/avoid-leaking-state-in-components */
     dropzoneOptions: {
         maxFiles: 1,
@@ -125,21 +135,15 @@ export default Component.extend(Analytics, {
         upload() {
             // Uploads file to node
             if (this.get('file') === null) { // No new file to upload.
-                this.sendAction('finishUpload');
+                this.finishUpload();
             } else {
-                return this.get('node.files').then((files) => {
-                    if (this.get('nodeLocked')) { // Edit mode, fetch URL for uploading new version
-                        this.send('uploadNewVersionUrl', files);
-                    } else { // Add mode, fetch URL for uploading new file
-                        this.send('uploadNewFileUrl', files);
-                    }
-                    this.callback.resolve(this.get('file'));
-                });
+                return this.get('node.files').then(this._setUploadProperties.bind(this));
             }
         },
 
         setNodeAndFile() {
-            // Switches between various upload scenarios involving uploading file to 1) a new project 2) a new component 3) an existing node.
+            // Switches between various upload scenarios involving uploading file to
+            // 1) a new project 2) a new component 3) an existing node.
             this.set('uploadInProgress', true);
             if (this.get('newNodeNewFile')) {
                 this.send('createProjectAndUploadFile');
@@ -151,8 +155,8 @@ export default Component.extend(Analytics, {
         },
 
         createProjectAndUploadFile() {
-            // Upload case where user starting from scratch - new project/new file.  Creates project and then uploads file to newly
-            // created project
+            // Upload case where user starting from scratch - new project/new file.
+            // Creates project and then uploads file to newly created project
             this.get('metrics')
                 .trackEvent({
                     category: 'button',
@@ -164,22 +168,13 @@ export default Component.extend(Analytics, {
                 category: 'project',
                 title: this.get('title'),
             }).save()
-                .then((node) => {
-                    this.set('node', node);
-                    this.getContributors(node);
-                    this.send('upload');
-                    this.set('newNode', true);
-                    this.set('applyLicense', true);
-                })
-                .catch(() => {
-                    this.set('uploadInProgress', false);
-                    this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_project'));
-                });
+                .then(this._createNewProject.bind(this))
+                .catch(this._failCreateNewProject.bind(this));
         },
 
         createComponentAndUploadFile() {
-            // Upload case for using a new component and a new file for the preprint.  Creates component of parent node
-            // and then uploads file to newly created component.
+            // Upload case for using a new component and a new file for the preprint.
+            // Creates component of parent node and then uploads file to newly created component.
             this.get('metrics')
                 .trackEvent({
                     category: 'button',
@@ -189,22 +184,13 @@ export default Component.extend(Analytics, {
             const node = this.get('node');
             node
                 .addChild(this.get('title'))
-                .then((child) => {
-                    this.set('parentNode', node);
-                    this.set('node', child);
-                    this.set('basicsAbstract', this.get('node.description') || null);
-                    this.send('upload');
-                    this.set('newNode', true);
-                    this.set('applyLicense', true);
-                })
-                .catch(() => {
-                    this.set('uploadInProgress', false);
-                    this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_component'));
-                });
+                .then(this._createComponent.bind(this))
+                .catch(this._failCreateComponent.bind(this));
         },
 
         uploadFileToExistingNode() {
-            // Upload case for using an existing node with a new file for the preprint.  Updates title of existing node and then uploads file to node.
+            // Upload case for using an existing node with a new file for the preprint.
+            // Updates title of existing node and then uploads file to node.
             // Also applicable in edit mode.
             this.get('metrics')
                 .trackEvent({
@@ -220,19 +206,14 @@ export default Component.extend(Analytics, {
             const node = this.get('node');
             this.set('basicsAbstract', this.get('model.description') || null);
             const currentNodeTitle = node.get('title');
+            this.set('currentNodeTitle', currentNodeTitle);
 
             if (currentNodeTitle !== this.get('title')) {
                 model.set('title', this.get('title'));
                 node.set('title', this.get('title'));
                 node.save()
-                    .then(() => {
-                        this.send('upload');
-                    })
-                    .catch(() => {
-                        node.set('title', currentNodeTitle);
-                        this.set('uploadInProgress', false);
-                        this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
-                    });
+                    .then(this._sendToUpload.bind(this))
+                    .catch(this._failUpdateTitle.bind(this));
             } else {
                 this.send('upload');
             }
@@ -285,7 +266,8 @@ export default Component.extend(Analytics, {
             return this.get('callback.promise');
         },
         discardUploadChanges() {
-            // Discards file upload changes.  Removes staged files from Dropzone, reverts visible file version.
+            // Discards file upload changes.  Removes staged files from Dropzone,
+            // reverts visible file version.
             if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
             this.set('fileVersion', this.get('osfFile.currentVersion') || 1);
             this.attrs.discardUploadChanges();
@@ -306,22 +288,8 @@ export default Component.extend(Analytics, {
                 const resp = JSON.parse(file.xhr.response);
                 this.get('store')
                     .findRecord('file', resp.data.id.split('/')[1])
-                    .then((file) => {
-                        this.set('osfFile', file);
-                        // Set current version - will revert if user uploaded a new version of the same file
-                        this.set('fileVersion', resp.data.attributes.extra.version);
-                        if (this.get('nodeLocked')) { // Edit mode
-                            if (this.get('osfFile.currentVersion') !== resp.data.attributes.extra.version) this.get('toast').info(this.get('i18n').t('components.file-uploader.preprint_file_updated'));
-                            this.sendAction('finishUpload');
-                            if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
-                        } else { // Add mode
-                            return this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint', this.get('parentNode'));
-                        }
-                    })
-                    .catch(() => {
-                        this.get('toast').error(this.get('i18n').t('components.file-uploader.preprint_file_error'));
-                        this.set('uploadInProgress', false);
-                    });
+                    .then(this._setFileDetails.bind(this))
+                    .catch(this._failUploadFile.bind(this));
             } else {
                 // File upload failure
                 dropzone.removeAllFiles();
@@ -368,5 +336,77 @@ export default Component.extend(Analytics, {
             this.get('metrics')
                 .trackEvent(eventData);
         },
+    },
+
+    _setUploadProperties(files) {
+        if (this.get('nodeLocked')) { // Edit mode, fetch URL for uploading new version
+            this.send('uploadNewVersionUrl', files);
+        } else { // Add mode, fetch URL for uploading new file
+            this.send('uploadNewFileUrl', files);
+        }
+        this.callback.resolve(this.get('file'));
+    },
+
+    _createNewProject(node) {
+        this.set('node', node);
+        this.getContributors(node);
+        this.send('upload');
+        this.set('newNode', true);
+        this.set('applyLicense', true);
+    },
+
+    _failCreateNewProject() {
+        this.set('uploadInProgress', false);
+        this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_project'));
+    },
+
+    _createComponent(child) {
+        const node = this.get('node');
+
+        this.set('parentNode', node);
+        this.set('node', child);
+        this.set('basicsAbstract', this.get('node.description') || null);
+        this.send('upload');
+        this.set('newNode', true);
+        this.set('applyLicense', true);
+    },
+
+    _failCreateComponent() {
+        this.set('uploadInProgress', false);
+        this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_component'));
+    },
+
+    _sendToUpload() {
+        this.send('upload');
+    },
+
+    _failUpdateTitle() {
+        const node = this.get('node');
+        const currentNodeTitle = this.get('currentNodeTitle');
+
+        node.set('title', currentNodeTitle);
+        this.set('uploadInProgress', false);
+        this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
+    },
+
+    _setFileDetails(file) {
+        const resp = JSON.parse(file.xhr.response);
+
+        this.set('osfFile', file);
+        // Set current version - will revert if user
+        // uploaded a new version of the same file
+        this.set('fileVersion', resp.data.attributes.extra.version);
+        if (this.get('nodeLocked')) { // Edit mode
+            if (this.get('osfFile.currentVersion') !== resp.data.attributes.extra.version) this.get('toast').info(this.get('i18n').t('components.file-uploader.preprint_file_updated'));
+            this.finishUpload();
+            if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
+        } else { // Add mode
+            return this.get('abandonedPreprint') ? this.resumeAbandonedPreprint() : this.startPreprint(this.get('parentNode'));
+        }
+    },
+
+    _failUploadFile() {
+        this.get('toast').error(this.get('i18n').t('components.file-uploader.preprint_file_error'));
+        this.set('uploadInProgress', false);
     },
 });

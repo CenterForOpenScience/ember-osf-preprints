@@ -2,10 +2,12 @@ import ObjectProxy from '@ember/object/proxy';
 import { helper } from '@ember/component/helper';
 
 function fetchIdFromRelationshipLink(node, relationship) {
-    // If id is not embedded in request, Private node ids can be accessed under initializedRelationships.
+    // If id is not embedded in request, Private node ids
+    // can be accessed under initializedRelationships.
     // May still return undefined if parent, for example, does not exist.
     if (node) {
-        const initializedRelationship = node._internalModel._relationships.initializedRelationships[relationship];
+        const initializedRelationship =
+            node._internalModel._relationships.initializedRelationships[relationship];
         if (initializedRelationship && initializedRelationship.link) {
             return initializedRelationship.link.split('nodes')[1].replace(/\//g, '');
         }
@@ -23,12 +25,12 @@ function fetchTitle(node, relationship) {
 }
 
 export function getAncestorDescriptor(params/* , hash */) {
-    // Formats titles similar to the way they're displayed in the dashboard.  For example, Root Name / ... / Parent Name / Node Name.
+    // Formats titles similar to the way they're displayed in the dashboard.
+    // For example, Root Name / ... / Parent Name / Node Name.
     const node = params[0];
     const nodeId = node.get('id');
     let rootId = node.get('root.id');
     let parentId = node.get('parent.id');
-    // It is not clear the case where ObjectProxy was needed but ran into this in the 2.18 conversion
     const parent = (node.get('parent') instanceof ObjectProxy) ? node.get('parent.content') : node.get('parent');
     let parentParentId = parent ? parent.get('parent.id') : undefined;
 

@@ -12,9 +12,10 @@ import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @class Discover Controller
  *
- * Most of the discover page is built using the discover-page component in ember-osf. The component is largely based on
- * SHARE's discover interface (https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js) and
- * the existing preprints interface
+ * Most of the discover page is built using the discover-page component in ember-osf.
+ * The component is largely based on SHARE's discover interface
+ * (https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js)
+ * and the existing preprints interface
  */
 
 export default Controller.extend(Analytics, {
@@ -79,8 +80,10 @@ export default Controller.extend(Analytics, {
             ];
         }
     }),
-    lockedParams: computed('additionalProviders', function() { // Query parameters that cannot be changed.
-        // if additionalProviders, open up search results to all types of results instead of just preprints.
+    lockedParams: computed('additionalProviders', function() {
+        // Query parameters that cannot be changed.
+        // if additionalProviders, open up search results to all
+        // types of results instead of just preprints.
         return this.get('additionalProviders') ? {} : {
             bool: {
                 should: [
@@ -94,8 +97,10 @@ export default Controller.extend(Analytics, {
     searchPlaceholder: computed('additionalProviders', function() { // Search bar placeholder
         return this.get('additionalProviders') ? 'discover.search.repository_placeholder' : 'discover.search.placeholder';
     }),
-    showActiveFilters: computed('additionalProviders', function() { // Whether Active Filters should be displayed.
-        // additionalProviders are using SHARE facets which do not work with Active Filters at this time
+    showActiveFilters: computed('additionalProviders', function() {
+        // Whether Active Filters should be displayed.
+        // additionalProviders are using SHARE facets which do not
+        // work with Active Filters at this time
         return !this.get('additionalProviders');
     }),
     sortOptions: computed('i18n.locale', function() { // Sort options for preprints

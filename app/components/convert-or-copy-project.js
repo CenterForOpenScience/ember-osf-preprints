@@ -7,11 +7,15 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 
 /**
- * Convert Or Copy Widget - very simple, just presents decision, do you want to convert this project or copy file to a new component.
+ * Convert Or Copy Widget
  *
- * Will set convertOrCopy to 'convert' or 'copy'.  If convert, will set node title as current node title and titleValid to
- * true. If 'copy', title will be set equal to null, and titleValid to false.  Converting a project requires the user confirm their
- * decision in an additional step.
+ * Very simple, just presents decision, do you want to
+ * convert this project or copy file to a new component
+ *
+ * Will set convertOrCopy to 'convert' or 'copy'.
+ * If convert, will set node title as current node title and titleValid to true.
+ * If 'copy', title will be set equal to null, and titleValid to false.
+ * Converting a project requires the user confirm their decision in an additional step.
  *
  * Sample usage:
  * ```handlebars

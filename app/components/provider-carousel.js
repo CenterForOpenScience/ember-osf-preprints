@@ -10,8 +10,9 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 
 /**
- * Displays active preprint providers in a horizontal carousel with five providers per slide. Does not auto-advance.
- * Handles display on two pages: index (lightLogo=true) and discover (lightLogo=false).  If using elsewhere, need to add more customization
+ * Displays active preprint providers in a horizontal carousel with five providers per slide.
+ * Does not auto-advance. Handles display on two pages: index (lightLogo=true) and discover
+ * (lightLogo=false).  If using elsewhere, need to add more customization
  * around how provider logos and links are built.
  *
  * Sample usage:
