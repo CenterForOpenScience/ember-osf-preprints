@@ -47,8 +47,7 @@ export default Component.extend(Analytics, {
                 data: getProvidersPayload,
                 contentType: 'application/json',
                 crossDomain: true,
-            })
-                .then(this._returnResultSources.bind(this)),
+            }).then(results => results.aggregations.sources.buckets),
         ])
             .then(this._formatProviderWhitelist.bind(this));
     },

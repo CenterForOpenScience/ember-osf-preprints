@@ -60,6 +60,7 @@ module.exports = function(defaults) {
         },
         sassOptions: {
             includePaths: [
+                'node_modules/bootstrap-sass/assets/stylesheets',
                 'node_modules/@centerforopenscience/ember-osf/addon/styles',
                 'node_modules/@centerforopenscience/osf-style/sass',
                 'node_modules/hint.css',
@@ -85,7 +86,7 @@ module.exports = function(defaults) {
                 enabled: useCdn,
                 content: `
                     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-                    <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.8.3/ember.min.js"></script>
+                    <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.18.0/ember.min.js"></script>
                 `.trim(),
             },
         },

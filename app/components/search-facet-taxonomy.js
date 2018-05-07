@@ -26,63 +26,6 @@ const pageSize = 150;
  */
 export default Component.extend(Analytics, {
     theme: service(),
-    // Creates a list of all of the subject paths that need to be selected
-    expandedList: computed('activeFilters.subjects', function() {
-        const filters = this.get('activeFilters.subjects');
-        const expandList = [];
-        filters.forEach((filter) => {
-            let filterStr = '';
-            filter.split('|').forEach((item) => {
-                if (item !== '') { filterStr += `|${item}`; }
-                if (!expandList.includes(filterStr) && filterStr) {
-                    expandList.push(filterStr);
-                }
-            });
-        });
-        return expandList;
-    }),
-    init() {
-        this._super(...arguments);
-        const items = [];
-        this.set('items', items);
-        this.set('item', null);
-
-        this._getTaxonomies()
-            .then(this._getExpandedList.bind(this));
-    },
-    actions: {
-        expand(item) {
-            this.get('metrics')
-                .trackEvent({
-                    category: 'tree',
-                    action: item.showChildren ? 'contract' : 'expand',
-                    label: `Discover - ${item.text}`,
-                });
-            this._expand(item);
-        },
-    },
-
-    _getExpandedList(results) {
-        const component = this;
-        const items = this.get('items');
-
-        this.set('topLevelItem', results);
-        results.forEach((result) => {
-            component.get('expandedList').forEach((element) => {
-                if (element.includes(`${result.path}|`)) {
-                    if (!items.includes(result)) {
-                        items.push(result);
-                    }
-                }
-            });
-        });
-        this._expandMany(items);
-        // Only auto-expand if no subjects are selected.
-        if (items.length === 0) {
-            this._expandDefault();
-        }
-    },
-
     _getTaxonomies(parents = 'null') {
         return this
             .get('theme.provider')
@@ -110,7 +53,56 @@ export default Component.extend(Analytics, {
                     return 0;
                 }));
     },
+    // Creates a list of all of the subject paths that need to be selected
+    expandedList: computed('activeFilters.subjects', function() {
+        const filters = this.get('activeFilters.subjects');
+        let expandList = [];
+        filters.forEach(filter => {
+            let filterStr = '';
+            filter.split('|').forEach(item => {
+                if (item !== '') { filterStr += '|' + item; }
+                if (!expandList.includes(filterStr) && filterStr) {
+                    expandList.push(filterStr);
+                }
+            });
+        });
+        return expandList;
+    }),
+    init() {
+        this._super(...arguments);
+        const component = this;
+        let items = [];
 
+        this._getTaxonomies()
+            .then(results => {
+                this.set('topLevelItem', results);
+                results.forEach(result => {
+                    component.get('expandedList').forEach(element => {
+                        if (element.includes(result.path + '|')) {
+                            if (!items.includes(result)) {
+                                items.push(result);
+                            }
+                        }
+                    })
+                });
+                this._expandMany(items);
+                //Only auto-expand if no subjects are selected.
+                if (items.length === 0) {
+                    this._expandDefault();
+                }
+            });
+    },
+    actions: {
+        expand(item) {
+            this.get('metrics')
+                .trackEvent({
+                    category: 'tree',
+                    action: item.showChildren ? 'contract' : 'expand',
+                    label: `Discover - ${item.text}`
+                });
+            this._expand(item);
+        }
+    },
     _expandDefault() {
         const topLevelItem = this.get('topLevelItem');
         if (topLevelItem.length <= 3) {
@@ -136,7 +128,11 @@ export default Component.extend(Analytics, {
         this.set('item', item);
 
         return this._getTaxonomies(item.id)
-            .then(this._setItemChildren.bind(this));
+            .then((results) => {
+                set(item, 'children', results);
+                set(item, 'showChildren', true);
+                return results;
+            });
     },
     // Runs through the expandedList.  If the subject's path is in the list,
     // then add it to the list.  Recursively runs through the list and expands.

@@ -354,8 +354,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             );
     }),
 
-    // Form section headers
-
     doiChanged: computed('model.doi', 'basicsDOI', function() {
         // Does the pending DOI differ from the saved DOI in the db?
         // If pending DOI and saved DOI are both falsy values, doi has not changed.

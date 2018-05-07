@@ -269,8 +269,6 @@ export default CpPanelBodyComponent.extend(Analytics, {
         // Reorders contributors in UI then sends server request to reorder contributors.
         // If request fails, reverts contributor list in UI back to original.
         reorderItems(itemModels, draggedContrib) {
-            this.set('draggedContrib', draggedContrib);
-
             this.get('metrics')
                 .trackEvent({
                     category: 'div',

@@ -1,11 +1,19 @@
 import RSVP from 'rsvp';
 import { module } from 'qunit';
 
+<<<<<<< HEAD
 import FactoryGuy, { manualSetup } from 'ember-data-factory-guy';
 import config from 'ember-get-config';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
+=======
+import startApp from '../helpers/start-app';
+import destroyApp from '../helpers/destroy-app';
+import FactoryGuy, { manualSetup } from 'ember-data-factory-guy';
+import config from 'ember-get-config';
+import FakeServer, { stubRequest } from 'ember-cli-fake-server';
+>>>>>>> 2c12d5a14817362b5bacca1c56162445060e70ca
 
 export default function(name, options = {}) {
     module(name, {
@@ -38,6 +46,7 @@ export default function(name, options = {}) {
                 });
             });
 
+<<<<<<< HEAD
             if (options.beforeEach) {
                 return options.beforeEach.apply(this, arguments);
             }
@@ -48,4 +57,16 @@ export default function(name, options = {}) {
             return RSVP.resolve(afterEach).then(() => destroyApp(this.application));
         },
     });
+=======
+        if (options.beforeEach) {
+            return options.beforeEach.apply(this, arguments);
+        }
+    },
+    afterEach() {
+        FakeServer.stop();
+        let afterEach = options.afterEach && options.afterEach.apply(this, arguments);
+        return RSVP.resolve(afterEach).then(() => destroyApp(this.application));
+    }
+  });
+>>>>>>> 2c12d5a14817362b5bacca1c56162445060e70ca
 }
