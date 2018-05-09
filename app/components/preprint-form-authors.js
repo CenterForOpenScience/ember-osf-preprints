@@ -308,7 +308,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
     },
 
     _addContributorsFromParent(contributors) {
-        contributors.map((contrib) => {
+        contributors.forEach((contrib) => {
             this.get('contributors').pushObject(contrib);
         });
         this.toggleAuthorModification();

@@ -25,7 +25,7 @@ const { PromiseArray } = DS;
 function queryStringify(queryParams) {
     const query = [];
     // TODO set up ember to transpile Object.entries
-    queryParams.array.forEach((param) => {
+    Object.keys(queryParams).forEach((param) => {
         let value = queryParams[param];
         let maxLength = null;
 
@@ -86,7 +86,7 @@ export default Controller.extend(Analytics, {
             this.get('model.dateCreated');
     }),
 
-    editButtonLabel: computed('model.{provider.reviewsWorkflow,reviewState}', function () {
+    editButtonLabel: computed('model.{provider.reviewsWorkflow,reviewsState}', function () {
         const editPreprint = 'content.project_button.edit_preprint';
         const editResubmitPreprint = 'content.project_button.edit_resubmit_preprint';
         return (
@@ -190,11 +190,10 @@ export default Controller.extend(Analytics, {
 
     fullLicenseText: computed('model.{license.text,licenseRecord}', function() {
         const text = this.get('model.license.text') || '';
-        const { year = '', copyrightHolders = [] } = this.get('model.licenseRecord');
-
+        const { year = '', copyright_holders = [] } = this.get('model.licenseRecord'); /* eslint-disable-line camelcase */
         return text
             .replace(/({{year}})/g, year)
-            .replace(/({{copyrightHolders}})/g, copyrightHolders.join(', '));
+            .replace(/({{copyrightHolders}})/g, copyright_holders.join(', '));
     }),
 
     hasShortenedDescription: computed('model.description', function() {

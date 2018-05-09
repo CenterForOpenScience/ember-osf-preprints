@@ -286,10 +286,27 @@ export default Component.extend(Analytics, {
             if (Math.floor(file.xhr.status / 100) === 2) {
                 // File upload success
                 const resp = JSON.parse(file.xhr.response);
+                /* eslint-disable ember/closure-actions,ember/named-functions-in-promises */
                 this.get('store')
                     .findRecord('file', resp.data.id.split('/')[1])
-                    .then(this._setFileDetails.bind(this))
-                    .catch(this._failUploadFile.bind(this));
+                    .then((file) => {
+                        this.set('osfFile', file);
+                        // Set current version:
+                        // will revert if user uploaded a new version of the same file
+                        this.set('fileVersion', resp.data.attributes.extra.version);
+                        if (this.get('nodeLocked')) { // Edit mode
+                            if (this.get('osfFile.currentVersion') !== resp.data.attributes.extra.version) this.get('toast').info(this.get('i18n').t('components.file-uploader.preprint_file_updated'));
+                            this.sendAction('finishUpload');
+                            if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
+                        } else { // Add mode
+                            return this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint', this.get('parentNode'));
+                        }
+                    })
+                    .catch(() => {
+                        this.get('toast').error(this.get('i18n').t('components.file-uploader.preprint_file_error'));
+                        this.set('uploadInProgress', false);
+                    });
+                /* eslint-enable ember/closure-actions,ember/named-functions-in-promises */
             } else {
                 // File upload failure
                 dropzone.removeAllFiles();
@@ -387,22 +404,6 @@ export default Component.extend(Analytics, {
         node.set('title', currentNodeTitle);
         this.set('uploadInProgress', false);
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
-    },
-
-    _setFileDetails(file) {
-        const resp = JSON.parse(file.xhr.response);
-
-        this.set('osfFile', file);
-        // Set current version - will revert if user
-        // uploaded a new version of the same file
-        this.set('fileVersion', resp.data.attributes.extra.version);
-        if (this.get('nodeLocked')) { // Edit mode
-            if (this.get('osfFile.currentVersion') !== resp.data.attributes.extra.version) this.get('toast').info(this.get('i18n').t('components.file-uploader.preprint_file_updated'));
-            this.finishUpload();
-            if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
-        } else { // Add mode
-            return this.get('abandonedPreprint') ? this.resumeAbandonedPreprint() : this.startPreprint(this.get('parentNode'));
-        }
     },
 
     _failUploadFile() {

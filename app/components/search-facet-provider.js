@@ -41,6 +41,7 @@ export default Component.extend(Analytics, {
                 .findAll('preprint-provider')
                 .then(this._filterProviders.bind(this)),
             // The providers list from SHARE
+            /* eslint-disable-next-line ember/named-functions-in-promises */
             $.ajax({
                 type: 'POST',
                 url: this.get('searchUrl'),

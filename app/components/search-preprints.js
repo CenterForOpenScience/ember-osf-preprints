@@ -24,6 +24,7 @@ export default Component.extend({
     actions: {
         search() {
             const query = $.trim(this.$('#searchBox').val());
+            /* eslint-disable-next-line ember/closure-actions */
             this.sendAction('search', query);
             this.get('metrics').trackEvent({
                 category: 'button',

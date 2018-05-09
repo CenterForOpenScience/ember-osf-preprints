@@ -27,6 +27,7 @@ moduleFor('controller:content/index', 'Unit | Controller | content/index', {
         'service:theme',
         'service:session',
         'service:currentUser',
+        'service:i18n',
     ],
 });
 

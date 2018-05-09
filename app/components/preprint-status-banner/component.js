@@ -59,7 +59,7 @@ export default Component.extend({
     reviewerComment: alias('latestAction.comment'),
     reviewerName: alias('latestAction.creator.fullName'),
 
-    getClassName: computed('submission.{provider.reviewsWorkflow,submission.reviewsState}', function() {
+    getClassName: computed('submission.{provider.reviewsWorkflow,reviewsState}', function() {
         return this.get('submission.reviewsState') === PENDING ?
             CLASS_NAMES[this.get('submission.provider.reviewsWorkflow')] :
             CLASS_NAMES[this.get('submission.reviewsState')];
@@ -77,7 +77,7 @@ export default Component.extend({
         return `${i18n.t(this.get('baseMessage'), { name: tName, reviewsWorkflow: tWorkflow })} ${tStatusExplanation}.`;
     }),
 
-    statusExplanation: computed('submission.{provider.reviewsWorkflow,submission.reviewsState}', function() {
+    statusExplanation: computed('submission.{provider.reviewsWorkflow,reviewsState}', function() {
         return this.get('submission.reviewsState') === PENDING ?
             MESSAGE[this.get('submission.provider.reviewsWorkflow')] :
             MESSAGE[this.get('submission.reviewsState')];
