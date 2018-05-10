@@ -169,25 +169,17 @@ export default Controller.extend(Analytics, {
         // Preprint disciplines are displayed in collapsed form on content page
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
-
+    /* eslint-disable ember/named-functions-in-promises */
     authors: computed('model', function() {
         // Cannot be called until node has loaded!
         const model = this.get('model');
         const contributors = A();
-
         return PromiseArray.create({
             promise: loadAll(model, 'contributors', contributors)
-                .then(this._returnContributors.bind(this)),
+                .then(() => contributors),
         });
-    /*
-        const dsPromiseArray = new DS.PromiseArray();
-        return dsPromiseArray.create({
-            promise: loadAll(model, 'contributors', contributors)
-                .then(this._returnContributors.bind(this)),
-        });
-    */
     }),
-
+    /* eslint-enable ember/named-functions-in-promises */
     fullLicenseText: computed('model.{license.text,licenseRecord}', function() {
         const text = this.get('model.license.text') || '';
         const { year = '', copyright_holders = [] } = this.get('model.licenseRecord'); /* eslint-disable-line camelcase */
