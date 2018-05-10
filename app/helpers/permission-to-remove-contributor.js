@@ -17,16 +17,15 @@ import { helper } from '@ember/component/helper';
  * @param {Object} node The preprint itself.
  * @return {Boolean} Does current user have permission to remove this particular contributor?
  */
-export function permissionToRemoveContributor(params/*, hash*/) {
-    var [contributor, currentUser, isAdmin, node] = params;
-    var currentUserId = currentUser.get('currentUserId') || currentUser.get('id');
-    var removeSelf = contributor.get('userId') === currentUserId;
-    var isRegistration = null;
+export function permissionToRemoveContributor(params/* , hash */) {
+    const [contributor, currentUser, isAdmin, node] = params;
+    const currentUserId = currentUser.get('currentUserId') || currentUser.get('id');
+    const removeSelf = contributor.get('userId') === currentUserId;
+    let isRegistration = null;
     if (node) {
         isRegistration = node.get('registration');
     }
     return (!removeSelf && isAdmin && !isRegistration);
-
 }
 
 export default helper(permissionToRemoveContributor);

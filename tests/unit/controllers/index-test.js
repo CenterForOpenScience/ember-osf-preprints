@@ -6,7 +6,7 @@ moduleFor('controller:index', 'Unit | Controller | index', {
         'service:metrics',
         'service:session',
         'service:theme',
-    ]
+    ],
 });
 
 

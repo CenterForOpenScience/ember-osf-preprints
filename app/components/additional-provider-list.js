@@ -27,7 +27,7 @@ export default Component.extend(Analytics, {
         const sortedList = this.get('additionalProviders').sort();
         const pairedList = [];
         for (let i = 0; i < sortedList.get('length'); i += 2) {
-            let pair = [];
+            const pair = [];
             pair.pushObject(sortedList.objectAt(i));
             if (sortedList.objectAt(i + 1)) {
                 pair.pushObject(sortedList.objectAt(i + 1));
@@ -35,5 +35,5 @@ export default Component.extend(Analytics, {
             pairedList.pushObject(pair);
         }
         return pairedList;
-    })
+    }),
 });

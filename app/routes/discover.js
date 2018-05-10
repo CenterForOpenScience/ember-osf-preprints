@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
-import ResetScrollMixin from '../mixins/reset-scroll';
 import Analytics from 'ember-osf/mixins/analytics';
 
+import ResetScrollMixin from '../mixins/reset-scroll';
 /**
  * @module ember-preprints
  * @submodule routes
@@ -14,8 +14,8 @@ import Analytics from 'ember-osf/mixins/analytics';
 export default Route.extend(Analytics, ResetScrollMixin, {
     queryParams: {
         queryString: {
-            replace: true
-        }
+            replace: true,
+        },
     },
     model() {
         return this
@@ -24,9 +24,9 @@ export default Route.extend(Analytics, ResetScrollMixin, {
     },
     actions: {
         willTransition() {
-            let controller = this.controllerFor('discover');
+            const controller = this.controllerFor('discover');
             controller._clearFilters();
             controller._clearQueryString();
-        }
-    }
+        },
+    },
 });

@@ -26,15 +26,48 @@ const pageSize = 150;
  */
 export default Component.extend(Analytics, {
     theme: service(),
+    // Creates a list of all of the subject paths that need to be selected
+    expandedList: computed('activeFilters.subjects', function() {
+        const filters = this.get('activeFilters.subjects');
+        const expandList = [];
+        filters.forEach((filter) => {
+            let filterStr = '';
+            filter.split('|').forEach((item) => {
+                if (item !== '') { filterStr += `|${item}`; }
+                if (!expandList.includes(filterStr) && filterStr) {
+                    expandList.push(filterStr);
+                }
+            });
+        });
+        return expandList;
+    }),
+    init() {
+        this._super(...arguments);
+        const component = this;
+        const items = [];
+
+        this._getTaxonomies()
+            .then(results => this._prepareForExpansion(results, component, items));
+    },
+    actions: {
+        expand(item) {
+            this.get('metrics')
+                .trackEvent({
+                    category: 'tree',
+                    action: item.showChildren ? 'contract' : 'expand',
+                    label: `Discover - ${item.text}`,
+                });
+            this._expand(item);
+        },
+    },
     _getTaxonomies(parents = 'null') {
         return this
             .get('theme.provider')
             .then(provider => provider
                 .queryHasMany('taxonomies', {
                     filter: { parents },
-                    page: { size: pageSize }
-                })
-            )
+                    page: { size: pageSize },
+                }))
             .then(results => results
                 .map(result => ({
                     id: result.id,
@@ -52,109 +85,97 @@ export default Component.extend(Analytics, {
                         return -1;
                     }
                     return 0;
-                })
-            );
+                }));
     },
-    // Creates a list of all of the subject paths that need to be selected
-    expandedList: computed('activeFilters.subjects', function() {
-        const filters = this.get('activeFilters.subjects');
-        let expandList = [];
-        filters.forEach(filter => {
-            let filterStr = '';
-            filter.split('|').forEach(item => {
-                if (item !== '') { filterStr += '|' + item; }
-                if (!expandList.includes(filterStr) && filterStr) {
-                    expandList.push(filterStr);
+    _prepareForExpansion(results, component, items) {
+        this.set('topLevelItem', results);
+        results.forEach((result) => {
+            component.get('expandedList').forEach((element) => {
+                if (element.includes(`${result.path}|`)) {
+                    if (!items.includes(result)) {
+                        items.push(result);
+                    }
                 }
             });
         });
-        return expandList;
-    }),
-    init() {
-        this._super(...arguments);
-        const component = this;
-        let items = [];
+        this._expandMany(items);
+        // Only auto-expand if no subjects are selected.
+        if (items.length === 0) {
+            this._expandDefault();
+        }
+    },
 
-        this._getTaxonomies()
-            .then(results => {
-                this.set('topLevelItem', results);
-                results.forEach(result => {
-                    component.get('expandedList').forEach(element => {
-                        if (element.includes(result.path + '|')) {
-                            if (!items.includes(result)) {
-                                items.push(result);
-                            }
-                        }
-                    })
-                });
-                this._expandMany(items);
-                //Only auto-expand if no subjects are selected.
-                if (items.length === 0) {
-                    this._expandDefault();
-                }
-            });
-    },
-    actions: {
-        expand(item) {
-            this.get('metrics')
-                .trackEvent({
-                    category: 'tree',
-                    action: item.showChildren ? 'contract' : 'expand',
-                    label: `Discover - ${item.text}`
-                });
-            this._expand(item);
-        }
-    },
     _expandDefault() {
-        let topLevelItem = this.get('topLevelItem');
+        const topLevelItem = this.get('topLevelItem');
         if (topLevelItem.length <= 3) {
-            topLevelItem.forEach(item => {
-                this._expand(item).then(() => {
-                    if (item.children && item.childCount <= 3) {
-                        item.children.forEach(item => {
-                           this._expand(item);
-                        });
-                    }
-                });
+            topLevelItem.forEach((item) => {
+                this._expand(item).then(this._expandEachChild.bind(this));
             });
         }
     },
+
     _expand(item) {
         if (item.showChildren) {
             set(item, 'showChildren', false);
             return;
         }
-        let children = item.children;
+        const { children } = item.children;
+        // const children = item.children;
 
         if (children && children.length > 0) {
             set(item, 'showChildren', true);
             return;
         }
+
+        this.set('item', item);
+
         return this._getTaxonomies(item.id)
-            .then((results) => {
-                set(item, 'children', results);
-                set(item, 'showChildren', true);
-                return results;
-            });
+            .then(results => this._setResults(results, item));
     },
     // Runs through the expandedList.  If the subject's path is in the list,
     // then add it to the list.  Recursively runs through the list and expands.
     _expandMany(items) {
-        const component = this;
+        this.set('items', items);
 
         if (items.length) {
-            this._expand(items.shift()).then(results => {
-                results.forEach(result => {
-                    component.get('expandedList').forEach(element => {
-                        if (element.includes(result.path + '|')) {
-                            if (!items.includes(result)) {
-                                items.push(result);
-                            }
-                        }
-                    });
-                });
-                component._expandMany(items);
+            this._expand(items.shift()).then(this._recursiveExpandMany.bind(this));
+        }
+    },
+
+    _expandEachChild(item) {
+        if (item.children && item.childCount <= 3) {
+            item.children.forEach((item) => {
+                this._expand(item);
             });
         }
-    }
+    },
+
+    _setItemChildren(results) {
+        const item = this.get('item');
+
+        set(item, 'children', results);
+        set(item, 'showChildren', true);
+        return results;
+    },
+    _setResults(results, item) {
+        set(item, 'children', results);
+        set(item, 'showChildren', true);
+        return results;
+    },
+    _recursiveExpandMany(results) {
+        const component = this;
+        const items = this.get('items');
+
+        results.forEach((result) => {
+            component.get('expandedList').forEach((element) => {
+                if (element.includes(`${result.path}|`)) {
+                    if (!items.includes(result)) {
+                        items.push(result);
+                    }
+                }
+            });
+        });
+
+        component._expandMany(items);
+    },
 });

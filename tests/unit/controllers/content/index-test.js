@@ -1,7 +1,7 @@
 import { run } from '@ember/runloop';
 import { moduleFor, test, skip } from 'ember-qunit';
 import config from 'ember-get-config';
-import trunc from 'npm:unicode-byte-truncate'
+import trunc from 'npm:unicode-byte-truncate';
 
 moduleFor('controller:content/index', 'Unit | Controller | content/index', {
     needs: [
@@ -27,8 +27,8 @@ moduleFor('controller:content/index', 'Unit | Controller | content/index', {
         'service:theme',
         'service:session',
         'service:currentUser',
-        'service:i18n'
-    ]
+        'service:i18n',
+    ],
 });
 
 test('Initial properties', function (assert) {
@@ -50,12 +50,12 @@ test('Initial properties', function (assert) {
 test('isAdmin computed property', function (assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const node = store.createRecord('node', {
-            currentUserPermissions: ['admin']
+            currentUserPermissions: ['admin'],
         });
 
         assert.strictEqual(ctrl.get('isAdmin'), false);
@@ -69,12 +69,12 @@ test('isAdmin computed property', function (assert) {
 test('twitterHref computed property', function (assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const preprint = store.createRecord('preprint', {
-            title: 'test title'
+            title: 'test title',
         });
 
         ctrl.set('model', preprint);
@@ -83,7 +83,7 @@ test('twitterHref computed property', function (assert) {
 
         assert.strictEqual(
             ctrl.get('twitterHref'),
-            `https://twitter.com/intent/tweet?url=${location}&text=test%20title&via=OSFramework`
+            `https://twitter.com/intent/tweet?url=${location}&text=test%20title&via=OSFramework`,
         );
     });
 });
@@ -91,13 +91,13 @@ test('twitterHref computed property', function (assert) {
 test('facebookHref computed property - has facebookAppId', function (assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
     const facebookAppId = 112233445566;
 
     run(() => {
         const provider = store.createRecord('preprint-provider', {
-            facebookAppId: facebookAppId,
+            facebookAppId,
         });
 
         const model = store.createRecord('preprint', {
@@ -110,7 +110,7 @@ test('facebookHref computed property - has facebookAppId', function (assert) {
 
         assert.strictEqual(
             ctrl.get('facebookHref'),
-            `https://www.facebook.com/dialog/share?app_id=${facebookAppId.toString()}&display=popup&href=${location}&redirect_uri=${location}`
+            `https://www.facebook.com/dialog/share?app_id=${facebookAppId.toString()}&display=popup&href=${location}&redirect_uri=${location}`,
         );
     });
 });
@@ -118,7 +118,7 @@ test('facebookHref computed property - has facebookAppId', function (assert) {
 test('facebookHref computed property - does not have facebookAppId', function(assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
@@ -137,7 +137,7 @@ test('facebookHref computed property - does not have facebookAppId', function(as
 
         assert.strictEqual(
             ctrl.get('facebookHref'),
-            `https://www.facebook.com/dialog/share?app_id=${FB_APP_ID}&display=popup&href=${location}&redirect_uri=${location}`
+            `https://www.facebook.com/dialog/share?app_id=${FB_APP_ID}&display=popup&href=${location}&redirect_uri=${location}`,
         );
     });
 });
@@ -145,13 +145,13 @@ test('facebookHref computed property - does not have facebookAppId', function(as
 test('linkedinHref computed property', function (assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const preprint = store.createRecord('preprint', {
             title: 'test title',
-            description: 'test description'
+            description: 'test description',
         });
 
         ctrl.set('model', preprint);
@@ -160,29 +160,29 @@ test('linkedinHref computed property', function (assert) {
 
         assert.strictEqual(
             ctrl.get('linkedinHref'),
-            `https://www.linkedin.com/shareArticle?url=${location}&mini=true&title=test%20title&summary=test%20description&source=Open%20Science%20Framework`
+            `https://www.linkedin.com/shareArticle?url=${location}&mini=true&title=test%20title&summary=test%20description&source=Open%20Science%20Framework`,
         );
     });
 });
 
 test('trunc() works properly: only unicode', function (assert) {
-    //Each Chinese characters is 3 bytes long in Unicode.
-    let unicodeString = '上下而求索';
-    let expectedTruncatedString = '上下';
+    // Each Chinese characters is 3 bytes long in Unicode.
+    const unicodeString = '上下而求索';
+    const expectedTruncatedString = '上下';
     assert.strictEqual(trunc(unicodeString, 6), expectedTruncatedString);
     assert.strictEqual(trunc(unicodeString, 7), expectedTruncatedString);
     assert.strictEqual(trunc(unicodeString, 8), expectedTruncatedString);
 });
 
 test('trunc() works properly: only ASCII', function (assert) {
-    let asciiString = 'ascii string';
+    const asciiString = 'ascii string';
     assert.strictEqual(trunc(asciiString, 5), 'ascii');
     assert.strictEqual(trunc(asciiString, 6), 'ascii ');
     assert.strictEqual(trunc(asciiString, 7), 'ascii s');
 });
 
 test('trunc() works properly: ASCII and Unicode', function (assert) {
-    let unicodeString = 'Open Science 开放科学';
+    const unicodeString = 'Open Science 开放科学';
     assert.strictEqual(trunc(unicodeString, 13), 'Open Science ');
     assert.strictEqual(trunc(unicodeString, 14), 'Open Science ');
     assert.strictEqual(trunc(unicodeString, 15), 'Open Science ');
@@ -195,12 +195,12 @@ test('trunc() works properly: ASCII and Unicode', function (assert) {
 test('emailHref computed property', function (assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const preprint = store.createRecord('preprint', {
-            title: 'test title'
+            title: 'test title',
         });
 
         ctrl.set('model', preprint);
@@ -209,7 +209,7 @@ test('emailHref computed property', function (assert) {
 
         assert.strictEqual(
             ctrl.get('emailHref'),
-            `mailto:?subject=test%20title&body=${location}`
+            `mailto:?subject=test%20title&body=${location}`,
         );
     });
 });
@@ -217,68 +217,68 @@ test('emailHref computed property', function (assert) {
 test('hasTag computed property', function (assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const preprint = store.createRecord('preprint', {
-            tags: []
+            tags: [],
         });
 
         ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('hasTag'),
-            false
+            false,
         );
     });
 
     run(() => {
         const preprint = store.createRecord('preprint', {
-            tags: ['a', 'b', 'c']
+            tags: ['a', 'b', 'c'],
         });
 
         ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('hasTag'),
-            true
+            true,
         );
     });
 });
 
-//TODO: unskip test when loadAll() is removed/refactored.
+// TODO: unskip test when loadAll() is removed/refactored.
 skip('authors computed property', function (assert) {
     assert.expect(1);
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const preprint = store.createRecord('preprint', {
-            id: 'abc12'
+            id: 'abc12',
         });
 
         ctrl.set('model', preprint);
 
         // TODO figure out how to test with at least one contributor
-        ctrl.get('authors')
-            .then(authors => {
-                assert.strictEqual(authors.length, 0);
-            });
+        // ctrl.get('authors')
+        //     .then((authors) => {
+        //         assert.strictEqual(authors.length, 0);
+        //     });
     });
 });
 
 test('fullLicenseText computed property', function (assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const license = store.createRecord('license', {
-            text: 'The year is {{year}} and the copyright holders are {{copyrightHolders}}.'
+            text: 'The year is {{year}} and the copyright holders are {{copyrightHolders}}.',
         });
 
         const model = store.createRecord('preprint', {
@@ -288,36 +288,36 @@ test('fullLicenseText computed property', function (assert) {
                 copyright_holders: [
                     'Annie Anderson',
                     'Bobby Buckner',
-                    'Charlie Carson'
-                ]
-            }
+                    'Charlie Carson',
+                ],
+            },
         });
 
-        ctrl.setProperties({model});
+        ctrl.setProperties({ model });
 
         assert.strictEqual(
             ctrl.get('fullLicenseText'),
-            'The year is 2000 and the copyright holders are Annie Anderson, Bobby Buckner, Charlie Carson.'
+            'The year is 2000 and the copyright holders are Annie Anderson, Bobby Buckner, Charlie Carson.',
         );
     });
 
     run(() => {
         const license = store.createRecord('license', {
-            text: 'The year is {{year}}.'
+            text: 'The year is {{year}}.',
         });
 
         const model = store.createRecord('preprint', {
             license,
             licenseRecord: {
-                year: '2000'
-            }
+                year: '2000',
+            },
         });
 
-        ctrl.setProperties({model});
+        ctrl.setProperties({ model });
 
         assert.strictEqual(
             ctrl.get('fullLicenseText'),
-            'The year is 2000.'
+            'The year is 2000.',
         );
     });
 });
@@ -325,7 +325,7 @@ test('fullLicenseText computed property', function (assert) {
 test('editButtonLabel computed property', function (assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
@@ -338,7 +338,7 @@ test('editButtonLabel computed property', function (assert) {
             reviewsState: 'initial',
         });
 
-        ctrl.setProperties({model});
+        ctrl.setProperties({ model });
 
         const workflowTypes = ['pre-moderation', 'post-moderation'];
         const stateTypes = ['pending', 'accepted', 'rejected'];
@@ -346,12 +346,11 @@ test('editButtonLabel computed property', function (assert) {
             for (let j = 0; j < stateTypes.length; j++) {
                 ctrl.set('model.provider.reviewsWorkflow', workflowTypes[i]);
                 ctrl.set('model.reviewsState', stateTypes[j]);
-                if (workflowTypes[i] == 'pre-moderation' && stateTypes[j] == 'rejected') {
-                    assert.strictEqual( ctrl.get('editButtonLabel'), 'content.project_button.edit_resubmit_preprint');
+                if (workflowTypes[i] === 'pre-moderation' && stateTypes[j] === 'rejected') {
+                    assert.strictEqual(ctrl.get('editButtonLabel'), 'content.project_button.edit_resubmit_preprint');
                 } else {
-                    assert.strictEqual( ctrl.get('editButtonLabel'), 'content.project_button.edit_preprint');
+                    assert.strictEqual(ctrl.get('editButtonLabel'), 'content.project_button.edit_preprint');
                 }
-
             }
         }
     });
@@ -360,31 +359,31 @@ test('editButtonLabel computed property', function (assert) {
 test('hasShortenedDescription computed property', function (assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const preprint = store.createRecord('preprint', {
-            description: 'Lorem ipsum'
+            description: 'Lorem ipsum',
         });
         ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('hasShortenedDescription'),
-            false
+            false,
         );
     });
 
     run(() => {
         const preprint = store.createRecord('preprint', {
-            description: 'Lorem ipsum'.repeat(35)
+            description: 'Lorem ipsum'.repeat(35),
         });
 
         ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('hasShortenedDescription'),
-            true
+            true,
         );
     });
 });
@@ -396,13 +395,13 @@ test('useShortenedDescription computed property', function (assert) {
         [false, true, true],
         [true, true, false],
         [false, false, false],
-        [true, false, false]
+        [true, false, false],
     ];
 
     for (const [expandedAbstract, hasShortenedDescription, expected] of scenarios) {
         ctrl.setProperties({
             expandedAbstract,
-            hasShortenedDescription
+            hasShortenedDescription,
         });
 
         assert.strictEqual(ctrl.get('useShortenedDescription'), expected);
@@ -412,22 +411,22 @@ test('useShortenedDescription computed property', function (assert) {
 test('description computed property', function (assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const input = 'Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem menandri consequat, tantas dictas quodsi nec eu. Ornatus forensibus vituperatoribus id vix.';
-        const expected ='Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem';
+        const expected = 'Lorem ipsum dolor sit amet, atqui elitr id vim, at clita facilis tibique ius, ad pro stet accusam. Laudem essent commune ea vix. Duis hendrerit complectitur usu eu, ei nam ullum accusamus inciderint, has appetere assueverit te. An pro maiorum alienum voluptatibus, mei adhuc docendi prodesset in. Ut vel mundi atomorum quaerendum, cu per autem';
 
         const preprint = store.createRecord('preprint', {
-            description: input
+            description: input,
         });
 
         ctrl.set('model', preprint);
 
         assert.strictEqual(
             ctrl.get('description'),
-            expected
+            expected,
         );
     });
 });
@@ -468,12 +467,12 @@ test('expandAbstract action', function (assert) {
 test('chooseFile action', function (assert) {
     this.inject.service('store');
 
-    const store = this.store;
+    const { store } = this;
     const ctrl = this.subject();
 
     run(() => {
         const fileItem = store.createRecord('file', {
-            id: 'test1'
+            id: 'test1',
         });
 
         ctrl.send('chooseFile', fileItem);

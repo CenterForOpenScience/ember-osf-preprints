@@ -21,7 +21,7 @@ export default Controller.extend(OSFAgnosticAuthControllerMixin, {
         const documentType = ppWord.getPreprintWord();
         const i18n = this.get('i18n');
 
-        let preprintWords = {};
+        const preprintWords = {};
         Object.keys(documentType).forEach(function(key1) {
             const entry = documentType[key1];
             Object.keys(entry).forEach(function(key2) {
@@ -30,7 +30,7 @@ export default Controller.extend(OSFAgnosticAuthControllerMixin, {
             });
         });
 
-        this.get('i18n').addGlobals({preprintWords: preprintWords});
+        this.get('i18n').addGlobals({ preprintWords });
 
         this._super(...arguments);
     },
