@@ -6,7 +6,10 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 
 /**
- * Confirm share preprint modal - Requires user to confirm they wish to submit their preprint, thus making it public and searchable
+ * Confirm share preprint modal
+ *
+ * Requires user to confirm they wish to submit their preprint,
+ * thus making it public and searchable
  *
  * Sample usage:
  * ```handlebars
@@ -28,9 +31,9 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Cancel Share Preprint'
+                    label: 'Submit - Cancel Share Preprint',
                 });
             this.set('isOpen', false);
-        }
-    }
+        },
+    },
 });

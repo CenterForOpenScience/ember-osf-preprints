@@ -15,11 +15,8 @@ export default Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
     i18n: service(),
     store: service(),
     theme: service(),
-    headTags: function() {
-        return this.get('theme.headTags');
-    },
-    beforeModel: function () {
-        let detectBrandedDomain = () => {
+    beforeModel () {
+        const detectBrandedDomain = () => {
             // Set the provider ID from the current origin
             if (window.isProviderDomain) {
                 return this.get('store').query(
@@ -27,46 +24,50 @@ export default Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
                     {
                         filter: {
                             domain: `${window.location.origin}/`,
-                        }
-                    }
-                ).then(providers => {
-                    if (providers.length) {
-                        this.set('theme.id', providers.objectAt(0).get('id'));
-                    }
-                });
+                            /* domain: 'http://local.engrxiv:4201', */
+                        },
+                    },
+                ).then(this.setTheme(this));
             }
         };
-        let parentResult = this._super(...arguments);
+        const parentResult = this._super(...arguments);
         // Chain on to parent's promise if parent returns a promise.
-        return parentResult instanceof Promise ? parentResult.then(detectBrandedDomain) : detectBrandedDomain();
+        return parentResult instanceof Promise ?
+            parentResult.then(detectBrandedDomain) : detectBrandedDomain();
     },
 
-    afterModel: function() {
+    afterModel() {
         const availableLocales = this.get('i18n.locales').toArray();
         let locale;
 
         // Works in Chrome and Firefox (editable in settings)
         if (navigator.languages && navigator.languages.length) {
-            for (let lang of navigator.languages) {
+            for (const lang of navigator.languages) {
                 if (availableLocales.includes(lang)) {
                     locale = lang;
                     break;
                 }
             }
-        }
-        // Backup for Safari (uses system settings)
-        else if (navigator.language && availableLocales.includes(navigator.language)) {
+        } else if (navigator.language && availableLocales.includes(navigator.language)) {
+            // Backup for Safari (uses system settings)
             locale = navigator.language;
         }
 
-        if (locale)
-            this.set('i18n.locale', locale);
+        if (locale) { this.set('i18n.locale', locale); }
     },
 
     actions: {
-        didTransition: function() {
-          window.prerenderReady = true;
-          return true; // Bubble the didTransition event
+        didTransition() {
+            window.prerenderReady = true;
+            return true; // Bubble the didTransition event
+        },
+    },
+    headTags() {
+        return this.get('theme.headTags');
+    },
+    setTheme (providers) {
+        if (providers.length) {
+            this.set('theme.id', providers.objectAt(0).get('id'));
         }
     },
 });

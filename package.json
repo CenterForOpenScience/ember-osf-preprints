@@ -25,7 +25,8 @@
     "hotfix": "git flow hotfix start rename-me && npm --no-git-tag-version version patch && git ci package.json -m 'Bump version' && git br -m \"hotfix/$(npm version | head -1 | grep -o '[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+')\""
   },
   "devDependencies": {
-    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-05-04T20:19:28Z",
+    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-05-10T13:01:53Z",
+    "@centerforopenscience/eslint-config": "^2.0.0",
     "@centerforopenscience/osf-style": "https://github.com/CenterForOpenScience/osf-style#b09451d759c8544d2fab4bd7dbd5ca8b6dc242b8",
     "autoprefixer": "^7.1.2",
     "bootstrap-daterangepicker": "^2.1.23",
@@ -42,7 +43,7 @@
     "ember-cli-app-version": "^3.0.0",
     "ember-cli-babel": "^6.7.1",
     "ember-cli-bootstrap-sassy": "0.5.8",
-    "ember-cli-code-coverage": "^0.3.11",
+    "ember-cli-code-coverage": "^0.4.2",
     "ember-cli-dependency-checker": "^2.0.1",
     "ember-cli-eslint": "^4.2.0",
     "ember-cli-fake-server": "^0.3.2",
@@ -86,7 +87,6 @@
     "ember-toastr": "^1.7.0",
     "ember-truth-helpers": "^1.2.0",
     "eslint": "^4.4.1",
-    "eslint-plugin-ember": "^5.0.0",
     "font-awesome": "^4.7.0",
     "hint.css": "^2.5.0",
     "liquid-fire": "^0.27.3",

@@ -3,10 +3,10 @@ import { moduleForComponent, test } from 'ember-qunit';
 
 moduleForComponent('convert-or-copy-project', 'Integration | Component | convert or copy project', {
     integration: true,
-    beforeEach: function() {
-        let noop = () => {};
+    beforeEach() {
+        const noop = () => {};
         this.set('noop', noop);
-    }
+    },
 });
 
 test('it renders', function(assert) {
@@ -70,7 +70,7 @@ test('choosing convert makes the preprint title the title of the node about to b
     this.set('title', null);
     this.set('titleValid', null);
     this.set('node', {
-        title: 'Mas, que Nada!'
+        title: 'Mas, que Nada!',
     });
 
     this.render(hbs`{{convert-or-copy-project

@@ -10,7 +10,7 @@ test('ResetScrollMixin mixin scrolls back to the top on every new route', functi
     object.set('scrollTarget', {
         scrollTo() {
             return [...arguments];
-        }
+        },
     });
 
     assert.ok(ResetScrollMixin.detect(object));

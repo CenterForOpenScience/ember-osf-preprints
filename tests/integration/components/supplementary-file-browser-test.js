@@ -7,44 +7,44 @@ import EmberObject from '@ember/object';
 
 moduleForComponent('supplementary-file-browser', 'Integration | Component | supplementary file browser', {
     integration: true,
-    beforeEach: function() {
-        let providerFiles = () => resolve(ArrayProxy.create({
-            content: A([{ name: 'test folder', kind: 'folder'}, { name: 'chosenFile', kind: 'file' }]),
+    beforeEach() {
+        const providerFiles = () => resolve(ArrayProxy.create({
+            content: A([{ name: 'test folder', kind: 'folder' }, { name: 'chosenFile', kind: 'file' }]),
             meta: {
                 pagination: {
-                    total: 1
-                }
-            }}));
-        let providersQuery = resolve(A([{
-                name: 'osfstorage',
-                queryHasMany: providerFiles
+                    total: 1,
+                },
+            },
+        }));
+        const providersQuery = resolve(A([{
+            name: 'osfstorage',
+            queryHasMany: providerFiles,
         }]));
 
-        let node = EmberObject.create({
+        const node = EmberObject.create({
             dateModified: '10-11-2016',
-            title:'My Preprint Title',
-            files: providersQuery
+            title: 'My Preprint Title',
+            files: providersQuery,
         });
 
-        let file = EmberObject.create({
+        const file = EmberObject.create({
             name: 'test file',
             currentVersion: '1.12',
-            id: 890
+            id: 890,
         });
-        let preprint = EmberObject.create({
+        const preprint = EmberObject.create({
             primaryFile: file,
-            node: node,
+            node,
             provider: 'osf',
             files: providersQuery,
-            id: 890
+            id: 890,
         });
-        let dualTrackNonContributors = () => {};
+        const dualTrackNonContributors = () => {};
 
         this.set('preprint', preprint);
         this.set('node', node);
         this.set('dualTrackNonContributors', dualTrackNonContributors);
-
-    }
+    },
 });
 
 function render(context) {
@@ -66,7 +66,6 @@ test('it renders', function(assert) {
     assert.equal(this.$('.osf-box').length, 0);
     assert.equal(this.$('.row p').text(), 'test file');
     assert.equal(this.$('.supplemental-downloads span').text(), ' Version: 1.12');
-
 });
 
 test('has additional files', function(assert) {
@@ -95,7 +94,7 @@ test('has additional files', function(assert) {
 test('fileDownloadURL computed property', function (assert) {
     render(this);
 
-    let url = this.$('.supplemental-downloads > a').attr('href')
+    const url = this.$('.supplemental-downloads > a').attr('href');
     assert.ok(url);
     assert.ok(url.indexOf(this.get('primaryFile.guid')) !== -1, 'Url does not have file\'s guid in it');
 });

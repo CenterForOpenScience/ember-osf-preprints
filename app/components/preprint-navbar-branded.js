@@ -10,7 +10,8 @@ import config from 'ember-get-config';
  */
 
 /**
- * Preprint navbar with branding for a specific provider - use in application.hbs to drop preprint-navbar-branded onto every page
+ * Preprint navbar with branding for a specific provider -
+ * use in application.hbs to drop preprint-navbar-branded onto every page
  *
  * Sample usage:
  * ```handlebars

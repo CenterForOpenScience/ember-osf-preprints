@@ -13,11 +13,14 @@ import { task, timeout } from 'ember-concurrency';
  */
 
 /**
- * Preprint form project select widget - handles all ADD mode cases where the first step is to select an existing OSF project to contain
- * your preprint.  Also used in EDIT mode - as we keep the project locked after preprint has been published.  Therefore, you must use an existing project!
+ * Preprint form project select widget - handles all ADD mode cases where the first step is to
+ * select an existing OSF project to contain your preprint.  Also used in EDIT mode - as we
+ * keep the project locked after preprint has been published.
+ * Therefore, you must use an existing project!
  *
- *  Uses the file-uploader component, hence the large number of properties for this component, that are passed along to the file-uploader.
- *  Cases not needing the file-uploader are where you are selecting an existing file on an existing node, or copying a file into
+ *  Uses the file-uploader component, hence the large number of properties for this component,
+ *  that are passed along to the file-uploader. Cases not needing the file-uploader are where
+ *  you are selecting an existing file on an existing node, or copying a file into
  *  a newly-created component - no file uploading needed.
  *
  * {{preprint-form-project-select
@@ -68,13 +71,19 @@ import { task, timeout } from 'ember-concurrency';
  */
 export default Component.extend(Analytics, {
     panelActions: service('panelActions'),
-    userNodes: A(),
     selectedNode: null,
     currentPage: 1,
     searchTerm: '',
     canLoadMore: false,
     isLoading: false,
     currentPanelName: null,
+    /**
+     * Whether to show the file selection dropdown box
+     * @property {boolean} fileSelect
+     */
+    fileSelect: false,
+
+    userNodes: A(),
     isAdmin: computed('selectedNode', function() {
         return this.get('selectedNode') ? (this.get('selectedNode.currentUserPermissions') || []).includes(Permissions.ADMIN) : false;
     }),
@@ -83,55 +92,6 @@ export default Component.extend(Analytics, {
         this._super(...arguments);
         this.get('_getInitialUserNodes').perform();
     },
-
-    // Only make a request every 500 ms to let user finish typing.
-    _getInitialUserNodes: task(function* (searchTerm) {
-        let userNodes = this.get('userNodes');
-        userNodes.clear();
-        yield timeout(500);
-        this.set('currentPage', 1);
-        let currentUser = this.get('currentUser');
-        let results = yield loadPage(currentUser, 'nodes', 10, 1, {
-            filter: {
-                preprint: false,
-                title: searchTerm,
-            },
-        });
-        // When the promise finishes, set the searchTerm
-        this.set('searchTerm', searchTerm);
-        let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
-        if (results.hasRemaining) {
-            this.set('canLoadMore', true);
-        } else {
-            this.set('canLoadMore', false);
-        }
-        userNodes.pushObjects(onlyAdminNodes);
-    }).restartable(),
-
-    _getMoreUserNodes: task(function* () {
-        this.set('isLoading', true);
-        let currentPage = this.get('currentPage');
-        let currentUser = this.get('currentUser');
-        let searchTerm = this.get('searchTerm');
-        let nextPage = currentPage + 1;
-        let results = yield loadPage(currentUser, 'nodes', 10, nextPage, {
-            filter: {
-                preprint: false,
-                title: searchTerm,
-            },
-        });
-        let userNodes = this.get('userNodes');
-        let onlyAdminNodes = results.results.filter((item) => item.get('currentUserPermissions').includes(Permissions.ADMIN));
-        onlyAdminNodes = onlyAdminNodes.filter(item => !userNodes.contains(item));
-        userNodes.pushObjects(onlyAdminNodes);
-        if (results.hasRemaining) {
-            this.set('canLoadMore', true);
-            this.set('currentPage', nextPage)
-        } else {
-            this.set('canLoadMore', false);
-        }
-        this.set('isLoading', false);
-    }).enqueue(),
 
     actions: {
         getDefaultUserNodes(term) {
@@ -153,22 +113,20 @@ export default Component.extend(Analytics, {
         },
 
         nodeSelected(node) {
-            // Sets selectedNode, then loads node's osfstorage provider. Once osfProviderLoaded, file-browser component can be loaded.
+            // Sets selectedNode, then loads node's osfstorage provider.
+            // Once osfProviderLoaded, file-browser component can be loaded.
             this.attrs.clearDownstreamFields('belowNode');
             this.set('selectedNode', node);
             this.set('osfProviderLoaded', false);
             this.send('changeExistingState', this.get('_existingState').CHOOSE);
-            this.get('selectedNode.files').then((files) => {
-                this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
-                this.set('osfProviderLoaded', true);
-            });
+            this.get('selectedNode.files').then(this._setStorageProvider.bind(this));
             this.attrs.nextUploadSection('chooseProject', 'chooseFile');
             this.get('metrics')
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
                     label: 'Submit - Choose Project',
-                    extra: node.id
+                    extra: node.id,
                 });
             this.getNodePreprints(node);
             this.getContributors(node);
@@ -183,12 +141,12 @@ export default Component.extend(Analytics, {
                     category: 'file browser',
                     action: 'select',
                     label: 'Submit - Existing File Selected',
-                    extra: file.id
+                    extra: file.id,
                 });
         },
         changeExistingState(newState) {
-            // Toggles existingState between 'existing' or 'new', meaning user wants to select existing file from file browser
-            // or upload a new file.
+            // Toggles existingState between 'existing' or 'new',
+            // meaning user wants to select existing file from file browser or upload a new file.
             this.attrs.clearDownstreamFields('belowNode');
             this.set('existingState', newState);
             if (newState === this.get('_existingState').EXISTINGFILE) {
@@ -197,26 +155,73 @@ export default Component.extend(Analytics, {
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: 'Submit - Choose Select Existing File as Preprint'
+                        label: 'Submit - Choose Select Existing File as Preprint',
                     });
-
             } else if (newState === this.get('_existingState').NEWFILE) {
                 this.attrs.nextUploadSection('chooseFile', 'uploadNewFile');
                 this.get('metrics')
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: 'Submit - Choose Upload Preprint'
+                        label: 'Submit - Choose Upload Preprint',
                     });
             }
         },
     },
 
-    /**
-     * Whether to show the file selection dropdown box
-     * @property {boolean} fileSelect
-     */
-    fileSelect: false,
+    _setStorageProvider(files) {
+        this.set('osfStorageProvider', files.findBy('name', 'osfstorage'));
+        this.set('osfProviderLoaded', true);
+    },
+
+    // Only make a request every 500 ms to let user finish typing.
+    _getInitialUserNodes: task(function* (searchTerm) {
+        const userNodes = this.get('userNodes');
+        userNodes.clear();
+        yield timeout(500);
+        this.set('currentPage', 1);
+        const currentUser = this.get('currentUser');
+        const results = yield loadPage(currentUser, 'nodes', 10, 1, {
+            filter: {
+                preprint: false,
+                title: searchTerm,
+            },
+        });
+        // When the promise finishes, set the searchTerm
+        this.set('searchTerm', searchTerm);
+        const onlyAdminNodes = results.results.filter(item => item.get('currentUserPermissions').includes(Permissions.ADMIN));
+        if (results.hasRemaining) {
+            this.set('canLoadMore', true);
+        } else {
+            this.set('canLoadMore', false);
+        }
+        userNodes.pushObjects(onlyAdminNodes);
+    }).restartable(),
+
+    _getMoreUserNodes: task(function* () {
+        this.set('isLoading', true);
+        const currentPage = this.get('currentPage');
+        const currentUser = this.get('currentUser');
+        const searchTerm = this.get('searchTerm');
+        const nextPage = currentPage + 1;
+        const results = yield loadPage(currentUser, 'nodes', 10, nextPage, {
+            filter: {
+                preprint: false,
+                title: searchTerm,
+            },
+        });
+        const userNodes = this.get('userNodes');
+        let onlyAdminNodes = results.results.filter(item => item.get('currentUserPermissions').includes(Permissions.ADMIN));
+        onlyAdminNodes = onlyAdminNodes.filter(item => !userNodes.contains(item));
+        userNodes.pushObjects(onlyAdminNodes);
+        if (results.hasRemaining) {
+            this.set('canLoadMore', true);
+            this.set('currentPage', nextPage);
+        } else {
+            this.set('canLoadMore', false);
+        }
+        this.set('isLoading', false);
+    }).enqueue(),
 
     titleMatcher(node, term) {
         // Passed into power-select component for customized searching.
@@ -224,7 +229,7 @@ export default Component.extend(Analytics, {
         const fields = [
             'title',
             'root.title',
-            'parent.title'
+            'parent.title',
         ];
 
         const sanitizedTerm = stripDiacritics(term).toLowerCase();
@@ -241,5 +246,5 @@ export default Component.extend(Analytics, {
             }
         }
         return -1;
-    }
+    },
 });
