@@ -187,19 +187,6 @@
                                 <div class='row'>
                                     <div class='col-xs-12'>
                                         {{license-picker licenses=availableLicenses currentValues=basicsLicense showCategories=false editLicense=(action 'editLicense') allowDismiss=false autosave=true showBorder=false pressSubmit=(action 'saveBasics')}}
-                                        <br>
-                                        <div class="row">
-                                            <div class='col-xs-12'>
-                                                <label> {{t "submit.body.basics.license.apply_license_title"}} </label>
-                                                {{#if (or (not newNode) editMode)}}
-                                                    <p>{{t "submit.body.basics.license.apply_license_text" documentType=currentProvider.documentType}}</p>
-                                                {{/if}}
-                                                <span style="margin: 5px">
-                                                    <input onchange={{action 'applyLicenseToggle' true}} type="radio" checked={{applyLicense}}> Yes
-                                                    <input onchange={{action 'applyLicenseToggle' false}} type="radio" checked={{not applyLicense}}> No
-                                                </span>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <br>
