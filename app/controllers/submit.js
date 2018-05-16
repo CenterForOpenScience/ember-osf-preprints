@@ -156,8 +156,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     _existingState: existingState,
     // Data for project picker; tracked internally on load
     user: null,
-    // File states - new file or existing file
-
     userNodesLoaded: false,
 
     _State: State,
@@ -175,7 +173,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     title: null,
     // Preprint title
     nodeLocked: false,
-    // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form,
     // the node is locked.  Is True on Edit.
     searchResults: [],
     // List of users matching search query
@@ -198,7 +195,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     convertProjectConfirmed: false,
     // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null,
-    // Will either be 'convert' or 'copy' depending on whether user wants
     // to use existing component or create a new component.
     osfStorageProvider: null,
     // Preprint node's osfStorage object
@@ -213,12 +209,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     editMode: false,
     // Edit mode is false by default.
     shareButtonDisabled: false,
+    // Will either be 'convert' or 'copy' depending on whether user wants
     attemptedSubmit: false,
-    // True when user has tried to submit with validation errors
-
     allProviders: [],
     // Initialize with an empty list of providers
     currentProvider: undefined,
+    // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form
     selectedProvider: undefined,
     providerSaved: false,
     preprintSaved: false,
@@ -249,7 +245,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // have been defined, and title must be set.
     uploadValid: alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: alias('validations.attrs.basicsAbstract.isValid'),
-    // /////////////////////////////////////
+
     doiValid: alias('validations.attrs.basicsDOI.isValid'),
     originalPublicationDateValid: alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
 
@@ -283,8 +279,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Are there any unsaved changes in the upload section?
     uploadChanged: computed.or('preprintFileChanged', 'titleChanged'),
 
-    // //////////////////////////////////////////////////
-
     basicsDOI: computed.or('model.doi'),
 
     // This is done to initialize basicsOriginalPublicationDate to the date fetched
@@ -293,8 +287,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     // Are there any unsaved changes in the basics section?
     basicsChanged: computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
-
-    // //////////////////////////////////////////////////
 
     moderationType: alias('currentProvider.reviewsWorkflow'),
 
@@ -353,8 +345,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 basicsTags.some((v, i) => fixSpecialChar(v) !== fixSpecialChar(tags[i]))
             );
     }),
-
-    // Form section headers
 
     doiChanged: computed('model.doi', 'basicsDOI', function() {
         // Does the pending DOI differ from the saved DOI in the db?
@@ -428,11 +418,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return this.get('isAdmin') && !(this.get('node.registration'));
     }),
 
-    // Language about submission and moderation.
     workflow: computed('moderationType', function () {
         return WORKFLOW[this.get('moderationType')];
     }),
-    // /////////////////////////////////////////////////
+
     providerName: computed('currentProvider', function() {
         return this.get('currentProvider.id') !== 'osf' ?
             this.get('currentProvider.name') :
@@ -489,8 +478,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return this.get('moderationType') === PRE_MODERATION && (state === PENDING || state === REJECTED);
     }),
 
-    // //////////////////////////////////////////////////
-
     actions: {
         getNodePreprints(node) {
             // Returns any existing preprints stored on the current node
@@ -541,7 +528,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             // Open next panel
             if (currentPanelName === 'Upload' || currentPanelName === 'Basics') {
                 run.scheduleOnce('afterRender', this, function() {
-                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, $(currentPanelName === 'Upload' ? '.preprint-header-preview' : '.abstract')[0]]); // jshint ignore:line
+                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, $(currentPanelName === 'Upload' ? '.preprint-header-preview' : '.abstract')[0]]);
                 });
             }
             if (currentPanelName === 'Authors') {
@@ -1343,8 +1330,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.set('basicsLicense.licenseType', this.get('availableLicenses.firstObject'));
     },
 
-    // Selected file state - new or existing file (poorly named)
-
     clearFields() {
         // Restores submit form defaults.
         // Called when user submits preprint, then hits back button, for example.
@@ -1398,11 +1383,5 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     // Selected upload state (initial decision on form) - new or existing project?
     filePickerState: State.START,
-    existingState: existingState.CHOOSE, // //////////////////////////////////////////////////
-    // Fields used in the "upload" section of the form.
-    // //////////////////////////////////////////////////
-
-    // //////////////////////////////////////////////////
-    // //////////////////////////////////////////////////
-    // Fields used in the "discipline" section of the form.
+    existingState: existingState.CHOOSE,
 });

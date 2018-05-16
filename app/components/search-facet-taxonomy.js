@@ -120,7 +120,6 @@ export default Component.extend(Analytics, {
             return;
         }
         const { children } = item.children;
-        // const children = item.children;
 
         if (children && children.length > 0) {
             set(item, 'showChildren', true);

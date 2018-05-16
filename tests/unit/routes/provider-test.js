@@ -10,7 +10,6 @@ moduleFor('route:provider', 'Unit | Route | provider', {
 });
 
 test('it exists', function(assert) {
-    // let route = this.subject();
     assert.ok(this);
     // TODO change this later. Ember provides no guidance
 });

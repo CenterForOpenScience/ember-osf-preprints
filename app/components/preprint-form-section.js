@@ -74,7 +74,7 @@ export default CpPanelComponent.extend(Analytics, {
                     });
                 this._super(...arguments);
             } else {
-                this.sendAction('errorAction', this.get('denyOpenMessage')); /* eslint-disable-line ember/closure-actions */
+                this.get('errorAction')(this.get('denyOpenMessage'));
             }
         } else {
             /* Manual animation
@@ -93,13 +93,11 @@ export default CpPanelComponent.extend(Analytics, {
                 $body.one('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', () => {
                     $body.addClass('no-transition');
                     $body.height('');
-                    // $body[0].offsetHeight;
                     $body.removeClass('no-transition');
                 });
             } else {
                 $body.addClass('no-transition');
                 $body.height($body.height());
-                // $body[0].offsetHeight;
                 $body.removeClass('no-transition');
                 $body.height('');
             }

@@ -16,7 +16,7 @@ export default Route.extend({
     slugLower: null,
 
     beforeModel(transition) {
-        const slug = transition.params.provider;
+        const { slug = '' } = transition.params.provider;
         const slugLower = slug.toLowerCase();
 
         this.set('slug', slug);

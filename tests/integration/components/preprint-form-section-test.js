@@ -38,8 +38,10 @@ test('allow handleToggle when allowOpen is true alskjflaskdjf', function(assert)
 
 test('does not allow handleToggle when allowOpen is false', function(assert) {
     this.set('allowOpen', false);
+    this.set('errorAction', () => {}); // noop
+
     this.render(hbs`
-        {{#preprint-form-section allowOpen=allowOpen}}
+        {{#preprint-form-section allowOpen=allowOpen errorAction=errorAction}}
             {{#preprint-form-header}}Title{{/preprint-form-header}}
             {{#preprint-form-body}}Body{{/preprint-form-body}}
         {{/preprint-form-section}}

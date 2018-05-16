@@ -17,10 +17,8 @@ function arrayStartsWith(arr, prefix) {
 }
 
 const Column = EmberObject.extend({
-    sortDefinition: ['text:asc'], // eslint-disable-line ember/avoid-leaking-state-in-components
     filterText: '',
     selection: null,
-    subjects: [], // eslint-disable-line ember/avoid-leaking-state-in-components
     subjectsSorted: sort('subjectsFiltered', 'sortDefinition'),
     subjectsFiltered: computed('subjects.[]', 'filterText', function() {
         const filterTextLowerCase = this.get('filterText').toLowerCase();
@@ -32,6 +30,10 @@ const Column = EmberObject.extend({
 
         return subjects.filter(item => item.get('text').toLowerCase().includes(filterTextLowerCase));
     }),
+    init() {
+        this.set('sortDefinition', ['text:asc']);
+        this.set('subjects', []);
+    },
 });
 
 /**
@@ -139,7 +141,7 @@ export default Component.extend(Analytics, {
                 for (let i = 1; i <= currentSelection.length; i++) {
                     const sub = currentSelection.slice(0, i);
                     existingParent = allSelections
-                        .find(item => arrayEquals(item, sub)); // jshint ignore:line
+                        .find(item => arrayEquals(item, sub));
 
                     // The parent exists, append the subject to it
                     if (existingParent) {

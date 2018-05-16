@@ -77,10 +77,8 @@ export default Component.extend(Analytics, {
     canLoadMore: false,
     isLoading: false,
     currentPanelName: null,
-    /**
-     * Whether to show the file selection dropdown box
-     * @property {boolean} fileSelect
-     */
+
+    // Whether to show the file selection dropdown box
     fileSelect: false,
 
     userNodes: A(),

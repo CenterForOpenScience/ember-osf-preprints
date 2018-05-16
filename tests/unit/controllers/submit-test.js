@@ -145,7 +145,6 @@ test('Initial properties', function (assert) {
     ));
 });
 
-// /////////////////////////////////////////////////////////////////////////////
 // Test COMPUTED PROPERTIES > SUBMIT CONTROLLER
 
 test('isTopLevelNode computed property', function(assert) {
@@ -693,7 +692,6 @@ test('canEdit', function(assert) {
     });
 });
 
-// /////////////////////////////////////////////////////////////////////////////
 // Test CONTROLLER ACTIONS > SUBMIT CONTROLLER
 test('editLicense sets basicsLicense and licenseValid', function(assert) {
     const ctrl = this.subject();

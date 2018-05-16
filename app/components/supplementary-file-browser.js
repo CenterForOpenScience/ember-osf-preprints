@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { computed } from '@ember/object';
+import { computed, observer } from '@ember/object';
 import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
 import fileDownloadPath from '../utils/file-download-path';
@@ -30,40 +30,20 @@ export default Component.extend(Analytics, {
 
     scrollAnim: '',
     selectedFile: null,
-    /* eslint-disable ember/no-function-prototype-extensions */
-    hasAdditionalFiles: function() {
+
+    hasAdditionalFiles: computed('files', function() {
         return this.get('files.length') > 1;
-    }.property('files'),
+    }),
 
-    hasPrev: function() {
+    hasPrev: computed('files', 'endIndex', 'startIndex', function() {
         return this.get('startIndex') > 0;
-    }.property('files', 'endIndex', 'startIndex'),
+    }),
 
-    hasNext: function() {
+    hasNext: computed('files', 'endIndex', 'startIndex', function() {
         return this.get('endIndex') < this.get('files.length');
-    }.property('files', 'endIndex', 'startIndex'),
-    /* eslint-enable ember/no-function-prototype-extensions */
+    }),
 
-    __files: function() {
-        this.set('files', []);
-        this.set('selectedFile', null);
-        /* eslint-disable ember/named-functions-in-promises */
-        this.get('node').get('files')
-            .then((providers) => {
-                this.set('provider', providers.findBy('name', 'osfstorage'));
-                return loadAll(this.get('provider'), 'files', this.get('files'), { 'page[size]': 50 });
-            })
-            .then(() => this.get('preprint').get('primaryFile'))
-            .then((pf) => {
-                this.get('files').removeObject(pf);
-                this.set('primaryFile', pf);
-                this.set('selectedFile', this.get('primaryFile'));
-                this.set('files', [this.get('primaryFile')].concat(this.get('files')));
-                this.set('indexes', this.get('files').map(each => each.id));
-            });
-    }.observes('preprint'),
 
-    /* eslint-enable ember/named-functions-in-promises */
     selectedFileChanged: computed('selectedFile', function() {
         const eventData = {
             file_views: {
@@ -112,6 +92,27 @@ export default Component.extend(Analytics, {
         return fileDownloadPath(this.get('selectedFile'), this.get('node'));
     }),
 
+    // This needs to be changed away from an observer, but "preprint" changes
+    // frequently enough that it is really complicated
+    __files: observer('preprint', function() { /* eslint-disable-line ember/no-observers */
+        this.set('files', []);
+        this.set('selectedFile', null);
+        /* eslint-disable ember/named-functions-in-promises */
+        this.get('node').get('files')
+            .then((providers) => {
+                this.set('provider', providers.findBy('name', 'osfstorage'));
+                return loadAll(this.get('provider'), 'files', this.get('files'), { 'page[size]': 50 });
+            })
+            .then(() => this.get('preprint').get('primaryFile'))
+            .then((pf) => {
+                this.get('files').removeObject(pf);
+                this.set('primaryFile', pf);
+                this.set('selectedFile', this.get('primaryFile'));
+                this.set('files', [this.get('primaryFile')].concat(this.get('files')));
+                this.set('indexes', this.get('files').map(each => each.id));
+            });
+        /* eslint-enable ember/named-functions-in-promises */
+    }),
     init() {
         this._super(...arguments);
         this.__files();
@@ -160,7 +161,7 @@ export default Component.extend(Analytics, {
 
             this.set('selectedFile', file);
             if (this.attrs.chooseFile) {
-                this.sendAction('chooseFile', file); /* eslint-disable-line ember/closure-actions */
+                this.get('chooseFile')(file);
             }
         },
     },

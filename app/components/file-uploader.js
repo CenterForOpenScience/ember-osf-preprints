@@ -206,7 +206,6 @@ export default Component.extend(Analytics, {
             const node = this.get('node');
             this.set('basicsAbstract', this.get('model.description') || null);
             const currentNodeTitle = node.get('title');
-            this.set('currentNodeTitle', currentNodeTitle);
 
             if (currentNodeTitle !== this.get('title')) {
                 model.set('title', this.get('title'));
