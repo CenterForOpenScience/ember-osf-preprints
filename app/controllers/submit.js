@@ -1093,8 +1093,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         const currentProvider = providers.filter(item => item.id === this.get('theme.id') || config.PREPRINTS.provider)[0];
         this.set('currentProvider', currentProvider);
         this.set('selectedProvider', currentProvider);
-        this.get('theme.isProvider');
-        this.set('providerSaved', true);
+        if (this.get('theme.isProvider')) {
+            this.set('providerSaved', true);
+        }
     },
 
     _setNodePreprints(preprints) {

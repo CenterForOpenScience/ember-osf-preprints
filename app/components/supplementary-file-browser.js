@@ -160,8 +160,8 @@ export default Component.extend(Analytics, {
                 });
 
             this.set('selectedFile', file);
-            if (this.attrs.chooseFile) {
-                this.get('chooseFile')(file);
+            if (this.chooseFile) {
+                this.chooseFile(file);
             }
         },
     },

@@ -74,7 +74,7 @@ export default CpPanelComponent.extend(Analytics, {
                     });
                 this._super(...arguments);
             } else {
-                this.get('errorAction')(this.get('denyOpenMessage'));
+                this.errorAction(this.denyOpenMessage);
             }
         } else {
             /* Manual animation

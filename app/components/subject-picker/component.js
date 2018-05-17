@@ -31,6 +31,7 @@ const Column = EmberObject.extend({
         return subjects.filter(item => item.get('text').toLowerCase().includes(filterTextLowerCase));
     }),
     init() {
+        this._super(...arguments);
         this.set('sortDefinition', ['text:asc']);
         this.set('subjects', []);
     },
