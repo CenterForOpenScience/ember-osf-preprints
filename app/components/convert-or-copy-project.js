@@ -7,11 +7,15 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 
 /**
- * Convert Or Copy Widget - very simple, just presents decision, do you want to convert this project or copy file to a new component.
+ * Convert Or Copy Widget
  *
- * Will set convertOrCopy to 'convert' or 'copy'.  If convert, will set node title as current node title and titleValid to
- * true. If 'copy', title will be set equal to null, and titleValid to false.  Converting a project requires the user confirm their
- * decision in an additional step.
+ * Very simple, just presents decision, do you want to
+ * convert this project or copy file to a new component
+ *
+ * Will set convertOrCopy to 'convert' or 'copy'.
+ * If convert, will set node title as current node title and titleValid to true.
+ * If 'copy', title will be set equal to null, and titleValid to false.
+ * Converting a project requires the user confirm their decision in an additional step.
  *
  * Sample usage:
  * ```handlebars
@@ -39,9 +43,8 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Make a New Component Selection'
+                    label: 'Submit - Make a New Component Selection',
                 });
-
         },
         chooseConvertExisting() {
             // Decision to have the existing project contain the preprint
@@ -55,7 +58,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Use the Current Project Selection'
+                    label: 'Submit - Use the Current Project Selection',
                 });
         },
         confirmConvert() {
@@ -67,8 +70,8 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Confirm Continue with the Current Project'
+                    label: 'Submit - Confirm Continue with the Current Project',
                 });
-        }
-    }
+        },
+    },
 });

@@ -1,6 +1,5 @@
 import Component from '@ember/component';
-import EmberObject from '@ember/object';
-import { computed } from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import { sort, notEmpty } from '@ember/object/computed';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
@@ -8,18 +7,19 @@ import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
 
 function arrayEquals(arr1, arr2) {
-    return arr1.length === arr2.length && arr1.reduce((acc, val, i) => acc && val === arr2[i], true);
+    return arr1.length === arr2.length
+        && arr1.reduce((acc, val, i) => acc && val === arr2[i], true);
 }
 
 function arrayStartsWith(arr, prefix) {
-    return prefix.reduce((acc, val, i) => acc && val && arr[i] && val.id === arr[i].id, true);
+    return prefix.reduce((acc, val, i) => acc && val
+        && arr[i] && val.id === arr[i].id, true);
 }
 
 const Column = EmberObject.extend({
-    sortDefinition: ['text:asc'],
     filterText: '',
     selection: null,
-    subjects: [],
+    subjectsSorted: sort('subjectsFiltered', 'sortDefinition'),
     subjectsFiltered: computed('subjects.[]', 'filterText', function() {
         const filterTextLowerCase = this.get('filterText').toLowerCase();
         const subjects = this.get('subjects');
@@ -30,7 +30,11 @@ const Column = EmberObject.extend({
 
         return subjects.filter(item => item.get('text').toLowerCase().includes(filterTextLowerCase));
     }),
-    subjectsSorted: sort('subjectsFiltered', 'sortDefinition')
+    init() {
+        this._super(...arguments);
+        this.set('sortDefinition', ['text:asc']);
+        this.set('subjects', []);
+    },
 });
 
 /**
@@ -57,31 +61,17 @@ export default Component.extend(Analytics, {
     store: service(),
     theme: service(),
 
-    querySubjects(parents = 'null', tier = 0) {
-        const column = this.get('columns').objectAt(tier);
-
-        if (this.get('provider')) {
-            this.get('provider').queryHasMany('taxonomies', {
-                filter: {
-                    parents,
-                },
-                page: {
-                    size: 150, // Law category has 117 (Jan 2018)
-                }
-            })
-            .then(results => column.set('subjects', results ? results.toArray() : []));
-        }
-    },
+    isValid: notEmpty('currentSubjects'),
 
     init() {
         this._super(...arguments);
 
         const tempSubjects = A();
-        
+
         this.get('initialSubjects').forEach((subject) => {
             tempSubjects.push(subject);
         });
-        
+
         this.setProperties({
             initialSubjects: [],
             currentSubjects: [],
@@ -100,28 +90,13 @@ export default Component.extend(Analytics, {
         }
     },
 
-    isValid: notEmpty('currentSubjects'),
-
-    resetColumnSelections() {
-        const columns = this.get('columns');
-
-        columns.objectAt(0).set('selection', null);
-
-        for (let i = 1; i < columns.length; i++) {
-            const column = columns.objectAt(i);
-
-            column.set('subjects', null);
-            column.set('selection', null);
-        }
-    },
-
     actions: {
         deselect(index) {
             this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Remove`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Remove`,
                 });
 
             const allSelections = this.get('currentSubjects');
@@ -136,7 +111,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Add`
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Add`,
                 });
 
             this.set('hasChanged', true);
@@ -158,13 +133,16 @@ export default Component.extend(Analytics, {
                 .slice(0, nextTier)
                 .map(column => column.get('selection'));
 
-            // An existing tag has this prefix, and this is the lowest level of the taxonomy, so no need to fetch child results
-            if (nextTier === totalColumns || !allSelections.some(item => arrayStartsWith(item, currentSelection))) {
+            // An existing tag has this prefix, and this is the lowest level of the taxonomy,
+            // so no need to fetch child results
+            if (nextTier === totalColumns
+                || !allSelections.some(item => arrayStartsWith(item, currentSelection))) {
                 let existingParent;
 
                 for (let i = 1; i <= currentSelection.length; i++) {
                     const sub = currentSelection.slice(0, i);
-                    existingParent = allSelections.find(item => arrayEquals(item, sub)); // jshint ignore:line
+                    existingParent = allSelections
+                        .find(item => arrayEquals(item, sub));
 
                     // The parent exists, append the subject to it
                     if (existingParent) {
@@ -195,7 +173,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Discipline Changes`
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Discipline Changes`,
                 });
 
             this.resetColumnSelections();
@@ -208,9 +186,38 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`
+                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`,
                 });
             this.saveSubjects(this.get('currentSubjects'), this.get('hasChanged'));
+        },
+    },
+    querySubjects(parents = 'null', tier = 0) {
+        const column = this.get('columns').objectAt(tier);
+
+        if (this.get('provider')) {
+            this.get('provider').queryHasMany('taxonomies', {
+                filter: {
+                    parents,
+                },
+                page: {
+                    size: 150, // Law category has 117 (Jan 2018)
+                },
+            })
+                .then(results => column.set('subjects', results ? results.toArray() : []));
         }
-    }
+    },
+
+    resetColumnSelections() {
+        const columns = this.get('columns');
+
+        columns.objectAt(0).set('selection', null);
+
+        for (let i = 1; i < columns.length; i++) {
+            const column = columns.objectAt(i);
+
+            column.set('subjects', null);
+            column.set('selection', null);
+        }
+    },
+
 });

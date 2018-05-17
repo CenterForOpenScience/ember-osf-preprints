@@ -8,7 +8,7 @@ export default Component.extend(Analytics, {
     classNames: ['preprint-header', 'preprint-header-error'],
     label: '',
     translationKey: '',
-    supportEmail: computed('theme.isProvider', 'theme.provider.emailSupport', function() {
+    supportEmail: computed('theme.{isProvider,provider.emailSupport}', function() {
         return this.get('theme.isProvider') ? this.get('theme.provider.emailSupport') : 'support@osf.io';
-    })
+    }),
 });

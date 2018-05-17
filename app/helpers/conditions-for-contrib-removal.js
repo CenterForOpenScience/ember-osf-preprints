@@ -18,10 +18,10 @@ import permissions from 'ember-osf/const/permissions';
  * admins and bibliographic contributors?
  */
 
-export function conditionsForContribRemoval(params/*, hash*/) {
-    var [contributorToRemove, contributors] = params;
-    var minRegisteredAdmins = false;
-    var minBibliographic = false;
+export function conditionsForContribRemoval(params/* , hash */) {
+    const [contributorToRemove, contributors] = params;
+    let minRegisteredAdmins = false;
+    let minBibliographic = false;
     contributors.forEach(function(contributor) {
         if (contributor.id !== contributorToRemove.id) {
             if (contributor.get('permission') === permissions.ADMIN && contributor.get('unregisteredContributor') === null) {
@@ -33,7 +33,6 @@ export function conditionsForContribRemoval(params/*, hash*/) {
         }
     });
     return minRegisteredAdmins && minBibliographic;
-
 }
 
 export default helper(conditionsForContribRemoval);

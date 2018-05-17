@@ -8,12 +8,12 @@ moduleFor('mixin:setup-submit-controller', {
         'service:panelActions',
         'service:session',
         'service:head-tags',
-        'service:i18n'
-    ]
+        'service:i18n',
+    ],
 });
 
 test('Setup-submit-controller mixin', function(assert) {
-    let routeObject = Route.extend(SetupSubmitControllerMixin);
+    const routeObject = Route.extend(SetupSubmitControllerMixin);
     this.registry.register('test:subject', routeObject);
     const routeTest = this.container.lookup('test:subject');
     assert.ok(SetupSubmitControllerMixin.detect(routeTest));

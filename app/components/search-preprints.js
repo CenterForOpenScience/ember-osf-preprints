@@ -23,15 +23,16 @@ export default Component.extend({
     theme: service(),
     actions: {
         search() {
-            let query = $.trim(this.$('#searchBox').val());
+            const query = $.trim(this.$('#searchBox').val());
+            /* eslint-disable-next-line ember/closure-actions */
             this.sendAction('search', query);
             this.get('metrics').trackEvent({
                 category: 'button',
                 action: 'click',
                 label: 'Index - Search',
-                extra: query
+                extra: query,
             });
-        }
+        },
     },
 
     keyDown(event) {
@@ -39,5 +40,5 @@ export default Component.extend({
         if (event.keyCode === 13) {
             this.send('search');
         }
-    }
+    },
 });

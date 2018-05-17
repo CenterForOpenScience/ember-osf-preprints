@@ -27,5 +27,5 @@ export default Component.extend({
             this.$('#existingProjectButton').addClass('active-custom');
         },
 
-    }
+    },
 });
