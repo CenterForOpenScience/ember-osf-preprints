@@ -1335,18 +1335,17 @@ nav.preprint-navbar {
     .nav-user-dropdown {
         height: $nav-height;
     }
-
-    .dropdown > a {
-        padding-top: 12px;
-        padding-bottom: 12px;
-    }
-
+    
     .dropdown-menu {
         color: white;
     }
 
     .sign-in {
         padding-top: 8px;
+    }
+
+    .navbar-title {
+        padding-right: 50px;
     }
 }
 
