@@ -1,17 +1,17 @@
 <div class="container">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggle" id='preprint-branded-collapse-button' data-toggle="collapse" aria-label={{t 'components.preprint-navbar.toggle'}} data-target="#preprint-navbar-links">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
         <a class="navbar-brand" href='{{theme.pathPrefix}}'
             onclick={{action "click" "link" "Navbar - Brand"}}>
             <span class="navbar-image" style={{safe-markup (concat "background-image: url('" (provider-asset theme.id 'square_color_transparent.png') "')")}}></span>
             <span class="navbar-title">{{model.name}}{{#if theme.preprintWordInTitle}} {{t "global.preprints"}}{{/if}}</span>
         </a>
+        <a type="button" role="button" class="navbar-toggle collapsed" id="preprint-branded-collapse-button" data-toggle="collapse" data-target="#secondary-navigation" aria-label={{t 'components.preprint-navbar.toggle'}}>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
     </div>
-    <div id="preprint-navbar-links" class="navbar-collapse collapse navbar-right">
+    <div class="navbar-collapse collapse navbar-right" id="secondary-navigation">
         <ul class="nav navbar-nav branded-nav">
             {{#if session.isAuthenticated}}
                 <li><a href="{{host}}myprojects/" class="" onbeforeclick={{action "click" "link" "Navbar - My OSF Projects"}}>{{t "components.preprint-navbar-branded.my_projects"}}</a></li>
