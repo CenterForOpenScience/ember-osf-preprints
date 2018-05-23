@@ -74,7 +74,7 @@ export default CpPanelComponent.extend(Analytics, {
                     });
                 this._super(...arguments);
             } else {
-                this.errorAction(this.denyOpenMessage);
+                this.sendAction('errorAction', this.denyOpenMessage); // eslint-disable-line ember/closure-actions
             }
         } else {
             /* Manual animation

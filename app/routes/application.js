@@ -26,7 +26,7 @@ export default Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
                             domain: `${window.location.origin}/`,
                         },
                     },
-                ).then(this.setTheme(this));
+                ).then(this.setTheme.bind(this));
             }
         };
         const parentResult = this._super(...arguments);
