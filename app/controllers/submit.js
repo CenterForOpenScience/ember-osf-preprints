@@ -1013,50 +1013,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 model.set('isPublished', true);
             }
             node.set('public', true);
+            this.set('model', model);
+            this.set('node', node);
 
             return model.save()
                 .then(() => node.save())
-                .then(() => {
-                    const preprintId = model.get('id');
-                    // Fix for IN-271: Terrible kluge to reattach periodically lost primary files
-                    // that is likely due to a backend race condition in celery tasks.
-                    // The OSF api does not return null for empty to one relationships
-                    // which causes ember to not nullify the primaryFile relationship when it gets disconnected.
-                    // So the model needs to be unloaded, reloaded, reassigned, and saved
-                    // This resaving of the preprint should be removed (likely after node-preprint divorce)
-                    model.unloadRecord();
-                    this.get('store').findRecord('preprint', preprintId).then(m => {
-                        if(!this.get('editMode')) { 
-                            m.set('primaryFile', this.get('selectedFile'));
-                        }
-                        m.save().then(() => {
-                            this.set('preprintSaved', true);
-                            if(isModerated) {
-                                const submitAction = this.get('store').createRecord('review-action', {
-                                    actionTrigger: 'submit',
-                                    target: m,
-                                });
-                                submitAction.save();
-                            }
-                            let useProviderRoute = false;
-                            if (this.get('theme.isProvider')) {
-                                useProviderRoute = this.get('theme.isSubRoute');
-                            } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
-                                window.location.replace(`${this.get('currentProvider.domain')}${m.id}`);
-                            } else if (this.get('currentProvider.id') !== 'osf') {
-                                useProviderRoute = true;
-                            }
-                            this.transitionToRoute(`${useProviderRoute ? 'provider.' : ''}content`, m);
-                        })
-                    })
-                })
-                .catch(() => {
-                    this.toggleProperty('shareButtonDisabled');
-                    return this.get('toast')
-                        .error(this.get('i18n')
-                            .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`)
-                        );
-                });
+                .then(this._resaveModel.bind(this))
+                .catch(this._failSaveModel.bind(this));
         },
         cancel() {
             this.transitionToRoute('index');
@@ -1104,6 +1067,58 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('selectedProvider', this.get('currentProvider'));
             this.set('providerChanged', false);
         },
+    },
+
+    _resaveModel() {
+        const model = this.get('model');
+        const preprintId = model.get('id');
+        // Fix for IN-271: Terrible kluge to reattach periodically lost primary files
+        // that is likely due to a backend race condition in celery tasks.
+        // The OSF api does not return null for empty to one relationships
+        // which causes ember to not nullify the primaryFile relationship when it gets
+        // disconnected. So the model needs to be unloaded, reloaded, reassigned, and
+        // saved. This resaving of the preprint should be removed
+        // (likely after node-preprint divorce)
+        model.unloadRecord();
+        this.get('store').findRecord('preprint', preprintId).then(this._setPrimaryFile.bind(this));
+    },
+
+    _setPrimaryFile(preprint) {
+        if (!this.get('editMode')) {
+            preprint.set('primaryFile', this.get('selectedFile'));
+            this.set('model', preprint);
+        }
+        preprint.save().then(this._savePreprint.bind(this));
+    },
+
+    _savePreprint() {
+        const isModerated = this.get('moderationType');
+        const preprint = this.get('model');
+
+        this.set('preprintSaved', true);
+        if (isModerated) {
+            const submitAction = this.get('store').createRecord('review-action', {
+                actionTrigger: 'submit',
+                target: preprint,
+            });
+            submitAction.save();
+        }
+        let useProviderRoute = false;
+        if (this.get('theme.isProvider')) {
+            useProviderRoute = this.get('theme.isSubRoute');
+        } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
+            window.location.replace(`${this.get('currentProvider.domain')}${preprint.id}`);
+        } else if (this.get('currentProvider.id') !== 'osf') {
+            useProviderRoute = true;
+        }
+        this.transitionToRoute(`${useProviderRoute ? 'provider.' : ''}content`, preprint);
+    },
+
+    _failSaveModel() {
+        this.toggleProperty('shareButtonDisabled');
+        return this.get('toast')
+            .error(this.get('i18n')
+                .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
     },
 
     _getProviders(providers) {
