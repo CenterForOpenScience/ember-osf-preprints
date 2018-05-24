@@ -1080,7 +1080,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         // saved. This resaving of the preprint should be removed
         // (likely after node-preprint divorce)
         model.unloadRecord();
-        this.get('store').findRecord('preprint', preprintId).then(this._setPrimaryFile.bind(this));
+        return this.get('store').findRecord('preprint', preprintId).then(this._setPrimaryFile.bind(this));
     },
 
     _setPrimaryFile(preprint) {
@@ -1088,7 +1088,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             preprint.set('primaryFile', this.get('selectedFile'));
             this.set('model', preprint);
         }
-        preprint.save().then(this._savePreprint.bind(this));
+        return preprint.save().then(this._savePreprint.bind(this));
     },
 
     _savePreprint() {
