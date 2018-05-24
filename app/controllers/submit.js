@@ -1304,12 +1304,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.highlightSuccessOrFailure('author-search-box', this, 'error');
     },
 
-    _saveNode() {
-        const node = this.get('node');
-
-        node.save();
-    },
-
     _saveModel() {
         const model = this.get('model');
 
