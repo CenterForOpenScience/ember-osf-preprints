@@ -211,9 +211,7 @@
                                         <div class="clearfix">
                                             <label>{{t "submit.body.basics.keywords.label"}}:</label>
                                             <p class="text-smaller">{{t "submit.body.basics.keywords.paragraph"}}</p>
-                                            {{#tag-input tags=basicsTags  addTag=(action 'addTag') removeTagAtIndex=(action 'removeTag') placeholder=(t "submit.body.basics.tags.placeholder") as |tag|}}
-                                                {{tag}}
-                                            {{/tag-input}}
+                                            {{tags-widget addATag=(action 'addTag') removeATag=(action 'removeTag') tags=basicsTags}}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -312,7 +310,7 @@
                             {{#if showValidationErrors}}
                                 <span id="validation-errors">
                                     <p class="m-t-md"><strong>{{t "submit.body.submit.invalid.description" documentType=currentProvider.documentType}}</strong></p>
-                                    <p class="text-danger">{{unless (and savedTitle savedFile) (t "submit.body.submit.invalid.upload")}}</p>
+                                    <p class="text-danger">{{if (not (and savedTitle savedFile)) (t "submit.body.submit.invalid.upload")}}</p>
                                     <p class="text-danger">{{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
                                     <p class="text-danger">{{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
                                     <p class="text-danger">{{unless authorsValid (t "global.authors")}}</p>

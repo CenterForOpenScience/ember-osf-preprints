@@ -2,7 +2,7 @@
     <div class="navbar-header">
         <a class="navbar-brand" href='{{theme.pathPrefix}}'
             onclick={{action "click" "link" "Navbar - Brand"}}>
-            <span class="navbar-image" style="background-image: url('{{provider-asset theme.id 'square_color_transparent.png'}}')"></span>
+            <span class="navbar-image" style={{safe-markup (concat "background-image: url('" (provider-asset theme.id 'square_color_transparent.png') "')")}}></span>
             <span class="navbar-title">{{model.name}}{{#if theme.preprintWordInTitle}} {{t "global.preprints" documentType=theme.provider.content.documentType}}{{/if}}</span>
         </a>
         <a type="button" role="button" class="navbar-toggle collapsed" id="preprint-branded-collapse-button" data-toggle="collapse" data-target="#secondary-navigation" aria-label={{t 'components.preprint-navbar.toggle'}}>
