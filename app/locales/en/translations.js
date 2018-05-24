@@ -113,7 +113,7 @@ export default {
     },
     index: {
         header: {
-            powered_by: 'Powered by ${brand}',
+            powered_by: 'Powered by OSF Preprints',
             or: 'or',
             as_of: 'as of',
             example: 'See an example',
@@ -311,7 +311,7 @@ export default {
         },
         'permission-language': {
             arxivTrademarkLicense,
-            arxiv_non_endorsement: '${arxivTrademarkLicense} This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.',
+            arxiv_non_endorsement: 'arXiv is a trademark of Cornell University, used under license. This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.',
             no_trademark: '',
         },
         'preprint-form-authors': {

@@ -209,8 +209,8 @@
                                             </form>
                                         </div>
                                         <div class="clearfix">
-                                            <label>{{t "submit.body.basics.keywords.label"}}:</label>
-                                            <p class="text-smaller">{{t "submit.body.basics.keywords.paragraph"}}</p>
+                                            <label>{{t "submit.body.basics.keywords.label" documentType=currentProvider.documentType}}:</label>
+                                            <p class="text-smaller">{{t "submit.body.basics.keywords.paragraph" documentType=currentProvider.documentType}}</p>
                                             {{tags-widget addATag=(action 'addTag') removeATag=(action 'removeTag') tags=basicsTags}}
                                         </div>
                                     </div>
