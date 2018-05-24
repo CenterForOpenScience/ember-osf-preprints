@@ -1,79 +1,79 @@
 import { getAncestorDescriptor } from 'preprint-service/helpers/get-ancestor-descriptor';
 import { module, test } from 'qunit';
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 
 
 module('Unit | Helper | get ancestor descriptor');
 
 test('One, two, three, and four-level hierarchies', function(assert) {
-    let root = Ember.Object.create({
-        'id': '12345',
-        'title': 'Great-Grandparent',
-        'root': Ember.Object.create({
-            'id': '12345',
-            'title': 'Great-Grandparent'
+    const root = EmberObject.create({
+        id: '12345',
+        title: 'Great-Grandparent',
+        root: EmberObject.create({
+            id: '12345',
+            title: 'Great-Grandparent',
         }),
-        '_internalModel': {
-            '_relationships': {
-                'initializedRelationships': {
+        _internalModel: {
+            _relationships: {
+                initializedRelationships: {
 
-                }
-            }
+                },
+            },
         },
-        parent: null
+        parent: null,
     });
 
-    let grandparent = Ember.Object.create({
-        'id': '67890',
-        'title': 'Grandparent',
-        'parent': root,
-        'root': root
+    const grandparent = EmberObject.create({
+        id: '67890',
+        title: 'Grandparent',
+        parent: root,
+        root,
     });
 
-    let parent = Ember.Object.create({
-        'id': 'abcde',
-        'title': 'Parent',
-        'parent': grandparent,
-        'root': root
+    const parent = EmberObject.create({
+        id: 'abcde',
+        title: 'Parent',
+        parent: grandparent,
+        root,
     });
-    let node = Ember.Object.create({
-        'id': 'fghij',
-        'root': root,
-        'parent': parent,
-        'title': 'Child'
+    const node = EmberObject.create({
+        id: 'fghij',
+        root,
+        parent,
+        title: 'Child',
     });
 
-    let describeNode = getAncestorDescriptor([node]);
+    const describeNode = getAncestorDescriptor([node]);
     assert.equal(describeNode, 'Great-Grandparent / ... / Parent / ');
 
-    let describeParent = getAncestorDescriptor([parent]);
+    const describeParent = getAncestorDescriptor([parent]);
     assert.equal(describeParent, 'Great-Grandparent / Grandparent / ');
 
-    let describeGrandparent = getAncestorDescriptor([grandparent]);
+    const describeGrandparent = getAncestorDescriptor([grandparent]);
     assert.equal(describeGrandparent, 'Great-Grandparent / ');
 
-    let describeGreatGrandparent = getAncestorDescriptor([root]);
+    const describeGreatGrandparent = getAncestorDescriptor([root]);
     assert.equal(describeGreatGrandparent, '');
 });
 
 test('Test private parent', function(assert) {
-    let child = Ember.Object.create({
+    const child = EmberObject.create({
         id: 'abcde',
         title: 'child',
-        '_internalModel': {
-            '_relationships': {
-                'initializedRelationships': {
-                    'root': {
-                        'link': '/nodes/12345/'
+        _internalModel: {
+            _relationships: {
+                initializedRelationships: {
+                    root: {
+                        link: '/nodes/12345/',
                     },
-                    'parent': {
-                        'link': '/nodes/12345/'
-                    }
-                }
-            }
+                    parent: {
+                        link: '/nodes/12345/',
+                    },
+                },
+            },
         },
     });
 
-    let result = getAncestorDescriptor([child]);
+    const result = getAncestorDescriptor([child]);
     assert.equal(result, 'Private / ');
 });

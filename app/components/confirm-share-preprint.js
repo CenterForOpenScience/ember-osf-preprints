@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
@@ -6,7 +6,10 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 
 /**
- * Confirm share preprint modal - Requires user to confirm they wish to submit their preprint, thus making it public and searchable
+ * Confirm share preprint modal
+ *
+ * Requires user to confirm they wish to submit their preprint,
+ * thus making it public and searchable
  *
  * Sample usage:
  * ```handlebars
@@ -20,17 +23,17 @@ import Analytics from 'ember-osf/mixins/analytics';
  * ```
  * @class confirm-share-preprint
  */
-export default Ember.Component.extend(Analytics, {
+export default Component.extend(Analytics, {
     isOpen: false,
     actions: {
         close() {
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Cancel Share Preprint'
+                    label: 'Submit - Cancel Share Preprint',
                 });
             this.set('isOpen', false);
-        }
-    }
+        },
+    },
 });

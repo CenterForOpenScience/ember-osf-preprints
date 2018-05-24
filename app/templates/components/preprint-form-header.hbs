@@ -1,7 +1,3 @@
-{{! Turn off rule that fails due to whitespace control bug.
-    Can remove when this PR merged: https://github.com/rwjblue/ember-template-lint/pull/98 }}
-<!-- template-lint block-indentation=false -->
-
 <div class="section-header">
     {{#if (eq name 'location_of_preprint')}}
         <span class='text-muted'> {{t (concat "components.preprint-form-header.name." name)}} </span>
@@ -20,7 +16,7 @@
         <span class="text-success text-smaller m-r-md"> {{t "components.preprint-form-header.changes_saved"}} </span>
     {{/if}}
     {{#if showValidationIndicator}}
-        {{fa-icon 'fa-floppy-o'}}
+        {{fa-icon 'floppy-o'}}
     {{/if}}
 </div>
 
@@ -29,7 +25,7 @@
         <p>
             <em class="m-r-md"> {{t "components.preprint-form-header.server"}}: </em>
             {{#if currentProvider}}
-                <img class="current-provider" title="{{currentProvider.name}}" src={{provider-asset currentProvider.id 'square_color_no_transparent.png'}}>
+                <img alt="provider logo" class="current-provider" title="{{currentProvider.name}}" src={{provider-asset currentProvider.id 'square_color_no_transparent.png'}}>
                 {{currentProvider.name}}
             {{/if}}
         </p>
@@ -139,13 +135,13 @@
 
         {{#if (eq name 'finalize_upload')}}
             {{#if title}}
-                 <p>{{t "components.preprint-form-header.title"}}: {{title}} </p>
+                <p>{{t "components.preprint-form-header.title"}}: {{title}} </p>
             {{/if}}
         {{/if}}
 
         {{#if (eq name 'title_of_preprint')}}
             {{#if title}}
-                 <p> {{title}} </p>
+                <p> {{title}} </p>
             {{/if}}
         {{/if}}
 

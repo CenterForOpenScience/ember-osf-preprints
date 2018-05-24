@@ -1,22 +1,22 @@
-import Ember from 'ember';
+import { merge } from '@ember/polyfills';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import FactoryGuy, { manualSetup } from 'ember-data-factory-guy';
 
 moduleForComponent('author-link', 'Integration | Component | author link', {
     integration: true,
-    beforeEach: function() {
+    beforeEach() {
         manualSetup(this.container);
-    }
+    },
 });
 
 test('renders non-links', function(assert) {
-    let contributorModel = FactoryGuy.make('contributor');
+    const contributorModel = FactoryGuy.make('contributor');
     // Problem here is that author link expects a share search-result contributor,
     // not a store instance of a contributor and its user(s).
-    let contributor = {users: {identifiers: []}};
+    let contributor = { users: { identifiers: [] } };
     contributor.users.name = contributorModel.get('users.fullName');
-    contributor = Ember.merge(contributor, contributorModel.serialize().data.attributes);
+    contributor = merge(contributor, contributorModel.serialize().data.attributes);
     this.set('contributor', contributor);
     this.render(hbs`{{author-link contributor=contributor}}`);
     assert.ok(!this.$('a').length, 'Found a link when user has no identifiers');
@@ -24,10 +24,10 @@ test('renders non-links', function(assert) {
 });
 
 test('renders links', function(assert) {
-    let contributorModel = FactoryGuy.make('contributor');
-    let contributor = {users: {identifiers: []}};
+    const contributorModel = FactoryGuy.make('contributor');
+    let contributor = { users: { identifiers: [] } };
     contributor.users.name = contributorModel.get('users.fullName');
-    contributor = Ember.merge(contributor, contributorModel.serialize().data.attributes);
+    contributor = merge(contributor, contributorModel.serialize().data.attributes);
     contributor.users.identifiers.push('https://staging.osf.io/cool');
     this.set('contributor', contributor);
 

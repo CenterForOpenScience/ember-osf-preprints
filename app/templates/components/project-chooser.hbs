@@ -1,5 +1,5 @@
 <div id = "allButtons">
-    <div id ="newFileButton" class="prereg-button m-b-md p-md osf-box-lt p-md box-round prereg" data-qtoggle-group="prereg" data-qtoggle-target="#newPrereg" action="newFile" {{action 'toggleNewFile'}}>{{t "components.project-chooser.file_upload_create"}}</div>
+    <div id ="newFileButton" class="prereg-button m-b-md p-md osf-box-lt p-md box-round prereg" data-qtoggle-group="prereg" data-qtoggle-target="#newPrereg" role="button" action="newFile" {{action 'toggleNewFile'}}>{{t "components.project-chooser.file_upload_create"}}</div>
 
     {{#if newFile}}
         <div id="newPrereg" class="prereg-new-prereg p-md osf-box box-round clearfix m-b-lg" style="display: block;">
@@ -11,7 +11,7 @@
     {{/if}}
 
 
-    <div id="existingProjectButton" class="prereg-button m-b-md p-md osf-box-lt p-md box-round prereg active" data-qtoggle-group="prereg" data-qtoggle-target="#newPrereg" {{action 'toggleExistingProject'}}>{{t "components.project-chooser.file_upload_existing"}}</div>
+    <div id="existingProjectButton" class="prereg-button m-b-md p-md osf-box-lt p-md box-round prereg active" data-qtoggle-group="prereg" data-qtoggle-target="#newPrereg" role="button" {{action 'toggleExistingProject'}}>{{t "components.project-chooser.file_upload_existing"}}</div>
 
     {{#if existingProject}}
         <div id="existingPrereg" class="prereg-existing-prereg p-md osf-box box-round clearfix m-b-lg" style="width: 100%; display: block;">
@@ -23,7 +23,7 @@
     {{/if}}
 
 
-    <div id="existingFileButton" class="prereg-button m-b-md p-md osf-box-lt p-md box-round prereg active" data-qtoggle-group="prereg" data-qtoggle-target="#newPrereg" {{action 'toggleExistingFile'}}>{{t "components.project-chooser.file_choose_existing"}}</div>
+    <div id="existingFileButton" class="prereg-button m-b-md p-md osf-box-lt p-md box-round prereg active" data-qtoggle-group="prereg" data-qtoggle-target="#newPrereg" role="button" {{action 'toggleExistingFile'}}>{{t "components.project-chooser.file_choose_existing"}}</div>
 
     {{#if existingFile}}
         <div id="existingProject" class="prereg-existing-project p-md osf-box box-round clearfix m-b-lg" style="display: block;">

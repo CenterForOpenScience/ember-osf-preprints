@@ -1,13 +1,14 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('route:provider/content', 'Unit | Route | provider/content', {
+moduleFor('route:submit', 'Unit | Route | submit', {
     // Specify the other units that are required for this test.
     needs: [
-        'controller:submit',
-        'route:content',
         'service:metrics',
         'service:theme',
         'service:session',
+        'service:panelActions',
+        'service:i18n',
+        'service:currentUser',
     ],
 });
 

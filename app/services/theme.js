@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import Service, { inject as service } from '@ember/service';
+import $ from 'jquery';
 import config from 'ember-get-config';
 import buildProviderAssetPath from '../utils/build-provider-asset-path';
 
@@ -8,15 +10,16 @@ import buildProviderAssetPath from '../utils/build-provider-asset-path';
  */
 
 /**
- * Detects preprint provider and allows you to inject that provider's theme into parts of your application
+ * Detects preprint provider and allows you to inject that
+ * provider's theme into parts of your application
  *
  * @class theme
- * @extends Ember.Service
+ * @extends Service
  */
-export default Ember.Service.extend({
-    store: Ember.inject.service(),
-    session: Ember.inject.service(),
-    headTagsService: Ember.inject.service('head-tags'),
+export default Service.extend({
+    store: service(),
+    session: service(),
+    headTagsService: service('head-tags'),
 
     // If we're using a provider domain
     isDomain: window.isProviderDomain,
@@ -27,43 +30,56 @@ export default Ember.Service.extend({
     currentLocation: null,
 
     // The provider object
-    provider: Ember.computed('id', function() {
+    provider: computed('id', function() {
         const id = this.get('id');
         const store = this.get('store');
 
         // Check if redirect is enabled for the current provider
         if (!window.isProviderDomain && this.get('isProvider')) {
             store.findRecord('preprint-provider', id)
-                .then(provider => {
-                    if (provider.get('domainRedirectEnabled')) {
-                        const domain = provider.get('domain');
-                        const {href, origin} = window.location;
-                        const url = href.replace(new RegExp(`^${origin}/preprints/${id}/?`), domain);
-
-                        window.location.replace(url);
-                    }
-                });
+                .then(this._getproviderDomain.bind(this));
         }
 
         return store.findRecord('preprint-provider', id);
     }),
 
+    _getproviderDomain(provider) {
+        if (provider.get('domainRedirectEnabled')) {
+            const domain = provider.get('domain');
+            const { href, origin } = window.location;
+            const id = this.get('id');
+            const url = href.replace(new RegExp(`^${origin}/preprints/${id}/?`), domain);
+
+            window.location.replace(url);
+        }
+    },
+
+    providerCallback(provider, id) {
+        if (provider.get('domainRedirectEnabled')) {
+            const domain = provider.get('domain');
+            const { href, origin } = window.location;
+            const url = href.replace(new RegExp(`^${origin}/preprints/${id}/?`), domain);
+
+            window.location.replace(url);
+        }
+    },
+
     // If we're using a branded provider
-    isProvider: Ember.computed('id', function() {
+    isProvider: computed('id', function() {
         return this.get('id') !== 'osf';
     }),
 
     // If we should include the preprint word in the title
-    preprintWordInTitle: Ember.computed('id', function() {
+    preprintWordInTitle: computed('id', function() {
         return this.get('id') !== 'thesiscommons';
     }),
 
     // If we're using a branded provider and not under a branded domain (e.g. /preprints/<provider>)
-    isSubRoute: Ember.computed('isProvider', 'isDomain', function() {
+    isSubRoute: computed('isProvider', 'isDomain', function() {
         return this.get('isProvider') && !this.get('isDomain');
     }),
 
-    pathPrefix: Ember.computed('isProvider', 'isDomain', 'id', function() {
+    pathPrefix: computed('isProvider', 'isDomain', 'id', function() {
         let pathPrefix = '/';
 
         if (!this.get('isDomain')) {
@@ -78,7 +94,7 @@ export default Ember.Service.extend({
     }),
 
     // Needed for the content route
-    guidPathPrefix: Ember.computed('isSubRoute', 'id', function() {
+    guidPathPrefix: computed('isSubRoute', 'id', function() {
         let pathPrefix = '/';
 
         if (this.get('isSubRoute')) {
@@ -88,40 +104,40 @@ export default Ember.Service.extend({
         return pathPrefix;
     }),
     // The logo object for social sharing
-    logoSharing: Ember.computed('id', 'isDomain', function() {
+    logoSharing: computed('id', 'isDomain', function() {
         const id = this.get('id');
         return {
             path: buildProviderAssetPath(config, id, 'sharing.png', this.get('isDomain')),
             type: 'image/png',
             width: 1200,
-            height: 630
+            height: 630,
         };
     }),
 
     // The url to redirect users to sign up to
-    signupUrl: Ember.computed('id', function() {
-        const query = Ember.$.param({
+    signupUrl: computed('id', function() {
+        const query = $.param({
             campaign: `${this.get('id')}-preprints`,
-            next: window.location.href
+            next: window.location.href,
         });
 
         return `${config.OSF.url}register?${query}`;
     }),
 
-    redirectUrl: Ember.computed('currentLocation', function() {
+    redirectUrl: computed('currentLocation', function() {
         return this.get('currentLocation');
     }),
 
-    headTags: Ember.computed('id', function() {
+    headTags: computed('id', function() {
         return [{
             type: 'link',
             attrs: {
                 rel: 'shortcut icon',
-                href: buildProviderAssetPath(config, this.get('id'), 'favicon.ico', window.isProviderDomain)
-            }
-        }]
+                href: buildProviderAssetPath(config, this.get('id'), 'favicon.ico', window.isProviderDomain),
+            },
+        }];
     }),
-    idChanged: Ember.observer('id', function() {
+    idChanged: computed('id', function() {
         this.get('headTagsService').collectHeadTags();
     }),
 });

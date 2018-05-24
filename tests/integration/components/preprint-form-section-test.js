@@ -2,10 +2,10 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('preprint-form-section', 'Integration | Component | preprint form section', {
-    integration: true
+    integration: true,
 });
 
-test('it renders 124', function(assert) {
+test('it renders', function(assert) {
     this.render(hbs`{{preprint-form-section}}`);
 
     assert.equal(this.$().text().trim(), '');
@@ -19,11 +19,11 @@ test('it renders 124', function(assert) {
     assert.equal(this.$().text().trim(), 'Preprint Stuff goes in Here');
 });
 
-test('allow handleToggle when allowOpen is true', function(assert){
+test('allow handleToggle when allowOpen is true alskjflaskdjf', function(assert) {
     this.set('allowOpen', true);
     this.render(hbs`
         {{#preprint-form-section allowOpen=allowOpen}}
-            {{#preprint-form-header}}Title{{/preprint-form-header}}
+            {{#preprint-form-header allowOpen=allowOpen }}Title{{/preprint-form-header}}
             {{#preprint-form-body}}Body{{/preprint-form-body}}
         {{/preprint-form-section}}
     `);
@@ -36,10 +36,12 @@ test('allow handleToggle when allowOpen is true', function(assert){
     assert.ok(this.$('.cp-is-open').length);
 });
 
-test('does note allow handleToggle when allowOpen is false', function(assert){
+test('does not allow handleToggle when allowOpen is false', function(assert) {
     this.set('allowOpen', false);
+    this.set('errorAction', () => {}); // noop
+
     this.render(hbs`
-        {{#preprint-form-section allowOpen=allowOpen}}
+        {{#preprint-form-section allowOpen=allowOpen errorAction=errorAction}}
             {{#preprint-form-header}}Title{{/preprint-form-header}}
             {{#preprint-form-body}}Body{{/preprint-form-body}}
         {{/preprint-form-section}}
