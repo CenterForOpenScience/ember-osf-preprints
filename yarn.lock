@@ -78,7 +78,7 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-05-21T13:47:45Z":
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-05-29T14:01:28Z":
   version "0.16.2"
   resolved "https://github.com/CenterForOpenScience/ember-osf.git#cabfef68e30092021eadcefa598d01ec8d75e4fd"
   dependencies:
