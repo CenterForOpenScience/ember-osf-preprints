@@ -1,0 +1,12 @@
+<div class='choices'>
+    {{#power-select-multiple
+        options=sourcesList
+        placeholder=placeholder
+        selected=selected
+        onchange=(action "changeFilter")
+        as |option|
+    }}
+        {{option}}
+    {{/power-select-multiple}}
+    <div class='donut'></div>
+</div>

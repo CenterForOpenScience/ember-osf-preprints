@@ -1,0 +1,15 @@
+<div class='choices'>
+    {{#if hasBlock}}
+        {{yield}}
+    {{else}}
+        {{#power-select-multiple
+            search=(perform searchElastic)
+            placeholder=placeholder
+            selected=selected
+            onchange=(action "changeFilter")
+            as |option|
+        }}
+            {{option}}
+        {{/power-select-multiple}}
+    {{/if}}
+</div>
