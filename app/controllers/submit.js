@@ -1213,7 +1213,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     },
 
     _failDeletePreprint() {
-        this.get('toast').error(this.get('i18n').t('submit.abandoned_preprint_error'));
+        this.get('toast').error(this.get('i18n').t(
+            'submit.abandoned_preprint_error',
+            {
+                documentType: this.get('currentProvider.documentType'),
+            },
+        ));
     },
 
     _sendStartPreprint() {
@@ -1235,7 +1240,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         // Sets file state to new file, for edit mode.
         this.set('existingState', existingState.NEWFILE);
         this.set('file', null);
-        this.get('toast').info(this.get('i18n').t('submit.preprint_file_uploaded'));
+        this.get('toast').info(this.get('i18n').t('submit.preprint_file_uploaded', {
+            documentType: this.get('currentProvider.documentType'),
+        }));
         this.send('finishUpload');
     },
 
@@ -1251,7 +1258,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             // a separate component will be created under the parentNode.
             this.set('node', parentNode);
         }
-        this.get('toast').error(this.get('i18n').t('submit.error_initiating_preprint'));
+        this.get('toast').error(this.get('i18n').t(
+            'submit.error_initiating_preprint',
+            {
+                documentType: this.get('currentProvider.documentType'),
+            },
+        ));
     },
 
     _setBasicsLicense(license) {

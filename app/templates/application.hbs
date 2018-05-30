@@ -1,4 +1,12 @@
-{{title (if theme.isProvider (if theme.preprintWordInTitle (t 'global.provider_brand' name=theme.provider.name) theme.provider.name) (t 'global.brand')) separator=(t 'application.separator')}}
+{{title (if theme.isProvider
+            (if theme.preprintWordInTitle
+                (t 'global.provider_brand' name=theme.provider.name documentType=theme.provider.documentType)
+                theme.provider.name
+            )
+            (t 'global.brand')
+        )
+        separator=(t 'application.separator')
+}}
 {{head-tags headTags=headTags}}
 
 {{#if theme.isProvider}}
@@ -14,7 +22,7 @@
     </style>
     {{preprint-navbar-branded model=theme.provider}}
 {{else}}
-    {{new-osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login')}}
+    {{new-osf-navbar signupUrl=theme.signupUrl loginAction=(action 'login') documentType=theme.provider.content.documentType}}
 {{/if}}
 
 {{maintenance-banner}}
