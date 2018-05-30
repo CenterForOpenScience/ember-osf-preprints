@@ -25,9 +25,10 @@ export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticate
     }),
     model() {
         // Store the empty preprint to be created on the model hook for page. Node will be fetched
-        //  internally during submission process.
+        // internally during submission process.
         return this.get('store').createRecord('preprint', {
             subjects: [],
+            title: '',
         });
     },
     afterModel() {
