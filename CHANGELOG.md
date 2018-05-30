@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+### Added
+- Unified solution for preprint words
+
 ### Changed
 - Styling and format of the branded navbar to match current styling in ember-osf
 
@@ -127,7 +130,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Updated `meta.total` to `meta.total_pages` in preprint-form-authors component
 - Modified `preprint-status-banner` component for review action rename.
 - Update to ember-osf@0.13.0
-- Update preprints to work with a new unified version of ember-osf (works with both preprints and reviews apps)
 
 ### Fixed
 - component integration tests to work in Firefox

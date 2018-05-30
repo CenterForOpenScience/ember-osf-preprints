@@ -248,7 +248,7 @@ export default {
         abandon_preprint_confirmation: 'Are you sure you want to abandon changes to this preprint?',
         preprint_file_uploaded: '{{documentType.singularCapitalized}} file uploaded!',
         preprint_author_added: '{{documentType.singularCapitalized}} author added!',
-        preprint_author_removed: '{{doucmentType.singularCapitalized}} author removed!',
+        preprint_author_removed: '{{documentType.singularCapitalized}} author removed!',
         preprint_unregistered_author_added: '{{documentType.singularCaptalized}} unregistered author added!',
         error_adding_author: 'Could not add author. Please try again.',
         error_adding_unregistered_author: 'Could not add unregistered author. Please try again.',
