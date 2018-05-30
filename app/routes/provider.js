@@ -28,6 +28,10 @@ export default Route.extend({
         ).then(this._getThemeId.bind(this)).catch(this._getPageNotFound.bind(this));
     },
 
+    setupController(controller) {
+        return this._super(...arguments);
+    },
+
     actions: {
         error(error) {
             console.error(error); // eslint-disable-line no-console

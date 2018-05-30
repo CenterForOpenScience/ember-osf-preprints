@@ -35,6 +35,7 @@ export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticate
     },
     setupController(controller, model) {
         this.setupSubmitController(controller, model);
+        controller._setCurrentProvider();
         return this._super(...arguments);
     },
     isPageDirty() {
