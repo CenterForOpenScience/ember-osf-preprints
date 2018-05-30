@@ -78,9 +78,9 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-05-29T14:01:28Z":
-  version "0.16.2"
-  resolved "https://github.com/CenterForOpenScience/ember-osf.git#cabfef68e30092021eadcefa598d01ec8d75e4fd"
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-05-30T18:58:56Z":
+  version "0.17.0"
+  resolved "https://github.com/CenterForOpenScience/ember-osf.git#2432efc3943a36b944fc2ad6946dc075ee198ab1"
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
@@ -100,6 +100,7 @@
     ember-concurrency "^0.8.12"
     ember-cp-validations "^3.5.0"
     ember-diff-attrs "^0.2.0"
+    ember-feature-flags "^5.0.0"
     ember-get-config "0.2.1"
     ember-i18n "5.0.1"
     ember-metrics "^0.12.1"
@@ -3883,6 +3884,12 @@ ember-faker@^1.1.1:
     ember-cli-babel "^6.4.1"
     ember-cli-node-assets "^0.2.2"
     faker "^3.0.0"
+
+ember-feature-flags@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/ember-feature-flags/-/ember-feature-flags-5.0.0.tgz#630d2876f5341b456db89996f35c0b109a0e27ec"
+  dependencies:
+    ember-cli-babel "^6.6.0"
 
 "ember-fetch@^2.1.0 || ^3.0.0":
   version "3.4.5"
