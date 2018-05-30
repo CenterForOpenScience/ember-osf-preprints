@@ -147,12 +147,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     toast: service('toast'),
     panelActions: service('panelActions'),
 
-    init() {
-        this.get('store')
-            .findAll('preprint-provider', { reload: true })
-            .then(this._getProviders.bind(this));
-    },
-
     _existingState: existingState,
     // Data for project picker; tracked internally on load
     user: null,
@@ -1069,6 +1063,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         },
     },
 
+    _setCurrentProvider() {
+        this.get('store')
+            .findAll('preprint-provider', { reload: true })
+            .then(this._getProviders.bind(this));
+    },
     _resaveModel() {
         const model = this.get('model');
         const preprintId = model.get('id');
