@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 import { merge } from '@ember/polyfills';
 import { run } from '@ember/runloop';
 import Controller from '@ember/controller';
+import { isEmpty } from '@ember/utils';
 
 import config from 'ember-get-config';
 import { validator, buildValidations } from 'ember-cp-validations';
@@ -308,7 +309,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     // Does the pending title differ from the title already saved?
     titleChanged: computed('model.title', 'title', function() {
-        return this.get('model.title') !== this.get('title');
+        const title = this.get('title');
+        const modelTitle = this.get('model.title');
+        if (isEmpty(title) && isEmpty(modelTitle)) {
+            return false;
+        }
+        return modelTitle !== title;
     }),
 
     // Pending abstract
