@@ -4,6 +4,6 @@ import { module, test } from 'qunit';
 module('Unit | Helper | safe markup');
 
 test('marks string as safe for unescaped output', function(assert) {
-  let result = safeMarkup(['<div>myString</div>']);
-  assert.equal(result.toString(), '<div>myString</div>');
+    const result = safeMarkup(['<div>myString</div>']);
+    assert.equal(result.toString(), '<div>myString</div>');
 });

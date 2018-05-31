@@ -1,5 +1,4 @@
-import Ember from 'ember';
-
+import Component from '@ember/component';
 import { validator, buildValidations } from 'ember-cp-validations';
 
 const TitleValidation = buildValidations({
@@ -10,8 +9,8 @@ const TitleValidation = buildValidations({
             validator('length', {
                 // minimum length for title?
                 max: 200,
-            })
-        ]
+            }),
+        ],
     },
 });
 /**
@@ -20,7 +19,9 @@ const TitleValidation = buildValidations({
  */
 
 /**
- * Preprint-title-editor widget - allows you to add a title if none exists, or edit existing title. Adds validation. Will modify title and titleValid.
+ * Preprint-title-editor widget -
+ * allows you to add a title if none exists, or edit existing title.
+ * Adds validation. Will modify title and titleValid.
  *
  * Sample usage:
  * ```handlebars
@@ -33,14 +34,17 @@ const TitleValidation = buildValidations({
  * @class preprint-title-editor
  */
 
-export default Ember.Component.extend(TitleValidation, {
+export default Component.extend(TitleValidation, {
     title: null,
     titlePlaceholder: 'Enter preprint title',
-    isValid: Ember.observer('title', function() {
-        if (this.get('title') && this.get('validations.isValid')) {
-            this.set('titleValid', true);
-        } else {
-            this.set('titleValid', false);
-        }
-    })
+
+    actions: {
+        isValid() {
+            if (this.get('title') && this.get('validations.isValid')) {
+                this.set('titleValid', true);
+            } else {
+                this.set('titleValid', false);
+            }
+        },
+    },
 });

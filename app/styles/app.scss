@@ -6,8 +6,8 @@
 @import 'authors';
 @import 'validated-input';
 @import 'hint';
-@import 'daterangepicker.scss';
 @import 'error-page.scss';
+@import 'daterangepicker.scss';
 
 /* GLOBAL to PREPRINTS, these may be used in multiple pages */
 .pointer {
@@ -1336,17 +1336,16 @@ nav.preprint-navbar {
         height: $nav-height;
     }
 
-    .dropdown > a {
-        padding-top: 12px;
-        padding-bottom: 12px;
-    }
-
     .dropdown-menu {
         color: white;
     }
 
     .sign-in {
         padding-top: 8px;
+    }
+
+    .navbar-title {
+        padding-right: 50px;
     }
 }
 

@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { inject as service } from '@ember/service';
 import OSFAgnosticAuthControllerMixin from 'ember-osf/mixins/osf-agnostic-auth-controller';
 import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
@@ -9,7 +10,8 @@ import config from 'ember-get-config';
  */
 
 /**
- * Preprint navbar with branding for a specific provider - use in application.hbs to drop preprint-navbar-branded onto every page
+ * Preprint navbar with branding for a specific provider -
+ * use in application.hbs to drop preprint-navbar-branded onto every page
  *
  * Sample usage:
  * ```handlebars
@@ -20,10 +22,10 @@ import config from 'ember-get-config';
  * ```
  * @class preprint-navbar-branded
  */
-export default Ember.Component.extend(OSFAgnosticAuthControllerMixin, Analytics, {
-    session: Ember.inject.service(),
-    theme: Ember.inject.service(),
-    currentUser: Ember.inject.service(),
+export default Component.extend(OSFAgnosticAuthControllerMixin, Analytics, {
+    session: service(),
+    theme: service(),
+    currentUser: service(),
 
     tagName: 'nav',
     classNames: ['navbar', 'branded-navbar', 'preprint-navbar'],

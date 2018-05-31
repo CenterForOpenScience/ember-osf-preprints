@@ -2,7 +2,7 @@
     <ul>
         {{#each topLevelItem as |item|}}
             <li>
-                <span class="pointer m-r-xs {{if item.showChildren 'taxonomy-show-children'}}" {{action 'expand' item}}>
+                <span role="button" class="pointer m-r-xs {{if item.showChildren 'taxonomy-show-children'}}" {{action 'expand' item}}>
                     <i class="taxonomy-caret fa {{if item.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
                 </span>
                 <label class="taxonomy-checkbox">
@@ -15,7 +15,7 @@
                     {{#each item.children as |child|}}
                         <li>
                             {{# if child.childCount }}
-                                <span class="pointer m-r-xs {{if item.showChildren 'taxonomy-show-children'}}" {{action 'expand' child}}>
+                                <span role="button" class="pointer m-r-xs {{if item.showChildren 'taxonomy-show-children'}}" {{action 'expand' child}}>
                                     <i class="taxonomy-caret fa {{if child.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
                                 </span>
                             {{else}}

@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Mixin from '@ember/object/mixin';
 
 /**
  * @module ember-preprints
@@ -6,45 +7,36 @@ import Ember from 'ember';
  */
 
 /**
- * The submit controller/template is used to handle both Add and Edit modes for a preprint.  Contains
- * the setupController items necessary for both Add and Edit Modes.
+ * The submit controller/template is used to handle both Add and
+ * Edit modes for a preprint.  Contains the setupController items
+ * necessary for both Add and Edit Modes.
  *
  * @class SetupSubmitControllerMixin
  */
 
-export default Ember.Mixin.create({
-    theme: Ember.inject.service(),
-    panelActions: Ember.inject.service('panelActions'),
+export default Mixin.create({
+    theme: service(),
+    panelActions: service('panelActions'),
+
+    controller: null,
 
     setupSubmitController(controller, model) {
-        //setupController method that will be run for both Add and Edit modes for submit form.
-        if (controller.get('model.isLoaded'))
-            controller.clearFields();
+        // setupController method that will be run for both Add and Edit modes for submit form.
+        this.set('controller', controller);
+
+        if (controller.get('model.isLoaded')) { controller.clearFields(); }
         controller.set('editMode', this.get('editMode'));
 
-        // Fetch values required to operate the page: user and userNodes
+        this.get('store').findAll('preprint-provider').then(this._setProviders.bind(this));
 
-        this.get('store').findAll('preprint-provider')
-            .then((providers) => {
-                controller.set('providers', providers);
-            }
-        );
-        this.get('theme.provider').then(provider => {
-            provider.queryHasMany('licensesAcceptable', {'page[size]': 20}).then(licenses => {
-                controller.set('availableLicenses', licenses);
-            });
-        });
-        this.get('currentUser').load()
-            .then((user) => {
-                controller.set('user', user);
-                return user;
-            });
+        this.get('theme.provider').then(this._getAvailableLicenses.bind(this));
+
+        this.get('currentUser').load().then(this._setCurrentUser.bind(this));
 
         // If editMode, these initial fields are set to pre-populate form with preprint/node data.
         if (this.get('editMode')) {
             this.loadEditModeDefaults(controller, model, this.get('node'));
         }
-
     },
     // This function helps prepopulate all the preprint fields in Edit mode.
     loadEditModeDefaults(controller, model, node) {
@@ -54,10 +46,34 @@ export default Ember.Mixin.create({
         controller.set('title', model.get('title'));
         controller.set('nodeLocked', true);
         controller.set('titleValid', true);
-        model.get('primaryFile').then((file) => {
-            controller.set('selectedFile', file);
-        });
+        model.get('primaryFile').then(this._setSelectedFile.bind(this));
         this.get('panelActions').close('Upload');
         this.get('panelActions').open('Submit');
-    }
+    },
+
+    _setProviders(providers) {
+        const controller = this.get('controller');
+        controller.set('providers', providers);
+    },
+
+    _getAvailableLicenses(provider) {
+        provider.queryHasMany('licensesAcceptable', { 'page[size]': 20 })
+            .then(this._setAvailableLicenses.bind(this));
+    },
+
+    _setAvailableLicenses(licenses) {
+        const controller = this.get('controller');
+        controller.set('availableLicenses', licenses);
+    },
+
+    _setCurrentUser(user) {
+        const controller = this.get('controller');
+        controller.set('user', user);
+        return user;
+    },
+
+    _setSelectedFile(file) {
+        const controller = this.get('controller');
+        controller.set('selectedFile', file);
+    },
 });

@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+
 import { permissionSelector } from 'ember-osf/const/permissions';
 /**
  * @module ember-preprints
@@ -13,13 +14,13 @@ import { permissionSelector } from 'ember-osf/const/permissions';
  * @param {String} permission Short form of permission
  * @return {String} permission Long form of permission
  */
-export function permissionMap(params/*, hash*/) {
-    var map = {};
-    for (var i = 0; i < permissionSelector.length; i++) {
+export function permissionMap(params/* , hash */) {
+    const map = {};
+    for (let i = 0; i < permissionSelector.length; i++) {
         map[permissionSelector[i].value] = permissionSelector[i].text;
     }
-    var permission = params[0];
+    const permission = params[0];
     return map[permission];
 }
 
-export default Ember.Helper.helper(permissionMap);
+export default helper(permissionMap);
