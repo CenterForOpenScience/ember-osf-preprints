@@ -1,9 +1,9 @@
-{{#bs-modal open=isOpen title=(t title) as |modal|}}
+{{#bs-modal open=isOpen title=(t title documentType=documentType) as |modal|}}
     {{#modal.header}}
-        <h3 class="modal-title">{{t title}}</h3>
+        <h3 class="modal-title">{{t title documentType=documentType}}</h3>
     {{/modal.header}}
     {{#modal.body}}
-        {{t "components.confirm-share-preprint.body"}}
+        {{t "components.confirm-share-preprint.body" documentType=documentType}}
     {{/modal.body}}
     {{#modal.footer}}
         <div align="right">

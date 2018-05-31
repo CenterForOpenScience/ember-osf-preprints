@@ -111,7 +111,7 @@ test('Initial properties', function (assert) {
         file: null,
         selectedFile: null,
         'contributors.length': 0,
-        title: null,
+        title: '',
         nodeLocked: false,
         'searchResults.length': 0,
         savingPreprint: false,
@@ -863,7 +863,7 @@ test('discardUploadChanges', function(assert) {
         ctrl.set('model', preprint);
         assert.equal(ctrl.get('file'), null);
         assert.equal(ctrl.get('selectedFile'), null);
-        assert.equal(ctrl.get('title'), null);
+        assert.equal(ctrl.get('title'), '');
         assert.equal(ctrl.get('titleValid'), null);
         ctrl.send('discardUploadChanges');
         assert.equal(ctrl.get('file'), null);

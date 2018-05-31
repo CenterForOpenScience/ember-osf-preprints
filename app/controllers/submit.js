@@ -147,12 +147,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     toast: service('toast'),
     panelActions: service('panelActions'),
 
-    init() {
-        this.get('store')
-            .findAll('preprint-provider', { reload: true })
-            .then(this._getProviders.bind(this));
-    },
-
     _existingState: existingState,
     // Data for project picker; tracked internally on load
     user: null,
@@ -170,7 +164,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
     selectedFile: null,
     // File that will be the preprint (already uploaded to node or selected from existing node)
-    title: null,
+    title: '',
     // Preprint title
     nodeLocked: false,
     // the node is locked.  Is True on Edit.
@@ -216,6 +210,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     currentProvider: undefined,
     // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form
     selectedProvider: undefined,
+    isOSFPreprints: Ember.computed('selectedProvider', function(){
+        return this.get('selectedProvider') &&  this.get('selectedProvider.name') === 'Open Science Framework';
+    }),
     providerSaved: false,
     preprintSaved: false,
 
@@ -293,7 +290,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // True if fields have been changed
     hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
         const preprintStarted = this.get('theme.isProvider') ? this.get('hasFile') : this.get('providerSaved');
-        return !this.get('preprintSaved') && ((this.get('isAddingPreprint') && preprintStarted) || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged'));
+        const fieldsChanged = this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged');
+        return !this.get('preprintSaved') && ((this.get('isAddingPreprint') && preprintStarted) || fieldsChanged);
     }),
 
     // Relevant in Add mode - flag prevents users from sending multiple requests to server
@@ -317,7 +315,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     // Pending abstract
-
     basicsAbstract: computed('model.description', function() {
         return this.get('model.description') || null;
     }),
@@ -1008,33 +1005,18 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.toggleProperty('shareButtonDisabled');
             model.set('provider', this.get('currentProvider'));
 
-            let submitAction = null;
-            if (this.get('moderationType')) {
-                submitAction = this.get('store').createRecord('review-action', {
-                    actionTrigger: 'submit',
-                    target: this.get('model'),
-                });
-                this.set('submitAction', submitAction);
-            } else {
+            const isModerated = this.get('moderationType');
+            if (!isModerated) {
                 model.set('isPublished', true);
             }
             node.set('public', true);
-
-            this.set('node', node);
             this.set('model', model);
+            this.set('node', node);
 
-            let saveChanges = null;
-            if (submitAction) {
-                saveChanges = model.save()
-                    .then(this._saveNode.bind(this))
-                    .then(this._submitAction.bind(this));
-            } else {
-                saveChanges = model.save().then(this._saveNode.bind(this));
-            }
-
-            return saveChanges
-                .then(this._saveChanges.bind(this))
-                .catch(this._saveChangesError.bind(this));
+            return model.save()
+                .then(() => node.save())
+                .then(this._resaveModel.bind(this))
+                .catch(this._failSaveModel.bind(this));
         },
         cancel() {
             this.transitionToRoute('index');
@@ -1082,6 +1064,63 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('selectedProvider', this.get('currentProvider'));
             this.set('providerChanged', false);
         },
+    },
+
+    _setCurrentProvider() {
+        this.get('store')
+            .findAll('preprint-provider', { reload: true })
+            .then(this._getProviders.bind(this));
+    },
+    _resaveModel() {
+        const model = this.get('model');
+        const preprintId = model.get('id');
+        // Fix for IN-271: Terrible kluge to reattach periodically lost primary files
+        // that is likely due to a backend race condition in celery tasks.
+        // The OSF api does not return null for empty to one relationships
+        // which causes ember to not nullify the primaryFile relationship when it gets
+        // disconnected. So the model needs to be unloaded, reloaded, reassigned, and
+        // saved. This resaving of the preprint should be removed
+        // (likely after node-preprint divorce)
+        model.unloadRecord();
+        return this.get('store').findRecord('preprint', preprintId).then(this._setPrimaryFile.bind(this));
+    },
+
+    _setPrimaryFile(preprint) {
+        if (!this.get('editMode')) {
+            preprint.set('primaryFile', this.get('selectedFile'));
+            this.set('model', preprint);
+        }
+        return preprint.save().then(this._savePreprint.bind(this));
+    },
+
+    _savePreprint() {
+        const isModerated = this.get('moderationType');
+        const preprint = this.get('model');
+
+        this.set('preprintSaved', true);
+        if (isModerated) {
+            const submitAction = this.get('store').createRecord('review-action', {
+                actionTrigger: 'submit',
+                target: preprint,
+            });
+            submitAction.save();
+        }
+        let useProviderRoute = false;
+        if (this.get('theme.isProvider')) {
+            useProviderRoute = this.get('theme.isSubRoute');
+        } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
+            window.location.replace(`${this.get('currentProvider.domain')}${preprint.id}`);
+        } else if (this.get('currentProvider.id') !== 'osf') {
+            useProviderRoute = true;
+        }
+        this.transitionToRoute(`${useProviderRoute ? 'provider.' : ''}content`, preprint);
+    },
+
+    _failSaveModel() {
+        this.toggleProperty('shareButtonDisabled');
+        return this.get('toast')
+            .error(this.get('i18n')
+                .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
     },
 
     _getProviders(providers) {
@@ -1176,7 +1215,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     },
 
     _failDeletePreprint() {
-        this.get('toast').error(this.get('i18n').t('submit.abandoned_preprint_error'));
+        this.get('toast').error(this.get('i18n').t(
+            'submit.abandoned_preprint_error',
+            {
+                documentType: this.get('currentProvider.documentType'),
+            },
+        ));
     },
 
     _sendStartPreprint() {
@@ -1198,7 +1242,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         // Sets file state to new file, for edit mode.
         this.set('existingState', existingState.NEWFILE);
         this.set('file', null);
-        this.get('toast').info(this.get('i18n').t('submit.preprint_file_uploaded'));
+        this.get('toast').info(this.get('i18n').t('submit.preprint_file_uploaded', {
+            documentType: this.get('currentProvider.documentType'),
+        }));
         this.send('finishUpload');
     },
 
@@ -1214,7 +1260,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             // a separate component will be created under the parentNode.
             this.set('node', parentNode);
         }
-        this.get('toast').error(this.get('i18n').t('submit.error_initiating_preprint'));
+        this.get('toast').error(this.get('i18n').t(
+            'submit.error_initiating_preprint',
+            {
+                documentType: this.get('currentProvider.documentType'),
+            },
+        ));
     },
 
     _setBasicsLicense(license) {
@@ -1265,12 +1316,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     _setContributorSearchResultsError() {
         this.get('toast').error(this.get('i18n').t('submit.search_contributors_error'));
         this.highlightSuccessOrFailure('author-search-box', this, 'error');
-    },
-
-    _saveNode() {
-        const node = this.get('node');
-
-        node.save();
     },
 
     _saveModel() {
@@ -1346,7 +1391,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             file: null,
             selectedFile: null,
             contributors: A(),
-            title: null,
+            title: '',
             nodeLocked: false, // Will be set to true if edit?
             searchResults: [],
             savingPreprint: false,

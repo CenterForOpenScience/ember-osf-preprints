@@ -46,7 +46,7 @@
                     {{t "global.no_results_found"}}
                 {{/if}}
                 {{#if (gt pages 1)}}
-                    <div class="pull-right text-right">                        
+                    <div class="pull-right text-right">
                         {{pagination-pager count=pages current=currentPage change=(action 'pageChanged')}}
                     </div>
                 {{/if}}
@@ -54,7 +54,7 @@
             {{#if (eq addState 'unregisteredView')}}
                 <h3> {{t "components.preprint-form-authors.add_email"}} </h3>
                 <div class="user-validation" id="add-unregistered-contributor-form">
-                    {{unregistered-contributor-form editMode=editMode resetfindContributorsView=(action 'resetfindContributorsView') addUnregisteredContributor=(action 'addUnregisteredContributor')}}
+                    {{unregistered-contributor-form documentType=documentType editMode=editMode resetfindContributorsView=(action 'resetfindContributorsView') addUnregisteredContributor=(action 'addUnregisteredContributor')}}
                 </div>
             {{/if}}
         {{/if}}

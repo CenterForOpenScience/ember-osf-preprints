@@ -1335,7 +1335,7 @@ nav.preprint-navbar {
     .nav-user-dropdown {
         height: $nav-height;
     }
-    
+
     .dropdown-menu {
         color: white;
     }
@@ -1511,4 +1511,15 @@ img.current-provider {
 
 #providerCarousel .carousel-control {
     color: black;
+}
+
+@media (min-width: 768px) {
+    .dl-description dd {
+        margin-left: 170px;
+    }
+}
+
+.dl-description dt {
+    overflow: inherit;
+    text-overflow: inherit;
 }
