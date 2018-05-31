@@ -23,7 +23,16 @@
                                 {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=(and providerSaved (not uploadValid)) currentProvider=currentProvider valid=(not providerChanged)}}
                                 {{#preprint-form-body}}
                                     {{provider-carousel itemsPerSlide=10 providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider')}}
-
+                                    {{#if selectedProvider}}
+                                        <div class="row">
+                                            <div style="padding: 25px 85px 15px;" class="col-md-12">
+                                                <dl class="dl-horizontal dl-description">
+                                                    <dt>{{if isOSFPreprints 'OSF Preprints' selectedProvider.name}}:</dt>
+                                                    <dd>{{sanitize-html selectedProvider.description}}</dd>
+                                                </dl>
+                                            </div>
+                                        </div>
+                                    {{/if}}
                                     {{#unless uploadValid}}
                                         <div class="row">
                                             <div class="col-md-12">

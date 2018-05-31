@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Unified solution for preprint words
 - use of ember-osf `scheduled-banner` component
+- Selected provider description in the provider carousel
 
 ### Changed
 - Styling and format of the branded navbar to match current styling in ember-osf

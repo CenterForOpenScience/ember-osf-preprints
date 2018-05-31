@@ -210,6 +210,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     currentProvider: undefined,
     // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form
     selectedProvider: undefined,
+    isOSFPreprints: Ember.computed('selectedProvider', function(){
+        return this.get('selectedProvider') &&  this.get('selectedProvider.name') === 'Open Science Framework';
+    }),
     providerSaved: false,
     preprintSaved: false,
 
