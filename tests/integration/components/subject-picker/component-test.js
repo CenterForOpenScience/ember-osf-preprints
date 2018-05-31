@@ -2,12 +2,11 @@ import { moduleForComponent, skip } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('subject-picker', 'Integration | Component | subject picker', {
-  integration: true
+    integration: true,
 });
 
 // TODO wait for ability to populate from ember data store
 skip('it renders', function(assert) {
-
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.on('myAction', function(val) { ... });
 

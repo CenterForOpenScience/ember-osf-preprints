@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
 
 /**
  * @module ember-preprints
@@ -14,10 +14,10 @@ import Ember from 'ember';
  * @param {Object} currentUser Current logged in user.
  * @return {Boolean} Is this contributor the current user?
  */
-export function contributorIsCurrentUser(params/*, hash*/) {
-    var [contributor, currentUser] = params;
-    var currentUserId = currentUser.get('currentUserId') || currentUser.get('id');
+export function contributorIsCurrentUser(params/* , hash */) {
+    const [contributor, currentUser] = params;
+    const currentUserId = currentUser.get('currentUserId') || currentUser.get('id');
     return contributor.get('userId') === currentUserId;
 }
 
-export default Ember.Helper.helper(contributorIsCurrentUser);
+export default helper(contributorIsCurrentUser);

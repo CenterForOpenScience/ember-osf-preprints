@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+
 /**
  * @module ember-preprints
  * @submodule helpers
@@ -13,9 +14,9 @@ import Ember from 'ember';
  * @param {Integer} stopIndex
  * @return {Array} sliced array
  */
-export function sliceArray(params/*, hash*/) {
-    var [array, start, finish] = params;
+export function sliceArray(params/* , hash */) {
+    const [array, start, finish] = params;
     return array.slice(start, finish);
 }
 
-export default Ember.Helper.helper(sliceArray);
+export default helper(sliceArray);

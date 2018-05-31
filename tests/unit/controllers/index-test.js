@@ -5,8 +5,8 @@ moduleFor('controller:index', 'Unit | Controller | index', {
     needs: [
         'service:metrics',
         'service:session',
-        'service:theme'
-    ]
+        'service:theme',
+    ],
 });
 
 

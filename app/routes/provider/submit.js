@@ -5,7 +5,7 @@ route.reopen({
     renderTemplate(controller, model) {
         this.render('submit', {
             controller,
-            model
+            model,
         });
     },
 });

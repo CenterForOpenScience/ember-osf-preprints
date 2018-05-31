@@ -4,10 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-
-## [Unreleased]
-## Added
+## Unreleased
+### Added
+- Unified solution for preprint words
 - Selected provider description in the provider carousel
+
+### Changed
+- Styling and format of the branded navbar to match current styling in ember-osf
 
 ## [0.118.5] - 2018-04-27
 ### Changed
@@ -26,6 +29,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Restricted width and centered preprint provider logos on index page
+- Update preprints to work with a new unified version of ember-osf (works with both preprints and reviews apps)
+- Update preprints to use ember-cli@2.18
 
 ## [0.118.2] - 2018-03-08
 ### Removed
