@@ -168,7 +168,12 @@ export default CpPanelBodyComponent.extend(Analytics, {
                     this.set('addState', 'searchView');
                     this.set('fullName', '');
                     this.set('email', '');
-                    this.get('toast').success(this.get('i18n').t('submit.preprint_unregistered_author_added'));
+                    this.get('toast').success(this.get('i18n').t(
+                        'submit.preprint_unregistered_author_added',
+                        {
+                            documentType: this.get('documentType'),
+                        },
+                    ));
                     this.highlightSuccessOrFailure(contributor.id, this, 'success');
                 }, (error) => {
                     if (error.errors[0] && error.errors[0].detail && error.errors[0].detail.indexOf('is already a contributor') > -1) {
@@ -323,7 +328,9 @@ export default CpPanelBodyComponent.extend(Analytics, {
     _addContributor(res) {
         this.toggleAuthorModification();
         this.get('contributors').pushObject(res);
-        this.get('toast').success(this.get('i18n').t('submit.preprint_author_added'));
+        this.get('toast').success(this.get('i18n').t('submit.preprint_author_added', {
+            documentType: this.get('documentType'),
+        }));
         this.highlightSuccessOrFailure(res.id, this, 'success');
     },
 
@@ -345,7 +352,12 @@ export default CpPanelBodyComponent.extend(Analytics, {
         this.toggleAuthorModification();
         this.removedSelfAsAdmin(contributor, contributor.get('permission'));
         this.get('contributors').removeObject(contributor);
-        this.get('toast').success(this.get('i18n').t('submit.preprint_author_removed'));
+        this.get('toast').success(this.get('i18n').t(
+            'submit.preprint_author_removed',
+            {
+                documentType: this.get('documentType'),
+            },
+        ));
     },
 
     _failRemoveContributor() {

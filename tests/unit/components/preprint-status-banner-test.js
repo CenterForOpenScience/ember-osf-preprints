@@ -109,6 +109,9 @@ test('bannerContent computed property', function(assert) {
 
         const provider = this.store.createRecord('preprint-provider', {
             reviewsWorkflow: 'pre-moderation',
+            documentType: {
+                singular: 'faker',
+            },
         });
 
         const submission = this.store.createRecord('preprint', { node, provider });

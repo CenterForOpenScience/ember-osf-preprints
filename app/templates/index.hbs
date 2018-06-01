@@ -1,4 +1,4 @@
-{{donate-banner}}
+{{scheduled-banner}}
 
 {{!INDEX}}
 <div class="preprints-page">
@@ -39,7 +39,7 @@
                 <div class="row">
                     <div class="text-center col-xs-12">
                         <p class="lead">{{t 'index.header.or'}}</p>
-                        <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>{{t "global.add_preprint"}}</a>
+                        <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>{{t "global.add_preprint" documentType=theme.provider.content.documentType}}</a>
                         <div class="m-t-md">{{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
                     </div>
                 </div>
@@ -89,8 +89,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
-                        <h2>{{t "index.services.top.heading"}}</h2>
-                        <p class="m-b-lg">{{t "index.services.top.paragraph"}}</p>
+                        <h2>{{t "index.services.top.heading" documentType=theme.provider.content.documentType}}</h2>
+                        <p class="m-b-lg">{{t "index.services.top.paragraph" documentType=theme.provider.content.documentType}}</p>
                     </div>
                 </div>
                 <div class="row p-v-md">
@@ -105,7 +105,7 @@
                 <div class="row p-v-md">
                     <div class="col-md-12 text-center">
                         <p class="lead">
-                            {{t "index.services.bottom.p1"}}
+                            {{t "index.services.bottom.p1" documentType=theme.provider.content.documentType}}
                             <div class="p-t-sm">
                                 {{t "index.services.bottom.div.line1"}}
                                 <a class="source_code_link" href="https://github.com/CenterForOpenScience/ember-preprints"

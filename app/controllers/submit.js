@@ -147,12 +147,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     toast: service('toast'),
     panelActions: service('panelActions'),
 
-    init() {
-        this.get('store')
-            .findAll('preprint-provider', { reload: true })
-            .then(this._getProviders.bind(this));
-    },
-
     _existingState: existingState,
     // Data for project picker; tracked internally on load
     user: null,
@@ -170,7 +164,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
     selectedFile: null,
     // File that will be the preprint (already uploaded to node or selected from existing node)
-    title: null,
+    title: '',
     // Preprint title
     nodeLocked: false,
     // the node is locked.  Is True on Edit.
@@ -216,6 +210,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     currentProvider: undefined,
     // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form
     selectedProvider: undefined,
+    isOSFPreprints: Ember.computed('selectedProvider', function(){
+        return this.get('selectedProvider') &&  this.get('selectedProvider.name') === 'Open Science Framework';
+    }),
     providerSaved: false,
     preprintSaved: false,
 
@@ -293,7 +290,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // True if fields have been changed
     hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
         const preprintStarted = this.get('theme.isProvider') ? this.get('hasFile') : this.get('providerSaved');
-        return !this.get('preprintSaved') && ((this.get('isAddingPreprint') && preprintStarted) || this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged'));
+        const fieldsChanged = this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged');
+        return !this.get('preprintSaved') && ((this.get('isAddingPreprint') && preprintStarted) || fieldsChanged);
     }),
 
     // Relevant in Add mode - flag prevents users from sending multiple requests to server
@@ -317,7 +315,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     // Pending abstract
-
     basicsAbstract: computed('model.description', function() {
         return this.get('model.description') || null;
     }),
@@ -1069,6 +1066,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         },
     },
 
+    _setCurrentProvider() {
+        this.get('store')
+            .findAll('preprint-provider', { reload: true })
+            .then(this._getProviders.bind(this));
+    },
     _resaveModel() {
         const model = this.get('model');
         const preprintId = model.get('id');
@@ -1213,7 +1215,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     },
 
     _failDeletePreprint() {
-        this.get('toast').error(this.get('i18n').t('submit.abandoned_preprint_error'));
+        this.get('toast').error(this.get('i18n').t(
+            'submit.abandoned_preprint_error',
+            {
+                documentType: this.get('currentProvider.documentType'),
+            },
+        ));
     },
 
     _sendStartPreprint() {
@@ -1235,7 +1242,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         // Sets file state to new file, for edit mode.
         this.set('existingState', existingState.NEWFILE);
         this.set('file', null);
-        this.get('toast').info(this.get('i18n').t('submit.preprint_file_uploaded'));
+        this.get('toast').info(this.get('i18n').t('submit.preprint_file_uploaded', {
+            documentType: this.get('currentProvider.documentType'),
+        }));
         this.send('finishUpload');
     },
 
@@ -1251,7 +1260,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             // a separate component will be created under the parentNode.
             this.set('node', parentNode);
         }
-        this.get('toast').error(this.get('i18n').t('submit.error_initiating_preprint'));
+        this.get('toast').error(this.get('i18n').t(
+            'submit.error_initiating_preprint',
+            {
+                documentType: this.get('currentProvider.documentType'),
+            },
+        ));
     },
 
     _setBasicsLicense(license) {
@@ -1377,7 +1391,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             file: null,
             selectedFile: null,
             contributors: A(),
-            title: null,
+            title: '',
             nodeLocked: false, // Will be set to true if edit?
             searchResults: [],
             savingPreprint: false,
