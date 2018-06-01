@@ -20,7 +20,16 @@ export default Route.extend(Analytics, ResetScrollMixin, {
     model() {
         return this
             .get('store')
-            .findAll('preprint-provider', { reload: true });
+            .query('preprint-provider', { reload: true }).then((results) => {
+                return {
+                    preprintProviders: results,
+                    meta: results.get('meta'),
+                };
+            });
+    },
+    setupController(controller, { preprintProviders, meta }) {
+        this._super(controller, preprintProviders);
+        controller.set('meta', meta);
     },
     actions: {
         willTransition() {
