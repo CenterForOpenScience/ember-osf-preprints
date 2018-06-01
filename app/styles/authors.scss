@@ -21,6 +21,7 @@
     width: 110px;
     display: inline;
 }
+
 .vert-align {
     padding-top: 4px;
     margin-top: 0;
@@ -40,7 +41,7 @@
 // More room for name when single column
 @media (max-width: 992px) {
     .vert-align-contributor-name {
-        max-width: 300px;
+        max-width: 200px;
     }
 }
 
@@ -119,8 +120,12 @@ span.sortable-bars:hover {
     }
 }
 
-.contrib-column-header {
-    padding-left: 12px;
+.contrib-perms-header {
+    padding-left: 6px;
+}
+
+.contrib-name-header {
+    padding-left: 58px;
 }
 
 .disabled-checkmark {
@@ -182,15 +187,29 @@ span.sortable-bars:hover {
     padding: 5px;
 }
 
-@media (max-width: 768px) { // Contributors section, XS screen
+@media (max-width: 320px) {
+    #preprint-form-authors {
+        padding: 15px;
+    }
+}
+
+.remove-contributor-xs {
+    padding: 0;
+    border: none;
+    background: none;
+    color: #D9534F;
+}
+
+@media (max-width: 767px) { // Contributors section, XS screen
+
     .current-authors {
         table, td, tr {
-    		display: block;
+    		    display: block;
             width: 100% !important;
-    	}
+    	  }
 
         th {
-            display: None;
+            display: none;
         }
 
         td {
@@ -206,7 +225,7 @@ span.sortable-bars:hover {
 
         .bib-padding {
             text-align: left;
-            padding-bottom: 10px;
+            padding-bottom: 5px;
             padding-right: 30px
         }
 
@@ -234,6 +253,7 @@ span.sortable-bars:hover {
         }
         .vert-align-contributor-name {
             padding-top: 0;
+            width: 120px;
         }
         .contributor-row {
             border-top: 1px solid #EEE !important;
@@ -243,14 +263,12 @@ span.sortable-bars:hover {
         .delete-contrib-button {
             padding-bottom: 10px;
         }
-        .remove-contributor-xs {
-            padding: 0;
-            border: none;
-            background: none;
-            color: #D9534F;
-        }
         .remove-contributor-padding-xs {
             padding-right: 10px;
         }
+    }
+
+    .permission-select {
+        padding-right: 2px;
     }
 }

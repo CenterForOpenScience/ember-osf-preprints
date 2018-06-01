@@ -210,9 +210,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     currentProvider: undefined,
     // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form
     selectedProvider: undefined,
-    isOSFPreprints: Ember.computed('selectedProvider', function(){
-        return this.get('selectedProvider') &&  this.get('selectedProvider.name') === 'Open Science Framework';
-    }),
     providerSaved: false,
     preprintSaved: false,
 
@@ -286,6 +283,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     basicsChanged: computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
 
     moderationType: alias('currentProvider.reviewsWorkflow'),
+
+    isOSFPreprints: computed('selectedProvider', function() {
+        return this.get('selectedProvider') && this.get('selectedProvider.name') === 'Open Science Framework';
+    }),
 
     // True if fields have been changed
     hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {

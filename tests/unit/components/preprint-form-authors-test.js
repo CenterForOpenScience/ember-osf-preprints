@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import { moduleForComponent } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 
@@ -27,6 +27,8 @@ moduleForComponent('preprint-form-authors', 'Unit | Component | preprint form au
         'service:theme',
         'service:session',
         'service:head-tags',
+        'service:metrics',
+        'service:dependencyChecker',
     ],
 });
 
@@ -35,8 +37,8 @@ test('currentContributorIds computed property', function(assert) {
     const component = this.subject();
     this.inject.service('store');
 
-    Ember.run(() => {
-        const contributor = this.store.createRecord('contributor', {userId: 'quedd'});
+    run(() => {
+        const contributor = this.store.createRecord('contributor', { userId: 'quedd' });
 
         const node = this.store.createRecord('node', {
             title: 'test title',
@@ -61,9 +63,9 @@ test('numParentContributors computed property', function(assert) {
     const component = this.subject();
     this.inject.service('store');
 
-    Ember.run(() => {
-        const contributor1 = this.store.createRecord('contributor', {userId: 'quedd'});
-        const contributor2 = this.store.createRecord('contributor', {userId: 'rsffe'});
+    run(() => {
+        const contributor1 = this.store.createRecord('contributor', { userId: 'quedd' });
+        const contributor2 = this.store.createRecord('contributor', { userId: 'rsffe' });
 
 
         const node = this.store.createRecord('node', {
