@@ -17,7 +17,7 @@
                 <li><a href="{{host}}myprojects/" class="" onbeforeclick={{action "click" "link" "Navbar - My OSF Projects"}}>{{t "components.preprint-navbar-branded.my_projects"}}</a></li>
             {{/if}}
             {{#if theme.provider.allowSubmissions}}
-                <li><a href={{concat theme.pathPrefix 'submit'}} onbeforeclick={{action "click" "link" "Navbar - Add preprint"}}>{{t "global.add_preprint" documentType=theme.provider.documentType}}</a></li>
+                <li><a href={{concat theme.pathPrefix 'submit'}} onbeforeclick={{action "click" "link" "Navbar - Add preprint"}}>{{t submitLabel documentType=theme.provider.documentType}}</a></li>
             {{/if}}
             {{#if currentUser.user.canViewReviews}}
                 <li>
