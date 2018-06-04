@@ -1,13 +1,19 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { A } from '@ember/array';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import DS from 'ember-data';
 import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
-import trunc from 'npm:unicode-byte-truncate'
+import trunc from 'npm:unicode-byte-truncate';
+
+const { PromiseArray } = DS;
 
 /**
- * Takes an object with query parameter name as the key and value, or [value, maxLength] as the values.
+ * Takes an object with query parameter name as the key and value,
+ * or [value, maxLength] as the values.
  *
  * @method queryStringify
  * @param queryParams {!object}
@@ -18,34 +24,30 @@ import trunc from 'npm:unicode-byte-truncate'
  */
 function queryStringify(queryParams) {
     const query = [];
-
     // TODO set up ember to transpile Object.entries
-    for (const param in queryParams) {
+    Object.keys(queryParams).forEach((param) => {
         let value = queryParams[param];
         let maxLength = null;
 
         if (Array.isArray(value)) {
-            maxLength = value[1];
-            value = value[0];
+            [value, maxLength] = value;
         }
 
-        if (!value)
-            continue;
+        if (!value) { return; }
 
         value = encodeURIComponent(value);
 
-        if (maxLength)
-            value = value.slice(0, maxLength);
+        if (maxLength) { value = value.slice(0, maxLength); }
 
         query.push(`${param}=${value}`);
-    }
+    });
 
     return query.join('&');
 }
 
 const DATE_LABEL = {
     created: 'content.date_label.created_on',
-    submitted: 'content.date_label.submitted_on'
+    submitted: 'content.date_label.submitted_on',
 };
 const PRE_MODERATION = 'pre-moderation';
 const REJECTED = 'rejected';
@@ -59,43 +61,46 @@ const INITIAL = 'initial';
 /**
  * @class Content Controller
  */
-export default Ember.Controller.extend(Analytics, {
-    theme: Ember.inject.service(),
+export default Controller.extend(Analytics, {
+    theme: service(),
+    currentUser: service(),
+    queryParams: {
+        chosenFile: 'file',
+    },
     fullScreenMFR: false,
-    currentUser: Ember.inject.service(),
     expandedAuthors: true,
     showLicenseText: false,
+    activeFile: null,
+    chosenFile: null,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
-    queryParams: {
-        chosenFile: 'file'
-    },
 
-    dateLabel: Ember.computed('model.provider.reviewsWorkflow', function() {
+    hasTag: computed.bool('model.tags.length'),
+    dateLabel: computed('model.provider.reviewsWorkflow', function() {
         return this.get('model.provider.reviewsWorkflow') === PRE_MODERATION ?
-            DATE_LABEL['submitted'] :
-            DATE_LABEL['created'];
+            DATE_LABEL.submitted :
+            DATE_LABEL.created;
     }),
-    relevantDate: Ember.computed('model.provider.reviewsWorkflow', function() {
+    relevantDate: computed('model.provider.reviewsWorkflow', function() {
         return this.get('model.provider.reviewsWorkflow') ?
             this.get('model.dateLastTransitioned') :
             this.get('model.dateCreated');
     }),
 
-    editButtonLabel: Ember.computed('model.provider.reviewsWorkflow', 'model.reviewsState', function () {
-        const edit_preprint = 'content.project_button.edit_preprint';
-        const edit_resubmit_preprint = 'content.project_button.edit_resubmit_preprint';
+    editButtonLabel: computed('model.{provider.reviewsWorkflow,reviewsState}', function () {
+        const editPreprint = 'content.project_button.edit_preprint';
+        const editResubmitPreprint = 'content.project_button.edit_resubmit_preprint';
         return (
             this.get('model.provider.reviewsWorkflow') === PRE_MODERATION
             && this.get('model.reviewsState') === REJECTED
-        ) ? edit_resubmit_preprint : edit_preprint;
+        ) ? editResubmitPreprint : editPreprint;
     }),
 
-    isAdmin: Ember.computed('node', function() {
+    isAdmin: computed('node', function() {
         // True if the current user has admin permissions for the node that contains the preprint
         return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
 
-    userIsContrib: Ember.computed('authors.[]', 'isAdmin', 'currentUser.currentUserId', function() {
+    userIsContrib: computed('authors.[]', 'isAdmin', 'currentUser.currentUserId', function() {
         if (this.get('isAdmin')) {
             return true;
         } else if (this.get('authors').length) {
@@ -107,7 +112,7 @@ export default Ember.Controller.extend(Analytics, {
         return false;
     }),
 
-    showStatusBanner: Ember.computed('model.{provider.reviewsWorkflow,reviewsState}', 'userIsContrib', 'node.public', function() {
+    showStatusBanner: computed('model.{provider.reviewsWorkflow,reviewsState}', 'userIsContrib', 'node.public', function() {
         return (
             this.get('model.provider.reviewsWorkflow')
             && this.get('node.public')
@@ -116,90 +121,84 @@ export default Ember.Controller.extend(Analytics, {
         );
     }),
 
-    twitterHref: Ember.computed('model', function() {
+    twitterHref: computed('model', function() {
         const queryParams = {
             url: window.location.href,
             text: this.get('model.title'),
-            via: 'OSFramework'
+            via: 'OSFramework',
         };
         return `https://twitter.com/intent/tweet?${queryStringify(queryParams)}`;
     }),
     /* TODO: Update this with new Facebook Share Dialog, but an App ID is required
      * https://developers.facebook.com/docs/sharing/reference/share-dialog
      */
-    facebookHref: Ember.computed('model', function() {
+    facebookHref: computed('model', function() {
         const facebookAppId = this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
         const queryParams = {
             app_id: facebookAppId,
             display: 'popup',
             href: window.location.href,
-            redirect_uri: window.location.href
+            redirect_uri: window.location.href,
         };
 
         return `https://www.facebook.com/dialog/share?${queryStringify(queryParams)}`;
     }),
     // https://developer.linkedin.com/docs/share-on-linkedin
-    linkedinHref: Ember.computed('model', function() {
+    linkedinHref: computed('model', function() {
         const queryParams = {
-            url: [window.location.href, 1024],          // required
-            mini: ['true', 4],                          // required
-            title: trunc(this.get('model.title'), 200),      // optional
+            url: [window.location.href, 1024], // required
+            mini: ['true', 4], // required
+            title: trunc(this.get('model.title'), 200), // optional
             summary: trunc(this.get('model.description'), 256), // optional
-            source: ['Open Science Framework', 200]     // optional
+            source: ['Open Science Framework', 200], // optional
         };
 
         return `https://www.linkedin.com/shareArticle?${queryStringify(queryParams)}`;
     }),
-    emailHref: Ember.computed('model', function() {
+    emailHref: computed('model', function() {
         const queryParams = {
             subject: this.get('model.title'),
-            body: window.location.href
+            body: window.location.href,
         };
 
         return `mailto:?${queryStringify(queryParams)}`;
     }),
     // The currently selected file (defaults to primary)
-    activeFile: null,
-    chosenFile: null,
 
-    disciplineReduced: Ember.computed('model.subjects', function() {
+    disciplineReduced: computed('model.subjects', function() {
         // Preprint disciplines are displayed in collapsed form on content page
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
-
-    hasTag: Ember.computed.bool('model.tags.length'),
-
-    authors: Ember.computed('model', function() {
+    /* eslint-disable ember/named-functions-in-promises */
+    authors: computed('model', function() {
         // Cannot be called until node has loaded!
         const model = this.get('model');
-        const contributors = Ember.A();
-
-        return DS.PromiseArray.create({
+        const contributors = A();
+        return PromiseArray.create({
             promise: loadAll(model, 'contributors', contributors)
-                .then(() => contributors)
+                .then(() => contributors),
         });
     }),
-
-    fullLicenseText: Ember.computed('model.license.text', 'model.licenseRecord', function() {
+    /* eslint-enable ember/named-functions-in-promises */
+    fullLicenseText: computed('model.{license.text,licenseRecord}', function() {
         const text = this.get('model.license.text') || '';
-        const {year = '', copyright_holders = []} = this.get('model.licenseRecord');
-
+        const { year = '', copyright_holders = [] } = this.get('model.licenseRecord'); /* eslint-disable-line camelcase */
         return text
             .replace(/({{year}})/g, year)
             .replace(/({{copyrightHolders}})/g, copyright_holders.join(', '));
     }),
 
-    hasShortenedDescription: Ember.computed('model.description', function() {
+    hasShortenedDescription: computed('model.description', function() {
         const description = this.get('model.description');
 
         return description && description.length > 350;
     }),
 
-    useShortenedDescription: Ember.computed('expandedAbstract', 'hasShortenedDescription', function() {
+    useShortenedDescription: computed('expandedAbstract', 'hasShortenedDescription', function() {
         return this.get('hasShortenedDescription') && !this.get('expandedAbstract');
     }),
 
-    description: Ember.computed('model.description', function() {
+    description: computed('model.description', function() {
         // Get a shortened version of the abstract, but doesn't cut in the middle of word by going
         // to the last space.
         return this.get('model.description')
@@ -210,22 +209,22 @@ export default Ember.Controller.extend(Analytics, {
     actions: {
         toggleLicenseText() {
             const licenseState = this.toggleProperty('showLicenseText') ? 'Expand' : 'Contract';
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Content - License ${licenseState}`
+                    label: `Content - License ${licenseState}`,
                 });
         },
         expandMFR() {
             // State of fullScreenMFR before the transition (what the user perceives as the action)
             const beforeState = this.toggleProperty('fullScreenMFR') ? 'Expand' : 'Contract';
 
-            Ember.get(this, 'metrics')
+            this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Content - MFR ${beforeState}`
+                    label: `Content - MFR ${beforeState}`,
                 });
         },
         expandAbstract() {
@@ -237,28 +236,29 @@ export default Ember.Controller.extend(Analytics, {
 
             this.setProperties({
                 chosenFile: fileItem.get('id'),
-                activeFile: fileItem
+                activeFile: fileItem,
             });
         },
         shareLink(href, category, action, label, extra) {
-            const metrics = Ember.get(this, 'metrics');
+            const metrics = this.get('metrics');
 
-            // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics. For now, we'll use trackEvent.
+            // TODO submit PR to ember-metrics for a trackSocial function for Google Analytics.
+            // For now, we'll use trackEvent.
             metrics.trackEvent({
                 category,
                 action,
                 label,
-                extra
+                extra,
             });
 
-            if (label.includes('email'))
-               return;
+            if (label.includes('email')) { return; }
 
             window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
             return false;
         },
-        // Sends Event to GA/Keen as normal. Sends second event to Keen under "non-contributor-preprint-downloads" collection
-        // to track non contributor preprint downloads specifically.
+        // Sends Event to GA/Keen as normal. Sends second event to Keen under
+        // "non-contributor-preprint-downloads" collection to track non contributor
+        // preprint downloads specifically.
         dualTrackNonContributors(category, label, url, primary) {
             this.send('click', category, label, url); // Sends event to both Google Analytics and Keen.
 
@@ -266,31 +266,35 @@ export default Ember.Controller.extend(Analytics, {
                 download_info: {
                     preprint: {
                         type: 'preprint',
-                        id: this.get('model.id')
+                        id: this.get('model.id'),
                     },
                     file: {
                         id: primary ? this.get('model.primaryFile.id') : this.get('activeFile.id'),
                         primaryFile: primary,
-                        version: primary ? this.get('model.primaryFile.currentVersion') : this.get('activeFile.currentVersion')
-                    }
+                        version: primary ? this.get('model.primaryFile.currentVersion') : this.get('activeFile.currentVersion'),
+                    },
                 },
                 interaction: {
-                    category: category,
+                    category,
                     action: 'click',
                     label: `${label} as Non-Contributor`,
-                    url: url
-                }
+                    url,
+                },
             };
 
-            const keenPayload =  {
+            const keenPayload = {
                 collection: 'non-contributor-preprint-downloads',
-                eventData: eventData,
+                eventData,
                 node: this.get('node'),
             };
 
             if (!this.get('userIsContrib')) {
-                Ember.get(this, 'metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor or non-authenticated user
+                this.get('metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor or non-authenticated user
             }
-        }
+        },
+    },
+
+    _returnContributors(contributors) {
+        return contributors;
     },
 });

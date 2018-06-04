@@ -1,4 +1,7 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import $ from 'jquery';
+import Component from '@ember/component';
+
 /**
  * @module ember-preprints
  * @submodule components
@@ -15,22 +18,21 @@ import Ember from 'ember';
  * ```
  * @class search-preprints
  */
-export default Ember.Component.extend({
-    metrics: Ember.inject.service(),
-    theme: Ember.inject.service(),
+export default Component.extend({
+    metrics: service(),
+    theme: service(),
     actions: {
         search() {
-            let query = Ember.$.trim(this.$('#searchBox').val());
+            const query = $.trim(this.$('#searchBox').val());
+            /* eslint-disable-next-line ember/closure-actions */
             this.sendAction('search', query);
-            Ember
-                .get(this, 'metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: 'Index - Search',
-                    extra: query
-                });
-        }
+            this.get('metrics').trackEvent({
+                category: 'button',
+                action: 'click',
+                label: 'Index - Search',
+                extra: query,
+            });
+        },
     },
 
     keyDown(event) {
@@ -38,5 +40,5 @@ export default Ember.Component.extend({
         if (event.keyCode === 13) {
             this.send('search');
         }
-    }
+    },
 });

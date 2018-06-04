@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
     newFile: false,
     existingFile: false,
     existingProject: false,
@@ -27,5 +27,5 @@ export default Ember.Component.extend({
             this.$('#existingProjectButton').addClass('active-custom');
         },
 
-    }
+    },
 });

@@ -20,7 +20,7 @@
             <ul style="overflow: scroll" role="listbox">
                 {{input value=column.filterText class="form-control" placeholder="Search"}}
                 {{#each column.subjectsSorted as |subject|}}
-                    <li {{action 'select' subject tier}} class={{if (eq subject column.selection) 'selected'}} role="listitem">
+                    <li {{action 'select' subject tier}} class={{if (eq subject column.selection) 'selected'}} role="button">
                         {{subject.text}}
                     </li>
                 {{/each}}

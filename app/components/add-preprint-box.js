@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import Analytics from 'ember-osf/mixins/analytics';
 
 /**
@@ -7,7 +8,9 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 
 /**
- * Add preprint box - Component of portion of preprints discover page - asks users if they want to create a preprint
+ * Add preprint box
+ * Component of portion of preprints discover page.
+ * Asks users if they want to create a preprint
  *
  * Sample usage:
  * ```handlebars
@@ -16,6 +19,6 @@ import Analytics from 'ember-osf/mixins/analytics';
  * ```
  * @class add-preprint-box
  */
-export default Ember.Component.extend(Analytics, {
-    theme: Ember.inject.service()
+export default Component.extend(Analytics, {
+    theme: service(),
 });

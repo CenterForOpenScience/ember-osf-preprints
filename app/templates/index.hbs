@@ -1,15 +1,18 @@
-{{donate-banner}}
+{{scheduled-banner}}
 
-<div class="preprints-page"> {{!INDEX}}
+{{!INDEX}}
+<div class="preprints-page">
 
     {{!HEADER}}
-    <div class="preprint-header"> {{!HEADER}}
-        <div class="container"> {{!CONTAINER}}
-            <div class="row">{{!HEADER ROW}}
+    <div class="preprint-header">
+        {{!CONTAINER}}
+        <div class="container">
+            {{!HEADER ROW}}
+            <div class="row">
                 {{!TITLE}}
                 <div class="text-center m-t-lg col-xs-12">
                     {{#if theme.isProvider}}
-                        <div class="provider-brand" style="background-image: url('{{providerAsset theme.id 'wide_color.png'}}')"></div>
+                        <div class="provider-brand" style={{safe-markup (concat "background-image: url('" (provider-asset theme.id 'wide_color.png') "')")}}></div>
                     {{else}}
                         <div class="provider-brand"></div>
                     {{/if}}
@@ -30,23 +33,29 @@
                         {{total-share-results}}
                     {{/if}}
                 </div>
-            </div> {{!END ROW}}
+            </div>
+            {{!END ROW}}
             {{#if theme.provider.allowSubmissions}}
                 <div class="row">
                     <div class="text-center col-xs-12">
                         <p class="lead">{{t 'index.header.or'}}</p>
-                        <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>{{t "global.add_preprint"}}</a>
+                        <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>{{t "global.add_preprint" documentType=theme.provider.content.documentType}}</a>
                         <div class="m-t-md">{{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
                     </div>
                 </div>
             {{/if}}
-        </div> {{!END CONTAINER}}
-    </div> {{!END HEADER}}
+        </div>
+        {{!END CONTAINER}}
+    </div>
+    {{!END HEADER}}
 
     {{!SUBJECTS}}
-    <div class="preprint-subjects p-v-md"> {{!SUBJECTS LIST}}
-        <div class="container"> {{!CONTAINER DIV}}
-            <div class="row p-v-md">{{!SUBJECTS ROW}}
+    {{!SUBJECTS LIST}}
+    <div class="preprint-subjects p-v-md">
+        {{!CONTAINER DIV}}
+        <div class="container">
+            {{!SUBJECTS ROW}}
+            <div class="row p-v-md">
                 <div class="col-xs-12">
                     <h2>{{#if theme.provider.additionalProviders}}
                             {{t "index.subjects.heading.provider"}}
@@ -57,17 +66,22 @@
                     {{#if theme.provider.hasHighlightedSubjects}}
                         {{#link-to (route-prefix 'discover') class="seeAllSubjects"}}{{t 'index.subjects.links.seeAllSubjects'}}{{/link-to}}
                     {{/if}}
-                    <div class="subjectsList p-lg"> {{!SUBJECTS LIST}}
+                    {{!SUBJECTS LIST}}
+                    <div class="subjectsList p-lg">
                         {{#if theme.provider.additionalProviders}}
                             {{additional-provider-list additionalProviders=theme.provider.additionalProviders}}
                         {{else}}
                             {{taxonomy-top-list list=model.taxonomies}}
                         {{/if}}
-                    </div> {{!END SUBJECTS LIST}}
+                    </div>
+                    {{!END SUBJECTS LIST}}
                 </div>
-            </div>{{!END ROW}}
-        </div> {{!END CONTAINER}}
-    </div> {{!END SUBJECTS LIST}}
+            </div>
+            {{!END ROW}}
+        </div>
+        {{!END CONTAINER}}
+    </div>
+    {{!END SUBJECTS LIST}}
 
     {{#unless theme.isProvider}}
         {{!SERVICES}}
@@ -75,23 +89,23 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
-                        <h2>{{t "index.services.top.heading"}}</h2>
-                        <p class="m-b-lg">{{t "index.services.top.paragraph"}}</p>
+                        <h2>{{t "index.services.top.heading" documentType=theme.provider.content.documentType}}</h2>
+                        <p class="m-b-lg">{{t "index.services.top.paragraph" documentType=theme.provider.content.documentType}}</p>
                     </div>
                 </div>
                 <div class="row p-v-md">
                     <div class="provider-logos">
                         {{#each model.brandedProviders as |provider| }}
-                            {{#unless (eq provider.id 'livedata')}}
-                                <a href="{{brandedPreprintUrl provider}}" title="{{provider.name}}" class="provider-logo-item" style="background-image: url({{provider-asset provider.id 'wide_white.png'}});"></a>
-                            {{/unless}}
+                            {{#if (not-eq provider.id 'livedata')}}
+                                <a href="{{branded-preprint-url provider}}" title="{{provider.name}}" class="provider-logo-item" style={{safe-markup (concat "background-image: url('" (provider-asset provider.id 'wide_white.png') "')")}}></a>
+                            {{/if}}
                         {{/each}}
                     </div>
                 </div>
                 <div class="row p-v-md">
                     <div class="col-md-12 text-center">
                         <p class="lead">
-                            {{t "index.services.bottom.p1"}}
+                            {{t "index.services.bottom.p1" documentType=theme.provider.content.documentType}}
                             <div class="p-t-sm">
                                 {{t "index.services.bottom.div.line1"}}
                                 <a class="source_code_link" href="https://github.com/CenterForOpenScience/ember-preprints"
@@ -124,4 +138,5 @@
             </div>
         </div>
     {{/if}}
-</div> {{!END INDEX}}
+</div>
+{{!END INDEX}}
