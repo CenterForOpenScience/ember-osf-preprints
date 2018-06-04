@@ -469,14 +469,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     editInformation1: computed('moderationType', function() {
         const moderationType = this.get('moderationType');
         if (moderationType) {
-            return EDIT_MESSAGES['line1'][moderationType];
+            return EDIT_MESSAGES.line1[moderationType];
         }
     }),
     editInformation2: computed('moderationType', 'model.reviewsState', function() {
         const reviewsState = this.get('model.reviewsState');
         const moderationType = this.get('moderationType');
         if (reviewsState && moderationType) {
-            return EDIT_MESSAGES['line2'][reviewsState][moderationType];
+            return EDIT_MESSAGES.line2[reviewsState][moderationType];
         }
     }),
     canResubmit: computed('moderationType', 'model.reviewsState', function() {

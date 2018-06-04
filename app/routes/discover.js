@@ -20,12 +20,8 @@ export default Route.extend(Analytics, ResetScrollMixin, {
     model() {
         return this
             .get('store')
-            .query('preprint-provider', { reload: true }).then((results) => {
-                return {
-                    preprintProviders: results,
-                    meta: results.get('meta'),
-                };
-            });
+            .query('preprint-provider', { reload: true })
+            .then(this._loadAllProviders.bind(this));
     },
     setupController(controller, { preprintProviders, meta }) {
         this._super(controller, preprintProviders);
@@ -37,5 +33,11 @@ export default Route.extend(Analytics, ResetScrollMixin, {
             controller._clearFilters();
             controller._clearQueryString();
         },
+    },
+    _loadAllProviders(providers) {
+        return {
+            preprintProviders: providers,
+            meta: providers.get('meta'),
+        };
     },
 });

@@ -52,6 +52,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'service:theme',
         'service:toast',
         'service:i18n',
+        'service:raven',
         'model:review-action',
         'model:file',
         'model:file-version',
