@@ -73,6 +73,7 @@ export default Component.extend(Analytics, {
     i18n: service(),
     store: service(),
     toast: service(),
+    raven: service(),
     panelActions: service('panelActions'),
 
     State,
@@ -85,6 +86,7 @@ export default Component.extend(Analytics, {
         maxFiles: 1,
         method: 'PUT',
         uploadMultiple: false,
+        autoDiscover: false,
     },
 
     fileVersion: computed('osfFile', function() {
@@ -313,7 +315,7 @@ export default Component.extend(Analytics, {
                             return this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint', this.get('parentNode'));
                         }
                     })
-                    .catch(() => {
+                    .catch((error) => {
                         this.get('toast').error(this.get('i18n').t(
                             'components.file-uploader.preprint_file_error',
                             {
@@ -321,6 +323,7 @@ export default Component.extend(Analytics, {
                             },
                         ));
                         this.set('uploadInProgress', false);
+                        this.get('raven').captureMessage('Could not create component', { extra: { error } });
                     });
                 /* eslint-enable ember/closure-actions,ember/named-functions-in-promises */
             } else {
@@ -393,9 +396,10 @@ export default Component.extend(Analytics, {
         this.set('applyLicense', true);
     },
 
-    _failCreateNewProject() {
+    _failCreateNewProject(error) {
         this.set('uploadInProgress', false);
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_project'));
+        this.get('raven').captureMessage('Could not create project', { extra: { error } });
     },
 
     _createComponent(child) {
@@ -409,22 +413,24 @@ export default Component.extend(Analytics, {
         this.set('applyLicense', true);
     },
 
-    _failCreateComponent() {
+    _failCreateComponent(error) {
         this.set('uploadInProgress', false);
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_component'));
+        this.get('raven').captureMessage('Could not create component', { extra: { error } });
     },
 
     _sendToUpload() {
         this.send('upload');
     },
 
-    _failUpdateTitle() {
+    _failUpdateTitle(error) {
         const node = this.get('node');
         const currentNodeTitle = this.get('currentNodeTitle');
 
         node.set('title', currentNodeTitle);
         this.set('uploadInProgress', false);
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
+        this.get('raven').captureMessage('Could not update title', { extra: { error } });
     },
 
     _failUploadFile() {
