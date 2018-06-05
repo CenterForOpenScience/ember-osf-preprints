@@ -178,6 +178,8 @@ export default Controller.extend(Analytics, {
         },
         // Metrics are handled in the component
         chooseFile(fileItem) {
+            if (!fileItem) return;
+
             this.setProperties({
                 chosenFile: fileItem.get('id'),
                 activeFile: fileItem,

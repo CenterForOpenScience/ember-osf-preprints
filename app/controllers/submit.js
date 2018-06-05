@@ -145,6 +145,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     store: service(),
     theme: service(),
     fileManager: service(),
+    raven: service(),
     toast: service('toast'),
     panelActions: service('panelActions'),
 
@@ -211,9 +212,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     currentProvider: undefined,
     // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form
     selectedProvider: undefined,
-    isOSFPreprints: Ember.computed('selectedProvider', function(){
-        return this.get('selectedProvider') &&  this.get('selectedProvider.name') === 'Open Science Framework';
-    }),
     providerSaved: false,
     preprintSaved: false,
 
@@ -287,6 +285,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     basicsChanged: computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
 
     moderationType: alias('currentProvider.reviewsWorkflow'),
+
+    isOSFPreprints: computed('selectedProvider', function() {
+        return this.get('selectedProvider') && this.get('selectedProvider.name') === 'Open Science Framework';
+    }),
 
     // True if fields have been changed
     hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
@@ -471,10 +473,17 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return !(state === ACCEPTED || (modType === POST_MODERATION && state === PENDING));
     }),
     editInformation1: computed('moderationType', function() {
-        return EDIT_MESSAGES.line1[this.get('moderationType')];
+        const moderationType = this.get('moderationType');
+        if (moderationType) {
+            return EDIT_MESSAGES.line1[moderationType];
+        }
     }),
     editInformation2: computed('moderationType', 'model.reviewsState', function() {
-        return EDIT_MESSAGES.line2[this.get('model.reviewsState')][this.get('moderationType')];
+        const reviewsState = this.get('model.reviewsState');
+        const moderationType = this.get('moderationType');
+        if (reviewsState && moderationType) {
+            return EDIT_MESSAGES.line2[reviewsState][moderationType];
+        }
     }),
     canResubmit: computed('moderationType', 'model.reviewsState', function() {
         const state = this.get('model.reviewsState');
@@ -1172,12 +1181,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return node.save();
     },
 
-    _failSetNodeTitle() {
+    _failSetNodeTitle(error) {
         const node = this.get('node');
         const currentNodeTitle = node.get('title');
 
         node.set('title', currentNodeTitle);
         this.get('toast').error(this.get('i18n').t('submit.could_not_update_title'));
+        this.get('raven').captureMessage('Could not update title', { extra: { error } });
     },
 
     _addChild(child) {
@@ -1208,25 +1218,29 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.set('newNode', true);
     },
 
-    _failCopyFile() {
+    _failCopyFile(error) {
         this.get('toast').error(this.get('i18n').t('submit.error_copying_file'));
+        this.get('raven').captureMessage('Could not copy file', { extra: { error } });
     },
 
-    _failGetFiles() {
+    _failGetFiles(error) {
         this.get('toast').error(this.get('i18n').t('submit.error_accessing_parent_files'));
+        this.get('raven').captureMessage('Could not access parent files', { extra: { error } });
     },
 
-    _failCreateComponent() {
+    _failCreateComponent(error) {
         this.get('toast').error(this.get('i18n').t('submit.could_not_create_component'));
+        this.get('raven').captureMessage('Could not create component', { extra: { error } });
     },
 
-    _failDeletePreprint() {
+    _failDeletePreprint(error) {
         this.get('toast').error(this.get('i18n').t(
             'submit.abandoned_preprint_error',
             {
                 documentType: this.get('currentProvider.documentType'),
             },
         ));
+        this.get('raven').captureMessage('Could not retrieve abandoned preprint', { extra: { error } });
     },
 
     _sendStartPreprint() {
@@ -1254,7 +1268,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('finishUpload');
     },
 
-    _failedUpload() {
+    _failedUpload(error) {
         const parentNode = this.get('parentNode');
 
         // Allows user to attempt operation again.
@@ -1272,6 +1286,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 documentType: this.get('currentProvider.documentType'),
             },
         ));
+        this.get('raven').captureMessage('Could not initiate preprint', { extra: { error } });
     },
 
     _setBasicsLicense(license) {
@@ -1296,9 +1311,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('next', this.get('_names.3'));
     },
 
-    _failMoveFromBasics() {
+    _failMoveFromBasics(error) {
         // If model save fails, do not transition, save original vales
         this.get('toast').error(this.get('i18n').t('submit.basics_error'));
+        this.get('raven').captureMessage('Could not save basics', { extra: { error } });
         this.send('saveOriginalValues');
     },
 
@@ -1306,12 +1322,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('next', this.get('_names.2'));
     },
 
-    _failMoveFromDisciplines() {
+    _failMoveFromDisciplines(error) {
         // Current subjects saved so UI can be restored in case of failure
         const model = this.get('model');
 
         model.set('subjects', $.extend(true, [], this.get('model.subjects')));
         this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
+        this.get('raven').captureMessage('Could not save disciplines', { extra: { error } });
     },
 
     _setContributorSearchResults(contributors) {

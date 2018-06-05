@@ -68,19 +68,6 @@ module.exports = function(defaults) {
             ],
         },
         inlineContent: {
-            raven: {
-                enabled: useCdn,
-                content: `
-                    <script src="https://cdn.ravenjs.com/3.22.1/ember/raven.min.js"></script>
-                    <script>
-                        var encodedConfig = document.head.querySelector("meta[name$='/config/environment']").content;
-                        var config = JSON.parse(unescape(encodedConfig));
-                        if (config.sentryDSN) {
-                            Raven.config(config.sentryDSN, config.sentryOptions || {}).install();
-                        }
-                    </script>
-                `.trim(),
-            },
             cdn: {
                 enabled: useCdn,
                 content: `
