@@ -50,6 +50,7 @@ export default Controller.extend(Analytics, {
     activeFile: null,
     chosenFile: null,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
+    hasTag: computed.bool('model.tags.length'),
     metricsExtra: computed('model', function() {
         return this.get('model.id');
     }),
@@ -150,6 +151,12 @@ export default Controller.extend(Analytics, {
         return this.get('model.description')
             .slice(0, 350)
             .replace(/\s+\S*$/, '');
+    }),
+
+    emailHref: computed('model', function() {
+        const titleEncoded = encodeURIComponent(this.get('model.title'));
+        const hrefEncoded = encodeURIComponent(window.location.href);
+        return `mailto:?subject=${titleEncoded}&body=${hrefEncoded}`;
     }),
 
     actions: {
