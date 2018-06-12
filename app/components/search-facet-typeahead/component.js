@@ -32,12 +32,12 @@ export default Component.extend({
             const label = selected;
 
             this.get('metrics').trackEvent({ category, action, label });
-            this.get('updateFacet')(this.get('paramName'), getUniqueList(selected));
+            this.get('updateFacet')(this.get('key'), getUniqueList(selected));
         },
     },
 
     typeaheadQueryUrl() {
-        const base = this.get('options.base') || this.get('paramName');
+        const base = this.get('options.base') || this.get('key');
         return `${config.OSF.shareApiUrl}/search/${base}/_search`;
     },
 
