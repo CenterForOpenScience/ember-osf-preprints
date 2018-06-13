@@ -19,6 +19,7 @@ import fileDownloadPath from '../utils/file-download-path';
  *      node=node
  *      projectURL=node.links.html
  *      chooseFile=(action 'chooseFile')
+ *      provider=model.provider
  * }}
  * ```
  * @class supplementary-file-browser
