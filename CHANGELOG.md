@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.118.4] - 2018-04-05
 ### Fixed
 - Automatic opening of upload section on branded provider submit page
+- Correctly show parent projects in the "Choose project" dropdown
 
 ### Removed
 - Unused image code
