@@ -8,7 +8,6 @@ import { camelize } from '@ember/string';
 import config from 'ember-get-config';
 import QueryParams from 'ember-parachute';
 import { task, timeout } from 'ember-concurrency';
-import moment from 'moment';
 
 import { getSplitParams, encodeParams, getFilter } from 'ember-osf/utils/elastic-query';
 
@@ -27,6 +26,15 @@ import { getSplitParams, encodeParams, getFilter } from 'ember-osf/utils/elastic
  */
 const MAX_SOURCES = 500;
 const DEBOUNCE_MS = 250;
+
+const elasticAggregations = {
+    sources: {
+        terms: {
+            field: 'sources',
+            size: MAX_SOURCES,
+        },
+    },
+};
 
 const filterQueryParamsList = ['tags', 'sources', 'type', 'subject', 'provider'];
 
@@ -139,7 +147,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     facets: computed('i18n.locale', 'additionalProviders', function() { // List of facets available for preprints
         if (this.get('additionalProviders')) { // if additionalProviders exist, use subset of SHARE facets
             return [
-                // { key: 'sources', title: this.get('i18n').t('discover.main.source'), component: 'search-facet-source' },
+                { key: 'sources', title: this.get('i18n').t('discover.main.source'), component: 'search-facet-source' },
                 // { key: 'date', title: this.get('i18n').t('discover.main.date'), component: 'search-facet-daterange' },
                 // { key: 'type', title: this.get('i18n').t('discover.main.type'), component: 'search-facet-worktype' },
                 { key: 'tags', title: this.get('i18n').t('discover.main.tag'), component: 'search-facet-typeahead' },
@@ -207,24 +215,12 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
         return `${config.OSF.shareSearchUrl}?preference=${preference}`;
     }),
 
-    _clearFilters() {
-        this.set('activeFilters', {
-            providers: [],
-            subjects: [],
-        });
-        this.set('provider', '');
-        this.set('subject', '');
-    },
-
-    _clearQueryString() {
-        this.set('q', '');
-    },
-
     setup({ queryParams }) {
         this.get('fetchData').perform(queryParams);
     },
 
     queryParamsDidChange({ shouldRefresh, queryParams, changed }) {
+        console.log('query params changed');
         if (queryParams.page !== 1 && !changed.page) {
             this.set('page', 1);
         }
@@ -241,9 +237,12 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     },
 
     buildLockedQueryBody(lockedParams) {
+        console.log('buildLockedQueryBody called');
         /**
-         *  For PREPRINTS, REGISTRIES, RETRACTION WATCH - services where portion of query is restricted.
-         *  Builds the locked portion of the query.  For example, in preprints, types=['preprint', 'thesis']
+         *  For PREPRINTS, REGISTRIES, RETRACTION WATCH
+         *  services where portion of query is restricted.
+         *  Builds the locked portion of the query.
+         *  For example, in preprints, types=['preprint', 'thesis']
          *  is something that cannot be modified by the user.
          *
          *  @method buildLockedQueryBody
@@ -272,6 +271,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     },
 
     constructFacetFilters() {
+        console.log('constructFacetFilters called');
         const filters = {};
         this.get('facets').forEach((facet) => {
             const filterType = facet.filter || 'termsFilter';
@@ -295,14 +295,17 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     },
 
     getQueryBody(queryParams) {
+        console.log('getQueryBody called');
         /**
-         * Builds query body to send to SHARE from a combination of locked Params, facetFilters and activeFilters
+         * Builds query body to send to SHARE from a combination of
+         * locked Params, facetFilters and activeFilters
          *
          * @method getQueryBody
          * @return queryBody
          */
         let filters = this.buildLockedQueryBody(this.get('lockedParams')); // Empty list if no locked query parameters
-        // From Ember-SHARE. Looks at facetFilters (partial SHARE queries already built) and adds them to query body
+        // From Ember-SHARE. Looks at facetFilters
+        // (partial SHARE queries already built) and adds them to query body
         const facetFilters = this.constructFacetFilters();
         for (const k of Object.keys(facetFilters)) {
             const filter = facetFilters[k];
@@ -350,20 +353,32 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
                 });
             }
         });
+
         // For PREPRINTS and REGISTRIES. If theme.isProvider, add provider(s) to query body
         if (this.get('themeProvider')) {
             const themeProvider = this.get('themeProvider');
-            // Regular preprint providers will have their search results restricted to the one provider.
-            // If the provider has additionalProviders, all of these providers will be added to the "sources" SHARE query
             let sources = [];
+            /*
+             * Regular preprint providers will have their search results
+             * restricted to the one provider.
+             * If the provider has additionalProviders, all of these providers
+             * will be added to the "sources" SHARE query
+             */
             if (this.get('theme.isProvider')) {
-                sources = (themeProvider.get('additionalProviders') || []).length ? themeProvider.get('additionalProviders') : [themeProvider.get('shareSource') || themeProvider.get('name')];
+                sources = (themeProvider.get('additionalProviders') || []).length ?
+                    themeProvider.get('additionalProviders') :
+                    [themeProvider.get('shareSource') || themeProvider.get('name')];
             } else if (this.get('themeProvider.id') === 'osf') {
                 let osfProviderSources = [themeProvider.get('shareSource') || 'OSF'];
+
                 osfProviderSources = osfProviderSources.concat(this.get('fetchedProviders')
                     .map(provider => provider.get('shareSource') || provider.get('name')));
-                sources = this.get('whiteListedProviders') ? osfProviderSources.concat(this.get('whiteListedProviders')) : osfProviderSources;
+
+                sources = this.get('whiteListedProviders') ?
+                    osfProviderSources.concat(this.get('whiteListedProviders')) :
+                    osfProviderSources;
             }
+
             filters.push({
                 terms: {
                     sources,
@@ -399,15 +414,17 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
         }
 
         if (page === 1 || this.get('firstLoad')) {
-            queryBody.aggregations = this.get('elasticAggregations');
+            queryBody.aggregations = elasticAggregations;
         }
 
         return this.set('queryBody', queryBody);
     },
 
     fetchData: task(function* (queryParams) {
+        console.log('fetch data called');
         yield timeout(DEBOUNCE_MS);
         const queryBody = JSON.stringify(this.getQueryBody(queryParams));
+
         try {
             const response = yield $.ajax({
                 url: this.get('searchUrl'),
@@ -426,7 +443,9 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
                     abstract: hit._source.description,
                     subjects: hit._source.subjects.map(each => ({ text: each })),
                     subject_synonyms: hit._source.subject_synonyms.map(each => ({ text: each })),
-                    providers: hit._source.sources.map(item => ({ name: item })), // For PREPRINTS, REGISTRIES
+                    providers: hit._source.sources.map(item => ({ // PREPRINTS, REGISTRIES
+                        name: item,
+                    })),
                     hyperLinks: [ // Links that are hyperlinks from hit._source.lists.links
                         {
                             type: 'share',
@@ -467,17 +486,19 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
             if (response.aggregations) {
                 this.set('aggregations', response.aggregations);
             }
+
             this.setProperties({
                 numberOfResults: response.hits.total,
                 results,
                 queryError: false,
             });
         } catch (errorResponse) {
-            debugger;
+            console.log('error thrown in fetch data');
             this.setProperties({
                 numberOfResults: 0,
                 results: [],
             });
+
             if (errorResponse.status === 400) {
                 this.set('queryError', true);
             } else {

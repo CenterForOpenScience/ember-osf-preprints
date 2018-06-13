@@ -19,6 +19,7 @@ export default TypeaheadComponent.extend({
     },
 
     updateDonut(data) {
+        console.log('called update donut');
         // eslint-disable-next-line camelcase
         const columns = data.map(({ key, doc_count }) => [key, doc_count]);
         const title = columns.length + (columns.length === 1 ? ' Source' : ' Sources');
@@ -36,29 +37,33 @@ export default TypeaheadComponent.extend({
     },
 
     initDonut(title, columns) {
-        const element = this.$('.donut').get(0);
-        // eslint-disable-next-line no-undef
-        const donut = c3.generate({
-            bindto: element,
-            data: {
-                columns,
-                type: 'donut',
-                onclick: (d) => {
-                    const selected = this.get('selected');
-                    if (!selected.includes(d.name)) {
-                        this.send('changeFilter', [d.name, ...selected]);
-                    }
+        try {
+            const element = this.$('.donut').get(0);
+            // eslint-disable-next-line no-undef
+            const donut = c3.generate({
+                bindto: element,
+                data: {
+                    columns,
+                    type: 'donut',
+                    onclick: (d) => {
+                        const selected = this.get('selected');
+                        if (!selected.includes(d.name)) {
+                            this.send('changeFilter', [d.name, ...selected]);
+                        }
+                    },
                 },
-            },
-            legend: { show: false },
-            donut: {
-                title,
-                label: {
-                    show: false,
+                legend: { show: false },
+                donut: {
+                    title,
+                    label: {
+                        show: false,
+                    },
                 },
-            },
-            size: { height: 200 },
-        });
-        this.set('donut', donut);
+                size: { height: 200 },
+            });
+            this.set('donut', donut);
+        } catch (e) {
+            console.log(e);
+        }
     },
 });
