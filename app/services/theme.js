@@ -40,7 +40,7 @@ export default Service.extend({
                 .then(this._getproviderDomain.bind(this));
         }
 
-        return store.findRecord('preprint-provider', id);
+        return store.findRecord('preprint-provider', id, { backgroundReload: false });
     }),
 
     _getproviderDomain(provider) {

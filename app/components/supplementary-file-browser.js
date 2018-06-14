@@ -19,6 +19,7 @@ import fileDownloadPath from '../utils/file-download-path';
  *      node=node
  *      projectURL=node.links.html
  *      chooseFile=(action 'chooseFile')
+ *      provider=model.provider
  * }}
  * ```
  * @class supplementary-file-browser
@@ -98,9 +99,9 @@ export default Component.extend(Analytics, {
         this.set('selectedFile', null);
         /* eslint-disable ember/named-functions-in-promises */
         this.get('node').get('files')
-            .then((providers) => {
-                this.set('provider', providers.findBy('name', 'osfstorage'));
-                return loadAll(this.get('provider'), 'files', this.get('files'), { 'page[size]': 50 });
+            .then((fileProviders) => {
+                this.set('fileProvider', fileProviders.findBy('name', 'osfstorage'));
+                return loadAll(this.get('fileProvider'), 'files', this.get('files'), { 'page[size]': 50 });
             })
             .then(() => this.get('preprint').get('primaryFile'))
             .then((pf) => {
