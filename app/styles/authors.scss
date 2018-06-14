@@ -1,19 +1,19 @@
 .vert-align-disabled-permissions {
     padding-top: 6px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .vert-align-enabled-permissions {
     padding-top: 2px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .drag-drop-contrib {
     padding-top: 4px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
     color: gray;
 }
 
@@ -21,16 +21,28 @@
     width: 110px;
     display: inline;
 }
+
 .vert-align {
     padding-top: 4px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .vert-align-contributor-name {
     padding-top: 8px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
+    max-width: 120px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+// More room for name when single column
+@media (max-width: 992px) {
+    .vert-align-contributor-name {
+        max-width: 200px;
+    }
 }
 
 .bib-padding {
@@ -108,8 +120,12 @@ span.sortable-bars:hover {
     }
 }
 
-.contrib-column-header {
-    padding-left: 12px;
+.contrib-perms-header {
+    padding-left: 6px;
+}
+
+.contrib-name-header {
+    padding-left: 58px;
 }
 
 .disabled-checkmark {
@@ -125,7 +141,7 @@ span.sortable-bars:hover {
   background:none;
   border:none;
   font-size:1em;
-  padding:0px;
+  padding:0;
 }
 
 @keyframes greenHighlight {
@@ -166,15 +182,34 @@ span.sortable-bars:hover {
 .errorHighlight {
     animation: redHighlight 2s;
 }
-@media (max-width: 768px) { // Contributors section, XS screen
+
+.table > tbody > tr > td {
+    padding: 5px;
+}
+
+@media (max-width: 320px) {
+    #preprint-form-authors {
+        padding: 15px;
+    }
+}
+
+.remove-contributor-xs {
+    padding: 0;
+    border: none;
+    background: none;
+    color: #D9534F;
+}
+
+@media (max-width: 767px) { // Contributors section, XS screen
+
     .current-authors {
         table, td, tr {
-    		display: block;
+    		    display: block;
             width: 100% !important;
-    	}
+    	  }
 
         th {
-            display: None;
+            display: none;
         }
 
         td {
@@ -190,7 +225,7 @@ span.sortable-bars:hover {
 
         .bib-padding {
             text-align: left;
-            padding-bottom: 10px;
+            padding-bottom: 5px;
             padding-right: 30px
         }
 
@@ -205,19 +240,20 @@ span.sortable-bars:hover {
         }
 
         .vert-align-disabled-permissions {
-            padding-top: 0px;
+            padding-top: 0;
         }
         .vert-align-enabled-permissions {
-            padding-top: 0px;
+            padding-top: 0;
         }
         .drag-drop-contrib {
-            padding-top: 0px;
+            padding-top: 0;
         }
         .vert-align {
-            padding-top: 0px;
+            padding-top: 0;
         }
         .vert-align-contributor-name {
-            padding-top: 0px;
+            padding-top: 0;
+            width: 120px;
         }
         .contributor-row {
             border-top: 1px solid #EEE !important;
@@ -227,14 +263,12 @@ span.sortable-bars:hover {
         .delete-contrib-button {
             padding-bottom: 10px;
         }
-        .remove-contributor-xs {
-            padding: 0;
-            border: none;
-            background: none;
-            color: #D9534F;
-        }
         .remove-contributor-padding-xs {
             padding-right: 10px;
         }
+    }
+
+    .permission-select {
+        padding-right: 2px;
     }
 }
