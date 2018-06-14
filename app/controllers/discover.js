@@ -34,7 +34,7 @@ export default Controller.extend(Analytics, {
     },
     // TODO: Add a conversion from shareSource to provider names here if desired
     filterReplace: { // Map filter names for front-end display
-        'Open Science Framework': 'OSF',
+        'Open Science Framework': 'OSF Preprints',
         'Cognitive Sciences ePrint Archive': 'Cogprints',
         OSF: 'OSF Preprints',
         'Research Papers in Economics': 'RePEc',

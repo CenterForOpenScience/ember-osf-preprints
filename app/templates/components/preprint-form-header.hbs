@@ -26,7 +26,7 @@
             <em class="m-r-md"> {{t "components.preprint-form-header.server" documentType=provider.documentType}}: </em>
             {{#if currentProvider}}
                 <img alt="provider logo" class="current-provider" title="{{currentProvider.name}}" src={{provider-asset currentProvider.id 'square_color_no_transparent.png'}}>
-                {{currentProvider.name}}
+                {{if (not theme.isProvider) 'OSF Preprints' currentProvider.name}}
             {{/if}}
         </p>
     </div>

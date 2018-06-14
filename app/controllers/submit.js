@@ -286,10 +286,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     moderationType: alias('currentProvider.reviewsWorkflow'),
 
-    isOSFPreprints: computed('selectedProvider', function() {
-        return this.get('selectedProvider') && this.get('selectedProvider.name') === 'Open Science Framework';
-    }),
-
     // True if fields have been changed
     hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
         const preprintStarted = this.get('theme.isProvider') ? this.get('hasFile') : this.get('providerSaved');
