@@ -135,27 +135,49 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
         return (this.get('themeProvider.additionalProviders') || []).length > 1;
     }),
 
-    discoverHeader: computed('additionalProviders', function() { // Header for preprints discover page
+    discoverHeader: computed('additionalProviders', function() {
         // If additionalProviders, use more generic Repository Search page title
-        return this.get('additionalProviders') ? 'discover.search.heading_repository_search' : 'discover.search.heading';
+        return this.get('additionalProviders') ?
+            'discover.search.heading_repository_search' :
+            'discover.search.heading';
     }),
 
     externalProviders: computed('model', function() {
         return this.get('model').filter(item => item.id !== 'osf');
     }),
 
-    facets: computed('i18n.locale', 'additionalProviders', function() { // List of facets available for preprints
-        if (this.get('additionalProviders')) { // if additionalProviders exist, use subset of SHARE facets
+    facets: computed('i18n.locale', 'additionalProviders', function() {
+        // if additionalProviders exist, use subset of SHARE facets (LiveData)
+        if (this.get('additionalProviders')) {
             return [
-                { key: 'sources', title: this.get('i18n').t('discover.main.source'), component: 'search-facet-source' },
-                // { key: 'date', title: this.get('i18n').t('discover.main.date'), component: 'search-facet-daterange' },
+                {
+                    key: 'sources',
+                    title: this.get('i18n').t('discover.main.source'),
+                    component: 'search-facet-source',
+                }, {
+                    key: 'date',
+                    title: this.get('i18n').t('discover.main.date'),
+                    component: 'search-facet-daterange',
+                    filter: 'dateRangeFilter',
+                },
                 // { key: 'type', title: this.get('i18n').t('discover.main.type'), component: 'search-facet-worktype' },
-                { key: 'tags', title: this.get('i18n').t('discover.main.tag'), component: 'search-facet-typeahead' },
+                {
+                    key: 'tags',
+                    title: this.get('i18n').t('discover.main.tag'),
+                    component: 'search-facet-typeahead',
+                },
             ];
         } else { // Regular preprints and branded preprints get provider and taxonomy facets
             return [
-                { key: 'sources', title: `${this.get('i18n').t('discover.main.providers')}`, component: 'search-facet-provider' },
-                { key: 'subjects', title: `${this.get('i18n').t('discover.main.subject')}`, component: 'search-facet-taxonomy' },
+                {
+                    key: 'sources',
+                    title: `${this.get('i18n').t('discover.main.providers')}`,
+                    component: 'search-facet-provider',
+                }, {
+                    key: 'subjects',
+                    title: `${this.get('i18n').t('discover.main.subject')}`,
+                    component: 'search-facet-taxonomy',
+                },
             ];
         }
     }),
@@ -174,13 +196,15 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
         };
     }),
 
-    searchPlaceholder: computed('additionalProviders', function() { // Search bar placeholder
-        return this.get('additionalProviders') ? 'discover.search.repository_placeholder' : 'discover.search.placeholder';
+    searchPlaceholder: computed('additionalProviders', function() {
+        return this.get('additionalProviders') ?
+            'discover.search.repository_placeholder' :
+            'discover.search.placeholder';
     }),
 
     showActiveFilters: computed('additionalProviders', function() {
         // Whether Active Filters should be displayed.
-        // additionalProviders are using SHARE facets which do not
+        // additionalProviders (LiveData) are using SHARE facets which do not
         // work with Active Filters at this time
         return !this.get('additionalProviders');
     }),
@@ -215,12 +239,17 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
         return `${config.OSF.shareSearchUrl}?preference=${preference}`;
     }),
 
+    actions: {
+        clearFilters() {
+            this.resetQueryParams();
+        },
+    },
+
     setup({ queryParams }) {
         this.get('fetchData').perform(queryParams);
     },
 
     queryParamsDidChange({ shouldRefresh, queryParams, changed }) {
-        console.log('query params changed');
         if (queryParams.page !== 1 && !changed.page) {
             this.set('page', 1);
         }
@@ -237,7 +266,6 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     },
 
     buildLockedQueryBody(lockedParams) {
-        console.log('buildLockedQueryBody called');
         /**
          *  For PREPRINTS, REGISTRIES, RETRACTION WATCH
          *  services where portion of query is restricted.
@@ -271,7 +299,6 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     },
 
     constructFacetFilters() {
-        console.log('constructFacetFilters called');
         const filters = {};
         this.get('facets').forEach((facet) => {
             const filterType = facet.filter || 'termsFilter';
@@ -295,7 +322,6 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     },
 
     getQueryBody(queryParams) {
-        console.log('getQueryBody called');
         /**
          * Builds query body to send to SHARE from a combination of
          * locked Params, facetFilters and activeFilters
@@ -421,7 +447,6 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     },
 
     fetchData: task(function* (queryParams) {
-        console.log('fetch data called');
         yield timeout(DEBOUNCE_MS);
         const queryBody = JSON.stringify(this.getQueryBody(queryParams));
 
@@ -493,7 +518,6 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
                 queryError: false,
             });
         } catch (errorResponse) {
-            console.log('error thrown in fetch data');
             this.setProperties({
                 numberOfResults: 0,
                 results: [],

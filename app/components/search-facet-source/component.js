@@ -19,7 +19,6 @@ export default TypeaheadComponent.extend({
     },
 
     updateDonut(data) {
-        console.log('called update donut');
         // eslint-disable-next-line camelcase
         const columns = data.map(({ key, doc_count }) => [key, doc_count]);
         const title = columns.length + (columns.length === 1 ? ' Source' : ' Sources');
