@@ -159,9 +159,12 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
                     title: this.get('i18n').t('discover.main.date'),
                     component: 'search-facet-daterange',
                     filter: 'dateRangeFilter',
-                },
-                // { key: 'type', title: this.get('i18n').t('discover.main.type'), component: 'search-facet-worktype' },
-                {
+                }, {
+                    key: 'type',
+                    title: this.get('i18n').t('discover.main.type'),
+                    component: 'search-facet-worktype',
+                    data: {},
+                }, {
                     key: 'tags',
                     title: this.get('i18n').t('discover.main.tag'),
                     component: 'search-facet-typeahead',

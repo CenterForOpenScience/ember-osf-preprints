@@ -65,6 +65,7 @@
     "ember-collapsible-panel": "~1.0.0",
     "ember-collection": "^1.0.0-alpha.7",
     "ember-cp-validations": "^3.5.1",
+    "ember-css-modules": "^0.7.10",
     "ember-data": "2.18.0",
     "ember-data-factory-guy": "^2.11.6",
     "ember-export-application-global": "^2.0.0",

@@ -1,0 +1,15 @@
+<div class='indent'>
+    {{#each-in data as |key|}}
+        <div class='row'>
+            {{search-facet-worktype-button type=key collapsible=(get data (concat key '.children'))
+                selectedTypes=selected onClick=(action 'toggle') toggleState=toggleState
+                toggleCollapse=(action 'toggleBody')}}
+        </div>
+        {{#bs-collapse collapsed=toggleState}}
+            {{#if (get data (concat key '.children'))}}
+                {{search-facet-worktype-hierarchy state=state defaultCollapsed=true
+                    data=(get data (concat key '.children')) onClick=(action 'toggle')}}
+            {{/if}}
+        {{/bs-collapse}}
+    {{/each-in}}
+</div>
