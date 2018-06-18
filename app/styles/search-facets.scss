@@ -1,3 +1,31 @@
+.facet-indent {
+    padding-left: 30px;
+}
+
+// faceted-search
+.ember-power-select-trigger {
+    background-color: #fff !important;
+}
+
+// search-facet-daterange
+.date-range {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    width: 100%;
+    background-color: #fff;
+}
+
+.daterangepicker.dropdown-menu {
+    background-color: #fff;
+}
+
+// search-facet-source
+.c3-tooltip {
+    white-space: nowrap;
+}
+
+// search-facet-worktype-button
 .clickable {
     cursor: pointer;
     &.btn-link {

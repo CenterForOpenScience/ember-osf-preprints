@@ -90,32 +90,32 @@ module.exports = function(defaults) {
                 `.trim(),
             },
         },
-        // postcssOptions: {
-        //     compile: {
-        //         enabled: false,
-        //     },
-        //     filter: {
-        //         enabled: true,
-        //         plugins: [{
-        //             module: autoprefixer,
-        //             options: {
-        //                 browsers: ['last 4 versions'],
-        //                 cascade: false,
-        //             },
-        //         }, {
-        //             // Wrap progid declarations with double-quotes
-        //             module: postcss.plugin('progid-wrapper', () => {
-        //                 return css =>
-        //                     css.walkDecls((declaration) => {
-        //                         if (declaration.value.startsWith('progid')) {
-        //                             const declarationValue = `"${declaration.value}"`;
-        //                             return declarationValue;
-        //                         }
-        //                     });
-        //             }),
-        //         }],
-        //     },
-        // },
+        postcssOptions: {
+            compile: {
+                enabled: false,
+            },
+            filter: {
+                enabled: true,
+                plugins: [{
+                    module: autoprefixer,
+                    options: {
+                        browsers: ['last 4 versions'],
+                        cascade: false,
+                    },
+                }, {
+                    // Wrap progid declarations with double-quotes
+                    module: postcss.plugin('progid-wrapper', () => {
+                        return css =>
+                            css.walkDecls((declaration) => {
+                                if (declaration.value.startsWith('progid')) {
+                                    const declarationValue = `"${declaration.value}"`;
+                                    return declarationValue;
+                                }
+                            });
+                    }),
+                }],
+            },
+        },
         // bable options included to fix issue with testing discover controller
         // http://stackoverflow.com/questions/32231773/ember-tests-passing-in-chrome-not-in-phantomjs
         'ember-cli-babel': {
