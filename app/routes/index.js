@@ -25,11 +25,12 @@ export default Route.extend(Analytics, ResetScrollMixin, {
                             size: 20,
                         },
                     })),
-            brandedProviders: this
-                .store
-                .findAll('preprint-provider', { reload: true })
-                .then(result => result
-                    .filter(item => item.id !== 'osf')),
+            brandedProviders: this.get('theme.isProvider')
+                ? []
+                : this.store
+                    .findAll('preprint-provider', { reload: true })
+                    .then(result => result
+                        .filter(item => item.id !== 'osf')),
         });
     },
     actions: {

@@ -1202,9 +1202,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             .catch(this._failGetFiles.bind(this));
     },
 
-    _getFiles(providers) {
+    _getFiles(fileProviders) {
         const child = this.get('node');
-        const osfstorage = providers.findBy('name', 'osfstorage');
+        const osfstorage = fileProviders.findBy('name', 'osfstorage');
 
         this.get('fileManager').copy(this.get('selectedFile'), osfstorage, { data: { resource: child.id } })
             .then(this._copyFile.bind(this))

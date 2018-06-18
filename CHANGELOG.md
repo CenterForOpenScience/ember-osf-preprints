@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Styling and format of the branded navbar to match current styling in ember-osf
+- Reduced number of calls to the `preprints_provider` endpoint
 
 ## [0.118.5] - 2018-04-27
 ### Changed
