@@ -144,7 +144,6 @@ module.exports = function(defaults) {
         production: path.join('node_modules', 'dropzone/dist/min/dropzone.min.css'),
     });
 
-    app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
     app.import(path.join('node_modules', 'bootstrap-daterangepicker/daterangepicker.js'));
     app.import(path.join('node_modules', 'c3/c3.js'));
     app.import(path.join('node_modules', 'd3/d3.js'));
@@ -153,6 +152,8 @@ module.exports = function(defaults) {
         development: path.join('node_modules', 'hint.css/hint.css'),
         production: path.join('node_modules', 'hint.css/hint.css'),
     });
+
+    app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
 
     // Import component styles from addon
     app.import('vendor/assets/ember-osf.css');
