@@ -7,7 +7,6 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
-import trunc from 'npm:unicode-byte-truncate';
 
 const { PromiseArray } = DS;
 
@@ -22,28 +21,6 @@ const { PromiseArray } = DS;
  * @param queryParams.key[1] {int}
  * @return {string}
  */
-function queryStringify(queryParams) {
-    const query = [];
-    // TODO set up ember to transpile Object.entries
-    Object.keys(queryParams).forEach((param) => {
-        let value = queryParams[param];
-        let maxLength = null;
-
-        if (Array.isArray(value)) {
-            [value, maxLength] = value;
-        }
-
-        if (!value) { return; }
-
-        value = encodeURIComponent(value);
-
-        if (maxLength) { value = value.slice(0, maxLength); }
-
-        query.push(`${param}=${value}`);
-    });
-
-    return query.join('&');
-}
 
 const DATE_LABEL = {
     created: 'content.date_label.created_on',
@@ -73,8 +50,22 @@ export default Controller.extend(Analytics, {
     activeFile: null,
     chosenFile: null,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
-
     hasTag: computed.bool('model.tags.length'),
+    metricsExtra: computed('model', function() {
+        return this.get('model.id');
+    }),
+    title: computed('model', function() {
+        return this.get('model.title');
+    }),
+    fullDescription: computed('model', function() {
+        return this.get('model.description');
+    }),
+    hyperlink: computed('model', function() {
+        return window.location.href;
+    }),
+    facebookAppId: computed('model', function() {
+        return this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
+    }),
     dateLabel: computed('model.provider.reviewsWorkflow', function() {
         return this.get('model.provider.reviewsWorkflow') === PRE_MODERATION ?
             DATE_LABEL.submitted :
@@ -121,50 +112,6 @@ export default Controller.extend(Analytics, {
         );
     }),
 
-    twitterHref: computed('model', function() {
-        const queryParams = {
-            url: window.location.href,
-            text: this.get('model.title'),
-            via: 'OSFramework',
-        };
-        return `https://twitter.com/intent/tweet?${queryStringify(queryParams)}`;
-    }),
-    /* TODO: Update this with new Facebook Share Dialog, but an App ID is required
-     * https://developers.facebook.com/docs/sharing/reference/share-dialog
-     */
-    facebookHref: computed('model', function() {
-        const facebookAppId = this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
-        const queryParams = {
-            app_id: facebookAppId,
-            display: 'popup',
-            href: window.location.href,
-            redirect_uri: window.location.href,
-        };
-
-        return `https://www.facebook.com/dialog/share?${queryStringify(queryParams)}`;
-    }),
-    // https://developer.linkedin.com/docs/share-on-linkedin
-    linkedinHref: computed('model', function() {
-        const queryParams = {
-            url: [window.location.href, 1024], // required
-            mini: ['true', 4], // required
-            title: trunc(this.get('model.title'), 200), // optional
-            summary: trunc(this.get('model.description'), 256), // optional
-            source: ['Open Science Framework', 200], // optional
-        };
-
-        return `https://www.linkedin.com/shareArticle?${queryStringify(queryParams)}`;
-    }),
-    emailHref: computed('model', function() {
-        const queryParams = {
-            subject: this.get('model.title'),
-            body: window.location.href,
-        };
-
-        return `mailto:?${queryStringify(queryParams)}`;
-    }),
-    // The currently selected file (defaults to primary)
-
     disciplineReduced: computed('model.subjects', function() {
         // Preprint disciplines are displayed in collapsed form on content page
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
@@ -204,6 +151,12 @@ export default Controller.extend(Analytics, {
         return this.get('model.description')
             .slice(0, 350)
             .replace(/\s+\S*$/, '');
+    }),
+
+    emailHref: computed('model', function() {
+        const titleEncoded = encodeURIComponent(this.get('model.title'));
+        const hrefEncoded = encodeURIComponent(window.location.href);
+        return `mailto:?subject=${titleEncoded}&body=${hrefEncoded}`;
     }),
 
     actions: {
