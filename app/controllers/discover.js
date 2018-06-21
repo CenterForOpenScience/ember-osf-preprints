@@ -413,7 +413,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
             } else if (this.get('themeProvider.id') === 'osf') {
                 let osfProviderSources = [themeProvider.get('shareSource') || 'OSF'];
 
-                osfProviderSources = osfProviderSources.concat(this.get('fetchedProviders')
+                osfProviderSources = osfProviderSources.concat(this.get('externalProviders')
                     .map(provider => provider.get('shareSource') || provider.get('name')));
 
                 sources = this.get('whiteListedProviders') ?
