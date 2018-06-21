@@ -9,7 +9,7 @@ import config from 'ember-get-config';
 import QueryParams from 'ember-parachute';
 import { task, timeout } from 'ember-concurrency';
 
-import { getSplitParams, encodeParams, getFilter } from 'ember-osf/utils/elastic-query';
+import { getSplitParams, encodeParams, getFilter } from '../utils/elastic-query';
 
 /**
  * @module ember-preprints
@@ -50,10 +50,22 @@ const filterQueryParams = {
     subject: {
         defaultValue: [],
         refresh: true,
+        serialize(value) {
+            return value.join('OR');
+        },
+        deserialize(value) {
+            return value.split('OR');
+        },
     },
     provider: {
-        defaultValue: '',
+        defaultValue: [],
         refresh: true,
+        serialize(value) {
+            return value.join('OR');
+        },
+        deserialize(value) {
+            return value.split('OR');
+        },
     },
     type: {
         defaultValue: [],
@@ -97,6 +109,7 @@ export const discoverQueryParams = new QueryParams(
         q: {
             defaultValue: '',
             refresh: true,
+            replace: true,
         },
         size: {
             defaultValue: 10,
@@ -111,13 +124,13 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     currentUser: service(),
     // q query param.  Must be passed to component, so can be reflected in URL
     // queryParams: ['page', 'q', 'sources', 'tags', 'type', 'start', 'end', 'subject', 'provider'],
-    activeFilters: { providers: [], subjects: [] },
+    activeFilters: { provider: [], subject: [] },
     consumingService: 'preprints',
     detailRoute: 'content',
 
     filterMap: { // Map active filters to facet names expected by SHARE
-        providers: 'sources',
-        subjects: 'subjects',
+        provider: 'sources',
+        subject: 'subjects',
     },
 
     // TODO: Add a conversion from shareSource to provider names here if desired
@@ -173,11 +186,11 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
         } else { // Regular preprints and branded preprints get provider and taxonomy facets
             return [
                 {
-                    key: 'sources',
+                    key: 'provider',
                     title: `${this.get('i18n').t('discover.main.providers')}`,
                     component: 'search-facet-provider',
                 }, {
-                    key: 'subjects',
+                    key: 'subject',
                     title: `${this.get('i18n').t('discover.main.subject')}`,
                     component: 'search-facet-taxonomy',
                 },
@@ -353,13 +366,13 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
         Object.keys(filterMap).forEach((key) => {
             const val = filterMap[key];
             const filterList = activeFilters[key];
-            this.set(key, filterList.join('OR'));
+            this.set(key, filterList);
 
-            if (!filterList.length || (key === 'providers' && this.get('theme.isProvider'))) {
+            if (!filterList.length || (key === 'provider' && this.get('theme.isProvider'))) {
                 return;
             }
 
-            if (val === 'subjects') {
+            if (val === 'subject') {
                 const matched = [];
                 for (const filter of filterList) {
                     matched.push({

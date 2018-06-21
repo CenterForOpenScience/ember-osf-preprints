@@ -1,9 +1,11 @@
 {{#each sortedList as |pair|}}
     <div class="subject row m-b-sm">
-        {{#each pair as |addProvider|}}
+        {{#each pair as |provider|}}
             <div class="col-xs-12 col-sm-6 subject-item">
-                {{#link-to (route-prefix 'discover') (query-params sources=addProvider) class='btn btn-primary p-sm' invokeAction=(action "click" "link" (concat 'Index - Browse Additional Providers ' addProvider))}}
-                    {{addProvider}}
+                {{log pair}}
+                {{log provider}}
+                {{#link-to (route-prefix 'discover') (query-params sources=provider) class='btn btn-primary p-sm' invokeAction=(action "click" "link" (concat 'Index - Browse Additional Providers ' provider))}}
+                    {{provider}}
                 {{/link-to}}
             </div>
         {{/each}}

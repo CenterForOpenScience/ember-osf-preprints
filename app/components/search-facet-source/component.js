@@ -62,7 +62,8 @@ export default TypeaheadComponent.extend({
             });
             this.set('donut', donut);
         } catch (e) {
-            console.log(e);
+            // eslint-disable-next-line no-console
+            console.debug(e);
         }
     },
 });

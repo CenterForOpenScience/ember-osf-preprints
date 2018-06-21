@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 
-import { getUniqueList } from 'ember-osf/utils/elastic-query';
+import { getUniqueList } from '../../utils/elastic-query';
 
 /**
  * Copied from Ember-SHARE.  Type facet.

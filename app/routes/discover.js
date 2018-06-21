@@ -12,11 +12,6 @@ import ResetScrollMixin from '../mixins/reset-scroll';
  * @class Discover Route Handler
  */
 export default Route.extend(Analytics, ResetScrollMixin, {
-    queryParams: {
-        queryString: {
-            replace: true,
-        },
-    },
     model() {
         return this
             .get('store')
