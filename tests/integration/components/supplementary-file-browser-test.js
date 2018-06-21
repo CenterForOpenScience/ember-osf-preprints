@@ -1,6 +1,15 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 
+const themeStub = Ember.Service.extend({
+    isProvider: true,
+    provider: Ember.RSVP.resolve(Ember.Object.create({
+        name: 'OSF',
+        allowCommenting: false,
+        additionalProviders: ['Other Provider'],
+    })),
+});
+
 moduleForComponent('supplementary-file-browser', 'Integration | Component | supplementary file browser', {
     integration: true,
     beforeEach: function() {
@@ -35,6 +44,9 @@ moduleForComponent('supplementary-file-browser', 'Integration | Component | supp
             id: 890
         });
         let dualTrackNonContributors = () => {};
+
+        this.register('service:theme', themeStub);
+        this.inject.service('theme');
 
         this.set('preprint', preprint);
         this.set('node', node);
