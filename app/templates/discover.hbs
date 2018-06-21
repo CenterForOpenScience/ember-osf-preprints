@@ -1,34 +1,41 @@
 {{title 'Search'}}
 
 {{discover-page
-    activeFilters=activeFilters
     consumingService=consumingService
+    searchPlaceholder=searchPlaceholder
     detailRoute=detailRoute
     discoverHeader=discoverHeader
-    facets=facets
-    results=results
-    numberOfResults=numberOfResults
-    fetchedProviders=externalProviders
+    themeProvider=themeProvider
+
+    sortOptions=sortOptions
+    activeFilters=activeFilters
     filterMap=filterMap
     filterReplace=filterReplace
     lockedParams=lockedParams
-    searchPlaceholder=searchPlaceholder
-    showActiveFilters=showActiveFilters
-    sortOptions=sortOptions
-    themeProvider=themeProvider
     whiteListedProviders=whiteListedProviders
+    fetchedProviders=externalProviders
+
+    facets=facets
+    results=results
+    numberOfResults=numberOfResults
     aggregations=aggregations
     queryParamsState=queryParamsState
+
+    showActiveFilters=showActiveFilters
     loading=fetchData.isRunning
-    clearFilters=clearFilters
+
+    clearFilters=(action 'clearFilters')
+    search=(action 'search')
+
     tags=tags
     sources=sources
-    size=size
-    page=page
     start=start
     end=end
     type=type
-    q=q
     subject=subject
     provider=provider
+    q=q
+    size=size
+    page=page
+    sort=sort
 }}

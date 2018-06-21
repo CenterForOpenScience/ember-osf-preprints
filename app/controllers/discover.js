@@ -36,8 +36,6 @@ const elasticAggregations = {
     },
 };
 
-const filterQueryParamsList = ['tags', 'sources', 'type', 'subject', 'provider'];
-
 const filterQueryParams = {
     start: {
         defaultValue: '',
@@ -115,6 +113,10 @@ export const discoverQueryParams = new QueryParams(
             defaultValue: 10,
             refresh: true,
         },
+        sort: {
+            defaultValue: '',
+            refresh: true,
+        },
     },
 );
 
@@ -122,8 +124,8 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     i18n: service(),
     theme: service(),
     currentUser: service(),
-    // q query param.  Must be passed to component, so can be reflected in URL
-    // queryParams: ['page', 'q', 'sources', 'tags', 'type', 'start', 'end', 'subject', 'provider'],
+    metrics: service(),
+
     activeFilters: { provider: [], subject: [] },
     consumingService: 'preprints',
     detailRoute: 'content',
@@ -143,7 +145,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
 
     queryParamsChanged: computed.or('queryParamsState.{page,sort,q,tags,sources,type,start,end,subject,provider}.changed'),
 
-    additionalProviders: computed('themeProvider', function() { // Do additionalProviders exist?
+    additionalProviders: computed('themeProvider', function() {
         // for now, using this property to alter many pieces of the landing/discover page
         return (this.get('themeProvider.additionalProviders') || []).length > 1;
     }),
@@ -160,8 +162,8 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     }),
 
     facets: computed('i18n.locale', 'additionalProviders', function() {
-        // if additionalProviders exist, use subset of SHARE facets (LiveData)
         if (this.get('additionalProviders')) {
+            // if additionalProviders exist, use subset of SHARE facets (LiveData)
             return [
                 {
                     key: 'sources',
@@ -183,7 +185,8 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
                     component: 'search-facet-typeahead',
                 },
             ];
-        } else { // Regular preprints and branded preprints get provider and taxonomy facets
+        } else {
+            // Regular preprints and branded preprints get provider and taxonomy facets
             return [
                 {
                     key: 'provider',
@@ -200,8 +203,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
 
     lockedParams: computed('additionalProviders', function() {
         // Query parameters that cannot be changed.
-        // if additionalProviders, open up search results to all
-        // types of results instead of just preprints.
+        // if additionalProviders, search for all types
         return this.get('additionalProviders') ? {} : {
             bool: {
                 should: [
@@ -258,6 +260,9 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     actions: {
         clearFilters() {
             this.resetQueryParams();
+        },
+        search() {
+            this.get('fetchData').perform(this.get('queryParams'));
         },
     },
 
