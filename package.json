@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.118.6",
+  "version": "0.118.7",
   "description": "Center for Open Science Preprint Service",
   "private": true,
   "directories": {
@@ -75,7 +75,7 @@
     "ember-i18n": "4.3.1",
     "ember-link-action": "0.0.35",
     "ember-load-initializers": "0.5.1",
-    "ember-metrics": "0.6.3",
+    "ember-metrics": "https://github.com/cos-forks/ember-metrics#v0.12.1+cos0",
     "ember-moment": "7.3.1",
     "ember-onbeforeunload": "1.1.2",
     "ember-page-title": "3.0.6",

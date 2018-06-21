@@ -50,8 +50,12 @@ module.exports = function(environment) {
                 name: 'GoogleAnalytics',
                 environments: [process.env.KEEN_ENVIRONMENT] || ['production'],
                 config: {
-                    id: process.env.GOOGLE_ANALYTICS_ID
-                }
+                    id: process.env.GOOGLE_ANALYTICS_ID,
+                    setFields: {
+                        // Ensure the IP address of the sender will be anonymized.
+                        anonymizeIp: true,
+                    },
+                },
             },
             {
                 name: 'Keen',
