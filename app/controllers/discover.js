@@ -515,7 +515,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
                         result.hyperLinks.push({ url: identifier });
                     } else {
                         const spl = identifier.split('://');
-                        const [type, uri, ..._] = spl;
+                        const [type, uri] = spl;
                         result.infoLinks.push({ type, uri });
                     }
                 });
@@ -532,7 +532,11 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
 
                 // Temporary fix to handle half way migrated SHARE ES
                 // Only false will result in a false here.
-                result.contributors.map(contributor => contributor.users.bibliographic = !(contributor.users.bibliographic === false));
+                result.contributors.map((contributor) => {
+                    const contrib = contributor;
+                    contrib.users.bibliographic = !(contributor.users.bibliographic === false);
+                    return contrib;
+                });
 
                 return result;
             });
