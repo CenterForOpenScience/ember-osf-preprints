@@ -1,10 +1,10 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Analytics from 'ember-osf/mixins/analytics';
 import { merge } from '@ember/polyfills';
 import { camelize } from '@ember/string';
 
+import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
 import QueryParams from 'ember-parachute';
 import { task, timeout } from 'ember-concurrency';
