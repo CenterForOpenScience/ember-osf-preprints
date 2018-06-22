@@ -126,7 +126,6 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     currentUser: service(),
     metrics: service(),
 
-    // activeFilters: ['provider', 'subject'],
     consumingService: 'preprints',
     detailRoute: 'content',
 
@@ -465,6 +464,16 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
         }
 
         return this.set('queryBody', queryBody);
+    },
+
+    trackDebouncedSearch() {
+        // For use in tracking debounced search of registries in Keen and GA
+        this.get('metrics').trackEvent({
+            category: 'input',
+            action: 'onkeyup',
+            label: 'Discover - Search',
+            extra: this.get('q'),
+        });
     },
 
     fetchData: task(function* (queryParams) {
