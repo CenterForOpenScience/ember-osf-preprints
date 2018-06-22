@@ -118,7 +118,9 @@ export default Ember.Component.extend(Analytics, {
 
     didReceiveAttrs() {
         this.get('theme.provider').then( provider => {
-            this.set('allowCommenting', provider.get('allowCommenting'));
+            // NOTE: the public check will likely need to be removed after the node-preprint divorce
+            const publishedAndPublic = this.get('preprint.isPublished') && this.get('node.public');
+            this.set('allowCommenting', provider.get('allowCommenting') && publishedAndPublic);
         });
     },
 
