@@ -126,7 +126,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
     currentUser: service(),
     metrics: service(),
 
-    activeFilters: { provider: [], subject: [] },
+    // activeFilters: ['provider', 'subject'],
     consumingService: 'preprints',
     detailRoute: 'content',
 
@@ -353,31 +353,31 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
         let filters = this.buildLockedQueryBody(this.get('lockedParams')); // Empty list if no locked query parameters
         // From Ember-SHARE. Looks at facetFilters
         // (partial SHARE queries already built) and adds them to query body
-        const facetFilters = this.constructFacetFilters();
-        for (const k of Object.keys(facetFilters)) {
-            const filter = facetFilters[k];
-            if (filter) {
-                if ($.isArray(filter)) {
-                    filters = filters.concat(filter);
-                } else {
-                    filters.push(filter);
+        if (this.get('additionalProviders')) {
+            const facetFilters = this.constructFacetFilters();
+            for (const k of Object.keys(facetFilters)) {
+                const filter = facetFilters[k];
+                if (filter) {
+                    if ($.isArray(filter)) {
+                        filters = filters.concat(filter);
+                    } else {
+                        filters.push(filter);
+                    }
                 }
             }
         }
 
-        // For PREPRINTS and REGISTRIES.  Adds activeFilters to query body.
-        const activeFilters = this.get('activeFilters');
+        // For PREPRINTS and REGISTRIES.
         const filterMap = this.get('filterMap');
         Object.keys(filterMap).forEach((key) => {
             const val = filterMap[key];
-            const filterList = activeFilters[key];
-            this.set(key, filterList);
+            const filterList = this.get(key);
 
             if (!filterList.length || (key === 'provider' && this.get('theme.isProvider'))) {
                 return;
             }
 
-            if (val === 'subject') {
+            if (val === 'subjects') {
                 const matched = [];
                 for (const filter of filterList) {
                     matched.push({
@@ -499,7 +499,6 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
                         },
                     ],
                     infoLinks: [], // Links that are not hyperlinks  hit._source.lists.links
-                    registrationType: hit._source.registration_type, // For REGISTRIES
                 });
 
                 hit._source.identifiers.forEach(function(identifier) {
