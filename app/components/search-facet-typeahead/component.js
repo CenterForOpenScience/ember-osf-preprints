@@ -4,8 +4,9 @@ import { computed } from '@ember/object';
 import { isBlank } from '@ember/utils';
 
 import { task, timeout } from 'ember-concurrency';
-
+import $ from 'jquery';
 import config from 'ember-get-config';
+
 import { getUniqueList } from '../../utils/elastic-query';
 
 

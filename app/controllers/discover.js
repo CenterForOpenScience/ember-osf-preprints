@@ -8,6 +8,7 @@ import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
 import QueryParams from 'ember-parachute';
 import { task, timeout } from 'ember-concurrency';
+import $ from 'jquery';
 
 import { getSplitParams, encodeParams, getFilter } from '../utils/elastic-query';
 
@@ -250,7 +251,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
         return themeProvider;
     }),
 
-    searchUrl: computed(function() {
+    searchUrl: computed('currentUser.sessionKey', function() {
         // Pulls SHARE search url from config file.
         const preference = this.get('currentUser.sessionKey');
         return `${config.OSF.shareSearchUrl}?preference=${preference}`;
