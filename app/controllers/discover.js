@@ -275,6 +275,10 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
             this.set('page', 1);
         }
 
+        if (changed.q) {
+            this.get('trackDebouncedSearch').perform();
+        }
+
         if (shouldRefresh) {
             this.get('fetchData').perform(queryParams);
         }
@@ -467,15 +471,15 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
         return this.set('queryBody', queryBody);
     },
 
-    trackDebouncedSearch() {
-        // For use in tracking debounced search of registries in Keen and GA
+    trackDebouncedSearch: task(function* () {
+        yield timeout(DEBOUNCE_MS);
         this.get('metrics').trackEvent({
             category: 'input',
             action: 'onkeyup',
             label: 'Discover - Search',
             extra: this.get('q'),
         });
-    },
+    }).restartable(),
 
     fetchData: task(function* (queryParams) {
         yield timeout(DEBOUNCE_MS);
