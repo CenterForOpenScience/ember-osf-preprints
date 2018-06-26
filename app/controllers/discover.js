@@ -292,8 +292,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
 
     buildLockedQueryBody(lockedParams) {
         /**
-         *  For PREPRINTS, REGISTRIES, RETRACTION WATCH
-         *  services where portion of query is restricted.
+         *  For services where portion of query is restricted.
          *  Builds the locked portion of the query.
          *  For example, in preprints, types=['preprint', 'thesis']
          *  is something that cannot be modified by the user.
@@ -371,7 +370,6 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
             }
         }
 
-        // For PREPRINTS and REGISTRIES.
         const filterMap = this.get('filterMap');
         Object.keys(filterMap).forEach((key) => {
             const val = filterMap[key];
@@ -405,7 +403,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
             }
         });
 
-        // For PREPRINTS and REGISTRIES. If theme.isProvider, add provider(s) to query body
+        // If theme.isProvider, add provider(s) to query body
         if (this.get('themeProvider')) {
             const themeProvider = this.get('themeProvider');
             let sources = [];
@@ -503,7 +501,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
                     abstract: hit._source.description,
                     subjects: hit._source.subjects.map(each => ({ text: each })),
                     subject_synonyms: hit._source.subject_synonyms.map(each => ({ text: each })),
-                    providers: hit._source.sources.map(item => ({ // PREPRINTS, REGISTRIES
+                    providers: hit._source.sources.map(item => ({
                         name: item,
                     })),
                     hyperLinks: [ // Links that are hyperlinks from hit._source.lists.links
