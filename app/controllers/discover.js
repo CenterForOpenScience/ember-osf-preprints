@@ -1,14 +1,14 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { merge } from '@ember/polyfills';
-import { camelize } from '@ember/string';
 
-import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
 import QueryParams from 'ember-parachute';
 import { task, timeout } from 'ember-concurrency';
 import $ from 'jquery';
+
+import Analytics from 'ember-osf/mixins/analytics';
+import { transformShareData, buildLockedQueryBody, constructBasicFilters, buildQueryBody } from 'ember-osf/utils/discover-page';
 
 import { getSplitParams, encodeParams, getFilter } from '../utils/elastic-query';
 
@@ -25,17 +25,7 @@ import { getSplitParams, encodeParams, getFilter } from '../utils/elastic-query'
  * (https://github.com/CenterForOpenScience/ember-share/blob/develop/app/controllers/discover.js)
  * and the existing preprints interface
  */
-const MAX_SOURCES = 500;
 const DEBOUNCE_MS = 250;
-
-const elasticAggregations = {
-    sources: {
-        terms: {
-            field: 'sources',
-            size: MAX_SOURCES,
-        },
-    },
-};
 
 const filterQueryParams = {
     start: {
@@ -96,10 +86,6 @@ const filterQueryParams = {
             return getSplitParams(value) || [];
         },
     },
-    page: {
-        defaultValue: 1,
-        refresh: true,
-    },
 };
 
 export const discoverQueryParams = new QueryParams(
@@ -116,6 +102,10 @@ export const discoverQueryParams = new QueryParams(
         },
         sort: {
             defaultValue: '',
+            refresh: true,
+        },
+        page: {
+            defaultValue: 1,
             refresh: true,
         },
     },
@@ -262,7 +252,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
             this.resetQueryParams();
         },
         search() {
-            this.get('fetchData').perform(this.get('queryParams'));
+            this.get('fetchData').perform(this.get('allQueryParams'));
         },
     },
 
@@ -288,38 +278,6 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
         if (isExiting) {
             this.resetQueryParams();
         }
-    },
-
-    buildLockedQueryBody(lockedParams) {
-        /**
-         *  For services where portion of query is restricted.
-         *  Builds the locked portion of the query.
-         *  For example, in preprints, types=['preprint', 'thesis']
-         *  is something that cannot be modified by the user.
-         *
-         *  @method buildLockedQueryBody
-         *  @param {Object} lockedParams - Locked param keys matched to the locked value.
-         *  @return {Object} queryBody - locked portion of query body
-        */
-        const queryBody = [];
-        Object.keys(lockedParams).forEach((key) => {
-            const query = {};
-            let queryKey = [`${key}`];
-            if (key === 'tags') {
-                queryKey = key;
-            } else if (key === 'contributors') {
-                queryKey = 'lists.contributors.name';
-            }
-            query[queryKey] = lockedParams[key];
-            if (key === 'bool') {
-                queryBody.push(query);
-            } else {
-                queryBody.push({
-                    terms: query,
-                });
-            }
-        });
-        return queryBody;
     },
 
     constructFacetFilters() {
@@ -353,7 +311,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
          * @method getQueryBody
          * @return queryBody
          */
-        let filters = this.buildLockedQueryBody(this.get('lockedParams')); // Empty list if no locked query parameters
+        let lockedFilters = buildLockedQueryBody(this.get('lockedParams')); // Empty list if no locked query parameters
         // From Ember-SHARE. Looks at facetFilters
         // (partial SHARE queries already built) and adds them to query body
         if (this.get('additionalProviders')) {
@@ -362,46 +320,20 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
                 const filter = facetFilters[k];
                 if (filter) {
                     if ($.isArray(filter)) {
-                        filters = filters.concat(filter);
+                        lockedFilters = lockedFilters.concat(filter);
                     } else {
-                        filters.push(filter);
+                        lockedFilters.push(filter);
                     }
                 }
             }
         }
 
-        const filterMap = this.get('filterMap');
-        Object.keys(filterMap).forEach((key) => {
-            const val = filterMap[key];
-            const filterList = this.get(key);
-
-            if (!filterList.length || (key === 'provider' && this.get('theme.isProvider'))) {
-                return;
-            }
-
-            if (val === 'subjects') {
-                const matched = [];
-                for (const filter of filterList) {
-                    matched.push({
-                        match: {
-                            [val]: filter,
-                        },
-                    });
-                }
-
-                filters.push({
-                    bool: {
-                        should: matched,
-                    },
-                });
-            } else {
-                filters.push({
-                    terms: {
-                        [val]: filterList,
-                    },
-                });
-            }
-        });
+        const filters = constructBasicFilters(
+            this.get('filterMap'),
+            lockedFilters,
+            this.get('theme.isProvider'),
+            queryParams,
+        );
 
         // If theme.isProvider, add provider(s) to query body
         if (this.get('themeProvider')) {
@@ -435,38 +367,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
             });
         }
 
-        let query = {
-            query_string: {
-                query: queryParams.q || '*',
-            },
-        };
-
-        if (filters.length) {
-            query = {
-                bool: {
-                    must: query,
-                    filter: filters,
-                },
-            };
-        }
-
-        const page = this.get('page');
-        const queryBody = {
-            query,
-            from: (page - 1) * this.get('size'),
-        };
-
-        if (this.get('sort')) {
-            const sortBy = {};
-            sortBy[this.get('sort').replace(/^-/, '')] = this.get('sort')[0] === '-' ? 'desc' : 'asc';
-            queryBody.sort = sortBy;
-        }
-
-        if (page === 1 || this.get('firstLoad')) {
-            queryBody.aggregations = elasticAggregations;
-        }
-
-        return this.set('queryBody', queryBody);
+        return buildQueryBody(queryParams, filters, this.get('queryParamsChanged'));
     },
 
     trackDebouncedSearch: task(function* () {
@@ -481,7 +382,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
 
     fetchData: task(function* (queryParams) {
         yield timeout(DEBOUNCE_MS);
-        const queryBody = JSON.stringify(this.getQueryBody(queryParams));
+        const queryBody = this.getQueryBody(queryParams);
 
         try {
             const response = yield $.ajax({
@@ -493,55 +394,8 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
             });
 
             const results = response.hits.hits.map((hit) => {
-                // HACK: Make share data look like apiv2 preprints data
-                const result = merge(hit._source, {
-                    id: hit._id,
-                    type: 'elastic-search-result',
-                    workType: hit._source['@type'],
-                    abstract: hit._source.description,
-                    subjects: hit._source.subjects.map(each => ({ text: each })),
-                    subject_synonyms: hit._source.subject_synonyms.map(each => ({ text: each })),
-                    providers: hit._source.sources.map(item => ({
-                        name: item,
-                    })),
-                    hyperLinks: [ // Links that are hyperlinks from hit._source.lists.links
-                        {
-                            type: 'share',
-                            url: `${config.OSF.shareBaseUrl}${hit._source.type.replace(/ /g, '')}/${hit._id}`,
-                        },
-                    ],
-                    infoLinks: [], // Links that are not hyperlinks  hit._source.lists.links
-                });
-
-                hit._source.identifiers.forEach(function(identifier) {
-                    if (identifier.startsWith('http://')) {
-                        result.hyperLinks.push({ url: identifier });
-                    } else {
-                        const spl = identifier.split('://');
-                        const [type, uri] = spl;
-                        result.infoLinks.push({ type, uri });
-                    }
-                });
-
-                result.contributors = result.lists.contributors ? result.lists.contributors
-                    .sort((b, a) => (b.order_cited || -1) - (a.order_cited || -1))
-                    .map(contributor => ({
-                        users: Object.keys(contributor)
-                            .reduce(
-                                (acc, key) => merge(acc, { [camelize(key)]: contributor[key] }),
-                                { bibliographic: contributor.relation !== 'contributor' },
-                            ),
-                    })) : [];
-
-                // Temporary fix to handle half way migrated SHARE ES
-                // Only false will result in a false here.
-                result.contributors.map((contributor) => {
-                    const contrib = contributor;
-                    contrib.users.bibliographic = !(contributor.users.bibliographic === false);
-                    return contrib;
-                });
-
-                return result;
+                // Make share data look like apiv2 preprints data
+                return transformShareData(hit);
             });
 
             if (response.aggregations) {

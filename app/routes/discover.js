@@ -17,11 +17,4 @@ export default Route.extend(Analytics, ResetScrollMixin, {
             .get('store')
             .findAll('preprint-provider', { reload: true });
     },
-    actions: {
-        willTransition() {
-            const controller = this.controllerFor('discover');
-            controller._clearFilters();
-            controller._clearQueryString();
-        },
-    },
 });
