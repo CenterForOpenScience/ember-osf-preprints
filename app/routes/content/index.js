@@ -59,10 +59,12 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         this.set('fileDownloadURL', downloadUrl);
         this.set('preprint', preprint);
 
-        return preprint.get('provider')
-            .then(this._getProviderDetails.bind(this))
-            .then(this._getUserPermissions.bind(this))
-            .then(this._setupMetaData.bind(this));
+        if (!preprint.get('dateWithdrawn')) {
+            return preprint.get('provider')
+                .then(this._getProviderDetails.bind(this))
+                .then(this._getUserPermissions.bind(this))
+                .then(this._setupMetaData.bind(this));
+        }
     },
 
     setupController(controller, model) {
@@ -70,6 +72,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
             activeFile: model.get('primaryFile'),
             node: this.get('node'),
             fileDownloadURL: this.get('fileDownloadURL'),
+            isWithdrawn: model.get('dateWithdrawn') != null,
         });
 
         run.scheduleOnce('afterRender', this, function() {

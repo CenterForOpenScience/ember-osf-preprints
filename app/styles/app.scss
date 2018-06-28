@@ -391,6 +391,17 @@ $color-border-light: #DDDDDD;
     }
 }
 
+.preprint-status-withdrawn {
+    background-color: $color-alert-bg-warning;
+    border: 1px solid $color-alert-border-warning;
+    color: $color-alert-text-warning;
+
+    .status-icon {
+        -webkit-text-stroke: 1px $color-alert-text-warning;
+        font-size: 14px;
+    }
+}
+
 .preprint-status-component {
     margin-top: -15px;
     margin-bottom: 15px;

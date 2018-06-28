@@ -14,6 +14,7 @@ export default {
         none: 'None',
         abstract: 'Abstract',
         doi: 'DOI',
+        reason_for_withdrawal: 'Reason for withdrawal',
         tags: 'Tags',
         search: 'Search',
         preprints,
@@ -42,6 +43,7 @@ export default {
     content: {
         header: {
             last_edited: 'Last edited',
+            withdrawn_on: 'Withdrawn on',
         },
         date_label: {
             created_on: 'Created on',
@@ -57,6 +59,7 @@ export default {
         see_less: 'See less',
         version: 'Version',
         preprint_doi: '{{documentType.singularCapitalized}} DOI',
+        preprint_doi_default: 'Preprint DOI',
         article_doi: 'Peer-reviewed Publication DOI',
         preprint_pending_doi: 'DOI created after {{documentType.singular}} is made public',
         preprint_pending_doi_moderation: 'DOI created after moderator approval',
@@ -396,6 +399,7 @@ export default {
                 pending_post: 'is publicly available and searchable but is subject to removal by a moderator',
                 accepted: 'has been accepted by a moderator and is publicly available and searchable',
                 rejected: 'has been rejected by a moderator and is not publicly available or searchable',
+                withdrawn: 'This preprint has been withdrawn by the author(s).',
             },
             pending: 'pending',
             accepted: 'accepted',

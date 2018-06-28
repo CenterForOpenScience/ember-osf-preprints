@@ -3,37 +3,44 @@
         {{#if submission.provider.isPending}}
             Loading...
         {{else}}
-            <div class="status-explanation">
-                <i class="fa {{icon}} status-icon" aria-hidden="true"></i>
-                <strong>{{t status}}:</strong>
-                <span>{{bannerContent}}</span>
-            </div>
-            {{#if (and reviewerComment (not submission.provider.reviewsCommentsPrivate))}}
-                <div class="dropdown reviewer-feedback">
-                    <button class="btn btn-default dropdown-toggle feedback-btn" type="button" data-toggle="dropdown">
-                        {{t labelModeratorFeedback}} <i class="fa fa-caret-down" aria-hidden="true"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <div class="feedback-header">
-                            <span id="moderator-feedback">{{t labelModeratorFeedback}}</span>
-                            <a role="button" aria-label="Close" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                        <div class="status p-md">
-                            <strong>{{t status}}</strong>
-                            <div>{{t feedbackBaseMessage documentType=submission.provider.documentType}} {{t statusExplanation}}.</div>
-                        </div>
-                        <div class="moderator-comment" aria-labelledby="moderator-feedback">
-                            <p>{{reviewerComment}}</p>
-                            {{#if (not submission.provider.reviewsCommentsAnonymous)}}
-                                <div>{{reviewerName}}</div>
-                            {{/if}}
-                            {{if theme.isProvider theme.provider.name (t "global.brand_name")}} {{t moderator}}
-                        </div>
-                        <div class="feedback-footer p-md"></div>
-                    </div>
+            {{#if isWithdrawn}}
+                <div class="status-explanation">
+                    <i class="fa {{icon}} status-icon" aria-hidden="true"></i>
+                    <span style="padding-left: 5px">{{bannerContent}}</span>
                 </div>
+            {{else}}
+                <div class="status-explanation">
+                    <i class="fa {{icon}} status-icon" aria-hidden="true"></i>
+                    <strong>{{t status}}:</strong>
+                    <span>{{bannerContent}}</span>
+                </div>
+                {{#if (and reviewerComment (not submission.provider.reviewsCommentsPrivate))}}
+                    <div class="dropdown reviewer-feedback">
+                        <button class="btn btn-default dropdown-toggle feedback-btn" type="button" data-toggle="dropdown">
+                            {{t labelModeratorFeedback}} <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <div class="feedback-header">
+                                <span id="moderator-feedback">{{t labelModeratorFeedback}}</span>
+                                <a role="button" aria-label="Close" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                            <div class="status p-md">
+                                <strong>{{t status}}</strong>
+                                <div>{{t feedbackBaseMessage documentType=submission.provider.documentType}} {{t statusExplanation}}.</div>
+                            </div>
+                            <div class="moderator-comment" aria-labelledby="moderator-feedback">
+                                <p>{{reviewerComment}}</p>
+                                {{#if (not submission.provider.reviewsCommentsAnonymous)}}
+                                    <div>{{reviewerName}}</div>
+                                {{/if}}
+                                {{if theme.isProvider theme.provider.name (t "global.brand_name")}} {{t moderator}}
+                            </div>
+                            <div class="feedback-footer p-md"></div>
+                        </div>
+                    </div>
+                {{/if}}
             {{/if}}
         {{/if}}
     </div>
