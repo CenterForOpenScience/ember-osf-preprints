@@ -73,7 +73,6 @@
     "ember-i18n": "^5.0.2",
     "ember-link-action": "^0.0.36",
     "ember-load-initializers": "^1.0.0",
-    "ember-metrics": "^0.6.3",
     "ember-moment": "^7.4.1",
     "ember-onbeforeunload": "^1.1.2",
     "ember-page-title": "^3.2.2",
