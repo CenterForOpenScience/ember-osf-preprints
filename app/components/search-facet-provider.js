@@ -20,7 +20,6 @@ const getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_strin
  * ```handlebars
  * {{search-facet-provider
  *      updateFilters=(action 'updateFilters')
- *      activeFilters=activeFilters
  *      options=facet
  *      filterReplace=filterReplace
  *      key=key
@@ -99,7 +98,6 @@ export default Component.extend(Analytics, {
             const filtered = providers.filter(item => item.key === this.get('theme.provider.name'));
 
             this.set('otherProviders', filtered);
-            this.get('activeFilters.providers').pushObject(filtered[0].key);
         }
         this.notifyPropertyChange('otherProviders');
     },

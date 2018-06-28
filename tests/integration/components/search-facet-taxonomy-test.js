@@ -45,12 +45,12 @@ moduleForComponent('search-facet-taxonomy', 'Integration | Component | search fa
     beforeEach() {
         this.register('service:theme', themeStub);
         this.inject.service('theme');
-        this.set('facet', { key: 'subjects', title: 'Subject', component: 'search-facet-taxonomy' });
+        this.set('facet', { key: 'subject', title: 'Subject', component: 'search-facet-taxonomy' });
         this.set('key', 'subjects');
         const noop = () => {};
         this.set('noop', noop);
-        this.set('activeFilters', { providers: [], subjects: [] });
         this.set('filterReplace', { 'Open Science Framework': 'OSF' });
+        this.set('state', { value: [] });
     },
 });
 
@@ -58,8 +58,8 @@ test('One-level hierarchy taxonomies', function(assert) {
     this.render(hbs`{{search-facet-taxonomy
         key=key
         options=facet
+        state=state
         updateFilters=(action noop)
-        activeFilters=activeFilters
         filterReplace=filterReplace
     }}`);
     assert.equal(this.$('label')[0].innerText.trim(), 'Arts and Humanities');

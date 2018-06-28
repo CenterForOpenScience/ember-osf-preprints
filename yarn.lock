@@ -78,9 +78,9 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-05-30T18:58:56Z":
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-06-28T13:31:22Z":
   version "0.17.0"
-  resolved "https://github.com/CenterForOpenScience/ember-osf.git#0de495595030a15c94a56b3a31f9b62ad701fb30"
+  resolved "https://github.com/CenterForOpenScience/ember-osf.git#4a918fe29e1ea7ba48833c6395aa2e08e82f6955"
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
@@ -2183,6 +2183,12 @@ bytes@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
 
+c3@^0.4.23:
+  version "0.4.23"
+  resolved "https://registry.yarnpkg.com/c3/-/c3-0.4.23.tgz#32ece135d0ac6d124187be5c6935903699643002"
+  dependencies:
+    d3 "~3.5.0"
+
 cache-base@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cache-base/-/cache-base-1.0.1.tgz#0a7f46416831c8b662ee36fe4e7c59d76f666ab2"
@@ -2796,6 +2802,10 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
+d3@~3.5.0:
+  version "3.5.17"
+  resolved "https://registry.yarnpkg.com/d3/-/d3-3.5.17.tgz#bc46748004378b21a360c9fc7cf5231790762fb8"
+
 d@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/d/-/d-1.0.0.tgz#754bb5bfe55451da69a58b94d45f4c5b0462d58f"
@@ -3124,6 +3134,14 @@ ember-basic-dropdown@^0.34.0:
     ember-cli-htmlbars "^2.0.3"
     ember-native-dom-helpers "^0.5.4"
     ember-wormhole "^0.5.2"
+
+ember-basic-dropdown@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ember-basic-dropdown/-/ember-basic-dropdown-1.0.1.tgz#413f929572028d613024966726992fb45351880c"
+  dependencies:
+    ember-cli-babel "^6.12.0"
+    ember-cli-htmlbars "^2.0.3"
+    ember-maybe-in-element "^0.1.3"
 
 ember-bootstrap-datepicker@^2.0.3:
   version "2.0.8"
@@ -3778,7 +3796,7 @@ ember-computed-style@^0.2.0:
   dependencies:
     ember-cli-babel "^5.1.7"
 
-ember-concurrency@^0.8.12, ember-concurrency@^0.8.7:
+ember-concurrency@^0.8.12, ember-concurrency@^0.8.19, ember-concurrency@^0.8.7:
   version "0.8.19"
   resolved "https://registry.yarnpkg.com/ember-concurrency/-/ember-concurrency-0.8.19.tgz#71b9c175ba077865310029cb4bdb880e17d5155e"
   dependencies:
@@ -4080,6 +4098,14 @@ ember-page-title@^3.2.2:
     ember-cli-head "^0.3.1"
     ember-cli-htmlbars "^2.0.1"
 
+ember-parachute@^0.3.7:
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/ember-parachute/-/ember-parachute-0.3.7.tgz#741e435210d4cd6e60bdf6956fd784d14751f20c"
+  dependencies:
+    ember-assign-polyfill "^2.0.1"
+    ember-cli-babel "^6.0.0"
+    ember-getowner-polyfill "^2.0.1"
+
 ember-popper@^0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/ember-popper/-/ember-popper-0.9.0.tgz#ec211e116bb3c4fb70a770e75134b94ddda079b5"
@@ -4100,7 +4126,7 @@ ember-popper@^0.9.0:
     fastboot-transform "^0.1.0"
     popper.js "^1.14.1"
 
-ember-power-select@^1.10.4, ember-power-select@^1.8.4:
+ember-power-select@^1.10.4:
   version "1.10.4"
   resolved "https://registry.yarnpkg.com/ember-power-select/-/ember-power-select-1.10.4.tgz#7f0bb8c55279375391f2d97591ed65f727061579"
   dependencies:
@@ -4108,6 +4134,17 @@ ember-power-select@^1.10.4, ember-power-select@^1.8.4:
     ember-cli-babel "^6.10.0"
     ember-cli-htmlbars "^2.0.1"
     ember-concurrency "^0.8.12"
+    ember-text-measurer "^0.4.0"
+    ember-truth-helpers "^2.0.0"
+
+ember-power-select@^2.0.0:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/ember-power-select/-/ember-power-select-2.0.3.tgz#a44b62d74ca286e1fdc4b8f3b0ea9a7cf53f34ed"
+  dependencies:
+    ember-basic-dropdown "^1.0.0"
+    ember-cli-babel "^6.11.0"
+    ember-cli-htmlbars "^2.0.1"
+    ember-concurrency "^0.8.19"
     ember-text-measurer "^0.4.0"
     ember-truth-helpers "^2.0.0"
 
@@ -4281,13 +4318,6 @@ ember-string-ishtmlsafe-polyfill@^2.0.0:
   dependencies:
     ember-cli-version-checker "^2.1.0"
 
-ember-tag-input@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/ember-tag-input/-/ember-tag-input-1.2.1.tgz#5130b3895f09663b809719abc3fc2a7bb3bd6a0f"
-  dependencies:
-    ember-cli-babel "^6.7.1"
-    ember-cli-htmlbars "^2.0.3"
-
 ember-template-lint@^0.8.16:
   version "0.8.18"
   resolved "https://registry.yarnpkg.com/ember-template-lint/-/ember-template-lint-0.8.18.tgz#634b3dac1195a150e110a6d93332db04f651bf81"
@@ -4319,7 +4349,7 @@ ember-toastr@^1.7.0:
     broccoli-merge-trees "^2.0.0"
     ember-cli-babel "^6.11.0"
 
-ember-truth-helpers@1.3.0, ember-truth-helpers@^1.2.0:
+ember-truth-helpers@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/ember-truth-helpers/-/ember-truth-helpers-1.3.0.tgz#6ed9f83ce9a49f52bb416d55e227426339a64c60"
   dependencies:

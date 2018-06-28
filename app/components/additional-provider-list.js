@@ -28,9 +28,11 @@ export default Component.extend(Analytics, {
         const pairedList = [];
         for (let i = 0; i < sortedList.get('length'); i += 2) {
             const pair = [];
-            pair.pushObject(sortedList.objectAt(i));
+            // provider in pair needs to be a list because that's
+            // what the discover controller is expecting
+            pair.pushObject([sortedList.objectAt(i)]);
             if (sortedList.objectAt(i + 1)) {
-                pair.pushObject(sortedList.objectAt(i + 1));
+                pair.pushObject([sortedList.objectAt(i + 1)]);
             }
             pairedList.pushObject(pair);
         }

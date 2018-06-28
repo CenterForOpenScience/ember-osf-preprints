@@ -6,7 +6,7 @@
                     <i class="taxonomy-caret fa {{if item.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
                 </span>
                 <label class="taxonomy-checkbox">
-                    <input type="checkbox" checked="{{if (if-filter (concat item.shareTitle "|" item.text) activeFilters.subjects) 'checked'}}" onclick={{action updateFilters 'subjects' (concat item.shareTitle "|" item.text)}}>
+                    <input type="checkbox" checked="{{if (if-filter (concat item.shareTitle "|" item.text) state.value) 'checked'}}" onclick={{action updateFilters 'subject' (concat item.shareTitle "|" item.text)}}>
                     {{item.text}}
                 </label>
             </li>
@@ -14,7 +14,7 @@
                 <ul>
                     {{#each item.children as |child|}}
                         <li>
-                            {{# if child.childCount }}
+                            {{#if child.childCount }}
                                 <span role="button" class="pointer m-r-xs {{if item.showChildren 'taxonomy-show-children'}}" {{action 'expand' child}}>
                                     <i class="taxonomy-caret fa {{if child.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
                                 </span>
@@ -22,7 +22,7 @@
                                 <span class="taxonomy-right-padding"></span>
                             {{/if}}
                             <label class="taxonomy-checkbox">
-                                <input type="checkbox" checked="{{if (if-filter (concat item.shareTitle "|" item.text "|" child.text) activeFilters.subjects) 'checked'}}" onclick={{action updateFilters 'subjects' (concat item.shareTitle "|" item.text "|" child.text)}}>
+                                <input type="checkbox" checked="{{if (if-filter (concat item.shareTitle "|" item.text "|" child.text) state.value) 'checked'}}" onclick={{action updateFilters 'subject' (concat item.shareTitle "|" item.text "|" child.text)}}>
                                 {{child.text}}
                             </label>
                         </li>
@@ -31,7 +31,7 @@
                                 {{#each child.children as |grandkid|}}
                                     <li>
                                         <label class="taxonomy-checkbox">
-                                            <input type="checkbox" checked="{{if (if-filter (concat item.shareTitle "|" item.text "|" child.text "|" grandkid.text) activeFilters.subjects) 'checked'}}" onclick={{action updateFilters 'subjects' (concat item.shareTitle "|" item.text "|" child.text "|" grandkid.text)}}>
+                                            <input type="checkbox" checked="{{if (if-filter (concat item.shareTitle "|" item.text "|" child.text "|" grandkid.text) state.value) 'checked'}}" onclick={{action updateFilters 'subject' (concat item.shareTitle "|" item.text "|" child.text "|" grandkid.text)}}>
                                             {{grandkid.text}}
                                         </label>
                                     </li>
