@@ -3,7 +3,7 @@
         {{#each otherProviders as |item|}}
             <li>
                 <label>
-                    <input type="checkbox" checked="{{if (if-filter item.key state.value) 'checked'}}" onclick={{action updateFilters 'provider' item.key}} disabled={{theme.isProvider}}>
+                    <input type="checkbox" checked="{{if (or (if-filter item.key state.value) theme.isProvider) 'checked'}}" onclick={{action updateFilters 'provider' item.key}} disabled={{theme.isProvider}}>
                     {{filter-replace item.key filterReplace}}
                     <small>({{number-format item.doc_count}})</small>
                 </label>
