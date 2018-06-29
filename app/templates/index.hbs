@@ -21,7 +21,9 @@
                             {{sanitize-html theme.provider.description "description"}}
                             <br>
                             <small>
-                                <a href="{{host}}preprints" onbeforeclick={{action "click" "link" "Index - Powered By"}}>{{t "index.header.powered_by"}}</a>
+                                <a href="{{host}}preprints" onbeforeclick={{action "click" "link" "Index - Powered By"}}>
+                                    {{t "index.header.powered_by"}}
+                                </a>
                             </small>
                         {{/if}}
                     </p>
@@ -39,8 +41,14 @@
                 <div class="row">
                     <div class="text-center col-xs-12">
                         <p class="lead">{{t 'index.header.or'}}</p>
-                        <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>{{t submitLabel documentType=theme.provider.content.documentType}}</a>
-                        <div class="m-t-md">{{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}{{t "index.header.example"}}{{/link-to}}</div>
+                        <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>
+                            {{t submitLabel documentType=theme.provider.content.documentType}}
+                        </a>
+                        <div class="m-t-md">
+                            {{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}
+                                {{t "index.header.example"}}
+                            {{/link-to}}
+                        </div>
                     </div>
                 </div>
             {{/if}}
@@ -50,11 +58,8 @@
     {{!END HEADER}}
 
     {{!SUBJECTS}}
-    {{!SUBJECTS LIST}}
     <div class="preprint-subjects p-v-md">
-        {{!CONTAINER DIV}}
         <div class="container">
-            {{!SUBJECTS ROW}}
             <div class="row p-v-md">
                 <div class="col-xs-12">
                     <h2>{{#if theme.provider.additionalProviders}}
@@ -64,9 +69,10 @@
                         {{/if}}
                     </h2>
                     {{#if theme.provider.hasHighlightedSubjects}}
-                        {{#link-to (route-prefix 'discover') class="seeAllSubjects"}}{{t 'index.subjects.links.seeAllSubjects'}}{{/link-to}}
+                        {{#link-to (route-prefix 'discover') class="seeAllSubjects"}}
+                            {{t 'index.subjects.links.seeAllSubjects'}}
+                        {{/link-to}}
                     {{/if}}
-                    {{!SUBJECTS LIST}}
                     <div class="subjectsList p-lg">
                         {{#if theme.provider.additionalProviders}}
                             {{additional-provider-list additionalProviders=theme.provider.additionalProviders}}
@@ -74,14 +80,10 @@
                             {{taxonomy-top-list list=model.taxonomies}}
                         {{/if}}
                     </div>
-                    {{!END SUBJECTS LIST}}
                 </div>
             </div>
-            {{!END ROW}}
         </div>
-        {{!END CONTAINER}}
     </div>
-    {{!END SUBJECTS LIST}}
 
     {{#unless theme.isProvider}}
         {{!SERVICES}}
@@ -90,7 +92,9 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <h2>{{t "index.services.top.heading" documentType=theme.provider.content.documentType}}</h2>
-                        <p class="m-b-lg">{{t "index.services.top.paragraph" documentType=theme.provider.content.documentType}}</p>
+                        <p class="m-b-lg">
+                            {{t "index.services.top.paragraph" documentType=theme.provider.content.documentType}}
+                        </p>
                     </div>
                 </div>
                 <div class="row p-v-md">
@@ -120,7 +124,9 @@
                                 {{t "index.services.bottom.div.line3"}}
                             </div>
                         </p>
-                        <a href="mailto:contact@osf.io" class="btn btn-info btn-lg" onclick={{action 'contactLink' emailHref 'link' 'click' 'Index - contact email'}}>{{t "index.services.bottom.contact"}}</a>
+                        <a href="mailto:contact@osf.io" class="btn btn-info btn-lg" onclick={{action 'contactLink' emailHref 'link' 'click' 'Index - contact email'}}>
+                            {{t "index.services.bottom.contact"}}
+                        </a>
                     </div>
                 </div>
             </div>

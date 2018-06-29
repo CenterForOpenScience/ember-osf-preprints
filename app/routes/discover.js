@@ -12,11 +12,6 @@ import ResetScrollMixin from '../mixins/reset-scroll';
  * @class Discover Route Handler
  */
 export default Route.extend(Analytics, ResetScrollMixin, {
-    queryParams: {
-        queryString: {
-            replace: true,
-        },
-    },
     model() {
         return this
             .get('store')
@@ -26,18 +21,5 @@ export default Route.extend(Analytics, ResetScrollMixin, {
     setupController(controller, { preprintProviders, meta }) {
         this._super(controller, preprintProviders);
         controller.set('meta', meta);
-    },
-    actions: {
-        willTransition() {
-            const controller = this.controllerFor('discover');
-            controller._clearFilters();
-            controller._clearQueryString();
-        },
-    },
-    _loadAllProviders(providers) {
-        return {
-            preprintProviders: providers,
-            meta: providers.get('meta'),
-        };
     },
 });

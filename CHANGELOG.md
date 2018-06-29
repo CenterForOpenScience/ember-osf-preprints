@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [Unreleased]
 ### Added
 - Whitelist functionality for discover page
 - Unified solution for preprint words
@@ -17,6 +17,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Styling and format of the branded navbar to match current styling in ember-osf
 - Reduced number of calls to the `preprints_provider` endpoint
 - Update preprint submission page language.
+- Update preprints to work with a new unified version of ember-osf (works with both preprints and reviews apps)
+- Update preprints to use ember-cli@2.18
+
+## [0.118.7] - 2018-06-21
+### Added
+- `anonymizeIp: true` in GA config to anonymize sender IP.
+
+## [0.118.6] - 2018-06-19
+### Changed
+- Updated to use latest provider assets
 
 ## [0.118.5] - 2018-04-27
 ### Changed
@@ -36,8 +46,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Restricted width and centered preprint provider logos on index page
-- Update preprints to work with a new unified version of ember-osf (works with both preprints and reviews apps)
-- Update preprints to use ember-cli@2.18
 
 ## [0.118.2] - 2018-03-08
 ### Removed

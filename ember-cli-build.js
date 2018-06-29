@@ -65,6 +65,7 @@ module.exports = function(defaults) {
                 'node_modules/@centerforopenscience/osf-style/sass',
                 'node_modules/hint.css',
                 'node_modules/bootstrap-daterangepicker',
+                'node_modules/c3',
             ],
         },
         inlineContent: {
@@ -124,21 +125,22 @@ module.exports = function(defaults) {
 
 
     app.import('vendor/ember/ember-template-compiler.js');
-    // osf-style
 
-    // app.import('bower_components/dropzone/dist/dropzone.js');
     app.import({
         development: path.join('node_modules', 'dropzone/dist/dropzone.css'),
         production: path.join('node_modules', 'dropzone/dist/min/dropzone.min.css'),
     });
 
-    app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
     app.import(path.join('node_modules', 'bootstrap-daterangepicker/daterangepicker.js'));
+    app.import(path.join('node_modules', 'c3/c3.js'));
+    app.import(path.join('node_modules', 'd3/d3.js'));
 
     app.import({
         development: path.join('node_modules', 'hint.css/hint.css'),
         production: path.join('node_modules', 'hint.css/hint.css'),
     });
+
+    app.import(path.join(app.bowerDirectory, 'jquery.tagsinput/src/jquery.tagsinput.js'));
 
     // Import component styles from addon
     app.import('vendor/assets/ember-osf.css');
