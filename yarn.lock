@@ -78,9 +78,9 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-06-28T13:31:22Z":
-  version "0.17.0"
-  resolved "https://github.com/CenterForOpenScience/ember-osf.git#4a918fe29e1ea7ba48833c6395aa2e08e82f6955"
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-06-29T13:49:43Z":
+  version "0.18.0"
+  resolved "https://github.com/CenterForOpenScience/ember-osf.git#c17913bb6b2abe0bcda4dedd74352efd0655543e"
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
@@ -103,7 +103,7 @@
     ember-feature-flags "^5.0.0"
     ember-get-config "0.2.1"
     ember-i18n "5.0.1"
-    ember-metrics "^0.12.1"
+    ember-metrics "https://github.com/cos-forks/ember-metrics#v0.12.1+cos0"
     ember-moment "^7.4.1"
     ember-power-select "^1.10.4"
     ember-radio-buttons "4.0.3"
@@ -4051,15 +4051,6 @@ ember-maybe-in-element@^0.1.3:
   dependencies:
     ember-cli-babel "^6.11.0"
 
-ember-metrics@^0.12.1:
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/ember-metrics/-/ember-metrics-0.12.1.tgz#8659343bf7b8bda403e70d482ff59cc9714d89f6"
-  dependencies:
-    broccoli-funnel "^1.0.1"
-    ember-cli-babel "^6.1.0"
-    ember-getowner-polyfill "^2.0.0"
-    ember-runtime-enumerable-includes-polyfill "^2.0.0"
-
 ember-metrics@^0.6.3:
   version "0.6.4"
   resolved "https://registry.yarnpkg.com/ember-metrics/-/ember-metrics-0.6.4.tgz#ae09db7a40081df538463c5b5b3ac3da48c94027"
@@ -4068,6 +4059,15 @@ ember-metrics@^0.6.3:
     ember-cli-babel "^5.1.6"
     ember-getowner-polyfill "^1.0.0"
     ember-runtime-enumerable-includes-polyfill "^1.0.1"
+
+"ember-metrics@https://github.com/cos-forks/ember-metrics#v0.12.1+cos0":
+  version "0.12.1"
+  resolved "https://github.com/cos-forks/ember-metrics#32fcc6eec0c4bc1974c854435401f94f660c6e74"
+  dependencies:
+    broccoli-funnel "^1.0.1"
+    ember-cli-babel "^6.1.0"
+    ember-getowner-polyfill "^2.0.0"
+    ember-runtime-enumerable-includes-polyfill "^2.0.0"
 
 ember-moment@^7.4.1:
   version "7.7.0"
