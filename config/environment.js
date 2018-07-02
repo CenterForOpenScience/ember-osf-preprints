@@ -47,6 +47,15 @@ module.exports = function(environment) {
                 environments: [process.env.KEEN_ENVIRONMENT] || ['production'],
                 config: {
                     id: process.env.GOOGLE_ANALYTICS_ID,
+                    setFields: {
+                        // Ensure the IP address of the sender will be anonymized.
+                        anonymizeIp: true,
+                    },
+                },
+                dimensions: {
+                    authenticated: 'dimension1',
+                    resource: 'dimension2',
+                    isPublic: 'dimension3',
                 },
             },
             {
