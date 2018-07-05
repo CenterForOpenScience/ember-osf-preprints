@@ -28,6 +28,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Updated to use latest provider assets
 
+### Removed
+- Remove logic related to updating the node's license
+
 ## [0.118.5] - 2018-04-27
 ### Changed
 - Updated to use latest provider assets
