@@ -215,7 +215,7 @@
                                             <span class="required">{{t "global.abstract"}}:</span>
                                         </label>
                                         <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Abstract Text Change') (action 'track' 'input' 'onchange' 'Submit - Abstract Text Change')}}>
-                                            {{validated-input inputType='textarea' model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder") value=basicsAbstract}}
+                                            {{validated-input inputType='textarea' model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder" documentType=currentProvider.documentType) value=basicsAbstract}}
                                         </form>
                                     </div>
                                 </div>
