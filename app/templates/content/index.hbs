@@ -69,7 +69,23 @@
                             {{t "content.private_preprint_warning" documentType=model.provider.documentType}} <a href={{node.links.html}}>{{model.title}} </a> {{t "content.public"}}.
                         </div>
                     {{/if}}
-                    {{supplementary-file-browser provider=model.provider chosenFile=chosenFile preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile') dualTrackNonContributors=(action 'dualTrackNonContributors')}}
+
+                    {{#file-renderer download=model.primaryFile.links.download
+                        width="99%" height="700"}}
+                    {{/file-renderer}}
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p class="f-w-lg p-b-md">{{model.primaryFile.name}}</p>
+                        </div>
+                        <div class="col-sm-6 text-nowrap supplemental-downloads">
+                            <a class="btn btn-default btn-sm" href={{fileDownloadURL}} onclick={{action 'dualTrackNonContributors' 'link' 'Content - Download' model.primaryFile.links.download true}}>
+                                {{t "content.share.download_preprint" documentType=model.provider.documentType}}
+                            </a>
+                            <span class="p-sm"> {{t "content.version"}}: {{model.primaryFile.currentVersion}}</span>
+                        </div>
+                    </div>
+
                     <button class="expand-mfr-carrot hidden-xs hidden-sm" {{action 'expandMFR'}}>
                         <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                     </button>
@@ -145,6 +161,18 @@
                         </div>
                     {{/if}}
 
+                    {{#if node}}
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md f-w-md"><strong>{{t "content.supplemental_materials.title"}}</strong></h4>
+                          {{!--   <p class="f-w-xs">
+                                {{t "content.supplemental_materials.paragraph" documentType=model.provider.documentType}}
+                            </p> --}}
+                            <a href={{node.links.html}} target="_blank" rel="noopener noreferrer" onclick={{action "click" "link" "Content - Visit Project" node.id}}>
+                                {{node.links.html}} <i class="fa fa-external-link" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    {{/if}}
+
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "content.disciplines"}}</strong></h4>
                         {{#each disciplineReduced as |subject|}}
@@ -174,18 +202,6 @@
                     <div class="p-t-xs m-b-lg">
                         <h4 class="p-v-md f-w-md"><strong>{{t "content.citations"}}</strong></h4>
                         {{citation-widget node=model}}
-                    </div>
-
-                    {{!PROJECT BUTTON}}
-                    <div class="p-lg osf-box-lt row project-box">
-                        <div class="col-xs-6 text-center">
-                            <div class="content-provider-logo provider-osf-dark"
-                                 title={{t "global.open_science_framework"}}></div>
-                        </div>
-                        <div class="col-xs-6 text-left">
-                            <p class="f-w-xs">{{t "content.project_button.paragraph"}}</p>
-                            <a type="button" class="btn btn-info" href={{node.links.html}} onclick={{action "click" "link" "Content - Visit Project" node.id}}>{{t "content.project_button.button"}}</a>
-                        </div>
                     </div>
                 </div>
                 {{!END RIGHT SIDE COL}}

@@ -51,6 +51,7 @@ export default Controller.extend(Analytics, {
     chosenFile: null,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
     hasTag: computed.bool('model.tags.length'),
+
     metricsExtra: computed('model', function() {
         return this.get('model.id');
     }),
@@ -66,6 +67,7 @@ export default Controller.extend(Analytics, {
     facebookAppId: computed('model', function() {
         return this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
     }),
+
     dateLabel: computed('model.provider.reviewsWorkflow', function() {
         return this.get('model.provider.reviewsWorkflow') === PRE_MODERATION ?
             DATE_LABEL.submitted :

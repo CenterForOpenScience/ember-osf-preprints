@@ -65,9 +65,11 @@ export default {
         original_publication_date: 'Original publication date',
         citations: 'Citations',
         disciplines: 'Disciplines',
+        supplemental_materials: {
+            paragraph: 'The project for this {{documentType.singular}} is available on the OSF.',
+            title: 'Supplemental Materials',
+        },
         project_button: {
-            paragraph: 'The project for this paper is available on the OSF.',
-            button: 'Visit project',
             edit_preprint: 'Edit {{documentType.singular}}',
             edit_resubmit_preprint: 'Edit and resubmit',
         },
@@ -426,9 +428,6 @@ export default {
             post_facebook: 'Post to Facebook',
             share_linkedin: 'Share on LinkedIn',
             send_email: 'Send in email',
-        },
-        'supplementary-file-browser': {
-            primary: 'Primary',
         },
         'taxonomy-top-list': {
             // Nothing to translate
