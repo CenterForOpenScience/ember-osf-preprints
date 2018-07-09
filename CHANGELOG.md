@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Selected provider description in the provider carousel
 - use of "OSF Preprints" as provider name for OSF preprints instead of "OSF" or "Open Science Framework"
 - parameters for `authenticated`, `isPublic` and `resource` to pageView tracking
+- add `isWithdrawn` to google anlaytics pageTracking
 
 ### Changed
 - Styling and format of the branded navbar to match current styling in ember-osf
