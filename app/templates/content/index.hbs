@@ -164,9 +164,9 @@
                     {{#if node}}
                         <div class="p-t-xs">
                             <h4 class="p-v-md f-w-md"><strong>{{t "content.supplemental_materials.title"}}</strong></h4>
-                          {{!--   <p class="f-w-xs">
+                            <p class="f-w-xs">
                                 {{t "content.supplemental_materials.paragraph" documentType=model.provider.documentType}}
-                            </p> --}}
+                            </p>
                             <a href={{node.links.html}} target="_blank" rel="noopener noreferrer" onclick={{action "click" "link" "Content - Visit Project" node.id}}>
                                 {{node.links.html}} <i class="fa fa-external-link" aria-hidden="true"></i>
                             </a>
