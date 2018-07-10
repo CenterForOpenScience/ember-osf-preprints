@@ -156,7 +156,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     _State: State,
     // Project states - new project or existing project
-    applyLicense: false,
     newNode: false,
 
     // Information about the thing to be turned into a preprint
@@ -676,7 +675,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             // when pressing 'Save and continue'.  Creates a preprint with
             // primaryFile, node, and provider fields populated.
             const model = this.get('model');
-            this.get('node.license').then(this._setDefaultPreprintLicense.bind(this));
 
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
@@ -784,7 +782,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 return;
             }
 
-            const node = this.get('node');
             const model = this.get('model');
 
             const copyrightHolders = this.get('basicsLicense.copyrightHolders')
@@ -794,19 +791,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             if (this.get('abstractChanged')) { model.set('description', this.get('basicsAbstract')); }
 
             if (this.get('tagsChanged')) { model.set('tags', this.get('basicsTags')); }
-
-            if (this.get('applyLicense')) {
-                if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || (node.get('nodeLicense.copyrightHolders') || []).join() !== copyrightHolders.join()) {
-                    node.set('nodeLicense', {
-                        year: this.get('basicsLicense.year'),
-                        copyright_holders: copyrightHolders,
-                    });
-                }
-
-                if (node.get('license.name') !== this.get('basicsLicense.licenseType.name')) {
-                    node.set('license', this.get('basicsLicense.licenseType'));
-                }
-            }
 
             if (this.get('doiChanged')) {
                 model.set('doi', this.get('basicsDOI') || null);
@@ -833,10 +817,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             }
 
             this.set('model', model);
-            this.set('node', node);
 
-            node.save()
-                .then(this._saveBasicsInfo.bind(this))
+            model.save()
+                .then(this._moveFromBasics.bind(this))
                 .catch(this._failMoveFromBasics.bind(this));
         },
 
@@ -1210,7 +1193,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     _copyFile(copiedFile) {
         this.set('selectedFile', copiedFile);
         this.send('startPreprint', this.get('parentNode'));
-        this.set('applyLicense', true);
         this.set('newNode', true);
     },
 
@@ -1241,15 +1223,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     _sendStartPreprint() {
         this.send('startPreprint');
-    },
-
-    _setDefaultPreprintLicense(license) {
-        // This is used to set the default applyLicense once a node is loaded,
-        // as if the node's license is not set or is of type No license,
-        // we want to set the default to make its license the same as the preprint license.
-        if (license === null || (license && license.get('name').includes('No license'))) {
-            this.set('applyLicense', true);
-        }
     },
 
     _finishUpload() {
@@ -1293,14 +1266,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : date.getUTCFullYear().toString(),
             copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(', ') : '',
         });
-    },
-
-    _saveBasicsInfo() {
-        const model = this.get('model');
-
-        model.save()
-            .then(this._moveFromBasics.bind(this))
-            .catch(this._failMoveFromBasics.bind(this));
     },
 
     _moveFromBasics() {
@@ -1440,7 +1405,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             basicsLicense: null,
             subjectsList: A(),
             availableLicenses: A(),
-            applyLicense: false,
             newNode: false,
             attemptedSubmit: false,
         }));

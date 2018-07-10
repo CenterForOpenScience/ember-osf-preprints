@@ -22,4 +22,10 @@ export default Route.extend(Analytics, ResetScrollMixin, {
         this._super(controller, preprintProviders);
         controller.set('meta', meta);
     },
+    _loadAllProviders(providers) {
+        return {
+            preprintProviders: providers,
+            meta: providers.get('meta'),
+        };
+    },
 });
