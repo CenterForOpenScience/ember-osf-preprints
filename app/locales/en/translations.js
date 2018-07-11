@@ -43,6 +43,7 @@ export default {
     content: {
         header: {
             last_edited: 'Last edited',
+            authors_label: 'Authors',
         },
         date_label: {
             created_on: 'Created on',
@@ -66,7 +67,6 @@ export default {
         citations: 'Citations',
         disciplines: 'Disciplines',
         supplemental_materials: {
-            paragraph: 'The project for this {{documentType.singular}} is available on the OSF.',
             title: 'Supplemental Materials',
         },
         project_button: {

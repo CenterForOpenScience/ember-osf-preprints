@@ -68,11 +68,17 @@ export default Controller.extend(Analytics, {
         return this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
     }),
 
+    supplementalMaterialDisplayLink: computed('node.links.html', function() {
+        const supplementalLink = this.get('node.links.html');
+        return supplementalLink.replace(/^https?:\/\//i, '');
+    }),
+
     dateLabel: computed('model.provider.reviewsWorkflow', function() {
         return this.get('model.provider.reviewsWorkflow') === PRE_MODERATION ?
             DATE_LABEL.submitted :
             DATE_LABEL.created;
     }),
+
     relevantDate: computed('model.provider.reviewsWorkflow', function() {
         return this.get('model.provider.reviewsWorkflow') ?
             this.get('model.dateLastTransitioned') :
