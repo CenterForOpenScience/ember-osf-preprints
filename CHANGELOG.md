@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.118.8] - 2018-08-11
+### Changed
+- Updated to use latest provider assets
+
 ## [0.118.7] - 2018-06-21
 ### Added
 - `anonymizeIp: true` in GA config to anonymize sender IP.
