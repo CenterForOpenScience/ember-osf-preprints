@@ -38,7 +38,7 @@
                 {{#if (not isWithdrawn)}}
                     <div class="col-xs-12 col-sm-2 edit-button-and-logo text-center">
                         {{#if isAdmin}}
-                        {{! TODO This link will need to be updated for phase 2 of branding }}
+                            {{! TODO This link will need to be updated for phase 2 of branding }}
                             <a type="button"
                                class="btn btn-success edit-btn"
                                href={{concat theme.guidPathPrefix model.id '/edit'}}
@@ -62,7 +62,7 @@
     {{!CONTAINER DIV}}
     <div id="view-page" class="container">
         {{#if (not isWithdrawn)}}
-        {{!CONTENT ROW}}
+            {{!CONTENT ROW}}
             <div class="row p-md">
                 {{!LEFT COL DIV}}
                 <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}">
@@ -84,7 +84,7 @@
                 </div>
                 {{!END LEFT COL DIV}}
                 {{#unless fullScreenMFR}}
-                {{!RIGHT SIDE COL}}
+                    {{!RIGHT SIDE COL}}
                     <div class="col-md-5">
                         {{!SHARE ROW}}
                         <div class="share-row p-sm osf-box-lt clearfix">
@@ -192,76 +192,76 @@
                             </div>
                         </div>
                     </div>
-                {{!END RIGHT SIDE COL}}
+                    {{!END RIGHT SIDE COL}}
                 {{/unless}}
             </div>
-        {{!END CONTENT ROW}}
+            {{!END CONTENT ROW}}
         {{else}}
-        <div class="row p-md" style="margin-bottom: 50px">
-            <div class="col-md-5">
+            <div class="row p-md" style="margin-bottom: 50px">
+                <div class="col-md-5">
 
-                {{#if model.withdrawalJustification}}
-                    <div class="p-t-xs">
-                        <h4 class="p-v-md f-w-md"><strong>{{t 'global.reason_for_withdrawal'}}</strong></h4>
-                        <p>
-                            {{model.withdrawalJustification}}
-                        </p>
-                    </div>
-                {{/if}}
-
-                <div class="p-t-xs">
-                    <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
-                    <p class="abstract {{if useShortenedDescription 'abstract-truncated'}}">
-                        {{~if useShortenedDescription description model.description~}}
-                    </p>
-                    <button class='btn-link' hidden={{not hasShortenedDescription}} {{action 'expandAbstract'}}>
-                        {{~t (if expandedAbstract 'content.see_less' 'content.see_more')~}}
-                    </button>
-                </div>
-
-                <div class="p-t-xs">
-                    <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi_default"}}</strong></h4>
-                    {{#if model.preprintDoiUrl}}
-                            <p> {{extract-doi model.preprintDoiUrl}} </p>
+                    {{#if model.withdrawalJustification}}
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md f-w-md"><strong>{{t 'global.reason_for_withdrawal'}}</strong></h4>
+                            <p>
+                                {{model.withdrawalJustification}}
+                            </p>
+                        </div>
                     {{/if}}
-                </div>
 
-                {{#if model.license.name}}
                     <div class="p-t-xs">
-                        <h4 class="p-v-md f-w-md"><strong>{{t "global.license"}}</strong></h4>
-                        {{model.license.name}}
-                        <span style='cursor: pointer'>
-                            {{#if showLicenseText }}
-                                {{fa-icon 'caret-down' click=(action 'toggleLicenseText')}}
-                            {{else}}
-                                {{fa-icon 'caret-right' click=(action 'toggleLicenseText')}}
-                            {{/if}}
-                        </span>
-                        {{#if showLicenseText}}
-                            <pre style='white-space: pre-wrap; font-size:75%; border:none; width:100%; text-align:justify; max-height: 300px;'>{{fullLicenseText}}</pre>
+                        <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
+                        <p class="abstract {{if useShortenedDescription 'abstract-truncated'}}">
+                            {{~if useShortenedDescription description model.description~}}
+                        </p>
+                        <button class='btn-link' hidden={{not hasShortenedDescription}} {{action 'expandAbstract'}}>
+                            {{~t (if expandedAbstract 'content.see_less' 'content.see_more')~}}
+                        </button>
+                    </div>
+
+                    <div class="p-t-xs">
+                        <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi_default"}}</strong></h4>
+                        {{#if model.preprintDoiUrl}}
+                            <p> {{extract-doi model.preprintDoiUrl}} </p>
                         {{/if}}
                     </div>
-                {{/if}}
 
-                <div class="p-t-xs">
-                    <h4 class="p-v-md f-w-md"><strong>{{t "content.disciplines"}}</strong></h4>
-                    {{#each disciplineReduced as |subject|}}
-                        <span class='subject-preview'>{{subject.text}}</span>
-                    {{/each}}
-                </div>
-
-                <div class="p-t-xs">
-                    <h4 class=" f-w-md p-v-md"><strong>{{t "global.tags"}}</strong></h4>
-                    {{#if hasTag}}
-                        {{#each model.tags as |tag|}}
-                            <span class="badge">{{fix-special-char tag}}</span>
-                        {{/each}}
-                    {{else}}
-                        {{t "global.none"}}
+                    {{#if model.license.name}}
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md f-w-md"><strong>{{t "global.license"}}</strong></h4>
+                            {{model.license.name}}
+                            <span style='cursor: pointer'>
+                                {{#if showLicenseText }}
+                                    {{fa-icon 'caret-down' click=(action 'toggleLicenseText')}}
+                                {{else}}
+                                    {{fa-icon 'caret-right' click=(action 'toggleLicenseText')}}
+                                {{/if}}
+                            </span>
+                            {{#if showLicenseText}}
+                                <pre style='white-space: pre-wrap; font-size:75%; border:none; width:100%; text-align:justify; max-height: 300px;'>{{fullLicenseText}}</pre>
+                            {{/if}}
+                        </div>
                     {{/if}}
+
+                    <div class="p-t-xs">
+                        <h4 class="p-v-md f-w-md"><strong>{{t "content.disciplines"}}</strong></h4>
+                        {{#each disciplineReduced as |subject|}}
+                            <span class='subject-preview'>{{subject.text}}</span>
+                        {{/each}}
+                    </div>
+
+                    <div class="p-t-xs">
+                        <h4 class=" f-w-md p-v-md"><strong>{{t "global.tags"}}</strong></h4>
+                        {{#if hasTag}}
+                            {{#each model.tags as |tag|}}
+                                <span class="badge">{{fix-special-char tag}}</span>
+                            {{/each}}
+                        {{else}}
+                            {{t "global.none"}}
+                        {{/if}}
+                    </div>
                 </div>
             </div>
-        </div>
         {{/if}}
     </div>
     {{!END DIV CONTAINER}}

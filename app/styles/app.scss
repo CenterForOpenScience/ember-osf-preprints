@@ -415,6 +415,9 @@ $color-border-light: #DDDDDD;
         flex-direction: row;
         align-content: space-between;
 
+        .banner-content {
+            padding-left: 5px;
+        }
         strong {
             display: inline-block;  // required for the text-transform
         }
