@@ -42,7 +42,7 @@ export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, Setu
     setupController(controller, model) {
         // Runs setupController for 'submit'
         this.setupSubmitController(controller, model);
-
+        controller._setCurrentProvider();
         return this._super(...arguments);
     },
     renderTemplate() {
