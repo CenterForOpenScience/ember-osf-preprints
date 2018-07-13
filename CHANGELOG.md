@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Whitelist functionality for discover page
 - Unified solution for preprint words
+- `cookie-banner` component to main application page
 - use of ember-osf `scheduled-banner` component
 - Selected provider description in the provider carousel
 - use of "OSF Preprints" as provider name for OSF preprints instead of "OSF" or "Open Science Framework"
