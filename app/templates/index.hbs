@@ -1,4 +1,4 @@
-{{donate-banner}}
+{{scheduled-banner}}
 
 {{!INDEX}}
 <div class="preprints-page">
@@ -42,7 +42,7 @@
                     <div class="text-center col-xs-12">
                         <p class="lead">{{t 'index.header.or'}}</p>
                         <a type="button" class="btn btn-success btn-lg preprint-submit-button" onclick={{action "click" "link" "Index - Add preprint"}} href={{concat theme.pathPrefix 'submit'}}>
-                            {{t "global.add_preprint" documentType=theme.provider.content.documentType}}
+                            {{t submitLabel documentType=theme.provider.content.documentType}}
                         </a>
                         <div class="m-t-md">
                             {{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}

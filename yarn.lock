@@ -78,7 +78,7 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-06-29T13:49:43Z":
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#2018-07-06T16:01:19Z":
   version "0.18.0"
   resolved "https://github.com/CenterForOpenScience/ember-osf.git#c17913bb6b2abe0bcda4dedd74352efd0655543e"
   dependencies:
@@ -3563,6 +3563,16 @@ ember-cli-sass@^7.0.0:
     broccoli-merge-trees "^1.1.0"
     broccoli-sass-source-maps "^2.1.0"
     ember-cli-version-checker "^2.1.0"
+
+ember-cli-sentry@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-sentry/-/ember-cli-sentry-3.0.0.tgz#72e5462d21a699b3dd54d8ea15c06bf2bd9a8ad7"
+  dependencies:
+    broccoli-funnel "^2.0.1"
+    broccoli-merge-trees "^2.0.0"
+    ember-cli-babel "^6.6.0"
+    raven-js "^3.15.0"
+    resolve "^1.5.0"
 
 ember-cli-shims@1.0.2:
   version "1.0.2"
@@ -8181,6 +8191,10 @@ randomfill@^1.0.3:
 range-parser@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
+
+raven-js@^3.15.0:
+  version "3.24.1"
+  resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.24.1.tgz#7327e08786248517eedd36205bf50f1047821ffa"
 
 raw-body@2.3.2:
   version "2.3.2"

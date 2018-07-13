@@ -86,8 +86,8 @@ const MODAL_TITLE = {
 const SUBMIT_MESSAGES = {
     default: 'submit.body.submit.information.line1.default',
     moderation: 'submit.body.submit.information.line1.moderation',
-    [PRE_MODERATION]: 'submit.body.submit.information.line3.pre',
-    [POST_MODERATION]: 'submit.body.submit.information.line3.post',
+    [PRE_MODERATION]: 'submit.body.submit.information.line1.pre',
+    [POST_MODERATION]: 'submit.body.submit.information.line1.post',
 };
 
 const PERMISSION_MESSAGES = {
@@ -145,6 +145,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     store: service(),
     theme: service(),
     fileManager: service(),
+    raven: service(),
     toast: service('toast'),
     panelActions: service('panelActions'),
 
@@ -155,7 +156,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     _State: State,
     // Project states - new project or existing project
-    applyLicense: false,
     newNode: false,
 
     // Information about the thing to be turned into a preprint
@@ -443,7 +443,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             ACTION.create.heading;
     }),
     buttonLabel: computed('moderationType', function() {
-        return this.get('moderationType') === PRE_MODERATION ?
+        return this.get('moderationType') ?
             ACTION.submit.button :
             ACTION.create.button;
     }),
@@ -453,7 +453,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             SUBMIT_MESSAGES.default;
     }),
     permissionInformation: computed('moderationType', function() {
-        return this.get('moderationType') === PRE_MODERATION ?
+        return this.get('moderationType') ?
             PERMISSION_MESSAGES.submit :
             PERMISSION_MESSAGES.create;
     }),
@@ -468,10 +468,17 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return !(state === ACCEPTED || (modType === POST_MODERATION && state === PENDING));
     }),
     editInformation1: computed('moderationType', function() {
-        return EDIT_MESSAGES.line1[this.get('moderationType')];
+        const moderationType = this.get('moderationType');
+        if (moderationType) {
+            return EDIT_MESSAGES.line1[moderationType];
+        }
     }),
     editInformation2: computed('moderationType', 'model.reviewsState', function() {
-        return EDIT_MESSAGES.line2[this.get('model.reviewsState')][this.get('moderationType')];
+        const reviewsState = this.get('model.reviewsState');
+        const moderationType = this.get('moderationType');
+        if (reviewsState && moderationType) {
+            return EDIT_MESSAGES.line2[reviewsState][moderationType];
+        }
     }),
     canResubmit: computed('moderationType', 'model.reviewsState', function() {
         const state = this.get('model.reviewsState');
@@ -668,7 +675,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             // when pressing 'Save and continue'.  Creates a preprint with
             // primaryFile, node, and provider fields populated.
             const model = this.get('model');
-            this.get('node.license').then(this._setDefaultPreprintLicense.bind(this));
 
             model.set('primaryFile', this.get('selectedFile'));
             model.set('node', this.get('node'));
@@ -776,7 +782,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 return;
             }
 
-            const node = this.get('node');
             const model = this.get('model');
 
             const copyrightHolders = this.get('basicsLicense.copyrightHolders')
@@ -786,19 +791,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             if (this.get('abstractChanged')) { model.set('description', this.get('basicsAbstract')); }
 
             if (this.get('tagsChanged')) { model.set('tags', this.get('basicsTags')); }
-
-            if (this.get('applyLicense')) {
-                if (node.get('nodeLicense.year') !== this.get('basicsLicense.year') || (node.get('nodeLicense.copyrightHolders') || []).join() !== copyrightHolders.join()) {
-                    node.set('nodeLicense', {
-                        year: this.get('basicsLicense.year'),
-                        copyright_holders: copyrightHolders,
-                    });
-                }
-
-                if (node.get('license.name') !== this.get('basicsLicense.licenseType.name')) {
-                    node.set('license', this.get('basicsLicense.licenseType'));
-                }
-            }
 
             if (this.get('doiChanged')) {
                 model.set('doi', this.get('basicsDOI') || null);
@@ -825,10 +817,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             }
 
             this.set('model', model);
-            this.set('node', node);
 
-            node.save()
-                .then(this._saveBasicsInfo.bind(this))
+            model.save()
+                .then(this._moveFromBasics.bind(this))
                 .catch(this._failMoveFromBasics.bind(this));
         },
 
@@ -1169,12 +1160,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return node.save();
     },
 
-    _failSetNodeTitle() {
+    _failSetNodeTitle(error) {
         const node = this.get('node');
         const currentNodeTitle = node.get('title');
 
         node.set('title', currentNodeTitle);
         this.get('toast').error(this.get('i18n').t('submit.could_not_update_title'));
+        this.get('raven').captureMessage('Could not update title', { extra: { error } });
     },
 
     _addChild(child) {
@@ -1201,42 +1193,36 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     _copyFile(copiedFile) {
         this.set('selectedFile', copiedFile);
         this.send('startPreprint', this.get('parentNode'));
-        this.set('applyLicense', true);
         this.set('newNode', true);
     },
 
-    _failCopyFile() {
+    _failCopyFile(error) {
         this.get('toast').error(this.get('i18n').t('submit.error_copying_file'));
+        this.get('raven').captureMessage('Could not copy file', { extra: { error } });
     },
 
-    _failGetFiles() {
+    _failGetFiles(error) {
         this.get('toast').error(this.get('i18n').t('submit.error_accessing_parent_files'));
+        this.get('raven').captureMessage('Could not access parent files', { extra: { error } });
     },
 
-    _failCreateComponent() {
+    _failCreateComponent(error) {
         this.get('toast').error(this.get('i18n').t('submit.could_not_create_component'));
+        this.get('raven').captureMessage('Could not create component', { extra: { error } });
     },
 
-    _failDeletePreprint() {
+    _failDeletePreprint(error) {
         this.get('toast').error(this.get('i18n').t(
             'submit.abandoned_preprint_error',
             {
                 documentType: this.get('currentProvider.documentType'),
             },
         ));
+        this.get('raven').captureMessage('Could not retrieve abandoned preprint', { extra: { error } });
     },
 
     _sendStartPreprint() {
         this.send('startPreprint');
-    },
-
-    _setDefaultPreprintLicense(license) {
-        // This is used to set the default applyLicense once a node is loaded,
-        // as if the node's license is not set or is of type No license,
-        // we want to set the default to make its license the same as the preprint license.
-        if (license === null || (license && license.get('name').includes('No license'))) {
-            this.set('applyLicense', true);
-        }
     },
 
     _finishUpload() {
@@ -1251,7 +1237,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('finishUpload');
     },
 
-    _failedUpload() {
+    _failedUpload(error) {
         const parentNode = this.get('parentNode');
 
         // Allows user to attempt operation again.
@@ -1269,6 +1255,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 documentType: this.get('currentProvider.documentType'),
             },
         ));
+        this.get('raven').captureMessage('Could not initiate preprint', { extra: { error } });
     },
 
     _setBasicsLicense(license) {
@@ -1281,21 +1268,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         });
     },
 
-    _saveBasicsInfo() {
-        const model = this.get('model');
-
-        model.save()
-            .then(this._moveFromBasics.bind(this))
-            .catch(this._failMoveFromBasics.bind(this));
-    },
-
     _moveFromBasics() {
         this.send('next', this.get('_names.3'));
     },
 
-    _failMoveFromBasics() {
+    _failMoveFromBasics(error) {
         // If model save fails, do not transition, save original vales
         this.get('toast').error(this.get('i18n').t('submit.basics_error'));
+        this.get('raven').captureMessage('Could not save basics', { extra: { error } });
         this.send('saveOriginalValues');
     },
 
@@ -1303,12 +1283,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('next', this.get('_names.2'));
     },
 
-    _failMoveFromDisciplines() {
+    _failMoveFromDisciplines(error) {
         // Current subjects saved so UI can be restored in case of failure
         const model = this.get('model');
 
         model.set('subjects', $.extend(true, [], this.get('model.subjects')));
         this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
+        this.get('raven').captureMessage('Could not save disciplines', { extra: { error } });
     },
 
     _setContributorSearchResults(contributors) {
@@ -1424,7 +1405,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             basicsLicense: null,
             subjectsList: A(),
             availableLicenses: A(),
-            applyLicense: false,
             newNode: false,
             attemptedSubmit: false,
         }));

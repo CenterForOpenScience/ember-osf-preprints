@@ -30,7 +30,6 @@ const getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_strin
 export default Component.extend(Analytics, {
     store: service(),
     theme: service(),
-    whiteListedProviders: config.whiteListedProviders.map(item => item.toLowerCase()),
     init() {
         this._super(...arguments);
         this.set('otherProviders', []);
@@ -56,19 +55,19 @@ export default Component.extend(Analytics, {
         const providerNames = providers.filter(provider => provider.get('id') !== 'livedata').map((provider) => {
             const name = provider.get('shareSource') || provider.get('name');
             // TODO Change this in populate_preprint_providers script to just OSF
-            return name === 'Open Science Framework' ? 'OSF' : name;
+            return name === 'Open Science Framework' ? 'OSF Preprints' : name;
         });
         this.set('osfProviders', providerNames);
         return providerNames;
     },
-
     _returnResultSources(results) {
         return results.aggregations.sources.buckets;
     },
 
     _formatProviderWhitelist([osfProviders, hits]) {
         // Get the whitelist and add the OSF Providers to it
-        const whiteList = this.get('whiteListedProviders')
+        const whiteList = (this.get('whiteListedProviders') || [])
+            .map(provider => provider.toLowerCase())
             .concat(osfProviders
                 .map(osfProvider => osfProvider.toLowerCase()));
         // Filter out providers that are not on the whitelist

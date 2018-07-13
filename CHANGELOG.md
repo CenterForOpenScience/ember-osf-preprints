@@ -6,12 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
+- Whitelist functionality for discover page
 - Unified solution for preprint words
 - `cookie-banner` component to main application page
+- use of ember-osf `scheduled-banner` component
+- Selected provider description in the provider carousel
+- use of "OSF Preprints" as provider name for OSF preprints instead of "OSF" or "Open Science Framework"
+- parameters for `authenticated`, `isPublic` and `resource` to pageView tracking
 
 ### Changed
 - Styling and format of the branded navbar to match current styling in ember-osf
 - Reduced number of calls to the `preprints_provider` endpoint
+- Update preprint submission page language.
+- Sharing from the preprint detail view to use ember-osf sharing icons
 - Update preprints to work with a new unified version of ember-osf (works with both preprints and reviews apps)
 - Update preprints to use ember-cli@2.18
 
@@ -23,6 +30,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Updated to use latest provider assets
 
+### Removed
+- Remove logic related to updating the node's license
+
 ## [0.118.5] - 2018-04-27
 ### Changed
 - Updated to use latest provider assets
@@ -30,6 +40,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.118.4] - 2018-04-05
 ### Fixed
 - Automatic opening of upload section on branded provider submit page
+- Correctly show parent projects in the "Choose project" dropdown
 
 ### Removed
 - Unused image code

@@ -65,16 +65,18 @@ export default Component.extend(Analytics, {
             node: this.get('node'),
         });
     }),
-
-    _chosenFile: computed('chosenFile', 'indexes', function() {
+    fileDownloadURL: computed('selectedFile', function() {
+        return fileDownloadPath(this.get('selectedFile'), this.get('node'));
+    }),
+    _chosenFile: observer('chosenFile', 'indexes', function() { /* eslint-disable-line ember/no-observers */
         const fid = this.get('chosenFile');
-        const index = this.get('indexes').indexOf(fid);
+        const index = this.get('indexes') && this.get('indexes').indexOf(fid);
         if (fid && index !== -1) {
             this.set('selectedFile', this.get('files')[index]);
         }
     }),
-    _moveIfNeeded: computed('selectedFile', function() {
-        const index = this.get('files').indexOf(this.get('selectedFile'));
+    _moveIfNeeded: observer('selectedFile', function() { /* eslint-disable-line ember/no-observers */
+        const index = this.get('files') && this.get('files').indexOf(this.get('selectedFile'));
         if (index < 0) {
             return;
         }
@@ -88,9 +90,6 @@ export default Component.extend(Analytics, {
                 this.set('endIndex', index + 6);
             }
         }
-    }),
-    fileDownloadURL: computed('selectedFile', function() {
-        return fileDownloadPath(this.get('selectedFile'), this.get('node'));
     }),
 
     // This needs to be changed away from an observer, but "preprint" changes
