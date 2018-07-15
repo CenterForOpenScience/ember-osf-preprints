@@ -936,10 +936,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Search for Authors`,
                 });
-            return this.store.query('user', {
-                filter: {
-                    'full_name,given_name,middle_names,family_name': query,
-                },
+            return this.store.query('search-users', {
+                // Stupid hack. This is technically lucene but people don't care if it is
+                // lucene when searching for collabs (and we don't want to explain lucene here).
+                // So this makes search similar to how it worked when it was done through filters
+                q: `*${query}*`,
                 page,
             })
                 .then(this._setContributorSearchResults.bind(this))
