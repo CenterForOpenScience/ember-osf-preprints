@@ -25,12 +25,15 @@ import fileDownloadPath from '../utils/file-download-path';
  * @class supplementary-file-browser
  */
 export default Component.extend(Analytics, {
+    theme: Ember.inject.service(),
+
     elementId: 'preprint-file-view',
     endIndex: 6,
     startIndex: 0,
 
     scrollAnim: '',
     selectedFile: null,
+    allowCommenting: false,
 
     hasAdditionalFiles: computed('files', function() {
         return this.get('files.length') > 1;
@@ -118,6 +121,11 @@ export default Component.extend(Analytics, {
         this._super(...arguments);
         this.__files();
     },
+
+    didReceiveAttrs() {
+        this.get('theme.provider').then(provider => this.setAllowCommenting(provider));
+    },
+
     actions: {
         next(direction) {
             this.get('metrics')
@@ -165,5 +173,10 @@ export default Component.extend(Analytics, {
                 this.chooseFile(file);
             }
         },
+    },
+    setAllowCommenting(provider) {
+        // NOTE: the public check will likely need to be removed after the node-preprint divorce
+        const publishedAndPublic = this.get('preprint.isPublished') && this.get('node.public');
+        this.set('allowCommenting', provider.get('allowCommenting') && publishedAndPublic);
     },
 });

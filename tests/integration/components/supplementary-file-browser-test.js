@@ -5,6 +5,15 @@ import ArrayProxy from '@ember/array/proxy';
 import hbs from 'htmlbars-inline-precompile';
 import EmberObject from '@ember/object';
 
+const themeStub = Ember.Service.extend({
+    isProvider: true,
+    provider: Ember.RSVP.resolve(Ember.Object.create({
+        name: 'OSF',
+        allowCommenting: false,
+        additionalProviders: ['Other Provider'],
+    })),
+});
+
 moduleForComponent('supplementary-file-browser', 'Integration | Component | supplementary file browser', {
     integration: true,
     beforeEach() {
@@ -40,6 +49,9 @@ moduleForComponent('supplementary-file-browser', 'Integration | Component | supp
             id: 890,
         });
         const dualTrackNonContributors = () => {};
+
+        this.register('service:theme', themeStub);
+        this.inject.service('theme');
 
         this.set('preprint', preprint);
         this.set('node', node);
