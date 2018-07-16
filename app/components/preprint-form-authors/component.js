@@ -1,8 +1,9 @@
+import Component from '@ember/component';
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
-import CpPanelBodyComponent from 'ember-collapsible-panel/components/cp-panel-body';
+
 import { permissionSelector } from 'ember-osf/const/permissions';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
@@ -39,7 +40,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  * ```
  * @class preprint-form-authors
  */
-export default CpPanelBodyComponent.extend(Analytics, {
+export default Component.extend(Analytics, {
     i18n: service(),
     raven: service(),
     authorModification: false,
