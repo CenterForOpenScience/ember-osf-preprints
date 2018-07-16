@@ -65,7 +65,7 @@ export default {
         citations: 'Citations',
         disciplines: 'Disciplines',
         project_button: {
-            paragraph: 'The project for this paper is available on the OSF.',
+            paragraph: 'The project for this {{documentType.singular}} is available on the OSF.',
             button: 'Visit project',
             edit_preprint: 'Edit {{documentType.singular}}',
             edit_resubmit_preprint: 'Edit and resubmit',

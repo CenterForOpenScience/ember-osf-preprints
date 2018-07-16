@@ -180,7 +180,7 @@
                                  title={{t "global.open_science_framework"}}></div>
                         </div>
                         <div class="col-xs-6 text-left">
-                            <p class="f-w-xs">{{t "content.project_button.paragraph"}}</p>
+                            <p class="f-w-xs">{{t "content.project_button.paragraph" documentType=model.provider.documentType}}</p>
                             <a type="button" class="btn btn-info" href={{node.links.html}} onclick={{action "click" "link" "Content - Visit Project" node.id}}>{{t "content.project_button.button"}}</a>
                         </div>
                     </div>
