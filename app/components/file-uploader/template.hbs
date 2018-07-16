@@ -18,7 +18,7 @@
 
     <div class="p-t-xs pull-right">
         <button class="btn btn-default" {{action changeInitialState startState}}>Back</button>
-        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "submit.body.save_continue"}}</button>
+        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "submit.body.continue"}}</button>
     </div>
 {{else}}
     {{!UPLOAD NEW FILE SECTION}}

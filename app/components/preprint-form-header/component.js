@@ -18,7 +18,7 @@ import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-
  *    selectedFile=osfFile
  *    fileVersion=fileVersion
  *    file=file
- *    showValidationIndicator=false
+ *    valid=isValid
  * }}
  * ```
  * @class preprint-form-header
@@ -27,7 +27,6 @@ export default CpPanelToggleComponent.extend({
     tagName: 'header',
     // Variables to pass in
     enabled: true,
-    showValidationIndicator: true,
     valid: null,
     isValidationActive: false,
     // CSS controls icon color and display.
