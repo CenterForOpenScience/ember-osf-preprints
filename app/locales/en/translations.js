@@ -20,7 +20,7 @@ export default {
         brand,
         brand_name: 'OSF',
         provider_brand: '{{name}} {{documentType.pluralCapitalized}}',
-        add_preprint: 'Add a {{documentType.singularCapitalized}}',
+        add_preprint: 'Add a {{documentType.singular}}',
         title: 'Title',
         search_preprints: 'Search {{documentType.plural}}...',
         added_on: 'Added on',
