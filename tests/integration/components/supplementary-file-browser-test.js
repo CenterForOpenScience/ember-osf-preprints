@@ -1,13 +1,14 @@
 import { A } from '@ember/array';
-import { resolve } from 'rsvp';
+import RSVP, { resolve } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
+import Service from '@ember/service';
 import ArrayProxy from '@ember/array/proxy';
 import hbs from 'htmlbars-inline-precompile';
 import EmberObject from '@ember/object';
 
-const themeStub = Ember.Service.extend({
+const themeStub = Service.extend({
     isProvider: true,
-    provider: Ember.RSVP.resolve(Ember.Object.create({
+    provider: RSVP.resolve(EmberObject.create({
         name: 'OSF',
         allowCommenting: false,
         additionalProviders: ['Other Provider'],

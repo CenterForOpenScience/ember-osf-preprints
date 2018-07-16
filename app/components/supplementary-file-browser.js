@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 import { computed, observer } from '@ember/object';
+import { inject as service } from '@ember/service';
 import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
 import fileDownloadPath from '../utils/file-download-path';
@@ -25,7 +26,7 @@ import fileDownloadPath from '../utils/file-download-path';
  * @class supplementary-file-browser
  */
 export default Component.extend(Analytics, {
-    theme: Ember.inject.service(),
+    theme: service(),
 
     elementId: 'preprint-file-view',
     endIndex: 6,
