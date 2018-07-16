@@ -49,7 +49,7 @@ export default CpPanelComponent.extend(Analytics, {
     didReceiveAttrs() {
         this._super(...arguments);
         if (this.get('denyOpenMessage') === undefined) {
-            this.set('denyOpenMessage', this.get('i18n').t('submit.please_complete_upload'));
+            this.set('denyOpenMessage', this.get('i18n').t('submit.please_select_server'));
         }
     },
     didRender() {

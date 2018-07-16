@@ -173,8 +173,8 @@ export default {
         body: {
             p_add: 'For each section below, "Save and continue" will update your {{documentType.singular}}\'s associated OSF project.',
             p_edit: 'For each section below, "Save and continue" will update your {{documentType.singular}} and the associated OSF project.',
-            upload: 'Upload new {{documentType.singular}}',
-            connect: 'Connect {{documentType.singular}} to existing OSF project',
+            upload: 'Select a file from your computer',
+            connect: 'Select a file from an existing OSF project',
             subjects_description: 'Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.',
             remove_subject_aria: 'Remove subject',
             basics: {
@@ -239,7 +239,7 @@ export default {
                 resubmit_button: 'Resubmit',
                 return_button: 'Return to {{documentType.singular}}',
             },
-            save_continue: 'Save and continue',
+            continue: 'Continue',
         },
         could_not_update_title: 'Error updating title. Please try again.',
         error_copying_file: 'Error copying file; please try again.',
