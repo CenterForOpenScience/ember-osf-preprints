@@ -43,6 +43,7 @@ export default {
     content: {
         header: {
             last_edited: 'Last edited',
+            authors_label: 'Authors',
         },
         date_label: {
             created_on: 'Created on',
@@ -65,9 +66,10 @@ export default {
         original_publication_date: 'Original publication date',
         citations: 'Citations',
         disciplines: 'Disciplines',
+        supplemental_materials: {
+            title: 'Supplemental Materials',
+        },
         project_button: {
-            paragraph: 'The project for this paper is available on the OSF.',
-            button: 'Visit project',
             edit_preprint: 'Edit {{documentType.singular}}',
             edit_resubmit_preprint: 'Edit and resubmit',
         },
@@ -426,9 +428,6 @@ export default {
             post_facebook: 'Post to Facebook',
             share_linkedin: 'Share on LinkedIn',
             send_email: 'Send in email',
-        },
-        'supplementary-file-browser': {
-            primary: 'Primary',
         },
         'taxonomy-top-list': {
             // Nothing to translate

@@ -362,9 +362,6 @@ export default {
             share_linkedin: 'Compartir en LinkedIn',
             send_email: 'Enviar por email',
         },
-        'supplementary-file-browser': {
-            primary: 'Primario',
-        },
         'permission-language': {
             arxivTrademarkLicense,
             arxiv_non_endorsement: `${arxivTrademarkLicense} This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.`,

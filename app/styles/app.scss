@@ -284,6 +284,7 @@ $logo-dir: 'img/provider_logos/';
 .dark-overlay-header-background {
     background: #343333 url("img/dark-overlay.png") top center;
 }
+
 #view-page {
     background-color: #FCFCFC;
     font-family : 'Open Sans', Helvetica, sans-serif;
@@ -296,9 +297,28 @@ $logo-dir: 'img/provider_logos/';
     }
     .view-authors {
         color: white;
+        padding-bottom: 15px;
+
         a {
             color: #6dd1de;
         }
+    }
+    .detail-header-info {
+        font-size: 14px;
+        display: flex;
+
+        .detail-header-item {
+            margin-right: 25px;
+        }
+
+        a {
+            color: #6dd1de;
+        }
+    }
+    .detail-header-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        padding-bottom: 2px;
     }
     .round-btn {
         border-radius: 25px;
@@ -1221,7 +1241,6 @@ label.title-label {
 }
 
 .discover-provider-logo,
-.content-provider-logo,
 .submit-provider-logo {
     background-position-x: center;
     background-position-y: center;
@@ -1252,8 +1271,9 @@ label.title-label {
     .view-authors {
         text-align: center;
     }
-    .preprint-added-on {
+    .detail-header-info {
         text-align: center;
+        justify-content: center;
     }
     .truncate {
         width: auto;
@@ -1300,11 +1320,6 @@ label.title-label {
             margin-bottom: 40px !important;
         }
     }
-}
-
-.content-provider-logo {
-    min-height: 80px;
-    min-width: 120px;
 }
 
 .discover-provider-logo {
