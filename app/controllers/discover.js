@@ -249,7 +249,7 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
 
     actions: {
         clearFilters() {
-            this.resetQueryParams();
+            this.resetQueryParams(Object.keys(filterQueryParams));
         },
         search() {
             this.get('fetchData').perform(this.get('allQueryParams'));
