@@ -374,10 +374,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 this.get('model.licenseRecord.copyright_holders').join(', ') :
                 '') !== this.get('basicsLicense.copyrightHolders')) return true;
         } else {
-            if ((this.get('availableLicenses').toArray().length ?
+            if (this.get('basicsLicense.licenseType.name') && (this.get('availableLicenses').toArray().length ?
                 this.get('availableLicenses').toArray()[0].get('name') :
                 null) !== this.get('basicsLicense.licenseType.name')) return true;
-            if ((new Date()).getUTCFullYear().toString() !== this.get('basicsLicense.year')) return true;
+            if (this.get('basicsLicense.year') && (new Date()).getUTCFullYear().toString() !== this.get('basicsLicense.year')) return true;
             if (!(this.get('basicsLicense.copyrightHolders') === '' ||
                 !this.get('basicsLicense.copyrightHolders.length') ||
                 this.get('basicsLicense.copyrightHolders') === null)) return true;
@@ -1106,17 +1106,22 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 actionTrigger: 'submit',
                 target: preprint,
             });
-            submitAction.save();
+            submitAction.save().then(() => this._providerRouteTransition(preprint.id));
+        } else {
+            this._providerRouteTransition(preprint.id);
         }
+    },
+
+    _providerRouteTransition(preprintId) {
         let useProviderRoute = false;
         if (this.get('theme.isProvider')) {
             useProviderRoute = this.get('theme.isSubRoute');
         } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
-            window.location.replace(`${this.get('currentProvider.domain')}${preprint.id}`);
+            window.location.replace(`${this.get('currentProvider.domain')}${preprintId}`);
         } else if (this.get('currentProvider.id') !== 'osf') {
             useProviderRoute = true;
         }
-        this.transitionToRoute(`${useProviderRoute ? 'provider.' : ''}content`, preprint);
+        this.transitionToRoute(`${useProviderRoute ? 'provider.' : ''}content`, this.get('model').reload());
     },
 
     _failSaveModel() {

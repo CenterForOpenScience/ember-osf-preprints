@@ -21,7 +21,8 @@ export default {
         brand,
         brand_name: 'OSF',
         provider_brand: '{{name}} {{documentType.pluralCapitalized}}',
-        add_preprint: 'Add a {{documentType.singularCapitalized}}',
+        add_preprint: 'Add a {{documentType.singular}}',
+        add_preprint_navbar: 'Add a {{documentType.singularCapitalized}}',
         title: 'Title',
         search_preprints: 'Search {{documentType.plural}}...',
         added_on: 'Added on',
@@ -68,7 +69,7 @@ export default {
         citations: 'Citations',
         disciplines: 'Disciplines',
         project_button: {
-            paragraph: 'The project for this paper is available on the OSF.',
+            paragraph: 'The project for this {{documentType.singular}} is available on the OSF.',
             button: 'Visit project',
             edit_preprint: 'Edit {{documentType.singular}}',
             edit_resubmit_preprint: 'Edit and resubmit',

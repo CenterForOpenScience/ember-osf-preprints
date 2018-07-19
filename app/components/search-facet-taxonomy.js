@@ -16,7 +16,6 @@ const pageSize = 150;
  * ```handlebars
  * {{search-facet-taxonomy
  *      updateFilters=(action 'updateFilters')
- *      activeFilters=activeFilters
  *      options=facet
  *      filterReplace=filterReplace
  *      key=key
@@ -27,8 +26,8 @@ const pageSize = 150;
 export default Component.extend(Analytics, {
     theme: service(),
     // Creates a list of all of the subject paths that need to be selected
-    expandedList: computed('activeFilters.subjects', function() {
-        const filters = this.get('activeFilters.subjects');
+    expandedList: computed('state.value', function() {
+        const filters = this.get('state.value');
         const expandList = [];
         filters.forEach((filter) => {
             let filterStr = '';

@@ -260,6 +260,31 @@
                             {{t "global.none"}}
                         {{/if}}
                     </div>
+                    {{#if model.originalPublicationDate}}
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md f-w-md"><strong>{{t "content.original_publication_date"}}</strong></h4>
+                            <p>
+                                {{moment-format model.originalPublicationDate "YYYY-MM-DD"}}
+                            </p>
+                        </div>
+                    {{/if}}
+
+                    <div class="p-t-xs m-b-lg">
+                        <h4 class="p-v-md f-w-md"><strong>{{t "content.citations"}}</strong></h4>
+                        {{citation-widget node=model}}
+                    </div>
+
+                    {{!PROJECT BUTTON}}
+                    <div class="p-lg osf-box-lt row project-box">
+                        <div class="col-xs-6 text-center">
+                            <div class="content-provider-logo provider-osf-dark"
+                                 title={{t "global.open_science_framework"}}></div>
+                        </div>
+                        <div class="col-xs-6 text-left">
+                            <p class="f-w-xs">{{t "content.project_button.paragraph" documentType=model.provider.documentType}}</p>
+                            <a type="button" class="btn btn-info" href={{node.links.html}} onclick={{action "click" "link" "Content - Visit Project" node.id}}>{{t "content.project_button.button"}}</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         {{/if}}

@@ -19,11 +19,10 @@ moduleForComponent('search-facet-provider', 'Integration | Component | search fa
         ]);
 
         this.set('otherProviders', otherProviders);
-        this.set('facet', { key: 'sources', title: 'Providers', component: 'search-facet-provider' });
-        this.set('key', 'sources');
+        this.set('facet', { key: 'provider', title: 'Providers', component: 'search-facet-provider' });
+        this.set('key', 'provider');
         const noop = () => {};
         this.set('noop', noop);
-        this.set('activeFilters', { providers: [], subjects: [] });
         this.set('filterReplace', { 'Open Science Framework': 'OSF' });
     },
 });
@@ -34,7 +33,6 @@ skip('preprint providers and counts are listed', function(assert) {
         key=key
         options=facet
         updateFilters=(action noop)
-        activeFilters=activeFilters
         filterReplace=filterReplace
         otherProviders=otherProviders
     }}`);
@@ -53,7 +51,6 @@ skip('filterReplace looks up key in mapping', function(assert) {
         key=key
         options=facet
         updateFilters=(action noop)
-        activeFilters=activeFilters
         filterReplace=filterReplace
         otherProviders=otherProviders
     }}`);

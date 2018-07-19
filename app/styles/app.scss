@@ -2,12 +2,17 @@
 @import 'variables';
 @import 'bootstrap';
 @import 'ember-power-select';
+@import 'daterangepicker.scss';
+@import 'c3';
+@import 'hint';
+
 @import 'osf-style';
+
 @import 'authors';
 @import 'validated-input';
-@import 'hint';
-@import 'error-page.scss';
-@import 'daterangepicker.scss';
+@import 'error-page';
+@import 'search-facets';
+
 
 /* GLOBAL to PREPRINTS, these may be used in multiple pages */
 .pointer {
@@ -219,7 +224,7 @@ $logo-dir: 'img/provider_logos/';
     }
 }
 .search-main {
-    background-color: #fbfbfb;
+    background-color: #fbfbfb !important;
     border-bottom: 1px solid #dedede;
     .filter-heading {
         background-color: #efefef;

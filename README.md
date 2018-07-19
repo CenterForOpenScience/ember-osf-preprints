@@ -30,7 +30,7 @@ You will need the following things properly installed on your computer.
 
 If you will be using local preprint provider assets (rather than the CDN):
 
-1. If you did not clone the repository using --recursive, run: `git submodule update --init --recursive`
+1. If you did not clone the repository using `--recursive`, run: `git submodule update --init --recursive`
 2. Set the PROVIDER_ASSETS_URL environment variable to 'local'
 
 ### Updating Assets
@@ -59,7 +59,7 @@ any other OSF page, then returning to the preprints app.
 ### Generating test data on the OSF
 There are a few scripts to run to populate your local preprint providers list, and help generate some "fake" preprints locally so you can begin testing using the OSF API.
 
-* Populate the OSF's PrerpintProvider model with data:
+* Populate the OSF's PreprintProvider model with data:
 
 `python -m scripts.populate_preprint_providers`
 
@@ -71,7 +71,7 @@ There are a few scripts to run to populate your local preprint providers list, a
 
 `python -m scripts.create_fakes -u user@email.io --nprojects 2 --preprint True --preprintprovider osf,psyarxiv`
 
-*notes*: You can enter as many providers as you like, seperated by commas. Also, this script does not currently create actual fake files, only fake file metadata; the file itself won't render in a preprint view, but you can still request its information from the API.
+*notes*: You can enter as many providers as you like, separated by commas. Also, this script does not currently create actual fake files, only fake file metadata; the file itself won't render in a preprint view, but you can still request its information from the API.
 
 ### Code Generators
 
