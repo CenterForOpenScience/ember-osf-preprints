@@ -374,10 +374,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 this.get('model.licenseRecord.copyright_holders').join(', ') :
                 '') !== this.get('basicsLicense.copyrightHolders')) return true;
         } else {
-            if ((this.get('availableLicenses').toArray().length ?
+            if (this.get('basicsLicense.licenseType.name') && (this.get('availableLicenses').toArray().length ?
                 this.get('availableLicenses').toArray()[0].get('name') :
                 null) !== this.get('basicsLicense.licenseType.name')) return true;
-            if ((new Date()).getUTCFullYear().toString() !== this.get('basicsLicense.year')) return true;
+            if (this.get('basicsLicense.year') && (new Date()).getUTCFullYear().toString() !== this.get('basicsLicense.year')) return true;
             if (!(this.get('basicsLicense.copyrightHolders') === '' ||
                 !this.get('basicsLicense.copyrightHolders.length') ||
                 this.get('basicsLicense.copyrightHolders') === null)) return true;
