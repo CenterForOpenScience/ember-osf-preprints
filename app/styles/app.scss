@@ -1337,6 +1337,17 @@ nav.preprint-navbar {
         margin-right: 16px;
     }
 
+    // Hacks for very small preprints windows breaking navbar into two lines
+    // Don't display the preprint word on small screens and force the margin of the button over a bit
+    @media (max-width: 520px) {
+        .navbar-preprint-word {
+            display: none;
+        }
+        #preprint-branded-collapse-button {
+            margin-right: -15px;
+        }
+    }
+
     .nav-user-dropdown {
         height: $nav-height;
     }
