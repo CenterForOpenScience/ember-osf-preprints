@@ -183,13 +183,11 @@ export default {
                 },
                 keywords: {
                     label: 'Keywords',
-                    paragraph: 'Add keywords to increase discoverability of your {{documentType.singular}}',
+                    paragraph: 'Add keywords to increase discoverability of your {{documentType.singular}}. Type keyword, then hit enter.',
+                    placeholder: 'Add a keyword',
                 },
                 abstract: {
                     placeholder: 'Add a brief summary of your {{documentType.singular}}',
-                },
-                tags: {
-                    placeholder: 'add a tag',
                 },
                 license: {
                     apply_license_title: 'Apply this license to my OSF Project.',

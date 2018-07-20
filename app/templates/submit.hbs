@@ -318,10 +318,22 @@
                                             {{validated-input inputType='date' model=this valuePath='basicsOriginalPublicationDate' value=basicsOriginalPublicationDate}}
                                         </form>
                                     </div>
-                                    <div class="clearfix">
+                                    <div class="clearfix preprints-form-keywords">
                                         <label>{{t "submit.body.basics.keywords.label" documentType=currentProvider.documentType}}:</label>
-                                        <p class="text-smaller">{{t "submit.body.basics.keywords.paragraph" documentType=currentProvider.documentType}}</p>
-                                        {{tags-widget addATag=(action 'addTag') removeATag=(action 'removeTag') tags=basicsTags}}
+                                        <p class="text-smaller">
+                                            {{t "submit.body.basics.keywords.paragraph" documentType=currentProvider.documentType}}
+                                        </p>
+
+                                        {{#tag-input
+                                            tags=basicsTags
+                                            addTag=(action 'addTag')
+                                            removeTagAtIndex=(action 'removeTag')
+                                            placeholder=(t 'submit.body.basics.keywords.placeholder')
+                                            allowSpacesInTags=true
+                                            as |tag|
+                                        }}
+                                          {{tag}}
+                                        {{/tag-input}}
                                     </div>
                                 </div>
                                 <div class="col-md-6">

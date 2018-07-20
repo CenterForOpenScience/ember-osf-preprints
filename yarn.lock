@@ -4317,6 +4317,13 @@ ember-string-ishtmlsafe-polyfill@^2.0.0:
   dependencies:
     ember-cli-version-checker "^2.1.0"
 
+ember-tag-input@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/ember-tag-input/-/ember-tag-input-1.2.1.tgz#5130b3895f09663b809719abc3fc2a7bb3bd6a0f"
+  dependencies:
+    ember-cli-babel "^6.7.1"
+    ember-cli-htmlbars "^2.0.3"
+
 ember-template-lint@^0.8.16:
   version "0.8.18"
   resolved "https://registry.yarnpkg.com/ember-template-lint/-/ember-template-lint-0.8.18.tgz#634b3dac1195a150e110a6d93332db04f651bf81"

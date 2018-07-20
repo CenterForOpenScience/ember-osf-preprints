@@ -871,15 +871,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         },
 
         // Custom removeATag method that removes tag from list instead of auto-saving
-        removeTag(tag) {
+        removeTag(tagIndex) {
             this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Tag`,
                 });
-
-            this.get('basicsTags').removeObject(tag);
+            this.get('basicsTags').removeAt(tagIndex);
         },
 
         /*
