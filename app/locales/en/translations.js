@@ -72,7 +72,7 @@ export default {
             edit_resubmit_preprint: 'Edit and resubmit',
         },
         orphan_preprint: 'The user has removed this file.',
-        private_preprint_warning: 'This {{documentType.singularCapitalized}} is private. Make it discoverable by making',
+        private_preprint_warning: 'This {{documentType.singular}} is private. Make it discoverable by making',
         public: 'public',
     },
     discover: {
@@ -187,7 +187,7 @@ export default {
                     placeholder: 'Add a brief summary of your {{documentType.singular}}',
                 },
                 tags: {
-                    placeholder: 'add a tag',
+                    placeholder: 'Add a tag',
                 },
                 license: {
                     apply_license_title: 'Apply this license to my OSF Project.',
@@ -258,22 +258,22 @@ export default {
         basics_error: 'Error saving basics fields.',
         disciplines_error: 'Error saving discipline(s).',
         search_contributors_error: 'Could not perform search query.',
-        server_locked: 'You cannot change the {{documentType.singular}} service after a file has been uploaded',
-        please_select_server: 'Please select a {{documentType.singular}} service before continuing',
+        server_locked: 'You cannot change the paper service after a file has been uploaded',
+        please_select_server: 'Please select a paper service before continuing',
         please_complete_upload: 'Please complete upload section before continuing',
     },
     components: {
         'confirm-share-preprint': {
             body: 'Once this {{documentType.singular}} is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.',
             title: {
-                submit: 'Submit {{documentType.singularCapitalized}}',
-                create: 'Create {{documentType.singularCapitalized}}',
-                resubmit: 'Resubmit {{documentType.singularCapitalized}}',
+                submit: 'Submit {{documentType.singular}}',
+                create: 'Create {{documentType.singular}}',
+                resubmit: 'Resubmit {{documentType.singular}}',
             },
         },
         'convert-or-copy': {
-            organize_language_project: 'You can organize your {{documentType.singular}} by storing the file in this project or in its own new component.  If you select ‘Make a new component’,the {{documentType.singular}} file will be stored in a new component inside this project.  If you select ‘Use the current project’, the {{documentType.singular}} file will be stored in this project.If you are unsure, select ‘Make a new component’.',
-            organize_language_component: 'You can organize your {{documentType.singular}} by storing the file in this component or in its own new component.  If you select ‘Make a new component’,the {{documentType.singular}} file will be stored in a new component inside this component.  If you select ‘Use the current component’, the {{documentType.singular}} file will be stored in this component.If you are unsure, select ‘Make a new component’.',
+            organize_language_project: 'You can organize your {{documentType.singular}} by storing the file in this project or in its own new component.  If you select ‘Make a new component’, the {{documentType.singular}} file will be stored in a new component inside this project.  If you select ‘Use the current project’, the {{documentType.singular}} file will be stored in this project.  If you are unsure, select ‘Make a new component’.',
+            organize_language_component: 'You can organize your {{documentType.singular}} by storing the file in this component or in its own new component.  If you select ‘Make a new component’, the {{documentType.singular}} file will be stored in a new component inside this component.  If you select ‘Use the current component’, the {{documentType.singular}} file will be stored in this component.  If you are unsure, select ‘Make a new component’.',
             copy: 'Make a new component',
             convert_project: 'Use the current project',
             convert_component: 'Use the current component',
@@ -345,11 +345,11 @@ export default {
             // Nothing to translate
         },
         'preprint-form-header': {
-            changes_saved: 'Changes Saved!',
+            changes_saved: 'Changes saved!',
             file: '{{documentType.singularCapitalized}} file',
             title: '{{documentType.singularCapitalized}} title',
             location: '{{documentType.singularCapitalized}} location',
-            click_edit: 'Click to Edit',
+            click_edit: 'Click to edit',
             server: 'Paper service',
             name: {
                 Server: 'Select a service',
@@ -374,7 +374,7 @@ export default {
             select_existing_file: 'Select existing file as {{documentType.singular}}',
             edit_preprint_title_project: 'Edit {{documentType.singular}} title (will also become the name of the project)',
             edit_preprint_title_component: 'Edit {{documentType.singular}} title (will also become the name of the component)',
-            initiate_preprint_process: 'You have selected and organized your {{documentType.singular}} file. Clicking "Save and continue" will immediately make changes to your OSF project. You will not be able to delete your {{documentType.singularCapitalized}} file, but you will be able to update or modify it.',
+            initiate_preprint_process: 'You have selected and organized your {{documentType.singular}} file. Clicking "Save and continue" will immediately make changes to your OSF project. You will not be able to delete your {{documentType.singular}} file, but you will be able to update or modify it.',
             edit_organize_section: 'Edits to this {{documentType.singular}} will update both the {{documentType.singular}} and the OSF project.',
             admin_only: 'You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.',
         },
