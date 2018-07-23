@@ -350,9 +350,9 @@ export default {
             title: '{{documentType.singularCapitalized}} title',
             location: '{{documentType.singularCapitalized}} location',
             click_edit: 'Click to Edit',
-            server: '{{documentType.singularCapitalized}} service',
+            server: 'Paper service',
             name: {
-                Server: 'Select a {{documentType.singular}} service',
+                Server: 'Select a service',
                 Upload: 'Upload',
                 Discipline: 'Discipline',
                 Basics: 'Basics',
