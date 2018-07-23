@@ -19,6 +19,7 @@ import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-
  *    fileVersion=fileVersion
  *    file=file
  *    showValidationIndicator=false
+ *    currentProvider=currentProvider // needed if preprint words are used via translations
  * }}
  * ```
  * @class preprint-form-header
