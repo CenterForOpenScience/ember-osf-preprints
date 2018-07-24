@@ -178,8 +178,12 @@ export default {
             subjects_description: 'Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.',
             remove_subject_aria: 'Remove subject',
             basics: {
+                title: {
+                    label: 'Preprint Title',
+                },
                 doi: {
-                    label: 'Peer-reviewed publication DOI (optional)',
+                    label: 'Peer-reviewed publication DOI',
+                    placeholder: 'Add a publication DOI',
                 },
                 keywords: {
                     label: 'Keywords',
@@ -189,12 +193,9 @@ export default {
                 abstract: {
                     placeholder: 'Add a brief summary of your {{documentType.singular}}',
                 },
-                license: {
-                    apply_license_title: 'Apply this license to my OSF Project.',
-                    apply_license_text: 'Selecting a license for your {{documentType.singular}} does not automatically apply the license to your OSF project.',
-                },
                 original_publication_date: {
                     label: 'Original publication date',
+                    placeholder: 'Add the original publication date',
                 },
             },
             authors: {

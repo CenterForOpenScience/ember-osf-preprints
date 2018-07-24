@@ -4,7 +4,11 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h1>{{t (if editMode "submit.edit_heading" heading) documentType=currentProvider.documentType}}</h1>
+                <h1>
+                    {{t (if editMode "submit.edit_heading" heading)
+                        documentType=currentProvider.documentType
+                    }}
+                </h1>
             </div>
         </div>
     </div>
@@ -61,7 +65,9 @@
                                     <div class="row">
                                         <div style="padding: 25px 85px 15px;" class="col-md-12">
                                             <dl class="dl-horizontal dl-description">
-                                                <dt>{{if (not theme.isProvider) 'OSF Preprints' selectedProvider.name}}:</dt>
+                                                <dt>
+                                                    {{if (not theme.isProvider) 'OSF Preprints' selectedProvider.name}}:
+                                                </dt>
                                                 <dd>{{sanitize-html selectedProvider.description}}</dd>
                                             </dl>
                                         </div>
@@ -94,7 +100,9 @@
                     }}
                         {{#panel.toggle tagName="header"}}
                             <div class="section-header">
-                                {{t "components.preprint-form-header.name.Upload" documentType=provider.documentType}}
+                                {{t "components.preprint-form-header.name.Upload"
+                                    documentType=currentProvider.documentType
+                                }}
                             </div>
                             <div class="preprint-section-status pull-right">
                                 {{#if (not uploadChanged)}}
@@ -238,7 +246,9 @@
                     }}
                         {{#panel.toggle tagName="header"}}
                             <div class="section-header">
-                                {{t "components.preprint-form-header.name.Discipline" documentType=provider.documentType}}
+                                {{t "components.preprint-form-header.name.Discipline"
+                                    documentType=currentProvider.documentType
+                                }}
                             </div>
                             <div class="preprint-section-status pull-right">
                                 {{#if (not disciplineChanged)}}
@@ -289,7 +299,9 @@
                     }}
                         {{#panel.toggle tagName="header"}}
                             <div class="section-header">
-                                {{t "components.preprint-form-header.name.Basics" documentType=provider.documentType}}
+                                {{t "components.preprint-form-header.name.Basics"
+                                    documentType=currentProvider.documentType
+                                }}
                             </div>
                             <div class="preprint-section-status pull-right">
                                 {{#if (not basicsChanged)}}
@@ -298,30 +310,85 @@
                             </div>
                         {{/panel.toggle}}
                         {{#panel.body}}
-                            <div class='row'>
-                                <div class='col-xs-12'>
-                                    {{license-picker licenses=availableLicenses currentValues=basicsLicense showCategories=false editLicense=(action 'editLicense') allowDismiss=false autosave=true showBorder=false pressSubmit=(action 'saveBasics')}}
+                            <div class="basics-body">
+                                <div class="basics-column">
+                                    <label>
+                                        <span class="required">
+                                            {{t "submit.body.basics.title.label"
+                                                documentType=currentProvider.documentType
+                                            }}
+                                        </span>
+                                    </label>
+                                    <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Edit title') (action 'track' 'input' 'onchange' 'Submit - Edit title')}}>
+                                        {{preprint-title-editor
+                                            documentType=currentProvider.documentType
+                                            title=title
+                                            titleValid=titleValid
+                                        }}
+                                    </form>
+                                    <label>
+                                        <span class="required">{{t "global.abstract"}}</span>
+                                    </label>
+                                    <form class="abstract-form" onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Abstract Text Change') (action 'track' 'input' 'onchange' 'Submit - Abstract Text Change')}}>
+                                        {{validated-input
+                                            inputType='textarea'
+                                            model=this
+                                            valuePath='basicsAbstract'
+                                            placeholder=(t "submit.body.basics.abstract.placeholder"
+                                            documentType=currentProvider.documentType)
+                                            value=basicsAbstract
+                                        }}
+                                    </form>
                                 </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-6">
+                                <div class="basics-column">
+                                    <div class='row'>
+                                        <div class='col-xs-12'>
+                                            {{license-picker
+                                                licenses=availableLicenses
+                                                currentValues=basicsLicense
+                                                showCategories=false
+                                                editLicense=(action 'editLicense')
+                                                allowDismiss=false
+                                                autosave=true
+                                                showBorder=false
+                                                pressSubmit=(action 'saveBasics')
+                                            }}
+                                        </div>
+                                    </div>
                                     <div>
-                                        <label>{{t "submit.body.basics.doi.label"}}:</label>
+                                        <label>{{t "submit.body.basics.doi.label"}}</label>
                                         <form role="button" onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
-                                            {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
+                                            {{validated-input
+                                                model=this
+                                                valuePath='basicsDOI'
+                                                placeholder=(t "submit.body.basics.doi.placeholder")
+                                                value=basicsDOI
+                                                pressSubmit=(action 'saveBasics')
+                                            }}
                                         </form>
                                     </div>
                                     <div>
-                                        <label>{{t "submit.body.basics.original_publication_date.label"}}:</label>
+                                        <label>{{t "submit.body.basics.original_publication_date.label"}}</label>
                                         <form>
-                                            {{validated-input inputType='date' model=this valuePath='basicsOriginalPublicationDate' value=basicsOriginalPublicationDate}}
+                                            {{validated-input
+                                                inputType='date'
+                                                model=this
+                                                valuePath='basicsOriginalPublicationDate'
+                                                placeholder=(t "submit.body.basics.original_publication_date.placeholder")
+                                                value=basicsOriginalPublicationDate
+                                            }}
                                         </form>
                                     </div>
                                     <div class="clearfix preprints-form-keywords">
-                                        <label>{{t "submit.body.basics.keywords.label" documentType=currentProvider.documentType}}:</label>
+                                        <label>
+                                            {{t "submit.body.basics.keywords.label"
+                                                documentType=currentProvider.documentType
+                                            }}
+                                        </label>
                                         <p class="text-smaller">
-                                            {{t "submit.body.basics.keywords.paragraph" documentType=currentProvider.documentType}}
+                                            {{t "submit.body.basics.keywords.paragraph"
+                                                documentType=currentProvider.documentType
+                                            }}
                                         </p>
 
                                         {{#tag-input
@@ -336,20 +403,16 @@
                                         {{/tag-input}}
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label>
-                                        <span class="required">{{t "global.abstract"}}:</span>
-                                    </label>
-                                    <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Abstract Text Change') (action 'track' 'input' 'onchange' 'Submit - Abstract Text Change')}}>
-                                        {{validated-input inputType='textarea' model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder" documentType=currentProvider.documentType) value=basicsAbstract}}
-                                    </form>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="pull-right">
-                                        <button {{action 'discardBasics'}} class="btn btn-default" disabled={{unless basicsChanged true}} >{{t "global.discard"}}</button>
-                                        <button {{action 'saveBasics'}} class="btn btn-primary" disabled={{unless basicsValid true}} >{{t "submit.body.continue"}}</button>
+                                        <button {{action 'discardBasics'}} class="btn btn-default" disabled={{unless basicsChanged true}} >
+                                            {{t "global.discard"}}
+                                        </button>
+                                        <button {{action 'saveBasics'}} class="btn btn-primary" disabled={{unless basicsValid true}}>
+                                            {{t "submit.body.continue"}}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -387,7 +450,9 @@
                     }}
                         {{#panel.toggle tagName="header"}}
                             <div class="section-header">
-                                {{t "components.preprint-form-header.name.Authors" documentType=provider.documentType}}
+                                {{t "components.preprint-form-header.name.Authors"
+                                    documentType=currentProvider.documentType
+                                }}
                             </div>
                             <div class="preprint-section-status pull-right">
                                 {{#if (not authorsChanged)}}
@@ -446,12 +511,19 @@
                     {{#if editMode}}
                         <div>
                             {{#if showInformation}}
-                                <p>{{t editInformation1 documentType=currentProvider.documentType name=providerName reviewsWorkflow=(t workflow)}}</p>
+                                <p>
+                                    {{t editInformation1
+                                        documentType=currentProvider.documentType
+                                        name=providerName
+                                        reviewsWorkflow=(t workflow)
+                                    }}
+                                </p>
                                 <p>
                                     {{t editInformation2
                                         name=providerName
                                         reviewsWorkflow=(t workflow)
-                                        email=theme.provider.emailSupport}}
+                                        email=theme.provider.emailSupport
+                                    }}
                                 </p>
                             {{/if}}
                             {{#if canResubmit}}
@@ -470,26 +542,58 @@
                                 </div>
                             {{/if}}
                             <button class="btn btn-primary btn-md m-t-md pull-right" disabled={{unless allSectionsValid true}} {{action 'returnToSubmission'}}>
-                                {{t "submit.body.edit.return_button" documentType=currentProvider.documentType}}
+                                {{t "submit.body.edit.return_button"
+                                    documentType=currentProvider.documentType
+                                }}
                             </button>
                         </div>
                     {{else}}
+                        <p class="information">
+                            <strong>
+                                {{t permissionInformation
+                                    documentType=currentProvider.documentType
+                                    name=providerName
+                                }}
+                            </strong>
+                        </p>
                         {{#if moderationType}}
                             <p class="information">
-                                {{t moderationInformation documentType=currentProvider.documentType name=providerName reviewsWorkflow=(t workflow)}}
+                                {{t moderationInformation
+                                    documentType=currentProvider.documentType
+                                    name=providerName
+                                    reviewsWorkflow=(t workflow)
+                                }}
                             </p>
                         {{else}}
-                            <p class="information">{{t generalInformation documentType=currentProvider.documentType name=providerName}}</p>
+                            <p class="information">
+                                {{t generalInformation
+                                    documentType=currentProvider.documentType
+                                    name=providerName
+                                }}
+                            </p>
                         {{/if}}
-                        <p class="information">{{t permissionInformation documentType=currentProvider.documentType name=providerName}}</p>
                         <div class="text-center">
                             {{#if showValidationErrors}}
                                 <span id="validation-errors">
-                                    <p class="m-t-md"><strong>{{t "submit.body.submit.invalid.description" documentType=currentProvider.documentType}}</strong></p>
-                                    <p class="text-danger">{{if (not (and savedTitle savedFile)) (t "submit.body.submit.invalid.upload")}}</p>
-                                    <p class="text-danger">{{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
-                                    <p class="text-danger">{{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
-                                    <p class="text-danger">{{unless authorsValid (t "global.authors")}}</p>
+                                    <p class="m-t-md">
+                                        <strong>
+                                            {{t "submit.body.submit.invalid.description"
+                                                documentType=currentProvider.documentType
+                                            }}
+                                        </strong>
+                                    </p>
+                                    <p class="text-danger">
+                                        {{if (not (and savedTitle savedFile)) (t "submit.body.submit.invalid.upload")}}
+                                    </p>
+                                    <p class="text-danger">
+                                        {{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}
+                                    </p>
+                                    <p class="text-danger">
+                                        {{unless savedAbstract (t "submit.body.submit.invalid.basics")}}
+                                    </p>
+                                    <p class="text-danger">
+                                        {{unless authorsValid (t "global.authors")}}
+                                    </p>
                                 </span>
                             {{/if}}
                             <button class="btn btn-success btn-md m-t-md pull-right" disabled={{showValidationErrors}} {{action 'clickSubmit'}}>
