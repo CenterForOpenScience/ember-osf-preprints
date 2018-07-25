@@ -302,6 +302,14 @@ export default {
             upload_error: 'Upload Failed',
             dropzone_text_override: 'Click or drag another {{documentType.singular}} file to replace',
         },
+        'license-picker': {
+            choose_a_license: 'Choose a license',
+            copyright_holders: 'Copyright holders',
+            license_FAQ: 'License FAQ',
+            required: '(required)',
+            save: 'Save',
+            year: 'Year',
+        },
         'preprint-footer-branded': {
             twitter: 'Twitter',
             facebook: 'Facebook',
