@@ -73,6 +73,7 @@ export default Controller.extend(Analytics, {
     activeFile: null,
     chosenFile: null,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
+    isWithdrawn: null,
 
     hasTag: computed.bool('model.tags.length'),
     dateLabel: computed('model.provider.reviewsWorkflow', function() {

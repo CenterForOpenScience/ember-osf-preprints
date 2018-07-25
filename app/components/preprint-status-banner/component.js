@@ -6,6 +6,7 @@ import { alias } from '@ember/object/computed';
 const PENDING = 'pending';
 const ACCEPTED = 'accepted';
 const REJECTED = 'rejected';
+const WITHDRAWN = 'withdrawn';
 
 const PRE_MODERATION = 'pre-moderation';
 const POST_MODERATION = 'post-moderation';
@@ -14,6 +15,7 @@ const ICONS = {
     [PENDING]: 'fa-hourglass-o',
     [ACCEPTED]: 'fa-check-circle-o',
     [REJECTED]: 'fa-times-circle-o',
+    [WITHDRAWN]: 'fa-exclamation-triangle',
 };
 
 const STATUS = {
@@ -27,6 +29,7 @@ const MESSAGE = {
     [POST_MODERATION]: 'components.preprint-status-banner.message.pending_post',
     [ACCEPTED]: 'components.preprint-status-banner.message.accepted',
     [REJECTED]: 'components.preprint-status-banner.message.rejected',
+    [WITHDRAWN]: 'components.preprint-status-banner.message.withdrawn',
 };
 
 const WORKFLOW = {
@@ -39,11 +42,14 @@ const CLASS_NAMES = {
     [POST_MODERATION]: 'preprint-status-pending-post',
     [ACCEPTED]: 'preprint-status-accepted',
     [REJECTED]: 'preprint-status-rejected',
+    [WITHDRAWN]: 'preprint-status-withdrawn',
 };
 
 export default Component.extend({
     i18n: service(),
     theme: service(),
+
+    isWithdrawn: false,
 
     // translations
     labelModeratorFeedback: 'components.preprint-status-banner.feedback.moderator_feedback',
@@ -60,20 +66,28 @@ export default Component.extend({
     reviewerName: alias('latestAction.creator.fullName'),
 
     getClassName: computed('submission.{provider.reviewsWorkflow,reviewsState}', function() {
-        return this.get('submission.reviewsState') === PENDING ?
-            CLASS_NAMES[this.get('submission.provider.reviewsWorkflow')] :
-            CLASS_NAMES[this.get('submission.reviewsState')];
+        if (this.get('isWithdrawn')) {
+            return CLASS_NAMES[WITHDRAWN];
+        } else {
+            return this.get('submission.reviewsState') === PENDING ?
+                CLASS_NAMES[this.get('submission.provider.reviewsWorkflow')] :
+                CLASS_NAMES[this.get('submission.reviewsState')];
+        }
     }),
 
-    bannerContent: computed('statusExplanation', 'workflow', 'theme.{isProvider,provider.name}', function() {
+    bannerContent: computed('statusExplanation', 'workflow', 'theme.{isProvider,provider.name}', 'isWithdrawn', function() {
         const i18n = this.get('i18n');
-        const tName = this.get('theme.isProvider') ?
-            this.get('theme.provider.name') :
-            i18n.t('global.brand_name');
+        if (this.get('isWithdrawn')) {
+            return i18n.t(MESSAGE[WITHDRAWN]);
+        } else {
+            const tName = this.get('theme.isProvider') ?
+                this.get('theme.provider.name') :
+                i18n.t('global.brand_name');
 
-        const tWorkflow = i18n.t(this.get('workflow'));
-        const tStatusExplanation = i18n.t(this.get('statusExplanation'));
-        return `${i18n.t(this.get('baseMessage'), { name: tName, reviewsWorkflow: tWorkflow, documentType: this.get('submission.provider.documentType') })} ${tStatusExplanation}.`;
+            const tWorkflow = i18n.t(this.get('workflow'));
+            const tStatusExplanation = i18n.t(this.get('statusExplanation'));
+            return `${i18n.t(this.get('baseMessage'), { name: tName, reviewsWorkflow: tWorkflow, documentType: this.get('submission.provider.documentType') })} ${tStatusExplanation}.`;
+        }
     }),
 
     statusExplanation: computed('submission.{provider.reviewsWorkflow,reviewsState}', function() {
@@ -86,8 +100,12 @@ export default Component.extend({
         return STATUS[this.get('submission.reviewsState')];
     }),
 
-    icon: computed('submission.reviewsState', function() {
-        return ICONS[this.get('submission.reviewsState')];
+    icon: computed('submission.reviewsState', 'isWithdrawn', function() {
+        if (this.get('isWithdrawn')) {
+            return ICONS[WITHDRAWN];
+        } else {
+            return ICONS[this.get('submission.reviewsState')];
+        }
     }),
 
     workflow: computed('submission.provider.reviewsWorkflow', function () {
