@@ -22,7 +22,7 @@ export default {
         provider_brand: '{{name}} {{documentType.pluralCapitalized}}',
         add_preprint: 'Add a {{documentType.singular}}',
         add_preprint_navbar: 'Add a {{documentType.singularCapitalized}}',
-        submit_preprint: 'Submit a {{documentType}}',
+        submit_preprint: 'Submit a {{documentType.singular}}',
         submit_preprint_navbar: 'Submit a {{documentType.singularCapitalized}}',
         title: 'Title',
         search_preprints: 'Search {{documentType.plural}}...',
