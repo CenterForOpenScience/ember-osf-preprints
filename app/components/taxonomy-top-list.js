@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
  * @module ember-preprints
@@ -16,22 +18,33 @@ import Analytics from 'ember-osf/mixins/analytics';
  * ```
  * @class taxonomy-top-list
  */
-export default Ember.Component.extend(Analytics, {
-    theme: Ember.inject.service(),
-    sortedList: Ember.computed('list', 'list.content', function() {
+export default Component.extend(Analytics, {
+    theme: service(),
+    sortedList: computed('list', 'list.content', function() {
         if (!this.get('list')) {
             return;
         }
         const sortedList = this.get('list').sortBy('text');
         const pairedList = [];
         for (let i = 0; i < sortedList.get('length'); i += 2) {
-            let pair = [];
-            pair.pushObject(sortedList.objectAt(i));
+            const pair = [];
+            // path in pair needs to be a list because that's what the
+            // subject param in the discover controller is expecting
+            const subjectOdd = sortedList.objectAt(i);
+            pair.pushObject({
+                path: [subjectOdd.get('path')],
+                text: subjectOdd.get('text'),
+            });
+
             if (sortedList.objectAt(i + 1)) {
-                pair.pushObject(sortedList.objectAt(i + 1));
+                const subjectEven = sortedList.objectAt(i + 1);
+                pair.pushObject({
+                    path: [subjectEven.get('path')],
+                    text: subjectEven.get('text'),
+                });
             }
             pairedList.pushObject(pair);
         }
         return pairedList;
-    })
+    }),
 });

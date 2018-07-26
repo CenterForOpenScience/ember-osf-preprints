@@ -1,12 +1,15 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import config from 'ember-get-config';
 import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-toggle';
+
 /**
  * @module ember-preprints
  * @submodule components
  */
 
 /**
- * Extends Ember Collapsible Panel's CpPanelToggleComponent.  Customizes the collapsible panel header.
+ * Extends Ember Collapsible Panel's CpPanelToggleComponent.
+ * Customizes the collapsible panel header.
  *
  * Sample usage:
  * ```handlebars
@@ -16,10 +19,11 @@ import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-
  *    fileVersion=fileVersion
  *    file=file
  *    showValidationIndicator=false
+ *    currentProvider=currentProvider // needed if preprint words are used via translations
  * }}
  * ```
  * @class preprint-form-header
- **/
+ * */
 export default CpPanelToggleComponent.extend({
     tagName: 'header',
     // Variables to pass in
@@ -27,9 +31,11 @@ export default CpPanelToggleComponent.extend({
     showValidationIndicator: true,
     valid: null,
     isValidationActive: false,
-
+    // CSS controls icon color and display.
+    // If neither valid nor invalid state applies, don't show icon.
+    classNameBindings: ['enabled::disabled', 'valid:valid', 'invalid:invalid', 'isValidationActive::not-validated'],
     // Calculated properties
-    invalid: Ember.computed('valid', 'isValidationActive', function() {
+    invalid: computed('valid', 'isValidationActive', function() {
         // If the user hasn't even opened the panel yet, don't run the validation check
         // In other words, not true or null
         if (this.get('isValidationActive')) {
@@ -38,6 +44,6 @@ export default CpPanelToggleComponent.extend({
             return false;
         }
     }),
-    // CSS controls icon color and display. If neither valid nor invalid state applies, don't show icon.
-    classNameBindings: ['enabled::disabled', 'valid:valid', 'invalid:invalid', 'isValidationActive::not-validated']
+    providerAssetsURL: config.providerAssetsURL,
+
 });

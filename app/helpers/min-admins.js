@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+
 /**
  * @module ember-preprints
  * @submodule helpers
@@ -14,8 +15,8 @@ import Ember from 'ember';
  * @param {Array} contributors list of all contributors on the preprint
  * @return {Boolean} Does updating this contributor leave minimum number of admins?
  */
-export function minAdmins(params/*, hash*/) {
-    let [contrib, contributors] = params;
+export function minAdmins(params/* , hash */) {
+    const [contrib, contributors] = params;
     let registeredAdmins = 0;
     contributors.forEach(function(contributor) {
         if (contributor.get('permission') === 'admin' && contributor.get('unregisteredContributor') === null) {
@@ -27,7 +28,6 @@ export function minAdmins(params/*, hash*/) {
     } else {
         return true;
     }
-
 }
 
-export default Ember.Helper.helper(minAdmins);
+export default helper(minAdmins);

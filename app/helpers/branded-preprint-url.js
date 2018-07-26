@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
 import pathJoin from '../utils/path-join';
 
 /**
@@ -6,7 +6,7 @@ import pathJoin from '../utils/path-join';
  * @submodule helpers
  */
 
- /**
+/**
   * To determine the link url for branded preprints on the provider carousel
   * Returns a string of the url with the necessary path
   *
@@ -19,11 +19,11 @@ import pathJoin from '../utils/path-join';
   */
 export function brandedPreprintUrl(params, hash) {
     let url = '';
-    let [provider] = params;
+    const [provider] = params;
     if (provider.get('domain') && provider.get('domainRedirectEnabled')) {
         url = provider.get('domain');
     } else {
-        url = '/preprints/' + provider.get('id');
+        url = `/preprints/${provider.get('id')}`;
     }
     if (hash.path) {
         return pathJoin(url, hash.path);
@@ -31,4 +31,4 @@ export function brandedPreprintUrl(params, hash) {
     return url;
 }
 
-export default Ember.Helper.helper(brandedPreprintUrl);
+export default helper(brandedPreprintUrl);

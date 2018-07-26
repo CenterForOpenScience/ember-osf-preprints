@@ -1,13 +1,13 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('additional-provider-list', 'Integration | Component | additional provider list', {
-    integration: true
+    integration: true,
 });
 
 test('additionalProviderList renders', function(assert) {
-    this.set('additionalProviders', Ember.A(['B Provider', 'A Provider']));
+    this.set('additionalProviders', A(['B Provider', 'A Provider']));
     this.render(hbs`{{additional-provider-list additionalProviders=additionalProviders}}`);
 
     // Should be alphabetically sorted as 'A Provider, B Provider'
@@ -15,5 +15,4 @@ test('additionalProviderList renders', function(assert) {
 
     assert.ok(this.$('.subject-item').length);
     assert.ok(this.$('.subject-item a').length);
-
 });

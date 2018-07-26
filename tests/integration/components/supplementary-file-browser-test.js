@@ -1,9 +1,14 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import RSVP, { resolve } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
+import Service from '@ember/service';
+import ArrayProxy from '@ember/array/proxy';
+import hbs from 'htmlbars-inline-precompile';
+import EmberObject from '@ember/object';
 
-const themeStub = Ember.Service.extend({
+const themeStub = Service.extend({
     isProvider: true,
-    provider: Ember.RSVP.resolve(Ember.Object.create({
+    provider: RSVP.resolve(EmberObject.create({
         name: 'OSF',
         allowCommenting: false,
         additionalProviders: ['Other Provider'],
@@ -12,38 +17,39 @@ const themeStub = Ember.Service.extend({
 
 moduleForComponent('supplementary-file-browser', 'Integration | Component | supplementary file browser', {
     integration: true,
-    beforeEach: function() {
-        let providerFiles = () => Ember.RSVP.resolve(Ember.ArrayProxy.create({
-            content: Ember.A([{ name: 'test folder', kind: 'folder'}, { name: 'chosenFile', kind: 'file' }]),
+    beforeEach() {
+        const providerFiles = () => resolve(ArrayProxy.create({
+            content: A([{ name: 'test folder', kind: 'folder' }, { name: 'chosenFile', kind: 'file' }]),
             meta: {
                 pagination: {
-                    total: 1
-                }
-            }}));
-        let providersQuery =  Ember.RSVP.resolve(Ember.A([{
-                name: 'osfstorage',
-                queryHasMany: providerFiles
+                    total: 1,
+                },
+            },
+        }));
+        const providersQuery = resolve(A([{
+            name: 'osfstorage',
+            queryHasMany: providerFiles,
         }]));
 
-        let node = Ember.Object.create({
+        const node = EmberObject.create({
             dateModified: '10-11-2016',
-            title:'My Preprint Title',
-            files: providersQuery
+            title: 'My Preprint Title',
+            files: providersQuery,
         });
 
-        let file = Ember.Object.create({
+        const file = EmberObject.create({
             name: 'test file',
             currentVersion: '1.12',
-            id: 890
+            id: 890,
         });
-        let preprint = Ember.Object.create({
+        const preprint = EmberObject.create({
             primaryFile: file,
-            node: node,
+            node,
             provider: 'osf',
             files: providersQuery,
-            id: 890
+            id: 890,
         });
-        let dualTrackNonContributors = () => {};
+        const dualTrackNonContributors = () => {};
 
         this.register('service:theme', themeStub);
         this.inject.service('theme');
@@ -51,32 +57,40 @@ moduleForComponent('supplementary-file-browser', 'Integration | Component | supp
         this.set('preprint', preprint);
         this.set('node', node);
         this.set('dualTrackNonContributors', dualTrackNonContributors);
-
-    }
+    },
 });
 
-function render(context, componentArgs) {
-    return context.render(Ember.HTMLBars.compile(`{{supplementary-file-browser
+function render(context) {
+    return context.render(hbs`{{supplementary-file-browser
         preprint=preprint
         node=node
-        ${componentArgs || ''}
         dualTrackNonContributors=(action dualTrackNonContributors)
-    }}`));
+    }}`);
 }
 
 test('it renders', function(assert) {
     // Tests that the page renders
-    render(this, 'hasAdditionalFiles=false');
+    this.render(hbs`{{supplementary-file-browser
+        preprint=preprint
+        node=node
+        hasAdditionalFiles=false    
+        dualTrackNonContributors=(action dualTrackNonContributors)
+    }}`);
     assert.equal(this.$('.osf-box').length, 0);
     assert.equal(this.$('.row p').text(), 'test file');
     assert.equal(this.$('.supplemental-downloads span').text(), ' Version: 1.12');
-
 });
 
 test('has additional files', function(assert) {
     // Tests that additional file section renders
-    render(this, 'hasAdditionalFiles=true hasPrev=true hasNext=true');
-
+    this.render(hbs`{{supplementary-file-browser
+        preprint=preprint
+        node=node
+        hasAdditionalFiles=true
+        hasPrev=true
+        hasNext=true
+        dualTrackNonContributors=(action dualTrackNonContributors)
+    }}`);
     // Checks for elements to render
     assert.equal(this.$('.osf-box').length, 1);
     assert.equal(this.$('#leftArrow').length, 1);
@@ -93,7 +107,7 @@ test('has additional files', function(assert) {
 test('fileDownloadURL computed property', function (assert) {
     render(this);
 
-    let url = this.$('.supplemental-downloads > a').attr('href')
+    const url = this.$('.supplemental-downloads > a').attr('href');
     assert.ok(url);
     assert.ok(url.indexOf(this.get('primaryFile.guid')) !== -1, 'Url does not have file\'s guid in it');
 });

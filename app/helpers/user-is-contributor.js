@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { helper } from '@ember/component/helper';
+
 /**
  * @module ember-preprints
  * @submodule helpers
@@ -13,10 +14,10 @@ import Ember from 'ember';
  * @param {Array} contributors List of all contributors on the preprint.
  * @return {Boolean} Is the user a current contributor on the preprint?
  */
-export function userIsContributor(params/*, hash*/) {
-    var [user, contributors] = params;
-    var userIds = contributors.map((contrib) => contrib.get('userId'));
+export function userIsContributor(params/* , hash */) {
+    const [user, contributors] = params;
+    const userIds = contributors.map(contrib => contrib.get('userId'));
     return userIds.indexOf(user.id) > -1;
 }
 
-export default Ember.Helper.helper(userIsContributor);
+export default helper(userIsContributor);

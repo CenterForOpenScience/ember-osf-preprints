@@ -1,8 +1,9 @@
-import Ember from 'ember';
-
-import ResetScrollMixin from '../mixins/reset-scroll';
+import RSVP from 'rsvp';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import Analytics from 'ember-osf/mixins/analytics';
 
+import ResetScrollMixin from '../mixins/reset-scroll';
 /**
  * @module ember-preprints
  * @submodule routes
@@ -12,35 +13,33 @@ import Analytics from 'ember-osf/mixins/analytics';
  * Loads all disciplines and preprint providers to the index page
  * @class Index Route Handler
  */
-export default Ember.Route.extend(Analytics, ResetScrollMixin, {
-    // store: Ember.inject.service(),
-    theme: Ember.inject.service(),
+export default Route.extend(Analytics, ResetScrollMixin, {
+    store: service(),
+    theme: service(),
     model() {
-        return Ember.RSVP.hash({
+        return RSVP.hash({
             taxonomies: this.get('theme.provider')
                 .then(provider => provider
                     .queryHasMany('highlightedTaxonomies', {
                         page: {
-                            size: 20
-                        }
-                    })
-                ),
-            brandedProviders: this
-                .store
-                .findAll('preprint-provider', { reload: true })
-                .then(result => result
-                    .filter(item => item.id !== 'osf')
-                )
+                            size: 20,
+                        },
+                    })),
+            brandedProviders: this.get('theme.isProvider')
+                ? []
+                : this.store
+                    .findAll('preprint-provider', { reload: true })
+                    .then(result => result
+                        .filter(item => item.id !== 'osf')),
         });
     },
     actions: {
         search(q) {
             let route = 'discover';
 
-            if (this.get('theme.isSubRoute'))
-                route = `provider.${route}`;
+            if (this.get('theme.isSubRoute')) { route = `provider.${route}`; }
 
-            this.transitionTo(route, { queryParams: { q: q } });
-        }
-    }
+            this.transitionTo(route, { queryParams: { q } });
+        },
+    },
 });

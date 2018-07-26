@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
-    didInsertElement: function () {
+export default Component.extend({
+    didInsertElement () {
         this.$('#share-popover').popover();
     },
 });
