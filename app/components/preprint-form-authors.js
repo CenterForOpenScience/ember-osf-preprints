@@ -41,6 +41,7 @@ import Analytics from 'ember-osf/mixins/analytics';
  */
 export default CpPanelBodyComponent.extend(Analytics, {
     i18n: service(),
+    raven: service(),
     authorModification: false,
     currentPage: 1,
     // Permissions labels for dropdown
@@ -180,6 +181,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                         this.get('toast').error(error.errors[0].detail);
                     } else {
                         this.get('toast').error(this.get('i18n').t('submit.error_adding_unregistered_author'));
+                        this.get('raven').captureMessage('Could not add unregistered author', { extra: { error } });
                     }
                     this.highlightSuccessOrFailure('add-unregistered-contributor-form', this, 'error');
                 });
@@ -321,8 +323,9 @@ export default CpPanelBodyComponent.extend(Analytics, {
         this.toggleAuthorModification();
     },
 
-    _failAddContributorsFromParent() {
+    _failAddContributorsFromParent(error) {
         this.get('toast').error('Some contributors may not have been added. Try adding manually.');
+        this.get('raven').captureMessage('Could not add some contributors', { extra: { error } });
     },
 
     _addContributor(res) {
@@ -334,10 +337,11 @@ export default CpPanelBodyComponent.extend(Analytics, {
         this.highlightSuccessOrFailure(res.id, this, 'success');
     },
 
-    _failAddContributor() {
+    _failAddContributor(error) {
         const user = this.get('user');
 
         this.get('toast').error(this.get('i18n').t('submit.error_adding_author'));
+        this.get('raven').captureMessage('Could not add author', { extra: { error } });
         this.highlightSuccessOrFailure(user.id, this, 'error');
         user.rollbackAttributes();
     },
@@ -360,10 +364,11 @@ export default CpPanelBodyComponent.extend(Analytics, {
         ));
     },
 
-    _failRemoveContributor() {
+    _failRemoveContributor(error) {
         const contributor = this.get('contributor');
 
         this.get('toast').error(this.get('i18n').t('submit.error_adding_author'));
+        this.get('raven').captureMessage('Could not remove contributor', { extra: { error } });
         this.highlightSuccessOrFailure(contributor.id, this, 'error');
         contributor.rollbackAttributes();
     },
@@ -377,10 +382,11 @@ export default CpPanelBodyComponent.extend(Analytics, {
         this.removedSelfAsAdmin(contributor, permission);
     },
 
-    _failModifyAuthorPermission() {
+    _failModifyAuthorPermission(error) {
         const contributor = this.get('contributor');
 
         this.get('toast').error('Could not modify author permissions');
+        this.get('raven').captureMessage('Could not modify author permissions', { extra: { error } });
         this.highlightSuccessOrFailure(contributor.id, this, 'error');
         contributor.rollbackAttributes();
     },
@@ -392,10 +398,11 @@ export default CpPanelBodyComponent.extend(Analytics, {
         this.highlightSuccessOrFailure(contributor.id, this, 'success');
     },
 
-    _failUpdateCitation() {
+    _failUpdateCitation(error) {
         const contributor = this.get('contributor');
 
         this.get('toast').error('Could not modify citation');
+        this.get('raven').captureMessage('Could not modify citation', { extra: { error } });
         this.highlightSuccessOrFailure(contributor.id, this, 'error');
         contributor.rollbackAttributes();
     },
@@ -406,13 +413,14 @@ export default CpPanelBodyComponent.extend(Analytics, {
         this.highlightSuccessOrFailure(draggedContrib.id, this, 'success');
     },
 
-    _sendHighlightFailure() {
+    _sendHighlightFailure(error) {
         const draggedContrib = this.get('draggedContrib');
         const originalOrder = this.get('contributors');
 
         this.highlightSuccessOrFailure(draggedContrib.id, this, 'error');
         this.set('contributors', originalOrder);
         this.get('toast').error('Could not reorder contributors');
+        this.get('raven').captureMessage('Could not reorder contributors', { extra: { error } });
         draggedContrib.rollbackAttributes();
     },
 
@@ -423,8 +431,9 @@ export default CpPanelBodyComponent.extend(Analytics, {
         this.set('currentPage', current);
     },
 
-    _failSearchQuery() {
+    _failSearchQuery(error) {
         this.get('toast').error('Could not perform search query.');
+        this.get('raven').captureMessage('Could not perform search query', { extra: { error } });
         this.highlightSuccessOrFailure('author-search-box', this, 'error');
     },
 });

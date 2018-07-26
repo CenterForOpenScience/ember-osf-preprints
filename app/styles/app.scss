@@ -798,7 +798,7 @@ hr {
         }
         &.cp-is-open {
             opacity: 1;
-            padding: 15px;
+            padding: 5px;
         }
     }
     // THESE STYLES ARE INTERFERING WITH MY STYLES.
@@ -1195,6 +1195,10 @@ label.title-label {
     cursor: default;
 }
 
+.panel-body {
+    padding: 15px 0 15px 0;
+}
+
 // Narrow views for submit
 @media (max-width: 768px) {
     #preprint-form-upload .btn-big {
@@ -1529,4 +1533,15 @@ img.current-provider {
 
 #providerCarousel .carousel-control {
     color: black;
+}
+
+@media (min-width: 768px) {
+    .dl-description dd {
+        margin-left: 170px;
+    }
+}
+
+.dl-description dt {
+    overflow: inherit;
+    text-overflow: inherit;
 }

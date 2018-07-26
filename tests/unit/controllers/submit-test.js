@@ -52,6 +52,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'service:theme',
         'service:toast',
         'service:i18n',
+        'service:raven',
         'model:review-action',
         'model:file',
         'model:file-version',
@@ -105,7 +106,6 @@ test('Initial properties', function (assert) {
         'userNodes.length': 0,
         userNodesLoaded: false,
         'availableLicenses.length': 0,
-        applyLicense: false,
         newNode: false,
         node: null,
         file: null,
@@ -702,13 +702,6 @@ test('editLicense sets basicsLicense and licenseValid', function(assert) {
     ctrl.send('editLicense', 'license', true);
     assert.equal(ctrl.get('basicsLicense'), 'license');
     assert.equal(ctrl.get('licenseValid'), true);
-});
-
-test('applyLicenseToggle toggles applyLicense', function(assert) {
-    const ctrl = this.subject();
-    assert.equal(ctrl.get('applyLicense'), false);
-    ctrl.send('applyLicenseToggle', true);
-    assert.equal(ctrl.get('applyLicense'), true);
 });
 
 test('next opens next panel and flashes changes saved', function(assert) {

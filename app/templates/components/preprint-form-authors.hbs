@@ -1,4 +1,4 @@
-<div class="row form">
+<div class="row form views">
     <div class="col-xs-12 col-md-5 col-division-right">
         <form {{action 'findContributors' 1 on='submit'}}>
             <div class="input-group author-search-box">
@@ -80,9 +80,8 @@
         <div class="panel-body">
             <table class="table author-table current-authors">
                 <tr>
-                    <th> </th>
-                    <th class="contrib-column-header"> {{t "components.preprint-form-authors.authors.name"}} </th>
-                    <th class="contrib-column-header">
+                    <th class="contrib-name-header"> {{t "components.preprint-form-authors.authors.name"}} </th>
+                    <th class="contrib-perms-header">
                         {{t "components.preprint-form-authors.authors.permissions"}}
                         <span>
                             <i class="fa fa-question-circle permission-info"
@@ -115,17 +114,19 @@
                 {{#sortable-group tagName="tbody" onChange="reorderItems" as |group|}}
                     {{#each contributors as |contrib|}}
                         {{#sortable-item tagName="tr" model=contrib class="contributor-row" group=group spacing=1 handle=".handle" id=contrib.id}}
-                            <td class="text-nowrap author-cols">
+                            <td class="text-nowrap author-cols" title={{if contrib.unregisteredContributor contrib.unregisteredContributor contrib.users.fullName}}>
                                 <div class="form-group drag-drop-contrib">
                                     <span class="fa fa-bars sortable-bars handle small"></span>
                                     <img alt="author profile image" class="m-l-xs" src={{contrib.users.profileImage}} height=30 width=30>
                                     {{!CONTRIBUTOR NAME - XS Screen}}
-                                    <span class="visible-xs-inline">
+                                    <span class="vert-align-contributor-name">
                                         {{#if contrib.unregisteredContributor}}
                                             {{contrib.unregisteredContributor}}
                                         {{else}}
                                             <a href={{contrib.users.links.html}} target="_blank" rel="noopener"> {{contrib.users.fullName}} </a>
                                         {{/if}}
+                                    </span>
+                                    <span class="visible-xs-inline">
                                         <span class="pull-right remove-contributor-padding-xs">
                                             {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin node) (conditions-for-contrib-removal contrib contributors authorModification))}}
                                                 <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
@@ -134,15 +135,6 @@
                                             {{/if}}
                                         </span>
                                     </span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="vert-align-contributor-name hidden-xs">
-                                    {{#if contrib.unregisteredContributor}}
-                                        {{contrib.unregisteredContributor}}
-                                    {{else}}
-                                        <a href={{contrib.users.links.html}} target="_blank" rel="noopener"> {{contrib.users.fullName}} </a>
-                                    {{/if}}
                                 </div>
                             </td>
                             <td>
@@ -170,13 +162,20 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="delete-contrib-button form-group vert-align nudge-right hidden-xs">
+                                <div class="delete-contrib-button form-group vert-align nudge-right hidden-xs hidden-md">
                                     {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin node) (conditions-for-contrib-removal contrib contributors authorModification))}}
                                         <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm" > {{t "components.preprint-form-authors.remove"}} </button>
                                     {{else}}
                                         <button class="btn btn-danger btn-sm disabled"> {{t "components.preprint-form-authors.remove"}} </button>
                                     {{/if}}
                                 </div>
+                                <span class="visible-md-inline">
+                                    {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin node) (conditions-for-contrib-removal contrib contributors authorModification))}}
+                                        <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
+                                            <i class="fa fa-times"> </i>
+                                        </button>
+                                    {{/if}}
+                                </span>
                             </td>
                         {{/sortable-item}}
                     {{/each}}

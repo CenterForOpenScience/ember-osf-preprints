@@ -184,6 +184,7 @@ export default Component.extend(Analytics, {
                 preprint: false,
                 title: searchTerm,
             },
+            embed: 'parent',
         });
         // When the promise finishes, set the searchTerm
         this.set('searchTerm', searchTerm);
@@ -207,6 +208,7 @@ export default Component.extend(Analytics, {
                 preprint: false,
                 title: searchTerm,
             },
+            embed: 'parent',
         });
         const userNodes = this.get('userNodes');
         let onlyAdminNodes = results.results.filter(item => item.get('currentUserPermissions').includes(Permissions.ADMIN));
