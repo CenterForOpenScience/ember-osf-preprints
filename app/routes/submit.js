@@ -28,6 +28,7 @@ export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticate
         // internally during submission process.
         return this.get('store').createRecord('preprint', {
             subjects: [],
+            licenseRecord: {},
         });
     },
     afterModel() {
@@ -35,7 +36,7 @@ export default Route.extend(ConfirmationMixin, ResetScrollMixin, CasAuthenticate
     },
     setupController(controller, model) {
         this.setupSubmitController(controller, model);
-        controller._setCurrentProvider();
+        controller.get('setCurrentProvider').perform();
         return this._super(...arguments);
     },
     isPageDirty() {

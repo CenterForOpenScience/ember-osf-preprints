@@ -24,7 +24,10 @@ export default Mixin.create({
         // setupController method that will be run for both Add and Edit modes for submit form.
         this.set('controller', controller);
 
-        if (controller.get('model.isLoaded')) { controller.clearFields(); }
+        if (controller.get('model.isLoaded')) {
+            controller.clearFields();
+        }
+
         controller.set('editMode', this.get('editMode'));
 
         this.get('store').findAll('preprint-provider').then(this._setProviders.bind(this));

@@ -1,18 +1,23 @@
 <div>
     <div class="form-inline">
-        <div class="form-group">
+        <div class="form-group p-b-sm">
             <label>
-                {{t 'components.license-picker.choose_a_license'}}
-                <span style="color: #f99; font-weight: 400">
-                    {{t 'components.license-picker.required'}}
+                <span class='required'>
+                    {{t 'components.license-picker.choose_a_license'}}
                 </span>
             </label>
-            {{license-list
-                licenses=licensesAvailable
-                currentLicense=nodeLicense
-                showCategories=showCategories
-                select=(action 'selectLicense')
-            }}
+            <div>
+                <select class="form-control" onchange={{action 'selectLicense' value='target.value'}}>
+                    <option value="" disabled selected>
+                        {{t 'components.license-picker.placeholder'}}
+                    </option>
+                    {{#each licenses as |license|}}
+                        <option selected={{if (eq license.id currentLicense.id) true false}} value={{license.id}}>
+                            {{license.name}}
+                        </option>
+                    {{/each}}
+                </select>
+            </div>
             <small>
                 <a target='_blank' rel="noopener" href='http://help.osf.io/m/60347/l/611430-licensing'>
                     {{t 'components.license-picker.license_FAQ'}}
@@ -28,31 +33,29 @@
         </div>
     </div>
     {{#if showYear}}
-        <label>
-            {{t 'components.license-picker.year'}}
-            {{#if yearRequired }}
-                <span style="color: #f99; font-weight: 400">
-                    {{t 'components.license-picker.required'}}
+        <div class="p-b-sm">
+            <label>
+                <span class={{if yearRequired 'required' ''}}>
+                    {{t 'components.license-picker.year'}}
                 </span>
-            {{/if}}
-        </label>
-        {{input class='form-control' value=year enter=(action 'sendSubmit')}}
+            </label>
+            {{input class='form-control' value=year}}
+        </div>
     {{/if}}
     {{#if showCopyrightHolders}}
-        <label>
-            {{t 'components.license-picker.copyright_holders'}}
-            {{#if copyrightHoldersRequired}}
-                <span style="color: #f99; font-weight: 400">
-                    {{t 'components.license-picker.required'}}
+        <div class="p-b-sm">
+            <label>
+                <span class={{if copyrightHoldersRequired 'required' ''}}>
+                    {{t 'components.license-picker.copyright_holders'}}
                 </span>
-            {{/if}}
-        </label>
-        {{input class='form-control' value=copyrightHolders enter=(action 'sendSubmit')}}
+            </label>
+            {{input class='form-control' value=copyrightHolders}}
+        </div>
     {{/if}}
 
-    {{#if (or showText (not toggleText))}}
+    {{#if (and showText toggleText)}}
         <pre style='white-space: pre-wrap; word-break: normal; border:none; width:100%; text-align:justify; max-height: 300px;'>
-            {{nodeLicenseText}}
+            {{selectedLicenseText}}
         </pre>
     {{/if}}
 </div>

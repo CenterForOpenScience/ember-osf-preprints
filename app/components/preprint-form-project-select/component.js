@@ -64,7 +64,6 @@ import { task, timeout } from 'ember-concurrency';
  *     resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
  *     basicsAbstract=basicsAbstract
  *     editMode=editMode
- *     newNode=newNode
  *     applyLicense=applyLicense
  * }}
  * @class preprint-form-project-select

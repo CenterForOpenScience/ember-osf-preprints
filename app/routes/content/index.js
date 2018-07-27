@@ -149,11 +149,14 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         const imageUrl = /^https?:\/\//.test(image.path) ? image.path : origin + image.path;
         const dateCreated = new Date(preprint.get('dateCreated') || null);
         const dateModified = new Date(preprint.get('dateModified') || dateCreated);
-        if (!preprint.get('datePublished')) { preprint.set('datePublished', dateCreated); }
         const providerName = provider.get('name') === 'Open Science Framework' ? 'OSF Preprints' : provider.get('name');
         const canonicalUrl = preprint.get('links.html');
         const contributors = this.get('contributors');
         const downloadUrl = this.get('downloadUrl');
+
+        if (!preprint.get('datePublished')) {
+            preprint.set('datePublished', dateCreated);
+        }
 
         // NOTE: Ordering of meta tags matters for scrapers
         // EX: (Facebook, LinkedIn, Google, etc)

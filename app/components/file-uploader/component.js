@@ -64,7 +64,6 @@ import { State } from '../controllers/submit';
  *   resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
  *   basicsAbstract=basicsAbstract
  *   editMode=editMode
- *   newNode=newNode
  *   applyLicense=applyLicense
 }}
  * @class file-uploader
@@ -392,7 +391,6 @@ export default Component.extend(Analytics, {
         this.set('node', node);
         this.getContributors(node);
         this.send('upload');
-        this.set('newNode', true);
         this.set('applyLicense', true);
     },
 
@@ -409,7 +407,6 @@ export default Component.extend(Analytics, {
         this.set('node', child);
         this.set('basicsAbstract', this.get('node.description') || null);
         this.send('upload');
-        this.set('newNode', true);
         this.set('applyLicense', true);
     },
 

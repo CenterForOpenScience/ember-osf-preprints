@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
   "dependencies": {
-    "sanitize.js": "^1.0.0",
+    "sanitize.js": "^1.0.0"
   }
 }

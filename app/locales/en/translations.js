@@ -309,6 +309,7 @@ export default {
             required: '(required)',
             save: 'Save',
             year: 'Year',
+            placeholder: 'Select a license',
         },
         'preprint-footer-branded': {
             twitter: 'Twitter',
