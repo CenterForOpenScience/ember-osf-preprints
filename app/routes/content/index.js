@@ -138,6 +138,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
     },
 
     _setupMetaData([provider, license]) {
+        const { origin } = window.location;
         const preprint = this.get('preprint');
         const title = preprint.get('title');
         const description = preprint.get('description');
