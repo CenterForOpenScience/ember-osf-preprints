@@ -10,7 +10,6 @@ import permissions from 'ember-osf/const/permissions';
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
 import ResetScrollMixin from '../../mixins/reset-scroll';
-import SetupSubmitControllerMixin from '../../mixins/setup-submit-controller';
 
 const {
     OSF: { url: osfUrl },
@@ -34,7 +33,7 @@ const handlers = new Map([
  * Fetches current preprint. Redirects to preprint provider route if necessary.
  * @class Content Route Handler
  */
-export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
+export default Route.extend(Analytics, ResetScrollMixin, {
     theme: service(),
     headTagsService: service('head-tags'),
     currentUser: service('currentUser'),
