@@ -28,7 +28,6 @@ moduleForComponent('preprint-form-authors', 'Unit | Component | preprint form au
         'service:session',
         'service:head-tags',
         'service:metrics',
-        'service:raven',
         'service:dependencyChecker',
     ],
 });

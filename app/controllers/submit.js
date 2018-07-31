@@ -145,7 +145,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     store: service(),
     theme: service(),
     fileManager: service(),
-    raven: service(),
     toast: service('toast'),
     panelActions: service('panelActions'),
 
@@ -1165,13 +1164,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return node.save();
     },
 
-    _failSetNodeTitle(error) {
+    _failSetNodeTitle() {
         const node = this.get('node');
         const currentNodeTitle = node.get('title');
 
         node.set('title', currentNodeTitle);
         this.get('toast').error(this.get('i18n').t('submit.could_not_update_title'));
-        this.get('raven').captureMessage('Could not update title', { extra: { error } });
     },
 
     _addChild(child) {
@@ -1201,29 +1199,25 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.set('newNode', true);
     },
 
-    _failCopyFile(error) {
+    _failCopyFile() {
         this.get('toast').error(this.get('i18n').t('submit.error_copying_file'));
-        this.get('raven').captureMessage('Could not copy file', { extra: { error } });
     },
 
-    _failGetFiles(error) {
+    _failGetFiles() {
         this.get('toast').error(this.get('i18n').t('submit.error_accessing_parent_files'));
-        this.get('raven').captureMessage('Could not access parent files', { extra: { error } });
     },
 
-    _failCreateComponent(error) {
+    _failCreateComponent() {
         this.get('toast').error(this.get('i18n').t('submit.could_not_create_component'));
-        this.get('raven').captureMessage('Could not create component', { extra: { error } });
     },
 
-    _failDeletePreprint(error) {
+    _failDeletePreprint() {
         this.get('toast').error(this.get('i18n').t(
             'submit.abandoned_preprint_error',
             {
                 documentType: this.get('currentProvider.documentType'),
             },
         ));
-        this.get('raven').captureMessage('Could not retrieve abandoned preprint', { extra: { error } });
     },
 
     _sendStartPreprint() {
@@ -1242,7 +1236,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('finishUpload');
     },
 
-    _failedUpload(error) {
+    _failedUpload() {
         const parentNode = this.get('parentNode');
 
         // Allows user to attempt operation again.
@@ -1260,7 +1254,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 documentType: this.get('currentProvider.documentType'),
             },
         ));
-        this.get('raven').captureMessage('Could not initiate preprint', { extra: { error } });
     },
 
     _setBasicsLicense(license) {
@@ -1277,10 +1270,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('next', this.get('_names.3'));
     },
 
-    _failMoveFromBasics(error) {
+    _failMoveFromBasics() {
         // If model save fails, do not transition, save original vales
         this.get('toast').error(this.get('i18n').t('submit.basics_error'));
-        this.get('raven').captureMessage('Could not save basics', { extra: { error } });
         this.send('saveOriginalValues');
     },
 
@@ -1288,13 +1280,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('next', this.get('_names.2'));
     },
 
-    _failMoveFromDisciplines(error) {
+    _failMoveFromDisciplines() {
         // Current subjects saved so UI can be restored in case of failure
         const model = this.get('model');
 
         model.set('subjects', $.extend(true, [], this.get('model.subjects')));
         this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
-        this.get('raven').captureMessage('Could not save disciplines', { extra: { error } });
     },
 
     _setContributorSearchResults(contributors) {
