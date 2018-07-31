@@ -8,12 +8,14 @@
             </label>
             <div>
                 <select class="form-control" onchange={{action 'selectLicense' value='target.value'}}>
-                    <option value="" disabled selected>
-                        {{t 'components.license-picker.placeholder'}}
-                    </option>
-                    {{#each licenses as |license|}}
-                        <option selected={{if (eq license.id currentLicense.id) true false}} value={{license.id}}>
-                            {{license.name}}
+                    {{#if (not license)}}
+                        <option value="" disabled selected>
+                            {{t 'components.license-picker.placeholder'}}
+                        </option>
+                    {{/if}}
+                    {{#each licenses as |licenseOption|}}
+                        <option selected={{if (eq licenseOption.id license.id) true false}} value={{licenseOption.id}}>
+                            {{licenseOption.name}}
                         </option>
                     {{/each}}
                 </select>

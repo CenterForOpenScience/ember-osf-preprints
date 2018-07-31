@@ -55,10 +55,6 @@ export default Component.extend({
         return licenseText.includes('{{copyrightHolders}}');
     }),
 
-    licenseValid: computed('year', 'copyrightHolders', function() {
-        return !((this.get('yearRequired') && !this.get('year')) || (this.get('copyrightHoldersRequired') && this.get('copyrightHolders').length === 0));
-    }),
-
     actions: {
         selectLicense(licenseID) {
             const license = this.get('licenses').filter(license => license.id === licenseID)[0];
