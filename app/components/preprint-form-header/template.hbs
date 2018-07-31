@@ -1,4 +1,16 @@
-<div class="section-header">
+{{sectionName}}
+<div class="preprint-section-status pull-right">
+    {{#if changed}}
+        {{fa-icon (if valid 'check valid' 'times invalid')}}
+    {{/if}}
+</div>
+{{#if (not isOpen)}}
+    <div class="m-t-md preprint-header-preview">
+        {{yield}}
+    </div>
+{{/if}}
+
+{{!-- <div class="section-header">
     {{#if (eq name 'location_of_preprint')}}
         <span class='text-muted'>
             {{t (concat "components.preprint-form-header.name." name) documentType=provider.documentType}}
@@ -157,4 +169,4 @@
             <i class="text-smaller m-t-md">{{t "components.preprint-form-header.click_edit"}}</i>
         {{/if}}
     </div>
-{{/if}}
+{{/if}} --}}

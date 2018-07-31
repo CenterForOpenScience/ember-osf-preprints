@@ -873,26 +873,21 @@ hr {
             cursor: default;
             color: #333;
         }
-        &.valid {
-            .preprint-section-status .fa {
-                color: #488132;
-            }
-        }
-        &.invalid {
-            .preprint-section-status .fa {
-                color: #b64949;
-            }
-        }
-        &.not-validated {
-            .preprint-section-status .fa {
-                color: gray;
-            }
-        }
+
         .fa {
             font-size: 20px;
         }
+
         .preprint-section-status .fa {
             transition: color 0.1s linear;
+
+            &.valid {
+                color: #488132;
+            }
+
+            &.invalid {
+                color: #b64949;
+            }
         }
     }
     .cp-Panel-body {
