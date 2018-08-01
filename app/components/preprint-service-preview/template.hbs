@@ -1,0 +1,19 @@
+<div class="m-t-md preprint-header-preview">
+    <p>
+        <em class="m-r-md">
+            {{t "components.preprint-form-header.server" documentType=currentProvider.documentType}}:
+        </em>
+        {{#if currentProvider}}
+            <img alt="provider logo"
+                class="current-provider"
+                title="{{currentProvider.name}}"
+                src={{provider-asset currentProvider.id 'square_color_no_transparent.png'}}
+            >
+            {{#if (eq currentProvider.name 'Open Science Framework')}}
+                OSF Preprints
+            {{else}}
+                {{currentProvider.name}}
+            {{/if}}
+        {{/if}}
+    </p>
+</div>
