@@ -1,0 +1,9 @@
+{{#if subjects}}
+    {{#each subjects as |subject|}}
+        <span class="subject-preview">
+            {{subject.text}}
+        </span>
+    {{/each}}
+{{else}}
+    <span>{{t "global.none"}}</span>
+{{/if}}
