@@ -33,7 +33,7 @@
                             {{#panel.toggle tagName="header"}}
                                 {{#preprint-form-header
                                     sectionName=(t "components.preprint-form-header.name.Server")
-                                    changed=true
+                                    saved=providerSaved
                                     valid=true
                                     isOpen=panel.isOpen
                                 }}
@@ -41,39 +41,45 @@
                                 {{/preprint-form-header}}
                             {{/panel.toggle}}
                             {{#panel.body}}
-                                {{provider-carousel
-                                    itemsPerSlide=10
-                                    providers=allProviders
-                                    selectable=true
-                                    activeProvider=selectedProvider
-                                    selectAction=(action 'selectProvider')
-                                }}
-                                {{#if selectedProvider}}
-                                    <div class="row">
-                                        <div style="padding: 25px 85px 15px;" class="col-md-12">
-                                            <dl class="dl-horizontal dl-description">
-                                                <dt>
-                                                    {{if (not theme.isProvider) 'OSF Preprints' selectedProvider.name}}:
-                                                </dt>
-                                                <dd>{{sanitize-html selectedProvider.description}}</dd>
-                                            </dl>
-                                        </div>
+                                {{#if setCurrentProvider.isRunning}}
+                                    <div class="ball-scale ball-dark text-center">
+                                        <div></div>
                                     </div>
-                                {{/if}}
-                                {{#unless uploadValid}}
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="pull-right">
-                                                <button {{action 'discardProvider'}} class="btn btn-default" disabled={{not providerChanged}}>
-                                                    {{t "global.discard"}}
-                                                </button>
-                                                <button onclick={{perform saveProvider}} class="btn btn-primary">
-                                                    {{t "submit.body.continue"}}
-                                                </button>
+                                {{else}}
+                                    {{provider-carousel
+                                        itemsPerSlide=10
+                                        providers=allProviders
+                                        selectable=true
+                                        activeProvider=selectedProvider
+                                        selectAction=(action 'selectProvider')
+                                    }}
+                                    {{#if selectedProvider}}
+                                        <div class="row">
+                                            <div style="padding: 25px 85px 15px;" class="col-md-12">
+                                                <dl class="dl-horizontal dl-description">
+                                                    <dt>
+                                                        {{if (not theme.isProvider) 'OSF Preprints' selectedProvider.name}}:
+                                                    </dt>
+                                                    <dd>{{sanitize-html selectedProvider.description}}</dd>
+                                                </dl>
                                             </div>
                                         </div>
-                                    </div>
-                                {{/unless}}
+                                    {{/if}}
+                                    {{#unless uploadValid}}
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="pull-right">
+                                                    <button {{action 'discardProvider'}} class="btn btn-default" disabled={{not providerChanged}}>
+                                                        {{t "global.discard"}}
+                                                    </button>
+                                                    <button onclick={{perform saveProvider}} class="btn btn-primary">
+                                                        {{t "submit.body.continue"}}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {{/unless}}
+                                {{/if}}
                             {{/panel.body}}
                         {{/panels.panel}}
                     {{/if}}
@@ -89,7 +95,7 @@
                         {{#panel.toggle tagName="header"}}
                             {{#preprint-form-header
                                 sectionName=(t "components.preprint-form-header.name.Upload" documentType=currentProvider.documentType)
-                                changed=uploadChanged
+                                saved=uploadSaved
                                 valid=uploadValid
                                 isOpen=panel.isOpen
                             }}
@@ -245,7 +251,7 @@
                         {{#panel.toggle tagName="header" class="section-header"}}
                             {{#preprint-form-header
                                 sectionName=(t "components.preprint-form-header.name.Basics" documentType=currentProvider.documentType)
-                                changed=basicsChanged
+                                saved=basicsSaved
                                 valid=basicsValid
                                 isOpen=panel.isOpen
                             }}
@@ -378,7 +384,7 @@
                         {{#panel.toggle tagName="header"}}
                             {{#preprint-form-header
                                 sectionName=(t "components.preprint-form-header.name.Authors" documentType=currentProvider.documentType)
-                                changed=authorsChanged
+                                saved=authorsSaved
                                 valid=authorsValid
                                 isOpen=panel.isOpen
                             }}
@@ -405,7 +411,6 @@
                                 removeContributor=(action 'removeContributor')
                                 editContributor=(action 'updateContributor')
                                 reorderContributors=(action 'reorderContributors')
-                                highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
                                 parentNode=parentNode
                                 editMode=editMode
                                 documentType=currentProvider.documentType
@@ -424,8 +429,8 @@
                             {{#preprint-form-header
                                 sectionName=(t "components.preprint-form-header.name.Discipline"
                                 documentType=currentProvider.documentType)
-                                changed=disciplineChanged
-                                valid=disciplineValid
+                                saved=disciplinesSaved
+                                valid=disciplinesValid
                                 isOpen=panel.isOpen
                             }}
                                 {{preprint-discipline-preview
@@ -446,6 +451,35 @@
                                 provider=currentProvider
                                 disciplineChanged=disciplineChanged
                             }}
+                        {{/panel.body}}
+                    {{/panels.panel}}
+
+                    {{!-- Supplemental materials --}}
+                    {{#panels.panel
+                        class="preprint-form-section preprint-form-block"
+                        tagName="section"
+                        name="SupplementalMaterials"
+                        id="preprint-form-supp-materials" as |panel|
+                    }}
+                        {{#panel.toggle tagName="header"}}
+                            {{#preprint-form-header
+                                sectionName="Supplemental materials"
+                                saved=suppMaterialsSaved
+                                valid=suppMaterialsValid
+                                isOpen=panel.isOpen
+                            }}
+                                None
+                               {{!--  {{preprint-supp-materials-preview
+                                    subjects=disciplineReduced
+                                }} --}}
+                            {{/preprint-form-header}}
+                        {{/panel.toggle}}
+                        {{#panel.body}}
+                            <p class="m-b-lg text-smaller">
+                                {{t "submit.body.subjects_description"}}
+                            </p>
+
+                            Placeholder
                         {{/panel.body}}
                     {{/panels.panel}}
 

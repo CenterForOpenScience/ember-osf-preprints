@@ -1,10 +1,10 @@
 {{sectionName}}
 <div class="preprint-section-status pull-right">
-    {{#if changed}}
+    {{#if saved}}
         {{fa-icon (if valid 'check valid' 'times invalid')}}
     {{/if}}
 </div>
-{{#if (not isOpen)}}
+{{#if (and (not isOpen) saved)}}
     <div class="m-t-md preprint-header-preview">
         {{yield}}
     </div>
@@ -19,32 +19,6 @@
         {{t (concat "components.preprint-form-header.name." name) documentType=provider.documentType}}
     {{/if}}
 </div>
-
-<div class="preprint-section-status pull-right">
-    {{#if (or
-        (and serverSaveState (eq name 'Server'))
-        (and uploadSaveState (eq name 'Upload'))
-        (and basicsSaveState (eq name 'Basics'))
-        (and authorsSaveState (eq name 'Authors'))
-        (and disciplineSaveState (eq name 'Discipline')) )}}
-        <span class="text-success text-smaller m-r-md"> {{t "components.preprint-form-header.changes_saved"}} </span>
-    {{/if}}
-    {{#if isValidationActive}}
-        {{fa-icon (if valid 'check' 'times')}}
-    {{/if}}
-</div>
-
-{{#if (and (not isOpen) (eq name 'Server'))}}
-    <div class="m-t-md preprint-header-preview">
-        <p>
-            <em class="m-r-md"> {{t "components.preprint-form-header.server" documentType=provider.documentType}}: </em>
-            {{#if currentProvider}}
-                <img alt="provider logo" class="current-provider" title="{{currentProvider.name}}" src={{provider-asset currentProvider.id 'square_color_no_transparent.png'}}>
-                {{if (not theme.isProvider) 'OSF Preprints' currentProvider.name}}
-            {{/if}}
-        </p>
-    </div>
-{{/if}}
 
 {{#if (and (not isOpen) (eq name 'Upload'))}}
     <div class="m-t-md preprint-header-preview">
@@ -69,30 +43,9 @@
     <div class="m-t-md preprint-header-preview">
         {{#if (or isValidationActive editMode)}}
             {{#if (eq name 'Basics')}}
-                <em class="m-r-md"> {{t "global.abstract"}}: </em>
-                <p class="abstract">{{if abstract abstract (t "global.none")}} </p>
-                <p><em class="m-r-md"> {{t "global.license"}}: </em> {{if license license.name (t "global.none")}} </p>
-                <p><em class="m-r-md"> {{t "global.doi"}}: </em> {{if doi doi (t "global.none")}} </p>
-                <p>
-                    <em class="m-r-md"> {{t "global.tags"}}: </em>
-                    {{#if tags}}
-                        <ul class="comma-list">
-                            {{#each tags as |tag|~}}
-                                <li> {{~fix-special-char tag~}} </li>
-                            {{~/each}}
-                        </ul>
-                    {{else}}
-                        <span>{{t "global.none"}}</span>
-                    {{/if}}
-                </p>
+
             {{else if (eq name 'Discipline')}}
-                {{#if subjects}}
-                    {{#each subjects as |subject|}}
-                        <span class="subject-preview">{{subject.text}} </span>
-                    {{/each}}
-                {{else}}
-                    <span>{{t "global.none"}}</span>
-                {{/if}}
+
             {{else if (eq name 'Authors')}}
                 <ul class="author-preview comma-list">
                     {{#each authors as |contrib| ~}}

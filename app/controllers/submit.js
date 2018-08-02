@@ -143,15 +143,15 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Data for project picker; tracked internally on load
 
     user: null,
-    userNodesLoaded: false,
+    // userNodesLoaded: false,
 
     _State: State,
 
 
-    file: null,
+    // file: null,
     // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
 
-    selectedFile: null,
+    // selectedFile: null,
     // File that will be the preprint (already uploaded to node or selected from existing node)
 
     nodeLocked: false,
@@ -160,18 +160,19 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     searchResults: [],
     // List of users matching search query
 
-    savingPreprint: false,
+    // savingPreprint: false,
     // True when Share button is pressed on Add Preprint page
 
     showModalSharePreprint: false,
     // True when sharing preprint confirmation modal is displayed
 
-    osfStorageProvider: null,
+    // osfStorageProvider: null,
     // Preprint node's osfStorage object
-    osfProviderLoaded: false,
+
+    // osfProviderLoaded: false,
     // Preprint node's osfStorageProvider is loaded.
 
-    uploadInProgress: false,
+    // uploadInProgress: false,
     // Set to true when upload step is underway,
 
     shareButtonDisabled: false,
@@ -182,15 +183,21 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     currentProvider: undefined,
     // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form
-
     selectedProvider: undefined,
-    providerSaved: false,
+
     preprintSaved: false,
 
     submitAction: null,
 
     // order that panels will open
-    sectionOrder: ['Service', 'Upload', 'Basics', 'Authors', 'Discipline'],
+    sectionOrder: ['Service', 'Upload', 'Basics', 'Authors', 'Discipline', 'SupplementalMaterials'],
+
+    // if the user has clicked "continue" on that section
+    providerSaved: false,
+    uploadSaved: false,
+    basicsSaved: false,
+    authorsSaved: false,
+    disciplinesSaved: false,
 
     // initial basics values
     basicsTitle: '',
@@ -208,12 +215,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     hasFile: computed.or('file', 'selectedFile'),
     isAddingPreprint: computed.not('editMode'),
 
-    // existingPreprints: A(), // Existing preprints on the current node
-
     // Contributors on preprint
     contributors: A(),
 
-    userNodes: A(),
+    // userNodes: A(),
+
     availableLicenses: A(),
     subjectsList: A(),
 
@@ -222,7 +228,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     uploadValid: alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
 
     // Preprint can be published once all required sections have been saved.
-    allSectionsValid: computed.and('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid'),
+    allSectionsValid: computed.and('uploadValid', 'basicsValid', 'authorsValid', 'disciplinesValid'),
+    allSectionsSaved: computed.and('providerSaved', 'uploadSaved', 'basicsSaved', 'authorsSaved', 'disciplinesSaved'),
 
     // basics
     basicsValid: computed.and('licenseValid', 'abstractValid', 'doiValid', 'originalPublicationDateValid', 'preprintTitleValid'),
@@ -235,13 +242,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     authorsValid: computed.bool('contributors.length'),
 
     // Must select at least one subject (looking at pending subjects)
-    disciplineValid: computed.notEmpty('subjectsList'),
+    disciplinesValid: computed.notEmpty('subjectsList'),
 
     // Has the section been saved?
-    savedFile: computed.notEmpty('model.primaryFile.content'),
-    savedTitle: computed.notEmpty('model.title'),
-    savedAbstract: computed.notEmpty('model.description'),
-    savedSubjects: computed.notEmpty('model.subjects'),
+    // savedFile: computed.notEmpty('model.primaryFile.content'),
 
     // Are there any unsaved changes?
     basicsChanged: computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
@@ -255,29 +259,27 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     //     return !this.get('preprintSaved') && ((this.get('isAddingPreprint') && preprintStarted) || fieldsChanged);
     // }),
 
-    // Relevant in Add mode - flag prevents users from sending multiple requests to server
-    currentPanelName: computed('sectionOrder', function() {
-        return this.get('sectionOrder')[0];
-    }),
-
     // Are there validation errors which should be displayed right now?
     showValidationErrors: computed('attemptedSubmit', 'allSectionsValid', function() {
         return this.get('attemptedSubmit') && !this.get('allSectionsValid');
     }),
 
     // Does the pending primaryFile differ from the primary file already saved?
-    preprintFileChanged: computed('model.primaryFile', 'selectedFile', 'file', function() {
-        return Object.keys(this.get('model').changedAttributes()).includes('primaryFile');
-        // return (this.get('selectedFile.id') && (this.get('model.primaryFile.id') !== this.get('selectedFile.id'))) || this.get('file') !== null;
-    }),
+    // preprintFileChanged: computed('model.primaryFile', 'selectedFile', 'file', function() {
+    //     return Object.keys(this.get('model').changedAttributes()).includes('primaryFile');
+    //     // return (this.get('selectedFile.id') && (this.get('model.primaryFile.id') !== this.get('selectedFile.id'))) || this.get('file') !== null;
+    // }),
 
-    /* Service */
+    /*
+        Service
+    */
     providerChanged: computed('selectedProvider', 'currentProvider', function() {
         return this.get('selectedProvider.id') !== this.get('currentProvider.id');
     }),
 
-    /* Basics */
-
+    /*
+        Basics
+    */
     licenseValid: computed('model.license.requiredFields.[]', 'model.licenseRecord.{year,copyrightHolders}', function() {
         // Must have year and copyrightHolders if required by the licenseType selected
         const requiredFields = this.get('model.license.requiredFields');
@@ -370,9 +372,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return modelOriginalPublicationDate !== basicsOriginalPublicationDate;
     }),
 
-    /* Disciplines */
-    // Flattened subject list
+    /*
+        Disciplines
+    */
     disciplineReduced: computed('model.subjects.@each.id', function() {
+        // Flattened subject list
         return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
     }),
 
@@ -437,15 +441,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     actions: {
-        // getNodePreprints(node) {
-        //     // Returns any existing preprints stored on the current node
-
-        //     // Cannot be called until a project has been selected!
-        //     if (!this.get('node')) return;
-
-        //     node.get('preprints').then(this._setNodePreprints.bind(this));
-        // },
-
         getContributors() {
             // TODO lauren: add current user as contributor
             // this.set('contributors', contributors));
@@ -458,19 +453,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         //     const contributors = A();
         //     loadAll(parent, 'contributors', contributors).then(() =>
         //         this.set('parentContributors', contributors));
-        // },
-
-        // This gets called by the save method of the license-widget, which in autosave mode
-        // gets called every time a change is observed in the widget.
-        // editLicense(license, year, copyrightHolders, licenseValid) {
-        //     this.get('model').setProperties({
-        //         license,
-        //         licenseRecord: {
-        //             year,
-        //             copyright_holders: copyrightHolders,
-        //         },
-        //     });
-        //     this.set('licenseValid', licenseValid);
         // },
 
         next(currentPanelName) {
@@ -489,8 +471,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             }
             this.get('panelActions').close(this.get(`sectionOrder.${this.get('sectionOrder').indexOf(currentPanelName)}`));
             this.get('panelActions').open(this.get(`sectionOrder.${this.get('sectionOrder').indexOf(currentPanelName) + 1}`));
-            this.set('currentPanelName', this.get(`sectionOrder.${this.get('sectionOrder').indexOf(currentPanelName) + 1}`));
-            // this.send('changesSaved', currentPanelName);
         },
 
         // nextUploadSection(currentUploadPanel, nextUploadPanel) {
@@ -516,7 +496,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
         /*
           Upload section
-         */
+        */
         changeInitialState(newState) {
             // Sets filePickerState to start, new, or existing -
             // this is the initial decision on the form.
@@ -604,35 +584,27 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         //         .then(this._addChild.bind(this))
         //         .catch(this._failCreateComponent.bind(this));
         // },
-        // resumeAbandonedPreprint() {
-        //     // You can only have one preprint per provider. For now, we delete the
-        //     // abandoned preprint so another preprint can be created.
-        //     const preprintRecord = this.store.peekRecord('preprint', this.get('abandonedPreprint').id);
-        //     preprintRecord.destroyRecord()
-        //         .then(this._sendStartPreprint.bind(this))
-        //         .catch(this._failDeletePreprint.bind(this));
+
+        // startPreprint() {
+        //     // Initiates preprint.  Occurs in Upload section of Add Preprint form
+        //     // when pressing 'Save and continue'.  Creates a preprint with
+        //     // primaryFile, node, and provider fields populated.
+        //     const model = this.get('model');
+
+        //     model.set('primaryFile', this.get('selectedFile'));
+        //     // model.set('node', this.get('node'));
+        //     model.set('provider', this.get('currentProvider'));
+
+        //     // return model.save()
+        //     //     .then(this._finishUpload.bind(this))
+        //     //     .catch(this._failedUpload.bind(this));
         // },
-
-        startPreprint() {
-            // Initiates preprint.  Occurs in Upload section of Add Preprint form
-            // when pressing 'Save and continue'.  Creates a preprint with
-            // primaryFile, node, and provider fields populated.
-            const model = this.get('model');
-
-            model.set('primaryFile', this.get('selectedFile'));
-            // model.set('node', this.get('node'));
-            model.set('provider', this.get('currentProvider'));
-
-            // return model.save()
-            //     .then(this._finishUpload.bind(this))
-            //     .catch(this._failedUpload.bind(this));
-        },
 
         // Takes file chosen from file-browser and sets equal to selectedFile.
         // This file will become the preprint.
-        selectExistingFile(file) {
-            this.set('selectedFile', file);
-        },
+        // selectExistingFile(file) {
+        //     this.set('selectedFile', file);
+        // },
 
         // Discards upload section changes.  Restores displayed file to current preprint primaryFile
         // and resets displayed title to current node title. (No requests sent, front-end only.)
@@ -646,8 +618,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.setProperties({
                 file: null,
                 selectedFile: this.get('store').peekRecord('file', this.get('model.primaryFile.id')),
-                // title: this.get('model.title'),
-                // titleValid: true,
             });
         },
 
@@ -687,17 +657,17 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             e.preventDefault();
         },
 
-        stripDOI() {
-            // Replaces the inputted doi link with just the doi itself
-            this.get('metrics').trackEvent({
-                category: 'input',
-                action: 'onchange',
-                label: 'Submit - DOI Text Change',
-            });
+        // stripDOI() {
+        //     // Replaces the inputted doi link with just the doi itself
+        //     this.get('metrics').trackEvent({
+        //         category: 'input',
+        //         action: 'onchange',
+        //         label: 'Submit - DOI Text Change',
+        //     });
 
-            const basicsDOI = this.get('basicsDOI');
-            this.set('basicsDOI', extractDoiFromString(basicsDOI));
-        },
+        //     const basicsDOI = this.get('basicsDOI');
+        //     this.set('basicsDOI', extractDoiFromString(basicsDOI));
+        // },
 
         saveBasics() {
             this.get('metrics').trackEvent({
@@ -747,6 +717,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 });
             }
 
+            this.set('basicsSaved', true);
             this.send('next', 'Basics');
         },
 
@@ -789,15 +760,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 label: 'Submit - Discipline Save and Continue',
             });
 
-            if (!this.get('disciplineChanged')) {
-                this.send('next', 'Discipline');
-                return;
+            if (this.get('disciplineChanged')) {
+                this.get('model').set('subjects', this.get('subjectsList'));
             }
 
-            this.get('model').set('subjects', this.get('subjectsList'));
-
+            this.set('disciplinesSaved', true);
             this.send('next', 'Discipline');
         },
+
         /**
          * findContributors method.  Queries APIv2 users endpoint on any of a set of name fields.
          * Fetches specified page of results.
@@ -823,6 +793,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 .then(this._setContributorSearchResults.bind(this))
                 .catch(this._setContributorSearchResultsError.bind(this));
         },
+
         /**
         * highlightSuccessOrFailure method.
         * Element with specified ID flashes green or red depending on response success.
@@ -832,13 +803,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         * @param {Object} context "this" scope
         * @param {string} status "success" or "error"
         */
-        highlightSuccessOrFailure(elementId, context, status) {
-            const highlightClass = `${status === 'success' ? 'success' : 'error'}Highlight`;
+        // highlightSuccessOrFailure(elementId, context, status) {
+        //     const highlightClass = `${status === 'success' ? 'success' : 'error'}Highlight`;
 
-            context.$(`#${elementId}`).addClass(highlightClass);
+        //     context.$(`#${elementId}`).addClass(highlightClass);
 
-            run.later(() => context.$(`#${elementId}`).removeClass(highlightClass), 2000);
-        },
+        //     run.later(() => context.$(`#${elementId}`).removeClass(highlightClass), 2000);
+        // },
+
         /*
           Submit tab actions
          */
@@ -1021,50 +993,50 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.transitionToRoute(`${useProviderRoute ? 'provider.' : ''}content`, preprint);
     },
 
-    _failSaveModel() {
-        this.toggleProperty('shareButtonDisabled');
-        return this.get('toast')
-            .error(this.get('i18n')
-                .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
-    },
+    // _failSaveModel() {
+    //     this.toggleProperty('shareButtonDisabled');
+    //     return this.get('toast')
+    //         .error(this.get('i18n')
+    //             .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
+    // },
 
-    _setNodePreprints(preprints) {
-        this.set('existingPreprints', preprints);
-        if (preprints.toArray().length > 0) { // If node already has a preprint
-            const preprint = preprints.toArray()[0]; // TODO change after branded finished
-            if (!(preprint.get('isPublished'))) { // Preprint exists in abandoned state.
-                this.set('abandonedPreprint', preprint);
-            }
-        }
-    },
+    // _setNodePreprints(preprints) {
+    //     this.set('existingPreprints', preprints);
+    //     if (preprints.toArray().length > 0) { // If node already has a preprint
+    //         const preprint = preprints.toArray()[0]; // TODO change after branded finished
+    //         if (!(preprint.get('isPublished'))) { // Preprint exists in abandoned state.
+    //             this.set('abandonedPreprint', preprint);
+    //         }
+    //     }
+    // },
 
-    _sendToPreprintStartOrAbandon() {
-        this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint');
-    },
+    // _sendToPreprintStartOrAbandon() {
+    //     this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint');
+    // },
 
-    _setNodeTitle() {
-        const node = this.get('node');
-        const model = this.get('model');
+    // _setNodeTitle() {
+    //     const node = this.get('node');
+    //     const model = this.get('model');
 
-        const currentNodeTitle = node.get('title');
-        const title = this.get('title');
+    //     const currentNodeTitle = node.get('title');
+    //     const title = this.get('title');
 
-        if (currentNodeTitle === title) {
-            return;
-        }
-        model.set('title', title);
-        node.set('title', title);
-        return node.save();
-    },
+    //     if (currentNodeTitle === title) {
+    //         return;
+    //     }
+    //     model.set('title', title);
+    //     node.set('title', title);
+    //     return node.save();
+    // },
 
-    _failSetNodeTitle(error) {
-        const node = this.get('node');
-        const currentNodeTitle = node.get('title');
+    // _failSetNodeTitle(error) {
+    //     const node = this.get('node');
+    //     const currentNodeTitle = node.get('title');
 
-        node.set('title', currentNodeTitle);
-        this.get('toast').error(this.get('i18n').t('submit.could_not_update_title'));
-        this.get('raven').captureMessage('Could not update title', { extra: { error } });
-    },
+    //     node.set('title', currentNodeTitle);
+    //     this.get('toast').error(this.get('i18n').t('submit.could_not_update_title'));
+    //     this.get('raven').captureMessage('Could not update title', { extra: { error } });
+    // },
 
     // _addChild(child) {
     //     const node = this.get('node');
@@ -1078,48 +1050,48 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     //         .catch(this._failGetFiles.bind(this));
     // },
 
-    _getFiles(fileProviders) {
-        const child = this.get('node');
-        const osfstorage = fileProviders.findBy('name', 'osfstorage');
+    // _getFiles(fileProviders) {
+    //     const child = this.get('node');
+    //     const osfstorage = fileProviders.findBy('name', 'osfstorage');
 
-        this.get('fileManager').copy(this.get('selectedFile'), osfstorage, { data: { resource: child.id } })
-            .then(this._copyFile.bind(this))
-            .catch(this._failCopyFile.bind(this));
-    },
+    //     this.get('fileManager').copy(this.get('selectedFile'), osfstorage, { data: { resource: child.id } })
+    //         .then(this._copyFile.bind(this))
+    //         .catch(this._failCopyFile.bind(this));
+    // },
 
-    _copyFile(copiedFile) {
-        this.set('selectedFile', copiedFile);
-        this.send('startPreprint', this.get('parentNode'));
-    },
+    // _copyFile(copiedFile) {
+    //     this.set('selectedFile', copiedFile);
+    //     this.send('startPreprint', this.get('parentNode'));
+    // },
 
-    _failCopyFile(error) {
-        this.get('toast').error(this.get('i18n').t('submit.error_copying_file'));
-        this.get('raven').captureMessage('Could not copy file', { extra: { error } });
-    },
+    // _failCopyFile(error) {
+    //     this.get('toast').error(this.get('i18n').t('submit.error_copying_file'));
+    //     this.get('raven').captureMessage('Could not copy file', { extra: { error } });
+    // },
 
-    _failGetFiles(error) {
-        this.get('toast').error(this.get('i18n').t('submit.error_accessing_parent_files'));
-        this.get('raven').captureMessage('Could not access parent files', { extra: { error } });
-    },
+    // _failGetFiles(error) {
+    //     this.get('toast').error(this.get('i18n').t('submit.error_accessing_parent_files'));
+    //     this.get('raven').captureMessage('Could not access parent files', { extra: { error } });
+    // },
 
-    _failCreateComponent(error) {
-        this.get('toast').error(this.get('i18n').t('submit.could_not_create_component'));
-        this.get('raven').captureMessage('Could not create component', { extra: { error } });
-    },
+    // _failCreateComponent(error) {
+    //     this.get('toast').error(this.get('i18n').t('submit.could_not_create_component'));
+    //     this.get('raven').captureMessage('Could not create component', { extra: { error } });
+    // },
 
-    _failDeletePreprint(error) {
-        this.get('toast').error(this.get('i18n').t(
-            'submit.abandoned_preprint_error',
-            {
-                documentType: this.get('currentProvider.documentType'),
-            },
-        ));
-        this.get('raven').captureMessage('Could not retrieve abandoned preprint', { extra: { error } });
-    },
+    // _failDeletePreprint(error) {
+    //     this.get('toast').error(this.get('i18n').t(
+    //         'submit.abandoned_preprint_error',
+    //         {
+    //             documentType: this.get('currentProvider.documentType'),
+    //         },
+    //     ));
+    //     this.get('raven').captureMessage('Could not retrieve abandoned preprint', { extra: { error } });
+    // },
 
-    _sendStartPreprint() {
-        this.send('startPreprint');
-    },
+    // _sendStartPreprint() {
+    //     this.send('startPreprint');
+    // },
 
     // _finishUpload() {
     //     // Sets upload form state to existing project (now that project has been created)
@@ -1164,43 +1136,43 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.highlightSuccessOrFailure('author-search-box', this, 'error');
     },
 
-    _saveModel() {
-        const model = this.get('model');
+    // _saveModel() {
+    //     const model = this.get('model');
 
-        model.save();
-    },
+    //     model.save();
+    // },
 
-    _submitAction() {
-        const submitAction = this.get('submitAction');
+    // _submitAction() {
+    //     const submitAction = this.get('submitAction');
 
-        submitAction.save();
-    },
+    //     submitAction.save();
+    // },
 
-    _saveChanges() {
-        const model = this.get('model');
+    // _saveChanges() {
+    //     const model = this.get('model');
 
-        this.set('preprintSaved', true);
-        let useProviderRoute = false;
+    //     this.set('preprintSaved', true);
+    //     let useProviderRoute = false;
 
-        if (this.get('theme.isProvider')) {
-            useProviderRoute = this.get('theme.isSubRoute');
-        } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
-            window.location.replace(`${this.get('currentProvider.domain')}${model.id}`);
-        } else if (this.get('currentProvider.id') !== 'osf') {
-            useProviderRoute = true;
-        }
-        this.transitionToRoute(
-            `${useProviderRoute ? 'provider.' : ''}content`,
-            model.reload(),
-        );
-    },
+    //     if (this.get('theme.isProvider')) {
+    //         useProviderRoute = this.get('theme.isSubRoute');
+    //     } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
+    //         window.location.replace(`${this.get('currentProvider.domain')}${model.id}`);
+    //     } else if (this.get('currentProvider.id') !== 'osf') {
+    //         useProviderRoute = true;
+    //     }
+    //     this.transitionToRoute(
+    //         `${useProviderRoute ? 'provider.' : ''}content`,
+    //         model.reload(),
+    //     );
+    // },
 
-    _saveChangesError() {
-        this.toggleProperty('shareButtonDisabled');
-        return this.get('toast')
-            .error(this.get('i18n')
-                .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
-    },
+    // _saveChangesError() {
+    //     this.toggleProperty('shareButtonDisabled');
+    //     return this.get('toast')
+    //         .error(this.get('i18n')
+    //             .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
+    // },
 
     _transitionToPreprint() {
         this.set('preprintSaved', true);
@@ -1247,7 +1219,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
             uploadInProgress: false,
             existingPreprints: A(),
-            abandonedPreprint: null,
             shareButtonDisabled: false,
             // Basics and subjects fields need to be reset because
             // the Add process overwrites the computed properties as reg properties
