@@ -14,7 +14,7 @@ const iconForType = {
 };
 
 const typeToIcon = {};
-for (const icon of iconForType) {
+for (const icon in iconForType) {
     for (const type of iconForType[icon]) {
         typeToIcon[type] = icon;
     }

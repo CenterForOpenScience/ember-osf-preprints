@@ -185,6 +185,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form
     selectedProvider: undefined,
 
+    selectedNode: null,
+
     preprintSaved: false,
 
     submitAction: null,
@@ -223,8 +225,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     availableLicenses: A(),
     subjectsList: A(),
 
-    // In order to advance from upload state, node and selectedFile must
-    // have been defined, and title must be set.
+    // In order to advance from upload state, node and selectedFile must have been defined
     uploadValid: alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
 
     // Preprint can be published once all required sections have been saved.
@@ -602,9 +603,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
         // Takes file chosen from file-browser and sets equal to selectedFile.
         // This file will become the preprint.
-        // selectExistingFile(file) {
-        //     this.set('selectedFile', file);
-        // },
+        selectExistingFile(file) {
+            this.set('selectedFile', file);
+        },
 
         // Discards upload section changes.  Restores displayed file to current preprint primaryFile
         // and resets displayed title to current node title. (No requests sent, front-end only.)
