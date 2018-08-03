@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import EmberObject, { computed } from '@ember/object';
-import { sort, notEmpty } from '@ember/object/computed';
+import { sort } from '@ember/object/computed';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
 

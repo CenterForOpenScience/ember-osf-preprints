@@ -1,5 +1,5 @@
 {{!UPLOAD NEW FILE SECTION - NEW OSF USERS}}
-{{#if newNodeNewFile}}
+{{!-- {{#if newNodeNewFile}} --}}
     {{dropzone-widget
         url=url
         options=dropzoneOptions
@@ -10,7 +10,7 @@
         defaultMessage=(t 'components.file-uploader.dropzone_message' documentType=provider.documentType)
         maxfilesexceeded=(action 'maxfilesexceeded')
     }}
-    {{#if hasFile}}
+{{!--     {{#if hasFile}}
         <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Upload new preprint'}} role="button">
             {{preprint-title-editor
                 documentType=provider.documentType
@@ -19,7 +19,7 @@
                 pressSubmit=(action 'setNodeAndFile')
             }}
         </form>
-    {{/if}}
+    {{/if}} --}}
 
     <div class="p-t-xs pull-right">
         <button class="btn btn-default" {{action changeInitialState startState}}>Back</button>
@@ -27,7 +27,7 @@
             {{t "submit.body.continue"}}
         </button>
     </div>
-{{else}}
+{{!-- {{else}}
     {{!UPLOAD NEW FILE SECTION}}
     {{#preprint-form-section
         editMode=editMode
@@ -176,4 +176,4 @@
             {{/if}}
         {{/if}}
     {{/if}}
-{{/if}}
+{{/if}} --}}
