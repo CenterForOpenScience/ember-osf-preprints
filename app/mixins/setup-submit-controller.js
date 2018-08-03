@@ -28,8 +28,6 @@ export default Mixin.create({
             controller.clearFields();
         }
 
-        controller.set('editMode', this.get('editMode'));
-
         this.get('store').findAll('preprint-provider').then(this._setProviders.bind(this));
 
         this.get('theme.provider').then(this._getAvailableLicenses.bind(this));

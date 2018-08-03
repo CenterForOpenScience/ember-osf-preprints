@@ -22,15 +22,17 @@ import SetupSubmitControllerMixin from '../../mixins/setup-submit-controller';
 export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, SetupSubmitControllerMixin, { // eslint-disable-line max-len
     i18n: service(),
     theme: service(),
+    store: service(),
     headTagsService: service('head-tags'),
-    currentUser: service('currentUser'),
-
-    editMode: true,
-    preprint: null,
+    currentUser: service(),
 
     confirmationMessage: computed('i18n', function() {
         return this.get('i18n').t('submit.abandon_preprint_confirmation');
     }),
+
+    model(params) {
+        return this.get('store').findRecord('preprint', params.preprint_id);
+    },
 
     afterModel(preprint) {
         this.set('preprint', preprint);
@@ -40,22 +42,13 @@ export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, Setu
     },
 
     setupController(controller, model) {
-        // Runs setupController for 'submit'
         this.setupSubmitController(controller, model);
         controller._setCurrentProvider();
         return this._super(...arguments);
     },
     renderTemplate() {
-        // Overrides renderTemplate method.
-        // If query param /?edit is present, uses 'submit' template instead.
+        // uses 'submit' template
         this.render('submit');
-    },
-
-    setup() {
-        // Overrides setup method.  If query param /?edit is present,
-        // uses 'submit' controller instead.
-        this.set('controllerName', 'submit');
-        return this._super(...arguments);
     },
 
     isPageDirty() {
@@ -78,7 +71,7 @@ export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, Setu
     },
 
     _getContributors(node) {
-        const controller = this.controllerFor('submit');
+        const controller = this.controllerFor('edit');
         this.set('node', node);
         controller.set('node', node);
         controller.send('getContributors', node);

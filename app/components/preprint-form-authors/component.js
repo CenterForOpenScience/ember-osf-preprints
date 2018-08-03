@@ -176,7 +176,7 @@ export default Component.extend(Analytics, {
                             documentType: this.get('documentType'),
                         },
                     ));
-                    this.highlightSuccessOrFailure(contributor.id, this, 'success');
+                    // this.highlightSuccessOrFailure(contributor.id, this, 'success');
                 }, (error) => {
                     if (error.errors[0] && error.errors[0].detail && error.errors[0].detail.indexOf('is already a contributor') > -1) {
                         this.get('toast').error(error.errors[0].detail);
@@ -184,7 +184,7 @@ export default Component.extend(Analytics, {
                         this.get('toast').error(this.get('i18n').t('submit.error_adding_unregistered_author'));
                         this.get('raven').captureMessage('Could not add unregistered author', { extra: { error } });
                     }
-                    this.highlightSuccessOrFailure('add-unregistered-contributor-form', this, 'error');
+                    // this.highlightSuccessOrFailure('add-unregistered-contributor-form', this, 'error');
                 });
             }
         },
@@ -335,7 +335,7 @@ export default Component.extend(Analytics, {
         this.get('toast').success(this.get('i18n').t('submit.preprint_author_added', {
             documentType: this.get('documentType'),
         }));
-        this.highlightSuccessOrFailure(res.id, this, 'success');
+        // this.highlightSuccessOrFailure(res.id, this, 'success');
     },
 
     _failAddContributor(error) {
@@ -343,7 +343,7 @@ export default Component.extend(Analytics, {
 
         this.get('toast').error(this.get('i18n').t('submit.error_adding_author'));
         this.get('raven').captureMessage('Could not add author', { extra: { error } });
-        this.highlightSuccessOrFailure(user.id, this, 'error');
+        // this.highlightSuccessOrFailure(user.id, this, 'error');
         user.rollbackAttributes();
     },
 
@@ -370,7 +370,7 @@ export default Component.extend(Analytics, {
 
         this.get('toast').error(this.get('i18n').t('submit.error_adding_author'));
         this.get('raven').captureMessage('Could not remove contributor', { extra: { error } });
-        this.highlightSuccessOrFailure(contributor.id, this, 'error');
+        // this.highlightSuccessOrFailure(contributor.id, this, 'error');
         contributor.rollbackAttributes();
     },
 
@@ -379,7 +379,7 @@ export default Component.extend(Analytics, {
         const permission = this.get('permission');
 
         this.toggleAuthorModification();
-        this.highlightSuccessOrFailure(contributor.id, this, 'success');
+        // this.highlightSuccessOrFailure(contributor.id, this, 'success');
         this.removedSelfAsAdmin(contributor, permission);
     },
 
@@ -388,7 +388,7 @@ export default Component.extend(Analytics, {
 
         this.get('toast').error('Could not modify author permissions');
         this.get('raven').captureMessage('Could not modify author permissions', { extra: { error } });
-        this.highlightSuccessOrFailure(contributor.id, this, 'error');
+        // this.highlightSuccessOrFailure(contributor.id, this, 'error');
         contributor.rollbackAttributes();
     },
 
@@ -396,7 +396,7 @@ export default Component.extend(Analytics, {
         const contributor = this.get('contributor');
 
         this.toggleAuthorModification();
-        this.highlightSuccessOrFailure(contributor.id, this, 'success');
+        // this.highlightSuccessOrFailure(contributor.id, this, 'success');
     },
 
     _failUpdateCitation(error) {
@@ -411,14 +411,14 @@ export default Component.extend(Analytics, {
     _sendHighlightSuccess() {
         const draggedContrib = this.get('draggedContrib');
 
-        this.highlightSuccessOrFailure(draggedContrib.id, this, 'success');
+        // this.highlightSuccessOrFailure(draggedContrib.id, this, 'success');
     },
 
     _sendHighlightFailure(error) {
         const draggedContrib = this.get('draggedContrib');
         const originalOrder = this.get('contributors');
 
-        this.highlightSuccessOrFailure(draggedContrib.id, this, 'error');
+        // this.highlightSuccessOrFailure(draggedContrib.id, this, 'error');
         this.set('contributors', originalOrder);
         this.get('toast').error('Could not reorder contributors');
         this.get('raven').captureMessage('Could not reorder contributors', { extra: { error } });
@@ -435,6 +435,6 @@ export default Component.extend(Analytics, {
     _failSearchQuery(error) {
         this.get('toast').error('Could not perform search query.');
         this.get('raven').captureMessage('Could not perform search query', { extra: { error } });
-        this.highlightSuccessOrFailure('author-search-box', this, 'error');
+        // this.highlightSuccessOrFailure('author-search-box', this, 'error');
     },
 });
