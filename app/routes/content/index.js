@@ -10,7 +10,6 @@ import permissions from 'ember-osf/const/permissions';
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
 import ResetScrollMixin from '../../mixins/reset-scroll';
-import SetupSubmitControllerMixin from '../../mixins/setup-submit-controller';
 
 const {
     OSF: { url: osfUrl },
@@ -34,7 +33,7 @@ const handlers = new Map([
  * Fetches current preprint. Redirects to preprint provider route if necessary.
  * @class Content Route Handler
  */
-export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
+export default Route.extend(Analytics, ResetScrollMixin, {
     theme: service(),
     headTagsService: service('head-tags'),
     currentUser: service('currentUser'),
@@ -149,11 +148,14 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         const imageUrl = /^https?:\/\//.test(image.path) ? image.path : origin + image.path;
         const dateCreated = new Date(preprint.get('dateCreated') || null);
         const dateModified = new Date(preprint.get('dateModified') || dateCreated);
-        if (!preprint.get('datePublished')) { preprint.set('datePublished', dateCreated); }
         const providerName = provider.get('name') === 'Open Science Framework' ? 'OSF Preprints' : provider.get('name');
         const canonicalUrl = preprint.get('links.html');
         const contributors = this.get('contributors');
         const downloadUrl = this.get('downloadUrl');
+
+        if (!preprint.get('datePublished')) {
+            preprint.set('datePublished', dateCreated);
+        }
 
         // NOTE: Ordering of meta tags matters for scrapers
         // EX: (Facebook, LinkedIn, Google, etc)

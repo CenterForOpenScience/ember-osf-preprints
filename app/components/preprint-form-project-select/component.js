@@ -57,15 +57,9 @@ import { task, timeout } from 'ember-concurrency';
  *     nodeLocked=nodeLocked
  *     osfStorageProvider=osfStorageProvider
  *     osfProviderLoaded=osfProviderLoaded
- *     titleValid=titleValid
  *     uploadChanged=uploadChanged
  *     uploadInProgress=uploadInProgress
- *     abandonedPreprint=abandonedPreprint
- *     resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
- *     basicsAbstract=basicsAbstract
  *     editMode=editMode
- *     newNode=newNode
- *     applyLicense=applyLicense
  * }}
  * @class preprint-form-project-select
  */
@@ -119,13 +113,14 @@ export default Component.extend(Analytics, {
             this.send('changeExistingState', this.get('_existingState').CHOOSE);
             this.get('selectedNode.files').then(this._setStorageProvider.bind(this));
             this.attrs.nextUploadSection('chooseProject', 'chooseFile');
-            this.get('metrics')
-                .trackEvent({
-                    category: 'dropdown',
-                    action: 'select',
-                    label: 'Submit - Choose Project',
-                    extra: node.id,
-                });
+
+            this.get('metrics').trackEvent({
+                category: 'dropdown',
+                action: 'select',
+                label: 'Submit - Choose Project',
+                extra: node.id,
+            });
+
             this.getNodePreprints(node);
             this.getContributors(node);
         },

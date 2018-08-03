@@ -1,0 +1,46 @@
+<p>
+    <em class="m-r-md">
+        Preprint Title:
+    </em>
+    {{if title title (t "global.none")}}
+</p>
+
+<p>
+    <em class="m-r-md">
+        {{t "global.abstract"}}:
+    </em>
+    {{#if abstract}}
+        <span class="abstract">
+            {{abstract}}
+        </span>
+    {{else}}
+        {{t "global.none"}}
+    {{/if}}
+</p>
+
+<p>
+    <em class="m-r-md">
+        {{t "global.license"}}:
+    </em>
+    {{if license license (t "global.none")}}
+</p>
+
+<p>
+    <em class="m-r-md">
+        {{t "global.doi"}}:
+    </em>
+    {{if doi doi (t "global.none")}}
+</p>
+
+<p>
+    <em class="m-r-md">{{t "global.tags"}}:</em>
+    {{#if tags}}
+        <ul class="comma-list">
+            {{#each tags as |tag|~}}
+                <li>{{~fix-special-char tag~}}</li>
+            {{~/each}}
+        </ul>
+    {{else}}
+        <span>{{t "global.none"}}</span>
+    {{/if}}
+</p>

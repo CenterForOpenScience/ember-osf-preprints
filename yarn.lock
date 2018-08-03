@@ -3234,7 +3234,7 @@ ember-cli-babel@6.11.0:
     ember-cli-version-checker "^2.1.0"
     semver "^5.4.1"
 
-ember-cli-babel@^5.0.0, ember-cli-babel@^5.1.3, ember-cli-babel@^5.1.5, ember-cli-babel@^5.1.6, ember-cli-babel@^5.1.7, ember-cli-babel@^5.2.1:
+ember-cli-babel@^5.0.0, ember-cli-babel@^5.1.5, ember-cli-babel@^5.1.6, ember-cli-babel@^5.1.7, ember-cli-babel@^5.2.1:
   version "5.2.8"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-5.2.8.tgz#0356b03cc3fdff5d0f2ecaa46a0e1cfaebffd876"
   dependencies:
@@ -3642,7 +3642,7 @@ ember-cli-valid-component-name@^1.0.0:
   dependencies:
     silent-error "^1.0.0"
 
-ember-cli-version-checker@^1.0.2, ember-cli-version-checker@^1.1.3, ember-cli-version-checker@^1.1.6, ember-cli-version-checker@^1.2.0:
+ember-cli-version-checker@^1.0.2, ember-cli-version-checker@^1.1.6, ember-cli-version-checker@^1.2.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/ember-cli-version-checker/-/ember-cli-version-checker-1.3.1.tgz#0bc2d134c830142da64bf9627a0eded10b61ae72"
   dependencies:
@@ -3752,12 +3752,13 @@ ember-collapsible-panel@^2.1.1:
     ember-cli-htmlbars "^1.0.3"
     ember-cli-version-checker "^1.1.6"
 
-ember-collapsible-panel@~1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/ember-collapsible-panel/-/ember-collapsible-panel-1.0.0.tgz#89236d9d57c6461aa896ba894fdad1578065f310"
+ember-collapsible-panel@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/ember-collapsible-panel/-/ember-collapsible-panel-3.1.1.tgz#7fa04b0217c7c333d04fd74d0fb0d568f4cb31b1"
   dependencies:
-    ember-cli-babel "^5.1.3"
-    ember-cli-version-checker "^1.1.3"
+    ember-cli-babel "^6.12.0"
+    ember-cli-htmlbars "^2.0.3"
+    ember-cli-version-checker "^2.1.0"
 
 ember-collection@^1.0.0-alpha.7:
   version "1.0.0-alpha.7"
@@ -3825,7 +3826,7 @@ ember-cookies@^0.3.0:
     ember-cli-babel "^6.8.2"
     ember-getowner-polyfill "^1.1.0 || ^2.0.0"
 
-ember-cp-validations@^3.5.0, ember-cp-validations@^3.5.1:
+ember-cp-validations@^3.5.0, ember-cp-validations@^3.5.2:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/ember-cp-validations/-/ember-cp-validations-3.5.3.tgz#059d173e2f0904232516b23c4b774675e672ae11"
   dependencies:
@@ -4315,6 +4316,13 @@ ember-string-ishtmlsafe-polyfill@^2.0.0:
   resolved "https://registry.yarnpkg.com/ember-string-ishtmlsafe-polyfill/-/ember-string-ishtmlsafe-polyfill-2.0.2.tgz#f7c1beb2fcb95599f499af41772477284b16ed74"
   dependencies:
     ember-cli-version-checker "^2.1.0"
+
+ember-tag-input@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/ember-tag-input/-/ember-tag-input-1.2.1.tgz#5130b3895f09663b809719abc3fc2a7bb3bd6a0f"
+  dependencies:
+    ember-cli-babel "^6.7.1"
+    ember-cli-htmlbars "^2.0.3"
 
 ember-template-lint@^0.8.16:
   version "0.8.18"

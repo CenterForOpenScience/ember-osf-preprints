@@ -1,41 +1,34 @@
-<div class="section-header">
+{{sectionName}}
+<div class="preprint-section-status pull-right">
+    {{#if saved}}
+        {{fa-icon (if valid 'check valid' 'times invalid')}}
+    {{/if}}
+</div>
+{{#if (and (not isOpen) saved)}}
+    <div class="m-t-md preprint-header-preview">
+        {{yield}}
+    </div>
+{{/if}}
+
+{{!-- <div class="section-header">
     {{#if (eq name 'location_of_preprint')}}
-        <span class='text-muted'> {{t (concat "components.preprint-form-header.name." name) documentType=provider.documentType}} </span>
+        <span class='text-muted'>
+            {{t (concat "components.preprint-form-header.name." name) documentType=provider.documentType}}
+        </span>
     {{else}}
         {{t (concat "components.preprint-form-header.name." name) documentType=provider.documentType}}
     {{/if}}
 </div>
 
-<div class="preprint-section-status pull-right">
-    {{#if (or
-        (and serverSaveState (eq name 'Server'))
-        (and uploadSaveState (eq name 'Upload'))
-        (and basicsSaveState (eq name 'Basics'))
-        (and authorsSaveState (eq name 'Authors'))
-        (and disciplineSaveState (eq name 'Discipline')) )}}
-        <span class="text-success text-smaller m-r-md"> {{t "components.preprint-form-header.changes_saved"}} </span>
-    {{/if}}
-    {{#if showValidationIndicator}}
-        {{fa-icon 'floppy-o'}}
-    {{/if}}
-</div>
-
-{{#if (and (not isOpen) (eq name 'Server'))}}
-    <div class="m-t-md preprint-header-preview">
-        <p>
-            <em class="m-r-md"> {{t "components.preprint-form-header.server" documentType=provider.documentType}}: </em>
-            {{#if currentProvider}}
-                <img alt="provider logo" class="current-provider" title="{{currentProvider.name}}" src={{provider-asset currentProvider.id 'square_color_no_transparent.png'}}>
-                {{if (not theme.isProvider) 'OSF Preprints' currentProvider.name}}
-            {{/if}}
-        </p>
-    </div>
-{{/if}}
-
 {{#if (and (not isOpen) (eq name 'Upload'))}}
     <div class="m-t-md preprint-header-preview">
         {{#if preprintNode}}
-            <p><em class="m-r-md"> {{t "components.preprint-form-header.location" documentType=provider.documentType}}: </em> {{get-ancestor-descriptor preprintNode}} {{preprintNode.title}}</p>
+            <p>
+                <em class="m-r-md">
+                    {{t "components.preprint-form-header.location" documentType=provider.documentType}}:
+                </em>
+                {{get-ancestor-descriptor preprintNode}} {{preprintNode.title}}
+            </p>
         {{/if}}
         {{#if preprintFile}}
             <p><em class="m-r-md"> {{t "components.preprint-form-header.file" documentType=provider.documentType}}: </em> {{preprintFile.name}} <em>(Version: {{preprintFile.currentVersion}})</em>  </p>
@@ -50,30 +43,9 @@
     <div class="m-t-md preprint-header-preview">
         {{#if (or isValidationActive editMode)}}
             {{#if (eq name 'Basics')}}
-                <p><em class="m-r-md"> {{t "global.license"}}: </em> {{if license license.name (t "global.none")}} </p>
-                <p><em class="m-r-md"> {{t "global.doi"}}: </em> {{if doi doi (t "global.none")}} </p>
-                <p>
-                    <em class="m-r-md"> {{t "global.tags"}}: </em>
-                    {{#if tags}}
-                        <ul class="comma-list">
-                            {{#each tags as |tag|~}}
-                                <li> {{~fix-special-char tag~}} </li>
-                            {{~/each}}
-                        </ul>
-                    {{else}}
-                        <span>{{t "global.none"}}</span>
-                    {{/if}}
-                </p>
-                <em class="m-r-md"> {{t "global.abstract"}}: </em>
-                <p class="abstract">{{if abstract abstract (t "global.none")}} </p>
+
             {{else if (eq name 'Discipline')}}
-                {{#if subjects}}
-                    {{#each subjects as |subject|}}
-                        <span class="subject-preview">{{subject.text}} </span>
-                    {{/each}}
-                {{else}}
-                    <span>{{t "global.none"}}</span>
-                {{/if}}
+
             {{else if (eq name 'Authors')}}
                 <ul class="author-preview comma-list">
                     {{#each authors as |contrib| ~}}
@@ -146,8 +118,8 @@
         {{/if}}
 
 
-        {{#if (and (is-section-editable name) (or editMode (or (not showValidationIndicator) isValidationActive)))}}
+        {{#if (and (is-section-editable name) (or editMode isValidationActive))}}
             <i class="text-smaller m-t-md">{{t "components.preprint-form-header.click_edit"}}</i>
         {{/if}}
     </div>
-{{/if}}
+{{/if}} --}}

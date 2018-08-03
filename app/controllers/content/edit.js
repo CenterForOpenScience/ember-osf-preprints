@@ -78,6 +78,10 @@ const BasicsValidations = buildValidations({
     },
 });
 
+const PENDING = 'pending';
+const ACCEPTED = 'accepted';
+const REJECTED = 'rejected';
+
 const PRE_MODERATION = 'pre-moderation';
 const POST_MODERATION = 'post-moderation';
 
@@ -97,6 +101,22 @@ const SUBMIT_MESSAGES = {
 const PERMISSION_MESSAGES = {
     create: 'submit.body.submit.information.line2.create',
     submit: 'submit.body.submit.information.line2.submit',
+};
+
+const EDIT_MESSAGES = {
+    line1: {
+        [PRE_MODERATION]: 'submit.body.edit.information.line1.pre',
+        [POST_MODERATION]: 'submit.body.edit.information.line1.post_rejected',
+    },
+    line2: {
+        [PENDING]: {
+            [PRE_MODERATION]: 'submit.body.edit.information.line2.pre_pending',
+        },
+        [REJECTED]: {
+            [PRE_MODERATION]: 'submit.body.edit.information.line2.pre_rejected',
+            [POST_MODERATION]: 'submit.body.edit.information.line2.post_rejected',
+        },
+    },
 };
 
 const WORKFLOW = {
@@ -137,150 +157,129 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     toast: service(),
     panelActions: service(),
 
-    editMode: false, // template is shared between edit and submit view
+    editMode: true, // template is shared between edit and submit view
 
     _existingState: existingState,
     // Data for project picker; tracked internally on load
-
     user: null,
-    // userNodesLoaded: false,
+    userNodesLoaded: false,
 
     _State: State,
 
-
-    // file: null,
+    node: null,
+    // Project or component containing the preprint
+    file: null,
     // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
-
-    // selectedFile: null,
+    selectedFile: null,
     // File that will be the preprint (already uploaded to node or selected from existing node)
-
+    title: '',
+    // Preprint title
     nodeLocked: false,
     // the node is locked.  Is True on Edit.
-
     searchResults: [],
     // List of users matching search query
-
-    // savingPreprint: false,
+    savingPreprint: false,
     // True when Share button is pressed on Add Preprint page
-
     showModalSharePreprint: false,
     // True when sharing preprint confirmation modal is displayed
 
-    // osfStorageProvider: null,
+    parentNode: null,
+    // If component created, parentNode will be defined
+    convertProjectConfirmed: false,
+    // User has confirmed they want to convert their existing OSF project into a preprint,
+    convertOrCopy: null,
+    // to use existing component or create a new component.
+    osfStorageProvider: null,
     // Preprint node's osfStorage object
-
-    // osfProviderLoaded: false,
+    osfProviderLoaded: false,
     // Preprint node's osfStorageProvider is loaded.
 
-    // uploadInProgress: false,
+    uploadInProgress: false,
     // Set to true when upload step is underway,
+    abandonedPreprint: null,
+    // Abandoned(draft) preprint on the current node
+
 
     shareButtonDisabled: false,
-
+    // Will either be 'convert' or 'copy' depending on whether user wants
     attemptedSubmit: false,
     allProviders: [],
     // Initialize with an empty list of providers
-
     currentProvider: undefined,
     // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form
     selectedProvider: undefined,
-
-    selectedNode: null,
-
+    providerSaved: false,
     preprintSaved: false,
 
     submitAction: null,
 
+    // Validation rules and changed states for form sections
+
+    providerChanged: true,
+
     // order that panels will open
-    sectionOrder: ['Service', 'Upload', 'Basics', 'Authors', 'Discipline', 'SupplementalMaterials'],
-
-    // if the user has clicked "continue" on that section
-    providerSaved: false,
-    uploadSaved: false,
-    basicsSaved: false,
-    authorsSaved: false,
-    disciplinesSaved: false,
-
-    // initial basics values
-    basicsTitle: '',
-    basicsAbstract: '',
-    basicsDOI: '',
-    basicsOriginalPublicationDate: '',
-    basicsLicenseType: '',
-    basicsLicenseYear: '',
-    basicsLicenseCopyrightHolders: '',
-    basicsTags: A(),
-
-    moderationType: alias('currentProvider.reviewsWorkflow'),
+    sectionOrder: ['Upload', 'Basics', 'Authors', 'Discipline'],
 
     isTopLevelNode: computed.not('node.parent.id'),
     hasFile: computed.or('file', 'selectedFile'),
     isAddingPreprint: computed.not('editMode'),
 
-    // Contributors on preprint
+
+    // Contributors on preprint - if creating a component,
+    // contributors will be copied over from parent
     contributors: A(),
-
-    // userNodes: A(),
-
+    userNodes: A(),
+    parentContributors: A(), // Contributors on parent project
     availableLicenses: A(),
-    subjectsList: A(),
 
-    // In order to advance from upload state, node and selectedFile must have been defined
+    // In order to advance from upload state, node and selectedFile must
+    // have been defined, and title must be set.
     uploadValid: alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
 
-    // Preprint can be published once all required sections have been saved.
-    allSectionsValid: computed.and('uploadValid', 'basicsValid', 'authorsValid', 'disciplinesValid'),
-    allSectionsSaved: computed.and('providerSaved', 'uploadSaved', 'basicsSaved', 'authorsSaved', 'disciplinesSaved'),
-
-    // basics
-    basicsValid: computed.and('licenseValid', 'abstractValid', 'doiValid', 'originalPublicationDateValid', 'preprintTitleValid'),
     abstractValid: alias('validations.attrs.basicsAbstract.isValid'),
     preprintTitleValid: alias('validations.attrs.basicsTitle.isValid'),
     doiValid: alias('validations.attrs.basicsDOI.isValid'),
     originalPublicationDateValid: alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
 
+    // Basics fields that are being validated
+    basicsValid: computed.and('licenseValid', 'abstractValid', 'doiValid', 'originalPublicationDateValid', 'preprintTitleValid'),
+
     // Must have at least one contributor. Backend enforces admin and bibliographic rules.
+    // If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: computed.bool('contributors.length'),
 
     // Must select at least one subject (looking at pending subjects)
-    disciplinesValid: computed.notEmpty('subjectsList'),
+    disciplineValid: computed.notEmpty('subjectsList'),
 
-    // Has the section been saved?
-    // savedFile: computed.notEmpty('model.primaryFile.content'),
+    // Does node have a saved title?
+    savedTitle: computed.notEmpty('model.title'),
 
-    // Are there any unsaved changes?
-    basicsChanged: computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
+    // Does preprint have a saved primaryFile?
+    savedFile: computed.notEmpty('model.primaryFile.content'),
+
+    // Does node have a saved description?
+    savedAbstract: computed.notEmpty('model.description'),
+
+    // Does preprint have saved subjects?
+    savedSubjects: computed.notEmpty('model.subjects'),
+
+    // Preprint can be published once all required sections have been saved.
+    allSectionsValid: computed.and('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid'),
+
+    // Are there any unsaved changes in the upload section?
     uploadChanged: computed.or('preprintFileChanged', 'titleChanged'),
-    licenseChanged: computed.or('basicsLicenseTypeChanged', 'basicsLicenseYearChanged', 'basicsLicenseCopyrightHoldersChanged'),
 
-    // True if fields have been changed
-    // hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
-    //     const preprintStarted = this.get('theme.isProvider') ? this.get('hasFile') : this.get('providerSaved');
-    //     const fieldsChanged = this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged');
-    //     return !this.get('preprintSaved') && ((this.get('isAddingPreprint') && preprintStarted) || fieldsChanged);
-    // }),
+    basicsDOI: computed.or('model.doi'),
 
-    // Are there validation errors which should be displayed right now?
-    showValidationErrors: computed('attemptedSubmit', 'allSectionsValid', function() {
-        return this.get('attemptedSubmit') && !this.get('allSectionsValid');
-    }),
+    // This is done to initialize basicsOriginalPublicationDate to the date fetched
+    // from an existing preprint, similar to how basicsDOI is initialized.
+    basicsOriginalPublicationDate: computed.or('model.originalPublicationDate'),
 
-    // Does the pending primaryFile differ from the primary file already saved?
-    // preprintFileChanged: computed('model.primaryFile', 'selectedFile', 'file', function() {
-    //     return Object.keys(this.get('model').changedAttributes()).includes('primaryFile');
-    //     // return (this.get('selectedFile.id') && (this.get('model.primaryFile.id') !== this.get('selectedFile.id'))) || this.get('file') !== null;
-    // }),
+    // Are there any unsaved changes in the basics section?
+    basicsChanged: computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
 
-    /*
-        Service
-    */
-    providerChanged: computed('selectedProvider', 'currentProvider', function() {
-        return this.get('selectedProvider.id') !== this.get('currentProvider.id');
-    }),
+    moderationType: alias('currentProvider.reviewsWorkflow'),
 
-    /*
-        Basics
-    */
     licenseValid: computed('model.license.requiredFields.[]', 'model.licenseRecord.{year,copyrightHolders}', function() {
         // Must have year and copyrightHolders if required by the licenseType selected
         const requiredFields = this.get('model.license.requiredFields');
@@ -293,111 +292,146 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return !(yearValid || copyrightHoldersValid) && this.get('model.license.content');
     }),
 
-    titleChanged: computed('basicsTitle', function() {
-        const basicsTitle = this.get('basicsTitle');
-        const modelTitle = this.get('model.title');
-
-        if (isEmpty(modelTitle) && isEmpty(basicsTitle)) {
-            return false;
-        }
-        return modelTitle !== basicsTitle;
-    }),
-
-    abstractChanged: computed('basicsAbstract', function() {
-        const basicsAbstract = this.get('basicsAbstract');
-        const modelAbstract = this.get('model.description');
-
-        if (isEmpty(modelAbstract) && isEmpty(basicsAbstract)) {
-            return false;
-        }
-        return modelAbstract !== basicsAbstract;
-    }),
-
-    tagsChanged: computed('model.tags', function() {
-        const basicsTags = this.get('basicsTags');
-        const modelTags = this.get('model.tags');
-
-        if (isEmpty(modelTags) && isEmpty(basicsTags)) {
-            return false;
-        }
-        return basicsTags.some((v, i) => fixSpecialChar(v) !== fixSpecialChar(modelTags[i]));
-    }),
-
-    doiChanged: computed('basicsDOI', function() {
-        const basicsDOI = this.get('basicsDOI');
-        const modelDOI = this.get('model.doi');
-
-        if (isEmpty(modelDOI) && isEmpty(basicsDOI)) {
-            return false;
-        }
-        return modelDOI !== basicsDOI;
-    }),
-
-    basicsLicenseTypeChanged: computed('basicsLicenseType', function() {
-        const basicsLicenseType = this.get('basicsLicenseType');
-
-        if (isEmpty(this.get('model.license.content')) && isEmpty(basicsLicenseType)) {
-            return false;
-        }
-        return this.get('model.license.id') !== basicsLicenseType.id;
-    }),
-
-    basicsLicenseYearChanged: computed('basicsLicenseYear', function() {
-        const basicsLicenseYear = this.get('basicsLicenseYear');
-        const modelLicenseYear = this.get('model.licenseRecord.year');
-
-        if (isEmpty(modelLicenseYear) && isEmpty(basicsLicenseYear)) {
-            return false;
-        }
-        return modelLicenseYear !== basicsLicenseYear;
-    }),
-
-    basicsLicenseCopyrightHoldersChanged: computed('basicsLicenseCopyrightHolders', function() {
-        const basicsLicenseCopyrightHolders = this.get('basicsLicenseCopyrightHolders');
-        const modelLicenseCopyrightHolders = this.get('model.licenseRecord.copyrightHolders');
-
-        if (isEmpty(modelLicenseCopyrightHolders) && isEmpty(basicsLicenseCopyrightHolders)) {
-            return false;
-        }
-        return modelLicenseCopyrightHolders.join(', ') !== basicsLicenseCopyrightHolders;
-    }),
-
-
-    originalPublicationDateChanged: computed('basicsOriginalPublicationDate', function () {
-        const basicsOriginalPublicationDate = this.get('basicsOriginalPublicationDate');
-        const modelOriginalPublicationDate = this.get('model.originalPublicationDate');
-
-        if (isEmpty(modelOriginalPublicationDate) && isEmpty(basicsOriginalPublicationDate)) {
-            return false;
-        }
-        return modelOriginalPublicationDate !== basicsOriginalPublicationDate;
-    }),
-
-    /*
-        Disciplines
-    */
-    disciplineReduced: computed('model.subjects.@each.id', function() {
-        // Flattened subject list
-        return this.get('model.subjects').reduce((acc, val) => acc.concat(val), []).uniqBy('id');
-    }),
-
-    disciplineChanged: computed('model.subjects.@each.id', 'subjectsList.@each.id', function () {
-        const currentSubjectIds = subjectIdMap(this.get('subjectsList'));
-        const modelSubjectIds = subjectIdMap(this.get('model.subjects'));
-
-        return JSON.stringify(modelSubjectIds) !== JSON.stringify(currentSubjectIds);
-    }),
-
-    /* Misc */
-
-    // True if the current user has admin permissions
-    // isAdmin: computed('model', function() {
-    //     return (this.get('model.currentUserPermissions') || []).includes(permissions.ADMIN);
+    // True if fields have been changed
+    // hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
+    //     const preprintStarted = this.get('theme.isProvider') ? this.get('hasFile') : this.get('providerSaved');
+    //     const fieldsChanged = this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged');
+    //     return !this.get('preprintSaved') && ((this.get('isAddingPreprint') && preprintStarted) || fieldsChanged);
     // }),
 
-    // // True if the current user is an admin
-    // canEdit: computed('isAdmin', function() {
-    //     return this.get('isAdmin');
+    // Relevant in Add mode - flag prevents users from sending multiple requests to server
+    currentPanelName: computed('editMode', 'theme.isProvider', function() {
+        return this.get('isAddingPreprint') ? this.get('sectionOrder')[0] : null;
+    }),
+
+    // Are there validation errors which should be displayed right now?
+    showValidationErrors: computed('attemptedSubmit', 'allSectionsValid', function() {
+        return this.get('attemptedSubmit') && !this.get('allSectionsValid');
+    }),
+
+    // Does the pending primaryFile differ from the primary file already saved?
+    preprintFileChanged: computed('model.primaryFile', 'selectedFile', 'file', function() {
+        return Object.keys(this.get('model').changedAttributes()).includes('primaryFile');
+        // return (this.get('selectedFile.id') && (this.get('model.primaryFile.id') !== this.get('selectedFile.id'))) || this.get('file') !== null;
+    }),
+
+    // Does the pending title differ from the title already saved?
+    titleChanged: computed('model.title', function() {
+        return Object.keys(this.get('model').changedAttributes()).includes('title');
+        // const title = this.get('title');
+        // const modelTitle = this.get('model.title');
+        // if (isEmpty(title) && isEmpty(modelTitle)) {
+        //     return false;
+        // }
+        // return modelTitle !== title;
+    }),
+
+    // Pending abstract
+    // basicsAbstract: computed('model.description', function() {
+    //     return this.get('model.description') || null;
+    // }),
+
+    // Does the pending abstract differ from the saved abstract in the db?
+    abstractChanged: computed('model.description', function() {
+        return Object.keys(this.get('model').changedAttributes()).includes('description');
+    }),
+
+    // Pending tags
+    // basicsTags: computed('model.tags', function() {
+    //     const tags = this.get('model.tags');
+    //     return (tags && tags.map(fixSpecialChar)) || A();
+    // }),
+
+    // Does the list of pending tags differ from the saved tags in the db?
+    tagsChanged: computed('model.tags', function() {
+        return Object.keys(this.get('model').changedAttributes()).includes('tags');
+        // const basicsTags = this.get('basicsTags');
+        // const tags = this.get('model.tags');
+
+        // return basicsTags && tags &&
+        //     (
+        //         basicsTags.length !== tags.length ||
+        //         basicsTags.some((v, i) => fixSpecialChar(v) !== fixSpecialChar(tags[i]))
+        //     );
+    }),
+
+    doiChanged: computed('model.doi', function() {
+        // Does the pending DOI differ from the saved DOI in the db?
+        // If pending DOI and saved DOI are both falsy values, doi has not changed.
+        return Object.keys(this.get('model').changedAttributes()).includes('doi');
+        // const basicsDOI = extractDoiFromString(this.get('basicsDOI'));
+        // const modelDOI = this.get('model.doi');
+        // return (basicsDOI || modelDOI) && basicsDOI !== modelDOI;
+    }),
+
+    // license object with null values
+    // basicsLicense: computed('model', function() {
+    //     const record = this.get('model.licenseRecord');
+    //     const license = this.get('model.license');
+    //     return {
+    //         year: record ? record.year : null,
+    //         copyrightHolders: record && record.copyright_holders ? record.copyright_holders.join(', ') : '',
+    //         licenseType: license || null,
+    //     };
+    // }),
+
+    // This loads up the current license information if the preprint has one
+    licenseChanged: computed('model.license', 'model.licenseRecord.{year,copyrightHolders}', function() {
+        const changed = this.get('model').changedAttributes();
+        return ['license', 'licenseRecord'].any(val => Object.keys(changed).includes(val));
+
+        // this.get('licenseValid');
+        // if (this.get('model.licenseRecord') || this.get('model.license.content')) {
+            // if (this.get('model.license.name') !== this.get('basicsLicense.licenseType.name')) return true;
+            // if (this.get('model.licenseRecord').year !== this.get('basicsLicense.year')) return true;
+            // if ((this.get('model.licenseRecord.copyright_holders.length') ?
+            //     this.get('model.licenseRecord.copyright_holders').join(', ') :
+            //     '') !== this.get('basicsLicense.copyrightHolders')) return true;
+        // }
+        // else {
+        //     if ((this.get('availableLicenses').toArray().length ?
+        //         this.get('availableLicenses').toArray()[0].get('name') :
+        //         null) !== this.get('basicsLicense.licenseType.name')) return true;
+        //     if ((new Date()).getUTCFullYear().toString() !== this.get('basicsLicense.year')) return true;
+        //     if (!(this.get('basicsLicense.copyrightHolders') === '' ||
+        //         !this.get('basicsLicense.copyrightHolders.length') ||
+        //         this.get('basicsLicense.copyrightHolders') === null)) return true;
+        // }
+        // return false;
+    }),
+
+    // Fields used in the "basics" section of the form.
+    originalPublicationDateChanged: computed('model.originalPublicationDate', function () {
+        return Object.keys(this.get('model').changedAttributes()).includes('originalPublicationDate');
+        // const basicsOriginalPublicationDate = this.get('basicsOriginalPublicationDate');
+        // const modelOriginalPublicationDate = this.get('model.originalPublicationDate');
+        // return (basicsOriginalPublicationDate || modelOriginalPublicationDate)
+        //     && basicsOriginalPublicationDate !== modelOriginalPublicationDate;
+    }),
+
+    // Pending subjects
+    subjectsList: computed('model.subjects.@each', function() {
+        return this.get('model.subjects') ? $.extend(true, [], this.get('model.subjects')) : A();
+    }),
+
+    // Flattened subject list
+    disciplineReduced: computed('model.subjects', function() {
+        return $.extend(true, [], this.get('model.subjects')).reduce((acc, val) => acc.concat(val), []).uniqBy('id');
+    }),
+
+    // to determine if there has been a change.
+    disciplineChanged: computed('model.subjects.@each.subject', 'subjectsList.@each.subject', 'disciplineModifiedToggle', function () {
+        return JSON.stringify(subjectIdMap(this.get('model.subjects'))) !== JSON.stringify(subjectIdMap(this.get('subjectsList')));
+    }),
+
+    // // True if the current user has admin permissions
+    // isAdmin: computed('node', function() {
+    //     return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
+    // }),
+
+    // // True if the current user is and admin and the node is not a registration.
+    // canEdit: computed('isAdmin', 'node', function() {
+    //     return this.get('isAdmin') && !(this.get('node.registration'));
     // }),
 
     workflow: computed('moderationType', function () {
@@ -411,40 +445,57 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     modalTitle: computed('moderationType', function() {
-        return this.get('moderationType') === PRE_MODERATION ?
-            MODAL_TITLE.submit :
-            MODAL_TITLE.create;
+        return MODAL_TITLE.resubmit;
     }),
 
-    // submission language
-    heading: computed('moderationType', function() {
-        return this.get('moderationType') === PRE_MODERATION ?
-            ACTION.submit.heading :
-            ACTION.create.heading;
+    // edit
+    showInformation: computed('moderationType', 'model.reviewsState', function() {
+        const state = this.get('model.reviewsState');
+        const modType = this.get('moderationType');
+        return !(state === ACCEPTED || (modType === POST_MODERATION && state === PENDING));
     }),
-    buttonLabel: computed('moderationType', function() {
-        return this.get('moderationType') ?
-            ACTION.submit.button :
-            ACTION.create.button;
+    editInformation1: computed('moderationType', function() {
+        const moderationType = this.get('moderationType');
+        if (moderationType) {
+            return EDIT_MESSAGES.line1[moderationType];
+        }
     }),
-    generalInformation: computed('moderationType', function() {
-        return this.get('moderationType') ?
-            SUBMIT_MESSAGES.moderation :
-            SUBMIT_MESSAGES.default;
+    editInformation2: computed('moderationType', 'model.reviewsState', function() {
+        const reviewsState = this.get('model.reviewsState');
+        const moderationType = this.get('moderationType');
+        if (reviewsState && moderationType) {
+            return EDIT_MESSAGES.line2[reviewsState][moderationType];
+        }
     }),
-    permissionInformation: computed('moderationType', function() {
-        return this.get('moderationType') ?
-            PERMISSION_MESSAGES.submit :
-            PERMISSION_MESSAGES.create;
-    }),
-    moderationInformation: computed('moderationType', function() {
-        return SUBMIT_MESSAGES[this.get('moderationType')];
+    canResubmit: computed('moderationType', 'model.reviewsState', function() {
+        const state = this.get('model.reviewsState');
+        return this.get('moderationType') === PRE_MODERATION && (state === PENDING || state === REJECTED);
     }),
 
     actions: {
-        getContributors() {
+        // getNodePreprints(node) {
+        //     // Returns any existing preprints stored on the current node
+
+        //     // Cannot be called until a project has been selected!
+        //     if (!this.get('node')) return;
+
+        //     node.get('preprints').then(this._setNodePreprints.bind(this));
+        // },
+
+        getContributors(node) {
             // TODO lauren: add current user as contributor
-            // this.set('contributors', contributors));
+
+
+            // Returns all contributors of node that will be container for preprint.
+            // Makes sequential requests to API until all pages of contributors have been loaded
+            // and combines into one array
+
+            // Cannot be called until a project has been selected!
+            // if (!this.get('node')) return;
+
+            // const contributors = A();
+            // loadAll(node, 'contributors', contributors).then(() =>
+            //     this.set('contributors', contributors));
         },
 
         // getParentContributors(parentNode) {
@@ -454,6 +505,19 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         //     const contributors = A();
         //     loadAll(parent, 'contributors', contributors).then(() =>
         //         this.set('parentContributors', contributors));
+        // },
+
+        // This gets called by the save method of the license-widget, which in autosave mode
+        // gets called every time a change is observed in the widget.
+        // editLicense(license, year, copyrightHolders, licenseValid) {
+        //     this.get('model').setProperties({
+        //         license,
+        //         licenseRecord: {
+        //             year,
+        //             copyright_holders: copyrightHolders,
+        //         },
+        //     });
+        //     this.set('licenseValid', licenseValid);
         // },
 
         next(currentPanelName) {
@@ -467,11 +531,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 this.get('metrics').trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Authors Next Button',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Authors Next Button`,
                 });
             }
             this.get('panelActions').close(this.get(`sectionOrder.${this.get('sectionOrder').indexOf(currentPanelName)}`));
             this.get('panelActions').open(this.get(`sectionOrder.${this.get('sectionOrder').indexOf(currentPanelName) + 1}`));
+            this.set('currentPanelName', this.get(`sectionOrder.${this.get('sectionOrder').indexOf(currentPanelName) + 1}`));
+            // this.send('changesSaved', currentPanelName);
         },
 
         // nextUploadSection(currentUploadPanel, nextUploadPanel) {
@@ -497,7 +563,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
         /*
           Upload section
-        */
+         */
         changeInitialState(newState) {
             // Sets filePickerState to start, new, or existing -
             // this is the initial decision on the form.
@@ -585,21 +651,29 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         //         .then(this._addChild.bind(this))
         //         .catch(this._failCreateComponent.bind(this));
         // },
-
-        // startPreprint() {
-        //     // Initiates preprint.  Occurs in Upload section of Add Preprint form
-        //     // when pressing 'Save and continue'.  Creates a preprint with
-        //     // primaryFile, node, and provider fields populated.
-        //     const model = this.get('model');
-
-        //     model.set('primaryFile', this.get('selectedFile'));
-        //     // model.set('node', this.get('node'));
-        //     model.set('provider', this.get('currentProvider'));
-
-        //     // return model.save()
-        //     //     .then(this._finishUpload.bind(this))
-        //     //     .catch(this._failedUpload.bind(this));
+        // resumeAbandonedPreprint() {
+        //     // You can only have one preprint per provider. For now, we delete the
+        //     // abandoned preprint so another preprint can be created.
+        //     const preprintRecord = this.store.peekRecord('preprint', this.get('abandonedPreprint').id);
+        //     preprintRecord.destroyRecord()
+        //         .then(this._sendStartPreprint.bind(this))
+        //         .catch(this._failDeletePreprint.bind(this));
         // },
+
+        startPreprint() {
+            // Initiates preprint.  Occurs in Upload section of Add Preprint form
+            // when pressing 'Save and continue'.  Creates a preprint with
+            // primaryFile, node, and provider fields populated.
+            const model = this.get('model');
+
+            model.set('primaryFile', this.get('selectedFile'));
+            // model.set('node', this.get('node'));
+            model.set('provider', this.get('currentProvider'));
+
+            // return model.save()
+            //     .then(this._finishUpload.bind(this))
+            //     .catch(this._failedUpload.bind(this));
+        },
 
         // Takes file chosen from file-browser and sets equal to selectedFile.
         // This file will become the preprint.
@@ -613,12 +687,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.get('metrics').trackEvent({
                 category: 'button',
                 action: 'click',
-                label: 'Submit - Discard Upload Changes',
+                label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Upload Changes`,
             });
 
             this.setProperties({
                 file: null,
                 selectedFile: this.get('store').peekRecord('file', this.get('model.primaryFile.id')),
+                // title: this.get('model.title'),
+                // titleValid: true,
             });
         },
 
@@ -654,6 +730,21 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         /*
           Basics section
          */
+        discardBasics() {
+            // Discards changes to basic fields. (No requests sent, front-end only.)
+            this.get('metrics').trackEvent({
+                category: 'button',
+                action: 'click',
+                label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Basics Changes`,
+            });
+
+            this.set('basicsTags', this.get('model.tags').slice(0).map(fixSpecialChar));
+            this.set('basicsAbstract', this.get('model.description'));
+            this.set('basicsDOI', this.get('model.doi'));
+            this.set('basicsOriginalPublicationDate', this.get('model.originalPublicationDate'));
+            this.get('model.license').then(this._setBasicsLicense.bind(this));
+        },
+
         preventDefault(e) {
             e.preventDefault();
         },
@@ -663,7 +754,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.get('metrics').trackEvent({
                 category: 'input',
                 action: 'onchange',
-                label: 'Submit - DOI Text Change',
+                label: `${this.get('editMode') ? 'Edit' : 'Submit'} - DOI Text Change`,
             });
 
             const basicsDOI = this.get('basicsDOI');
@@ -674,69 +765,108 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.get('metrics').trackEvent({
                 category: 'button',
                 action: 'click',
-                label: 'Submit - Save and Continue Basics Section',
+                label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue Basics Section`,
             });
 
-            const model = this.get('model');
-
-            if (this.get('titleChanged')) {
-                model.set('title', this.get('basicsTitle'));
+            // Saves the description/tags on the node and the DOI on the preprint,
+            // then advances to next panel
+            if (!this.get('basicsValid')) {
+                return;
             }
 
-            if (this.get('abstractChanged')) {
-                model.set('description', this.get('basicsAbstract'));
-            }
+            // const model = this.get('model');
 
-            if (this.get('tagsChanged')) {
-                model.set('tags', this.get('basicsTags'));
-            }
+            // const copyrightHolders = this.get('basicsLicense.copyrightHolders')
+            //     .split(', ')
+            //     .map(item => item.trim());
 
-            if (this.get('doiChanged')) {
-                model.set('doi', this.get('basicsDOI') || null);
-            }
+            // if (this.get('abstractChanged')) {
+            //     model.set('description', this.get('basicsAbstract'));
+            // }
 
-            if (this.get('originalPublicationDateChanged')) {
-                model.set('originalPublicationDate', this.get('basicsOriginalPublicationDate') || null);
-            }
+            // if (this.get('tagsChanged')) {
+            //     model.set('tags', this.get('basicsTags'));
+            // }
 
-            if (this.get('licenseChanged')) {
-                const copyrightHolders = this.get('basicsLicenseCopyrightHolders')
-                    .split(', ')
-                    .map(item => item.trim());
+            // if (this.get('doiChanged')) {
+            //     model.set('doi', this.get('basicsDOI') || null);
+            // }
 
-                model.setProperties({
-                    licenseRecord: {
-                        year: this.get('basicsLicenseYear'),
-                        copyright_holders: copyrightHolders,
-                    },
-                    license: this.get('basicsLicenseType'),
-                });
-                this.get('metrics').trackEvent({
-                    category: 'dropdown',
-                    action: 'select',
-                    label: 'Submit - Edit License',
-                });
-            }
+            // if (this.get('originalPublicationDateChanged')) {
+            //     model.set('originalPublicationDate', this.get('basicsOriginalPublicationDate') || null);
+            // }
 
-            this.set('basicsSaved', true);
+            // if (this.get('licenseChanged') || !this.get('model.license.name')) {
+            //     model.setProperties({
+            //         licenseRecord: {
+            //             year: this.get('basicsLicense.year'),
+            //             copyright_holders: copyrightHolders,
+            //         },
+            //         license: this.get('basicsLicense.licenseType'),
+            //     });
+            //     this.get('metrics').trackEvent({
+            //         category: 'dropdown',
+            //         action: 'select',
+            //         label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Edit License`,
+            //     });
+            // }
+
+            // this.set('model', model);
             this.send('next', 'Basics');
         },
 
+        // saveOriginalValues() {
+        //     // Saves off current server-state basics fields,
+        //     // so UI can be restored in case of failure
+        //     const node = this.get('node');
+        //     const model = this.get('model');
+
+        //     const currentAbstract = model.get('description');
+        //     const currentTags = model.get('tags').slice();
+        //     const currentDOI = model.get('doi');
+        //     const currentOriginalPublicationDate = model.get('originalPublicationDate');
+        //     const currentLicenseType = model.get('license');
+        //     const currentLicenseRecord = model.get('licenseRecord');
+        //     const currentNodeLicenseType = node.get('license');
+        //     const currentNodeLicenseRecord = node.get('nodeLicense');
+
+        //     model.setProperties({
+        //         licenseRecord: currentLicenseRecord,
+        //         license: currentLicenseType,
+        //         doi: currentDOI,
+        //         originalPublicationDate: currentOriginalPublicationDate,
+        //     });
+
+        //     node.setProperties({
+        //         description: currentAbstract,
+        //         tags: currentTags,
+        //         license: currentNodeLicenseType,
+        //         nodeLicense: currentNodeLicenseRecord,
+        //     });
+
+        //     this.set('model', model);
+        //     this.set('node', node);
+
+        //     node.save().then(this._saveModel.bind(this));
+        // },
+
+        // Custom addATag method that appends tag to list instead of auto-saving
         addTag(tag) {
             this.get('metrics').trackEvent({
                 category: 'input',
                 action: 'onchange',
-                label: 'Submit - Add Tag',
+                label: 'Edit - Add Tag',
             });
 
             this.get('basicsTags').pushObject(tag);
         },
 
+        // Custom removeATag method that removes tag from list instead of auto-saving
         removeTag(tagIndex) {
             this.get('metrics').trackEvent({
                 category: 'button',
                 action: 'click',
-                label: 'Submit - Remove Tag',
+                label: 'Edit - Remove Tag',
             });
             this.get('basicsTags').removeAt(tagIndex);
         },
@@ -744,31 +874,37 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         /*
           Discipline section
         */
+
         discardSubjects() {
+            // Discards changes to subjects. (No requests sent, front-end only.)
             this.get('metrics').trackEvent({
                 category: 'button',
                 action: 'click',
-                label: 'Submit - Discard Discipline Changes',
+                label: 'Edit - Discard Discipline Changes',
             });
-
             this.set('subjectsList', $.extend(true, [], this.get('model.subjects')));
         },
 
-        saveSubjects() {
+        saveSubjects(currentSubjects, hasChanged) {
+            // Saves subjects (disciplines) and then moves to next section.
             this.get('metrics').trackEvent({
                 category: 'button',
                 action: 'click',
-                label: 'Submit - Discipline Save and Continue',
+                label: 'Edit - Discipline Save and Continue',
             });
 
-            if (this.get('disciplineChanged')) {
-                this.get('model').set('subjects', this.get('subjectsList'));
+            if (!hasChanged) {
+                this.send('next', 'Discipline');
+                return;
             }
 
-            this.set('disciplinesSaved', true);
+            const model = this.get('model');
+            const currentSubjectList = currentSubjects;
+
+            model.set('subjects', subjectIdMap(currentSubjectList));
+
             this.send('next', 'Discipline');
         },
-
         /**
          * findContributors method.  Queries APIv2 users endpoint on any of a set of name fields.
          * Fetches specified page of results.
@@ -782,7 +918,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.get('metrics').trackEvent({
                 category: 'button',
                 action: 'click',
-                label: 'Submit - Search for Authors',
+                label: 'Edit - Search for Authors',
             });
 
             return this.store.query('user', {
@@ -794,7 +930,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 .then(this._setContributorSearchResults.bind(this))
                 .catch(this._setContributorSearchResultsError.bind(this));
         },
-
         /**
         * highlightSuccessOrFailure method.
         * Element with specified ID flashes green or red depending on response success.
@@ -804,14 +939,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         * @param {Object} context "this" scope
         * @param {string} status "success" or "error"
         */
-        // highlightSuccessOrFailure(elementId, context, status) {
-        //     const highlightClass = `${status === 'success' ? 'success' : 'error'}Highlight`;
+        highlightSuccessOrFailure(elementId, context, status) {
+            const highlightClass = `${status === 'success' ? 'success' : 'error'}Highlight`;
 
-        //     context.$(`#${elementId}`).addClass(highlightClass);
+            context.$(`#${elementId}`).addClass(highlightClass);
 
-        //     run.later(() => context.$(`#${elementId}`).removeClass(highlightClass), 2000);
-        // },
-
+            run.later(() => context.$(`#${elementId}`).removeClass(highlightClass), 2000);
+        },
         /*
           Submit tab actions
          */
@@ -839,11 +973,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Share Preprint',
+                    label: 'Edit - Complete Preprint Edits',
                 });
-
-            // reassign the subjects to just the ids before saving
-            // this.get('model').set('subjects', subjectIdMap(this.get('subjectsList')));
 
             const model = this.get('model');
             const node = this.get('node');
@@ -867,49 +998,39 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         cancel() {
             this.transitionToRoute('index');
         },
+        // resubmit() {
+        //     this.set('savingPreprint', true);
+        //     this.toggleProperty('shareButtonDisabled');
+
+        //     const submitAction = this.get('store').createRecord('review-action', {
+        //         actionTrigger: 'submit',
+        //         target: this.get('model'),
+        //     });
+
+        //     this.set('submitAction', submitAction);
+
+        //     return submitAction.save()
+        //         .then(this._transitionToPreprint.bind(this))
+        //         .catch(this._transitionToPreprintError.bind(this));
+        // },
+
+        // returnToSubmission() {
+        //     this.transitionToRoute(
+        //         `${this.get('theme.isSubRoute') ? 'provider.' : ''}content`,
+        //         this.get('model'),
+        //     );
+        // },
 
         selectProvider(provider) {
             this.set('selectedProvider', provider);
+            this.set('providerChanged', true);
         },
 
         discardProvider() {
             this.set('selectedProvider', this.get('currentProvider'));
+            this.set('providerChanged', false);
         },
     },
-
-    discardBasics: task(function* () {
-        this.get('metrics').trackEvent({
-            category: 'button',
-            action: 'click',
-            label: 'Submit - Discard Basics Changes',
-        });
-
-        this.set('basicsTitle', this.get('model.title'));
-        this.set('basicsAbstract', this.get('model.description'));
-        this.set('basicsDOI', this.get('model.doi'));
-        this.set('basicsOriginalPublicationDate', this.get('model.originalPublicationDate'));
-        this.set(
-            'basicsTags',
-            this.get('model.tags') ? this.get('model.tags').slice(0).map(fixSpecialChar) : A(),
-        );
-
-        yield this.get('discardLicense').perform();
-    }),
-
-    discardLicense: task(function* () {
-        const modelLicense = yield this.get('model.license');
-
-        this.set('basicsLicenseType', modelLicense || '');
-
-        this.set(
-            'basicsLicenseYear',
-            this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : '',
-        );
-        this.set(
-            'basicsLicenseCopyrightHolders',
-            this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(', ') : '',
-        );
-    }),
 
     saveProvider: task(function* () {
         this.get('metrics').trackEvent({
@@ -922,12 +1043,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
         const licenses = yield this.get('currentProvider').queryHasMany('licensesAcceptable', { 'page[size]': 20 });
         this.set('availableLicenses', licenses);
+        // this.set('basicsLicense.licenseType', this.get('availableLicenses.firstObject'));
 
+        this.set('providerChanged', false);
         this.set('providerSaved', true);
         this.send('discardSubjects');
-
-        this.get('discardLicense').perform();
-
         this.send('next', 'Service');
     }),
 
@@ -994,105 +1114,105 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.transitionToRoute(`${useProviderRoute ? 'provider.' : ''}content`, preprint);
     },
 
-    // _failSaveModel() {
-    //     this.toggleProperty('shareButtonDisabled');
-    //     return this.get('toast')
-    //         .error(this.get('i18n')
-    //             .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
-    // },
+    _failSaveModel() {
+        this.toggleProperty('shareButtonDisabled');
+        return this.get('toast')
+            .error(this.get('i18n')
+                .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
+    },
 
-    // _setNodePreprints(preprints) {
-    //     this.set('existingPreprints', preprints);
-    //     if (preprints.toArray().length > 0) { // If node already has a preprint
-    //         const preprint = preprints.toArray()[0]; // TODO change after branded finished
-    //         if (!(preprint.get('isPublished'))) { // Preprint exists in abandoned state.
-    //             this.set('abandonedPreprint', preprint);
-    //         }
-    //     }
-    // },
+    _setNodePreprints(preprints) {
+        this.set('existingPreprints', preprints);
+        if (preprints.toArray().length > 0) { // If node already has a preprint
+            const preprint = preprints.toArray()[0]; // TODO change after branded finished
+            if (!(preprint.get('isPublished'))) { // Preprint exists in abandoned state.
+                this.set('abandonedPreprint', preprint);
+            }
+        }
+    },
 
-    // _sendToPreprintStartOrAbandon() {
-    //     this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint');
-    // },
+    _sendToPreprintStartOrAbandon() {
+        this.send(this.get('abandonedPreprint') ? 'resumeAbandonedPreprint' : 'startPreprint');
+    },
 
-    // _setNodeTitle() {
-    //     const node = this.get('node');
-    //     const model = this.get('model');
+    _setNodeTitle() {
+        const node = this.get('node');
+        const model = this.get('model');
 
-    //     const currentNodeTitle = node.get('title');
-    //     const title = this.get('title');
+        const currentNodeTitle = node.get('title');
+        const title = this.get('title');
 
-    //     if (currentNodeTitle === title) {
-    //         return;
-    //     }
-    //     model.set('title', title);
-    //     node.set('title', title);
-    //     return node.save();
-    // },
+        if (currentNodeTitle === title) {
+            return;
+        }
+        model.set('title', title);
+        node.set('title', title);
+        return node.save();
+    },
 
-    // _failSetNodeTitle(error) {
-    //     const node = this.get('node');
-    //     const currentNodeTitle = node.get('title');
+    _failSetNodeTitle(error) {
+        const node = this.get('node');
+        const currentNodeTitle = node.get('title');
 
-    //     node.set('title', currentNodeTitle);
-    //     this.get('toast').error(this.get('i18n').t('submit.could_not_update_title'));
-    //     this.get('raven').captureMessage('Could not update title', { extra: { error } });
-    // },
+        node.set('title', currentNodeTitle);
+        this.get('toast').error(this.get('i18n').t('submit.could_not_update_title'));
+        this.get('raven').captureMessage('Could not update title', { extra: { error } });
+    },
 
-    // _addChild(child) {
-    //     const node = this.get('node');
+    _addChild(child) {
+        const node = this.get('node');
 
-    //     this.set('parentNode', node);
-    //     this.send('getParentContributors', node);
-    //     this.set('node', child);
-    //     this.set('basicsAbstract', this.get('node.description') || null);
-    //     child.get('files')
-    //         .then(this._getFiles.bind(this))
-    //         .catch(this._failGetFiles.bind(this));
-    // },
+        this.set('parentNode', node);
+        this.send('getParentContributors', node);
+        this.set('node', child);
+        this.set('basicsAbstract', this.get('node.description') || null);
+        child.get('files')
+            .then(this._getFiles.bind(this))
+            .catch(this._failGetFiles.bind(this));
+    },
 
-    // _getFiles(fileProviders) {
-    //     const child = this.get('node');
-    //     const osfstorage = fileProviders.findBy('name', 'osfstorage');
+    _getFiles(fileProviders) {
+        const child = this.get('node');
+        const osfstorage = fileProviders.findBy('name', 'osfstorage');
 
-    //     this.get('fileManager').copy(this.get('selectedFile'), osfstorage, { data: { resource: child.id } })
-    //         .then(this._copyFile.bind(this))
-    //         .catch(this._failCopyFile.bind(this));
-    // },
+        this.get('fileManager').copy(this.get('selectedFile'), osfstorage, { data: { resource: child.id } })
+            .then(this._copyFile.bind(this))
+            .catch(this._failCopyFile.bind(this));
+    },
 
-    // _copyFile(copiedFile) {
-    //     this.set('selectedFile', copiedFile);
-    //     this.send('startPreprint', this.get('parentNode'));
-    // },
+    _copyFile(copiedFile) {
+        this.set('selectedFile', copiedFile);
+        this.send('startPreprint', this.get('parentNode'));
+    },
 
-    // _failCopyFile(error) {
-    //     this.get('toast').error(this.get('i18n').t('submit.error_copying_file'));
-    //     this.get('raven').captureMessage('Could not copy file', { extra: { error } });
-    // },
+    _failCopyFile(error) {
+        this.get('toast').error(this.get('i18n').t('submit.error_copying_file'));
+        this.get('raven').captureMessage('Could not copy file', { extra: { error } });
+    },
 
-    // _failGetFiles(error) {
-    //     this.get('toast').error(this.get('i18n').t('submit.error_accessing_parent_files'));
-    //     this.get('raven').captureMessage('Could not access parent files', { extra: { error } });
-    // },
+    _failGetFiles(error) {
+        this.get('toast').error(this.get('i18n').t('submit.error_accessing_parent_files'));
+        this.get('raven').captureMessage('Could not access parent files', { extra: { error } });
+    },
 
-    // _failCreateComponent(error) {
-    //     this.get('toast').error(this.get('i18n').t('submit.could_not_create_component'));
-    //     this.get('raven').captureMessage('Could not create component', { extra: { error } });
-    // },
+    _failCreateComponent(error) {
+        this.get('toast').error(this.get('i18n').t('submit.could_not_create_component'));
+        this.get('raven').captureMessage('Could not create component', { extra: { error } });
+    },
 
-    // _failDeletePreprint(error) {
-    //     this.get('toast').error(this.get('i18n').t(
-    //         'submit.abandoned_preprint_error',
-    //         {
-    //             documentType: this.get('currentProvider.documentType'),
-    //         },
-    //     ));
-    //     this.get('raven').captureMessage('Could not retrieve abandoned preprint', { extra: { error } });
-    // },
+    _failDeletePreprint(error) {
+        this.get('toast').error(this.get('i18n').t(
+            'submit.abandoned_preprint_error',
+            {
+                documentType: this.get('currentProvider.documentType'),
+            },
+        ));
+        this.get('raven').captureMessage('Could not retrieve abandoned preprint', { extra: { error } });
+    },
 
-    // _sendStartPreprint() {
-    //     this.send('startPreprint');
-    // },
+    _sendStartPreprint() {
+        this.send('startPreprint');
+    },
 
     // _finishUpload() {
     //     // Sets upload form state to existing project (now that project has been created)
@@ -1127,6 +1247,16 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     //     this.get('raven').captureMessage('Could not initiate preprint', { extra: { error } });
     // },
 
+    // _setBasicsLicense(license) {
+    //     const date = new Date();
+
+    //     this.set('basicsLicense', {
+    //         licenseType: license || this.get('availableLicenses').toArray()[0],
+    //         year: this.get('model.licenseRecord') ? this.get('model.licenseRecord').year : date.getUTCFullYear().toString(),
+    //         copyrightHolders: this.get('model.licenseRecord') ? this.get('model.licenseRecord').copyright_holders.join(', ') : '',
+    //     });
+    // },
+
     _setContributorSearchResults(contributors) {
         this.set('searchResults', contributors);
         return contributors;
@@ -1137,43 +1267,43 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.highlightSuccessOrFailure('author-search-box', this, 'error');
     },
 
-    // _saveModel() {
-    //     const model = this.get('model');
+    _saveModel() {
+        const model = this.get('model');
 
-    //     model.save();
-    // },
+        model.save();
+    },
 
-    // _submitAction() {
-    //     const submitAction = this.get('submitAction');
+    _submitAction() {
+        const submitAction = this.get('submitAction');
 
-    //     submitAction.save();
-    // },
+        submitAction.save();
+    },
 
-    // _saveChanges() {
-    //     const model = this.get('model');
+    _saveChanges() {
+        const model = this.get('model');
 
-    //     this.set('preprintSaved', true);
-    //     let useProviderRoute = false;
+        this.set('preprintSaved', true);
+        let useProviderRoute = false;
 
-    //     if (this.get('theme.isProvider')) {
-    //         useProviderRoute = this.get('theme.isSubRoute');
-    //     } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
-    //         window.location.replace(`${this.get('currentProvider.domain')}${model.id}`);
-    //     } else if (this.get('currentProvider.id') !== 'osf') {
-    //         useProviderRoute = true;
-    //     }
-    //     this.transitionToRoute(
-    //         `${useProviderRoute ? 'provider.' : ''}content`,
-    //         model.reload(),
-    //     );
-    // },
+        if (this.get('theme.isProvider')) {
+            useProviderRoute = this.get('theme.isSubRoute');
+        } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
+            window.location.replace(`${this.get('currentProvider.domain')}${model.id}`);
+        } else if (this.get('currentProvider.id') !== 'osf') {
+            useProviderRoute = true;
+        }
+        this.transitionToRoute(
+            `${useProviderRoute ? 'provider.' : ''}content`,
+            model.reload(),
+        );
+    },
 
-    // _saveChangesError() {
-    //     this.toggleProperty('shareButtonDisabled');
-    //     return this.get('toast')
-    //         .error(this.get('i18n')
-    //             .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
-    // },
+    _saveChangesError() {
+        this.toggleProperty('shareButtonDisabled');
+        return this.get('toast')
+            .error(this.get('i18n')
+                .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
+    },
 
     _transitionToPreprint() {
         this.set('preprintSaved', true);
@@ -1220,6 +1350,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
             uploadInProgress: false,
             existingPreprints: A(),
+            abandonedPreprint: null,
+            editMode: false,
             shareButtonDisabled: false,
             // Basics and subjects fields need to be reset because
             // the Add process overwrites the computed properties as reg properties
@@ -1227,7 +1359,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             basicsAbstract: null,
             basicsDOI: null,
             basicsOriginalPublicationDate: null,
-
+            // basicsLicense: null,
             subjectsList: A(),
             availableLicenses: A(),
             attemptedSubmit: false,

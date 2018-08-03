@@ -1,1 +1,7 @@
-{{validated-input model=this valuePath='title' placeholder=(t "components.file-uploader.title_placeholder") value=title pressSubmit=pressSubmit input=(action "isValid")}}
+{{validated-input
+    model=this
+    valuePath='title'
+    placeholder=(t "components.file-uploader.title_placeholder" documentType=documentType)
+    value=title
+    input=(action "isValid")
+}}

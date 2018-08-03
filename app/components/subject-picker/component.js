@@ -1,10 +1,14 @@
 import Component from '@ember/component';
 import EmberObject, { computed } from '@ember/object';
-import { sort, notEmpty } from '@ember/object/computed';
+import { sort } from '@ember/object/computed';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
+
 import $ from 'jquery';
+import { task } from 'ember-concurrency';
+
 import Analytics from 'ember-osf/mixins/analytics';
+
 
 function arrayEquals(arr1, arr2) {
     return arr1.length === arr2.length
@@ -61,112 +65,37 @@ export default Component.extend(Analytics, {
     store: service(),
     theme: service(),
 
-    isValid: notEmpty('currentSubjects'),
-
     init() {
         this._super(...arguments);
 
-        const tempSubjects = A();
+        this.set(
+            'columns',
+            A(new Array(3).fill(null).map(() => Column.create())),
+        );
 
-        this.get('initialSubjects').forEach((subject) => {
-            tempSubjects.push(subject);
-        });
-
-        this.setProperties({
-            initialSubjects: [],
-            currentSubjects: [],
-            hasChanged: false,
-            columns: A(new Array(3).fill(null).map(() => Column.create())),
-        });
-
-        this.querySubjects();
-        this.set('currentSubjects', tempSubjects);
+        this.get('loadSubjects').perform();
     },
 
     didReceiveAttrs() {
         if (this.get('provider') !== this.get('lastProvider')) {
-            this.querySubjects();
+            this.get('loadSubjects').perform();
             this.set('lastProvider', this.get('provider'));
         }
     },
 
     actions: {
         deselect(index) {
-            this.get('metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Remove`,
-                });
+            this.get('metrics').trackEvent({
+                category: 'button',
+                action: 'click',
+                label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Remove`,
+            });
 
             const allSelections = this.get('currentSubjects');
 
-            this.set('hasChanged', true);
             this.resetColumnSelections();
 
             allSelections.removeAt(index);
-        },
-        select(selected, tier) {
-            this.get('metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Add`,
-                });
-
-            this.set('hasChanged', true);
-            const columns = this.get('columns');
-            const column = columns.objectAt(tier);
-
-            // Bail out if the subject is already selected
-            if (column.get('selection') === selected) {
-                return;
-            }
-
-            column.set('selection', selected);
-
-            const totalColumns = columns.length;
-            const nextTier = tier + 1;
-            const allSelections = this.get('currentSubjects');
-
-            const currentSelection = columns
-                .slice(0, nextTier)
-                .map(column => column.get('selection'));
-
-            // An existing tag has this prefix, and this is the lowest level of the taxonomy,
-            // so no need to fetch child results
-            if (nextTier === totalColumns
-                || !allSelections.some(item => arrayStartsWith(item, currentSelection))) {
-                let existingParent;
-
-                for (let i = 1; i <= currentSelection.length; i++) {
-                    const sub = currentSelection.slice(0, i);
-                    existingParent = allSelections
-                        .find(item => arrayEquals(item, sub));
-
-                    // The parent exists, append the subject to it
-                    if (existingParent) {
-                        existingParent.pushObjects(currentSelection.slice(i));
-                        break;
-                    }
-                }
-
-                if (!existingParent) {
-                    allSelections.pushObject(currentSelection);
-                }
-            }
-
-            // Bail out if we're at the last column.
-            if (nextTier === totalColumns) {
-                return;
-            }
-
-            for (let i = nextTier; i < totalColumns; i++) {
-                columns.objectAt(i).set('subjects', null);
-            }
-
-            // TODO: Fires a network request every time clicking here, instead of only when needed?
-            this.querySubjects(selected.id, nextTier);
         },
         discard() {
             this.get('metrics')
@@ -179,33 +108,100 @@ export default Component.extend(Analytics, {
             this.resetColumnSelections();
 
             this.set('currentSubjects', $.extend(true, [], this.get('initialSubjects')));
-            this.set('hasChanged', false);
         },
         save() {
-            this.get('metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`,
-                });
-            this.saveSubjects(this.get('currentSubjects'), this.get('hasChanged'));
+            this.get('metrics').trackEvent({
+                category: 'button',
+                action: 'click',
+                label: `Preprints - ${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`,
+            });
+
+            this.saveSubjects();
+            this.resetColumnSelections();
         },
     },
-    querySubjects(parents = 'null', tier = 0) {
-        const column = this.get('columns').objectAt(tier);
 
-        if (this.get('provider')) {
-            this.get('provider').queryHasMany('taxonomies', {
-                filter: {
-                    parents,
-                },
-                page: {
-                    size: 150, // Law category has 117 (Jan 2018)
-                },
-            })
-                .then(results => column.set('subjects', results ? results.toArray() : []));
+    select: task(function* (selected, tier) {
+        this.get('metrics').trackEvent({
+            category: 'button',
+            action: 'click',
+            label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Add`,
+        });
+
+        const columns = this.get('columns');
+        const column = columns.objectAt(tier);
+
+        // Bail out if the subject is already selected
+        if (column.get('selection') === selected) {
+            return;
         }
-    },
+
+        column.set('selection', selected);
+
+        const totalColumns = columns.length;
+        const nextTier = tier + 1;
+        const allSelections = this.get('currentSubjects');
+
+        const currentSelection = columns
+            .slice(0, nextTier)
+            .map(column => column.get('selection'));
+
+        // An existing tag has this prefix, and this is the lowest level of the taxonomy,
+        // so no need to fetch child results
+        if (nextTier === totalColumns
+            || !allSelections.some(item => arrayStartsWith(item, currentSelection))) {
+            let existingParent;
+
+            for (let i = 1; i <= currentSelection.length; i++) {
+                const sub = currentSelection.slice(0, i);
+                existingParent = allSelections
+                    .find(item => arrayEquals(item, sub));
+
+                // The parent exists, append the subject to it
+                if (existingParent) {
+                    existingParent.pushObjects(currentSelection.slice(i));
+                    break;
+                }
+            }
+
+            if (!existingParent) {
+                allSelections.pushObject(currentSelection);
+            }
+        }
+
+        // Bail out if we're at the last column.
+        if (nextTier === totalColumns) {
+            return;
+        }
+
+        for (let i = nextTier; i < totalColumns; i++) {
+            columns.objectAt(i).set('subjects', null);
+        }
+
+        // TODO: Fires a network request every time clicking here, instead of only when needed?
+        const results = yield this.get('getProviderTaxonomy').perform(selected.id, nextTier);
+        columns.objectAt(nextTier).set('subjects', results ? results.toArray() : []);
+    }),
+
+    loadSubjects: task(function* () {
+        const column = this.get('columns').objectAt(0);
+        const results = yield this.get('getProviderTaxonomy').perform();
+
+        column.set('subjects', results ? results.toArray() : []);
+    }),
+
+    getProviderTaxonomy: task(function* (parents = 'null') {
+        const taxonomy = yield this.get('provider').queryHasMany('taxonomies', {
+            filter: {
+                parents,
+            },
+            page: {
+                size: 150, // Law category has 117 (Jan 2018)
+            },
+        });
+
+        return taxonomy;
+    }),
 
     resetColumnSelections() {
         const columns = this.get('columns');

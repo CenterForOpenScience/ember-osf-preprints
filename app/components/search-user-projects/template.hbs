@@ -1,0 +1,13 @@
+{{#power-select
+    search=(perform _getInitialUserNodes)
+    optionsComponent=(component 'lazy-options' loadMore=(action "getMoreUserNodes") isLoading=isLoading canLoadMore=canLoadMore)
+    oninput=(action "getDefaultUserNodes")
+    onfocus=(action "onFocus")
+    options=userNodes
+    placeholder="Click to select"
+    selected=selectedNode
+    onchange=(action "selectNode")
+    as |node|
+}}
+    {{get-ancestor-descriptor node}} <strong>{{node.title}}</strong>
+{{/power-select}}

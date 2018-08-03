@@ -43,6 +43,7 @@ export default {
     content: {
         header: {
             last_edited: 'Last edited',
+            authors_label: 'Authors',
         },
         date_label: {
             created_on: 'Created on',
@@ -65,9 +66,10 @@ export default {
         original_publication_date: 'Original publication date',
         citations: 'Citations',
         disciplines: 'Disciplines',
+        supplemental_materials: {
+            title: 'Supplemental Materials',
+        },
         project_button: {
-            paragraph: 'The project for this paper is available on the OSF.',
-            button: 'Visit project',
             edit_preprint: 'Edit {{documentType.singular}}',
             edit_resubmit_preprint: 'Edit and resubmit',
         },
@@ -171,30 +173,29 @@ export default {
         body: {
             p_add: 'For each section below, "Save and continue" will update your {{documentType.singular}}\'s associated OSF project.',
             p_edit: 'For each section below, "Save and continue" will update your {{documentType.singular}} and the associated OSF project.',
-            upload: 'Upload new {{documentType.singular}}',
-            connect: 'Connect {{documentType.singular}} to existing OSF project',
+            upload: 'Select a file from your computer',
+            connect: 'Select a file from an existing OSF project',
             subjects_description: 'Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.',
             remove_subject_aria: 'Remove subject',
             basics: {
+                title: {
+                    label: 'Preprint Title',
+                },
                 doi: {
-                    label: 'Peer-reviewed publication DOI (optional)',
+                    label: 'Peer-reviewed publication DOI',
+                    placeholder: 'Add a publication DOI',
                 },
                 keywords: {
                     label: 'Keywords',
-                    paragraph: 'Add keywords to increase discoverability of your {{documentType.singular}}',
+                    paragraph: 'Add keywords to increase discoverability of your {{documentType.singular}}. Type keyword, then hit enter.',
+                    placeholder: 'Add a keyword',
                 },
                 abstract: {
                     placeholder: 'Add a brief summary of your {{documentType.singular}}',
                 },
-                tags: {
-                    placeholder: 'add a tag',
-                },
-                license: {
-                    apply_license_title: 'Apply this license to my OSF Project.',
-                    apply_license_text: 'Selecting a license for your {{documentType.singular}} does not automatically apply the license to your OSF project.',
-                },
                 original_publication_date: {
                     label: 'Original publication date',
+                    placeholder: 'Add the original publication date',
                 },
             },
             authors: {
@@ -237,7 +238,7 @@ export default {
                 resubmit_button: 'Resubmit',
                 return_button: 'Return to {{documentType.singular}}',
             },
-            save_continue: 'Save and continue',
+            continue: 'Continue',
         },
         could_not_update_title: 'Error updating title. Please try again.',
         error_copying_file: 'Error copying file; please try again.',
@@ -300,6 +301,15 @@ export default {
             file_exists_error: 'A file with that name already exists',
             upload_error: 'Upload Failed',
             dropzone_text_override: 'Click or drag another {{documentType.singular}} file to replace',
+        },
+        'license-picker': {
+            choose_a_license: 'Choose a license',
+            copyright_holders: 'Copyright holders',
+            license_FAQ: 'License FAQ',
+            required: '(required)',
+            save: 'Save',
+            year: 'Year',
+            placeholder: 'Select a license',
         },
         'preprint-footer-branded': {
             twitter: 'Twitter',
@@ -426,9 +436,6 @@ export default {
             post_facebook: 'Post to Facebook',
             share_linkedin: 'Share on LinkedIn',
             send_email: 'Send in email',
-        },
-        'supplementary-file-browser': {
-            primary: 'Primary',
         },
         'taxonomy-top-list': {
             // Nothing to translate

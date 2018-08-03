@@ -5,7 +5,11 @@
                 <div class="subject-container">
                     <span class="subject-container-text">
                         {{segment.text}}
-                        <button class="cancel-subject fa fa-close" aria-label="{{t 'submit.body.remove_subject_aria'}}" title="Remove" {{action 'deselect' index}}></button>
+                        <button {{action 'deselect' index}}
+                            class="cancel-subject fa fa-close"
+                            aria-label="{{t 'submit.body.remove_subject_aria'}}"
+                            title="Remove"
+                        ></button>
                     </span>
                 </div>
                 <span class="right-arrow"></span>
@@ -20,7 +24,11 @@
             <ul style="overflow: scroll" role="listbox">
                 {{input value=column.filterText class="form-control" placeholder="Search"}}
                 {{#each column.subjectsSorted as |subject|}}
-                    <li {{action 'select' subject tier}} class={{if (eq subject column.selection) 'selected'}} role="button">
+                    <li
+                        onclick={{perform select subject tier}}
+                        class={{if (eq subject column.selection) 'selected'}}
+                        role="button"
+                    >
                         {{subject.text}}
                     </li>
                 {{/each}}
@@ -32,8 +40,12 @@
 <div class="row">
     <div class="col-md-12">
         <div class="pull-right">
-            <button {{action 'discard'}} class="btn btn-default" disabled={{not hasChanged}}>{{t "global.discard"}}</button>
-            <button {{action 'save'}} class="btn btn-primary" disabled={{not isValid}}>{{t "submit.body.save_continue"}}</button>
+            <button {{action 'discard'}} class="btn btn-default" disabled={{not disciplineChanged}}>
+                {{t "global.discard"}}
+            </button>
+            <button {{action 'save'}} class="btn btn-primary">
+                {{t "submit.body.continue"}}
+            </button>
         </div>
     </div>
 </div>

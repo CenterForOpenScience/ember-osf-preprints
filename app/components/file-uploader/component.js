@@ -62,9 +62,7 @@ import { State } from '../controllers/submit';
  *   uploadInProgress=uploadInProgress
  *   abandonedPreprint=abandonedPreprint
  *   resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
- *   basicsAbstract=basicsAbstract
  *   editMode=editMode
- *   newNode=newNode
  *   applyLicense=applyLicense
 }}
  * @class file-uploader
@@ -156,69 +154,68 @@ export default Component.extend(Analytics, {
             }
         },
 
-        createProjectAndUploadFile() {
-            // Upload case where user starting from scratch - new project/new file.
-            // Creates project and then uploads file to newly created project
-            this.get('metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: 'Submit - Save and Continue, New Node New File',
-                });
-            this.get('store').createRecord('node', {
-                public: false,
-                category: 'project',
-                title: this.get('title'),
-            }).save()
-                .then(this._createNewProject.bind(this))
-                .catch(this._failCreateNewProject.bind(this));
-        },
+        // createProjectAndUploadFile() {
+        //     // Upload case where user starting from scratch - new project/new file.
+        //     // Creates project and then uploads file to newly created project
+        //     this.get('metrics')
+        //         .trackEvent({
+        //             category: 'button',
+        //             action: 'click',
+        //             label: 'Submit - Save and Continue, New Node New File',
+        //         });
+        //     this.get('store').createRecord('node', {
+        //         public: false,
+        //         category: 'project',
+        //         title: this.get('title'),
+        //     }).save()
+        //         .then(this._createNewProject.bind(this))
+        //         .catch(this._failCreateNewProject.bind(this));
+        // },
 
-        createComponentAndUploadFile() {
-            // Upload case for using a new component and a new file for the preprint.
-            // Creates component of parent node and then uploads file to newly created component.
-            this.get('metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: 'Submit - Save and Continue, New Component New File',
-                });
-            const node = this.get('node');
-            node
-                .addChild(this.get('title'))
-                .then(this._createComponent.bind(this))
-                .catch(this._failCreateComponent.bind(this));
-        },
+        // createComponentAndUploadFile() {
+        //     // Upload case for using a new component and a new file for the preprint.
+        //     // Creates component of parent node and then uploads file to newly created component.
+        //     this.get('metrics')
+        //         .trackEvent({
+        //             category: 'button',
+        //             action: 'click',
+        //             label: 'Submit - Save and Continue, New Component New File',
+        //         });
+        //     const node = this.get('node');
+        //     node
+        //         .addChild(this.get('title'))
+        //         .then(this._createComponent.bind(this))
+        //         .catch(this._failCreateComponent.bind(this));
+        // },
 
-        uploadFileToExistingNode() {
-            // Upload case for using an existing node with a new file for the preprint.
-            // Updates title of existing node and then uploads file to node.
-            // Also applicable in edit mode.
-            this.get('metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('nodeLocked') ? 'Save File/Title Edits' : 'Existing Node New File'}`,
-                });
-            if (this.get('nodeLocked')) { // Edit mode
-                this.set('uploadInProgress', true);
-            }
+        // uploadFileToExistingNode() {
+        //     // Upload case for using an existing node with a new file for the preprint.
+        //     // Updates title of existing node and then uploads file to node.
+        //     // Also applicable in edit mode.
+        //     this.get('metrics')
+        //         .trackEvent({
+        //             category: 'button',
+        //             action: 'click',
+        //             label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('nodeLocked') ? 'Save File/Title Edits' : 'Existing Node New File'}`,
+        //         });
+        //     if (this.get('nodeLocked')) { // Edit mode
+        //         this.set('uploadInProgress', true);
+        //     }
 
-            const model = this.get('model');
-            const node = this.get('node');
-            this.set('basicsAbstract', this.get('model.description') || null);
-            const currentNodeTitle = node.get('title');
+        //     const model = this.get('model');
+        //     const node = this.get('node');
+        //     const currentNodeTitle = node.get('title');
 
-            if (currentNodeTitle !== this.get('title')) {
-                model.set('title', this.get('title'));
-                node.set('title', this.get('title'));
-                node.save()
-                    .then(this._sendToUpload.bind(this))
-                    .catch(this._failUpdateTitle.bind(this));
-            } else {
-                this.send('upload');
-            }
-        },
+        //     if (currentNodeTitle !== this.get('title')) {
+        //         model.set('title', this.get('title'));
+        //         node.set('title', this.get('title'));
+        //         node.save()
+        //             .then(this._sendToUpload.bind(this))
+        //             .catch(this._failUpdateTitle.bind(this));
+        //     } else {
+        //         this.send('upload');
+        //     }
+        // },
 
         // Dropzone hooks
         sending(_, dropzone, file, xhr/* formData */) {
@@ -293,8 +290,7 @@ export default Component.extend(Analytics, {
                 // File upload success
                 const resp = JSON.parse(file.xhr.response);
                 /* eslint-disable ember/closure-actions,ember/named-functions-in-promises */
-                this.get('store')
-                    .findRecord('file', resp.data.id.split('/')[1])
+                this.get('store').findRecord('file', resp.data.id.split('/')[1])
                     .then((file) => {
                         this.set('osfFile', file);
                         // Set current version:
@@ -312,7 +308,7 @@ export default Component.extend(Analytics, {
                             }
                             if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
                         } else { // Add mode
-                            return this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint', this.get('parentNode'));
+                            return this.sendAction('startPreprint', this.get('parentNode'));
                         }
                     })
                     .catch((error) => {
@@ -388,36 +384,33 @@ export default Component.extend(Analytics, {
         this.callback.resolve(this.get('file'));
     },
 
-    _createNewProject(node) {
-        this.set('node', node);
-        this.getContributors(node);
-        this.send('upload');
-        this.set('newNode', true);
-        this.set('applyLicense', true);
-    },
+    // _createNewProject(node) {
+    //     this.set('node', node);
+    //     this.getContributors(node);
+    //     this.send('upload');
+    //     this.set('applyLicense', true);
+    // },
 
-    _failCreateNewProject(error) {
-        this.set('uploadInProgress', false);
-        this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_project'));
-        this.get('raven').captureMessage('Could not create project', { extra: { error } });
-    },
+    // _failCreateNewProject(error) {
+    //     this.set('uploadInProgress', false);
+    //     this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_project'));
+    //     this.get('raven').captureMessage('Could not create project', { extra: { error } });
+    // },
 
-    _createComponent(child) {
-        const node = this.get('node');
+    // _createComponent(child) {
+    //     const node = this.get('node');
 
-        this.set('parentNode', node);
-        this.set('node', child);
-        this.set('basicsAbstract', this.get('node.description') || null);
-        this.send('upload');
-        this.set('newNode', true);
-        this.set('applyLicense', true);
-    },
+    //     this.set('parentNode', node);
+    //     this.set('node', child);
+    //     this.send('upload');
+    //     this.set('applyLicense', true);
+    // },
 
-    _failCreateComponent(error) {
-        this.set('uploadInProgress', false);
-        this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_component'));
-        this.get('raven').captureMessage('Could not create component', { extra: { error } });
-    },
+    // _failCreateComponent(error) {
+    //     this.set('uploadInProgress', false);
+    //     this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_component'));
+    //     this.get('raven').captureMessage('Could not create component', { extra: { error } });
+    // },
 
     _sendToUpload() {
         this.send('upload');

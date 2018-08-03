@@ -284,6 +284,7 @@ $logo-dir: 'img/provider_logos/';
 .dark-overlay-header-background {
     background: #343333 url("img/dark-overlay.png") top center;
 }
+
 #view-page {
     background-color: #FCFCFC;
     font-family : 'Open Sans', Helvetica, sans-serif;
@@ -296,9 +297,28 @@ $logo-dir: 'img/provider_logos/';
     }
     .view-authors {
         color: white;
+        padding-bottom: 15px;
+
         a {
             color: #6dd1de;
         }
+    }
+    .detail-header-info {
+        font-size: 14px;
+        display: flex;
+
+        .detail-header-item {
+            margin-right: 25px;
+        }
+
+        a {
+            color: #6dd1de;
+        }
+    }
+    .detail-header-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        padding-bottom: 2px;
     }
     .round-btn {
         border-radius: 25px;
@@ -524,6 +544,43 @@ $color-border-light: #DDDDDD;
         }
     }
 }
+
+#preprint-form-basics {
+   .basics-body {
+        display: flex;
+        justify-content: space-between;
+
+        .basics-column {
+            width: 50%;
+            padding: 0 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .abstract-form {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+
+            div {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+            }
+
+            textarea[name="basicsAbstract"] {
+                flex: 1;
+            }
+
+            .input-error {
+                flex: none;
+            }
+        }
+
+
+    }
+}
+
 #preprint-form-upload {
     .btn-big {
         height: 80px;
@@ -558,6 +615,56 @@ $color-border-light: #DDDDDD;
         border-radius: 2px;
     }
 }
+
+.preprints-form-keywords {
+    .emberTagInput-tag {
+        text-decoration: none;
+        background: #DEF;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        font-size: 13px;
+        padding: 5px;
+        border: 1px solid transparent;
+        border-radius: 2px;
+        cursor: pointer;
+        color: #333;
+
+        a {
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+            font-size: 11px;
+            vertical-align: top;
+        }
+
+        &:hover {
+            background-color: #337ab7;
+            color: #E0EBF3;
+
+            a {
+                color: #E0EBF3;
+            }
+        }
+    }
+
+    .emberTagInput-input {
+        font-family: "Open Sans", "Helvetica Neue", sans-serif;
+        font-size: 14px;
+        padding-left: 5px;
+
+        &::placeholder {
+            color: #999;
+            opacity: 1;
+        }
+    }
+
+    .emberTagInput {
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+}
+
+
 .file-browser-header {
     display: none;
 }
@@ -766,26 +873,21 @@ hr {
             cursor: default;
             color: #333;
         }
-        &.valid {
-            .preprint-section-status .fa {
-                color: #488132;
-            }
-        }
-        &.invalid {
-            .preprint-section-status .fa {
-                color: #b64949;
-            }
-        }
-        &.not-validated {
-            .preprint-section-status .fa {
-                color: gray;
-            }
-        }
+
         .fa {
             font-size: 20px;
         }
+
         .preprint-section-status .fa {
             transition: color 0.1s linear;
+
+            &.valid {
+                color: #488132;
+            }
+
+            &.invalid {
+                color: #b64949;
+            }
         }
     }
     .cp-Panel-body {
@@ -823,7 +925,7 @@ hr {
         content: "(required)";
         color: lighten(red, 30%);
         font-weight: normal;
-        float: right;
+        padding-left: 5px;
     }
 }
 
@@ -1221,7 +1323,6 @@ label.title-label {
 }
 
 .discover-provider-logo,
-.content-provider-logo,
 .submit-provider-logo {
     background-position-x: center;
     background-position-y: center;
@@ -1252,8 +1353,9 @@ label.title-label {
     .view-authors {
         text-align: center;
     }
-    .preprint-added-on {
+    .detail-header-info {
         text-align: center;
+        justify-content: center;
     }
     .truncate {
         width: auto;
@@ -1300,11 +1402,6 @@ label.title-label {
             margin-bottom: 40px !important;
         }
     }
-}
-
-.content-provider-logo {
-    min-height: 80px;
-    min-width: 120px;
 }
 
 .discover-provider-logo {
