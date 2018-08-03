@@ -658,17 +658,17 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             e.preventDefault();
         },
 
-        // stripDOI() {
-        //     // Replaces the inputted doi link with just the doi itself
-        //     this.get('metrics').trackEvent({
-        //         category: 'input',
-        //         action: 'onchange',
-        //         label: 'Submit - DOI Text Change',
-        //     });
+        stripDOI() {
+            // Replaces the inputted doi link with just the doi itself
+            this.get('metrics').trackEvent({
+                category: 'input',
+                action: 'onchange',
+                label: 'Submit - DOI Text Change',
+            });
 
-        //     const basicsDOI = this.get('basicsDOI');
-        //     this.set('basicsDOI', extractDoiFromString(basicsDOI));
-        // },
+            const basicsDOI = this.get('basicsDOI');
+            this.set('basicsDOI', extractDoiFromString(basicsDOI));
+        },
 
         saveBasics() {
             this.get('metrics').trackEvent({
