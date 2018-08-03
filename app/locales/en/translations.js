@@ -105,7 +105,8 @@ export default {
             tag: 'Tag',
             box: {
                 paragraph: 'Do you want to add your own research as a {{documentType.singular}}?',
-                button: 'Add your {{documentType.singular}}',
+                button_non_moderated: 'Add a {{documentType.singular}}',
+                button_moderated: 'Submit a {{documentType.singular}}',
             },
             results: {
                 of: 'of',
