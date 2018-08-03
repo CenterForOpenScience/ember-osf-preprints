@@ -1,0 +1,34 @@
+.file-browser.old-file-browser {
+    a {
+        cursor: pointer;
+    }
+
+    .breadcrumb {
+        margin-bottom: 0;
+    }
+
+    .file-browser-list.old-file-browser-list {
+        position: relative;
+        height: 500px;
+    }
+
+    .file-browser-item.old-file-browser-item {
+        height: 30px;
+        padding: 3px;
+    }
+
+    .file-browser-item.old-file-browser-item:hover {
+        background-color: #E0EBF3; /* $color-hover; */
+    }
+
+    .file-browser-icon {
+        width: 3em;
+        display: inline-block;
+        cursor: pointer;
+        text-align: right;
+    }
+
+    .selected {
+        background-color: #337AB7; /* $color-select; */
+    }
+}

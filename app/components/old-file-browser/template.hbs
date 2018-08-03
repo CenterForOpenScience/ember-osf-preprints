@@ -1,0 +1,28 @@
+<ol class='breadcrumb'>
+    {{#each breadcrumbs as |item|}}
+        <li>
+            <a {{action 'navigateToItem' item}} role="link">
+                {{file-browser-icon item=item}}
+                {{item.itemName}}
+            </a>
+        </li>
+    {{/each}}
+</ol>
+
+<div class='old-file-browser-list file-browser-list'>
+    {{#ember-collection
+        items=items
+        cell-layout=(fixed-grid-layout itemWidth itemHeight)
+        as |item|
+    }}
+        {{old-file-browser-item
+            item=item
+            navigateToItem=(action 'navigateToItem')
+            selectItem=(action 'selectItem')
+            openItem=(action 'openItem')
+        }}
+    {{/ember-collection}}
+    {{#unless itemsLoaded}}
+        {{fa-icon 'spinner' size=3 pulse=true}}
+    {{/unless}}
+</div>
