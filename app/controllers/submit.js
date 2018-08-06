@@ -145,7 +145,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     store: service(),
     theme: service(),
     fileManager: service(),
-    raven: service(),
     toast: service('toast'),
     panelActions: service('panelActions'),
 
@@ -374,10 +373,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 this.get('model.licenseRecord.copyright_holders').join(', ') :
                 '') !== this.get('basicsLicense.copyrightHolders')) return true;
         } else {
-            if ((this.get('availableLicenses').toArray().length ?
+            if (this.get('basicsLicense.licenseType.name') && (this.get('availableLicenses').toArray().length ?
                 this.get('availableLicenses').toArray()[0].get('name') :
                 null) !== this.get('basicsLicense.licenseType.name')) return true;
-            if ((new Date()).getUTCFullYear().toString() !== this.get('basicsLicense.year')) return true;
+            if (this.get('basicsLicense.year') && (new Date()).getUTCFullYear().toString() !== this.get('basicsLicense.year')) return true;
             if (!(this.get('basicsLicense.copyrightHolders') === '' ||
                 !this.get('basicsLicense.copyrightHolders.length') ||
                 this.get('basicsLicense.copyrightHolders') === null)) return true;
@@ -1098,17 +1097,22 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 actionTrigger: 'submit',
                 target: preprint,
             });
-            submitAction.save();
+            submitAction.save().then(() => this._providerRouteTransition(preprint.id));
+        } else {
+            this._providerRouteTransition(preprint.id);
         }
+    },
+
+    _providerRouteTransition(preprintId) {
         let useProviderRoute = false;
         if (this.get('theme.isProvider')) {
             useProviderRoute = this.get('theme.isSubRoute');
         } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
-            window.location.replace(`${this.get('currentProvider.domain')}${preprint.id}`);
+            window.location.replace(`${this.get('currentProvider.domain')}${preprintId}`);
         } else if (this.get('currentProvider.id') !== 'osf') {
             useProviderRoute = true;
         }
-        this.transitionToRoute(`${useProviderRoute ? 'provider.' : ''}content`, preprint);
+        this.transitionToRoute(`${useProviderRoute ? 'provider.' : ''}content`, this.get('model').reload());
     },
 
     _failSaveModel() {
@@ -1161,13 +1165,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return node.save();
     },
 
-    _failSetNodeTitle(error) {
+    _failSetNodeTitle() {
         const node = this.get('node');
         const currentNodeTitle = node.get('title');
 
         node.set('title', currentNodeTitle);
         this.get('toast').error(this.get('i18n').t('submit.could_not_update_title'));
-        this.get('raven').captureMessage('Could not update title', { extra: { error } });
     },
 
     _addChild(child) {
@@ -1197,29 +1200,25 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.set('newNode', true);
     },
 
-    _failCopyFile(error) {
+    _failCopyFile() {
         this.get('toast').error(this.get('i18n').t('submit.error_copying_file'));
-        this.get('raven').captureMessage('Could not copy file', { extra: { error } });
     },
 
-    _failGetFiles(error) {
+    _failGetFiles() {
         this.get('toast').error(this.get('i18n').t('submit.error_accessing_parent_files'));
-        this.get('raven').captureMessage('Could not access parent files', { extra: { error } });
     },
 
-    _failCreateComponent(error) {
+    _failCreateComponent() {
         this.get('toast').error(this.get('i18n').t('submit.could_not_create_component'));
-        this.get('raven').captureMessage('Could not create component', { extra: { error } });
     },
 
-    _failDeletePreprint(error) {
+    _failDeletePreprint() {
         this.get('toast').error(this.get('i18n').t(
             'submit.abandoned_preprint_error',
             {
                 documentType: this.get('currentProvider.documentType'),
             },
         ));
-        this.get('raven').captureMessage('Could not retrieve abandoned preprint', { extra: { error } });
     },
 
     _sendStartPreprint() {
@@ -1238,7 +1237,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('finishUpload');
     },
 
-    _failedUpload(error) {
+    _failedUpload() {
         const parentNode = this.get('parentNode');
 
         // Allows user to attempt operation again.
@@ -1256,7 +1255,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 documentType: this.get('currentProvider.documentType'),
             },
         ));
-        this.get('raven').captureMessage('Could not initiate preprint', { extra: { error } });
     },
 
     _setBasicsLicense(license) {
@@ -1273,10 +1271,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('next', this.get('_names.3'));
     },
 
-    _failMoveFromBasics(error) {
+    _failMoveFromBasics() {
         // If model save fails, do not transition, save original vales
         this.get('toast').error(this.get('i18n').t('submit.basics_error'));
-        this.get('raven').captureMessage('Could not save basics', { extra: { error } });
         this.send('saveOriginalValues');
     },
 
@@ -1284,13 +1281,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('next', this.get('_names.2'));
     },
 
-    _failMoveFromDisciplines(error) {
+    _failMoveFromDisciplines() {
         // Current subjects saved so UI can be restored in case of failure
         const model = this.get('model');
 
         model.set('subjects', $.extend(true, [], this.get('model.subjects')));
         this.get('toast').error(this.get('i18n').t('submit.disciplines_error'));
-        this.get('raven').captureMessage('Could not save disciplines', { extra: { error } });
     },
 
     _setContributorSearchResults(contributors) {

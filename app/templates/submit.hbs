@@ -27,7 +27,13 @@
                                         <div class="row">
                                             <div style="padding: 25px 85px 15px;" class="col-md-12">
                                                 <dl class="dl-horizontal dl-description">
-                                                    <dt>{{if (not theme.isProvider) 'OSF Preprints' selectedProvider.name}}:</dt>
+                                                    <dt>
+                                                        {{#if (eq selectedProvider.name 'Open Science Framework')}}
+                                                            OSF Preprints
+                                                        {{else}}
+                                                            {{ selectedProvider.name }}
+                                                        {{/if}}
+                                                    </dt>
                                                     <dd>{{sanitize-html selectedProvider.description}}</dd>
                                                 </dl>
                                             </div>
@@ -60,7 +66,7 @@
                             errorAction=(action 'error')
                             as |hasOpened|
                         }}
-                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged)}}
+                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged) currentProvider=currentProvider}}
                             {{#preprint-form-body}}
                                 {{#liquid-bind filePickerState class='translate' as |currentState|}}
                                     <div class={{currentState}}>
@@ -153,7 +159,7 @@
                                               applyLicense=applyLicense
                                               getNodePreprints=(action 'getNodePreprints')
                                               getContributors=(action 'getContributors')
-                                              provider=theme.provider
+                                              provider=currentProvider
                                               }}
                                         {{/if}}
                                     </div>

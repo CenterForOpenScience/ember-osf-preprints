@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.120.0] - 2018-07-26
 ### Added
 - Whitelist functionality for discover page
 - Unified solution for preprint words
@@ -21,7 +23,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Sharing from the preprint detail view to use ember-osf sharing icons
 - Update preprints to work with a new unified version of ember-osf (works with both preprints and reviews apps)
 - Update preprints to use ember-cli@2.18
-- User search to also search profile information
+- Environment check in `config/environment`
+
+## [0.119.0] - 2018-07-16
+### Added
+- Hypothes.is commenting toggle
+
+## [0.118.8] - 2018-07-11
+### Changed
+- Updated to use latest provider assets
 
 ## [0.118.7] - 2018-06-21
 ### Added

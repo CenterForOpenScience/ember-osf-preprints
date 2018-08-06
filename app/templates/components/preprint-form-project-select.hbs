@@ -2,7 +2,7 @@
     {{#if nodeLocked}}
         {{!PROJECT LOCKED (EDIT MODE)}}
         {{#preprint-form-section class="upload-section-block" allowOpen=false name='locationOfPreprint' open=false}}
-            {{preprint-form-header id='locked-section' name='location_of_preprint' node=node selectedNode=selectedNode showValidationIndicator=false}}
+            {{preprint-form-header id='locked-section' name='location_of_preprint' node=node selectedNode=selectedNode showValidationIndicator=false currentProvider=provider}}
             {{#preprint-form-body}}
             {{/preprint-form-body}}
         {{/preprint-form-section}}
@@ -38,7 +38,7 @@
                                     </div>
                                     <div class="col-xs-6 col-sm-3 text-center">
                                         <input id='newfile' class="radio_item" onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
-                                        <label class='choose-large' for="newfile"><i class="fa fa-th-list"></i>{{t "components.preprint-form-project-select.select_existing_file" documentType=provider.documentTYpe}}</label>
+                                        <label class='choose-large' for="newfile"><i class="fa fa-th-list"></i>{{t "components.preprint-form-project-select.select_existing_file" documentType=provider.documentType}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                         {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
                             {{!ORGANIZE DECISION SECTION}}
                             {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
-                                {{preprint-form-header provider=provider isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy name='organize' showValidationIndicator=false}}
+                                {{preprint-form-header isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy name='organize' showValidationIndicator=false currentProvider=provider}}
                                 {{#preprint-form-body}}
                                     {{convert-or-copy-project documentType=provider.documentType nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields title=title node=node isTopLevelNode=isTopLevelNode titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
                                 {{/preprint-form-body}}
@@ -78,7 +78,7 @@
                             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
                                 {{!FINALIZE UPLOAD SECTION - EXISTING FILE}}
                                 {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
-                                    {{preprint-form-header title=title name='finalize_upload' showValidationIndicator=false}}
+                                    {{preprint-form-header title=title name='finalize_upload' showValidationIndicator=false currentProvider=provider}}
                                     {{#preprint-form-body}}
                                         {{#if (eq convertOrCopy 'convert')}}
                                             {{#if convertProjectConfirmed}}
