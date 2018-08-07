@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update preprints to work with a new unified version of ember-osf (works with both preprints and reviews apps)
 - Update preprints to use ember-cli@2.18
 
+### Removed
+- Manual sorting of taxonomies on the discover page
+
 ## [0.118.7] - 2018-06-21
 ### Added
 - `anonymizeIp: true` in GA config to anonymize sender IP.
