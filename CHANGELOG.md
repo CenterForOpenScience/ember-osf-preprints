@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.120.2] - 2018-08-03
+### Fixed
+- discover page loading bug
+
+## [0.120.1] - 2018-07-27
+### Fixed
+- IE/Edge preprint error
+
 ## [0.120.0] - 2018-07-26
 ### Added
 - Whitelist functionality for discover page
