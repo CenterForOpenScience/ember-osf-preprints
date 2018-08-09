@@ -451,6 +451,17 @@ $color-border-light: #DDDDDD;
     }
 }
 
+.preprint-status-withdrawn {
+    background-color: $color-alert-bg-warning;
+    border: 1px solid $color-alert-border-warning;
+    color: $color-alert-text-warning;
+
+    .status-icon {
+        -webkit-text-stroke: 1px $color-alert-text-warning;
+        font-size: 14px;
+    }
+}
+
 .preprint-status-component {
     margin-top: -15px;
     margin-bottom: 15px;
@@ -524,12 +535,16 @@ $color-border-light: #DDDDDD;
 /* SUBMIT page */
 
 .preprint-submit-header {
-    padding-top: 90px;
+    padding-top: 70px;
     background: url("img/submit_bg.jpg") no-repeat top center;
     background-size: cover;
     background-position-y: -50px;
     border-bottom: 1px solid #eee;
     height: 200px;
+    a {
+        color: white;
+        text-decoration: underline;
+    }
 }
 .preprint-submit-body {
     background-color: #f8f8f8;
@@ -867,6 +882,29 @@ hr {
     }
     textarea {
         resize: none;
+    }
+}
+
+.fade.in {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.preprint-form-section-withdraw-comment {
+    header {
+        font: {
+            size: 16px;
+            font-weight: bold;
+        }
+        color: #337AB7;
+        display: block;
+        margin: 1rem 0;
+    }
+    label > input, label > textarea {
+        font-weight: normal;
+    }
+    textarea {
+        resize: none;
+        height: 150px;
     }
 }
 

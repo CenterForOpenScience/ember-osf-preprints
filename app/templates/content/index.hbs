@@ -43,10 +43,17 @@
                                 {{moment-format relevantDate "MMMM DD, YYYY"}}
                             </div>
                             <div class={{if model "detail-header-item" ""}}>
-                                <div class="detail-header-label">
-                                    <strong>{{t "content.header.last_edited"}}</strong>
-                                </div>
-                                {{moment-format model.dateModified "MMMM DD, YYYY"}}
+                                {{#if (not isWithdrawn)}}
+                                    <div class="detail-header-label">
+                                        <strong>{{t "content.header.last_edited"}}</strong>
+                                    </div>
+                                    {{moment-format model.dateModified "MMMM DD, YYYY"}}
+                                {{else}}
+                                    <div class="detail-header-label">
+                                        <strong>{{t "content.header.withdrawn_on"}}</strong>
+                                    </div>
+                                    {{moment-format model.dateWithdrawn "MMMM DD, YYYY"}}
+                                {{/if}}
                             </div>
                             {{#if node}}
                                 <div>
@@ -62,60 +69,62 @@
                         </h6>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-2 edit-button-and-logo text-center">
-                    <div class="content-provider-logo provider-{{model.provider.id}} hidden-xs" title="{{model.provider.name}}"></div>
-                    {{#if userIsContrib}}
-                        {{! TODO This link will need to be updated for phase 2 of branding }}
-                        <a type="button"
-                           class="btn btn-success edit-btn"
-                           href={{concat theme.guidPathPrefix model.id '/edit'}}
-                           onclick={{action "click" 'link' "Content - Edit Preprint" (concat model.links.html 'edit')}}
-                        >
-                            {{t editButtonLabel documentType=model.provider.documentType}}
-                        </a>
-                    {{/if}}
-                    <br>
-                </div>
+                {{#if (not isWithdrawn)}}
+                    <div class="col-xs-12 col-sm-2 edit-button-and-logo text-center">
+                        <div class="content-provider-logo provider-{{model.provider.id}} hidden-xs" title="{{model.provider.name}}"></div>
+                        {{#if (and userIsContrib (not isPendingWithdrawal))}}
+                            {{! TODO This link will need to be updated for phase 2 of branding }}
+                            <a type="button"
+                               class="btn btn-success edit-btn"
+                               href={{concat theme.guidPathPrefix model.id '/edit'}}
+                                   onclick={{action "click" 'link' "Content - Edit Preprint" (concat model.links.html 'edit')}}
+                            >
+                                {{t editButtonLabel documentType=model.provider.documentType}}
+                            </a>
+                        {{/if}}
+                        <br>
+                    </div>
+                {{/if}}
             </div>
         </div>
         {{!END CONTAINER DIV}}
     </div>
     {{!END HEADER ROW}}
-    {{#if showStatusBanner}}
-        {{preprint-status-banner submission=model}}
+    {{#if (or showStatusBanner isWithdrawn)}}
+        {{preprint-status-banner submission=model isWithdrawn=isWithdrawn isPendingWithdrawal=isPendingWithdrawal}}
     {{/if}}
     {{!CONTAINER DIV}}
     <div id="view-page" class="container">
-        {{!CONTENT ROW}}
-        <div class="row p-md">
-            {{!LEFT COL DIV}}
-            <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}">
-                {{#if model.isPreprintOrphan}}
-                    <div class="alert alert-danger m-r-md" role="alert">
-                        {{t "content.orphan_preprint"}}
-                    </div>
-                {{else}}
-                    {{#if (not model.public)}}
+        {{#if (not isWithdrawn)}}
+            {{!CONTENT ROW}}
+            <div class="row p-md">
+                {{!LEFT COL DIV}}
+                <div id="mfr-col" class="col-md-{{if fullScreenMFR '12' '7'}}">
+                    {{#if model.isPreprintOrphan}}
                         <div class="alert alert-danger m-r-md" role="alert">
-                            {{t "content.private_preprint_warning" documentType=model.provider.documentType supportEmail='support@osf.io'}}
+                            {{t "content.orphan_preprint"}}
                         </div>
+                    {{else}}
+                        {{#if (not model.public)}}
+                            <div class="alert alert-danger m-r-md" role="alert">
+                                {{t "content.private_preprint_warning" documentType=model.provider.documentType supportEmail='support@osf.io'}}
+                            </div>
+                        {{/if}}
+                        {{preprint-file-renderer provider=model.provider preprint=model primaryFile=primaryFile dualTrackNonContributors=(action 'dualTrackNonContributors')}}
+                        <button class="expand-mfr-carrot hidden-xs hidden-sm" {{action 'expandMFR'}}>
+                            <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
+                        </button>
                     {{/if}}
-                    {{preprint-file-renderer provider=model.provider preprint=model primaryFile=primaryFile dualTrackNonContributors=(action 'dualTrackNonContributors')}}
-                    <button class="expand-mfr-carrot hidden-xs hidden-sm" {{action 'expandMFR'}}>
-                        <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
-                    </button>
-                {{/if}}
-            </div>
-            {{!END LEFT COL DIV}}
-            {{#unless fullScreenMFR}}
-                {{!RIGHT SIDE COL}}
-                <div class="col-md-5">
-                    {{!SHARE ROW}}
-                    <div class="share-row p-sm osf-box-lt clearfix">
-                        <a class="btn btn-primary p-v-xs" href={{fileDownloadURL}} onclick={{action 'dualTrackNonContributors' 'link' 'Content - Download' model.primaryFile.links.download true}}>{{t "content.share.download_preprint" documentType=model.provider.documentType}} </a>
-                        <div class=" p-v-xs pull-right">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}} </div>
-                    </div>
-                    <div class="clearfix">
+                </div>
+                {{!END LEFT COL DIV}}
+                {{#unless fullScreenMFR}}
+                    {{!RIGHT SIDE COL}}
+                    <div class="col-md-5">
+                        {{!SHARE ROW}}
+                        <div class="share-row p-sm osf-box-lt clearfix">
+                            <a class="btn btn-primary p-v-xs" href={{fileDownloadURL}} onclick={{action 'dualTrackNonContributors' 'link' 'Content - Download' model.primaryFile.links.download true}}>{{t "content.share.download_preprint" documentType=model.provider.documentType}} </a>
+                            <div class=" p-v-xs pull-right">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}} </div>
+                        </div>
                         <div class="p-t-md pull-right">
                             {{sharing-icons
                                 title=title
@@ -125,18 +134,133 @@
                                 metricsExtra=metricsExtra
                             }}
                         </div>
-                    </div>
 
-                    {{#if this.isChronosProvider}}
+                        {{!SHARE ROW}}
+                        <div class="share-row p-sm osf-box-lt clearfix">
+                            <a class="btn btn-primary p-v-xs" href={{fileDownloadURL}} onclick={{action 'dualTrackNonContributors' 'link' 'Content - Download' model.primaryFile.links.download true}}>{{t "content.share.download_preprint" documentType=model.provider.documentType}} </a>
+                            <div class=" p-v-xs pull-right">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}} </div>
+                        </div>
+                        <div class="clearfix">
+                            <div class="p-t-md pull-right">
+                                {{sharing-icons
+                                    title=title
+                                    description=fullDescription
+                                    hyperlink=hyperlink
+                                    facebookAppId=facebookAppId
+                                    metricsExtra=metricsExtra
+                                }}
+                            </div>
+                        </div>
+
+                        {{#if this.isChronosProvider}}
+                            <div class="p-t-xs">
+                                {{#chronos-widget preprint=model isContributor=userIsContrib isAdmin=isAdmin as | preprint submissions isAllowSubmissions isContributor | }}
+                                    {{chronos-submission-status-list submissions=submissions isContributor=isContributor}}
+                                    {{#if isAllowSubmissions }}
+                                        <div class="p-t-xs">
+                                            {{chronos-submission-panel preprint=preprint publisherFilterKeyword="American Psychological Association"}}
+                                        </div>
+                                    {{/if}}
+                                {{/chronos-widget}}
+                            </div>
+                        {{/if}}
                         <div class="p-t-xs">
-                            {{#chronos-widget preprint=model isContributor=userIsContrib isAdmin=isAdmin as | preprint submissions isAllowSubmissions isContributor | }}
-                                {{chronos-submission-status-list submissions=submissions isContributor=isContributor}}
-                                {{#if isAllowSubmissions }}
-                                    <div class="p-t-xs">
-                                        {{chronos-submission-panel preprint=preprint publisherFilterKeyword="American Psychological Association"}}
-                                    </div>
+                            <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
+                            <p class="abstract {{if useShortenedDescription 'abstract-truncated'}}">
+                                {{~if useShortenedDescription description model.description~}}
+                            </p>
+                            <button class='btn-link' hidden={{not hasShortenedDescription}} {{action 'expandAbstract'}}>
+                                {{~t (if expandedAbstract 'content.see_less' 'content.see_more')~}}
+                            </button>
+                        </div>
+
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi" documentType=model.provider.documentType}}</strong></h4>
+                            {{#if model.preprintDoiUrl}}
+                                {{#if model.preprintDoiCreated}}
+                                    <a href={{model.preprintDoiUrl}} onclick={{action "click" "link" "Content - Preprint DOI" model.preprintDoiUrl}}>{{extract-doi model.preprintDoiUrl}}</a>
+                                {{else}}
+                                    <p> {{extract-doi model.preprintDoiUrl}} </p>
+                                    <p> {{t "content.preprint_pending_doi_minted"}} </p>
                                 {{/if}}
-                            {{/chronos-widget}}
+                            {{else}}
+                                {{#if (not model.public)}}
+                                    {{t 'content.preprint_pending_doi' documentType=model.provider.documentType }}
+                                {{else if (and model.provider.reviewsWorkflow (not model.isPublished))}}
+                                    {{t 'content.preprint_pending_doi_moderation'}}
+                                {{/if}}
+                            {{/if}}
+                        </div>
+
+                        {{#if model.articleDoiUrl}}
+                            <div class="p-t-xs">
+                                <h4 class="p-v-md f-w-md"><strong>{{t "content.article_doi"}}</strong></h4>
+                                <a href={{model.articleDoiUrl}} onlick={{action "click" "link" "Content - DOI" model.articleDoiUrl}}>{{extract-doi model.articleDoiUrl}}</a>
+                            </div>
+                        {{/if}}
+
+                        {{#if model.license.name}}
+                            <div class="p-t-xs license-text">
+                                <h4 class="p-v-md f-w-md"><strong>{{t "global.license"}}</strong></h4>
+                                {{model.license.name}}
+                                <span>
+                                    {{#if showLicenseText }}
+                                        {{fa-icon 'caret-down' click=(action 'toggleLicenseText')}}
+                                    {{else}}
+                                        {{fa-icon 'caret-right' click=(action 'toggleLicenseText')}}
+                                    {{/if}}
+                                </span>
+                                {{#if showLicenseText}}
+                                    <pre>{{fullLicenseText}}</pre>
+                                {{/if}}
+                            </div>
+                        {{/if}}
+
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md f-w-md"><strong>{{t "content.disciplines"}}</strong></h4>
+                            {{#each disciplineReduced as |subject|}}
+                                <span class='subject-preview'>{{subject.text}}</span>
+                            {{/each}}
+                        </div>
+                        <div class="p-t-xs">
+                            <h4 class=" f-w-md p-v-md"><strong>{{t "global.tags"}}</strong></h4>
+                            {{#if hasTag}}
+                                {{#each model.tags as |tag|}}
+                                    <span class="badge">{{fix-special-char tag}}</span>
+                                {{/each}}
+                            {{else}}
+                                {{t "global.none"}}
+                            {{/if}}
+                        </div>
+
+                        {{#if model.originalPublicationDate}}
+                            <div class="p-t-xs">
+                                <h4 class="p-v-md f-w-md"><strong>{{t "content.original_publication_date"}}</strong></h4>
+                                <p>
+                                    {{moment-format model.originalPublicationDate "YYYY-MM-DD"}}
+                                </p>
+                            </div>
+                        {{/if}}
+
+                        <div class="p-t-xs m-b-lg">
+                            <h4 class="p-v-md f-w-md"><strong>{{t "content.citations"}}</strong></h4>
+                            {{citation-widget node=model}}
+                        </div>
+                    </div>
+                    {{!END RIGHT SIDE COL}}
+                {{/unless}}
+            </div>
+            {{!END CONTENT ROW}}
+        {{else}}
+            {{! TOMBSTONE PAGE}}
+            <div class="row p-md" style="margin-bottom: 50px">
+                <div class="col-md-5">
+                    {{#if model.withdrawalJustification}}
+                        <div class="p-t-xs">
+                            <h4 class="p-v-md f-w-md"><strong>{{t 'global.reason_for_withdrawal'}}</strong></h4>
+                            <p>
+                                {{model.withdrawalJustification}}
+                            </p>
                         </div>
                     {{/if}}
 
@@ -153,33 +277,15 @@
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi" documentType=model.provider.documentType}}</strong></h4>
                         {{#if model.preprintDoiUrl}}
-                            {{#if model.preprintDoiCreated}}
-                                <a href={{model.preprintDoiUrl}} onclick={{action "click" "link" "Content - Preprint DOI" model.preprintDoiUrl}}>{{extract-doi model.preprintDoiUrl}}</a>
-                            {{else}}
-                                <p> {{extract-doi model.preprintDoiUrl}} </p>
-                                <p> {{t "content.preprint_pending_doi_minted"}} </p>
-                            {{/if}}
-                        {{else}}
-                            {{#if (not model.public)}}
-                                {{t 'content.preprint_pending_doi' documentType=model.provider.documentType }}
-                            {{else if (and model.provider.reviewsWorkflow (not model.isPublished))}}
-                                {{t 'content.preprint_pending_doi_moderation'}}
-                            {{/if}}
+                            <p> {{extract-doi model.preprintDoiUrl}} </p>
                         {{/if}}
                     </div>
 
-                    {{#if model.articleDoiUrl}}
-                        <div class="p-t-xs">
-                            <h4 class="p-v-md f-w-md"><strong>{{t "content.article_doi"}}</strong></h4>
-                            <a href={{model.articleDoiUrl}} onlick={{action "click" "link" "Content - DOI" model.articleDoiUrl}}>{{extract-doi model.articleDoiUrl}}</a>
-                        </div>
-                    {{/if}}
-
                     {{#if model.license.name}}
-                        <div class="p-t-xs license-text">
+                        <div class="p-t-xs">
                             <h4 class="p-v-md f-w-md"><strong>{{t "global.license"}}</strong></h4>
                             {{model.license.name}}
-                            <span>
+                            <span style='cursor: pointer'>
                                 {{#if showLicenseText }}
                                     {{fa-icon 'caret-down' click=(action 'toggleLicenseText')}}
                                 {{else}}
@@ -187,17 +293,17 @@
                                 {{/if}}
                             </span>
                             {{#if showLicenseText}}
-                                <pre>{{fullLicenseText}}</pre>
+                                <pre style='white-space: pre-wrap; font-size:75%; border:none; width:100%; text-align:justify; max-height: 300px;'>{{fullLicenseText}}</pre>
                             {{/if}}
                         </div>
                     {{/if}}
-
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "content.disciplines"}}</strong></h4>
                         {{#each disciplineReduced as |subject|}}
                             <span class='subject-preview'>{{subject.text}}</span>
                         {{/each}}
                     </div>
+
                     <div class="p-t-xs">
                         <h4 class=" f-w-md p-v-md"><strong>{{t "global.tags"}}</strong></h4>
                         {{#if hasTag}}
@@ -208,25 +314,10 @@
                             {{t "global.none"}}
                         {{/if}}
                     </div>
-
-                    {{#if model.originalPublicationDate}}
-                        <div class="p-t-xs">
-                            <h4 class="p-v-md f-w-md"><strong>{{t "content.original_publication_date"}}</strong></h4>
-                            <p>
-                                {{moment-format model.originalPublicationDate "YYYY-MM-DD"}}
-                            </p>
-                        </div>
-                    {{/if}}
-
-                    <div class="p-t-xs m-b-lg">
-                        <h4 class="p-v-md f-w-md"><strong>{{t "content.citations"}}</strong></h4>
-                        {{citation-widget node=model}}
-                    </div>
                 </div>
-                {{!END RIGHT SIDE COL}}
-            {{/unless}}
-        </div>
-        {{!END CONTENT ROW}}
+            </div>
+            {{! END TOMBSTONE PAGE}}
+        {{/if}}
     </div>
     {{!END DIV CONTAINER}}
 </div>

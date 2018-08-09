@@ -3,6 +3,12 @@
 <div class="preprint-submit-header">
     <div class="container">
         <div class="row">
+            <div class="col-xs-12 col-md-10 col-md-offset-1 ">
+                {{#if editMode}}
+                    {{fa-icon 'long-arrow-left'}}
+                    <a role="button" {{action 'returnToSubmission'}}>{{t "submit.body.edit.return_button" documentType=currentProvider.documentType}}</a>
+                {{/if}}
+            </div>
             <div class="col-xs-12 text-center">
                 <h1>{{t (if editMode "submit.edit_heading" heading) documentType=currentProvider.documentType}}</h1>
             </div>
@@ -342,9 +348,11 @@
                                     }}
                                 </div>
                             {{/if}}
-                            <button class="btn btn-primary btn-md m-t-md pull-right" disabled={{unless allSectionsValid true}} {{action 'returnToSubmission'}}>
-                                {{t "submit.body.edit.return_button" documentType=currentProvider.documentType}}
-                            </button>
+
+                            {{#if (not (eq model.reviewsState 'rejected'))}}
+                                {{!-- Only shows the 'Withdraw preprint' button iff the preprint is not in a rejected state --}}
+                                <button class="btn {{if canResubmit 'btn-default' 'btn-danger'}} btn-md m-t-md pull-right" {{action 'clickWithdraw'}}> {{t "submit.body.edit.withdraw_button" documentType=currentProvider.documentType}} </button>
+                            {{/if}}
                         </div>
                     {{else}}
                         <strong><p class="information">{{t permissionInformation documentType=currentProvider.documentType name=providerName}}</p></strong>

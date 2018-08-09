@@ -2,6 +2,7 @@ import { A, isArray } from '@ember/array';
 import { inject as service } from '@ember/service';
 import { run } from '@ember/runloop';
 import loadAll from 'ember-osf/utils/load-relationship';
+import { task } from 'ember-concurrency';
 import Route from '@ember/routing/route';
 import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -61,14 +62,18 @@ export default Route.extend(Analytics, ResetScrollMixin, {
         this.set('fileDownloadURL', downloadUrl);
         this.set('preprint', preprint);
 
-        const setupMetaData = preprint.get('provider')
-            .then(this._getProviderDetails.bind(this))
-            .then(this._getUserPermissions.bind(this))
-            .then(this._setupMetaData.bind(this));
+        if (!preprint.get('dateWithdrawn')) {
+            const setupMetaData = preprint.get('provider')
+                .then(this._getProviderDetails.bind(this))
+                .then(this._getUserPermissions.bind(this))
+                .then(this._setupMetaData.bind(this));
 
-        const setupPreprint = this._getPrimaryFile().then(this._loadSupplementalNode.bind(this));
+            const setupPreprint = this._getPrimaryFile()
+                .then(this._loadSupplementalNode.bind(this))
+                .then(this.get('fetchWithdrawalRequest').perform());
 
-        return this.get('waitForMetaData') ? setupMetaData : setupPreprint;
+            return this.get('waitForMetaData') ? setupMetaData : setupPreprint;
+        }
     },
 
     setupController(controller, model) {
@@ -76,6 +81,8 @@ export default Route.extend(Analytics, ResetScrollMixin, {
             primaryFile: model.get('primaryFile'),
             node: this.get('node'),
             fileDownloadURL: this.get('fileDownloadURL'),
+            isPendingWithdrawal: this.get('isPendingWithdrawal'),
+            isWithdrawn: model.get('dateWithdrawn') !== null,
         });
 
         run.scheduleOnce('afterRender', this, function() {
@@ -308,4 +315,12 @@ export default Route.extend(Analytics, ResetScrollMixin, {
         this.set('headTags', headTags);
         this.get('headTagsService').collectHeadTags();
     },
+
+    fetchWithdrawalRequest: task(function* () {
+        let withdrawalRequest = yield this.get('preprint.requests');
+        withdrawalRequest = withdrawalRequest.toArray();
+        if (withdrawalRequest.length >= 1 && withdrawalRequest[0].get('machineState') === 'pending') {
+            this.set('isPendingWithdrawal', true);
+        }
+    }),
 });
