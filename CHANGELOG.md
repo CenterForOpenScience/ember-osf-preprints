@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update preprints to use ember-cli@2.18
 
 ### Removed
-- Manual sorting of taxonomies on the discover page
+- Manual sorting of taxonomies
 
 ## [0.118.7] - 2018-06-21
 ### Added
