@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 - logic related to updating the node's license
+- branded footer line-height
 
 ## [0.120.2] - 2018-08-03
 ### Fixed
