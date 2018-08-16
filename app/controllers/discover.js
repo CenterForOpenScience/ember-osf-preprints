@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 
 import config from 'ember-get-config';
@@ -127,13 +128,14 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
 
     // TODO: Add a conversion from shareSource to provider names here if desired
     filterReplace: { // Map filter names for front-end display
-        'Open Science Framework': 'OSF',
         'Cognitive Sciences ePrint Archive': 'Cogprints',
         OSF: 'OSF Preprints',
         'Research Papers in Economics': 'RePEc',
     },
 
     queryParamsChanged: computed.or('queryParamsState.{page,sort,q,tags,sources,type,start,end,subject,provider}.changed'),
+
+    whiteListedProviders: alias('meta.whitelisted_providers'),
 
     additionalProviders: computed('themeProvider', function() {
         // for now, using this property to alter many pieces of the landing/discover page
@@ -420,6 +422,4 @@ export default Controller.extend(Analytics, discoverQueryParams.Mixin, {
             }
         }
     }).restartable(),
-
-    whiteListedProviders: config.whiteListedProviders,
 });

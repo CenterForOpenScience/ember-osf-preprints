@@ -29,6 +29,10 @@
 
 {{outlet}}
 
+{{#if (and notAuthenticated (not hasCookie))}}
+    {{cookie-banner addCookie=(action 'addCookie')}}
+{{/if}}
+
 {{#if theme.isProvider}}
     {{preprint-footer-branded model=theme.provider}}
 {{else}}

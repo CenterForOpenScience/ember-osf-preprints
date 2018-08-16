@@ -22,6 +22,8 @@ export default {
         provider_brand: '{{name}} {{documentType.pluralCapitalized}}',
         add_preprint: 'Add a {{documentType.singular}}',
         add_preprint_navbar: 'Add a {{documentType.singularCapitalized}}',
+        submit_preprint: 'Submit a {{documentType.singular}}',
+        submit_preprint_navbar: 'Submit a {{documentType.singularCapitalized}}',
         title: 'Title',
         search_preprints: 'Search {{documentType.plural}}...',
         added_on: 'Added on',
@@ -103,7 +105,8 @@ export default {
             tag: 'Tag',
             box: {
                 paragraph: 'Do you want to add your own research as a {{documentType.singular}}?',
-                button: 'Add your {{documentType.singular}}',
+                button_non_moderated: 'Add a {{documentType.singular}}',
+                button_moderated: 'Submit a {{documentType.singular}}',
             },
             results: {
                 of: 'of',
@@ -203,16 +206,13 @@ export default {
             submit: {
                 information: {
                     line1: {
-                        default: 'When you create this {{documentType.singular}}, it will be assigned a DOI and become publicly accessible via {{name}}. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.',
-                        moderation: 'When you submit this {{documentType.singular}}, it will be assigned a DOI. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.',
+                        default: 'When you add this {{documentType.singular}}, it will become publicly accessible via {{name}} and assigned a DOI. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.',
+                        pre: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. If your {{documentType.singular}} is accepted, it will become publicly accessible via {{name}} and assigned a DOI. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.',
+                        post: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. When you submit this {{documentType.singular}}, it will become publicly accessible via {{name}} and assigned a DOI. Your {{documentType.singular}} will only become private if rejected by a moderator. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.',
                     },
                     line2: {
-                        create: 'By creating this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.',
+                        create: 'By adding this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.',
                         submit: 'By submitting this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.',
-                    },
-                    line3: {
-                        pre: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore, your {{documentType.singular}} will not become publicly accessible until a moderator accepts the submission.',
-                        post: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Therefore, your {{documentType.singular}} will become publicly accessible after creation and will only become private if rejected by a moderator.',
                     },
                 },
                 invalid: {
@@ -222,12 +222,13 @@ export default {
                     upload: 'Upload',
                 },
                 submit_button: 'Submit {{documentType.singular}}',
-                create_button: 'Create {{documentType.singular}}',
+                create_button: 'Add {{documentType.singular}}',
+
             },
             edit: {
                 information: {
                     line1: {
-                        pre: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>, therefore your {{documentType.singular}} will not become publicly accessible until a moderator accepts the submission.',
+                        pre: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. If your {{documentType.singular}} is accepted, it will become publicly accessible via {{name}} and assigned a DOI.',
                         post_rejected: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. Your {{documentType.singular}} was rejected by a moderator so it will remain private.',
                     },
                     line2: {

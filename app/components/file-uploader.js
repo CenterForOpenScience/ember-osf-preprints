@@ -85,6 +85,7 @@ export default Component.extend(Analytics, {
         maxFiles: 1,
         method: 'PUT',
         uploadMultiple: false,
+        autoDiscover: false,
     },
 
     fileVersion: computed('osfFile', function() {

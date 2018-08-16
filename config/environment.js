@@ -10,9 +10,14 @@ module.exports = function(environment) {
         rootURL: '/',
         locationType: 'auto',
         authorizationType,
-        sentryDSN: 'http://test@localhost/80' || process.env.SENTRY_DSN,
+        // sentryDSN: 'http://test@localhost/80' || process.env.sentryDSN,
+        sentryDSN: null,
         sentryOptions: {
             release: process.env.GIT_COMMIT,
+            ignoreErrors: [
+                // https://github.com/emberjs/ember.js/issues/12505
+                'TransitionAborted',
+            ],
         },
         'ember-simple-auth': {
             authorizer: `authorizer:osf-${authorizationType}`,
@@ -48,7 +53,7 @@ module.exports = function(environment) {
         metricsAdapters: [
             {
                 name: 'GoogleAnalytics',
-                environments: [process.env.KEEN_ENVIRONMENT] || ['production'],
+                environments: [process.env.KEEN_ENVIRONMENT || 'production'],
                 config: {
                     id: process.env.GOOGLE_ANALYTICS_ID,
                     setFields: {
@@ -56,10 +61,15 @@ module.exports = function(environment) {
                         anonymizeIp: true,
                     },
                 },
+                dimensions: {
+                    authenticated: 'dimension1',
+                    resource: 'dimension2',
+                    isPublic: 'dimension3',
+                },
             },
             {
                 name: 'Keen',
-                environments: [process.env.KEEN_ENVIRONMENT] || ['production'],
+                environments: [process.env.KEEN_ENVIRONMENT || 'production'],
                 config: {
                     private: {
                         projectId: process.env.PREPRINTS_PRIVATE_PROJECT_ID,

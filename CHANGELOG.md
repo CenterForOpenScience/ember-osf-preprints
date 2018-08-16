@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.121.0] - 2018-08-16
+### Added
+- whitelist functionality for discover page
+- use of ember-osf `scheduled-banner` component
+- selected provider description in the provider carousel
+- use of "OSF Preprints" as provider name for OSF preprints instead of "OSF" or "Open Science Framework"
+- parameters for `authenticated`, `isPublic` and `resource` to pageView tracking
+
+### Changed
+- update preprint submission page language
+- sharing from the preprint detail view to use ember-osf sharing icons
+- environment check in `config/environment`
+
+### Fixed
+- preprint service select carousel redraw
+- correctly show parent projects in the "Choose project" dropdown
+
+### Removed
+- logic related to updating the node's license
+
 ## [0.120.2] - 2018-08-03
 ### Fixed
 - discover page loading bug
@@ -15,6 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.120.0] - 2018-07-26
 ### Added
 - Unified solution for preprint words
+- `cookie-banner` component to main application page
 
 ### Changed
 - Styling and format of the branded navbar to match current styling in ember-osf

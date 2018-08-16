@@ -22,8 +22,23 @@
                             {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=(not uploadValid) denyOpenMessage=(t 'submit.server_locked') errorAction=(action 'error')}}
                                 {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=(and providerSaved (not uploadValid)) currentProvider=currentProvider valid=(not providerChanged)}}
                                 {{#preprint-form-body}}
-                                    {{provider-carousel itemsPerSlide=10 providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider')}}
-
+                                    {{provider-carousel providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider')}}
+                                    {{#if selectedProvider}}
+                                        <div class="row">
+                                            <div style="padding: 25px 85px 15px;" class="col-md-12">
+                                                <dl class="dl-horizontal dl-description">
+                                                    <dt>
+                                                        {{#if (eq selectedProvider.name 'Open Science Framework')}}
+                                                            OSF Preprints
+                                                        {{else}}
+                                                            {{ selectedProvider.name }}
+                                                        {{/if}}
+                                                    </dt>
+                                                    <dd>{{sanitize-html selectedProvider.description}}</dd>
+                                                </dl>
+                                            </div>
+                                        </div>
+                                    {{/if}}
                                     {{#unless uploadValid}}
                                         <div class="row">
                                             <div class="col-md-12">
@@ -178,19 +193,6 @@
                                 <div class='row'>
                                     <div class='col-xs-12'>
                                         {{license-picker licenses=availableLicenses currentValues=basicsLicense showCategories=false editLicense=(action 'editLicense') allowDismiss=false autosave=true showBorder=false pressSubmit=(action 'saveBasics')}}
-                                        <br>
-                                        <div class="row">
-                                            <div class='col-xs-12'>
-                                                <label> {{t "submit.body.basics.license.apply_license_title"}} </label>
-                                                {{#if (or (not newNode) editMode)}}
-                                                    <p>{{t "submit.body.basics.license.apply_license_text" documentType=currentProvider.documentType}}</p>
-                                                {{/if}}
-                                                <span style="margin: 5px">
-                                                    <input onchange={{action 'applyLicenseToggle' true}} type="radio" checked={{applyLicense}}> Yes
-                                                    <input onchange={{action 'applyLicenseToggle' false}} type="radio" checked={{not applyLicense}}> No
-                                                </span>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <br>
@@ -299,13 +301,14 @@
                             </button>
                         </div>
                     {{else}}
-                        <p class="information">{{t generalInformation documentType=currentProvider.documentType name=providerName}}</p>
-                        <p class="information">{{t permissionInformation documentType=currentProvider.documentType name=providerName}}</p>
                         {{#if moderationType}}
                             <p class="information">
                                 {{t moderationInformation documentType=currentProvider.documentType name=providerName reviewsWorkflow=(t workflow)}}
                             </p>
+                        {{else}}
+                            <p class="information">{{t generalInformation documentType=currentProvider.documentType name=providerName}}</p>
                         {{/if}}
+                        <p class="information">{{t permissionInformation documentType=currentProvider.documentType name=providerName}}</p>
                         <div class="text-center">
                             {{#if showValidationErrors}}
                                 <span id="validation-errors">

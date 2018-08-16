@@ -30,7 +30,6 @@ const getProvidersPayload = '{"from": 0,"query": {"bool": {"must": {"query_strin
 export default Component.extend(Analytics, {
     store: service(),
     theme: service(),
-    whiteListedProviders: config.whiteListedProviders.map(item => item.toLowerCase()),
     init() {
         this._super(...arguments);
         this.set('otherProviders', []);
@@ -61,14 +60,14 @@ export default Component.extend(Analytics, {
         this.set('osfProviders', providerNames);
         return providerNames;
     },
-
     _returnResultSources(results) {
         return results.aggregations.sources.buckets;
     },
 
     _formatProviderWhitelist([osfProviders, hits]) {
         // Get the whitelist and add the OSF Providers to it
-        const whiteList = this.get('whiteListedProviders')
+        const whiteList = (this.get('whiteListedProviders') || [])
+            .map(provider => provider.toLowerCase())
             .concat(osfProviders
                 .map(osfProvider => osfProvider.toLowerCase()));
         // Filter out providers that are not on the whitelist
