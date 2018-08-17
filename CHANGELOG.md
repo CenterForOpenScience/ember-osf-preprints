@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- add `isWithdrawn` to google anlaytics pageTracking
 
 ## [0.121.0] - 2018-08-16
 ### Added
@@ -13,7 +15,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - selected provider description in the provider carousel
 - use of "OSF Preprints" as provider name for OSF preprints instead of "OSF" or "Open Science Framework"
 - parameters for `authenticated`, `isPublic` and `resource` to pageView tracking
-- add `isWithdrawn` to google anlaytics pageTracking
 
 ### Changed
 - update preprint submission page language
