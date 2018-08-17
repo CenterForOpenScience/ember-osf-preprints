@@ -5,21 +5,54 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.121.0] - 2018-08-16
 ### Added
-- Whitelist functionality for discover page
-- Unified solution for preprint words
+- whitelist functionality for discover page
 - use of ember-osf `scheduled-banner` component
-- Selected provider description in the provider carousel
+- selected provider description in the provider carousel
 - use of "OSF Preprints" as provider name for OSF preprints instead of "OSF" or "Open Science Framework"
 - parameters for `authenticated`, `isPublic` and `resource` to pageView tracking
 - add `isWithdrawn` to google anlaytics pageTracking
 
 ### Changed
+- update preprint submission page language
+- sharing from the preprint detail view to use ember-osf sharing icons
+- environment check in `config/environment`
+
+### Fixed
+- preprint service select carousel redraw
+- correctly show parent projects in the "Choose project" dropdown
+
+### Removed
+- logic related to updating the node's license
+
+## [0.120.2] - 2018-08-03
+### Fixed
+- discover page loading bug
+
+## [0.120.1] - 2018-07-27
+### Fixed
+- IE/Edge preprint error
+
+## [0.120.0] - 2018-07-26
+### Added
+- Unified solution for preprint words
+- `cookie-banner` component to main application page
+
+### Changed
 - Styling and format of the branded navbar to match current styling in ember-osf
 - Reduced number of calls to the `preprints_provider` endpoint
-- Update preprint submission page language.
 - Update preprints to work with a new unified version of ember-osf (works with both preprints and reviews apps)
 - Update preprints to use ember-cli@2.18
+
+## [0.119.0] - 2018-07-16
+### Added
+- Hypothes.is commenting toggle
+
+## [0.118.8] - 2018-07-11
+### Changed
+- Updated to use latest provider assets
 
 ## [0.118.7] - 2018-06-21
 ### Added
@@ -29,9 +62,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Updated to use latest provider assets
 
-### Removed
-- Remove logic related to updating the node's license
-
 ## [0.118.5] - 2018-04-27
 ### Changed
 - Updated to use latest provider assets
@@ -39,7 +69,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.118.4] - 2018-04-05
 ### Fixed
 - Automatic opening of upload section on branded provider submit page
-- Correctly show parent projects in the "Choose project" dropdown
 
 ### Removed
 - Unused image code

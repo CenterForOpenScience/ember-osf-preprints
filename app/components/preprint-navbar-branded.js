@@ -11,8 +11,8 @@ import config from 'ember-get-config';
  */
 
 const SUBMIT_LABEL = {
-    none: 'global.add_preprint',
-    moderated: 'global.submit_preprint',
+    none: 'global.add_preprint_navbar',
+    moderated: 'global.submit_preprint_navbar',
 };
 
 /**
