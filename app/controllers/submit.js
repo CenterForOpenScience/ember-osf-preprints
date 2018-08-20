@@ -936,10 +936,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Search for Authors`,
                 });
             return this.store.query('search-users', {
-                // Stupid hack. This is technically lucene but people don't care if it is
-                // lucene when searching for collabs (and we don't want to explain lucene here).
-                // So this makes search similar to how it worked when it was done through filters
-                q: `*${query}*`,
+                q: this._processQuery(query),
                 page,
             })
                 .then(this._setContributorSearchResults.bind(this))
@@ -1355,6 +1352,18 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     _setAvailableLicense(licenses) {
         this.set('availableLicenses', licenses);
         this.set('basicsLicense.licenseType', this.get('availableLicenses.firstObject'));
+    },
+
+    _escapeLucene(string) {
+        return string.replace(/([!*+&|()[\]{}^~?:"])/g, '\\$1');
+    },
+
+    _processQuery(query) {
+        // Takes a contributor query and process it to send to the api:
+        // Input: "nick cage"
+        // Output: "nick*~ AND cage*~"
+        // this output maps to how api v1 search users worked before (escape lucene, etc)
+        return query.split(/[\s-]+/).map(p => `${this._escapeLucene(p)}*~`).join(' AND ');
     },
 
     clearFields() {
