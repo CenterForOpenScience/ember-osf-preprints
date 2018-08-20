@@ -27,7 +27,7 @@ import Analytics from 'ember-osf/mixins/analytics';
 export default Component.extend(Analytics, {
     _resizeListener: null,
     // Pass in preprint providers
-    itemsPerSlide: 5,
+    itemsPerSlide: 10,
     // Default
     lightLogo: true,
     selectable: false,

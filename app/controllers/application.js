@@ -34,7 +34,7 @@ export default Controller.extend(OSFAgnosticAuthControllerMixin, {
             // Make new cookie with expiration date 10 years in future
             const CookieDate = new Date();
             CookieDate.setFullYear(CookieDate.getFullYear() + 10);
-            document.cookie = `osf_cookieconsent=1;expires=${CookieDate.toGMTString()};`;
+            document.cookie = `osf_cookieconsent=1;path=/;expires=${CookieDate.toGMTString()};`;
             this.set('hasCookie', true);
         },
     },

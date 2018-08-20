@@ -17,9 +17,15 @@ test('it renders', function (assert) {
     this.set('provider5', EmberObject.create({ id: 'osf' }));
     this.set('provider6', EmberObject.create({ id: 'testprovider' }));
     this.set('provider7', EmberObject.create({ id: 'testprovider2' }));
+    this.set('provider8', EmberObject.create({ id: 'testprovider3' }));
+    this.set('provider9', EmberObject.create({ id: 'testprovider4' }));
+    this.set('provider10', EmberObject.create({ id: 'testprovider5' }));
+    this.set('provider11', EmberObject.create({ id: 'testprovider6' }));
 
     this.set('providers', [this.get('provider1'), this.get('provider2'), this.get('provider3'),
-        this.get('provider4'), this.get('provider5'), this.get('provider6'), this.get('provider7')]);
+        this.get('provider4'), this.get('provider5'), this.get('provider6'), this.get('provider7'),
+        this.get('provider8'), this.get('provider9'), this.get('provider10'), this.get('provider11'),
+    ]);
     this.render(hbs`{{provider-carousel
       providers=providers
     }}`);
