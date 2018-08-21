@@ -26,6 +26,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - subject filters breaking page when adding/editing preprints
 
+### Removed
+- Remove margin hack to fix navbar on smaller screens
+
+### Changed
+- Moved some navbar styling to `osf-style`
+
 ## [0.121.0] - 2018-08-16
 ### Added
 - whitelist functionality for discover page
