@@ -23,7 +23,7 @@
 {{else}}
     {{!UPLOAD NEW FILE SECTION}}
     {{#preprint-form-section editMode=editMode class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}
-        {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" 'uploadNewFile')}}
+        {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" 'uploadNewFile') currentProvider=provider}}
         {{#preprint-form-body}}
             {{#if nodeLocked}}
                 <p class='text-muted m-v-sm text-smaller'> {{t "components.file-uploader.update_version" documentType=provider.documentType}}</p>
@@ -57,7 +57,7 @@
         {{#if nodeLocked}}
             {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
             {{#preprint-form-section editMode=editMode class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}}
-                {{preprint-form-header title=title name='title_of_preprint' showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" 'titleOfPreprint')}}
+                {{preprint-form-header title=title name='title_of_preprint' showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" 'titleOfPreprint') currentProvider=provider}}
                 {{#preprint-form-body}}
                     <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project" documentType=provider.documentType) (t "components.preprint-form-project-select.edit_preprint_title_component" documentType=provider.documentType)}} </label>
                     <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Edit title') (action 'track' 'input' 'onchange' 'Submit - Edit title')}}>
@@ -73,7 +73,7 @@
         {{else}}
             {{!ORGANIZE DECISION SECTION}}
             {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
-                {{preprint-form-header provider=provider name='organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false}}
+                {{preprint-form-header name='organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false currentProvider=provider}}
                 {{#preprint-form-body}}
                     {{convert-or-copy-project documentType=provider.documentType nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy title=title node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
                 {{/preprint-form-body}}
@@ -81,7 +81,7 @@
             {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
                 {{!FINALIZE UPLOAD SECTION - NEW FILE}}
                 {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
-                    {{preprint-form-header name='finalize_upload' title=title showValidationIndicator=false}}
+                    {{preprint-form-header name='finalize_upload' title=title showValidationIndicator=false currentProvider=provider}}
                     {{#preprint-form-body}}
                         {{#if (eq convertOrCopy 'convert')}}
                             {{#if convertProjectConfirmed}}

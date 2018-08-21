@@ -4,7 +4,11 @@
        type="button" class="btn btn-success btn-lg"
        invokeAction=(action 'click' 'button' 'Discover - Add Preprint')
     }}
-        {{t "discover.main.box.button" documentType=provider.documentType}}
+        {{#if theme.provider.reviewsWorkflow}}
+            {{t "discover.main.box.button_moderated" documentType=provider.documentType}}
+        {{else}}
+            {{t "discover.main.box.button_non_moderated" documentType=provider.documentType}}
+        {{/if}}
     {{/link-to}}
 </div>
 

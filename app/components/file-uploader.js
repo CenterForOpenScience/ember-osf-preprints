@@ -73,7 +73,6 @@ export default Component.extend(Analytics, {
     i18n: service(),
     store: service(),
     toast: service(),
-    raven: service(),
     panelActions: service('panelActions'),
 
     State,
@@ -315,7 +314,7 @@ export default Component.extend(Analytics, {
                             return this.get('abandonedPreprint') ? this.sendAction('resumeAbandonedPreprint') : this.sendAction('startPreprint', this.get('parentNode'));
                         }
                     })
-                    .catch((error) => {
+                    .catch(() => {
                         this.get('toast').error(this.get('i18n').t(
                             'components.file-uploader.preprint_file_error',
                             {
@@ -323,7 +322,6 @@ export default Component.extend(Analytics, {
                             },
                         ));
                         this.set('uploadInProgress', false);
-                        this.get('raven').captureMessage('Could not create component', { extra: { error } });
                     });
                 /* eslint-enable ember/closure-actions,ember/named-functions-in-promises */
             } else {
@@ -396,10 +394,9 @@ export default Component.extend(Analytics, {
         this.set('applyLicense', true);
     },
 
-    _failCreateNewProject(error) {
+    _failCreateNewProject() {
         this.set('uploadInProgress', false);
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_project'));
-        this.get('raven').captureMessage('Could not create project', { extra: { error } });
     },
 
     _createComponent(child) {
@@ -413,24 +410,22 @@ export default Component.extend(Analytics, {
         this.set('applyLicense', true);
     },
 
-    _failCreateComponent(error) {
+    _failCreateComponent() {
         this.set('uploadInProgress', false);
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_component'));
-        this.get('raven').captureMessage('Could not create component', { extra: { error } });
     },
 
     _sendToUpload() {
         this.send('upload');
     },
 
-    _failUpdateTitle(error) {
+    _failUpdateTitle() {
         const node = this.get('node');
         const currentNodeTitle = this.get('currentNodeTitle');
 
         node.set('title', currentNodeTitle);
         this.set('uploadInProgress', false);
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
-        this.get('raven').captureMessage('Could not update title', { extra: { error } });
     },
 
     _failUploadFile() {

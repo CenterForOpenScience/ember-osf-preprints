@@ -76,31 +76,6 @@ export default CpPanelComponent.extend(Analytics, {
             } else {
                 this.sendAction('errorAction', this.denyOpenMessage); // eslint-disable-line ember/closure-actions
             }
-        } else {
-            /* Manual animation
-             * Can be omitted if using {{cp-panel-body}} instead of {{preprint-form-body}} because
-             * cp-panel-body uses liquid-if for animation. preprint-form-body purposely avoids
-             * liquid-if because liquid-if will cause elements to be removed from DOM.
-             * This is can cause some information to be lost (e.g. dropzone state).
-             */
-            if (this.get('animate')) {
-                return;
-            }
-            const $body = this.$('.cp-Panel-body');
-            if (this.get('isOpen')) {
-                $body.height('auto');
-                $body.height($body.height());
-                $body.one('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', () => {
-                    $body.addClass('no-transition');
-                    $body.height('');
-                    $body.removeClass('no-transition');
-                });
-            } else {
-                $body.addClass('no-transition');
-                $body.height($body.height());
-                $body.removeClass('no-transition');
-                $body.height('');
-            }
         }
     },
 });

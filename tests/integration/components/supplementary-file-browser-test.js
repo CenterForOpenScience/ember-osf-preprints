@@ -1,9 +1,19 @@
 import { A } from '@ember/array';
-import { resolve } from 'rsvp';
+import RSVP, { resolve } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
+import Service from '@ember/service';
 import ArrayProxy from '@ember/array/proxy';
 import hbs from 'htmlbars-inline-precompile';
 import EmberObject from '@ember/object';
+
+const themeStub = Service.extend({
+    isProvider: true,
+    provider: RSVP.resolve(EmberObject.create({
+        name: 'OSF',
+        allowCommenting: false,
+        additionalProviders: ['Other Provider'],
+    })),
+});
 
 moduleForComponent('supplementary-file-browser', 'Integration | Component | supplementary file browser', {
     integration: true,
@@ -40,6 +50,9 @@ moduleForComponent('supplementary-file-browser', 'Integration | Component | supp
             id: 890,
         });
         const dualTrackNonContributors = () => {};
+
+        this.register('service:theme', themeStub);
+        this.inject.service('theme');
 
         this.set('preprint', preprint);
         this.set('node', node);

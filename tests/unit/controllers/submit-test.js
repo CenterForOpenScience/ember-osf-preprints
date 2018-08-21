@@ -52,7 +52,6 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'service:theme',
         'service:toast',
         'service:i18n',
-        'service:raven',
         'model:review-action',
         'model:file',
         'model:file-version',
@@ -538,8 +537,7 @@ test('licenseChanged with no model set', function(assert) {
             copyrightHolders: 'Sally Ride',
             licenseType: $.extend(true, {}, license),
         };
-        // TODO is below assertion correct?
-        assert.equal(ctrl.get('licenseChanged'), true);
+        assert.equal(ctrl.get('licenseChanged'), false);
         assert.equal(ctrl.get('basicsLicense.licenseType.name'), null);
         ctrl.set('basicsLicense', basicsLicense);
         assert.equal(ctrl.get('licenseChanged'), true);
