@@ -328,6 +328,20 @@ $logo-dir: 'img/provider_logos/';
             min-height: 100px;
         }
     }
+    .license-text {
+        pre {
+            white-space: pre-wrap;
+            font-size: 75%;
+            border:none;
+            width:100%;
+            text-align:justify;
+            max-height: 300px;
+            word-break: break-word;
+        }
+        span {
+            cursor: pointer;
+        }
+    }
 }
 
 /* Moderation */
