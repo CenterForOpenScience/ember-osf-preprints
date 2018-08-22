@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - add `isWithdrawn` to google anlaytics pageTracking
 
+### Fixed
+- word break in license text
+
 ## [0.121.0] - 2018-08-16
 ### Added
 - whitelist functionality for discover page
