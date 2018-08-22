@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - word break in license text
 
+### Removed
+- branded footer line-height
+
 ## [0.121.0] - 2018-08-16
 ### Added
 - whitelist functionality for discover page
@@ -30,7 +33,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 - logic related to updating the node's license
-- branded footer line-height
 
 ## [0.120.2] - 2018-08-03
 ### Fixed
