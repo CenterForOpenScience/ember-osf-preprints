@@ -935,7 +935,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Search for Authors`,
                 });
-            return this.store.query('search-users', {
+            return this.store.query('user', {
                 q: this._processQuery(query),
                 page,
             })
