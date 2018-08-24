@@ -1,6 +1,7 @@
 import { inject as service } from '@ember/service';
 import { run } from '@ember/runloop';
 import EmberRouter from '@ember/routing/router';
+import { getOwner } from '@ember/application';
 
 import config from 'ember-get-config';
 
@@ -28,6 +29,7 @@ const Router = EmberRouter.extend({
             const {
                 authenticated,
                 isPublic,
+                isWithdrawn,
                 resource,
             } = config.metricsAdapters[0].dimensions;
 
@@ -37,9 +39,30 @@ const Router = EmberRouter.extend({
             const publicType = title.endsWith('content.index') ? 'public' : 'n/a';
             const modelType = title.endsWith('content.index') ? 'preprint' : 'n/a';
 
+            const controllerPathArr = title.split('.');
+            let controllerPath = null;
+
+            if (controllerPathArr.indexOf('provider') !== -1) {
+                controllerPath = controllerPathArr.slice(1).join('.');
+            } else {
+                controllerPath = controllerPathArr.join('.');
+            }
+
+            const model = getOwner(this).lookup(`controller:${controllerPath}`).model || null;
+            let withdrawn = 'n/a';
+
+            if (model && this.currentRouteName.endsWith('content.index')) {
+                if (model.get('dateWithdrawn') !== null) {
+                    withdrawn = 'True';
+                } else {
+                    withdrawn = 'False';
+                }
+            }
+
             this.get('metrics').trackPage({
                 [authenticated]: isAuthenticated ? 'Logged in' : 'Logged out',
                 [isPublic]: publicType,
+                [isWithdrawn]: withdrawn,
                 page,
                 [resource]: modelType,
                 title,

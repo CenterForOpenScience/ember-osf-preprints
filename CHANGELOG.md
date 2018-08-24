@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- add `isWithdrawn` to google anlaytics pageTracking
+
+### Fixed
+- word break in license text
+
+### Removed
+- Manual sorting of taxonomies
 
 ## [0.121.0] - 2018-08-16
 ### Added

@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import EmberObject, { computed } from '@ember/object';
-import { sort, notEmpty } from '@ember/object/computed';
+import { notEmpty } from '@ember/object/computed';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
 import $ from 'jquery';
@@ -19,7 +19,6 @@ function arrayStartsWith(arr, prefix) {
 const Column = EmberObject.extend({
     filterText: '',
     selection: null,
-    subjectsSorted: sort('subjectsFiltered', 'sortDefinition'),
     subjectsFiltered: computed('subjects.[]', 'filterText', function() {
         const filterTextLowerCase = this.get('filterText').toLowerCase();
         const subjects = this.get('subjects');
@@ -32,7 +31,6 @@ const Column = EmberObject.extend({
     }),
     init() {
         this._super(...arguments);
-        this.set('sortDefinition', ['text:asc']);
         this.set('subjects', []);
     },
 });
