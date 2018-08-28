@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - word break in license text
 
 ### Removed
+- branded footer line-height
 - Manual sorting of taxonomies
 
 ## [0.121.0] - 2018-08-16
