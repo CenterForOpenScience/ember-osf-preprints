@@ -7,12 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - add `isWithdrawn` to google anlaytics pageTracking
+- contributor query using elastic endpoint
 
 ### Fixed
 - word break in license text
 
 ### Removed
 - branded footer line-height
+- Manual sorting of taxonomies
 
 ## [0.121.0] - 2018-08-16
 ### Added
