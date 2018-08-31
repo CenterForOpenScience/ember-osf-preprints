@@ -48,7 +48,8 @@ const Router = EmberRouter.extend({
                 controllerPath = controllerPathArr.join('.');
             }
 
-            const model = getOwner(this).lookup(`controller:${controllerPath}`).model || null;
+            const ctrl = getOwner(this).lookup(`controller:${controllerPath}`);
+            const model = ctrl ? ctrl.model : null;
             let withdrawn = 'n/a';
 
             if (model && this.currentRouteName.endsWith('content.index')) {
