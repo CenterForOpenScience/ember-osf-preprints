@@ -1025,6 +1025,32 @@ hr {
         background: #D8D8D8;
         font-size: 2em;
     }
+
+    .file-versions-dropdown-menu {
+        background-color: $color-bg-default;
+
+        a {
+            color: inherit;
+            display: flex;
+            justify-content: space-between;
+            background: transparent;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li a:hover {
+            background-color: $color-border-gray-light;
+            text-decoration: none;
+        }
+    }
+
+    .scrollable-menu {
+        height: auto;
+        max-height: 200px;
+        overflow-x: hidden;
+    }
+
 }
 
 .file-browser {
@@ -1247,12 +1273,33 @@ label.title-label {
     text-align: right;
 }
 
+.current-version {
+    text-align: right;
+}
+
+/* Remove gutters between bootstrap cols */
+.row.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.row.no-gutters > [class^="col-"],
+.row.no-gutters > [class*=" col-"] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+@media (max-width: 1199.98px) {
+
+      .supplemental-downloads {
+          float: none !important;
+          text-align: inherit !important;
+      }
+}
+
 @media (max-width: 768px) {
     .edit-button-and-logo {
         padding-top: 20px;
-    }
-    .supplemental-downloads {
-        float: none !important;
     }
     .preprint-image {
         margin-top: 0 !important;
