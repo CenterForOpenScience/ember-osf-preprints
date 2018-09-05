@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - add `isWithdrawn` to google anlaytics pageTracking
+- ability to download previous preprint (primary file) versions
 - contributor query using elastic endpoint
 
 ### Fixed

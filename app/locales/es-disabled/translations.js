@@ -364,6 +364,7 @@ export default {
         },
         'supplementary-file-browser': {
             primary: 'Primario',
+            download_previous_versions: 'Descargar versiones anteriores',
         },
         'permission-language': {
             arxivTrademarkLicense,
