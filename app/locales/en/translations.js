@@ -386,7 +386,7 @@ export default {
             toggle: 'Toggle navigation',
         },
         'preprint-navbar-branded': {
-            my_projects: 'My OSF Projects',
+            my_preprints: 'My Preprints',
             headline: 'On the OSF',
             reviews: 'My Reviewing',
             donate: 'Donate',
