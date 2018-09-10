@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - add `isWithdrawn` to google anlaytics pageTracking
 - ability to download previous preprint (primary file) versions
 - contributor query using elastic endpoint
+- `My Preprints` link to the branded navbar
 
 ### Fixed
 - word break in license text
@@ -16,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Removed
 - branded footer line-height
 - Manual sorting of taxonomies
+- `My OSF Projects` from the branded navbar
 
 ## [0.121.0] - 2018-08-16
 ### Added
