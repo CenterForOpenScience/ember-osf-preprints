@@ -45,6 +45,7 @@ export default {
     content: {
         header: {
             last_edited: 'Last edited',
+             authors_label: 'Authors',
         },
         date_label: {
             created_on: 'Created on',
@@ -67,9 +68,10 @@ export default {
         original_publication_date: 'Original publication date',
         citations: 'Citations',
         disciplines: 'Disciplines',
+        supplemental_materials: {
+            title: 'Supplemental Materials',
+        },
         project_button: {
-            paragraph: 'The project for this {{documentType.singular}} is available on the OSF.',
-            button: 'Visit project',
             edit_preprint: 'Edit {{documentType.singular}}',
             edit_resubmit_preprint: 'Edit and resubmit',
         },
@@ -172,10 +174,8 @@ export default {
         submit_heading: 'Submit {{documentType.singularCapitalized}}',
         edit_heading: 'Edit {{documentType.singularCapitalized}}',
         body: {
-            p_add: 'For each section below, "Save and continue" will update your {{documentType.singular}}\'s associated OSF project.',
-            p_edit: 'For each section below, "Save and continue" will update your {{documentType.singular}} and the associated OSF project.',
-            upload: 'Upload new {{documentType.singular}}',
-            connect: 'Connect {{documentType.singular}} to existing OSF project',
+            upload: 'Select a file from your computer',
+            connect: 'Select a file from an existing OSF project',
             subjects_description: 'Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.',
             remove_subject_aria: 'Remove subject',
             basics: {
@@ -295,6 +295,7 @@ export default {
             title_placeholder: 'Enter {{documentType.singular}} title',
             update_version: 'Update {{documentType.singular}} file version.  File must have the same name as the original.',
             could_not_create_project: 'Could not create project. Please try again.',
+            could_not_create_preprint: 'Could not create preprint. Please try again.',
             could_not_create_component: 'Could not create component. Please try again.',
             could_not_update_title: 'Could not update title. Please try again.',
             version_error: 'This is not a version of the current {{documentType.singular}} file.',
@@ -373,10 +374,8 @@ export default {
             existing_project_selector: 'The list of projects appearing in the selector are projects and components for which you have admin access.  Registrations are not included here.',
             upload_preprint: 'Upload {{documentType.singular}}',
             select_existing_file: 'Select existing file as {{documentType.singular}}',
-            edit_preprint_title_project: 'Edit {{documentType.singular}} title (will also become the name of the project)',
+            edit_preprint_title_project: 'Edit {{documentType.singular}} title',
             edit_preprint_title_component: 'Edit {{documentType.singular}} title (will also become the name of the component)',
-            initiate_preprint_process: 'You have selected and organized your {{documentType.singular}} file. Clicking "Save and continue" will immediately make changes to your OSF project. You will not be able to delete your {{documentType.singular}} file, but you will be able to update or modify it.',
-            edit_organize_section: 'Edits to this {{documentType.singular}} will update both the {{documentType.singular}} and the OSF project.',
             admin_only: 'You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.',
         },
         'preprint-form-section': {

@@ -29,11 +29,8 @@ import { task, timeout } from 'ember-concurrency';
  *      finishUpload=(action 'finishUpload')
  *     clearDownstreamFields=(action 'clearDownstreamFields')
  *     nextUploadSection=(action 'nextUploadSection')
- *     existingNodeExistingFile=(action 'existingNodeExistingFile')
- *     createComponentCopyFile=(action "createComponentCopyFile")
  *     selectFile=(action "selectExistingFile")
  *     highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
- *     startPreprint=(action 'startPreprint')
  *     discardUploadChanges=(action 'discardUploadChanges')
  *     startState=_State.START
  *     existingState=existingState
@@ -49,19 +46,13 @@ import { task, timeout } from 'ember-concurrency';
  *     contributors=contributors
  *     fileSelect=true
  *     currentState=filePickerState
- *     parentNode=parentNode
- *     convertProjectConfirmed=convertProjectConfirmed
  *     userNodesLoaded=userNodesLoaded
- *     convertOrCopy=convertOrCopy
- *     isTopLevelNode=isTopLevelNode
  *     nodeLocked=nodeLocked
  *     osfStorageProvider=osfStorageProvider
  *     osfProviderLoaded=osfProviderLoaded
  *     titleValid=titleValid
  *     uploadChanged=uploadChanged
  *     uploadInProgress=uploadInProgress
- *     abandonedPreprint=abandonedPreprint
- *     resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
  *     basicsAbstract=basicsAbstract
  *     editMode=editMode
  *     newNode=newNode
@@ -116,7 +107,7 @@ export default Component.extend(Analytics, {
             this.attrs.clearDownstreamFields('belowNode');
             this.set('selectedNode', node);
             this.set('osfProviderLoaded', false);
-            this.send('changeExistingState', this.get('_existingState').CHOOSE);
+            this.send('changeExistingState', this.get('_existingState').EXISTINGFILE);
             this.get('selectedNode.files').then(this._setStorageProvider.bind(this));
             this.attrs.nextUploadSection('chooseProject', 'chooseFile');
             this.get('metrics')
@@ -126,14 +117,13 @@ export default Component.extend(Analytics, {
                     label: 'Submit - Choose Project',
                     extra: node.id,
                 });
-            this.getNodePreprints(node);
-            this.getContributors(node);
+            this.getProjectContributors(node);
         },
         selectFile(file) {
             // Select existing file from file-browser
             this.attrs.clearDownstreamFields('belowFile');
+            this.attrs.nextUploadSection('selectExistingFile', 'finalizeUpload');
             this.attrs.selectFile(file);
-            this.attrs.nextUploadSection('selectExistingFile', 'organize');
             this.get('metrics')
                 .trackEvent({
                     category: 'file browser',
@@ -181,7 +171,6 @@ export default Component.extend(Analytics, {
         const currentUser = this.get('currentUser');
         const results = yield loadPage(currentUser, 'nodes', 10, 1, {
             filter: {
-                preprint: false,
                 title: searchTerm,
             },
             embed: 'parent',
@@ -205,7 +194,6 @@ export default Component.extend(Analytics, {
         const nextPage = currentPage + 1;
         const results = yield loadPage(currentUser, 'nodes', 10, nextPage, {
             filter: {
-                preprint: false,
                 title: searchTerm,
             },
             embed: 'parent',

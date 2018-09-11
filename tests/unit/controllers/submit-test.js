@@ -778,51 +778,6 @@ skip('finishUpload', function(assert) {
     });
 });
 
-skip('existingNodeExistingFile', function(assert) {
-    // TODO Many actions get called by this action. Sending POST to localhost:7357/nodeTags
-    // Getting Assertion Failed: You can only unload a record which is not inFlight
-    this.inject.service('store');
-    const { store } = this;
-    const ctrl = this.subject();
-
-    const node = store.createRecord('node', {
-        title: 'hello',
-        // tags: ['first tag'],
-        description: 'The best abstract',
-    });
-
-    run(() => {
-        ctrl.set('nodeTitle', 'New title');
-        ctrl.set('node', node);
-
-        ctrl.send('existingNodeExistingFile');
-
-        run.next(() => {
-            assert.equal(ctrl.get('node.title'), 'New title');
-            assert.equal(ctrl.get('basicsAbstract'), node.get('description'));
-        });
-    });
-});
-
-
-skip('createComponentCopyFile', function() {
-    // TODO - same error with You can only unload a record which is not inFlight.
-    // Assert that node has a child
-    this.inject.service('store');
-    const { store } = this;
-    const ctrl = this.subject();
-    run(() => {
-        const node = store.createRecord('node', {
-            title: 'hello',
-            tags: ['first tag'],
-            description: 'The best abstract',
-        });
-        ctrl.set('nodeTitle', 'New title');
-        ctrl.set('node', node);
-        ctrl.send('createComponentCopyFile');
-    });
-});
-
 skip('resumeAbandonedPreprint', function() {
     // TODO class startPreprint, which haven't figured out how to test yet
 });

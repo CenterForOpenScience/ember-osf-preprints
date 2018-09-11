@@ -66,6 +66,10 @@ export default Controller.extend(Analytics, {
     facebookAppId: computed('model', function() {
         return this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
     }),
+    supplementalMaterialDisplayLink: computed('node.links.html', function() {
+        const supplementalLink = this.get('node.links.html');
+        return supplementalLink.replace(/^https?:\/\//i, '');
+    }),
     dateLabel: computed('model.provider.reviewsWorkflow', function() {
         return this.get('model.provider.reviewsWorkflow') === PRE_MODERATION ?
             DATE_LABEL.submitted :
@@ -86,9 +90,9 @@ export default Controller.extend(Analytics, {
         ) ? editResubmitPreprint : editPreprint;
     }),
 
-    isAdmin: computed('node', function() {
+    isAdmin: computed('model', function() {
         // True if the current user has admin permissions for the node that contains the preprint
-        return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
+        return (this.get('model.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
 
     userIsContrib: computed('authors.[]', 'isAdmin', 'currentUser.currentUserId', function() {
@@ -103,10 +107,9 @@ export default Controller.extend(Analytics, {
         return false;
     }),
 
-    showStatusBanner: computed('model.{provider.reviewsWorkflow,reviewsState}', 'userIsContrib', 'node.public', function() {
+    showStatusBanner: computed('model.{provider.reviewsWorkflow,reviewsState}', 'userIsContrib', function() {
         return (
             this.get('model.provider.reviewsWorkflow')
-            && this.get('node.public')
             && this.get('userIsContrib')
             && this.get('model.reviewsState') !== INITIAL
         );

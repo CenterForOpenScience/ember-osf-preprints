@@ -72,9 +72,6 @@
                     id="author-popover">
                 </i>
             </span>
-            {{#if (and (gt numParentContributors 1) (not parentContributorsAdded))}}
-                <button class="btn btn-default pull-right" {{action 'addContributorsFromParentProject'}}> <i class="fa fa-plus icon-large small"></i> <em class="small"> {{t "components.preprint-form-authors.authors.parent_contributors"}} </em> </button>
-            {{/if}}
         </div>
         <p class="drag-drop small"> {{t "components.preprint-form-authors.authors.order_instructions"}} </p>
         <div class="panel-body">

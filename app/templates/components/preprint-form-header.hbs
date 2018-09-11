@@ -34,9 +34,6 @@
 
 {{#if (and (not isOpen) (eq name 'Upload'))}}
     <div class="m-t-md preprint-header-preview">
-        {{#if preprintNode}}
-            <p><em class="m-r-md"> {{t "components.preprint-form-header.location" documentType=currentProvider.documentType}}: </em> {{get-ancestor-descriptor preprintNode}} {{preprintNode.title}}</p>
-        {{/if}}
         {{#if preprintFile}}
             <p><em class="m-r-md"> {{t "components.preprint-form-header.file" documentType=currentProvider.documentType}}: </em> {{preprintFile.name}} <em>(Version: {{preprintFile.currentVersion}})</em>  </p>
         {{/if}}
@@ -89,12 +86,6 @@
             {{/if}}
         {{/if}}
 
-        {{#if (eq name 'location_of_preprint')}}
-            {{#if node}}
-                <p class='text-muted'> <span class='lock-span p-r-xs'><i class='fa fa-lock'></i></span> {{get-ancestor-descriptor node}} {{node.title}} </p>
-            {{/if}}
-        {{/if}}
-
         {{#if (eq name 'choose_project')}}
             {{#if selectedNode}}
                 <p> {{selectedNode.title}} </p>
@@ -112,24 +103,6 @@
                 {{#if file}}
                     <p> {{file.name}} </p>
                 {{/if}}
-            {{/if}}
-        {{/if}}
-
-        {{#if (eq name 'organize')}}
-            {{#if (eq convertOrCopy 'convert')}}
-                <p>
-                    {{#if isTopLevelNode}}
-                        {{t "global.convert_project" documentType=currentProvider.documentType}}
-                    {{else}}
-                        {{t "global.convert_component" documentType=currentProvider.documentType}}
-                    {{/if}}
-                </p>
-            {{/if}}
-
-            {{#if (eq convertOrCopy 'copy')}}
-                <p>
-                    {{t "global.copy_inside_project" documentType=currentProvider.documentType}}
-                </p>
             {{/if}}
         {{/if}}
 

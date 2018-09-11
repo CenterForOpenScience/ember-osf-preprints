@@ -13,9 +13,6 @@
     <div class="container">
         <div class="row m-t-lg">
             <div class="col-xs-12 col-md-10 col-md-offset-1 ">
-                <p class="instructions">
-                    {{if editMode (t "submit.body.p_edit" documentType=currentProvider.documentType) (t "submit.body.p_add" documentType=currentProvider.documentType name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}
-                </p>
                 {{#cp-panels accordion=true}}
                     {{#if (not (or editMode theme.isProvider))}}
                         {{#with _names.[0] as |name|}}
@@ -66,17 +63,17 @@
                             errorAction=(action 'error')
                             as |hasOpened|
                         }}
-                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged) currentProvider=currentProvider}}
+                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprint=model preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=model.title valid=(not uploadChanged) currentProvider=currentProvider}}
                             {{#preprint-form-body}}
                                 {{#liquid-bind filePickerState class='translate' as |currentState|}}
                                     <div class={{currentState}}>
                                         {{#if (eq currentState _State.START)}}
                                             <div class="row">
                                                 <div class="col-xs-6">
-                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.NEW}}>{{t "submit.body.upload" documentType=currentProvider.documentType}}</button>
+                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.NEW}}>{{t "submit.body.upload"}}</button>
                                                 </div>
                                                 <div class="col-xs-6">
-                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.EXISTING}}>{{t "submit.body.connect" documentType=currentProvider.documentType}}</button>
+                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.EXISTING}}>{{t "submit.body.connect"}}</button>
                                                 </div>
                                             </div>
                                         {{else if (eq currentState _State.NEW)}}
@@ -87,7 +84,7 @@
                                                 nextUploadSection=(action 'nextUploadSection')
                                                 startPreprint=(action 'startPreprint')
                                                 discardUploadChanges=(action 'discardUploadChanges')
-                                                newNodeNewFile=true
+                                                newPreprintFile=true
                                                 startState=_State.START
                                                 existingState=existingState
                                                 _existingState=_existingState
@@ -97,21 +94,16 @@
                                                 hasFile=hasFile
                                                 file=file
                                                 node=node
-                                                parentNode=parentNode
-                                                convertProjectConfirmed=convertProjectConfirmed
-                                                convertOrCopy=convertOrCopy
-                                                isTopLevelNode=isTopLevelNode
+                                                model=model
                                                 nodeLocked=nodeLocked
                                                 titleValid=titleValid
                                                 uploadChanged=uploadChanged
                                                 uploadInProgress=uploadInProgress
-                                                abandonedPreprint=abandonedPreprint
-                                                resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
                                                 basicsAbstract=basicsAbstract
                                                 editMode=editMode
                                                 newNode=newNode
                                                 applyLicense=applyLicense
-                                                getContributors=(action 'getContributors')
+                                                getProjectContributors=(action 'getProjectContributors')
                                                 provider=currentProvider
                                             }}
                                         {{else if (eq currentState _State.EXISTING)}}
@@ -120,8 +112,6 @@
                                               finishUpload=(action 'finishUpload')
                                               clearDownstreamFields=(action 'clearDownstreamFields')
                                               nextUploadSection=(action 'nextUploadSection')
-                                              existingNodeExistingFile=(action 'existingNodeExistingFile')
-                                              createComponentCopyFile=(action "createComponentCopyFile")
                                               selectFile=(action "selectExistingFile")
                                               highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
                                               startPreprint=(action 'startPreprint')
@@ -140,26 +130,20 @@
                                               contributors=contributors
                                               fileSelect=true
                                               currentState=filePickerState
-                                              parentNode=parentNode
-                                              convertProjectConfirmed=convertProjectConfirmed
                                               userNodesLoaded=userNodesLoaded
-                                              convertOrCopy=convertOrCopy
-                                              isTopLevelNode=isTopLevelNode
                                               nodeLocked=nodeLocked
                                               osfStorageProvider=osfStorageProvider
                                               osfProviderLoaded=osfProviderLoaded
                                               titleValid=titleValid
                                               uploadChanged=uploadChanged
                                               uploadInProgress=uploadInProgress
-                                              abandonedPreprint=abandonedPreprint
-                                              resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
                                               basicsAbstract=basicsAbstract
                                               editMode=editMode
                                               newNode=newNode
                                               applyLicense=applyLicense
-                                              getNodePreprints=(action 'getNodePreprints')
-                                              getContributors=(action 'getContributors')
+                                              getProjectContributors=(action 'getProjectContributors')
                                               provider=currentProvider
+                                              createPreprintCopyFile=(action 'createPreprintCopyFile')
                                               }}
                                         {{/if}}
                                     </div>
@@ -247,8 +231,8 @@
                                 </p>
                                 {{preprint-form-authors
                                     contributors=contributors
-                                    parentContributors=parentContributors
                                     node=node
+                                    model=model
                                     isAdmin=isAdmin
                                     canEdit=canEdit
                                     currentUser=user
@@ -260,7 +244,6 @@
                                     editContributor=(action 'updateContributor')
                                     reorderContributors=(action 'reorderContributors')
                                     highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
-                                    parentNode=parentNode
                                     editMode=editMode
                                     documentType=currentProvider.documentType
                                 }}

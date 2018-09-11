@@ -295,10 +295,26 @@ $logo-dir: 'img/provider_logos/';
         padding-top: 40px;
     }
     .view-authors {
-        color: white;
+       color: white;
+       padding-bottom: 15px;
         a {
-            color: #6dd1de;
-        }
+           color: #6dd1de;
+       }
+    }
+    .detail-header-info {
+       font-size: 14px;
+       display: flex;
+        .detail-header-item {
+           margin-right: 25px;
+       }
+        a {
+           color: #6dd1de;
+       }
+    }
+    .detail-header-label {
+       font-size: 11px;
+       text-transform: uppercase;
+       padding-bottom: 2px;
     }
     .round-btn {
         border-radius: 25px;

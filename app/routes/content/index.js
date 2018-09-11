@@ -122,7 +122,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         this.set('node', node);
 
         if (this.get('editMode')) {
-            const userPermissions = this.get('node.currentUserPermissions') || [];
+            const userPermissions = this.get('preprint.currentUserPermissions') || [];
 
             if (!userPermissions.includes(permissions.ADMIN)) {
                 this.replaceWith('forbidden'); // Non-admin trying to access edit form.
@@ -133,7 +133,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
             provider,
             node,
             preprint.get('license'),
-            loadAll(node, 'contributors', contributors, { filter: { bibliographic: true } }),
+            loadAll(preprint, 'contributors', contributors, { filter: { bibliographic: true } }),
         ]);
     },
 

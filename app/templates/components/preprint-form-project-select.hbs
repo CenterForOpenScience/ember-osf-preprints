@@ -1,12 +1,5 @@
 {{#cp-panels accordion=true}}
-    {{#if nodeLocked}}
-        {{!PROJECT LOCKED (EDIT MODE)}}
-        {{#preprint-form-section class="upload-section-block" allowOpen=false name='locationOfPreprint' open=false}}
-            {{preprint-form-header id='locked-section' name='location_of_preprint' node=node selectedNode=selectedNode showValidationIndicator=false currentProvider=provider}}
-            {{#preprint-form-body}}
-            {{/preprint-form-body}}
-        {{/preprint-form-section}}
-    {{else}}
+    {{#unless nodeLocked}}
         {{!CHOOSE PROJECT SECTION}}
         {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}}
             {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
@@ -21,129 +14,77 @@
                 </p>
             {{/preprint-form-body}}
         {{/preprint-form-section}}
-    {{/if}}
-    {{#if selectedNode}}
-        {{#if isAdmin}}
-            {{!FILE DECISION SECTION - UPLOAD OR CHOOSE EXISTING}}
-            {{#if (and fileSelect (eq existingState _existingState.CHOOSE))}}
-                {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseFile' open=false}}
-                    {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false}}
-                    {{#preprint-form-body}}
-                        <form class="form">
-                            <div class="toggle-button">
-                                <div class="row">
-                                    <div class="col-xs-6 col-sm-3 col-sm-offset-3 text-center">
-                                        <input id='existing' class="radio_item" onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
-                                        <label for="existing" class='choose-large'><i class="fa fa-cloud-upload"></i> {{t "components.preprint-form-project-select.upload_preprint" documentType=provider.documentType}}</label>
-                                    </div>
-                                    <div class="col-xs-6 col-sm-3 text-center">
-                                        <input id='newfile' class="radio_item" onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
-                                        <label class='choose-large' for="newfile"><i class="fa fa-th-list"></i>{{t "components.preprint-form-project-select.select_existing_file" documentType=provider.documentType}}</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    {{/preprint-form-body}}
-                {{/preprint-form-section}}
-            {{/if}}
-            {{#if (eq existingState _existingState.EXISTINGFILE)}}
+    {{/unless}}
+    {{#if (eq existingState _existingState.EXISTINGFILE)}}
+        {{#if selectedNode}}
+            {{#if isAdmin}}
                 <div>
                     {{#if osfProviderLoaded}}
                         {{!CHOOSE EXISTING FILE SECTION}}
                         {{#preprint-form-section class="upload-section-block" allowOpen=true name='selectExistingFile' open=false}}
                             {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false}}
                             {{#preprint-form-body}}
-                                <div class="m-t-sm">
-                                    <form class="form">
-                                        <div class="toggle-button">
-                                            <input id='existing' onchange={{action 'changeExistingState' _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
-                                            <label for="existing"><i class="fa fa-cloud-upload"></i> </label>
-
-                                            <input id='newfile' onchange={{action 'changeExistingState' _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
-                                            <label for="newfile"><i class="fa fa-th-list"></i> </label>
-                                        </div>
-                                    </form>
-                                </div>
                                 {{old-file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                         {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-                            {{!ORGANIZE DECISION SECTION}}
-                            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
-                                {{preprint-form-header isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy name='organize' showValidationIndicator=false currentProvider=provider}}
+                            {{!FINALIZE UPLOAD SECTION - EXISTING FILE}}
+                            {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
+                                {{preprint-form-header title=title name='finalize_upload' showValidationIndicator=false currentProvider=provider}}
                                 {{#preprint-form-body}}
-                                    {{convert-or-copy-project documentType=provider.documentType nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields title=title node=node isTopLevelNode=isTopLevelNode titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed convertOrCopy=convertOrCopy}}
+                                    <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Connect preprint to existing project'}}>
+                                        {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action createPreprintCopyFile name)}}
+                                    </form>
+                                    <div class="text-center m-v-md">
+                                        <button class="btn btn-primary" disabled={{or (not (and selectedFile titleValid))}} {{action createPreprintCopyFile}}>{{t "submit.body.save_continue"}}</button>
+                                    </div>
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
-                            {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
-                                {{!FINALIZE UPLOAD SECTION - EXISTING FILE}}
-                                {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
-                                    {{preprint-form-header title=title name='finalize_upload' showValidationIndicator=false currentProvider=provider}}
-                                    {{#preprint-form-body}}
-                                        {{#if (eq convertOrCopy 'convert')}}
-                                            {{#if convertProjectConfirmed}}
-                                                <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project" documentType=provider.documentType) (t "components.preprint-form-project-select.edit_preprint_title_component" documentType=provider.documentType)}} </label>
-                                            {{/if}}
-                                        {{/if}}
-                                        <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Connect preprint to existing project'}}>
-                                            {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name)}}
-                                        </form>
-                                        <div class="text-center m-v-md">
-                                            <p> {{t "components.preprint-form-project-select.initiate_preprint_process" documentType=provider.documentType}} </p>
-                                            <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and selectedFile titleValid))}} {{action (if (eq convertOrCopy 'convert') existingNodeExistingFile createComponentCopyFile) name}}>{{t "submit.body.save_continue"}}</button>
-                                        </div>
-                                    {{/preprint-form-body}}
-                                {{/preprint-form-section}}
-                            {{/if}}
                         {{/if}}
                     {{/if}}
                 </div>
-            {{else if (eq existingState _existingState.NEWFILE)}}
-                {{file-uploader
-                    changeInitialState=changeInitialState
-                    nextUploadSection=nextUploadSection
-                    changeExistingState=(action "changeExistingState")
-                    isTopLevelNode=isTopLevelNode
-                    finishUpload=finishUpload
-                    startPreprint=startPreprint
-                    startState=startState
-                    title=title
-                    currentUser=currentUser
-                    osfFile=selectedFile
-                    hasFile=hasFile
-                    file=file
-                    contributors=contributors
-                    model=model
-                    node=node
-                    selectedNode=selectedNode
-                    parentNode=parentNode
-                    convertProjectConfirmed=convertProjectConfirmed
-                    convertOrCopy=convertOrCopy
-                    existingState=existingState
-                    _existingState=_existingState
-                    isTopLevelNode=isTopLevelNode
-                    clearDownstreamFields=clearDownstreamFields
-                    nodeLocked=nodeLocked
-                    titleValid=titleValid
-                    uploadChanged=uploadChanged
-                    discardUploadChanges=discardUploadChanges
-                    uploadInProgress=uploadInProgress
-                    abandonedPreprint=abandonedPreprint
-                    resumeAbandonedPreprint=resumeAbandonedPreprint
-                    basicsAbstract=basicsAbstract
-                    editMode=editMode
-                    applyLicense=applyLicense
-                    newNode=newNode
-                    provider=provider
-                }}
-            {{/if}}
-        {{else}}
-            {{#if (not-eq currentState 'start')}}
-                <p class="alert alert-danger" role="alert">
-                    {{t "components.preprint-form-project-select.admin_only"}}
-                </p>
+            {{else}}
+                {{#if (not-eq currentState 'start')}}
+                    <p class="alert alert-danger" role="alert">
+                        {{t "components.preprint-form-project-select.admin_only"}}
+                    </p>
+                {{/if}}
             {{/if}}
         {{/if}}
+    {{else if (eq existingState _existingState.NEWFILE)}}
+        {{file-uploader
+            changeInitialState=changeInitialState
+            nextUploadSection=nextUploadSection
+            changeExistingState=(action "changeExistingState")
+            finishUpload=finishUpload
+            startPreprint=startPreprint
+            startState=startState
+            title=title
+            currentUser=currentUser
+            osfFile=selectedFile
+            hasFile=hasFile
+            file=file
+            contributors=contributors
+            model=model
+            node=node
+            selectedNode=selectedNode
+            parentNode=parentNode
+            existingState=existingState
+            _existingState=_existingState
+            clearDownstreamFields=clearDownstreamFields
+            nodeLocked=nodeLocked
+            titleValid=titleValid
+            uploadChanged=uploadChanged
+            discardUploadChanges=discardUploadChanges
+            uploadInProgress=uploadInProgress
+            abandonedPreprint=abandonedPreprint
+            resumeAbandonedPreprint=resumeAbandonedPreprint
+            basicsAbstract=basicsAbstract
+            editMode=editMode
+            applyLicense=applyLicense
+            newNode=newNode
+            provider=provider
+        }}
     {{/if}}
 {{/cp-panels}}
 {{#unless nodeLocked}}

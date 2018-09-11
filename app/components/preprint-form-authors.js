@@ -33,7 +33,6 @@ import Analytics from 'ember-osf/mixins/analytics';
  *    editContributor=(action 'updateContributor')
  *    reorderContributors=(action 'reorderContributors')
  *    highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
- *    parentNode=parentNode
  *    editMode=editMode
 }}
  * ```
@@ -67,13 +66,6 @@ export default CpPanelBodyComponent.extend(Analytics, {
     // contributors are emailed as soon as they are added to preprint.
     sendEmail: computed('editMode', function() {
         return this.get('editMode') ? 'preprint' : false;
-    }),
-    numParentContributors: computed('parentNode', function() {
-        if (this.get('parentNode')) {
-            return this.get('parentNode').get('contributors').get('length');
-        } else {
-            return 0;
-        }
     }),
     // Total contributor search results
     totalSearchResults: computed('searchResults.[]', function() {
@@ -129,39 +121,15 @@ export default CpPanelBodyComponent.extend(Analytics, {
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Add Author`,
                 });
             this.set('user', user);
-            this.attrs.addContributor(user.id, 'write', true, this.get('sendEmail'), undefined, undefined, true)
+            this.get('model').addContributor(user.id, 'write', true, this.get('sendEmail'), undefined, undefined, true)
                 .then(this._addContributor.bind(this))
                 .catch(this._failAddContributor.bind(this));
-        },
-        // Adds all contributors from parent project to current component
-        // as long as they are not current contributors
-        addContributorsFromParentProject() {
-            this.get('metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: 'Submit - Bulk Add Contributors From Parent',
-                });
-            this.set('parentContributorsAdded', true);
-            const contributorsToAdd = A();
-            this.get('parentContributors').toArray().forEach((contributor) => {
-                if (this.get('currentContributorIds').indexOf(contributor.get('userId')) === -1) {
-                    contributorsToAdd.push({
-                        permission: contributor.get('permission'),
-                        bibliographic: contributor.get('bibliographic'),
-                        userId: contributor.get('userId'),
-                    });
-                }
-            });
-            this.attrs.addContributors(contributorsToAdd, this.get('sendEmail'))
-                .then(this._addContributorsFromParent.bind(this))
-                .catch(this._failAddContributorsFromParent.bind(this));
         },
         // Adds unregistered contributor, then clears form and switches back to search view.
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
             if (fullName && email) {
-                const res = this.attrs.addContributor(null, 'write', true, this.get('sendEmail'), fullName, email, true);
+                const res = this.get('model').addContributor(null, 'write', true, this.get('sendEmail'), fullName, email, true);
                 res.then((contributor) => {
                     this.get('contributors').pushObject(contributor);
                     this.toggleAuthorModification();
@@ -206,7 +174,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
 
             this.set('contributor', contrib);
 
-            this.attrs.removeContributor(contrib)
+            this.model.removeContributor(contrib)
                 .then(this._removeContributor.bind(this))
                 .catch(this._failRemoveContributor.bind(this));
         },
@@ -223,10 +191,35 @@ export default CpPanelBodyComponent.extend(Analytics, {
             this.set('contributor', contributor);
             this.set('permission', permission);
 
-            this.attrs.editContributor(contributor, permission, '')
+            this.get('model').updateContributor(contributor, permission, '')
                 .then(this._modifyAuthorPermission.bind(this))
                 .catch(this._failModifyAuthorPermission.bind(this));
         },
+        // Adds all contributors from parent project to current component
+        // as long as they are not current contributors
+        addContributorsFromParentProject() {
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Submit - Bulk Add Contributors From Parent',
+                });
+            this.set('parentContributorsAdded', true);
+            const contributorsToAdd = A();
+            this.get('parentContributors').toArray().forEach((contributor) => {
+                if (this.get('currentContributorIds').indexOf(contributor.get('userId')) === -1) {
+                    contributorsToAdd.push({
+                        permission: contributor.get('permission'),
+                        bibliographic: contributor.get('bibliographic'),
+                        userId: contributor.get('userId'),
+                    });
+                }
+            });
+            this.get('model').addContributors(contributorsToAdd, this.get('sendEmail'))
+                .then(this._addContributorsFromParent.bind(this))
+                .catch(this._failAddContributorsFromParent.bind(this));
+        },
+
         // Updates contributor then redraws contributor list view - updating contributor
         // bibliographic info may change which additional update/remove requests are permitted.
         updateBibliographic(contributor, isBibliographic) {
@@ -238,7 +231,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                     action: 'select',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Update Bibliographic Author`,
                 });
-            this.attrs.editContributor(contributor, '', isBibliographic)
+            this.get('model').updateContributor(contributor, '', isBibliographic)
                 .then(this._successUpdateCitation.bind(this))
                 .catch(this._failUpdateCitation.bind(this));
         },

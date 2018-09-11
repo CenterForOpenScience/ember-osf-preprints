@@ -9,6 +9,9 @@
                 <div class="col-xs-12 col-sm-10">
                     <h1 id="preprintTitle" class="p-b-md">{{model.title}}</h1>
                     <h5 class="view-authors">
+                        <div class="detail-header-label">
+                            <strong>{{t "content.header.authors_label"}}</strong>
+                        </div>
                         <ul class="comma-list">
                             {{#if authors}}
                                 {{#each authors as |author| ~}}
@@ -21,14 +24,38 @@
                                     {{/if}}
                                 {{~/each}}
                             {{else}}
-                                <div>
-                                    {{fa-icon 'spinner' pulse=true size=2}}
+                                <div class="ball-pulse ball-dark">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
                                 </div>
                             {{/if}}
                         </ul>
                     </h5>
-                    <h6 class='preprint-added-on'>
-                        {{t dateLabel}}: {{moment-format relevantDate "MMMM DD, YYYY"}} | {{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}}
+                    <h6 class="detail-header-info">
+                        <div class="detail-header-item">
+                            <div class="detail-header-label">
+                                <strong>{{t dateLabel}}</strong>
+                            </div>
+                            {{moment-format relevantDate "MMMM DD, YYYY"}}
+                        </div>
+                        <div class={{if node "detail-header-item" ""}}>
+                            <div class="detail-header-label">
+                                <strong>{{t "content.header.last_edited"}}</strong>
+                            </div>
+                            {{moment-format model.dateModified "MMMM DD, YYYY"}}
+                        </div>
+                        {{#if node}}
+                            <div>
+                                <div class="detail-header-label">
+                                    <strong>{{t "content.supplemental_materials.title"}}</strong>
+                                </div>
+                                <a href={{node.links.html}} target="_blank" rel="noopener noreferrer" onclick={{action "click" "link" "Content - Visit Project" node.id}}>
+                                    {{supplementalMaterialDisplayLink}}
+                                    <i class="fa fa-external-link" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        {{/if}}
                     </h6>
                 </div>
                 <div class="col-xs-12 col-sm-2 edit-button-and-logo text-center">
@@ -64,12 +91,6 @@
                         {{t "content.orphan_preprint"}}
                     </div>
                 {{else}}
-                    {{#if (not node.public)}}
-                        <div class="alert alert-danger m-r-md" role="alert">
-                            {{t "content.private_preprint_warning" documentType=model.provider.documentType}} <a href={{node.links.html}}>{{model.title}} </a> {{t "content.public"}}.
-                        </div>
-                    {{/if}}
-                    {{supplementary-file-browser provider=model.provider chosenFile=chosenFile preprint=model node=node projectURL=node.links.html chooseFile=(action 'chooseFile') dualTrackNonContributors=(action 'dualTrackNonContributors')}}
                     <button class="expand-mfr-carrot hidden-xs hidden-sm" {{action 'expandMFR'}}>
                         <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                     </button>
@@ -113,7 +134,7 @@
                                 <p> {{t "content.preprint_pending_doi_minted"}} </p>
                             {{/if}}
                         {{else}}
-                            {{#if (not node.public)}}
+                            {{#if (not model.public)}}
                                 {{t 'content.preprint_pending_doi' documentType=model.provider.documentType }}
                             {{else if (and model.provider.reviewsWorkflow (not model.isPublished))}}
                                 {{t 'content.preprint_pending_doi_moderation'}}
@@ -174,18 +195,6 @@
                     <div class="p-t-xs m-b-lg">
                         <h4 class="p-v-md f-w-md"><strong>{{t "content.citations"}}</strong></h4>
                         {{citation-widget node=model}}
-                    </div>
-
-                    {{!PROJECT BUTTON}}
-                    <div class="p-lg osf-box-lt row project-box">
-                        <div class="col-xs-6 text-center">
-                            <div class="content-provider-logo provider-osf-dark"
-                                 title={{t "global.open_science_framework"}}></div>
-                        </div>
-                        <div class="col-xs-6 text-left">
-                            <p class="f-w-xs">{{t "content.project_button.paragraph" documentType=model.provider.documentType}}</p>
-                            <a type="button" class="btn btn-info" href={{node.links.html}} onclick={{action "click" "link" "Content - Visit Project" node.id}}>{{t "content.project_button.button"}}</a>
-                        </div>
                     </div>
                 </div>
                 {{!END RIGHT SIDE COL}}

@@ -81,9 +81,10 @@ export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, Setu
         const controller = this.controllerFor('submit');
         this.set('node', node);
         controller.set('node', node);
-        controller.send('getContributors', node);
+        controller.set('model', this.get('preprint'));
+        controller.send('getPreprintContributors');
 
-        const userPermissions = this.get('node.currentUserPermissions') || [];
+        const userPermissions = this.get('preprint.currentUserPermissions') || [];
 
         if (!userPermissions.includes(permissions.ADMIN)) {
             this.replaceWith('forbidden'); // Non-admin trying to access edit form.
