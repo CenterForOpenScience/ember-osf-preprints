@@ -1,5 +1,5 @@
 {{#cp-panels accordion=true}}
-    {{#unless nodeLocked}}
+    {{#unless preprintLocked}}
         {{!CHOOSE PROJECT SECTION}}
         {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}}
             {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
@@ -22,7 +22,7 @@
                     {{#if osfProviderLoaded}}
                         {{!CHOOSE EXISTING FILE SECTION}}
                         {{#preprint-form-section class="upload-section-block" allowOpen=true name='selectExistingFile' open=false}}
-                            {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false}}
+                            {{preprint-form-header name=(if preprintLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false}}
                             {{#preprint-form-body}}
                                 {{old-file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
                             {{/preprint-form-body}}
@@ -72,7 +72,7 @@
             existingState=existingState
             _existingState=_existingState
             clearDownstreamFields=clearDownstreamFields
-            nodeLocked=nodeLocked
+            preprintLocked=preprintLocked
             titleValid=titleValid
             uploadChanged=uploadChanged
             discardUploadChanges=discardUploadChanges
@@ -82,12 +82,11 @@
             basicsAbstract=basicsAbstract
             editMode=editMode
             applyLicense=applyLicense
-            newNode=newNode
             provider=provider
         }}
     {{/if}}
 {{/cp-panels}}
-{{#unless nodeLocked}}
+{{#unless preprintLocked}}
     <div class="p-t-xs">
         <button class="btn btn-default" {{action changeInitialState startState}}>{{t "global.back"}}</button>
     </div>

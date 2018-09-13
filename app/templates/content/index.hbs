@@ -39,7 +39,7 @@
                             </div>
                             {{moment-format relevantDate "MMMM DD, YYYY"}}
                         </div>
-                        <div class={{if node "detail-header-item" ""}}>
+                        <div class={{if model "detail-header-item" ""}}>
                             <div class="detail-header-label">
                                 <strong>{{t "content.header.last_edited"}}</strong>
                             </div>
@@ -95,6 +95,14 @@
                         <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                     </button>
                 {{/if}}
+                <div id='preprint-file-view'>
+                    {{#file-renderer
+                        download=model.primaryFile.links.download
+                        allowCommenting=allowCommenting
+                        width="99%"
+                        height="700"}}
+                    {{/file-renderer}}
+                </div>
             </div>
             {{!END LEFT COL DIV}}
             {{#unless fullScreenMFR}}

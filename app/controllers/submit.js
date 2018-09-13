@@ -154,9 +154,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     userNodesLoaded: false,
 
     _State: State,
-    // Project states - new project or existing project
-    newNode: false,
-
     // Information about the thing to be turned into a preprint
     node: null,
     // Project or component containing the preprint
@@ -166,8 +163,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // File that will be the preprint (already uploaded to node or selected from existing node)
     title: '',
     // Preprint title
-    nodeLocked: false,
-    // the node is locked.  Is True on Edit.
+    preprintLocked: false,
+    // the preprint is locked.  Is True on Edit.
     searchResults: [],
     // List of users matching search query
     savingPreprint: false,
@@ -227,7 +224,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     // In order to advance from upload state, node and selectedFile must
     // have been defined, and title must be set.
-    uploadValid: alias('nodeLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
+    uploadValid: alias('preprintLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: alias('validations.attrs.basicsAbstract.isValid'),
 
     doiValid: alias('validations.attrs.basicsDOI.isValid'),
@@ -594,10 +591,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         finishUpload() {
             // Locks node so that preprint location cannot be modified.
             // Occurs after upload step is complete.
-            // In editMode, nodeLocked is set to true.
+            // In editMode, preprintLocked is set to true.
             // Locks node and advances to next form section.
             this.setProperties({
-                nodeLocked: true,
+                preprintLocked: true,
                 file: null,
             });
             // Closes section, so all panels closed if Upload section revisited
@@ -653,7 +650,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         // all fields downstream of that section need to clear.
         clearDownstreamFields(section) {
             // Only clear downstream fields in Add mode!
-            if (this.get('nodeLocked')) { return; }
+            if (this.get('preprintLocked')) { return; }
 
             const props = [];
 
@@ -1111,7 +1108,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.set('selectedFile', copiedFile);
         const model = this.get('model');
         model.set('primaryFile', this.get('selectedFile'));
-        this.set('newNode', true);
         return model.save()
             .then(this._finishUpload.bind(this))
             .catch(this._failedUpload.bind(this));
@@ -1276,7 +1272,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             contributors: A(),
             projectContributors: A(),
             title: '',
-            nodeLocked: false, // Will be set to true if edit?
+            preprintLocked: false, // Will be set to true if edit?
             searchResults: [],
             savingPreprint: false,
             showModalSharePreprint: false,
@@ -1300,7 +1296,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             basicsLicense: null,
             subjectsList: A(),
             availableLicenses: A(),
-            newNode: false,
             attemptedSubmit: false,
         }));
     },

@@ -63,6 +63,12 @@ export default Controller.extend(Analytics, {
     hyperlink: computed('model', function() {
         return window.location.href;
     }),
+    fileDownloadURL: computed('model', function() {
+        return fileDownloadPath(this.get('model.primaryFile'), this.get('model'));
+    }),
+    allowCommenting: computed('model.provider', 'model', function() {
+        return this.get('model.provider').get('allowCommenting') && this.get('model.isPublished');
+    }),
     facebookAppId: computed('model', function() {
         return this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
     }),

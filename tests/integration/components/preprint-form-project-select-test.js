@@ -28,7 +28,7 @@ test('isAdmin computed to false shows warning', function(assert) {
         changeInitialState=(action noop)
         finishUpload=(action noop)
         selectedNode=selectedNode
-        nodeLocked=true
+        preprintLocked=true
         highlightSuccessOrFailure=(action noop)
     }}`);
     assert.ok(!this.$('.alert-danger').length);
@@ -40,7 +40,7 @@ test('isAdmin computed to false shows warning', function(assert) {
         changeInitialState=(action noop)
         finishUpload=(action noop)
         selectedNode=selectedNode
-        nodeLocked=true
+        preprintLocked=true
         highlightSuccessOrFailure=(action noop)
     }}`);
     assert.ok(this.$('.alert-danger').length);

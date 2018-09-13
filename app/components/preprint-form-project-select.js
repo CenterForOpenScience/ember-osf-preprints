@@ -47,7 +47,7 @@ import { task, timeout } from 'ember-concurrency';
  *     fileSelect=true
  *     currentState=filePickerState
  *     userNodesLoaded=userNodesLoaded
- *     nodeLocked=nodeLocked
+ *     preprintLocked=preprintLocked
  *     osfStorageProvider=osfStorageProvider
  *     osfProviderLoaded=osfProviderLoaded
  *     titleValid=titleValid
@@ -55,7 +55,6 @@ import { task, timeout } from 'ember-concurrency';
  *     uploadInProgress=uploadInProgress
  *     basicsAbstract=basicsAbstract
  *     editMode=editMode
- *     newNode=newNode
  *     applyLicense=applyLicense
  * }}
  * @class preprint-form-project-select

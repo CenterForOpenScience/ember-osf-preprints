@@ -63,7 +63,7 @@
                             errorAction=(action 'error')
                             as |hasOpened|
                         }}
-                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprint=model preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=model.title valid=(not uploadChanged) currentProvider=currentProvider}}
+                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprint=model preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode preprintLocked hasOpened) preprintTitle=model.title valid=(not uploadChanged) currentProvider=currentProvider}}
                             {{#preprint-form-body}}
                                 {{#liquid-bind filePickerState class='translate' as |currentState|}}
                                     <div class={{currentState}}>
@@ -95,13 +95,12 @@
                                                 file=file
                                                 node=node
                                                 model=model
-                                                nodeLocked=nodeLocked
+                                                preprintLocked=preprintLocked
                                                 titleValid=titleValid
                                                 uploadChanged=uploadChanged
                                                 uploadInProgress=uploadInProgress
                                                 basicsAbstract=basicsAbstract
                                                 editMode=editMode
-                                                newNode=newNode
                                                 applyLicense=applyLicense
                                                 getProjectContributors=(action 'getProjectContributors')
                                                 provider=currentProvider
@@ -131,7 +130,7 @@
                                               fileSelect=true
                                               currentState=filePickerState
                                               userNodesLoaded=userNodesLoaded
-                                              nodeLocked=nodeLocked
+                                              preprintLocked=preprintLocked
                                               osfStorageProvider=osfStorageProvider
                                               osfProviderLoaded=osfProviderLoaded
                                               titleValid=titleValid
@@ -139,7 +138,6 @@
                                               uploadInProgress=uploadInProgress
                                               basicsAbstract=basicsAbstract
                                               editMode=editMode
-                                              newNode=newNode
                                               applyLicense=applyLicense
                                               getProjectContributors=(action 'getProjectContributors')
                                               provider=currentProvider

@@ -73,7 +73,6 @@ test('it renders', function(assert) {
     this.render(hbs`{{supplementary-file-browser
         preprint=preprint
         node=node
-        hasAdditionalFiles=false    
         dualTrackNonContributors=(action dualTrackNonContributors)
     }}`);
     assert.equal(this.$('.osf-box').length, 0);
@@ -86,7 +85,6 @@ test('has additional files', function(assert) {
     this.render(hbs`{{supplementary-file-browser
         preprint=preprint
         node=node
-        hasAdditionalFiles=true
         hasPrev=true
         hasNext=true
         dualTrackNonContributors=(action dualTrackNonContributors)

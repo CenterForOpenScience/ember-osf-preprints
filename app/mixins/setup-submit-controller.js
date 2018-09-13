@@ -44,7 +44,7 @@ export default Mixin.create({
         controller.set('existingState', 'new'); // In edit mode, only option to change file is to upload a NEW file
         controller.set('node', node);
         controller.set('title', model.get('title'));
-        controller.set('nodeLocked', true);
+        controller.set('preprintLocked', true);
         controller.set('titleValid', true);
         model.get('primaryFile').then(this._setSelectedFile.bind(this));
         this.get('panelActions').close('Upload');

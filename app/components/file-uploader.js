@@ -51,13 +51,12 @@ import { State } from '../controllers/submit';
  *   hasFile=hasFile
  *   file=file
  *   node=node
- *   nodeLocked=nodeLocked
+ *   preprintLocked=preprintLocked
  *   titleValid=titleValid
  *   uploadChanged=uploadChanged
  *   uploadInProgress=uploadInProgress
  *   basicsAbstract=basicsAbstract
  *   editMode=editMode
- *   newNode=newNode
  *   applyLicense=applyLicense
 }}
  * @class file-uploader
@@ -181,9 +180,9 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('nodeLocked') ? 'Save File/Title Edits' : 'Existing Node New File'}`,
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('preprintLocked') ? 'Save File/Title Edits' : 'Existing Node New File'}`,
                 });
-            if (this.get('nodeLocked')) { // Edit mode
+            if (this.get('preprintLocked')) { // Edit mode
                 this.set('uploadInProgress', true);
             }
 
@@ -233,7 +232,7 @@ export default Component.extend(Analytics, {
         preUpload(_, dropzone, file) {
             // preUpload or "stage" file. Has yet to be uploaded to node.
             this.set('uploadInProgress', false);
-            if (this.get('nodeLocked')) { // Edit mode
+            if (this.get('preprintLocked')) { // Edit mode
                 if (file.name !== this.get('osfFile.name')) { // Invalid File - throw error.
                     this.send('mustModifyCurrentPreprintFile');
                 } else { // Valid file - can be staged.
@@ -281,7 +280,7 @@ export default Component.extend(Analytics, {
                         // Set current version:
                         // will revert if user uploaded a new version of the same file
                         this.set('fileVersion', resp.data.attributes.extra.version);
-                        if (this.get('nodeLocked')) { // Edit mode
+                        if (this.get('preprintLocked')) { // Edit mode
                             if (this.get('osfFile.currentVersion') !== resp.data.attributes.extra.version) {
                                 this.get('toast').info(this.get('i18n').t(
                                     'components.file-uploader.preprint_file_updated',
@@ -349,7 +348,7 @@ export default Component.extend(Analytics, {
 
             if (this.get('newPreprintFile')) {
                 eventData.label = 'Submit - Drop File, New Node';
-            } else if (this.get('nodeLocked')) {
+            } else if (this.get('preprintLocked')) {
                 eventData.label = `${this.get('editMode') ? 'Edit' : 'Submit'} - Drop File, New Version`;
             } else {
                 eventData.label = 'Submit - Drop File, Existing Node';
@@ -360,7 +359,7 @@ export default Component.extend(Analytics, {
     },
 
     _setUploadProperties(files) {
-        if (this.get('nodeLocked')) { // Edit mode, fetch URL for uploading new version
+        if (this.get('preprintLocked')) { // Edit mode, fetch URL for uploading new version
             this.send('uploadNewVersionUrl', files);
         } else { // Add mode, fetch URL for uploading new file
             this.send('uploadNewFileUrl', files);
@@ -372,7 +371,6 @@ export default Component.extend(Analytics, {
         this.set('node', node);
         this.getProjectContributors(node);
         this.send('upload');
-        this.set('newNode', true);
         this.set('applyLicense', true);
     },
 

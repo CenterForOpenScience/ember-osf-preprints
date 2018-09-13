@@ -105,13 +105,12 @@ test('Initial properties', function (assert) {
         'userNodes.length': 0,
         userNodesLoaded: false,
         'availableLicenses.length': 0,
-        newNode: false,
         node: null,
         file: null,
         selectedFile: null,
         'contributors.length': 0,
         title: '',
-        nodeLocked: false,
+        preprintLocked: false,
         'searchResults.length': 0,
         savingPreprint: false,
         showModalSharePreprint: false,
@@ -175,7 +174,7 @@ test('hasFile computed property', function(assert) {
 test('uploadValid computed property', function(assert) {
     const ctrl = this.subject();
     assert.equal(ctrl.get('uploadValid'), false);
-    ctrl.set('nodeLocked', true);
+    ctrl.set('preprintLocked', true);
     assert.equal(ctrl.get('uploadValid'), true);
 });
 
@@ -766,12 +765,12 @@ skip('changeInitialState', function(assert) {
 
 skip('finishUpload', function(assert) {
     const ctrl = this.subject();
-    assert.equal(ctrl.get('nodeLocked'), false);
+    assert.equal(ctrl.get('preprintLocked'), false);
 
     run(() => {
         ctrl.send('finishUpload');
 
-        assert.equal(ctrl.get('nodeLocked'), true);
+        assert.equal(ctrl.get('preprintLocked'), true);
         assert.equal(ctrl.get('file'), null);
 
         run.cancelTimers();
