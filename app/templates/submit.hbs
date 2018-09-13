@@ -53,9 +53,8 @@
 
                     {{#with _names.[1] as |name|}}
                         {{#preprint-form-section
-                            id='preprint-form-upload'
                             editMode=editMode
-                            class="preprint-form-block"
+                            class="preprint-form-block preprint-form-upload"
                             name=name
                             allowOpen=(or providerSaved editMode)
                             open=(and theme.isProvider (not editMode))
@@ -245,6 +244,47 @@
                                     editMode=editMode
                                     documentType=currentProvider.documentType
                                 }}
+                            {{/preprint-form-body}}
+                        {{/preprint-form-section}}
+                    {{/with}}
+                    {{#with _names.[5] as |name|}}
+                        {{#preprint-form-section editMode=editMode class="preprint-form-block preprint-form-upload"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProject=supplementalProject name=name valid=(not supplementalChanged) isValidationActive=hasOpened}}
+                            {{#preprint-form-body}}
+                                <p class="m-b-lg text-smaller">{{t "submit.body.supplemental_description"}}</p>
+
+                                {{#liquid-bind supplementalPickerState class='translate' as |supplementalState|}}
+                                    <div class={{supplementalState}}>
+                                        {{#if (eq supplementalState _State.START)}}
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.NEW}}>{{t "submit.body.supplemental_new_project"}}</button>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.EXISTING}}>{{t "submit.body.supplemental_connect_existing"}}</button>
+                                                </div>
+                                            </div>
+                                        {{else if (eq supplementalState _State.NEW)}}
+                                            <h1> TODO: Creating a project/uploading files to project will be added here. </h1>
+                                        {{else if (eq supplementalState _State.EXISTING)}}
+                                            {{preprint-form-project-select
+                                              changeSupplementalPickerState=(action 'changeSupplementalPickerState')
+                                              saveSupplementalProject=(action 'saveSupplementalProject')
+                                              currentUser=user
+                                              model=model
+                                              supplementalProject=supplementalProject
+                                              selectedSupplementalProject=selectedSupplementalProject
+                                              currentState=supplementalState
+                                              userNodesLoaded=userNodesLoaded
+                                              preprintLocked=preprintLocked
+                                              editMode=editMode
+                                              supplementalChanged=supplementalChanged
+                                              chooseSupplementalProject=true
+                                              startState=_State.START
+                                              }}
+                                        {{/if}}
+                                    </div>
+                                {{/liquid-bind}}
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}

@@ -85,6 +85,28 @@
             provider=provider
         }}
     {{/if}}
+    {{#if chooseSupplementalProject}}
+        {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseSupplementalProject' open=true}}
+            {{#preprint-form-body}}
+                <div class="m-t-sm">
+                    {{#power-select search=(perform _getInitialUserNodes) optionsComponent=(component 'lazy-options' loadMore=(action "getMoreUserNodes") isLoading=isLoading canLoadMore=canLoadMore) oninput=(action "getDefaultUserNodes") onfocus=(action "onFocus") onblue=(action "onBlur") options=userNodes placeholder="Click to select" selected=selectedSupplementalProject onchange=(action "supplementalProjectSelected") as |node|}}
+                        {{get-ancestor-descriptor node}} <strong> {{node.title}}</strong>
+                    {{/power-select}}
+                </div>
+                <p class="text-muted text-smaller m-t-xs">
+                    {{t "components.preprint-form-project-select.existing_project_selector"}}
+                </p>
+                <div class="row m-t-md">
+                    <div class="col-md-12">
+                        <div class="pull-right">
+                            <button {{action changeSupplementalPickerState startState}} class="btn btn-default">{{t "global.back"}}</button>
+                            <button {{action saveSupplementalProject}} disabled={{not selectedSupplementalProject}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
+                        </div>
+                    </div>
+                </div>
+            {{/preprint-form-body}}
+        {{/preprint-form-section}}
+    {{/if}}
 {{/cp-panels}}
 {{#unless preprintLocked}}
     <div class="p-t-xs">

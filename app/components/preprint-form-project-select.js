@@ -62,6 +62,8 @@ import { task, timeout } from 'ember-concurrency';
 export default Component.extend(Analytics, {
     panelActions: service('panelActions'),
     selectedNode: null,
+    selectedSupplementalProject: null,
+    supplementalChanged: false,
     currentPage: 1,
     searchTerm: '',
     canLoadMore: false,
@@ -117,6 +119,19 @@ export default Component.extend(Analytics, {
                     extra: node.id,
                 });
             this.getProjectContributors(node);
+        },
+
+        supplementalProjectSelected(node) {
+            // Sets selectedNode, then loads node's osfstorage provider.
+            // Once osfProviderLoaded, file-browser component can be loaded.
+            this.set('selectedSupplementalProject', node);
+            this.get('metrics')
+                .trackEvent({
+                    category: 'dropdown',
+                    action: 'select',
+                    label: 'Submit - Choose Supplemental Project',
+                    extra: node.id,
+                });
         },
         selectFile(file) {
             // Select existing file from file-browser

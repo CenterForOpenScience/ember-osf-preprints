@@ -177,6 +177,9 @@ export default {
             upload: 'Select a file from your computer',
             connect: 'Select a file from an existing OSF project',
             subjects_description: 'Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.',
+            supplemental_description: 'Connect an OSF project to share data, code, protocols, or other supplemental materials.',
+            supplemental_new_project: 'Upload files to a new OSF project',
+            supplemental_connect_existing: 'Connect an existing OSF project',
             remove_subject_aria: 'Remove subject',
             basics: {
                 doi: {
@@ -245,6 +248,7 @@ export default {
         could_not_update_title: 'Error updating title. Please try again.',
         error_copying_file: 'Error copying file; please try again.',
         error_accessing_parent_files: 'Error accessing parent files. Please try again.',
+        error_saving_supplemental: 'Error saving supplemental project. Please try again.',
         could_not_create_component: 'Could not create component. Please try again.',
         abandoned_preprint_error: 'Error with abandoned {{documentType.singular}}.',
         abandon_preprint_confirmation: 'Are you sure you want to abandon changes to this preprint?',
@@ -292,6 +296,7 @@ export default {
         },
         'file-uploader': {
             dropzone_message: 'Drop {{documentType.singular}} file here to upload',
+            dropzone_supplemental_message: 'Drop supplementary file here to upload',
             title_placeholder: 'Enter {{documentType.singular}} title',
             update_version: 'Update {{documentType.singular}} file version.  File must have the same name as the original.',
             could_not_create_project: 'Could not create project. Please try again.',
@@ -353,6 +358,7 @@ export default {
             location: '{{documentType.singularCapitalized}} location',
             click_edit: 'Click to edit',
             server: 'Paper service',
+            connected_project: 'Connected OSF project',
             name: {
                 Server: 'Select a service',
                 Upload: 'Upload',
@@ -361,6 +367,7 @@ export default {
                 Authors: 'Authors',
                 Submit: 'Submit',
                 Update: 'Update',
+                Supplemental: 'Supplemental materials',
                 choose_project: 'Choose Project',
                 choose_file: 'Choose File',
                 organize: 'Organize',

@@ -156,11 +156,15 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     _State: State,
     // Information about the thing to be turned into a preprint
     node: null,
-    // Project or component containing the preprint
+    // Project or component that preprint file was copied from
+    supplementalProject: null,
+    // Project that has been explicitly set to hold supplemental materials for the preprint
     file: null,
     // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
     selectedFile: null,
     // File that will be the preprint (already uploaded to node or selected from existing node)
+    selectedSupplementalProject: null,
+    // Supplemental project (existing) that is pending being set as supplemental project
     title: '',
     // Preprint title
     preprintLocked: false,
@@ -181,6 +185,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // True temporarily when changes have been saved in basics section
     authorsSaveState: false,
     // True temporarily when changes have been saved in authors section
+    suppplementalSaveState: false,
+    // True temporarily when changes have been saved in the supplemental section
     osfStorageProvider: null,
     // Preprint node's osfStorage object
     osfProviderLoaded: false,
@@ -220,7 +226,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     projectContributors: A(),
     userNodes: A(),
     availableLicenses: A(),
-    _names: ['server', 'upload', 'discipline', 'basics', 'authors'].map(str => str.capitalize()), // Form section headers
+    _names: ['server', 'upload', 'discipline', 'basics', 'authors', 'supplemental'].map(str => str.capitalize()), // Form section headers
 
     // In order to advance from upload state, node and selectedFile must
     // have been defined, and title must be set.
@@ -301,6 +307,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             return false;
         }
         return modelTitle !== title;
+    }),
+
+    supplementalChanged: computed('selectedSupplementalProject', 'supplementalProject', function() {
+        return this.get('selectedSupplementalProject.id') !== this.get('supplementalProject.id');
     }),
 
     // Pending abstract
@@ -530,8 +540,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     });
             }
             this.get('panelActions').close(this.get(`_names.${this.get('_names').indexOf(currentPanelName)}`));
-            this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
-            this.set('currentPanelName', this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
+            if (!(this.get('_names').indexOf(currentPanelName) > this.get('_names').length)) {
+                this.get('panelActions').open(this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
+                this.set('currentPanelName', this.get(`_names.${this.get('_names').indexOf(currentPanelName) + 1}`));
+            }
             this.send('changesSaved', currentPanelName);
         },
         nextUploadSection(currentUploadPanel, nextUploadPanel) {
@@ -587,6 +599,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                         label: 'Submit - Back Button, Upload Section',
                     });
             }
+        },
+        changeSupplementalPickerState(state) {
+            this.set('supplementalPickerState', state);
         },
         finishUpload() {
             // Locks node so that preprint location cannot be modified.
@@ -989,6 +1004,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('selectedProvider', this.get('currentProvider'));
             this.set('providerChanged', false);
         },
+        saveSupplementalProject() {
+            const model = this.get('model');
+            model.set('node', this.get('selectedSupplementalProject'));
+            return model.save()
+                .then(this._moveFromSupplemental.bind(this))
+                .catch(this._failSaveSupplementalProject.bind(this));
+        },
     },
 
     _setCurrentProvider() {
@@ -1052,6 +1074,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             .error(this.get('i18n')
                 .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
     },
+
+    _failSaveSupplementalProject() {
+        this.set('selectedSupplementalProject', null);
+        return this.get('toast')
+            .error(this.get('i18n')
+                .t(`submit.error_saving_supplemental`));
+    },
+
 
     _getProviders(providers) {
         this.set(
@@ -1169,6 +1199,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('next', this.get('_names.3'));
     },
 
+    _moveFromSupplemental() {
+        this.set('supplementalProject', this.get('selectedSupplementalProject'));
+        this.send('next', this.get('_names.5'));
+    },
+
     _failMoveFromBasics() {
         // If model save fails, do not transition, save original vales
         this.get('toast').error(this.get('i18n').t('submit.basics_error'));
@@ -1268,6 +1303,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             userNodesLoaded: false,
             node: null,
             file: null,
+            supplementalProject: null,
+            supplementalFile: null,
+            supplementalProjectTitle: null,
             selectedFile: null,
             contributors: A(),
             projectContributors: A(),
@@ -1281,6 +1319,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             disciplineSaveState: false,
             basicsSaveState: false,
             authorsSaveState: false,
+            suppplementalSaveState: false,
             osfStorageProvider: null,
             titleValid: null,
             uploadInProgress: false,
@@ -1303,4 +1342,5 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Selected upload state (initial decision on form) - new or existing project?
     filePickerState: State.START,
     existingState: existingState.CHOOSE,
+    supplementalPickerState: State.START,
 });
