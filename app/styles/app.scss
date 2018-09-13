@@ -336,7 +336,7 @@ $logo-dir: 'img/provider_logos/';
             width:100%;
             text-align:justify;
             max-height: 300px;
-            word-break: break-word;
+            word-break: normal;
         }
         span {
             cursor: pointer;
