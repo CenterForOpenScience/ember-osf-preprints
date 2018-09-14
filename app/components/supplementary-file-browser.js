@@ -184,6 +184,12 @@ export default Component.extend(Analytics, {
     },
     __serializeVersions(versions) {
         const downloadUrl = this.get('selectedFile.links.download');
+        const selectedFileGuid = this.get('selectedFile.guid');
+
+        const directDownloadUrl = downloadUrl.replace(
+            `download/${selectedFileGuid}`,
+            `${selectedFileGuid}/download`,
+        );
         const filename = this.get('selectedFile.name');
 
         if (this.get('selectedFileIsPrimaryFile')) {
@@ -194,7 +200,7 @@ export default Component.extend(Analytics, {
             .map((version) => {
                 const dateFormatted = encodeURIComponent(version.get('dateCreated').toISOString());
                 const displayName = filename.replace(/(\.\w+)?$/, ext => `-${dateFormatted}${ext}`);
-                version.set('downloadUrl', `${downloadUrl}?version=${version.id}&displayName=${displayName}`);
+                version.set('downloadUrl', `${directDownloadUrl}?version=${version.id}&displayName=${displayName}`);
                 return version;
             });
     },
