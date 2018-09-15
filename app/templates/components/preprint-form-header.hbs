@@ -46,8 +46,8 @@
 
 {{#if (and (not isOpen) (eq name 'Supplemental'))}}
     <div class="m-t-md preprint-header-preview">
-        {{#if supplementalProject}}
-            <p><em class="m-r-md"> {{t "components.preprint-form-header.connected_project"}}: </em> {{supplementalProject.title}} </p>
+        {{#if supplementalProjectTitle}}
+            <p><em class="m-r-md"> {{t "components.preprint-form-header.connected_project"}}: </em> {{supplementalProjectTitle}} </p>
         {{/if}}
     </div>
 {{/if}}

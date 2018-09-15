@@ -167,6 +167,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Supplemental project (existing) that is pending being set as supplemental project
     title: '',
     // Preprint title
+    supplementalProjectTitle: '',
+    // Supplemental Project Title
     preprintLocked: false,
     // the preprint is locked.  Is True on Edit.
     searchResults: [],
@@ -192,7 +194,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     osfProviderLoaded: false,
     // Preprint node's osfStorageProvider is loaded.
     titleValid: null,
-    // If node's pending title is valid.
+    // If preprint's pending title is valid.
+    supplementalProjectTitleValid: null,
+    // If supplemental project's pending title is valid
     uploadInProgress: false,
     // Set to true when upload step is underway,
     editMode: false,
@@ -602,6 +606,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         },
         changeSupplementalPickerState(state) {
             this.set('supplementalPickerState', state);
+            this.set('supplementalProjectTitle', '');
+            this.set('selectedSupplementalProject', null);
         },
         finishUpload() {
             // Locks node so that preprint location cannot be modified.
@@ -955,6 +961,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('model', model);
 
             return model.save()
+                .then(this._saveSupplementalProject.bind(this))
                 .then(this._savePreprint.bind(this))
                 .catch(this._failSaveModel.bind(this));
         },
@@ -1004,12 +1011,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('selectedProvider', this.get('currentProvider'));
             this.set('providerChanged', false);
         },
-        saveSupplementalProject() {
-            const model = this.get('model');
-            model.set('node', this.get('selectedSupplementalProject'));
-            return model.save()
-                .then(this._moveFromSupplemental.bind(this))
-                .catch(this._failSaveSupplementalProject.bind(this));
+        setSupplementalTitleFromSelected() {
+            this.set('supplementalProjectTitle', this.get('selectedSupplementalProject.title'));
+            this.send('next', this.get('_names.5'));
         },
     },
 
@@ -1056,6 +1060,24 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         }
     },
 
+    _saveSupplementalProject() {
+        const model = this.get('model');
+        if (this.get('selectedSupplementalProject')) {
+            model.set('node', this.get('selectedSupplementalProject'));
+            return model.save();
+        } else if (this.get('supplementalProjectTitle')) {
+            const node = this.get('store').createRecord('node', {
+                public: false,
+                category: 'project',
+                title: this.get('supplementalProjectTitle'),
+            });
+            this.set('model.node', node);
+            return node.save()
+                .then(() => model.save())
+                .then(this._savePreprint.bind(this));
+        }
+    },
+
     _providerRouteTransition(preprintId) {
         let useProviderRoute = false;
         if (this.get('theme.isProvider')) {
@@ -1079,7 +1101,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.set('selectedSupplementalProject', null);
         return this.get('toast')
             .error(this.get('i18n')
-                .t(`submit.error_saving_supplemental`));
+                .t('submit.error_saving_supplemental'));
     },
 
 
@@ -1322,6 +1344,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             suppplementalSaveState: false,
             osfStorageProvider: null,
             titleValid: null,
+            supplementalProjectTitleValid: null,
             uploadInProgress: false,
             existingPreprints: A(),
             editMode: false,

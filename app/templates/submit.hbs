@@ -248,8 +248,8 @@
                         {{/preprint-form-section}}
                     {{/with}}
                     {{#with _names.[5] as |name|}}
-                        {{#preprint-form-section editMode=editMode class="preprint-form-block preprint-form-upload"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProject=supplementalProject name=name valid=(not supplementalChanged) isValidationActive=hasOpened}}
+                        {{#preprint-form-section id="supplemental-materials" editMode=editMode class="preprint-form-block preprint-form-upload" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle name=name valid=(not supplementalChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="m-b-lg text-smaller">{{t "submit.body.supplemental_description"}}</p>
 
@@ -264,12 +264,25 @@
                                                     <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.EXISTING}}>{{t "submit.body.supplemental_connect_existing"}}</button>
                                                 </div>
                                             </div>
+                                            <div class="p-t-xs pull-right">
+                                                <button {{action 'next' name}} class="btn btn-default">{{t "global.skip"}}</button>
+                                            </div>
                                         {{else if (eq supplementalState _State.NEW)}}
-                                            <h1> TODO: Creating a project/uploading files to project will be added here. </h1>
+                                            <label>
+                                                <span class="required">{{t "submit.body.supplemental_title"}}:</span>
+                                            </label>
+                                            <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add supplemental project title'}}>
+                                                {{preprint-title-editor documentType='supplemental project' title=supplementalProjectTitle titleValid=supplementalProjectTitleValid pressSubmit=(action 'next' name)}}
+                                            </form>
+                                            <div class="p-t-xs pull-right">
+                                                <button {{action 'changeSupplementalPickerState' _State.START}} class="btn btn-default">{{t "global.discard"}}</button>
+                                                <button class="btn btn-primary" disabled={{not supplementalProjectTitleValid}} {{action 'next' name}}>{{t "components.project-chooser.continue"}}</button>
+                                            </div>
                                         {{else if (eq supplementalState _State.EXISTING)}}
                                             {{preprint-form-project-select
                                               changeSupplementalPickerState=(action 'changeSupplementalPickerState')
-                                              saveSupplementalProject=(action 'saveSupplementalProject')
+                                              setSupplementalTitleFromSelected=(action 'setSupplementalTitleFromSelected')
+                                              supplementalProjectTitle=supplementalProjectTitle
                                               currentUser=user
                                               model=model
                                               supplementalProject=supplementalProject
@@ -322,6 +335,7 @@
                             </button>
                         </div>
                     {{else}}
+                        <strong><p class="information">{{t permissionInformation documentType=currentProvider.documentType name=providerName}}</p></strong>
                         {{#if moderationType}}
                             <p class="information">
                                 {{t moderationInformation documentType=currentProvider.documentType name=providerName reviewsWorkflow=(t workflow)}}
@@ -329,7 +343,6 @@
                         {{else}}
                             <p class="information">{{t generalInformation documentType=currentProvider.documentType name=providerName}}</p>
                         {{/if}}
-                        <p class="information">{{t permissionInformation documentType=currentProvider.documentType name=providerName}}</p>
                         <div class="text-center">
                             {{#if showValidationErrors}}
                                 <span id="validation-errors">

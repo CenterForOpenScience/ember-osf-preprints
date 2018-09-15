@@ -5,6 +5,7 @@ const arxivTrademarkLicense = 'arXiv is a trademark of Cornell University, used 
 export default {
     global: {
         share: 'Share',
+        skip: 'Skip',
         complete: 'Complete',
         cancel: 'Cancel',
         discard: 'Discard changes',
@@ -45,7 +46,7 @@ export default {
     content: {
         header: {
             last_edited: 'Last edited',
-             authors_label: 'Authors',
+            authors_label: 'Authors',
         },
         date_label: {
             created_on: 'Created on',
@@ -178,8 +179,9 @@ export default {
             connect: 'Select a file from an existing OSF project',
             subjects_description: 'Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.',
             supplemental_description: 'Connect an OSF project to share data, code, protocols, or other supplemental materials.',
-            supplemental_new_project: 'Upload files to a new OSF project',
+            supplemental_new_project: 'Connect a new OSF project',
             supplemental_connect_existing: 'Connect an existing OSF project',
+            supplemental_title: 'Project Title',
             remove_subject_aria: 'Remove subject',
             basics: {
                 doi: {
@@ -209,12 +211,12 @@ export default {
             submit: {
                 information: {
                     line1: {
-                        default: 'When you add this {{documentType.singular}}, it will become publicly accessible via {{name}} and assigned a DOI. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.',
-                        pre: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. If your {{documentType.singular}} is accepted, it will become publicly accessible via {{name}} and assigned a DOI. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.',
-                        post: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. When you submit this {{documentType.singular}}, it will become publicly accessible via {{name}} and assigned a DOI. Your {{documentType.singular}} will only become private if rejected by a moderator. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.',
+                        default: 'When you create this {{documentType.singular}}, it will be assigned a DOI and become publicly accessible via {{name}}. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified.',
+                        pre: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. If your {{documentType.singular}} is accepted, it will be assigned a DOI and become publicly accessible via {{name}}. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified.',
+                        post: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. When you submit this {{documentType.singular}}, it will be assigned a DOI and become publicly accessible via {{name}} . Your {{documentType.singular}} will only become private if rejected by a moderator. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified.',
                     },
                     line2: {
-                        create: 'By adding this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.',
+                        create: 'By creating this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.',
                         submit: 'By submitting this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.',
                     },
                 },
@@ -225,7 +227,7 @@ export default {
                     upload: 'Upload',
                 },
                 submit_button: 'Submit {{documentType.singular}}',
-                create_button: 'Add {{documentType.singular}}',
+                create_button: 'Create {{documentType.singular}}',
 
             },
             edit: {

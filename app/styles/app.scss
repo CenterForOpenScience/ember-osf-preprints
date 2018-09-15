@@ -832,7 +832,14 @@ hr {
     }
 }
 
-
+#supplemental-materials {
+    span.required:after {
+        content: "(required)";
+        color: lighten(red, 30%);
+        font-weight: normal;
+        float: right;
+    }
+}
 
 #preprint-form-basics {
     span.required:after {

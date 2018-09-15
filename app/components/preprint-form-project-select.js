@@ -125,6 +125,7 @@ export default Component.extend(Analytics, {
             // Sets selectedNode, then loads node's osfstorage provider.
             // Once osfProviderLoaded, file-browser component can be loaded.
             this.set('selectedSupplementalProject', node);
+            this.set('supplementalProjectTitle', node.get('title'));
             this.get('metrics')
                 .trackEvent({
                     category: 'dropdown',
