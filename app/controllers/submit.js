@@ -157,14 +157,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Information about the thing to be turned into a preprint
     node: null,
     // Project or component that preprint file was copied from
-    supplementalProject: null,
-    // Project that has been explicitly set to hold supplemental materials for the preprint
     file: null,
     // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
     selectedFile: null,
     // File that will be the preprint (already uploaded to node or selected from existing node)
     selectedSupplementalProject: null,
-    // Supplemental project (existing) that is pending being set as supplemental project
+    // Pending supplemental project that will be set as the supplemental project on the node
     title: '',
     // Preprint title
     supplementalProjectTitle: '',
@@ -303,7 +301,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return (this.get('selectedFile.id') && (this.get('model.primaryFile.id') !== this.get('selectedFile.id'))) || this.get('file') !== null;
     }),
 
-    // Does the pending title differ from the title already saved?
+    // Does the pending preprint title differ from the title already saved?
     titleChanged: computed('model.title', 'title', function() {
         const title = this.get('title');
         const modelTitle = this.get('model.title');
@@ -311,10 +309,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             return false;
         }
         return modelTitle !== title;
-    }),
-
-    supplementalChanged: computed('selectedSupplementalProject', 'supplementalProject', function() {
-        return this.get('selectedSupplementalProject.id') !== this.get('supplementalProject.id');
     }),
 
     // Pending abstract
@@ -408,14 +402,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return JSON.stringify(subjectIdMap(this.get('model.subjects'))) !== JSON.stringify(subjectIdMap(this.get('subjectsList')));
     }),
 
-    // True if the current user has admin permissions
-    isAdmin: computed('node', function() {
-        return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
-    }),
-
-    // True if the current user is and admin and the node is not a registration.
-    canEdit: computed('isAdmin', 'node', function() {
-        return this.get('isAdmin') && !(this.get('node.registration'));
+    // True if the current user has admin permissions to the preprint
+    isAdmin: computed('model.currentUserPermissions', function() {
+        return (this.get('model.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
 
     workflow: computed('moderationType', function () {
@@ -487,7 +476,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     actions: {
         getProjectContributors(node) {
-            // Returns all contributors of node that will be container for preprint.
+            // Returns all contributors of node.  Can be optionally added to the preprint.
             // Makes sequential requests to API until all pages of contributors have been loaded
             // and combines into one array
 
@@ -499,7 +488,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 this.set('projectContributors', contributors));
         },
         getPreprintContributors() {
-            // Returns all contributors of node that will be container for preprint.
+            // Returns all contributors of a preprint.
             // Makes sequential requests to API until all pages of contributors have been loaded
             // and combines into one array
 
@@ -519,15 +508,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 licenseValid,
             });
         },
-        applyLicenseToggle(apply) {
-            this.set('applyLicense', apply);
-            this.get('metrics')
-                .trackEvent({
-                    category: 'radio-button',
-                    action: 'select',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Apply License: ${apply}`,
-                });
-        },
+
         next(currentPanelName) {
             // Open next panel
             if (currentPanelName === 'Upload' || currentPanelName === 'Basics') {
@@ -551,7 +532,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.send('changesSaved', currentPanelName);
         },
         nextUploadSection(currentUploadPanel, nextUploadPanel) {
-            // Opens next panel within the Upload Section, Existing Workflow
+            // Opens next panel within the Upload Sectiod - Selecting a file
+            // from an existing project
             // (Choose Project - Choose File - Finalize Upload)
             this.get('panelActions').toggle(currentUploadPanel);
             this.get('panelActions').toggle(nextUploadPanel);
@@ -574,6 +556,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
          */
         changeInitialState(newState) {
             // Sets filePickerState to start, new, or existing -
+            // Do you want to upload a `new` preprint file, or choose an
+            // `existing` file from a project
             // this is the initial decision on the form.
             this.set('filePickerState', newState);
             this.send('clearDownstreamFields', 'allUpload');
@@ -582,7 +566,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: 'Submit - Upload new preprint',
+                        label: 'Submit - Select a file from your computer',
                     });
             } else if (newState === this.get('_State').EXISTING) {
                 this.get('panelActions').open('chooseProject');
@@ -593,7 +577,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: 'Submit - Connect preprint to existing OSF Project',
+                        label: 'Submit - Select a file from an existing OSF project',
                     });
             } else {
                 this.get('metrics')
@@ -604,16 +588,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     });
             }
         },
-        changeSupplementalPickerState(state) {
-            this.set('supplementalPickerState', state);
-            this.set('supplementalProjectTitle', '');
-            this.set('selectedSupplementalProject', null);
-        },
+
         finishUpload() {
-            // Locks node so that preprint location cannot be modified.
+            // Locks preprint so that preprint location cannot be modified.
             // Occurs after upload step is complete.
             // In editMode, preprintLocked is set to true.
-            // Locks node and advances to next form section.
+            // Locks preprint and advances to next form section.
             this.setProperties({
                 preprintLocked: true,
                 file: null,
@@ -623,7 +603,22 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.send('next', this.get('_names.1'));
         },
 
+        changeSupplementalPickerState(state) {
+            // Sets supplementalPickerState to start, new, or existing
+            this.set('supplementalPickerState', state);
+            this.set('supplementalProjectTitle', '');
+            this.set('selectedSupplementalProject', null);
+        },
+
+        setSupplementalTitleFromSelected() {
+            // Sets supplemental project title in UI
+            this.set('supplementalProjectTitle', this.get('selectedSupplementalProject.title'));
+            this.send('next', this.get('_names.5'));
+        },
+
         createPreprintCopyFile() {
+            // Creates a preprint and then copies the file from the selected
+            // node to the preprint
             const model = this.get('model');
             model.set('title', this.get('title'));
             model.set('provider', this.get('currentProvider'));
@@ -632,10 +627,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 .catch(this._failedUpload.bind(this));
         },
 
-        startPreprint() {
-            // Initiates preprint.  Occurs in Upload section of Add Preprint form
-            // when pressing 'Save and continue'.  Creates a preprint with
-            // primaryFile, node, and provider fields populated.
+        setPrimaryFile() {
+            // Occurs in Upload section of Add Preprint form
+            // when pressing 'Save and continue'. Sets the primary file
+            // on the preprint model
             const model = this.get('model');
             model.set('primaryFile', this.get('selectedFile'));
 
@@ -644,13 +639,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 .catch(this._failedUpload.bind(this));
         },
         // Takes file chosen from file-browser and sets equal to selectedFile.
-        // This file will become the preprint.
+        // This file will be copied to the preprint
         selectExistingFile(file) {
             this.set('selectedFile', file);
         },
 
         // Discards upload section changes.  Restores displayed file to current preprint primaryFile
-        // and resets displayed title to current node title. (No requests sent, front-end only.)
+        // and resets displayed title to current preprint title. (No requests sent, front-end only.)
         discardUploadChanges() {
             this.get('metrics')
                 .trackEvent({
@@ -1011,37 +1006,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('selectedProvider', this.get('currentProvider'));
             this.set('providerChanged', false);
         },
-        setSupplementalTitleFromSelected() {
-            this.set('supplementalProjectTitle', this.get('selectedSupplementalProject.title'));
-            this.send('next', this.get('_names.5'));
-        },
     },
 
     _setCurrentProvider() {
         this.get('store')
             .findAll('preprint-provider', { reload: true })
             .then(this._getProviders.bind(this));
-    },
-    _resaveModel() {
-        const model = this.get('model');
-        const preprintId = model.get('id');
-        // Fix for IN-271: Terrible kluge to reattach periodically lost primary files
-        // that is likely due to a backend race condition in celery tasks.
-        // The OSF api does not return null for empty to one relationships
-        // which causes ember to not nullify the primaryFile relationship when it gets
-        // disconnected. So the model needs to be unloaded, reloaded, reassigned, and
-        // saved. This resaving of the preprint should be removed
-        // (likely after node-preprint divorce)
-        model.unloadRecord();
-        return this.get('store').findRecord('preprint', preprintId).then(this._setPrimaryFile.bind(this));
-    },
-
-    _setPrimaryFile(preprint) {
-        if (!this.get('editMode')) {
-            preprint.set('primaryFile', this.get('selectedFile'));
-            this.set('model', preprint);
-        }
-        return preprint.save().then(this._savePreprint.bind(this));
     },
 
     _savePreprint() {
@@ -1222,7 +1192,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     },
 
     _moveFromSupplemental() {
-        this.set('supplementalProject', this.get('selectedSupplementalProject'));
         this.send('next', this.get('_names.5'));
     },
 
@@ -1320,18 +1289,16 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.setProperties(merge(this.get('_names').reduce((acc, name) => merge(acc, { [`${name.toLowerCase()}SaveState`]: false }), {}), {
             filePickerState: State.START,
             existingState: existingState.CHOOSE,
+            supplementalPickerState: State.START,
             user: null,
             userNodes: A(),
             userNodesLoaded: false,
             node: null,
             file: null,
-            supplementalProject: null,
-            supplementalFile: null,
-            supplementalProjectTitle: null,
             selectedFile: null,
-            contributors: A(),
-            projectContributors: A(),
+            selectedSupplementalProject: null,
             title: '',
+            supplementalProjectTitle: '',
             preprintLocked: false, // Will be set to true if edit?
             searchResults: [],
             savingPreprint: false,
@@ -1343,12 +1310,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             authorsSaveState: false,
             suppplementalSaveState: false,
             osfStorageProvider: null,
+            osfProviderLoaded: false,
             titleValid: null,
             supplementalProjectTitleValid: null,
             uploadInProgress: false,
             existingPreprints: A(),
             editMode: false,
             shareButtonDisabled: false,
+            attemptedSubmit: false,
             // Basics and subjects fields need to be reset because
             // the Add process overwrites the computed properties as reg properties
             basicsTags: A(),
@@ -1358,11 +1327,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             basicsLicense: null,
             subjectsList: A(),
             availableLicenses: A(),
-            attemptedSubmit: false,
+            contributors: A(),
+            projectContributors: A(),
         }));
     },
 
-    // Selected upload state (initial decision on form) - new or existing project?
+    // Preprint file picker state - new preprint file, or existing file that we
+    // copy from project?
     filePickerState: State.START,
     existingState: existingState.CHOOSE,
     supplementalPickerState: State.START,

@@ -63,7 +63,6 @@ export default Component.extend(Analytics, {
     panelActions: service('panelActions'),
     selectedNode: null,
     selectedSupplementalProject: null,
-    supplementalChanged: false,
     currentPage: 1,
     searchTerm: '',
     canLoadMore: false,
@@ -121,19 +120,6 @@ export default Component.extend(Analytics, {
             this.getProjectContributors(node);
         },
 
-        supplementalProjectSelected(node) {
-            // Sets selectedNode, then loads node's osfstorage provider.
-            // Once osfProviderLoaded, file-browser component can be loaded.
-            this.set('selectedSupplementalProject', node);
-            this.set('supplementalProjectTitle', node.get('title'));
-            this.get('metrics')
-                .trackEvent({
-                    category: 'dropdown',
-                    action: 'select',
-                    label: 'Submit - Choose Supplemental Project',
-                    extra: node.id,
-                });
-        },
         selectFile(file) {
             // Select existing file from file-browser
             this.attrs.clearDownstreamFields('belowFile');
@@ -147,9 +133,24 @@ export default Component.extend(Analytics, {
                     extra: file.id,
                 });
         },
+
+        supplementalProjectSelected(node) {
+            // Sets selectedSupplementalProject and supplementalProjectTitle
+            // These are pending values until the preprint form is submitted
+            this.set('selectedSupplementalProject', node);
+            this.set('supplementalProjectTitle', node.get('title'));
+            this.get('metrics')
+                .trackEvent({
+                    category: 'dropdown',
+                    action: 'select',
+                    label: 'Submit - Choose Supplemental Project',
+                    extra: node.id,
+                });
+        },
         changeExistingState(newState) {
             // Toggles existingState between 'existing' or 'new',
-            // meaning user wants to select existing file from file browser or upload a new file.
+            // meaning user wants to select existing file from file browser to copy
+            // to the preprint or upload a new file to the preprint.
             this.attrs.clearDownstreamFields('belowNode');
             this.set('existingState', newState);
             if (newState === this.get('_existingState').EXISTINGFILE) {

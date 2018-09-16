@@ -17,16 +17,9 @@ import { State } from '../controllers/submit';
  *  Handles all cases where uploading a new file as your preprint,
  *  or uploading a new version of your preprint.
  *
- *  Currently used for the following ADD mode scenarios:
- *  1) Upload file to a new project
- *  2) Upload file to a new component
- *  3) Upload file to an existing node.
- *  Also used in EDIT mode because your only option to change a preprint file is
- *  to upload a new version.
  *
  *  Contains dropzone-widget where you can drag and drop preprint file.
- *  'file' will be set to the preuploaded file. 'node' will either become the newly created project
- *  or component, or the existing node.  After file is uploaded to the designated 'node',
+ *  'file' will be set to the preuploaded file. After file is uploaded to the designated 'model',
  *  'osfFile' is set to the uploadedFile.
  *
  *  NOTE: file-uploader is used in two places in the preprints application:
@@ -126,15 +119,6 @@ export default Component.extend(Analytics, {
             })}`);
         },
 
-        upload() {
-            // Uploads file to node
-            if (this.get('file') === null) { // No new file to upload.
-                this.finishUpload();
-            } else {
-                return this.get('node.files').then(this._setUploadProperties.bind(this));
-            }
-        },
-
         uploadToPreprint() {
             // Uploads file to preprint
             if (this.get('file') === null) { // No new file to upload.
@@ -154,33 +138,14 @@ export default Component.extend(Analytics, {
                 .catch(this._failCreateNewPreprint.bind(this));
         },
 
-        createProjectAndUploadFile() {
-            // Upload case where user starting from scratch - new project/new file.
-            // Creates project and then uploads file to newly created project
-            this.get('metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: 'Submit - Save and Continue, New Node New File',
-                });
-            this.get('store').createRecord('node', {
-                public: false,
-                category: 'project',
-                title: this.get('title'),
-            }).save()
-                .then(this._createNewProject.bind(this))
-                .catch(this._failCreateNewProject.bind(this));
-        },
-
         uploadNewPreprintVersion() {
-            // Upload case for using an existing node with a new file for the preprint.
-            // Updates title of existing node and then uploads file to node.
+            // Updates title of existing preprint and then uploads new version to preprint.
             // Also applicable in edit mode.
             this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('preprintLocked') ? 'Save File/Title Edits' : 'Existing Node New File'}`,
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('preprintLocked') ? 'Save File/Title Edits' : 'Uploads new version'}`,
                 });
             if (this.get('preprintLocked')) { // Edit mode
                 this.set('uploadInProgress', true);
@@ -263,8 +228,8 @@ export default Component.extend(Analytics, {
             dropzone.addFile(file);
         },
         complete(_, dropzone, file) {
-            // Called after uploading file to node is complete. After file has been uploaded,
-            // makes a request to create the preprint.
+            // Called after uploading file to a preprint is complete. After file has been uploaded,
+            // to the preprint, makes a request to set that file as the primary file.
 
             // Complete is called when swapping out files for some reason...
             if (file.xhr === undefined) return;
@@ -288,11 +253,11 @@ export default Component.extend(Analytics, {
                                         documentType: this.get('provider.documentType'),
                                     },
                                 ));
-                                this.sendAction('startPreprint');
+                                this.sendAction('setPrimaryFile');
                             }
                             if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
                         } else { // Add mode
-                            return this.sendAction('startPreprint');
+                            return this.sendAction('setPrimaryFile');
                         }
                     })
                     .catch(() => {
@@ -347,11 +312,9 @@ export default Component.extend(Analytics, {
             };
 
             if (this.get('newPreprintFile')) {
-                eventData.label = 'Submit - Drop File, New Node';
+                eventData.label = 'Submit - Drop File, New Preprint';
             } else if (this.get('preprintLocked')) {
                 eventData.label = `${this.get('editMode') ? 'Edit' : 'Submit'} - Drop File, New Version`;
-            } else {
-                eventData.label = 'Submit - Drop File, Existing Node';
             }
             this.get('metrics')
                 .trackEvent(eventData);
@@ -367,13 +330,6 @@ export default Component.extend(Analytics, {
         this.callback.resolve(this.get('file'));
     },
 
-    _createNewProject(node) {
-        this.set('node', node);
-        this.getProjectContributors(node);
-        this.send('upload');
-        this.set('applyLicense', true);
-    },
-
     _createNewPreprint() {
         this.send('uploadToPreprint');
     },
@@ -381,15 +337,6 @@ export default Component.extend(Analytics, {
     _failCreateNewPreprint() {
         this.set('uploadInProgress', false);
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_preprint'));
-    },
-
-    _failCreateNewProject() {
-        this.set('uploadInProgress', false);
-        this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_project'));
-    },
-
-    _sendToUpload() {
-        this.send('upload');
     },
 
     _sendToUploadPreprint() {
@@ -403,10 +350,5 @@ export default Component.extend(Analytics, {
         preprint.set('title', currentPreprintTitle);
         this.set('uploadInProgress', false);
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
-    },
-
-    _failUploadFile() {
-        this.get('toast').error(this.get('i18n').t('components.file-uploader.preprint_file_error'));
-        this.set('uploadInProgress', false);
     },
 });

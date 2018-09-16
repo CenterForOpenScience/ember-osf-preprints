@@ -81,7 +81,7 @@
                                                 finishUpload=(action 'finishUpload')
                                                 clearDownstreamFields=(action 'clearDownstreamFields')
                                                 nextUploadSection=(action 'nextUploadSection')
-                                                startPreprint=(action 'startPreprint')
+                                                setPrimaryFile=(action 'setPrimaryFile')
                                                 discardUploadChanges=(action 'discardUploadChanges')
                                                 newPreprintFile=true
                                                 startState=_State.START
@@ -101,7 +101,6 @@
                                                 basicsAbstract=basicsAbstract
                                                 editMode=editMode
                                                 applyLicense=applyLicense
-                                                getProjectContributors=(action 'getProjectContributors')
                                                 provider=currentProvider
                                             }}
                                         {{else if (eq currentState _State.EXISTING)}}
@@ -112,7 +111,7 @@
                                               nextUploadSection=(action 'nextUploadSection')
                                               selectFile=(action "selectExistingFile")
                                               highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
-                                              startPreprint=(action 'startPreprint')
+                                              setPrimaryFile=(action 'setPrimaryFile')
                                               discardUploadChanges=(action 'discardUploadChanges')
                                               startState=_State.START
                                               existingState=existingState
@@ -231,7 +230,6 @@
                                     node=node
                                     model=model
                                     isAdmin=isAdmin
-                                    canEdit=canEdit
                                     currentUser=user
                                     addContributor=(action 'addContributor')
                                     addContributors=(action 'addContributors')
@@ -249,7 +247,7 @@
                     {{/with}}
                     {{#with _names.[5] as |name|}}
                         {{#preprint-form-section id="supplemental-materials" editMode=editMode class="preprint-form-block preprint-form-upload" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle name=name valid=(not supplementalChanged) isValidationActive=hasOpened}}
+                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle name=name valid=true isValidationActive=supplementalProjectTitle}}
                             {{#preprint-form-body}}
                                 <p class="m-b-lg text-smaller">{{t "submit.body.supplemental_description"}}</p>
 
@@ -285,13 +283,11 @@
                                               supplementalProjectTitle=supplementalProjectTitle
                                               currentUser=user
                                               model=model
-                                              supplementalProject=supplementalProject
                                               selectedSupplementalProject=selectedSupplementalProject
                                               currentState=supplementalState
                                               userNodesLoaded=userNodesLoaded
                                               preprintLocked=preprintLocked
                                               editMode=editMode
-                                              supplementalChanged=supplementalChanged
                                               chooseSupplementalProject=true
                                               startState=_State.START
                                               }}

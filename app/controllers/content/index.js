@@ -7,7 +7,7 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
-import fileDownloadPath from '../utils/file-download-path';
+import fileDownloadPath from '../../utils/file-download-path';
 
 
 const { PromiseArray } = DS;

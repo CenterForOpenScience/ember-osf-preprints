@@ -662,30 +662,16 @@ test('isAdmin', function(assert) {
     this.inject.service('store');
     const { store } = this;
     run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             currentUserPermissions: 'administrator',
         });
-        const readNode = store.createRecord('node', {
+        const readPreprint = store.createRecord('preprint', {
             currentUserPermissions: 'read',
         });
-        ctrl.set('node', node);
+        ctrl.set('preprint', preprint);
         assert.equal(ctrl.get('isAdmin'), true);
-        ctrl.set('node', readNode);
+        ctrl.set('preprint', readPreprint);
         assert.equal(ctrl.get('isAdmin'), false);
-    });
-});
-
-test('canEdit', function(assert) {
-    const ctrl = this.subject();
-    this.inject.service('store');
-    const { store } = this;
-    run(() => {
-        const node = store.createRecord('node', {
-            currentUserPermissions: 'administrator',
-            registration: true,
-        });
-        ctrl.set('node', node);
-        assert.equal(ctrl.get('canEdit'), false);
     });
 });
 
@@ -777,13 +763,6 @@ skip('finishUpload', function(assert) {
     });
 });
 
-skip('resumeAbandonedPreprint', function() {
-    // TODO class startPreprint, which haven't figured out how to test yet
-});
-
-skip('startPreprint', function() {
-    // TODO
-});
 
 test('selectExistingFile', function(assert) {
     const ctrl = this.subject();

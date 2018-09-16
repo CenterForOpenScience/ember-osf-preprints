@@ -23,7 +23,6 @@ import Analytics from 'ember-osf/mixins/analytics';
  *    parentContributors=parentContributors
  *    node=node
  *    isAdmin=isAdmin
- *    canEdit=canEdit
  *    currentUser=user
  *    addContributor=(action 'addContributor')
  *    addContributors=(action 'addContributors')

@@ -136,7 +136,7 @@
                             </td>
                             <td>
                                 <div class="form-group vert-align-enabled-permissions">
-                                    {{#if (and (not (contributor-is-current-user contrib currentUser)) isAdmin (and canEdit (min-admins contrib contributors authorModification)))}}
+                                    {{#if (and (and (not (contributor-is-current-user contrib currentUser)) isAdmin (min-admins contrib contributors authorModification)))}}
                                         <span class="visible-xs-inline permission-label"><em> {{t "components.preprint-form-authors.authors.permissions"}}: </em></span>
                                         <select class="text-smaller form-control permission-select" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
                                             {{#each permissionOptions as |option|}}
@@ -155,7 +155,7 @@
                             <td class="bib-padding">
                                 <div class="form-group vert-align">
                                     <span class="visible-xs-inline checkbox-padding"><em>{{t "components.preprint-form-authors.authors.in_citation"}}:</em></span>
-                                    <input disabled={{if (and isAdmin (and canEdit (min-bibliographic contrib contributors authorModification))) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
+                                    <input disabled={{if (and isAdmin (min-bibliographic contrib contributors authorModification)) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
                                 </div>
                             </td>
                             <td>

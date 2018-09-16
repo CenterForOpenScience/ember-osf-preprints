@@ -261,6 +261,8 @@ export default {
         error_adding_author: 'Could not add author. Please try again.',
         error_adding_unregistered_author: 'Could not add unregistered author. Please try again.',
         error_initiating_preprint: 'Could not initiate {{documentType.singular}}. Please try again.',
+        error_saving_preprint: 'Could not save {{documentType.singular}}. Please try again.',
+        error_creating_preprint: 'Could not create {{documentType.singular}}. Please try again.',
         doi_error: 'Error saving DOI',
         basics_error: 'Error saving basics fields.',
         disciplines_error: 'Error saving discipline(s).',
