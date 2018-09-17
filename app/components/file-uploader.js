@@ -43,7 +43,6 @@ import { State } from '../controllers/submit';
  *   osfFile=selectedFile
  *   hasFile=hasFile
  *   file=file
- *   node=node
  *   preprintLocked=preprintLocked
  *   titleValid=titleValid
  *   uploadChanged=uploadChanged
@@ -63,7 +62,6 @@ export default Component.extend(Analytics, {
 
     State,
     url: null,
-    node: null,
     callback: null,
     currentPreprintTitle: null,
     /* eslint-disable-next-line ember/avoid-leaking-state-in-components */
@@ -195,7 +193,7 @@ export default Component.extend(Analytics, {
             this.set('fileVersion', version);
         },
         preUpload(_, dropzone, file) {
-            // preUpload or "stage" file. Has yet to be uploaded to node.
+            // preUpload or "stage" file. Has yet to be uploaded to preprint.
             this.set('uploadInProgress', false);
             if (this.get('preprintLocked')) { // Edit mode
                 if (file.name !== this.get('osfFile.name')) { // Invalid File - throw error.

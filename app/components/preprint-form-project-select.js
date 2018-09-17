@@ -135,10 +135,9 @@ export default Component.extend(Analytics, {
         },
 
         supplementalProjectSelected(node) {
-            // Sets selectedSupplementalProject and supplementalProjectTitle
+            // Sets selectedSupplementalProject
             // These are pending values until the preprint form is submitted
             this.set('selectedSupplementalProject', node);
-            this.set('supplementalProjectTitle', node.get('title'));
             this.get('metrics')
                 .trackEvent({
                     category: 'dropdown',

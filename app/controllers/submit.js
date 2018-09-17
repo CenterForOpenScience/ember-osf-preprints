@@ -160,13 +160,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     file: null,
     // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
     selectedFile: null,
-    // File that will be the preprint (already uploaded to node or selected from existing node)
+    // File that will be the preprint
     selectedSupplementalProject: null,
     // Pending supplemental project that will be set as the supplemental project on the node
     title: '',
     // Preprint title
     supplementalProjectTitle: '',
     // Supplemental Project Title
+    pendingSupplementalProjectTitle: '',
     preprintLocked: false,
     // the preprint is locked.  Is True on Edit.
     searchResults: [],
@@ -194,6 +195,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     titleValid: null,
     // If preprint's pending title is valid.
     supplementalProjectTitleValid: null,
+    // If updated supplemental project title is valid.
+    supplementalProjectTitleUpdatedValid: null,
     // If supplemental project's pending title is valid
     uploadInProgress: false,
     // Set to true when upload step is underway,
@@ -220,7 +223,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     hasFile: computed.or('file', 'selectedFile'),
     isAddingPreprint: computed.not('editMode'),
-
     existingPreprints: A(), // Existing preprints on the current node
     // Contributors on preprint - if creating a component,
     // contributors will be copied over from parent
@@ -278,6 +280,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     basicsChanged: computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
 
     moderationType: alias('currentProvider.reviewsWorkflow'),
+
+    supplementalChanged: computed('supplementalProjectTitle', 'pendingSupplementalProjectTitle', 'selectedSupplementalProject', function() {
+        if (this.get('selectedSupplementalProject')) {
+            return this.get('selectedSupplementalProject.id') !== this.get('node.id');
+        } else {
+            return this.get('supplementalProjectTitle') !== this.get('pendingSupplementalProjectTitle');
+        }
+    }),
 
     // True if fields have been changed
     hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
@@ -606,14 +616,65 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         changeSupplementalPickerState(state) {
             // Sets supplementalPickerState to start, new, or existing
             this.set('supplementalPickerState', state);
-            this.set('supplementalProjectTitle', '');
-            this.set('selectedSupplementalProject', null);
+            this.send('resetSupplemental');
         },
 
         setSupplementalTitleFromSelected() {
             // Sets supplemental project title in UI
             this.set('supplementalProjectTitle', this.get('selectedSupplementalProject.title'));
+            this.set('node', this.get('selectedSupplementalProject'));
             this.send('next', this.get('_names.5'));
+        },
+
+        setSupplementalProjectTitle() {
+            this.set('supplementalProjectTitle', this.get('pendingSupplementalProjectTitle'));
+            this.send('next', this.get('_names.5'));
+        },
+
+        resetSupplemental() {
+            if (this.get('editMode')) {
+                if (this.get('selectedSupplementalProject')) {
+                    this.set('selectedSupplementalProject', null);
+                }
+                if (this.get('pendingSupplementalProjectTitle')) {
+                    this.set('pendingSupplementalProjectTitle', '');
+                }
+            } else {
+                if (this.get('selectedSupplementalProject') !== this.get('node')) {
+                    this.set('selectedSupplementalProject', null);
+                } else {
+                    this.set('pendingSupplementalProjectTitle', this.get('supplementalProjectTitle'));
+                }
+            }
+        },
+
+        noSupplementalNode() {
+            this.set('pendingSupplementalProjectTitle', '');
+            this.set('supplementalProjectTitle', '');
+            this.set('selectedSupplementalProject', null);
+            this.get('model').set('node', null);
+            this.send('next', this.get('_names.5'));
+        },
+
+        updateSupplementalNode() {
+            const model = this.get('model');
+            if (this.get('selectedSupplementalProject')) {
+                this.set('model.node', this.get('selectedSupplementalProject'));
+                return model.save()
+                    .then(this._finishUpdatingSupplementalNode.bind(this))
+                    .then(this._moveFromSupplemental.bind(this));
+            } else {
+                const node = this.get('store').createRecord('node', {
+                    public: false,
+                    category: 'project',
+                    title: this.get('pendingSupplementalProjectTitle'),
+                });
+                this.set('model.node', node);
+                return node.save()
+                    .then(() => model.save())
+                    .then(this._finishUpdatingSupplementalNode.bind(this))
+                    .then(this._moveFromSupplemental.bind(this));
+            }
         },
 
         createPreprintCopyFile() {
@@ -777,7 +838,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         saveOriginalValues() {
             // Saves off current server-state basics fields,
             // so UI can be restored in case of failure
-            const node = this.get('node');
             const model = this.get('model');
 
             const currentAbstract = model.get('description');
@@ -786,27 +846,18 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             const currentOriginalPublicationDate = model.get('originalPublicationDate');
             const currentLicenseType = model.get('license');
             const currentLicenseRecord = model.get('licenseRecord');
-            const currentNodeLicenseType = node.get('license');
-            const currentNodeLicenseRecord = node.get('nodeLicense');
 
             model.setProperties({
                 licenseRecord: currentLicenseRecord,
                 license: currentLicenseType,
                 doi: currentDOI,
                 originalPublicationDate: currentOriginalPublicationDate,
-            });
-
-            node.setProperties({
                 description: currentAbstract,
                 tags: currentTags,
-                license: currentNodeLicenseType,
-                nodeLicense: currentNodeLicenseRecord,
             });
 
             this.set('model', model);
-            this.set('node', node);
-
-            node.save().then(this._saveModel.bind(this));
+            return model.save();
         },
 
         // Custom addATag method that appends tag to list instead of auto-saving
@@ -936,7 +987,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             }
         },
         savePreprint() {
-            // Finalizes saving of preprint.  Publishes preprint and turns node public.
+            // Finalizes saving of preprint.  Publishes preprint.
             this.get('metrics')
                 .trackEvent({
                     category: 'button',
@@ -1177,6 +1228,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         ));
     },
 
+    _finishUpdatingSupplementalNode() {
+        this.set('node', this.get('model.node'));
+        this.set('supplementalProjectTitle', this.get('node').get('title'));
+    },
+
     _setBasicsLicense(license) {
         const date = new Date();
 
@@ -1299,6 +1355,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             selectedSupplementalProject: null,
             title: '',
             supplementalProjectTitle: '',
+            pendingSupplementalProjectTitle: '',
             preprintLocked: false, // Will be set to true if edit?
             searchResults: [],
             savingPreprint: false,
@@ -1313,6 +1370,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             osfProviderLoaded: false,
             titleValid: null,
             supplementalProjectTitleValid: null,
+            supplementalProjectTitleUpdatedValid: null,
             uploadInProgress: false,
             existingPreprints: A(),
             editMode: false,

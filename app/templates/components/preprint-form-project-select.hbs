@@ -98,8 +98,12 @@
                 <div class="row m-t-md">
                     <div class="col-md-12">
                         <div class="pull-right">
-                            <button {{action changeSupplementalPickerState startState}} class="btn btn-default">{{t "global.discard"}}</button>
-                            <button {{action setSupplementalTitleFromSelected}} disabled={{not selectedSupplementalProject}} class="btn btn-primary">{{t "components.project-chooser.continue"}}</button>
+                            <button {{action changeSupplementalPickerState startState}} class="btn btn-default">{{t "global.back"}}</button>
+                            {{#if editMode}}
+                                <button {{action updateSupplementalNode}} disabled={{not selectedSupplementalProject}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
+                            {{else}}
+                                <button {{action setSupplementalTitleFromSelected}} disabled={{not selectedSupplementalProject}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
+                            {{/if}}
                         </div>
                     </div>
                 </div>

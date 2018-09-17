@@ -92,7 +92,6 @@
                                                 osfFile=selectedFile
                                                 hasFile=hasFile
                                                 file=file
-                                                node=node
                                                 model=model
                                                 preprintLocked=preprintLocked
                                                 titleValid=titleValid
@@ -227,7 +226,6 @@
                                 </p>
                                 {{preprint-form-authors
                                     contributors=contributors
-                                    node=node
                                     model=model
                                     isAdmin=isAdmin
                                     currentUser=user
@@ -247,10 +245,9 @@
                     {{/with}}
                     {{#with _names.[5] as |name|}}
                         {{#preprint-form-section id="supplemental-materials" editMode=editMode class="preprint-form-block preprint-form-upload" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle name=name valid=true isValidationActive=supplementalProjectTitle}}
+                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle node=node name=name valid=(not supplementalChanged) isValidationActive=(or pendingSupplementalProjectTitle selectedSupplementalProject)}}
                             {{#preprint-form-body}}
                                 <p class="m-b-lg text-smaller">{{t "submit.body.supplemental_description"}}</p>
-
                                 {{#liquid-bind supplementalPickerState class='translate' as |supplementalState|}}
                                     <div class={{supplementalState}}>
                                         {{#if (eq supplementalState _State.START)}}
@@ -263,21 +260,26 @@
                                                 </div>
                                             </div>
                                             <div class="p-t-xs pull-right">
-                                                <button {{action 'next' name}} class="btn btn-default">{{t "global.skip"}}</button>
+                                                <button {{action 'noSupplementalNode' name}} class="btn btn-default">{{t "global.skip"}}</button>
                                             </div>
                                         {{else if (eq supplementalState _State.NEW)}}
                                             <label>
                                                 <span class="required">{{t "submit.body.supplemental_title"}}:</span>
                                             </label>
                                             <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add supplemental project title'}}>
-                                                {{preprint-title-editor documentType='supplemental project' title=supplementalProjectTitle titleValid=supplementalProjectTitleValid pressSubmit=(action 'next' name)}}
+                                                {{preprint-title-editor documentType='supplemental project' title=pendingSupplementalProjectTitle titleValid=supplementalProjectTitleValid pressSubmit=(action 'setSupplementalProjectTitle' name)}}
                                             </form>
                                             <div class="p-t-xs pull-right">
-                                                <button {{action 'changeSupplementalPickerState' _State.START}} class="btn btn-default">{{t "global.discard"}}</button>
-                                                <button class="btn btn-primary" disabled={{not supplementalProjectTitleValid}} {{action 'next' name}}>{{t "components.project-chooser.continue"}}</button>
+                                                <button {{action 'changeSupplementalPickerState' _State.START}} class="btn btn-default">{{t "global.back"}}</button>
+                                                {{#if editMode}}
+                                                    <button {{action 'updateSupplementalNode'}} disabled={{not supplementalProjectTitleValid}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
+                                                {{else}}
+                                                    <button class="btn btn-primary" disabled={{not supplementalProjectTitleValid}} {{action 'setSupplementalProjectTitle' name}}>{{t "submit.body.save_continue"}}</button>
+                                                {{/if}}
                                             </div>
                                         {{else if (eq supplementalState _State.EXISTING)}}
                                             {{preprint-form-project-select
+                                              updateSupplementalNode=(action 'updateSupplementalNode')
                                               changeSupplementalPickerState=(action 'changeSupplementalPickerState')
                                               setSupplementalTitleFromSelected=(action 'setSupplementalTitleFromSelected')
                                               supplementalProjectTitle=supplementalProjectTitle

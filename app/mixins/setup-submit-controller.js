@@ -35,7 +35,7 @@ export default Mixin.create({
 
         // If editMode, these initial fields are set to pre-populate form with preprint/node data.
         if (this.get('editMode')) {
-            this.loadEditModeDefaults(controller, model, this.get('node'));
+            this.loadEditModeDefaults(controller, model, model.get('node'));
         }
     },
     // This function helps prepopulate all the preprint fields in Edit mode.
@@ -44,6 +44,7 @@ export default Mixin.create({
         controller.set('existingState', 'new'); // In edit mode, only option to change file is to upload a NEW file
         controller.set('node', node);
         controller.set('title', model.get('title'));
+        controller.set('supplementalProjectTitle', node.get('title'))
         controller.set('preprintLocked', true);
         controller.set('titleValid', true);
         model.get('primaryFile').then(this._setSelectedFile.bind(this));

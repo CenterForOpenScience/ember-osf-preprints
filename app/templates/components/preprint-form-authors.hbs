@@ -125,7 +125,7 @@
                                     </span>
                                     <span class="visible-xs-inline">
                                         <span class="pull-right remove-contributor-padding-xs">
-                                            {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin node) (conditions-for-contrib-removal contrib contributors authorModification))}}
+                                            {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin model) (conditions-for-contrib-removal contrib contributors authorModification))}}
                                                 <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
                                                     <i class="fa fa-times"> </i>
                                                 </button>
@@ -160,14 +160,14 @@
                             </td>
                             <td>
                                 <div class="delete-contrib-button form-group vert-align nudge-right hidden-xs hidden-md">
-                                    {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin node) (conditions-for-contrib-removal contrib contributors authorModification))}}
+                                    {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin model) (conditions-for-contrib-removal contrib contributors authorModification))}}
                                         <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm" > {{t "components.preprint-form-authors.remove"}} </button>
                                     {{else}}
                                         <button class="btn btn-danger btn-sm disabled"> {{t "components.preprint-form-authors.remove"}} </button>
                                     {{/if}}
                                 </div>
                                 <span class="visible-md-inline">
-                                    {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin node) (conditions-for-contrib-removal contrib contributors authorModification))}}
+                                    {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin model) (conditions-for-contrib-removal contrib contributors authorModification))}}
                                         <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
                                             <i class="fa fa-times"> </i>
                                         </button>
