@@ -622,12 +622,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         setSupplementalTitleFromSelected() {
             // Sets supplemental project title in UI
             this.set('supplementalProjectTitle', this.get('selectedSupplementalProject.title'));
+            this.set('pendingSupplementalProjectTitle', '');
             this.set('node', this.get('selectedSupplementalProject'));
             this.send('next', this.get('_names.5'));
         },
 
         setSupplementalProjectTitle() {
             this.set('supplementalProjectTitle', this.get('pendingSupplementalProjectTitle'));
+            this.set('selectedSupplementalProject', null);
             this.send('next', this.get('_names.5'));
         },
 
@@ -643,7 +645,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 if (this.get('selectedSupplementalProject') !== this.get('node')) {
                     this.set('selectedSupplementalProject', null);
                 } else {
-                    this.set('pendingSupplementalProjectTitle', this.get('supplementalProjectTitle'));
+                    this.set('pendingSupplementalProjectTitle', '');
                 }
             }
         },
@@ -653,12 +655,18 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('supplementalProjectTitle', '');
             this.set('selectedSupplementalProject', null);
             this.get('model').set('node', null);
-            this.send('next', this.get('_names.5'));
+            if (this.get('editMode')) {
+                this.set('supplementalUnset', true);
+                this.send('updateSupplementalNode');
+            } else {
+                this.send('next', this.get('_names.5'));
+            }
+
         },
 
         updateSupplementalNode() {
             const model = this.get('model');
-            if (this.get('selectedSupplementalProject')) {
+            if (this.get('selectedSupplementalProject') || this.get('supplementalUnset')) {
                 this.set('model.node', this.get('selectedSupplementalProject'));
                 return model.save()
                     .then(this._finishUpdatingSupplementalNode.bind(this))
@@ -1230,6 +1238,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     _finishUpdatingSupplementalNode() {
         this.set('node', this.get('model.node'));
+        this.set('supplementalUnset', false);
         this.set('supplementalProjectTitle', this.get('node').get('title'));
     },
 

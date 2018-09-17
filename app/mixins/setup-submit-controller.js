@@ -35,19 +35,19 @@ export default Mixin.create({
 
         // If editMode, these initial fields are set to pre-populate form with preprint/node data.
         if (this.get('editMode')) {
-            this.loadEditModeDefaults(controller, model, model.get('node'));
+            this.loadEditModeDefaults(controller, model);
         }
     },
     // This function helps prepopulate all the preprint fields in Edit mode.
-    loadEditModeDefaults(controller, model, node) {
+    loadEditModeDefaults(controller, model) {
         controller.set('filePickerState', 'existing'); // In edit mode, dealing with existing project
         controller.set('existingState', 'new'); // In edit mode, only option to change file is to upload a NEW file
-        controller.set('node', node);
+        controller.set('model', model);
         controller.set('title', model.get('title'));
-        controller.set('supplementalProjectTitle', node.get('title'))
         controller.set('preprintLocked', true);
         controller.set('titleValid', true);
         model.get('primaryFile').then(this._setSelectedFile.bind(this));
+        model.get('node').then(this._setSupplementalProject.bind(this));
         this.get('panelActions').close('Upload');
         this.get('panelActions').open('Submit');
     },
@@ -55,6 +55,12 @@ export default Mixin.create({
     _setProviders(providers) {
         const controller = this.get('controller');
         controller.set('providers', providers);
+    },
+
+    _setSupplementalProject(node) {
+        const controller = this.get('controller');
+        controller.set('node', node);
+        controller.set('supplementalProjectTitle', node.get('title'));
     },
 
     _getAvailableLicenses(provider) {

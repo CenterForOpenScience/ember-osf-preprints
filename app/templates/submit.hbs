@@ -259,8 +259,8 @@
                                                     <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.EXISTING}}>{{t "submit.body.supplemental_connect_existing"}}</button>
                                                 </div>
                                             </div>
-                                            <div class="p-t-xs pull-right">
-                                                <button {{action 'noSupplementalNode' name}} class="btn btn-default">{{t "global.skip"}}</button>
+                                            <div class="p-t-xs m-t-sm pull-right">
+                                                <button {{action 'noSupplementalNode' name}} class="btn btn-primary">{{if editMode (t "submit.body.disconnect_supplemental") (t "global.skip")}}</button>
                                             </div>
                                         {{else if (eq supplementalState _State.NEW)}}
                                             <label>

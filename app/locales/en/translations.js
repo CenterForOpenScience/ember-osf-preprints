@@ -183,6 +183,7 @@ export default {
             supplemental_connect_existing: 'Connect an existing OSF project',
             supplemental_title: 'Project Title',
             remove_subject_aria: 'Remove subject',
+            disconnect_supplemental: 'Disconnect project',
             basics: {
                 doi: {
                     label: 'Peer-reviewed publication DOI (optional)',

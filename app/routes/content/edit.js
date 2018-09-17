@@ -71,18 +71,18 @@ export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, Setu
         const isOSF = providerId === 'osf';
 
         // If we're on the proper branded site, stay here.
-        if (themeId === providerId) { return preprint.get('node'); }
+        if (themeId === providerId) { return preprint; }
 
         window.location.replace(`${config.OSF.url}${isOSF ? '' : `preprints/${providerId}/`}${preprint.get('id')}/edit/`);
         return Promise.reject();
     },
 
-    _getContributors(node) {
+    _getContributors(preprint) {
         const controller = this.controllerFor('submit');
-        this.set('node', node);
-        controller.set('node', node);
-        controller.set('model', this.get('preprint'));
+        controller.set('model', preprint);
         controller.send('getPreprintContributors');
+        controller.set('model', null);
+        controller.set('node', preprint.get('node'));
 
         const userPermissions = this.get('preprint.currentUserPermissions') || [];
 
