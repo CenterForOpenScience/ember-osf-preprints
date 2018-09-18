@@ -318,6 +318,13 @@ export default {
             title: 'Claim Account',
             success_message: 'Email will arrive shortly. Please check {{email}}',
         },
+        'chronos-submission-status-list-row': {
+            drafted: 'Drafted to {{title}}',
+            submitted: 'Submitted to {{title}}',
+            accepted: 'Accepted to {{title}}',
+            rejected: 'Rejected from {{title}}',
+            published: 'Published in {{title}}',
+        },
         'error-page': {
             email_message: 'If this should not have occurred and the issue persists, please report it to',
             go_to: 'Go to {{brand}}',
