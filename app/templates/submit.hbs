@@ -101,6 +101,8 @@
                                                 editMode=editMode
                                                 applyLicense=applyLicense
                                                 provider=currentProvider
+                                                uploadedFileId=uploadedFileId
+                                                uploadedFileName=uploadedFileName
                                             }}
                                         {{else if (eq currentState _State.EXISTING)}}
                                             {{preprint-form-project-select
@@ -245,7 +247,7 @@
                     {{/with}}
                     {{#with _names.[5] as |name|}}
                         {{#preprint-form-section id="supplemental-materials" editMode=editMode class="preprint-form-block preprint-form-upload" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle node=node name=name valid=(not supplementalChanged) isValidationActive=(or pendingSupplementalProjectTitle selectedSupplementalProject)}}
+                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle node=node name=name valid=(not supplementalChanged) isValidationActive=(and hasOpened (or pendingSupplementalProjectTitle selectedSupplementalProject))}}
                             {{#preprint-form-body}}
                                 <p class="m-b-lg text-smaller">{{t "submit.body.supplemental_description"}}</p>
                                 {{#liquid-bind supplementalPickerState class='translate' as |supplementalState|}}

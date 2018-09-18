@@ -159,6 +159,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Project or component that preprint file was copied from
     file: null,
     // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
+    uploadedFileId: null,
+    // uploadedFileId saved off in case file upload succeeds but preprint request fails
+    uploadedFileName: false,
     selectedFile: null,
     // File that will be the preprint
     selectedSupplementalProject: null,
@@ -1360,6 +1363,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             userNodesLoaded: false,
             node: null,
             file: null,
+            uploadedFileId: null,
+            uploadedFileName: false,
             selectedFile: null,
             selectedSupplementalProject: null,
             title: '',

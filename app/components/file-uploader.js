@@ -14,9 +14,8 @@ import { State } from '../controllers/submit';
 /**
  * File uploader widget
  *
- *  Handles all cases where uploading a new file as your preprint,
- *  or uploading a new version of your preprint.
- *
+ *  Handles file uploads to preprints - Allows you to upload a new file as your preprint,
+ *  or upload a new version of your preprint
  *
  *  Contains dropzone-widget where you can drag and drop preprint file.
  *  'file' will be set to the preuploaded file. After file is uploaded to the designated 'model',
@@ -29,10 +28,10 @@ import { State } from '../controllers/submit';
  * ```handlebars
  * {{file-uploader
  *   changeInitialState=(action 'changeInitialState')
- *   nextUploadSection=nextUploadSection
  *   finishUpload=(action 'finishUpload')
  *   clearDownstreamFields=(action 'clearDownstreamFields')
  *   nextUploadSection=(action 'nextUploadSection')
+ *   setPrimaryFile=(action 'setPrimaryFile')
  *   discardUploadChanges=(action 'discardUploadChanges')
  *   newPreprintFile=true
  *   startState=_State.START
@@ -57,8 +56,11 @@ export default Component.extend(Analytics, {
     i18n: service(),
     store: service(),
     toast: service(),
+    fileManager: service(),
     panelActions: service('panelActions'),
     model: null,
+    uploadedFileId: null,
+    uploadedFileName: null,
 
     State,
     url: null,
@@ -121,18 +123,26 @@ export default Component.extend(Analytics, {
             // Uploads file to preprint
             if (this.get('file') === null) { // No new file to upload.
                 this.finishUpload();
+            } else if (this._uploadedFileUnchanged()) {
+                this.send('fileUploadSuccess', this.get('uploadedFileId'), {});
             } else {
                 return this.get('model.files').then(this._setUploadProperties.bind(this));
             }
         },
 
         createPreprintAndUploadFile() {
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Submit - Save and Continue, 'Uploads new preprint'}`,
+                });
             this.set('uploadInProgress', true);
             const preprint = this.get('model');
             preprint.set('title', this.get('title'));
             preprint.set('provider', this.get('provider'));
             preprint.save()
-                .then(this._createNewPreprint.bind(this))
+                .then(this._sendToUploadPreprint.bind(this))
                 .catch(this._failCreateNewPreprint.bind(this));
         },
 
@@ -151,9 +161,9 @@ export default Component.extend(Analytics, {
 
             const model = this.get('model');
             this.set('basicsAbstract', this.get('model.description') || null);
-            const currentPreprintTitle = model.get('title');
+            this.set('currentPreprintTitle', this.get('model.title'));
 
-            if (currentPreprintTitle !== this.get('title')) {
+            if (this.get('currentPreprintTitle') !== this.get('title')) {
                 model.set('title', this.get('title'));
                 model.save()
                     .then(this._sendToUploadPreprint.bind(this))
@@ -225,6 +235,43 @@ export default Component.extend(Analytics, {
             dropzone.removeAllFiles();
             dropzone.addFile(file);
         },
+        fileUploadSuccess(fileId, resp) {
+            // Called after successful response returned from WB
+            /* eslint-disable ember/closure-actions,ember/named-functions-in-promises */
+            this.get('store')
+                .findRecord('file', fileId)
+                .then((file) => {
+                    this.set('osfFile', file);
+                    // Set current version:
+                    // will revert if user uploaded a new version of the same file
+                    if (this.get('preprintLocked')) { // Edit mode
+                        this.set('fileVersion', resp.data.attributes.extra.version);
+                        if (this.get('osfFile.currentVersion') !== resp.data.attributes.extra.version) {
+                            this.get('toast').info(this.get('i18n').t(
+                                'components.file-uploader.preprint_file_updated',
+                                {
+                                    documentType: this.get('provider.documentType'),
+                                },
+                            ));
+                            this.sendAction('finishUpload');
+                        }
+                        if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
+                        this.sendAction('finishUpload');
+                    } else { // Add mode
+                        return this.sendAction('setPrimaryFile');
+                    }
+                })
+                .catch(() => {
+                    this.get('toast').error(this.get('i18n').t(
+                        'components.file-uploader.preprint_file_error',
+                        {
+                            documentType: this.get('provider.documentType'),
+                        },
+                    ));
+                    this.set('uploadInProgress', false);
+                });
+            /* eslint-enable ember/closure-actions,ember/named-functions-in-promises */
+        },
         complete(_, dropzone, file) {
             // Called after uploading file to a preprint is complete. After file has been uploaded,
             // to the preprint, makes a request to set that file as the primary file.
@@ -233,41 +280,11 @@ export default Component.extend(Analytics, {
             if (file.xhr === undefined) return;
 
             if (Math.floor(file.xhr.status / 100) === 2) {
+                this.set('uploadedFileId', JSON.parse(file.xhr.response).data.id.split('/')[1]);
+                this.set('uploadedFileName', JSON.parse(file.xhr.response).data.attributes.name);
                 // File upload success
                 const resp = JSON.parse(file.xhr.response);
-                /* eslint-disable ember/closure-actions,ember/named-functions-in-promises */
-                this.get('store')
-                    .findRecord('file', resp.data.id.split('/')[1])
-                    .then((file) => {
-                        this.set('osfFile', file);
-                        // Set current version:
-                        // will revert if user uploaded a new version of the same file
-                        this.set('fileVersion', resp.data.attributes.extra.version);
-                        if (this.get('preprintLocked')) { // Edit mode
-                            if (this.get('osfFile.currentVersion') !== resp.data.attributes.extra.version) {
-                                this.get('toast').info(this.get('i18n').t(
-                                    'components.file-uploader.preprint_file_updated',
-                                    {
-                                        documentType: this.get('provider.documentType'),
-                                    },
-                                ));
-                                this.sendAction('setPrimaryFile');
-                            }
-                            if (window.Dropzone) window.Dropzone.forElement('.dropzone').removeAllFiles(true);
-                        } else { // Add mode
-                            return this.sendAction('setPrimaryFile');
-                        }
-                    })
-                    .catch(() => {
-                        this.get('toast').error(this.get('i18n').t(
-                            'components.file-uploader.preprint_file_error',
-                            {
-                                documentType: this.get('provider.documentType'),
-                            },
-                        ));
-                        this.set('uploadInProgress', false);
-                    });
-                /* eslint-enable ember/closure-actions,ember/named-functions-in-promises */
+                this.send('fileUploadSuccess', this.get('uploadedFileId'), resp);
             } else {
                 // File upload failure
                 dropzone.removeAllFiles();
@@ -275,9 +292,7 @@ export default Component.extend(Analytics, {
                 // Error uploading file. Clear downstream fields.
                 this.attrs.clearDownstreamFields('belowNode');
                 this.set('uploadInProgress', false);
-                this.get('toast').error(file.xhr.status === 409 ?
-                    this.get('i18n').t('components.file-uploader.file_exists_error')
-                    : this.get('i18n').t('components.file-uploader.upload_error'));
+                this.get('toast').error(this.get('i18n').t('components.file-uploader.upload_error'));
             }
         },
         formatDropzoneAfterPreUpload(success) {
@@ -319,6 +334,16 @@ export default Component.extend(Analytics, {
         },
     },
 
+    _uploadedFileUnchanged() {
+        // Returns true if a file of the same name was already uploaded successfully (Add mode),
+        // but perhaps a request to the preprint failed. When attempting to retry the request,
+        // we can pull this uploadedFileId to set as the preprint's primary file
+        if (this.get('preprintLocked')) {
+            return false;
+        }
+        return this.get('uploadedFileId') && (this.get('file.name') === this.get('uploadedFileName'));
+    },
+
     _setUploadProperties(files) {
         if (this.get('preprintLocked')) { // Edit mode, fetch URL for uploading new version
             this.send('uploadNewVersionUrl', files);
@@ -328,7 +353,7 @@ export default Component.extend(Analytics, {
         this.callback.resolve(this.get('file'));
     },
 
-    _createNewPreprint() {
+    _sendToUploadPreprint() {
         this.send('uploadToPreprint');
     },
 
@@ -337,15 +362,9 @@ export default Component.extend(Analytics, {
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_create_preprint'));
     },
 
-    _sendToUploadPreprint() {
-        this.send('uploadToPreprint');
-    },
-
     _failUpdateTitle() {
-        const preprint = this.get('preprint');
         const currentPreprintTitle = this.get('currentPreprintTitle');
-
-        preprint.set('title', currentPreprintTitle);
+        this.set('model.title', currentPreprintTitle);
         this.set('uploadInProgress', false);
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
     },
