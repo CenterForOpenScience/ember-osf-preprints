@@ -286,6 +286,13 @@ export default {
             convert_confirmation_details_project: 'Changes you make on this page are saved immediately.  Create a new component under this project to avoid overwriting its details.',
             convert_confirmation_details_component: 'Changes you make on this page are saved immediately.  Create a new component under this component to avoid overwriting its details.',
         },
+        'chronos-submission-status-list-row': {
+            drafted: 'Drafted to {{title}}',
+            submitted: 'Submitted to {{title}}',
+            accepted: 'Accepted to {{title}}',
+            rejected: 'Rejected from {{title}}',
+            published: 'Published in {{title}}',
+        },
         'error-page': {
             email_message: 'If this should not have occurred and the issue persists, please report it to',
             go_to: 'Go to {{brand}}',

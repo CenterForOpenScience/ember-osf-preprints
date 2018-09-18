@@ -1,0 +1,5 @@
+{{#if (not fetchSubmission.isRunning)}}
+    {{#each submissions as |submission|}}
+        {{chronos-submission-status-list-row submission=submission isContributor=isContributor}}
+    {{/each}}
+{{/if}}
