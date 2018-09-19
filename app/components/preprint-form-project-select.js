@@ -99,13 +99,16 @@ export default Component.extend(Analytics, {
                     label: 'Submit - Choose Project',
                     extra: node.id,
                 });
+            this.set('title', node.get('title'));
+            this.set('description', node.get('description'));
+            this.set('tags', node.get('tags'));
+            this.set('titleValid', true);
             this.getProjectContributors(node);
         },
 
         selectFile(file) {
             // Select existing node file from file-browser -
             // This file will be eventually copied to the preprint
-            this.attrs.clearDownstreamFields('belowFile');
             this.attrs.nextUploadSection('selectExistingFile', 'finalizeUpload');
             this.attrs.selectFile(file);
             this.get('metrics')

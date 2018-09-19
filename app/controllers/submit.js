@@ -146,7 +146,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     // Data for project picker; tracked internally on load
     user: null,
-    userNodesLoaded: false,
 
     _State: State,
     // Information about the thing to be turned into a preprint
@@ -222,17 +221,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     hasFile: computed.or('file', 'selectedFile'),
     isAddingPreprint: computed.not('editMode'),
     existingPreprints: A(), // Existing preprints on the current node
-    // Contributors on preprint - if creating a component,
-    // contributors will be copied over from parent
+    // Contributors on preprint
     contributors: A(),
     projectContributors: A(),
     userNodes: A(),
     availableLicenses: A(),
     _names: ['server', 'upload', 'discipline', 'basics', 'authors', 'supplemental'].map(str => str.capitalize()), // Form section headers
-
-    // In order to advance from upload state, node and selectedFile must
-    // have been defined, and title must be set.
-    uploadValid: alias('preprintLocked'), // Once the node has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
+    uploadValid: alias('preprintLocked'), // Once the preprint has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: alias('validations.attrs.basicsAbstract.isValid'),
 
     doiValid: alias('validations.attrs.basicsDOI.isValid'),
@@ -508,6 +503,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             loadAll(model, 'contributors', contributors).then(() =>
                 this.set('contributors', contributors));
         },
+
         // This gets called by the save method of the license-widget, which in autosave mode
         // gets called every time a change is observed in the widget.
         editLicense(basicsLicense, licenseValid) {
@@ -689,7 +685,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             model.set('title', this.get('title'));
             model.set('provider', this.get('currentProvider'));
             return model.save()
-                .then(this._copyNodeFileToPreprint.bind(this))
+                .then(this._getFileProviders.bind(this))
                 .catch(this._failedUpload.bind(this));
         },
 
@@ -742,6 +738,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 props.push('node');
             case 'belowNode':
                 props.push('selectedFile', 'file');
+                break;
             case 'belowFile':
                 props.push('title');
                 break;
@@ -1123,14 +1120,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
     },
 
-    _failSaveSupplementalProject() {
-        this.set('selectedSupplementalProject', null);
-        return this.get('toast')
-            .error(this.get('i18n')
-                .t('submit.error_saving_supplemental'));
-    },
-
-
     _getProviders(providers) {
         this.set(
             'allProviders',
@@ -1145,48 +1134,33 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         }
     },
 
-    _setNodeTitle() {
-        const model = this.get('model');
-
-        const currentPreprintTitle = model.get('title');
-        const title = this.get('title');
-
-        if (currentPreprintTitle === title) {
-            return;
-        }
-        model.set('title', title);
-        return model.save();
-    },
-
-    _failSetNodeTitle() {
-        const model = this.get('model');
-        const currentPreprintTitle = model.get('title');
-
-        model.set('title', currentPreprintTitle);
-        this.get('toast').error(this.get('i18n').t('submit.could_not_update_title'));
-    },
-
-    _copyNodeFileToPreprint() {
+    _getFileProviders() {
         const preprint = this.get('model');
         preprint.get('files')
-            .then(this._getFiles.bind(this))
+            .then(this._copyNodeFileToPreprint.bind(this))
             .catch(this._failGetFiles.bind(this));
     },
 
-    _getFiles(fileProviders) {
+    _copyNodeFileToPreprint(fileProviders) {
         const preprint = this.get('model');
         const osfstorage = fileProviders.findBy('name', 'osfstorage');
 
         this.get('fileManager').copy(this.get('selectedFile'), osfstorage, { data: { resource: preprint.id, provider: 'osfstorage', conflict: 'replace' } })
-            .then(this._copyFile.bind(this))
+            .then(this._setPrimaryFileAndNodeAttributes.bind(this))
             .catch(this._failCopyFile.bind(this));
     },
 
-    _copyFile(copiedFile) {
+    _setPrimaryFileAndNodeAttributes(copiedFile) {
+        // Copied file from node is set as the preprint's primary file
+        // Also copies over node description and tags
         this.set('selectedFile', copiedFile);
         const model = this.get('model');
+        model.set('description', this.get('node.description'));
+        this.set('basicsAbstract', this.get('node.description'));
+        model.set('tags', this.get('node.tags'));
         model.set('primaryFile', this.get('selectedFile'));
         return model.save()
+            .then(this._addContributorsFromFileProject.bind(this))
             .then(this._finishUpload.bind(this))
             .catch(this._failedUpload.bind(this));
     },
@@ -1197,15 +1171,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     _failGetFiles() {
         this.get('toast').error(this.get('i18n').t('submit.error_accessing_parent_files'));
-    },
-
-    _failDeletePreprint() {
-        this.get('toast').error(this.get('i18n').t(
-            'submit.abandoned_preprint_error',
-            {
-                documentType: this.get('currentProvider.documentType'),
-            },
-        ));
     },
 
     _finishUpload() {
@@ -1282,41 +1247,36 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.highlightSuccessOrFailure('author-search-box', this, 'error');
     },
 
-    _saveModel() {
-        const model = this.get('model');
-
-        model.save();
+    // Adds all contributors from node (where preprint file was copied)
+    // to the preprint
+    _addContributorsFromFileProject() {
+        // Not catching errors adding contributors - not crucial that
+        // those node contributors were copied over
+        this.get('metrics')
+            .trackEvent({
+                category: 'button',
+                action: 'click',
+                label: 'Submit - Bulk Add Contributors From File Node',
+            });
+        const contributorsToAdd = A();
+        this.get('projectContributors').toArray().forEach((contributor) => {
+            if (this.get('user.id') !== contributor.get('userId')) {
+                contributorsToAdd.push({
+                    permission: contributor.get('permission'),
+                    bibliographic: contributor.get('bibliographic'),
+                    userId: contributor.get('userId'),
+                });
+            }
+        });
+        this.get('model').addContributors(contributorsToAdd, false)
+            .then(this._addContributorsFromProject.bind(this));
     },
 
-    _submitAction() {
-        const submitAction = this.get('submitAction');
-
-        submitAction.save();
-    },
-
-    _saveChanges() {
-        const model = this.get('model');
-
-        this.set('preprintSaved', true);
-        let useProviderRoute = false;
-        if (this.get('theme.isProvider')) {
-            useProviderRoute = this.get('theme.isSubRoute');
-        } else if (this.get('currentProvider.domain') && this.get('currentProvider.domainRedirectEnabled')) {
-            window.location.replace(`${this.get('currentProvider.domain')}${model.id}`);
-        } else if (this.get('currentProvider.id') !== 'osf') {
-            useProviderRoute = true;
-        }
-        this.transitionToRoute(
-            `${useProviderRoute ? 'provider.' : ''}content`,
-            model.reload(),
-        );
-    },
-
-    _saveChangesError() {
-        this.toggleProperty('shareButtonDisabled');
-        return this.get('toast')
-            .error(this.get('i18n')
-                .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
+    _addContributorsFromProject(contributors) {
+        // Locally updates preprint contributors list
+        contributors.forEach((contrib) => {
+            this.get('contributors').pushObject(contrib);
+        });
     },
 
     _transitionToPreprint() {
@@ -1350,7 +1310,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             supplementalPickerState: State.START,
             user: null,
             userNodes: A(),
-            userNodesLoaded: false,
             node: null,
             file: null,
             uploadedFileId: null,

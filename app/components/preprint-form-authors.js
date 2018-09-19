@@ -53,14 +53,6 @@ export default CpPanelBodyComponent.extend(Analytics, {
     // There are 3 view states on left side of Authors panel. Default state just shows search bar.
     query: null,
     valid: alias('newContributorId'),
-    // Returns list of user ids associated with current node
-    currentContributorIds: computed('contributors', function() {
-        const contribIds = [];
-        this.get('contributors').forEach((contrib) => {
-            contribIds.push(contrib.get('userId'));
-        });
-        return contribIds;
-    }),
     // In Add mode, contributors are emailed on creation of preprint. In Edit mode,
     // contributors are emailed as soon as they are added to preprint.
     sendEmail: computed('editMode', function() {
@@ -304,17 +296,6 @@ export default CpPanelBodyComponent.extend(Analytics, {
     disabling elements, enabling others, depending on what requests are permitted */
     toggleAuthorModification() {
         this.toggleProperty('authorModification');
-    },
-
-    _addContributorsFromParent(contributors) {
-        contributors.forEach((contrib) => {
-            this.get('contributors').pushObject(contrib);
-        });
-        this.toggleAuthorModification();
-    },
-
-    _failAddContributorsFromParent() {
-        this.get('toast').error('Some contributors may not have been added. Try adding manually.');
     },
 
     _addContributor(res) {
