@@ -15,7 +15,7 @@
             {{/preprint-form-body}}
         {{/preprint-form-section}}
     {{/unless}}
-    {{#if (eq existingState _existingState.EXISTINGFILE)}}
+    {{#if (eq currentState 'existing')}}
         {{#if selectedNode}}
             {{#if isAdmin}}
                 <div>
@@ -36,7 +36,7 @@
                                         {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action createPreprintCopyFile name)}}
                                     </form>
                                     <div class="text-center m-v-md">
-                                        <button class="btn btn-primary" disabled={{or (not (and selectedFile titleValid))}} {{action createPreprintCopyFile}}>{{t "submit.body.save_continue"}}</button>
+                                        <button class="btn btn-primary" disabled={{not (and title (and selectedFile titleValid))}} {{action createPreprintCopyFile}}>{{t "submit.body.save_continue"}}</button>
                                     </div>
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
@@ -51,38 +51,6 @@
                 {{/if}}
             {{/if}}
         {{/if}}
-    {{else if (eq existingState _existingState.NEWFILE)}}
-        {{file-uploader
-            changeInitialState=changeInitialState
-            nextUploadSection=nextUploadSection
-            changeExistingState=(action "changeExistingState")
-            finishUpload=finishUpload
-            setPrimaryFile=setPrimaryFile
-            startState=startState
-            title=title
-            currentUser=currentUser
-            osfFile=selectedFile
-            hasFile=hasFile
-            file=file
-            contributors=contributors
-            model=model
-            node=node
-            selectedNode=selectedNode
-            existingState=existingState
-            _existingState=_existingState
-            clearDownstreamFields=clearDownstreamFields
-            preprintLocked=preprintLocked
-            titleValid=titleValid
-            uploadChanged=uploadChanged
-            discardUploadChanges=discardUploadChanges
-            uploadInProgress=uploadInProgress
-            abandonedPreprint=abandonedPreprint
-            resumeAbandonedPreprint=resumeAbandonedPreprint
-            basicsAbstract=basicsAbstract
-            editMode=editMode
-            applyLicense=applyLicense
-            provider=provider
-        }}
     {{/if}}
     {{#if chooseSupplementalProject}}
         {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseSupplementalProject' open=true}}

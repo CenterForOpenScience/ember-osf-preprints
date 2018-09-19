@@ -40,8 +40,7 @@ export default Mixin.create({
     },
     // This function helps prepopulate all the preprint fields in Edit mode.
     loadEditModeDefaults(controller, model) {
-        controller.set('filePickerState', 'existing'); // In edit mode, dealing with existing project
-        controller.set('existingState', 'new'); // In edit mode, only option to change file is to upload a NEW file
+        controller.set('filePickerState', 'version'); // In edit mode, can only upload new version
         controller.set('model', model);
         controller.set('title', model.get('title'));
         controller.set('preprintLocked', true);

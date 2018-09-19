@@ -1,5 +1,5 @@
-{{!UPLOAD NEW FILE SECTION - NEW OSF USERS}}
-{{#if newPreprintFile}}
+{{!UPLOAD NEW FILE SECTION}}
+{{#if (eq currentState 'new')}}
     {{dropzone-widget
         url=url
         options=dropzoneOptions
@@ -23,7 +23,7 @@
 {{else}}
     {{!UPLOAD NEW VERSION SECTION}}
     {{#preprint-form-section editMode=editMode class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}
-        {{preprint-form-header name=(if preprintLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" 'uploadNewFile') currentProvider=provider}}
+        {{preprint-form-header name=(if preprintLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false click=(action "toggleIsOpen" 'uploadNewFile') currentProvider=provider}}
         {{#preprint-form-body}}
             {{#if preprintLocked}}
                 <p class='text-muted m-v-sm text-smaller'> {{t "components.file-uploader.update_version" documentType=provider.documentType}}</p>
@@ -45,7 +45,7 @@
         {{#if preprintLocked}}
             {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
             {{#preprint-form-section editMode=editMode class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}}
-                {{preprint-form-header title=title name='title_of_preprint' showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" 'titleOfPreprint') currentProvider=provider}}
+                {{preprint-form-header title=title name='title_of_preprint' showValidationIndicator=false click=(action "toggleIsOpen" 'titleOfPreprint') currentProvider=provider}}
                 {{#preprint-form-body}}
                     <label class="text-muted title-label text-smaller">  {{t "components.preprint-form-project-select.edit_preprint_title_project" documentType=provider.documentType}} </label>
                     <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Edit title') (action 'track' 'input' 'onchange' 'Submit - Edit title')}}>

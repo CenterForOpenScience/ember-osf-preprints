@@ -383,7 +383,7 @@ export default {
             },
         },
         'preprint-form-project-select': {
-            existing_project_selector: 'The list of projects appearing in the selector are projects and components for which you have admin access.  Registrations are not included here.',
+            existing_project_selector: 'The list of projects appearing in the selector are projects and components for which you have admin access.',
             upload_preprint: 'Upload {{documentType.singular}}',
             select_existing_file: 'Select existing file as {{documentType.singular}}',
             edit_preprint_title_project: 'Edit {{documentType.singular}} title',

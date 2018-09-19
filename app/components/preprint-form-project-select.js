@@ -13,49 +13,35 @@ import { task, timeout } from 'ember-concurrency';
  */
 
 /**
- * Preprint form project select widget - handles all ADD mode cases where the first step is to
- * select an existing OSF project to contain your preprint.  Also used in EDIT mode - as we
- * keep the project locked after preprint has been published.
- * Therefore, you must use an existing project!
+ * Preprint form project select widget - used wherever you need to load a list of user projects
+ * Used in two places - where the user is selecting a file from an existing project (to copy to their preprint),
+ * and where a user is choosing their supplemental project
  *
- *  Uses the file-uploader component, hence the large number of properties for this component,
- *  that are passed along to the file-uploader. Cases not needing the file-uploader are where
- *  you are selecting an existing file on an existing node, or copying a file into
- *  a newly-created component - no file uploading needed.
  *
  * {{preprint-form-project-select
  * ```handlebars
  *      changeInitialState=(action 'changeInitialState')
- *      finishUpload=(action 'finishUpload')
  *     clearDownstreamFields=(action 'clearDownstreamFields')
  *     nextUploadSection=(action 'nextUploadSection')
  *     selectFile=(action "selectExistingFile")
- *     highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+ *     setPrimaryFile=(action 'setPrimaryFile')
  *     discardUploadChanges=(action 'discardUploadChanges')
  *     startState=_State.START
- *     existingState=existingState
- *     _existingState=_existingState
  *     title=title
  *     currentUser=user
  *     selectedFile=selectedFile
  *     hasFile=hasFile
- *     file=file
- *     node=node
- *     userNodes=userNodes
  *     selectedNode=node
- *     contributors=contributors
- *     fileSelect=true
- *     currentState=filePickerState
- *     userNodesLoaded=userNodesLoaded
+ *     currentState=currentState
  *     preprintLocked=preprintLocked
  *     osfStorageProvider=osfStorageProvider
  *     osfProviderLoaded=osfProviderLoaded
  *     titleValid=titleValid
- *     uploadChanged=uploadChanged
- *     uploadInProgress=uploadInProgress
  *     basicsAbstract=basicsAbstract
  *     editMode=editMode
- *     applyLicense=applyLicense
+ *     getProjectContributors=(action 'getProjectContributors')
+ *     provider=currentProvider
+ *     createPreprintCopyFile=(action 'createPreprintCopyFile')
  * }}
  * @class preprint-form-project-select
  */
@@ -68,9 +54,6 @@ export default Component.extend(Analytics, {
     canLoadMore: false,
     isLoading: false,
     currentPanelName: null,
-
-    // Whether to show the file selection dropdown box
-    fileSelect: false,
 
     userNodes: A(),
     isAdmin: computed('selectedNode', function() {
@@ -107,9 +90,8 @@ export default Component.extend(Analytics, {
             this.attrs.clearDownstreamFields('belowNode');
             this.set('selectedNode', node);
             this.set('osfProviderLoaded', false);
-            this.send('changeExistingState', this.get('_existingState').EXISTINGFILE);
             this.get('selectedNode.files').then(this._setStorageProvider.bind(this));
-            this.attrs.nextUploadSection('chooseProject', 'chooseFile');
+            this.attrs.nextUploadSection('chooseProject', 'selectExistingFile');
             this.get('metrics')
                 .trackEvent({
                     category: 'dropdown',
@@ -121,7 +103,8 @@ export default Component.extend(Analytics, {
         },
 
         selectFile(file) {
-            // Select existing file from file-browser
+            // Select existing node file from file-browser -
+            // This file will be eventually copied to the preprint
             this.attrs.clearDownstreamFields('belowFile');
             this.attrs.nextUploadSection('selectExistingFile', 'finalizeUpload');
             this.attrs.selectFile(file);
@@ -145,30 +128,6 @@ export default Component.extend(Analytics, {
                     label: 'Submit - Choose Supplemental Project',
                     extra: node.id,
                 });
-        },
-        changeExistingState(newState) {
-            // Toggles existingState between 'existing' or 'new',
-            // meaning user wants to select existing file from file browser to copy
-            // to the preprint or upload a new file to the preprint.
-            this.attrs.clearDownstreamFields('belowNode');
-            this.set('existingState', newState);
-            if (newState === this.get('_existingState').EXISTINGFILE) {
-                this.attrs.nextUploadSection('chooseFile', 'selectExistingFile');
-                this.get('metrics')
-                    .trackEvent({
-                        category: 'button',
-                        action: 'click',
-                        label: 'Submit - Choose Select Existing File as Preprint',
-                    });
-            } else if (newState === this.get('_existingState').NEWFILE) {
-                this.attrs.nextUploadSection('chooseFile', 'uploadNewFile');
-                this.get('metrics')
-                    .trackEvent({
-                        category: 'button',
-                        action: 'click',
-                        label: 'Submit - Choose Upload Preprint',
-                    });
-            }
         },
     },
 
@@ -226,28 +185,4 @@ export default Component.extend(Analytics, {
         this.set('isLoading', false);
     }).enqueue(),
 
-    titleMatcher(node, term) {
-        // Passed into power-select component for customized searching.
-        // Returns results if match in node, root, or parent title
-        const fields = [
-            'title',
-            'root.title',
-            'parent.title',
-        ];
-
-        const sanitizedTerm = stripDiacritics(term).toLowerCase();
-
-        for (const field of fields) {
-            const fieldValue = node.get(field) || '';
-
-            if (!fieldValue) continue;
-
-            const sanitizedValue = stripDiacritics(fieldValue).toLowerCase();
-
-            if (sanitizedValue.includes(sanitizedTerm)) {
-                return 1;
-            }
-        }
-        return -1;
-    },
 });

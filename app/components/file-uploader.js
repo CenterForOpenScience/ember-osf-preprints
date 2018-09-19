@@ -21,10 +21,6 @@ import { State } from '../controllers/submit';
  *  'file' will be set to the preuploaded file. After file is uploaded to the designated 'model',
  *  'osfFile' is set to the uploadedFile.
  *
- *  NOTE: file-uploader is used in two places in the preprints application:
- *  on the submit page and inside the preprint-form-project-select component.
- *  If new properties need to be passed to this component, be sure to update in both places.
- *
  * ```handlebars
  * {{file-uploader
  *   changeInitialState=(action 'changeInitialState')
@@ -35,8 +31,6 @@ import { State } from '../controllers/submit';
  *   discardUploadChanges=(action 'discardUploadChanges')
  *   newPreprintFile=true
  *   startState=_State.START
- *   existingState=existingState
- *   _existingState=_existingState
  *   title=title
  *   currentUser=user
  *   osfFile=selectedFile
@@ -85,19 +79,21 @@ export default Component.extend(Analytics, {
 
     actions: {
         toggleIsOpen(panelName) {
-            if (this.get('editMode')) {
-                if (this.get('currentPanelName')) {
-                    this.get('panelActions').close(this.get('currentPanelName'));
-                }
-                this.get('metrics')
-                    .trackEvent({
-                        category: 'div',
-                        action: 'click',
-                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.panelName} section`,
-                    });
-                this.get('panelActions').open(panelName);
-                this.set('currentPanelName', panelName);
+            // Handles toggling within Preprint version section, once preprint is locked.
+            // Upload panel manually opened since version-related panels are nested inside this.
+            if (this.get('currentPanelName')) {
+                this.get('panelActions').close(this.get('currentPanelName'));
             }
+            this.get('metrics')
+                .trackEvent({
+                    category: 'div',
+                    action: 'click',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.panelName} section`,
+                });
+            this.get('panelActions').open(panelName);
+            this.set('currentPanelName', panelName);
+            this.get('panelActions')._panelFor('Upload').set('apiOpenState', true);
+            this.get('panelActions')._panelFor('Upload').set('apiWasUsed', true);
         },
 
         getUrl() {

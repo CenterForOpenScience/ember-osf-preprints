@@ -19,19 +19,15 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import fixSpecialChar from 'ember-osf/utils/fix-special-char';
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
-// Enum of available upload states > New project or existing project?
+// Enum of available upload states > new preprint file, existing project file,
+// new file version
 export const State = Object.freeze(EmberObject.create({
     START: 'start',
     NEW: 'new',
     EXISTING: 'existing',
+    VERSION: 'version',
 }));
 
-// Enum of available file states > New file or existing file?
-export const existingState = Object.freeze(EmberObject.create({
-    CHOOSE: 'choose',
-    EXISTINGFILE: 'existing',
-    NEWFILE: 'new',
-}));
 
 // Form data and validations
 const BasicsValidations = buildValidations({
@@ -148,7 +144,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     toast: service('toast'),
     panelActions: service('panelActions'),
 
-    _existingState: existingState,
     // Data for project picker; tracked internally on load
     user: null,
     userNodesLoaded: false,
@@ -664,7 +659,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             } else {
                 this.send('next', this.get('_names.5'));
             }
-
         },
 
         updateSupplementalNode() {
@@ -1216,11 +1210,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     _finishUpload() {
         this.send('getPreprintContributors');
-
         // Sets upload form state to existing project (now that project has been created)
-        this.set('filePickerState', State.EXISTING);
-        // Sets file state to new file, for edit mode.
-        this.set('existingState', existingState.NEWFILE);
+        this.set('filePickerState', State.VERSION);
         this.set('file', null);
         this.get('toast').info(this.get('i18n').t('submit.preprint_file_uploaded', {
             documentType: this.get('currentProvider.documentType'),
@@ -1356,7 +1347,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
         this.setProperties(merge(this.get('_names').reduce((acc, name) => merge(acc, { [`${name.toLowerCase()}SaveState`]: false }), {}), {
             filePickerState: State.START,
-            existingState: existingState.CHOOSE,
             supplementalPickerState: State.START,
             user: null,
             userNodes: A(),
@@ -1407,6 +1397,5 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Preprint file picker state - new preprint file, or existing file that we
     // copy from project?
     filePickerState: State.START,
-    existingState: existingState.CHOOSE,
     supplementalPickerState: State.START,
 });
