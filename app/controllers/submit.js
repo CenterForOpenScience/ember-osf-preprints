@@ -148,67 +148,64 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     user: null,
 
     _State: State,
-    // Information about the thing to be turned into a preprint
+    // Project that preprint file was copied from, or supplemental project (in edit mode)
     node: null,
-    // Project or component that preprint file was copied from
+    // Preuploaded file - file dragged to dropzone, but not uploaded to preprint
     file: null,
-    // Preuploaded file - file that has been dragged to dropzone, but not uploaded to node.
+    // Preuploaded file id - saved off in case file upload succeeds but preprint request fails
     uploadedFileId: null,
-    // uploadedFileId saved off in case file upload succeeds but preprint request fails
+    // Saved off in case file upload succeeds but preprint request fails
     uploadedFileName: false,
-    selectedFile: null,
     // File that will be the preprint
-    selectedSupplementalProject: null,
+    selectedFile: null,
     // Pending supplemental project that will be set as the supplemental project on the node
-    title: '',
+    selectedSupplementalProject: null,
     // Preprint title
-    supplementalProjectTitle: '',
+    title: '',
     // Supplemental Project Title
+    supplementalProjectTitle: '',
+    // Pending Supplemental Project Title - not yet saved
     pendingSupplementalProjectTitle: '',
+    // The preprint is locked.  Is always true on Edit, and true after Upload on Submit
     preprintLocked: false,
-    // the preprint is locked.  Is True on Edit.
-    searchResults: [],
     // List of users matching search query
-    savingPreprint: false,
+    searchResults: [],
     // True when Share button is pressed on Add Preprint page
-    showModalSharePreprint: false,
+    savingPreprint: false,
     // True when sharing preprint confirmation modal is displayed
-    serverSaveState: false,
+    showModalSharePreprint: false,
     // True temporarily when changes have been saved in server section
-    uploadSaveState: false,
+    serverSaveState: false,
     // True temporarily when changes have been saved in upload section
-    disciplineSaveState: false,
+    uploadSaveState: false,
     // True temporarily when changes have been saved in discipline section
-    basicsSaveState: false,
+    disciplineSaveState: false,
     // True temporarily when changes have been saved in basics section
-    authorsSaveState: false,
+    basicsSaveState: false,
     // True temporarily when changes have been saved in authors section
-    suppplementalSaveState: false,
+    authorsSaveState: false,
     // True temporarily when changes have been saved in the supplemental section
-    osfStorageProvider: null,
+    supplementalSaveState: false,
     // Preprint node's osfStorage object
-    osfProviderLoaded: false,
+    osfStorageProvider: null,
     // Preprint node's osfStorageProvider is loaded.
-    titleValid: null,
+    osfProviderLoaded: false,
     // If preprint's pending title is valid.
-    supplementalProjectTitleValid: null,
+    titleValid: null,
     // If updated supplemental project title is valid.
-    supplementalProjectTitleUpdatedValid: null,
-    // If supplemental project's pending title is valid
+    supplementalProjectTitleValid: null,
+    // Set to true when upload step is underway
     uploadInProgress: false,
-    // Set to true when upload step is underway,
-    editMode: false,
     // Edit mode is false by default.
+    editMode: false,
     shareButtonDisabled: false,
     attemptedSubmit: false,
-    allProviders: [],
     // Initialize with an empty list of providers
+    allProviders: [],
     currentProvider: undefined,
-    // IMPORTANT PROPERTY. After advancing beyond Step 1: Upload on Add Preprint form
     selectedProvider: undefined,
     providerSaved: false,
     preprintSaved: false,
-
     submitAction: null,
 
     // Validation rules and changed states for form sections
@@ -220,7 +217,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     hasFile: computed.or('file', 'selectedFile'),
     isAddingPreprint: computed.not('editMode'),
-    existingPreprints: A(), // Existing preprints on the current node
     // Contributors on preprint
     contributors: A(),
     projectContributors: A(),
@@ -539,8 +535,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             // Opens next panel within the Upload Sectiod - Selecting a file
             // from an existing project
             // (Choose Project - Choose File - Finalize Upload)
-            this.get('panelActions').toggle(currentUploadPanel);
-            this.get('panelActions').toggle(nextUploadPanel);
+            this.get('panelActions')._panelFor(currentUploadPanel).set('apiOpenState', false);
+            this.get('panelActions')._panelFor(currentUploadPanel).set('apiWasUsed', true);
+            this.get('panelActions')._panelFor(nextUploadPanel).set('apiOpenState', true);
+            this.get('panelActions')._panelFor(nextUploadPanel).set('apiWasUsed', true);
         },
         changesSaved(currentPanelName) {
             // Temporarily changes panel save state to true.
@@ -573,10 +571,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                         label: 'Submit - Select a file from your computer',
                     });
             } else if (newState === this.get('_State').EXISTING) {
-                this.get('panelActions').open('chooseProject');
-                this.get('panelActions').close('selectExistingFile');
-                this.get('panelActions').close('uploadNewFile');
-                this.get('panelActions').close('finalizeUpload');
+                this.get('panelActions')._panelFor('chooseProject').set('apiOpenState', true);
+                this.get('panelActions')._panelFor('chooseProject').set('apiWasUsed', true);
                 this.get('metrics')
                     .trackEvent({
                         category: 'button',
@@ -735,7 +731,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             /* eslint-disable no-fallthrough */
             switch (section) {
             case 'allUpload':
-                props.push('node');
+                props.push('node', 'title', 'titleValid');
             case 'belowNode':
                 props.push('selectedFile', 'file');
                 break;
@@ -1309,7 +1305,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             filePickerState: State.START,
             supplementalPickerState: State.START,
             user: null,
-            userNodes: A(),
             node: null,
             file: null,
             uploadedFileId: null,
@@ -1328,14 +1323,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             disciplineSaveState: false,
             basicsSaveState: false,
             authorsSaveState: false,
-            suppplementalSaveState: false,
+            supplementalSaveState: false,
             osfStorageProvider: null,
             osfProviderLoaded: false,
             titleValid: null,
             supplementalProjectTitleValid: null,
-            supplementalProjectTitleUpdatedValid: null,
             uploadInProgress: false,
-            existingPreprints: A(),
             editMode: false,
             shareButtonDisabled: false,
             attemptedSubmit: false,
@@ -1350,6 +1343,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             availableLicenses: A(),
             contributors: A(),
             projectContributors: A(),
+            submitAction: null,
         }));
     },
 

@@ -5,7 +5,6 @@ import { inject as service } from '@ember/service';
 import Permissions from 'ember-osf/const/permissions';
 import { loadPage } from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
-import { stripDiacritics } from 'ember-power-select/utils/group-utils';
 import { task, timeout } from 'ember-concurrency';
 /**
  * @module ember-preprints

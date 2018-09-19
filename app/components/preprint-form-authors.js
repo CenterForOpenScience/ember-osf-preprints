@@ -24,12 +24,8 @@ import Analytics from 'ember-osf/mixins/analytics';
  *    node=node
  *    isAdmin=isAdmin
  *    currentUser=user
- *    addContributor=(action 'addContributor')
- *    addContributors=(action 'addContributors')
  *    findContributors=(action 'findContributors')
  *    searchResults=searchResults
- *    removeContributor=(action 'removeContributor')
- *    editContributor=(action 'updateContributor')
  *    reorderContributors=(action 'reorderContributors')
  *    highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
  *    editMode=editMode
