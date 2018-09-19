@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - word break in license text
+- provider name on submit form header
 
 ### Removed
 - branded footer line-height
