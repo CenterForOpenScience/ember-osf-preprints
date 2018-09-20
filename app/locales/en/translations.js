@@ -318,7 +318,7 @@ export default {
         },
         'preprint-form-authors': {
             search: {
-                placeholder: 'Search by name',
+                placeholder: 'Search by name or user profile information',
             },
             unregistered_users: {
                 paragraph: 'Can\'t find the user you\'re looking for?',
@@ -386,7 +386,7 @@ export default {
             toggle: 'Toggle navigation',
         },
         'preprint-navbar-branded': {
-            my_projects: 'My OSF Projects',
+            my_preprints: 'My Preprints',
             headline: 'On the OSF',
             reviews: 'My Reviewing',
             donate: 'Donate',
@@ -432,6 +432,7 @@ export default {
         },
         'supplementary-file-browser': {
             primary: 'Primary',
+            download_previous_versions: 'Download previous versions',
         },
         'taxonomy-top-list': {
             // Nothing to translate

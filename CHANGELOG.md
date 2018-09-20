@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.122.0] - 2018-09-20
+### Added
+- add `isWithdrawn` to google anlaytics pageTracking
+- ability to download previous preprint (primary file) versions
+- contributor query using elastic endpoint
+- `My Preprints` link to the branded navbar
+
+### Fixed
+- word break in license text
+- provider name on submit form header
+
+### Removed
+- branded footer line-height
+- manual sorting of taxonomies
+- `My OSF Projects` from the branded navbar
+
 ## [0.121.1] - 2018-09-14
 ### Fixed
 - subject filters breaking page when adding/editing preprints

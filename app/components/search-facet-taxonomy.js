@@ -76,15 +76,7 @@ export default Component.extend(Analytics, {
                     childCount: result.get('child_count'),
                     shareTitle: result.get('shareTitle'),
                     path: result.get('path'),
-                }))
-                .sort((prev, next) => {
-                    if (prev.text > next.text) {
-                        return 1;
-                    } else if (prev.text < next.text) {
-                        return -1;
-                    }
-                    return 0;
-                }));
+                })));
     },
     _prepareForExpansion(results, component, items) {
         this.set('topLevelItem', results);
