@@ -604,6 +604,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 preprintLocked: true,
                 file: null,
                 node: null,
+                uploadInProgress: false
             });
             // Closes section, so all panels closed if Upload section revisited
             this.get('panelActions').close('uploadNewFile');
@@ -619,6 +620,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     action: 'click',
                     label: 'Submit - Save and Continue, Create preprint and copy node file to preprint',
                 });
+            this.set('uploadInProgress', true);
             const model = this.get('model');
             model.set('title', this.get('title'));
             model.set('provider', this.get('currentProvider'));

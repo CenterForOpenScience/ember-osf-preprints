@@ -55,7 +55,7 @@
             {{/preprint-form-section}}
             <div class="m-v-md text-center">
                 <button {{action "discardUploadChanges"}} class="btn btn-default" disabled={{unless uploadChanged true}} >{{t "global.discard"}}</button>
-                <button class="btn btn-primary" disabled={{not (and hasFile titleValid)}} {{action 'uploadNewPreprintVersion'}}>Save and continue</button>
+                <button class="btn btn-primary" disabled={{not (and (not uploadInProgress)(and hasFile titleValid))}} {{action 'uploadNewPreprintVersion'}}>Save and continue</button>
             </div>
         {{/if}}
     {{/if}}

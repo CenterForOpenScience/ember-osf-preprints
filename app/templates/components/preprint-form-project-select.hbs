@@ -39,7 +39,7 @@
                                         {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action createPreprintCopyFile name)}}
                                     </form>
                                     <div class="text-center m-v-md">
-                                        <button class="btn btn-primary" disabled={{not (and title (and selectedFile titleValid))}} {{action createPreprintCopyFile}}>{{t "submit.body.save_continue"}}</button>
+                                        <button class="btn btn-primary" disabled={{not (and (not uploadInProgress)(and title (and selectedFile titleValid)))}} {{action createPreprintCopyFile}}>{{t "submit.body.save_continue"}}</button>
                                     </div>
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}

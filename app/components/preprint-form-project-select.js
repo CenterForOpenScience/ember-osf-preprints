@@ -25,6 +25,7 @@ import { task, timeout } from 'ember-concurrency';
  *     selectFile=(action "selectExistingFile")
  *     discardUploadChanges=(action 'discardUploadChanges')
  *     startState=_State.START
+ *     uploadInProgress=uploadInProgress
  *     title=title
  *     currentUser=user
  *     selectedFile=selectedFile

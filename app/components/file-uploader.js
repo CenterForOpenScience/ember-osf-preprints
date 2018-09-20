@@ -118,7 +118,7 @@ export default Component.extend(Analytics, {
         uploadToPreprint() {
             // Uploads file to preprint
             if (this.get('file') === null) { // No new file to upload.
-                this.finishUpload();
+                this.sendAction('finishUpload');
             } else if (this._uploadedFileUnchanged()) {
                 this.send('fileUploadSuccess', this.get('uploadedFileId'), {});
             } else {
@@ -151,9 +151,7 @@ export default Component.extend(Analytics, {
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('preprintLocked') ? 'Save File/Title Edits' : 'Uploads new version'}`,
                 });
-            if (this.get('preprintLocked')) { // Edit mode
-                this.set('uploadInProgress', true);
-            }
+            this.set('uploadInProgress', true);
 
             const model = this.get('model');
             this.set('basicsAbstract', this.get('model.description') || null);
