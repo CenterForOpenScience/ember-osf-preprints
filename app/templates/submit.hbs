@@ -109,7 +109,6 @@
                                               clearDownstreamFields=(action 'clearDownstreamFields')
                                               nextUploadSection=(action 'nextUploadSection')
                                               selectFile=(action "selectExistingFile")
-                                              setPrimaryFile=(action 'setPrimaryFile')
                                               discardUploadChanges=(action 'discardUploadChanges')
                                               startState=_State.START
                                               title=title
@@ -229,7 +228,7 @@
                     {{/with}}
                     {{#with _names.[5] as |name|}}
                         {{#preprint-form-section id="supplemental-materials" editMode=editMode class="preprint-form-block preprint-form-upload" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle node=node name=name valid=(not supplementalChanged) isValidationActive=(and hasOpened (or pendingSupplementalProjectTitle selectedSupplementalProject))}}
+                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle node=node name=name valid=(not supplementalChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="m-b-lg text-smaller">{{t "submit.body.supplemental_description"}}</p>
                                 {{#liquid-bind supplementalPickerState class='translate' as |supplementalState|}}
@@ -251,7 +250,7 @@
                                                 <span class="required">{{t "submit.body.supplemental_title"}}:</span>
                                             </label>
                                             <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add supplemental project title'}}>
-                                                {{preprint-title-editor documentType=supplementalDocType title=pendingSupplementalProjectTitle titleValid=supplementalProjectTitleValid pressSubmit=(action 'setSupplementalProjectTitle' name)}}
+                                                {{preprint-title-editor documentType=supplementalDocumentType title=pendingSupplementalProjectTitle titleValid=supplementalProjectTitleValid pressSubmit=(action 'setSupplementalProjectTitle' name)}}
                                             </form>
                                             <div class="p-t-xs pull-right">
                                                 <button {{action 'changeSupplementalPickerState' _State.START}} class="btn btn-default">{{t "global.back"}}</button>

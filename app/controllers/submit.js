@@ -1,6 +1,7 @@
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
+import { getOwner } from '@ember/application';
 import { inject as service } from '@ember/service';
 import { merge } from '@ember/polyfills';
 import { run } from '@ember/runloop';
@@ -27,7 +28,6 @@ export const State = Object.freeze(EmberObject.create({
     EXISTING: 'existing',
     VERSION: 'version',
 }));
-
 
 // Form data and validations
 const BasicsValidations = buildValidations({
@@ -146,7 +146,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     // Data for project picker; tracked internally on load
     user: null,
-    supplementalDocType: { singular: 'supplemental project' },
 
     _State: State,
     // Project that preprint file was copied from, or supplemental project (in edit mode)
@@ -272,11 +271,17 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     moderationType: alias('currentProvider.reviewsWorkflow'),
 
     supplementalChanged: computed('supplementalProjectTitle', 'pendingSupplementalProjectTitle', 'selectedSupplementalProject', function() {
-        if (this.get('selectedSupplementalProject')) {
-            return this.get('selectedSupplementalProject.id') !== this.get('node.id');
-        } else {
-            return this.get('supplementalProjectTitle') !== this.get('pendingSupplementalProjectTitle');
-        }
+        const savedTitle = this.get('supplementalProjectTitle');
+        const pendingNewProjectTitle = this.get('pendingSupplementalProjectTitle');
+        const pendingExistingProjectTitle = this.get('selectedSupplementalProject.title');
+
+        return (pendingNewProjectTitle && pendingNewProjectTitle !== savedTitle) ||
+            (pendingExistingProjectTitle && pendingExistingProjectTitle !== savedTitle);
+    }),
+
+    supplementalDocumentType: computed('i18n', function () {
+        const locale = getOwner(this).factoryFor(`locale:${this.get('i18n.locale')}/translations`).class;
+        return locale.documentType.supplementalProject;
     }),
 
     // True if fields have been changed
@@ -569,7 +574,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: 'Submit - Select a file from your computer',
+                        label: 'Submit - Choose select a file from your computer',
                     });
             } else if (newState === this.get('_State').EXISTING) {
                 this.get('panelActions')._panelFor('chooseProject').set('apiOpenState', true);
@@ -578,7 +583,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     .trackEvent({
                         category: 'button',
                         action: 'click',
-                        label: 'Submit - Select a file from an existing OSF project',
+                        label: 'Submit - Choose select a file from an existing OSF project',
                     });
             } else {
                 this.get('metrics')
@@ -604,80 +609,15 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.send('next', this.get('_names.1'));
         },
 
-        changeSupplementalPickerState(state) {
-            // Sets supplementalPickerState to start, new, or existing
-            this.set('supplementalPickerState', state);
-            this.send('resetSupplemental');
-        },
-
-        setSupplementalTitleFromSelected() {
-            // Sets supplemental project title in UI
-            this.set('supplementalProjectTitle', this.get('selectedSupplementalProject.title'));
-            this.set('pendingSupplementalProjectTitle', '');
-            this.set('node', this.get('selectedSupplementalProject'));
-            this.send('next', this.get('_names.5'));
-        },
-
-        setSupplementalProjectTitle() {
-            this.set('supplementalProjectTitle', this.get('pendingSupplementalProjectTitle'));
-            this.set('selectedSupplementalProject', null);
-            this.send('next', this.get('_names.5'));
-        },
-
-        resetSupplemental() {
-            if (this.get('editMode')) {
-                if (this.get('selectedSupplementalProject')) {
-                    this.set('selectedSupplementalProject', null);
-                }
-                if (this.get('pendingSupplementalProjectTitle')) {
-                    this.set('pendingSupplementalProjectTitle', '');
-                }
-            } else {
-                if (this.get('selectedSupplementalProject') !== this.get('node')) {
-                    this.set('selectedSupplementalProject', null);
-                } else {
-                    this.set('pendingSupplementalProjectTitle', '');
-                }
-            }
-        },
-
-        noSupplementalNode() {
-            this.set('pendingSupplementalProjectTitle', '');
-            this.set('supplementalProjectTitle', '');
-            this.set('selectedSupplementalProject', null);
-            this.get('model').set('node', null);
-            if (this.get('editMode')) {
-                this.set('supplementalUnset', true);
-                this.send('updateSupplementalNode');
-            } else {
-                this.send('next', this.get('_names.5'));
-            }
-        },
-
-        updateSupplementalNode() {
-            const model = this.get('model');
-            if (this.get('selectedSupplementalProject') || this.get('supplementalUnset')) {
-                this.set('model.node', this.get('selectedSupplementalProject'));
-                return model.save()
-                    .then(this._finishUpdatingSupplementalNode.bind(this))
-                    .then(this._moveFromSupplemental.bind(this));
-            } else {
-                const node = this.get('store').createRecord('node', {
-                    public: false,
-                    category: 'project',
-                    title: this.get('pendingSupplementalProjectTitle'),
-                });
-                this.set('model.node', node);
-                return node.save()
-                    .then(() => model.save())
-                    .then(this._finishUpdatingSupplementalNode.bind(this))
-                    .then(this._moveFromSupplemental.bind(this));
-            }
-        },
-
         createPreprintCopyFile() {
             // Creates a preprint and then copies the file from the selected
             // node to the preprint
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Submit - Save and Continue, Create preprint and copy node file to preprint',
+                });
             const model = this.get('model');
             model.set('title', this.get('title'));
             model.set('provider', this.get('currentProvider'));
@@ -688,8 +628,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
         setPrimaryFile() {
             // Occurs in Upload section of Add Preprint form
-            // when pressing 'Save and continue'. Sets the primary file
-            // on the preprint model
+            // when pressing 'Save and continue'. Sets the newly uploaded file
+            // as the primary file on the preprint model.
             const model = this.get('model');
             model.set('primaryFile', this.get('selectedFile'));
 
@@ -697,6 +637,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 .then(this._finishUpload.bind(this))
                 .catch(this._failedUpload.bind(this));
         },
+
         // Takes file chosen from file-browser and sets equal to selectedFile.
         // This file will be copied to the preprint
         selectExistingFile(file) {
@@ -960,6 +901,114 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
             run.later(() => context.$(`#${elementId}`).removeClass(highlightClass), 2000);
         },
+
+        /*
+        Supplemental Project Section
+        */
+        changeSupplementalPickerState(state) {
+            // Sets supplementalPickerState to start, new, or existing
+            this.set('supplementalPickerState', state);
+            this.send('discardSupplemental');
+        },
+
+        setSupplementalTitleFromSelected() {
+            // Locally sets supplemental project title in UI - title taken from existing project
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Submit - Set existing project as supplemental',
+                });
+            this.set('supplementalProjectTitle', this.get('selectedSupplementalProject.title'));
+            this.set('pendingSupplementalProjectTitle', '');
+            this.set('node', this.get('selectedSupplementalProject'));
+            this.send('next', this.get('_names.5'));
+        },
+
+        setSupplementalProjectTitle() {
+            // Locally sets supplementalProjectTitle - Submit mode
+            // When preprint submission is finalized, a supplemental project will
+            // be created with this title.
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Submit - Set new project as supplemental',
+                });
+            this.set('supplementalProjectTitle', this.get('pendingSupplementalProjectTitle'));
+            this.set('selectedSupplementalProject', null);
+            this.set('node', null);
+            this.send('next', this.get('_names.5'));
+        },
+
+        discardSupplemental() {
+            // Locally resets supplemental project UI to latest save state
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Supplemental Project Changes`,
+                });
+            if (this.get('editMode')) {
+                if (this.get('selectedSupplementalProject') !== this.get('node')) {
+                    this.set('selectedSupplementalProject', null);
+                }
+                if (this.get('pendingSupplementalProjectTitle')) {
+                    this.set('pendingSupplementalProjectTitle', '');
+                }
+            } else {
+                if (this.get('selectedSupplementalProject')) {
+                    this.set('selectedSupplementalProject', this.get('node'));
+                    this.set('pendingSupplementalProjectTitle', '');
+                } else {
+                    this.set('pendingSupplementalProjectTitle', this.get('supplementalProjectTitle'));
+                }
+            }
+            this.set('supplementalProjectTitleValid', false);
+        },
+
+        noSupplementalNode() {
+            // TODO send request to unset supplementary project from node
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Edit - Remove Supplemental Project from Preprint',
+                });
+            this.set('pendingSupplementalProjectTitle', '');
+            this.set('supplementalProjectTitle', '');
+            this.set('selectedSupplementalProject', null);
+            this.get('model').set('node', null);
+            if (this.get('editMode')) {
+                // send request to remove node
+            } else {
+                this.send('next', this.get('_names.5'));
+            }
+        },
+
+        updateSupplementalNode() {
+            // For updating the supplemental project in edit mode - supplemental
+            // project is updated immediately on the preprint.
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `Edit - Update supplemental project: ${this.get('selectedSupplementalProject') ? 'Existing Project' : 'New Project'}`,
+                });
+            const model = this.get('model');
+            if (this.get('selectedSupplementalProject')) {
+                model.set('node', this.get('selectedSupplementalProject'));
+                return model.save()
+                    .then(this._finishUpdatingSupplementalNode.bind(this))
+                    .catch(this._errorUpdatingSupplemental.bind(this));
+            } else {
+                const node = this._createSupplementalProject(this.get('pendingSupplementalProjectTitle'));
+                return node.save()
+                    .then(() => model.save())
+                    .then(this._finishUpdatingSupplementalNode.bind(this))
+                    .catch(this._errorUpdatingSupplemental.bind(this));
+            }
+        },
         /*
           Submit tab actions
          */
@@ -1078,24 +1127,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         }
     },
 
-    _saveSupplementalProject() {
-        const model = this.get('model');
-        if (this.get('selectedSupplementalProject')) {
-            model.set('node', this.get('selectedSupplementalProject'));
-            return model.save();
-        } else if (this.get('supplementalProjectTitle')) {
-            const node = this.get('store').createRecord('node', {
-                public: false,
-                category: 'project',
-                title: this.get('supplementalProjectTitle'),
-            });
-            this.set('model.node', node);
-            return node.save()
-                .then(() => model.save())
-                .then(this._savePreprint.bind(this));
-        }
-    },
-
     _providerRouteTransition(preprintId) {
         let useProviderRoute = false;
         if (this.get('theme.isProvider')) {
@@ -1154,6 +1185,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.set('basicsAbstract', this.get('node.description'));
         model.set('tags', this.get('node.tags'));
         model.set('primaryFile', this.get('selectedFile'));
+        // Sets node to null here (don't need to preserve the node the file was copied from)
+        // The node variable will later be used for the supplemental project
+        this.set('node', null);
         return model.save()
             .then(this._addContributorsFromFileProject.bind(this))
             .then(this._finishUpload.bind(this))
@@ -1188,12 +1222,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 documentType: this.get('currentProvider.documentType'),
             },
         ));
-    },
-
-    _finishUpdatingSupplementalNode() {
-        this.set('node', this.get('model.node'));
-        this.set('supplementalUnset', false);
-        this.set('supplementalProjectTitle', this.get('node').get('title'));
     },
 
     _setBasicsLicense(license) {
@@ -1305,6 +1333,49 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         // Output: "nick*~ AND cage*~"
         // this output maps to how api v1 search users worked before (escape lucene, etc)
         return query.split(/[\s-]+/).map(p => `${this._escapeLucene(p)}*~`).join(' AND ');
+    },
+
+    _saveSupplementalProject() {
+        // On Submit page - Add mode.  Either creates a new project or uses an existing project,
+        // and saves that as the supplemental project on thoe node
+        const model = this.get('model');
+        if (this.get('node')) {
+            model.set('node', this.get('node'));
+            return model.save();
+        } else if (this.get('supplementalProjectTitle')) {
+            const node = this._createSupplementalProject(this.get('supplementalProjectTitle'));
+            return node.save()
+                .then(() => model.save())
+                .then(this._savePreprint.bind(this));
+        }
+    },
+
+    _createSupplementalProject(title) {
+        // Creates a project and locally sets that as the preprint's node.
+        const node = this.get('store').createRecord('node', {
+            public: false,
+            category: 'project',
+            title,
+        });
+        this.set('model.node', node);
+        return node;
+    },
+
+    _finishUpdatingSupplementalNode() {
+        // in Edit mode, locally updates the supplemental node and its title,
+        // to the newly saved supplemental project - advances to next form section
+        this.set('node', this.get('model.node'));
+        this.set('supplementalProjectTitle', this.get('node.title'));
+        this._moveFromSupplemental();
+    },
+
+    _errorUpdatingSupplemental() {
+        // If there was an error updating the supplemental project, reset
+        // the node on the model to be the original node, and the supplementalProjectTitle
+        // to be that node's title
+        this.get('toast').error(this.get('i18n').t('submit.error_saving_supplemental'));
+        this.set('supplementalProjectTitle', this.get('node.title'));
+        this.set('model.node', this.get('node'));
     },
 
     clearFields() {

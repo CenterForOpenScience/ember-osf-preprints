@@ -23,7 +23,6 @@ import { task, timeout } from 'ember-concurrency';
  *     clearDownstreamFields=(action 'clearDownstreamFields')
  *     nextUploadSection=(action 'nextUploadSection')
  *     selectFile=(action "selectExistingFile")
- *     setPrimaryFile=(action 'setPrimaryFile')
  *     discardUploadChanges=(action 'discardUploadChanges')
  *     startState=_State.START
  *     title=title

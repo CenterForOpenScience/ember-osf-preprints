@@ -377,7 +377,6 @@ export default {
                 choose_file: 'Choose File',
                 organize: 'Organize',
                 finalize_upload: 'Finalize Upload',
-                location_of_preprint: '{{documentType.singularCapitalized}} Location',
                 title_of_preprint: '{{documentType.singularCapitalized}} Title',
                 preprint_file: '{{documentType.singularCapitalized}} File',
             },

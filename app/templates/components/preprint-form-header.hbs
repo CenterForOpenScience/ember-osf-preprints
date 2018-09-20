@@ -1,9 +1,5 @@
 <div class="section-header">
-    {{#if (eq name 'location_of_preprint')}}
-        <span class='text-muted'> {{t (concat "components.preprint-form-header.name." name) documentType=currentProvider.documentType}} </span>
-    {{else}}
-        {{t (concat "components.preprint-form-header.name." name) documentType=currentProvider.documentType}}
-    {{/if}}
+    {{t (concat "components.preprint-form-header.name." name) documentType=currentProvider.documentType}}
 </div>
 
 <div class="preprint-section-status pull-right">

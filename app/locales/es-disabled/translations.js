@@ -308,7 +308,6 @@ export default {
                 choose_file: 'Elegir un Archivo',
                 organize: 'Organizar',
                 finalize_upload: 'Finalizar la Carga',
-                location_of_preprint: 'Ubicación del Preprint',
                 title_of_preprint: 'Título del Preprint',
                 preprint_file: 'Archivo del Preprint',
             },

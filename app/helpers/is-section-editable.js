@@ -14,7 +14,7 @@ import { helper } from '@ember/component/helper';
  */
 export function isSectionEditable(params/* , hash */) {
     const section = params[0];
-    const uneditableSections = ['Submit', 'location_of_preprint', 'Update'];
+    const uneditableSections = ['Submit', 'Update'];
     return !(uneditableSections.includes(section));
 }
 
