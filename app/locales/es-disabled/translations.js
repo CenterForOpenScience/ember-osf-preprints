@@ -330,7 +330,7 @@ export default {
             toggle: 'Cambiar la navegación',
         },
         'preprint-navbar-branded': {
-            my_projects: 'Mis Proyectos OSF',
+            my_preprints: 'Mis Preprints',
             headline: 'En la OSF',
         },
         'project-chooser': {
@@ -361,6 +361,7 @@ export default {
         },
         'supplementary-file-browser': {
             primary: 'Primario',
+            download_previous_versions: 'Descargar versiones anteriores',
         },
         'permission-language': {
             arxivTrademarkLicense,

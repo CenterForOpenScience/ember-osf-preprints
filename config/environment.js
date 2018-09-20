@@ -65,6 +65,7 @@ module.exports = function(environment) {
                     authenticated: 'dimension1',
                     resource: 'dimension2',
                     isPublic: 'dimension3',
+                    isWithdrawn: 'dimension4',
                 },
             },
             {

@@ -1053,3 +1053,15 @@ test('returnToSubmission', function(assert) {
     ctrl.send('cancel');
     assert.ok(stub.calledOnce);
 });
+
+test('_processQuery', function(assert) {
+    const ctrl = this.subject();
+    let query = ctrl._processQuery('nick cage');
+    assert.equal(query, 'nick*~ AND cage*~');
+
+    query = ctrl._processQuery('ni*ck cage');
+    assert.equal(query, 'ni\\*ck*~ AND cage*~');
+
+    query = ctrl._processQuery('nick "freedom" cage');
+    assert.equal(query, 'nick*~ AND \\"freedom\\"*~ AND cage*~');
+});
