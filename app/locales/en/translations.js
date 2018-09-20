@@ -386,8 +386,8 @@ export default {
             upload_preprint: 'Upload {{documentType.singular}}',
             select_existing_file: 'Select existing file as {{documentType.singular}}',
             edit_preprint_title_project: 'Edit {{documentType.singular}} title',
-            edit_preprint_title_component: 'Edit {{documentType.singular}} title (will also become the name of the component)',
-            admin_only: 'You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.',
+            copy_file_help_text: 'This will make a copy of your file to become your {{documentType.singular}}.',
+            admin_only: 'You must be the admin of this project to copy a file.  Please ask the admin of this project to make you an admin so you may copy a file.',
         },
         'preprint-form-section': {
             // Nothing to translate

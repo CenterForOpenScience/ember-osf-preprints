@@ -1311,7 +1311,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.toggleProperty('shareButtonDisabled');
         return this.get('toast')
             .error(this.get('i18n')
-                .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
+                .t(
+                    `submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`,
+                    {
+                        documentType: this.get('currentProvider.documentType'),
+                    },
+                ));
     },
 
     _setAvailableLicense(licenses) {

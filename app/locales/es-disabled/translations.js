@@ -318,7 +318,6 @@ export default {
             upload_preprint: 'Cargar un preprint',
             select_existing_file: 'Seleccionar un archivo existente como un preprint',
             edit_preprint_title_project: 'Editar el título de un preprint',
-            edit_preprint_title_component: 'Editar el titulo del preprint',
             initiate_preprint_process: 'Ud. ha seleccionado y organizado un archivo del preprint. Cliquear "Grabar y continuar" para cambiar su proyecto OSF de manera inmediata. No podrá borrar el archivo de preprint, pero Ud. podrá actualizarlo y modificarlo.',
             admin_only: 'Ud. debe ser el administrador de este componente para compartirlo.  Por favor, pídale al administrador de este proyecto que lo haga también administrador para que pueda compartir este componente.',
         },

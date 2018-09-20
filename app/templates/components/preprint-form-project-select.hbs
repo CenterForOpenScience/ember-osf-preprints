@@ -20,7 +20,7 @@
             {{#if isNodeAdmin}}
                 <div>
                     {{#if osfProviderLoaded}}
-                        {{!CHOOSE EXISTING FILE SECTION}}
+                        {{!CHOOSE EXISTING FILE SECTION - THIS FILE WILL BE COPIED FROM THE NODE TO THE PREPRINT}}
                         {{#preprint-form-section class="upload-section-block" allowOpen=true name='selectExistingFile' open=false}}
                             {{preprint-form-header name=(if preprintLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false}}
                             {{#preprint-form-body}}
@@ -28,10 +28,13 @@
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                         {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
-                            {{!FINALIZE UPLOAD SECTION - EXISTING FILE}}
+                            {{!FINALIZE UPLOAD SECTION - ADD TITLE}}
                             {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
                                 {{preprint-form-header title=title name='finalize_upload' showValidationIndicator=false currentProvider=provider}}
                                 {{#preprint-form-body}}
+                                    <p class="text-muted text-smaller m-t-xs">
+                                        {{t "components.preprint-form-project-select.copy_file_help_text" documentType=provider.documentType}}
+                                    </p>
                                     <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Connect preprint to existing project'}}>
                                         {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action createPreprintCopyFile name)}}
                                     </form>

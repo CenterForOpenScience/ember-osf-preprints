@@ -1264,7 +1264,7 @@ label.title-label {
 
 // Narrow views for submit
 @media (max-width: 768px) {
-    #preprint-form-upload .btn-big {
+    .preprint-form-upload .btn-big {
         min-height: 100px;
         font-size: 14px;
     }
