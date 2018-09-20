@@ -603,6 +603,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.setProperties({
                 preprintLocked: true,
                 file: null,
+                node: null,
             });
             // Closes section, so all panels closed if Upload section revisited
             this.get('panelActions').close('uploadNewFile');
@@ -937,7 +938,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 });
             this.set('supplementalProjectTitle', this.get('pendingSupplementalProjectTitle'));
             this.set('selectedSupplementalProject', null);
-            this.set('node', null);
             this.send('next', this.get('_names.5'));
         },
 
@@ -1185,9 +1185,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.set('basicsAbstract', this.get('node.description'));
         model.set('tags', this.get('node.tags'));
         model.set('primaryFile', this.get('selectedFile'));
-        // Sets node to null here (don't need to preserve the node the file was copied from)
-        // The node variable will later be used for the supplemental project
-        this.set('node', null);
         return model.save()
             .then(this._addContributorsFromFileProject.bind(this))
             .then(this._finishUpload.bind(this))
@@ -1206,7 +1203,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.send('getPreprintContributors');
         // Sets upload form state to existing project (now that project has been created)
         this.set('filePickerState', State.VERSION);
-        this.set('file', null);
         this.get('toast').info(this.get('i18n').t('submit.preprint_file_uploaded', {
             documentType: this.get('currentProvider.documentType'),
         }));
