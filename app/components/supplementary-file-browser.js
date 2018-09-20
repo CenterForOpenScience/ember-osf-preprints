@@ -1,5 +1,8 @@
+import Ember from 'ember';
 import Component from '@ember/component';
-import { computed, observer } from '@ember/object';
+import { task } from 'ember-concurrency';
+import DS from 'ember-data';
+import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -25,101 +28,86 @@ import fileDownloadPath from '../utils/file-download-path';
  * ```
  * @class supplementary-file-browser
  */
+
+const { A } = Ember;
+const { PromiseArray } = DS;
+
 export default Component.extend(Analytics, {
     theme: service(),
 
     elementId: 'preprint-file-view',
-    endIndex: 6,
-    startIndex: 0,
-
+    maxFilesDisplayed: 6, // Max number of files displayed in suppl. files carousel
     scrollAnim: '',
     selectedFile: null,
     allowCommenting: false,
 
-    hasAdditionalFiles: computed('files', function() {
-        return this.get('files.length') > 1;
+    hasAdditionalFiles: computed.gt('files.length', 1),
+    hasPrev: computed.gt('startIndex', 0),
+    selectedFileIsPrimaryFile: computed.equal('selectedIndex', 0),
+
+    primaryFileHasVersions: computed('selectedFileIsPrimaryFile', 'versions', function() {
+        const versions = this.get('versions');
+        if (!versions) return;
+
+        return this.get('selectedFileIsPrimaryFile') && versions.length > 1;
     }),
 
-    hasPrev: computed('files', 'endIndex', 'startIndex', function() {
-        return this.get('startIndex') > 0;
+    startIndex: computed('selectedIndex', 'maxFilesDisplayed', function() {
+        const selectedIndex = this.get('selectedIndex') || 0;
+        const maxFilesDisplayed = this.get('maxFilesDisplayed');
+
+        return Math.floor(selectedIndex / maxFilesDisplayed) * maxFilesDisplayed;
     }),
 
-    hasNext: computed('files', 'endIndex', 'startIndex', function() {
+    endIndex: computed('selectedIndex', 'maxFilesDisplayed', function() {
+        const maxFilesDisplayed = this.get('maxFilesDisplayed');
+        const selectedIndex = this.get('selectedIndex') || maxFilesDisplayed;
+
+        return Math.ceil(selectedIndex / maxFilesDisplayed) * maxFilesDisplayed;
+    }),
+
+    hasNext: computed('files.length', 'endIndex', function() {
         return this.get('endIndex') < this.get('files.length');
     }),
 
+    versions: computed('selectedFile', function() {
+        const selectedFile = this.get('selectedFile');
 
-    selectedFileChanged: computed('selectedFile', function() {
-        const eventData = {
-            file_views: {
-                preprint: {
-                    type: 'preprint',
-                    id: this.get('preprint.id'),
-                },
-                file: {
-                    id: this.get('selectedFile.id'),
-                    primaryFile: this.get('preprint.primaryFile.id') === this.get('selectedFile.id'),
-                    version: this.get('selectedFile.currentVersion'),
-                },
-            },
-        };
-        this.get('metrics').invoke('trackSpecificCollection', 'Keen', {
-            collection: 'preprint-file-views',
-            eventData,
-            node: this.get('node'),
+        if (!selectedFile || !this.get('selectedFileIsPrimaryFile')) {
+            return A();
+        }
+
+        const versions = A();
+
+        return PromiseArray.create({
+            promise: loadAll(selectedFile, 'versions', versions, { sort: '-id', 'page[size]': 50 })
+                .then(this.__serializeVersions.bind(this, versions)),
         });
     }),
-    fileDownloadURL: computed('selectedFile', function() {
-        return fileDownloadPath(this.get('selectedFile'), this.get('node'));
-    }),
-    _chosenFile: observer('chosenFile', 'indexes', function() { /* eslint-disable-line ember/no-observers */
-        const fid = this.get('chosenFile');
-        const index = this.get('indexes') && this.get('indexes').indexOf(fid);
-        if (fid && index !== -1) {
-            this.set('selectedFile', this.get('files')[index]);
-        }
-    }),
-    _moveIfNeeded: observer('selectedFile', function() { /* eslint-disable-line ember/no-observers */
-        const index = this.get('files') && this.get('files').indexOf(this.get('selectedFile'));
-        if (index < 0) {
-            return;
-        }
-        if (index >= this.get('endIndex') || index < this.get('startIndex')) {
-            const max = this.get('files').length - 6;
-            if (index > max) {
-                this.set('startIndex', max);
-                this.set('endIndex', this.get('files').length);
-            } else {
-                this.set('startIndex', index);
-                this.set('endIndex', index + 6);
-            }
-        }
+
+    fileRendererURL: computed('selectedFile.links.download', 'selectedVersion', function() {
+        const downloadUrl = this.get('selectedFile.links.download');
+        const selectedVersion = this.get('selectedVersion');
+
+        return (downloadUrl && selectedVersion) ? `${downloadUrl}?version=${selectedVersion}` : null;
     }),
 
-    // This needs to be changed away from an observer, but "preprint" changes
-    // frequently enough that it is really complicated
-    __files: observer('preprint', function() { /* eslint-disable-line ember/no-observers */
-        this.set('files', []);
-        this.set('selectedFile', null);
-        /* eslint-disable ember/named-functions-in-promises */
-        this.get('node').get('files')
-            .then((fileProviders) => {
-                this.set('fileProvider', fileProviders.findBy('name', 'osfstorage'));
-                return loadAll(this.get('fileProvider'), 'files', this.get('files'), { 'page[size]': 50 });
-            })
-            .then(() => this.get('preprint').get('primaryFile'))
-            .then((pf) => {
-                this.get('files').removeObject(pf);
-                this.set('primaryFile', pf);
-                this.set('selectedFile', this.get('primaryFile'));
-                this.set('files', [this.get('primaryFile')].concat(this.get('files')));
-                this.set('indexes', this.get('files').map(each => each.id));
-            });
-        /* eslint-enable ember/named-functions-in-promises */
+    fileDownloadURL: computed('selectedFile', 'selectedVersion', function() {
+        return fileDownloadPath(this.get('selectedFile'), this.get('node'));
     }),
+
+    updateFiles: computed('preprint', function() {
+        this.get('getFiles').perform();
+    }),
+
     init() {
         this._super(...arguments);
-        this.__files();
+        this.setProperties({
+            files: A(),
+            selectedFile: null,
+            selectedIndex: null,
+        });
+        this.get('getFiles').perform();
     },
 
     didReceiveAttrs() {
@@ -135,11 +123,19 @@ export default Component.extend(Analytics, {
                     label: 'Content - Next',
                 });
 
-            if (this.get('endIndex') > this.get('files.length')) return;
+            const endIndex = this.get('endIndex');
 
-            this.set('scrollAnim', `to${direction}`);
-            this.set('endIndex', this.get('endIndex') + 5);
-            this.set('startIndex', this.get('startIndex') + 5);
+            if (endIndex > this.get('files.length')) {
+                return;
+            }
+
+            const maxFilesDisplayed = this.get('maxFilesDisplayed');
+
+            this.setProperties({
+                scrollAnim: `to${direction}`,
+                startIndex: this.get('startIndex') + maxFilesDisplayed,
+                endIndex: endIndex + maxFilesDisplayed,
+            });
         },
         prev(direction) {
             this.get('metrics')
@@ -148,19 +144,22 @@ export default Component.extend(Analytics, {
                     action: 'click',
                     label: 'Content - Prev',
                 });
-            const start = this.get('startIndex');
-            if (start <= 0) return;
 
-            this.set('scrollAnim', `to${direction}`);
-            if ((start - 5) < 0) {
-                this.set('startIndex', 0);
-                this.set('endIndex', 6);
-            } else {
-                this.set('startIndex', start - 5);
-                this.set('endIndex', this.get('endIndex') - 5);
+            const startIndex = this.get('startIndex');
+
+            if (startIndex <= 0) {
+                return;
             }
+
+            const maxFilesDisplayed = this.get('maxFilesDisplayed');
+
+            this.setProperties({
+                scrollAnim: `to${direction}`,
+                startIndex: Math.max(startIndex - maxFilesDisplayed, 0),
+                endIndex: Math.max(this.get('endIndex') - maxFilesDisplayed, maxFilesDisplayed),
+            });
         },
-        changeFile(file) {
+        changeFile(selectedFile, selectedIndex) {
             this.get('metrics')
                 .trackEvent({
                     category: 'file browser',
@@ -168,9 +167,13 @@ export default Component.extend(Analytics, {
                     label: 'Content - File',
                 });
 
-            this.set('selectedFile', file);
+            this.setProperties({
+                selectedFile,
+                selectedIndex,
+            });
+
             if (this.chooseFile) {
-                this.chooseFile(file);
+                this.chooseFile(selectedFile);
             }
         },
     },
@@ -179,4 +182,54 @@ export default Component.extend(Analytics, {
         const publishedAndPublic = this.get('preprint.isPublished') && this.get('node.public');
         this.set('allowCommenting', provider.get('allowCommenting') && publishedAndPublic);
     },
+    __serializeVersions(versions) {
+        const downloadUrl = this.get('selectedFile.links.download');
+        const selectedFileGuid = this.get('selectedFile.guid');
+
+        const directDownloadUrl = downloadUrl.replace(
+            `download/${selectedFileGuid}`,
+            `${selectedFileGuid}/download`,
+        );
+        const filename = this.get('selectedFile.name');
+
+        if (this.get('selectedFileIsPrimaryFile')) {
+            this.set('primaryFileHasVersions', versions.length > 1);
+        }
+
+        return versions
+            .map((version) => {
+                const dateFormatted = encodeURIComponent(version.get('dateCreated').toISOString());
+                const displayName = filename.replace(/(\.\w+)?$/, ext => `-${dateFormatted}${ext}`);
+                version.set('downloadUrl', `${directDownloadUrl}?version=${version.id}&displayName=${displayName}`);
+                return version;
+            });
+    },
+    __initProperties(primaryFile) {
+        const files = this.get('files');
+
+        files.removeObject(primaryFile);
+        files.unshiftObject(primaryFile);
+
+        const selectedFile = files.find(({ id }) => id === this.get('chosenFile')) || primaryFile;
+
+        this.setProperties({
+            primaryFile,
+            selectedFile,
+            files,
+            selectedIndex: files.indexOf(selectedFile),
+        });
+    },
+    getFiles: task(function* () {
+        const providers = yield this.get('node.files');
+        yield loadAll(
+            providers.findBy('name', 'osfstorage'),
+            'files',
+            this.get('files'),
+            {
+                'page[size]': 50,
+            },
+        );
+        const primaryFile = yield this.get('preprint.primaryFile');
+        this.__initProperties(primaryFile);
+    }),
 });

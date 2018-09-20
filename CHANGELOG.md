@@ -5,6 +5,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- add `isWithdrawn` to google anlaytics pageTracking
+- ability to download previous preprint (primary file) versions
+- contributor query using elastic endpoint
+- `My Preprints` link to the branded navbar
+
+### Fixed
+- word break in license text
+- provider name on submit form header
+
+### Removed
+- branded footer line-height
+- Manual sorting of taxonomies
+- `My OSF Projects` from the branded navbar
 
 ## [0.121.1] - 2018-09-14
 ### Fixed
