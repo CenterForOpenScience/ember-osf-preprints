@@ -251,7 +251,7 @@
                                                 <span class="required">{{t "submit.body.supplemental_title"}}:</span>
                                             </label>
                                             <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add supplemental project title'}}>
-                                                {{preprint-title-editor documentType='supplemental project' title=pendingSupplementalProjectTitle titleValid=supplementalProjectTitleValid pressSubmit=(action 'setSupplementalProjectTitle' name)}}
+                                                {{preprint-title-editor documentType=supplementalDocType title=pendingSupplementalProjectTitle titleValid=supplementalProjectTitleValid pressSubmit=(action 'setSupplementalProjectTitle' name)}}
                                             </form>
                                             <div class="p-t-xs pull-right">
                                                 <button {{action 'changeSupplementalPickerState' _State.START}} class="btn btn-default">{{t "global.back"}}</button>

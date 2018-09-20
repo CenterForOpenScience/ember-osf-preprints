@@ -55,7 +55,7 @@ export default Component.extend(Analytics, {
     currentPanelName: null,
 
     userNodes: A(),
-    isAdmin: computed('selectedNode', function() {
+    isNodeAdmin: computed('selectedNode', function() {
         return this.get('selectedNode') ? (this.get('selectedNode.currentUserPermissions') || []).includes(Permissions.ADMIN) : false;
     }),
 

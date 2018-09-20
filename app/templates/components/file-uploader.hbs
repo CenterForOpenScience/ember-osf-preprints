@@ -20,7 +20,7 @@
         <button class="btn btn-default" {{action changeInitialState startState}}>Back</button>
         <button class="btn btn-primary" disabled={{not (and (not uploadInProgress)(and hasFile titleValid))}} {{action 'createPreprintAndUploadFile'}}>{{t "submit.body.save_continue"}}</button>
     </div>
-{{else}}
+{{else if (eq currentState 'version')}}
     {{!UPLOAD NEW VERSION SECTION}}
     {{#preprint-form-section editMode=editMode class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}
         {{preprint-form-header name=(if preprintLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false click=(action "toggleIsOpen" 'uploadNewFile') currentProvider=provider}}

@@ -36,7 +36,6 @@ const TitleValidation = buildValidations({
 
 export default Component.extend(TitleValidation, {
     title: null,
-    titlePlaceholder: 'Enter preprint title',
 
     actions: {
         isValid() {

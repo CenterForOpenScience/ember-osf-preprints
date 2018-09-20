@@ -59,7 +59,7 @@ export default Mixin.create({
     _setSupplementalProject(node) {
         const controller = this.get('controller');
         controller.set('node', node);
-        controller.set('supplementalProjectTitle', node.get('title'));
+        controller.set('supplementalProjectTitle', node ? node.get('title'): '');
     },
 
     _getAvailableLicenses(provider) {

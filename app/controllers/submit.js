@@ -146,6 +146,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     // Data for project picker; tracked internally on load
     user: null,
+    supplementalDocType: { singular: 'supplemental project' },
 
     _State: State,
     // Project that preprint file was copied from, or supplemental project (in edit mode)
