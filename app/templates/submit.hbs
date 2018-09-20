@@ -135,24 +135,6 @@
                     {{/with}}
 
                     {{#with _names.[2] as |name|}}
-                        {{#preprint-form-section id='preprint-form-subjects' editMode=editMode class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
-                            {{#preprint-form-body}}
-                                <p class="m-b-lg text-smaller">{{t "submit.body.subjects_description"}}</p>
-
-                                {{subject-picker
-                                    editMode=editMode
-                                    initialSubjects=model.subjects
-                                    currentSubjects=subjectsList
-                                    saveSubjects=(action 'saveSubjects')
-                                    provider=currentProvider
-                                }}
-
-                            {{/preprint-form-body}}
-                        {{/preprint-form-section}}
-                    {{/with}}
-
-                    {{#with _names.[3] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' editMode=editMode class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=model.tags abstract=model.description name=name valid=(not basicsChanged) license=model.license isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -199,6 +181,23 @@
                                         </div>
                                     </div>
                                 </div>
+                            {{/preprint-form-body}}
+                        {{/preprint-form-section}}
+                    {{/with}}
+
+                    {{#with _names.[3] as |name|}}
+                        {{#preprint-form-section id='preprint-form-subjects' editMode=editMode class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
+                            {{#preprint-form-body}}
+                                <p class="m-b-lg text-smaller">{{t "submit.body.subjects_description"}}</p>
+
+                                {{subject-picker
+                                    editMode=editMode
+                                    initialSubjects=model.subjects
+                                    currentSubjects=subjectsList
+                                    saveSubjects=(action 'saveSubjects')
+                                    provider=currentProvider
+                                }}
 
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
@@ -328,8 +327,8 @@
                                 <span id="validation-errors">
                                     <p class="m-t-md"><strong>{{t "submit.body.submit.invalid.description" documentType=currentProvider.documentType}}</strong></p>
                                     <p class="text-danger">{{if (not (and savedTitle savedFile)) (t "submit.body.submit.invalid.upload")}}</p>
-                                    <p class="text-danger">{{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
                                     <p class="text-danger">{{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
+                                    <p class="text-danger">{{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
                                     <p class="text-danger">{{unless authorsValid (t "global.authors")}}</p>
                                 </span>
                             {{/if}}

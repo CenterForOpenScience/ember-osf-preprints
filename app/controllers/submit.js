@@ -222,7 +222,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     projectContributors: A(),
     userNodes: A(),
     availableLicenses: A(),
-    _names: ['server', 'upload', 'discipline', 'basics', 'authors', 'supplemental'].map(str => str.capitalize()), // Form section headers
+    _names: ['server', 'upload', 'basics', 'discipline', 'authors', 'supplemental'].map(str => str.capitalize()), // Form section headers
     uploadValid: alias('preprintLocked'), // Once the preprint has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: alias('validations.attrs.basicsAbstract.isValid'),
 
@@ -849,7 +849,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`,
                 });
 
-            const sendNext = () => this.send('next', this.get('_names.2'));
+            const sendNext = this._moveFromDisciplines;
 
             if (!hasChanged) {
                 return sendNext();
@@ -1231,7 +1231,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     },
 
     _moveFromBasics() {
-        this.send('next', this.get('_names.3'));
+        this.send('next', this.get('_names.2'));
     },
 
     _moveFromSupplemental() {
@@ -1245,7 +1245,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     },
 
     _moveFromDisciplines() {
-        this.send('next', this.get('_names.2'));
+        this.send('next', this.get('_names.3'));
     },
 
     _failMoveFromDisciplines() {
