@@ -36,7 +36,7 @@
                                             </button>
                                         </span>
                                     {{else}}
-                                        <button class="btn btn-success btn-small pull-right" {{action "addContributor" result}}> {{t "global.add"}} </button>
+                                        <button disabled={{not isAdmin}} class="btn btn-success btn-small pull-right" {{action "addContributor" result}}> {{t "global.add"}} </button>
                                     {{/if}}
                                 </td>
                             </tr>
@@ -123,9 +123,10 @@
                                             <a href={{contrib.users.links.html}} target="_blank" rel="noopener"> {{contrib.users.fullName}} </a>
                                         {{/if}}
                                     </span>
+                                    {{!REMOVE CONTRIBUTOR BUTTON - XS SCREEN}}
                                     <span class="visible-xs-inline">
                                         <span class="pull-right remove-contributor-padding-xs">
-                                            {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin model) (conditions-for-contrib-removal contrib contributors authorModification))}}
+                                            {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin editMode) (conditions-for-contrib-removal contrib contributors authorModification))}}
                                                 <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
                                                     <i class="fa fa-times"> </i>
                                                 </button>
@@ -135,8 +136,9 @@
                                 </div>
                             </td>
                             <td>
+                                {{!CHANGE AUTHOR PERMISSIONS SECTION}}
                                 <div class="form-group vert-align-enabled-permissions">
-                                    {{#if (and (and (not (contributor-is-current-user contrib currentUser)) isAdmin (min-admins contrib contributors authorModification)))}}
+                                    {{#if (and (can-update-contributor contrib currentUser isAdmin editMode) (min-admins contrib contributors authorModification))}}
                                         <span class="visible-xs-inline permission-label"><em> {{t "components.preprint-form-authors.authors.permissions"}}: </em></span>
                                         <select class="text-smaller form-control permission-select" onchange={{action (action 'updatePermissions' contrib) value='target.value'}}>
                                             {{#each permissionOptions as |option|}}
@@ -152,22 +154,24 @@
                                     {{/if}}
                                 </div>
                             </td>
+                            {{!CHANGE AUTHOR CITATION SECTION}}
                             <td class="bib-padding">
                                 <div class="form-group vert-align">
                                     <span class="visible-xs-inline checkbox-padding"><em>{{t "components.preprint-form-authors.authors.in_citation"}}:</em></span>
                                     <input disabled={{if (and isAdmin (min-bibliographic contrib contributors authorModification)) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
                                 </div>
                             </td>
+                            {{!REMOVE CONTRIBUTOR - LARGE SCREEN}}
                             <td>
                                 <div class="delete-contrib-button form-group vert-align nudge-right hidden-xs hidden-md">
-                                    {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin model) (conditions-for-contrib-removal contrib contributors authorModification))}}
+                                    {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin editMode) (conditions-for-contrib-removal contrib contributors authorModification))}}
                                         <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm" > {{t "components.preprint-form-authors.remove"}} </button>
                                     {{else}}
                                         <button class="btn btn-danger btn-sm disabled"> {{t "components.preprint-form-authors.remove"}} </button>
                                     {{/if}}
                                 </div>
                                 <span class="visible-md-inline">
-                                    {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin model) (conditions-for-contrib-removal contrib contributors authorModification))}}
+                                    {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin editMode) (conditions-for-contrib-removal contrib contributors authorModification))}}
                                         <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
                                             <i class="fa fa-times"> </i>
                                         </button>

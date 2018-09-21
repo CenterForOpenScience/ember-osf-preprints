@@ -57,6 +57,8 @@ export default Mixin.create({
     },
 
     _setSupplementalProject(node) {
+        // If supplemental project exists, set the node and supplementalProjectTitle
+        // to the supplementalProject's values
         const controller = this.get('controller');
         controller.set('node', node);
         controller.set('supplementalProjectTitle', node ? node.get('title'): '');

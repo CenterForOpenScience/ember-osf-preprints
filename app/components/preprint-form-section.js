@@ -42,6 +42,12 @@ export default CpPanelComponent.extend(Analytics, {
      */
     hasOpened: false,
 
+    /**
+     * Does the user have permission to edit information inside this panel?
+     * @property {boolean} canEdit
+     */
+    canEdit: true,
+
     init() {
         this._super(...arguments);
         this.set('panelState.boundOpenState', this.get('open'));
@@ -50,6 +56,9 @@ export default CpPanelComponent.extend(Analytics, {
         this._super(...arguments);
         if (this.get('denyOpenMessage') === undefined) {
             this.set('denyOpenMessage', this.get('i18n').t('submit.please_complete_upload'));
+        }
+        if (this.get('denyEditMessage') === undefined) {
+            this.set('denyEditMessage', this.get('i18n').t('submit.body.edit.cannot_edit'));
         }
     },
     didRender() {
@@ -64,7 +73,9 @@ export default CpPanelComponent.extend(Analytics, {
         // Prevent closing all views
         const isOpen = this.get('isOpen');
         if (!isOpen) {
-            if (this.get('allowOpen')) {
+            if (!this.get('canEdit')) {
+                this.sendAction('errorAction', this.denyEditMessage); // eslint-disable-line ember/closure-actions
+            } else if (this.get('allowOpen')) {
                 // Crude mechanism to prevent opening a panel if conditions are not met
                 this.get('metrics')
                     .trackEvent({

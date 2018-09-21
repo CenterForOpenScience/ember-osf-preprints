@@ -81,13 +81,16 @@ export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, Setu
         const controller = this.controllerFor('submit');
         controller.set('model', preprint);
         controller.send('getPreprintContributors');
+        // Unsetting here, because setting model to this loaded preprint is causing errors elsewhere.
         controller.set('model', null);
         controller.set('node', preprint.get('node'));
 
         const userPermissions = this.get('preprint.currentUserPermissions') || [];
 
-        if (!userPermissions.includes(permissions.ADMIN)) {
-            this.replaceWith('forbidden'); // Non-admin trying to access edit form.
+        if (!userPermissions.includes(permissions.READ)) {
+            this.replaceWith('forbidden'); // Non-contributor trying to access edit form.
+            // All contributors can access the edit form, but read contributors can
+            // only do so to remove themselves as contributors.
         }
     },
 });

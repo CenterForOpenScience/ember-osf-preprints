@@ -60,9 +60,10 @@
                             open=(and theme.isProvider (not editMode))
                             denyOpenMessage=(t 'submit.please_select_server')
                             errorAction=(action 'error')
+                            canEdit=canEdit
                             as |hasOpened|
                         }}
-                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprint=model preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode preprintLocked hasOpened) preprintTitle=model.title valid=(not uploadChanged) currentProvider=currentProvider}}
+                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprint=model preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode preprintLocked hasOpened) preprintTitle=model.title valid=(not uploadChanged) currentProvider=currentProvider canEdit=canEdit}}
                             {{#preprint-form-body}}
                                 {{#liquid-bind filePickerState class='translate' as |currentState|}}
                                     <div class={{currentState}}>
@@ -136,7 +137,7 @@
                     {{/with}}
 
                     {{#with _names.[2] as |name|}}
-                        {{#preprint-form-section id='preprint-form-basics' editMode=editMode class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                        {{#preprint-form-section id='preprint-form-basics' editMode=editMode class="preprint-form-block" name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=model.tags abstract=model.description name=name valid=(not basicsChanged) license=model.license isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class='row'>
@@ -187,7 +188,7 @@
                     {{/with}}
 
                     {{#with _names.[3] as |name|}}
-                        {{#preprint-form-section id='preprint-form-subjects' editMode=editMode class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                        {{#preprint-form-section id='preprint-form-subjects' editMode=editMode class="preprint-form-block" name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="m-b-lg text-smaller">{{t "submit.body.subjects_description"}}</p>
@@ -218,16 +219,18 @@
                                     currentUser=user
                                     findContributors=(action 'findContributors')
                                     searchResults=searchResults
+                                    currentUserRemoved=(action 'currentUserRemoved')
                                     reorderContributors=(action 'reorderContributors')
                                     highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
                                     editMode=editMode
+                                    canEdit=canEdit
                                     documentType=currentProvider.documentType
                                 }}
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
                     {{#with _names.[5] as |name|}}
-                        {{#preprint-form-section id="supplemental-materials" editMode=editMode class="preprint-form-block preprint-form-upload" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                        {{#preprint-form-section id="supplemental-materials" editMode=editMode class="preprint-form-block preprint-form-upload" name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle node=node name=name valid=(not supplementalChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <p class="m-b-lg text-smaller">{{t "submit.body.supplemental_description"}}</p>

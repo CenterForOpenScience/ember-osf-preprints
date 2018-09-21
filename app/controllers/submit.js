@@ -412,6 +412,20 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return (this.get('model.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
 
+    // True if the current user has write permissions to the preprint
+    isWrite: computed('model.currentUserPermissions', function() {
+        return (this.get('model.currentUserPermissions') || []).includes(permissions.WRITE);
+    }),
+
+    // True if the current user has read permissions to the preprint
+    isRead: computed('model.currentUserPermissions', function() {
+        return (this.get('model.currentUserPermissions') || []).includes(permissions.READ);
+    }),
+
+    canEdit: computed('isWrite', 'editMode', function() {
+        return this.get('editMode') ?  this.get('isWrite'): true;
+    }),
+
     workflow: computed('moderationType', function () {
         return WORKFLOW[this.get('moderationType')];
     }),
@@ -903,6 +917,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             context.$(`#${elementId}`).addClass(highlightClass);
 
             run.later(() => context.$(`#${elementId}`).removeClass(highlightClass), 2000);
+        },
+        currentUserRemoved() {
+            this.send('cancel');
         },
 
         /*

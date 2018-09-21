@@ -281,11 +281,19 @@ export default CpPanelBodyComponent.extend(Analytics, {
         },
     },
     /* If user removes their own admin permissions, many things on the page must become
-    disabled.  Changing the isAdmin flag to false will remove many of the options
-    on the page. */
-    removedSelfAsAdmin(contributor, permission) {
-        if (this.get('currentUser').id === contributor.get('userId') && permission !== 'ADMIN') {
-            this.set('isAdmin', false);
+    disabled.  Changing the isAdmin flag to false will remove many options on the
+    contributor section. If the user is downgraded to write, they can still edit
+    most of the page, but cannot update authors */
+    modifiedSelf(contributor, permission, removed) {
+        if (this.get('currentUser').id === contributor.get('userId')) {
+            if (removed) {
+                this.attrs.currentUserRemoved();
+            } else if (permission !== 'admin') {
+                this.set('isAdmin', false);
+                if (permission === 'read') {
+                    this.set('canEdit', false);
+                }
+            }
         }
     },
     /* Toggling this property, authorModification, updates several items on the page -
@@ -317,11 +325,15 @@ export default CpPanelBodyComponent.extend(Analytics, {
 
     _removeContributor() {
         const contributor = this.get('contributor');
-
         this.toggleAuthorModification();
-        this.removedSelfAsAdmin(contributor, contributor.get('permission'));
         this.get('contributors').removeObject(contributor);
-        this.get('toast').success(this.get('i18n').t(
+        this.modifiedSelf(contributor, contributor.get('permission'), true);
+        return this._currentUserModified(contributor) ? this.get('toast').success(this.get('i18n').t(
+            'submit.preprint_self_removed',
+            {
+                documentType: this.get('documentType'),
+            },
+        )) : this.get('toast').success(this.get('i18n').t(
             'submit.preprint_author_removed',
             {
                 documentType: this.get('documentType'),
@@ -329,10 +341,14 @@ export default CpPanelBodyComponent.extend(Analytics, {
         ));
     },
 
+    _currentUserModified(contributor) {
+        return (this.get('currentUser').id === contributor.get('userId'));
+    },
+
     _failRemoveContributor() {
         const contributor = this.get('contributor');
 
-        this.get('toast').error(this.get('i18n').t('submit.error_adding_author'));
+        this.get('toast').error(this.get('i18n').t('submit.error_removing_author'));
         this.highlightSuccessOrFailure(contributor.id, this, 'error');
         contributor.rollbackAttributes();
     },
@@ -343,7 +359,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
 
         this.toggleAuthorModification();
         this.highlightSuccessOrFailure(contributor.id, this, 'success');
-        this.removedSelfAsAdmin(contributor, permission);
+        this.modifiedSelf(contributor, permission, false);
     },
 
     _failModifyAuthorPermission() {
