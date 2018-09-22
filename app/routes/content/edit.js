@@ -81,7 +81,8 @@ export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, Setu
         const controller = this.controllerFor('submit');
         controller.set('model', preprint);
         controller.send('getPreprintContributors');
-        // Unsetting here, because setting model to this loaded preprint is causing errors elsewhere.
+        // Unsetting here, because setting model to this loaded preprint is
+        // causing errors elsewhere.
         controller.set('model', null);
         controller.set('node', preprint.get('node'));
 

@@ -118,7 +118,7 @@ export default Component.extend(Analytics, {
         uploadToPreprint() {
             // Uploads file to preprint
             if (this.get('file') === null) { // No new file to upload.
-                this.sendAction('finishUpload');
+                this.attrs.finishUpload();
             } else if (this._uploadedFileUnchanged()) {
                 this.send('fileUploadSuccess', this.get('uploadedFileId'), {});
             } else {
@@ -131,7 +131,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `Submit - Save and Continue, 'Uploads new preprint'}`,
+                    label: 'Submit - Save and Continue, Uploads new preprint',
                 });
             this.set('uploadInProgress', true);
             const preprint = this.get('model');

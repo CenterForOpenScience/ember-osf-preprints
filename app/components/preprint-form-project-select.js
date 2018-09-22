@@ -13,8 +13,8 @@ import { task, timeout } from 'ember-concurrency';
 
 /**
  * Preprint form project select widget - used wherever you need to load a list of user projects
- * Used in two places - where the user is selecting a file from an existing project (to copy to their preprint),
- * and where a user is choosing their supplemental project
+ * Used in two places - where the user is selecting a file from an existing project
+ * (to copy to their preprint), and where a user is choosing their supplemental project
  *
  *
  * {{preprint-form-project-select
