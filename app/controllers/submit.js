@@ -194,6 +194,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     titleValid: null,
     // If updated supplemental project title is valid.
     supplementalProjectTitleValid: null,
+    firstSupplementalOpen: true,
     // Set to true when upload step is underway
     uploadInProgress: false,
     // Edit mode is false by default.
@@ -423,7 +424,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     canEdit: computed('isWrite', 'editMode', function() {
-        return this.get('editMode') ?  this.get('isWrite'): true;
+        return this.get('editMode') ? this.get('isWrite') : true;
     }),
 
     workflow: computed('moderationType', function () {
@@ -618,7 +619,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 preprintLocked: true,
                 file: null,
                 node: null,
-                uploadInProgress: false
+                uploadInProgress: false,
             });
             // Closes section, so all panels closed if Upload section revisited
             this.get('panelActions').close('uploadNewFile');
@@ -968,6 +969,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Supplemental Project Changes`,
                 });
+
             if (this.get('editMode')) {
                 if (this.get('selectedSupplementalProject') !== this.get('node')) {
                     this.set('selectedSupplementalProject', null);
@@ -975,6 +977,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 if (this.get('pendingSupplementalProjectTitle')) {
                     this.set('pendingSupplementalProjectTitle', '');
                 }
+                this.set('supplementalProjectTitleValid', false);
+            } else if (this.get('firstSupplementalOpen')) {
+                this.set('pendingSupplementalProjectTitle', `Supplemental materials for ${this.get('currentProvider.documentType.singular')}: ${this.get('model.title')}`);
+                this.set('firstSupplementalOpen', false);
+                this.set('supplementalProjectTitleValid', true);
             } else {
                 if (this.get('selectedSupplementalProject')) {
                     this.set('selectedSupplementalProject', this.get('node'));
@@ -982,8 +989,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 } else {
                     this.set('pendingSupplementalProjectTitle', this.get('supplementalProjectTitle'));
                 }
+                this.set('supplementalProjectTitleValid', false);
             }
-            this.set('supplementalProjectTitleValid', false);
         },
 
         noSupplementalNode() {
