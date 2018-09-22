@@ -46,7 +46,9 @@ export default Mixin.create({
         controller.set('preprintLocked', true);
         controller.set('titleValid', true);
         model.get('primaryFile').then(this._setSelectedFile.bind(this));
-        model.get('node').then(this._setSupplementalProject.bind(this));
+        model.get('node')
+            .then(this._setSupplementalProject.bind(this))
+            .catch(this._supplementalProjectPermissionDenied.bind(this));
         this.get('panelActions').close('Upload');
         this.get('panelActions').open('Submit');
     },
@@ -61,7 +63,15 @@ export default Mixin.create({
         // to the supplementalProject's values
         const controller = this.get('controller');
         controller.set('node', node);
-        controller.set('supplementalProjectTitle', node ? node.get('title'): '');
+        controller.set('supplementalProjectTitle', node ? node.get('title') : '');
+    },
+
+    _supplementalProjectPermissionDenied() {
+        // Permissions on the node and preprint are separate.
+        // A preprint author may not necessarily have permissions to the supplemental project.
+        const controller = this.get('controller');
+        controller.set('node', null);
+        controller.set('supplementalProjectTitle', '');
     },
 
     _getAvailableLicenses(provider) {
