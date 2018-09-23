@@ -1,0 +1,38 @@
+{{#file-renderer
+    download=fileDownloadURL
+    allowCommenting=allowCommenting
+    width="99%"
+    height="700"}}
+{{/file-renderer}}
+
+<div class="row no-gutters">
+    <div class="col-lg-4">
+        <p id="selectedFileName" class="f-w-lg p-b-md">{{primaryFile.name}}</p>
+    </div>
+    <div class="col-lg-2 hidden-lg">
+        <p class="p-b-md">{{t "content.version"}}: {{primaryFile.currentVersion}}</p>
+    </div>
+    <div class="clearfix visible-xs-block"></div>
+    <div class="col-lg-6 col-xs-12 text-nowrap supplemental-downloads">
+        {{#if primaryFileHasVersions}}
+            {{#bs-dropdown classNames="lock-span" as |dd|}}
+                {{#dd.toggle classNames="btn btn-default btn-sm dropdown-button"}}
+                    {{t 'components.supplementary-file-browser.download_previous_versions'}}
+                    <span class="fa fa-caret-down"></span>
+                {{/dd.toggle}}
+                {{#dd.menu class='file-versions-dropdown-menu scrollable-menu' as |menu|}}
+                    {{#each versions as |version|}}
+                        {{#menu.item}}
+                            <a class="dropdown-item" href="{{version.downloadUrl}}" onclick={{action 'click' 'link' 'Content - Download Previous Version'}}>
+                                {{t "content.version"}} {{version.id}}, {{moment-format version.dateCreated "MM/DD/YYYY HH:mm:SS"}}
+                            </a>
+                        {{/menu.item}}
+                    {{/each}}
+                {{/dd.menu}}
+            {{/bs-dropdown}}
+        {{/if}}
+    </div>
+    <div class="col-lg-2 visible-lg current-version">
+        <span id="currentVersion" class="p-sm">{{t "content.version"}}: {{primaryFile.currentVersion}}</span>
+    </div>
+</div>

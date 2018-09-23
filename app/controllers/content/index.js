@@ -49,7 +49,7 @@ export default Controller.extend(Analytics, {
     fullScreenMFR: false,
     expandedAuthors: true,
     showLicenseText: false,
-    activeFile: null,
+    primaryFile: null,
     chosenFile: null,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
     hasTag: computed.bool('model.tags.length'),
@@ -67,9 +67,6 @@ export default Controller.extend(Analytics, {
     }),
     fileDownloadURL: computed('model', function() {
         return fileDownloadPath(this.get('model.primaryFile'), this.get('model'));
-    }),
-    allowCommenting: computed('model.provider', 'model', function() {
-        return this.get('model.provider').get('allowCommenting') && this.get('model.isPublished');
     }),
     facebookAppId: computed('model', function() {
         return this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
@@ -194,15 +191,6 @@ export default Controller.extend(Analytics, {
         expandAbstract() {
             this.toggleProperty('expandedAbstract');
         },
-        // Metrics are handled in the component
-        chooseFile(fileItem) {
-            if (!fileItem) return;
-
-            this.setProperties({
-                chosenFile: fileItem.get('id'),
-                activeFile: fileItem,
-            });
-        },
         shareLink(href, category, action, label, extra) {
             const metrics = this.get('metrics');
 
@@ -233,9 +221,9 @@ export default Controller.extend(Analytics, {
                         id: this.get('model.id'),
                     },
                     file: {
-                        id: primary ? this.get('model.primaryFile.id') : this.get('activeFile.id'),
+                        id: primary ? this.get('model.primaryFile.id') : this.get('primaryFile.id'),
                         primaryFile: primary,
-                        version: primary ? this.get('model.primaryFile.currentVersion') : this.get('activeFile.currentVersion'),
+                        version: primary ? this.get('model.primaryFile.currentVersion') : this.get('primaryFile.currentVersion'),
                     },
                 },
                 interaction: {

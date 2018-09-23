@@ -77,7 +77,7 @@ export default {
             edit_resubmit_preprint: 'Edit and resubmit',
         },
         orphan_preprint: 'The user has removed this file.',
-        private_preprint_warning: 'This {{documentType.singular}} is private. Make it discoverable by making',
+        private_preprint_warning: 'This {{documentType.singular}} is private.',
         public: 'public',
     },
     discover: {

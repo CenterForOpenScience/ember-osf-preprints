@@ -62,12 +62,13 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         return preprint.get('provider')
             .then(this._getProviderDetails.bind(this))
             .then(this._getUserPermissions.bind(this))
-            .then(this._setupMetaData.bind(this));
+            .then(this._setupMetaData.bind(this))
+            .then(this._getPrimaryFile.bind(this));
     },
 
     setupController(controller, model) {
         controller.setProperties({
-            activeFile: model.get('primaryFile'),
+            primaryFile: model.get('primaryFile'),
             node: this.get('node'),
             fileDownloadURL: this.get('fileDownloadURL'),
         });
@@ -113,6 +114,20 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
 
         window.location.replace(`${osfUrl}${isOSF ? '' : `preprints/${providerId}/`}${preprint.get('id')}/`);
         return Promise.reject();
+    },
+
+    _getPrimaryFile() {
+        return this.store.findRecord('file', this.get('preprint.primaryFile.id'), {reload: true})
+            .then(this._successLoadingPrimaryFile.bind(this))
+            .catch(this._errorLoadingPrimaryFile.bind(this));
+    },
+
+    _successLoadingPrimaryFile(primaryFile) {
+        return this.set('primaryFile', primaryFile);
+    },
+
+    _errorLoadingPrimaryFile() {
+        return;
     },
 
     _getUserPermissions([provider, node]) {

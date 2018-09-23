@@ -91,18 +91,16 @@
                         {{t "content.orphan_preprint"}}
                     </div>
                 {{else}}
+                    {{#if (not model.public)}}
+                        <div class="alert alert-danger m-r-md" role="alert">
+                            {{t "content.private_preprint_warning" documentType=model.provider.documentType}}
+                        </div>
+                    {{/if}}
+                    {{preprint-file-renderer provider=model.provider preprint=model primaryFile=primaryFile dualTrackNonContributors=(action 'dualTrackNonContributors')}}
                     <button class="expand-mfr-carrot hidden-xs hidden-sm" {{action 'expandMFR'}}>
                         <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                     </button>
                 {{/if}}
-                <div id='preprint-file-view'>
-                    {{#file-renderer
-                        download=model.primaryFile.links.download
-                        allowCommenting=allowCommenting
-                        width="99%"
-                        height="700"}}
-                    {{/file-renderer}}
-                </div>
             </div>
             {{!END LEFT COL DIV}}
             {{#unless fullScreenMFR}}
