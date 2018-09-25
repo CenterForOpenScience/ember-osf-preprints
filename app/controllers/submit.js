@@ -1008,9 +1008,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     .catch(this._errorRemovingSupplementalNode.bind(this));
             } else {
                 this.set('pendingSupplementalProjectTitle', '');
-                this.set('supplementalProjectTitle', '');
                 this.set('selectedSupplementalProject', null);
-                model.set('node', null);
+                if (!this.get('editMode')) {
+                    this.set('supplementalProjectTitle', '');
+                }
                 this.send('next', this.get('_names.5'));
             }
         },

@@ -71,7 +71,8 @@ export default Mixin.create({
         // A preprint author may not necessarily have permissions to the supplemental project.
         const controller = this.get('controller');
         controller.set('node', null);
-        controller.set('supplementalProjectTitle', '');
+        // Just a placeholder title to indicate to the user that they can't view this project
+        controller.set('supplementalProjectTitle', '<Private Supplemental Project>');
     },
 
     _getAvailableLicenses(provider) {
