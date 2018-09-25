@@ -91,7 +91,7 @@ export default Controller.extend(Analytics, {
         const editResubmitPreprint = 'content.project_button.edit_resubmit_preprint';
         return (
             this.get('model.provider.reviewsWorkflow') === PRE_MODERATION
-            && this.get('model.reviewsState') === REJECTED
+            && this.get('model.reviewsState') === REJECTED && this.get('isAdmin')
         ) ? editResubmitPreprint : editPreprint;
     }),
 

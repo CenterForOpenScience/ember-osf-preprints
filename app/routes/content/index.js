@@ -6,11 +6,9 @@ import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
 import loadAll from 'ember-osf/utils/load-relationship';
-import permissions from 'ember-osf/const/permissions';
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
 import ResetScrollMixin from '../../mixins/reset-scroll';
-import SetupSubmitControllerMixin from '../../mixins/setup-submit-controller';
 
 const {
     OSF: { url: osfUrl },
@@ -34,7 +32,7 @@ const handlers = new Map([
  * Fetches current preprint. Redirects to preprint provider route if necessary.
  * @class Content Route Handler
  */
-export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
+export default Route.extend(Analytics, ResetScrollMixin, {
     theme: service(),
     headTagsService: service('head-tags'),
     currentUser: service('currentUser'),
@@ -43,6 +41,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
 
     downloadUrl: '',
     preprint: null,
+    node: null,
     contributors: A(),
 
     afterModel(preprint) {
@@ -65,7 +64,8 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
             .then(this._getProviderDetails.bind(this))
             .then(this._getUserPermissions.bind(this))
             .then(this._setupMetaData.bind(this))
-            .then(this._getPrimaryFile.bind(this));
+            .then(this._getPrimaryFile.bind(this))
+            .then(this._loadSupplementalNode.bind(this));
     },
 
     setupController(controller, model) {
@@ -110,7 +110,6 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         if (themeId === providerId) {
             return Promise.all([
                 provider,
-                preprint.get('node'),
             ]);
         }
 
@@ -124,6 +123,14 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
             .catch(this._errorLoadingPrimaryFile.bind(this));
     },
 
+    _loadSupplementalNode() {
+        if (this.get('preprint.node.id')) {
+            return this.store.findRecord('node', this.get('preprint.node.id'))
+                .then(this._successLoadingSupplemental.bind(this))
+                .catch(this._errorLoadingSupplemental.bind(this));
+        }
+    },
+
     _successLoadingPrimaryFile(primaryFile) {
         return this.set('primaryFile', primaryFile);
     },
@@ -132,23 +139,21 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         this.get('toast').error(this.get('i18n').t('content.error_loading_preprint_file'));
     },
 
-    _getUserPermissions([provider, node]) {
+    _successLoadingSupplemental(node) {
+        return this.set('node', node);
+    },
+
+    _errorLoadingSupplemental() {
+        // User does not have permission to view the supplemental node - is private
+        return this.set('node', null);
+    },
+
+    _getUserPermissions([provider]) {
         const contributors = this.get('contributors');
         const preprint = this.get('preprint');
 
-        this.set('node', node);
-
-        if (this.get('editMode')) {
-            const userPermissions = this.get('preprint.currentUserPermissions') || [];
-
-            if (!userPermissions.includes(permissions.ADMIN)) {
-                this.replaceWith('forbidden'); // Non-admin trying to access edit form.
-            }
-        }
-
         return Promise.all([
             provider,
-            node,
             preprint.get('license'),
             loadAll(preprint, 'contributors', contributors, { filter: { bibliographic: true } }),
         ]);

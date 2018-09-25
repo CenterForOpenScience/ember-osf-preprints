@@ -491,7 +491,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
     canResubmit: computed('moderationType', 'model.reviewsState', function() {
         const state = this.get('model.reviewsState');
-        return this.get('moderationType') === PRE_MODERATION && (state === PENDING || state === REJECTED);
+        return this.get('moderationType') === PRE_MODERATION && (state === PENDING || state === REJECTED) && this.get('isAdmin');
     }),
 
     actions: {
