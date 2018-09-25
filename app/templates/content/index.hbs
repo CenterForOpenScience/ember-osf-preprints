@@ -131,9 +131,11 @@
                         {{chronos-submission-status-list preprintId=model.id isContributor=userIsContrib}}
                     </div>
 
-                    <div class="p-t-xs">
-                        {{chronos-submission-panel preprint=model}}
-                    </div>
+                    {{#if (and userIsContrib (eq model.reviewsState "accepted"))}}
+                        <div class="p-t-xs">
+                            {{chronos-submission-panel preprint=model}}
+                        </div>
+                    {{/if}}
 
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
