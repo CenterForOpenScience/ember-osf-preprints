@@ -246,7 +246,7 @@
                                                 </div>
                                             </div>
                                             <div class="p-t-xs m-t-sm pull-right">
-                                                <button {{action 'noSupplementalNode' name}} class="btn btn-primary">{{if editMode (t "submit.body.disconnect_supplemental") (t "global.skip")}}</button>
+                                                <button {{action 'unsetSupplementalNode' name}} class="btn btn-primary">{{if (and editMode node) (t "submit.body.disconnect_supplemental") (t "global.skip")}}</button>
                                             </div>
                                         {{else if (eq supplementalState _State.NEW)}}
                                             <label>

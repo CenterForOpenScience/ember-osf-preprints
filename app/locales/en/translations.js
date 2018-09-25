@@ -253,6 +253,8 @@ export default {
         error_copying_file: 'Error copying file; please try again.',
         error_accessing_parent_files: 'Error accessing parent files. Please try again.',
         error_saving_supplemental: 'Error saving supplemental project. Please try again.',
+        error_removing_supplemental: 'Error disconnecting supplemental project. Please try again.',
+        success_saving_supplemental: 'Supplemental project disconnected.',
         could_not_create_component: 'Could not create component. Please try again.',
         abandoned_preprint_error: 'Error with abandoned {{documentType.singular}}.',
         abandon_preprint_confirmation: 'Are you sure you want to abandon changes to this preprint?',

@@ -993,21 +993,24 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             }
         },
 
-        noSupplementalNode() {
-            // TODO send request to unset supplementary project from node
+        unsetSupplementalNode() {
+            const model = this.get('model');
             this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
                     label: 'Edit - Remove Supplemental Project from Preprint',
                 });
-            this.set('pendingSupplementalProjectTitle', '');
-            this.set('supplementalProjectTitle', '');
-            this.set('selectedSupplementalProject', null);
-            this.get('model').set('node', null);
-            if (this.get('editMode')) {
-                // send request to remove node
+            if (this.get('editMode') && model.get('node.id')) {
+                model.set('node', null);
+                return model.save()
+                    .then(this._successRemovingSupplementalNode.bind(this))
+                    .catch(this._errorRemovingSupplementalNode.bind(this));
             } else {
+                this.set('pendingSupplementalProjectTitle', '');
+                this.set('supplementalProjectTitle', '');
+                this.set('selectedSupplementalProject', null);
+                model.set('node', null);
                 this.send('next', this.get('_names.5'));
             }
         },
@@ -1403,6 +1406,23 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.get('toast').error(this.get('i18n').t('submit.error_saving_supplemental'));
         this.set('supplementalProjectTitle', this.get('node.title'));
         this.set('model.node', this.get('node'));
+    },
+
+    _successRemovingSupplementalNode() {
+        // After supplemental node has been reset (Edit mode), modifies UI to reflect this
+        // sends toast message, and advances to the next section
+        this.set('pendingSupplementalProjectTitle', '');
+        this.set('supplementalProjectTitle', '');
+        this.set('selectedSupplementalProject', null);
+        this.set('node', null);
+        this.get('toast').success(this.get('i18n').t('submit.success_saving_supplemental'));
+        this._moveFromSupplemental();
+    },
+
+    _errorRemovingSupplementalNode() {
+        // If there was an error removing the supplemental node, resets the UI to reflect this.
+        this.set('model.node', this.get('node'));
+        this.get('toast').error(this.get('i18n').t('submit.error_removing_supplemental'));
     },
 
     clearFields() {
