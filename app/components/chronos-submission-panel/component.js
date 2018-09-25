@@ -5,13 +5,14 @@ import { A } from '@ember/array';
 
 export default Component.extend({
     store: service(),
+    toast: service(),
     isLoading: false,
     canLoadMore: false,
     page: 1,
     selectedJournal: null,
     keyword: '',
-    journals: A(),
     preprint: null,
+    journals: A(),
     _fetchInitialJournals: task(function* (keyword) {
         // Wait a bit for the user to finish typing.
         yield timeout(500);
@@ -28,29 +29,6 @@ export default Component.extend({
         this.set('canLoadMore', canLoadMore);
         this.set('journals', journals);
     }).restartable(),
-    _fetchMoreJournals: task(function* () {
-        const journals = this.get('journals');
-        const page = this.get('page');
-        const keyword = this.get('keyword');
-        this.set('isLoading', true);
-        const moreJournals = yield this.get('store').query('chronos-journal', { page: page + 1, 'filter[title]': keyword });
-        journals.pushObjects(moreJournals.toArray().map(item => item._internalModel));
-        this.set('isLoading', false);
-        const canLoadMore = page + 1 < journals.get('meta.total_pages');
-        if (canLoadMore) {
-            this.set('page', page + 1);
-        }
-        this.set('canLoadMore', canLoadMore);
-    }).queue(),
-    _submit: task(function* () {
-        const submission = this.get('store').createRecord('chronos-submission', {
-            journal: this.get('selectedJournal'),
-            preprint: this.get('preprint'),
-        });
-        yield submission.save();
-        window.open(submission.get('submissionUrl'));
-        window.location.reload(true);
-    }),
     actions: {
         getInitialJournals(keyword) {
             this.get('_fetchInitialJournals').perform(keyword);
@@ -66,4 +44,31 @@ export default Component.extend({
             this.set('selectedJournal', null);
         },
     },
+    _fetchMoreJournals: task(function* () {
+        const journals = this.get('journals');
+        const page = this.get('page');
+        const keyword = this.get('keyword');
+        this.set('isLoading', true);
+        const moreJournals = yield this.get('store').query('chronos-journal', { page: page + 1, 'filter[title]': keyword });
+        journals.pushObjects(moreJournals.toArray().map(item => item._internalModel));
+        this.set('isLoading', false);
+        const canLoadMore = page + 1 < journals.get('meta.total_pages');
+        if (canLoadMore) {
+            this.set('page', page + 1);
+        }
+        this.set('canLoadMore', canLoadMore);
+    }).enqueue(),
+    _submit: task(function* () {
+        const submission = this.get('store').createRecord('chronos-submission', {
+            journal: this.get('selectedJournal'),
+            preprint: this.get('preprint'),
+        });
+        try {
+            yield submission.save();
+            window.open(submission.get('submissionUrl'));
+            window.location.reload(true);
+        } catch (e) {
+            this.get('toast').error(e.errors[0].detail);
+        }
+    }).drop(),
 });
