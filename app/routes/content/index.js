@@ -38,6 +38,8 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
     theme: service(),
     headTagsService: service('head-tags'),
     currentUser: service('currentUser'),
+    toast: service('toast'),
+    i18n: service(),
 
     downloadUrl: '',
     preprint: null,
@@ -117,7 +119,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
     },
 
     _getPrimaryFile() {
-        return this.store.findRecord('file', this.get('preprint.primaryFile.id'), {reload: true})
+        return this.store.findRecord('file', this.get('preprint.primaryFile.id'), { reload: true })
             .then(this._successLoadingPrimaryFile.bind(this))
             .catch(this._errorLoadingPrimaryFile.bind(this));
     },
@@ -127,7 +129,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
     },
 
     _errorLoadingPrimaryFile() {
-        return;
+        this.get('toast').error(this.get('i18n').t('content.error_loading_preprint_file'));
     },
 
     _getUserPermissions([provider, node]) {

@@ -66,6 +66,7 @@ export default {
         preprint_pending_doi: 'DOI created after {{documentType.singular}} is made public',
         preprint_pending_doi_moderation: 'DOI created after moderator approval',
         preprint_pending_doi_minted: 'DOIs are minted by a third party, and may take up to 24 hours to be registered.',
+        error_loading_preprint_file: 'Error loading preprint file. Please refresh the page.',
         original_publication_date: 'Original publication date',
         citations: 'Citations',
         disciplines: 'Disciplines',
