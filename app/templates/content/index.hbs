@@ -32,31 +32,33 @@
                             {{/if}}
                         </ul>
                     </h5>
-                    <h6 class="detail-header-info">
-                        <div class="detail-header-item">
-                            <div class="detail-header-label">
-                                <strong>{{t dateLabel}}</strong>
-                            </div>
-                            {{moment-format relevantDate "MMMM DD, YYYY"}}
-                        </div>
-                        <div class={{if model "detail-header-item" ""}}>
-                            <div class="detail-header-label">
-                                <strong>{{t "content.header.last_edited"}}</strong>
-                            </div>
-                            {{moment-format model.dateModified "MMMM DD, YYYY"}}
-                        </div>
-                        {{#if node}}
-                            <div>
+                    <div class='detail-header-div'>
+                        <h6 class="detail-header-info">
+                            <div class="detail-header-item">
                                 <div class="detail-header-label">
-                                    <strong>{{t "content.supplemental_materials.title"}}</strong>
+                                    <strong>{{t dateLabel}}</strong>
                                 </div>
-                                <a href={{node.links.html}} target="_blank" rel="noopener noreferrer" onclick={{action "click" "link" "Content - Visit Project" node.id}}>
-                                    {{supplementalMaterialDisplayLink}}
-                                    <i class="fa fa-external-link" aria-hidden="true"></i>
-                                </a>
+                                {{moment-format relevantDate "MMMM DD, YYYY"}}
                             </div>
-                        {{/if}}
-                    </h6>
+                            <div class={{if model "detail-header-item" ""}}>
+                                <div class="detail-header-label">
+                                    <strong>{{t "content.header.last_edited"}}</strong>
+                                </div>
+                                {{moment-format model.dateModified "MMMM DD, YYYY"}}
+                            </div>
+                            {{#if node}}
+                                <div>
+                                    <div class="detail-header-label">
+                                        <strong>{{t "content.supplemental_materials.title"}}</strong>
+                                    </div>
+                                    <a href={{node.links.html}} target="_blank" rel="noopener noreferrer" onclick={{action "click" "link" "Content - Visit Project" node.id}}>
+                                        {{supplementalMaterialDisplayLink}}
+                                        <i class="fa fa-external-link" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            {{/if}}
+                        </h6>
+                    </div>
                 </div>
                 <div class="col-xs-12 col-sm-2 edit-button-and-logo text-center">
                     {{#if userIsContrib}}

@@ -1320,6 +1320,12 @@ label.title-label {
       }
 }
 
+@media (min-width: 769px) {
+    .edit-button-and-logo {
+        padding-top: 30px !important;
+    }
+}
+
 @media (max-width: 768px) {
     .edit-button-and-logo {
         padding-top: 20px;
@@ -1332,6 +1338,10 @@ label.title-label {
     }
     #preprintTitle {
         text-align: center;
+    }
+    .detail-header-info {
+        text-align: center;
+        justify-content: center;
     }
     .view-authors {
         text-align: center;
