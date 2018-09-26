@@ -1,7 +1,7 @@
 {{#cp-panels accordion=true}}
     {{#unless preprintLocked}}
         {{!CHOOSE PROJECT SECTION}}
-        {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true}}
+        {{#preprint-form-section class="upload-section-block" allowOpen=true name='chooseProject' open=true innerForm=true}}
             {{preprint-form-header name='choose_project' selectedNode=selectedNode showValidationIndicator=false}}
             {{#preprint-form-body}}
                 <div class="m-t-sm">
@@ -21,7 +21,7 @@
                 <div>
                     {{#if osfProviderLoaded}}
                         {{!CHOOSE EXISTING FILE SECTION - THIS FILE WILL BE COPIED FROM THE NODE TO THE PREPRINT}}
-                        {{#preprint-form-section class="upload-section-block" allowOpen=true name='selectExistingFile' open=false}}
+                        {{#preprint-form-section class="upload-section-block" allowOpen=true name='selectExistingFile' open=false innerForm=true}}
                             {{preprint-form-header name=(if preprintLocked 'preprint_file' 'choose_file') selectedFile=selectedFile showValidationIndicator=false}}
                             {{#preprint-form-body}}
                                 {{old-file-browser rootItem=osfStorageProvider openFile=(action 'selectFile')}}
@@ -29,7 +29,7 @@
                         {{/preprint-form-section}}
                         {{#if (and selectedNode (or hasFile selectedFile)) use='crossFade'}}
                             {{!FINALIZE UPLOAD SECTION - ADD TITLE}}
-                            {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
+                            {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false innerForm=true}}
                                 {{preprint-form-header title=title name='finalize_upload' showValidationIndicator=false currentProvider=provider}}
                                 {{#preprint-form-body}}
                                     <p class="text-muted text-smaller m-t-xs">

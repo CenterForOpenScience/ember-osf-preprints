@@ -22,7 +22,7 @@
     </div>
 {{else if (eq currentState 'version')}}
     {{!UPLOAD NEW VERSION SECTION}}
-    {{#preprint-form-section editMode=editMode class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}
+    {{#preprint-form-section innerForm=true editMode=editMode class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}
         {{preprint-form-header name=(if preprintLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false click=(action "toggleIsOpen" 'uploadNewFile') currentProvider=provider}}
         {{#preprint-form-body}}
             {{#if preprintLocked}}
@@ -44,7 +44,7 @@
     {{#if (or hasFile osfFile) use='crossFade'}}
         {{#if preprintLocked}}
             {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
-            {{#preprint-form-section editMode=editMode class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}}
+            {{#preprint-form-section  innerForm=true editMode=editMode class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}}
                 {{preprint-form-header title=title name='title_of_preprint' showValidationIndicator=false click=(action "toggleIsOpen" 'titleOfPreprint') currentProvider=provider}}
                 {{#preprint-form-body}}
                     <label class="text-muted title-label text-smaller">  {{t "components.preprint-form-project-select.edit_preprint_title_project" documentType=provider.documentType}} </label>

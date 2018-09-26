@@ -27,7 +27,14 @@ export default CpPanelComponent.extend(Analytics, {
 
     tagName: 'section',
     classNames: ['preprint-form-section'],
+    classNameBindings: ['addPreprintFormBlock:preprint-form-block'],
+    canEdit: false,
     animate: false,
+    innerForm: false,
+
+    addPreprintFormBlock: Ember.computed('canEdit', 'innerForm', function() {
+        return this.get('canEdit') && !(this.get('innerForm'));
+    }),
 
     /**
      * Prevent toggling into form section if file has not been uploaded
@@ -57,9 +64,6 @@ export default CpPanelComponent.extend(Analytics, {
         if (this.get('denyOpenMessage') === undefined) {
             this.set('denyOpenMessage', this.get('i18n').t('submit.please_complete_upload'));
         }
-        if (this.get('denyEditMessage') === undefined) {
-            this.set('denyEditMessage', this.get('i18n').t('submit.body.edit.cannot_edit'));
-        }
     },
     didRender() {
         this._super(...arguments);
@@ -73,9 +77,7 @@ export default CpPanelComponent.extend(Analytics, {
         // Prevent closing all views
         const isOpen = this.get('isOpen');
         if (!isOpen) {
-            if (!this.get('canEdit')) {
-                this.sendAction('errorAction', this.denyEditMessage); // eslint-disable-line ember/closure-actions
-            } else if (this.get('allowOpen')) {
+            if (this.get('allowOpen')) {
                 // Crude mechanism to prevent opening a panel if conditions are not met
                 this.get('metrics')
                     .trackEvent({
