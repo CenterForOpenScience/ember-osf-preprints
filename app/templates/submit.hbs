@@ -226,6 +226,9 @@
                                     canEdit=canEdit
                                     documentType=currentProvider.documentType
                                 }}
+                                <div class="p-t-xs pull-right">
+                                    <button {{action 'next' name}} class="btn btn-primary">{{t "components.project-chooser.continue"}}</button>
+                                </div>
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}

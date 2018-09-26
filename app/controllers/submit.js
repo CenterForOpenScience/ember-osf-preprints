@@ -1037,6 +1037,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     .catch(this._errorUpdatingSupplemental.bind(this));
             } else {
                 const node = this._createSupplementalProject(this.get('pendingSupplementalProjectTitle'));
+                model.set('node', node);
                 return node.save()
                     .then(() => model.save())
                     .then(this._finishUpdatingSupplementalNode.bind(this))
