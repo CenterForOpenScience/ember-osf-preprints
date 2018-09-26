@@ -61,6 +61,7 @@
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-2 edit-button-and-logo text-center">
+                    <div class="content-provider-logo provider-{{model.provider.id}} hidden-xs" title="{{model.provider.name}}"></div>
                     {{#if userIsContrib}}
                         {{! TODO This link will need to be updated for phase 2 of branding }}
                         <a type="button"
@@ -72,7 +73,6 @@
                         </a>
                     {{/if}}
                     <br>
-                    <div class="content-provider-logo provider-{{model.provider.id}} hidden-xs" title="{{model.provider.name}}"></div>
                 </div>
             </div>
         </div>
