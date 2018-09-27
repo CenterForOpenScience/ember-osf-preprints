@@ -223,7 +223,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     projectContributors: A(),
     userNodes: A(),
     availableLicenses: A(),
-    _names: ['server', 'upload', 'basics', 'discipline', 'authors', 'supplemental'].map(str => str.capitalize()), // Form section headers
+    _names: ['server', 'file', 'basics', 'discipline', 'authors', 'supplemental'].map(str => str.capitalize()), // Form section headers
     uploadValid: alias('preprintLocked'), // Once the preprint has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: alias('validations.attrs.basicsAbstract.isValid'),
 
@@ -532,9 +532,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
         next(currentPanelName) {
             // Open next panel
-            if (currentPanelName === 'Upload' || currentPanelName === 'Basics') {
+            if (currentPanelName === 'File' || currentPanelName === 'Basics') {
                 run.scheduleOnce('afterRender', this, function() {
-                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, $(currentPanelName === 'Upload' ? '.preprint-header-preview' : '.abstract')[0]]);
+                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, $(currentPanelName === 'File' ? '.preprint-header-preview' : '.abstract')[0]]);
                 });
             }
             if (currentPanelName === 'Authors') {
@@ -1430,7 +1430,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     clearFields() {
         // Restores submit form defaults.
         // Called when user submits preprint, then hits back button, for example.
-        this.get('panelActions').open('Upload');
+        this.get('panelActions').open('File');
 
         this.setProperties(merge(this.get('_names').reduce((acc, name) => merge(acc, { [`${name.toLowerCase()}SaveState`]: false }), {}), {
             filePickerState: State.START,

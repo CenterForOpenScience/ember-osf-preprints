@@ -242,29 +242,14 @@
                                         {{#if (eq supplementalState _State.START)}}
                                             <div class="row">
                                                 <div class="col-xs-6">
-                                                    <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.NEW}}>{{t "submit.body.supplemental_new_project"}}</button>
+                                                    <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.EXISTING}}>{{t "submit.body.supplemental_connect_existing"}}</button>
                                                 </div>
                                                 <div class="col-xs-6">
-                                                    <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.EXISTING}}>{{t "submit.body.supplemental_connect_existing"}}</button>
+                                                    <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.NEW}}>{{t "submit.body.supplemental_new_project"}}</button>
                                                 </div>
                                             </div>
                                             <div class="p-t-xs m-t-sm pull-right">
                                                 <button {{action 'unsetSupplementalNode' name}} class="btn btn-primary">{{if (and editMode node) (t "submit.body.disconnect_supplemental") (t "global.skip")}}</button>
-                                            </div>
-                                        {{else if (eq supplementalState _State.NEW)}}
-                                            <label>
-                                                <span class="required">{{t "submit.body.supplemental_title"}}:</span>
-                                            </label>
-                                            <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add supplemental project title'}}>
-                                                {{preprint-title-editor documentType=supplementalDocumentType title=pendingSupplementalProjectTitle titleValid=supplementalProjectTitleValid pressSubmit=(action 'setSupplementalProjectTitle' name)}}
-                                            </form>
-                                            <div class="p-t-xs pull-right">
-                                                <button {{action 'changeSupplementalPickerState' _State.START}} class="btn btn-default">{{t "global.back"}}</button>
-                                                {{#if editMode}}
-                                                    <button {{action 'updateSupplementalNode'}} disabled={{not supplementalProjectTitleValid}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
-                                                {{else}}
-                                                    <button class="btn btn-primary" disabled={{not supplementalProjectTitleValid}} {{action 'setSupplementalProjectTitle' name}}>{{t "submit.body.save_continue"}}</button>
-                                                {{/if}}
                                             </div>
                                         {{else if (eq supplementalState _State.EXISTING)}}
                                             {{preprint-form-project-select
@@ -281,6 +266,24 @@
                                               chooseSupplementalProject=true
                                               startState=_State.START
                                               }}
+                                        {{else if (eq supplementalState _State.NEW)}}
+                                            <label>
+                                                <span class="required">{{t "submit.body.supplemental_title"}}:</span>
+                                            </label>
+                                            <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add supplemental project title'}}>
+                                                {{preprint-title-editor documentType=supplementalDocumentType title=pendingSupplementalProjectTitle titleValid=supplementalProjectTitleValid pressSubmit=(action 'setSupplementalProjectTitle' name)}}
+                                                <p class="text-smaller">
+                                                    <strong>{{t "submit.body.supplemental_new_help_text"}}</strong>
+                                                </p>
+                                            </form>
+                                            <div class="p-t-xs pull-right">
+                                                <button {{action 'changeSupplementalPickerState' _State.START}} class="btn btn-default">{{t "global.back"}}</button>
+                                                {{#if editMode}}
+                                                    <button {{action 'updateSupplementalNode'}} disabled={{not supplementalProjectTitleValid}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
+                                                {{else}}
+                                                    <button class="btn btn-primary" disabled={{not supplementalProjectTitleValid}} {{action 'setSupplementalProjectTitle' name}}>{{t "submit.body.save_continue"}}</button>
+                                                {{/if}}
+                                            </div>
                                         {{/if}}
                                     </div>
                                 {{/liquid-bind}}

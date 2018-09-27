@@ -5,7 +5,7 @@
 <div class="preprint-section-status pull-right">
     {{#if (or
         (and serverSaveState (eq name 'Server'))
-        (and uploadSaveState (eq name 'Upload'))
+        (and uploadSaveState (eq name 'File'))
         (and basicsSaveState (eq name 'Basics'))
         (and authorsSaveState (eq name 'Authors'))
         (and supplementalSaveState (eq name 'Supplemental'))
@@ -29,7 +29,7 @@
     </div>
 {{/if}}
 
-{{#if (and (not isOpen) (eq name 'Upload'))}}
+{{#if (and (not isOpen) (eq name 'File'))}}
     <div class="m-t-md preprint-header-preview">
         {{#if preprintFile}}
             <p><em class="m-r-md"> {{t "components.preprint-form-header.file" documentType=currentProvider.documentType}}: </em> {{preprintFile.name}} <em>(Version: {{preprintFile.currentVersion}})</em>  </p>

@@ -78,7 +78,7 @@ export default {
             edit_resubmit_preprint: 'Edit and resubmit',
         },
         orphan_preprint: 'The user has removed this file.',
-        private_preprint_warning: 'This {{documentType.singular}} is private.',
+        private_preprint_warning: 'This {{documentType.singular}} is private. Contact {{supportEmail}} if this is in error.',
         public: 'public',
     },
     discover: {
@@ -176,15 +176,17 @@ export default {
         submit_heading: 'Submit {{documentType.singularCapitalized}}',
         edit_heading: 'Edit {{documentType.singularCapitalized}}',
         body: {
-            upload: 'Select a file from your computer',
-            connect: 'Select a file from an existing OSF project',
+            upload: 'Upload from your computer',
+            connect: 'Select from an existing OSF project',
             subjects_description: 'Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.',
             supplemental_description: 'Connect an OSF project to share data, code, protocols, or other supplemental materials.',
-            supplemental_new_project: 'Connect a new OSF project',
+            supplemental_new_project: 'Create a new OSF project',
             supplemental_connect_existing: 'Connect an existing OSF project',
             supplemental_title: 'Project Title',
             remove_subject_aria: 'Remove subject',
             disconnect_supplemental: 'Disconnect project',
+            supplemental_new_help_text: 'This creates a public project for your supplemental materials. Upload files and manage contributors on the project.',
+            supplemental_existing_help_text: 'This will make your project public, if it is not already.',
             basics: {
                 doi: {
                     label: 'Peer-reviewed publication DOI (optional)',
@@ -208,7 +210,7 @@ export default {
                 },
             },
             authors: {
-                paragraph: 'Add {{documentType.singular}} authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the {{documentType.singular}}.',
+                paragraph: 'Add {{documentType.singular}} authors and order them appropriately. Search for authors that have OSF accounts or invite unregistered users to join by entering their email addresses.'
             },
             submit: {
                 information: {
@@ -372,7 +374,7 @@ export default {
             connected_project: 'Connected OSF project',
             name: {
                 Server: 'Select a service',
-                Upload: 'Upload',
+                File: 'File',
                 Discipline: 'Discipline',
                 Basics: 'Basics',
                 Authors: 'Authors',
@@ -393,6 +395,7 @@ export default {
             select_existing_file: 'Select existing file as {{documentType.singular}}',
             edit_preprint_title_project: 'Edit {{documentType.singular}} title',
             copy_file_help_text: 'This will make a copy of your file to become your {{documentType.singular}}.',
+            edit_preprint_title: 'Edit your {{documentType.singular}} title',
             admin_only: 'You must be the admin of this project to copy a file.  Please ask the admin of this project to make you an admin so you may copy a file.',
         },
         'preprint-form-section': {

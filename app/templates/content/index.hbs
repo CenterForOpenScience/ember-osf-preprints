@@ -95,7 +95,7 @@
                 {{else}}
                     {{#if (not model.public)}}
                         <div class="alert alert-danger m-r-md" role="alert">
-                            {{t "content.private_preprint_warning" documentType=model.provider.documentType}}
+                            {{t "content.private_preprint_warning" documentType=model.provider.documentType supportEmail='support@osf.io'}}
                         </div>
                     {{/if}}
                     {{preprint-file-renderer provider=model.provider preprint=model primaryFile=primaryFile dualTrackNonContributors=(action 'dualTrackNonContributors')}}

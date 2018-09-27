@@ -80,7 +80,7 @@ export default Component.extend(Analytics, {
     actions: {
         toggleIsOpen(panelName) {
             // Handles toggling within Preprint version section, once preprint is locked.
-            // Upload panel manually opened since version-related panels are nested inside this.
+            // File panel manually opened since version-related panels are nested inside this.
             if (this.get('currentPanelName')) {
                 this.get('panelActions').close(this.get('currentPanelName'));
             }
@@ -92,8 +92,8 @@ export default Component.extend(Analytics, {
                 });
             this.get('panelActions').open(panelName);
             this.set('currentPanelName', panelName);
-            this.get('panelActions')._panelFor('Upload').set('apiOpenState', true);
-            this.get('panelActions')._panelFor('Upload').set('apiWasUsed', true);
+            this.get('panelActions')._panelFor('File').set('apiOpenState', true);
+            this.get('panelActions')._panelFor('File').set('apiWasUsed', true);
         },
 
         getUrl() {

@@ -76,7 +76,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 '<dt>Read</dt>' +
                     '<dd><ul><li>View preprint</li></ul></dd>' +
                 '<dt>Read + Write</dt>' +
-                    '<dd><ul><li>Read privileges</li> ' +
+                    '<dd><ul><li>Read and write privileges</li> ' +
                         '<li>Add and configure preprint</li> ' +
                         '<li>Add and edit content</li></ul></dd>' +
                 '<dt>Administrator</dt><dd><ul>' +

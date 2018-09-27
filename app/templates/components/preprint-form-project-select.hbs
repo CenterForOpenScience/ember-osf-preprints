@@ -33,11 +33,14 @@
                                 {{preprint-form-header title=title name='finalize_upload' showValidationIndicator=false currentProvider=provider}}
                                 {{#preprint-form-body}}
                                     <p class="text-muted text-smaller m-t-xs">
-                                        {{t "components.preprint-form-project-select.copy_file_help_text" documentType=provider.documentType}}
+                                        {{t "components.preprint-form-project-select.edit_preprint_title" documentType=provider.documentType}}:
                                     </p>
                                     <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Connect preprint to existing project'}}>
                                         {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action createPreprintCopyFile name)}}
                                     </form>
+                                    <p class="text-muted text-center m-t-xs">
+                                        {{t "components.preprint-form-project-select.copy_file_help_text" documentType=provider.documentType}}
+                                    </p>
                                 {{/preprint-form-body}}
                             {{/preprint-form-section}}
                         {{/if}}
@@ -68,6 +71,9 @@
                 </div>
                 <p class="text-muted text-smaller m-t-xs">
                     {{t "components.preprint-form-project-select.existing_project_selector"}}
+                </p>
+                <p class="text-smaller">
+                    <strong>{{t "submit.body.supplemental_existing_help_text"}}</strong>
                 </p>
                 <div class="row m-t-md">
                     <div class="col-md-12">
