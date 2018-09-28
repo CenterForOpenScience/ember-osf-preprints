@@ -277,10 +277,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         const pendingNewProjectTitle = this.get('pendingSupplementalProjectTitle');
         const pendingExistingProjectTitle = this.get('selectedSupplementalProject.title');
 
-        if (this.get('node') && this.get('selectedSupplementalProject')) {
-            return this.get('node.id') !== this.get('selectedSupplementalProject.id');
+        if (this.get('node')) {
+            // If supplemental project has already been saved
+            return (this.get('selectedSupplementalProject.id') && this.get('node.id') !== this.get('selectedSupplementalProject.id')) ||
+                !!(pendingNewProjectTitle);
         }
 
+        // If pending supplemental changes different from staged changes
         return (pendingNewProjectTitle && pendingNewProjectTitle !== savedTitle) ||
             (pendingExistingProjectTitle && pendingExistingProjectTitle !== savedTitle);
     }),
@@ -932,10 +935,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         Supplemental Project Section
         */
         changeSupplementalPickerState(state) {
-            // Sets supplementalPickerState to start, new, or existing
+            // Sets supplementalPickerState to edit, start, new, or existing
             this.set('supplementalPickerState', state);
             this.send('discardSupplemental');
-            if (this.get('firstSupplementalOpen')) {
+            if (this.get('firstSupplementalOpen') && state === this.get('_State').NEW) {
+                // Populates the supplemental project title the first time
+                // "Create a new OSF Project" is selected
                 this.set('pendingSupplementalProjectTitle', `Supplemental materials for ${this.get('currentProvider.documentType.singular')}: ${this.get('model.title')}`);
                 this.set('firstSupplementalOpen', false);
                 this.set('supplementalProjectTitleValid', true);
@@ -1003,6 +1008,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         },
 
         skipSupplemental() {
+            // If "skip" is clicked, reset to proper form state.
             if (this.get('editMode') && this.get('node.id')) {
                 this.send('changeSupplementalPickerState', this.get('_State').EDIT);
             } else {
@@ -1013,7 +1019,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this._moveFromSupplemental();
         },
 
-        unsetSupplementalNode() {
+        removeSupplementalNode() {
+            // Deletes the node from the preprint -
             const model = this.get('model');
             this.get('metrics')
                 .trackEvent({
@@ -1026,13 +1033,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 return model.save()
                     .then(this._successRemovingSupplementalNode.bind(this))
                     .catch(this._errorRemovingSupplementalNode.bind(this));
-            } else {
-                this.set('pendingSupplementalProjectTitle', '');
-                this.set('selectedSupplementalProject', null);
-                if (!this.get('editMode')) {
-                    this.set('supplementalProjectTitle', '');
-                }
-                this._moveFromSupplemental();
             }
         },
 
@@ -1103,8 +1103,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             }
             this.set('model', model);
 
-            return model.save()
-                .then(this._saveSupplementalProject.bind(this))
+            return this._saveSupplementalProject()
                 .then(this._savePreprint.bind(this))
                 .catch(this._failSaveModel.bind(this));
         },
@@ -1194,7 +1193,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.toggleProperty('shareButtonDisabled');
         return this.get('toast')
             .error(this.get('i18n')
-                .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`));
+                .t(`submit.error_${this.get('editMode') ? 'completing' : 'saving'}_preprint`, {
+                    documentType: this.get('currentProvider.documentType'),
+                }));
     },
 
     _getProviders(providers) {
@@ -1388,7 +1389,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     },
 
     _saveSupplementalProject() {
-        // On Submit page - Add mode.  Either creates a new project or uses an existing project,
+        // On Submit page - Add mode.  Either creates a new project or uses an existing project
         // and saves that as the supplemental project on the node. The node is made public.
         const model = this.get('model');
         if (this.get('node.id') || this.get('supplementalProjectTitle')) {
@@ -1396,9 +1397,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             node.set('public', true);
             model.set('node', node);
             return node.save()
-                .then(() => model.save())
-                .then(this._savePreprint.bind(this));
+                .then(() => model.save());
         }
+        return model.save();
     },
 
     _createSupplementalProject(title) {
