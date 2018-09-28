@@ -1,4 +1,5 @@
 import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
 import CpPanelComponent from 'ember-collapsible-panel/components/cp-panel';
 import Analytics from 'ember-osf/mixins/analytics';
 /**
@@ -28,14 +29,8 @@ export default CpPanelComponent.extend(Analytics, {
     tagName: 'section',
     classNames: ['preprint-form-section'],
     classNameBindings: ['addPreprintFormBlock:preprint-form-block'],
-    canEdit: false,
     animate: false,
     innerForm: false,
-
-    addPreprintFormBlock: Ember.computed('canEdit', 'innerForm', function() {
-        return this.get('canEdit') && !(this.get('innerForm'));
-    }),
-
     /**
      * Prevent toggling into form section if file has not been uploaded
      * @property {boolean} allowOpen
@@ -54,6 +49,14 @@ export default CpPanelComponent.extend(Analytics, {
      * @property {boolean} canEdit
      */
     canEdit: true,
+    /**
+     * Should the preprint-form-block class be added to the form section?
+     * Used for hiding preprint form sections for read contributors
+     * @computed {boolean} addPreprintFormBlock
+     */
+    addPreprintFormBlock: computed('canEdit', 'innerForm', function() {
+        return this.get('canEdit') && !(this.get('innerForm'));
+    }),
 
     init() {
         this._super(...arguments);

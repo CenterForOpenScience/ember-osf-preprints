@@ -212,7 +212,7 @@ export default {
                 },
             },
             authors: {
-                paragraph: 'Add {{documentType.singular}} authors and order them appropriately. Search for authors that have OSF accounts or invite unregistered users to join by entering their email addresses.'
+                paragraph: 'Add {{documentType.singular}} authors and order them appropriately. Search for authors that have OSF accounts or invite unregistered users to join by entering their email addresses.',
             },
             submit: {
                 information: {
