@@ -8,6 +8,7 @@ export default {
         skip: 'Skip',
         complete: 'Complete',
         cancel: 'Cancel',
+        optional: 'Optional',
         discard: 'Discard changes',
         back: 'Back',
         prev: 'Prev',
@@ -184,7 +185,8 @@ export default {
             supplemental_connect_existing: 'Connect an existing OSF project',
             supplemental_title: 'Project Title',
             remove_subject_aria: 'Remove subject',
-            disconnect_supplemental: 'Disconnect project',
+            disconnect_supplemental: 'Disconnect the project',
+            supplemental_change_saved: 'Change the connected project',
             supplemental_new_help_text: 'This creates a public project for your supplemental materials. Upload files and manage contributors on the project.',
             supplemental_existing_help_text: 'This will make your project public, if it is not already.',
             basics: {
@@ -278,7 +280,7 @@ export default {
         search_contributors_error: 'Could not perform search query.',
         server_locked: 'You cannot change the paper service after a file has been uploaded',
         please_select_server: 'Please select a paper service before continuing',
-        please_complete_upload: 'Please complete upload section before continuing',
+        please_complete_upload: 'Please complete file section before continuing',
     },
     components: {
         'confirm-share-preprint': {

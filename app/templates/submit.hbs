@@ -236,10 +236,28 @@
                         {{#preprint-form-section id="supplemental-materials" editMode=editMode class="preprint-form-upload" name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle node=node name=name valid=(not supplementalChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
-                                <p class="m-b-lg text-smaller">{{t "submit.body.supplemental_description"}}</p>
-                                {{#liquid-bind supplementalPickerState class='translate' as |supplementalState|}}
+                                <p class="m-b-lg text-smaller">
+                                    {{#if (eq supplementalPickerState _State.EDIT)}}
+                                        {{t "components.preprint-form-header.connected_project"}}: <a target='_blank' rel="noopener noreferrer" href="{{node.links.html}}">{{supplementalProjectTitle}}</a>
+                                    {{else}}
+                                        {{t "submit.body.supplemental_description"}}
+                                    {{/if}}
+                                </p>
+                                {{#liquid-bind supplementalPickerState class='supplemental' as |supplementalState|}}
                                     <div class={{supplementalState}}>
-                                        {{#if (eq supplementalState _State.START)}}
+                                        {{#if (eq supplementalState _State.EDIT)}}
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.START}}>{{t "submit.body.supplemental_change_saved"}}</button>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <button class="btn btn-block btn-big-danger" {{action 'unsetSupplementalNode' name}}>{{t "submit.body.disconnect_supplemental"}}</button>
+                                                </div>
+                                            </div>
+                                            <div class="p-t-xs m-t-sm pull-right">
+                                                <button {{action 'skipSupplemental' name}} class="btn btn-primary">{{t "global.skip"}}</button>
+                                            </div>
+                                        {{else if (eq supplementalState _State.START)}}
                                             <div class="row">
                                                 <div class="col-xs-6">
                                                     <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.EXISTING}}>{{t "submit.body.supplemental_connect_existing"}}</button>
@@ -249,7 +267,10 @@
                                                 </div>
                                             </div>
                                             <div class="p-t-xs m-t-sm pull-right">
-                                                <button {{action 'unsetSupplementalNode' name}} class="btn btn-primary">{{if (and editMode node) (t "submit.body.disconnect_supplemental") (t "global.skip")}}</button>
+                                                {{#if (and editMode node)}}
+                                                    <button {{action 'changeSupplementalPickerState' _State.EDIT}} class="btn btn-default">{{t "global.back"}}</button>
+                                                {{/if}}
+                                                <button {{action 'skipSupplemental' name}} class="btn btn-primary">{{t "global.skip"}}</button>
                                             </div>
                                         {{else if (eq supplementalState _State.EXISTING)}}
                                             {{preprint-form-project-select

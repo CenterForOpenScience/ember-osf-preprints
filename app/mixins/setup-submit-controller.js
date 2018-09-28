@@ -64,6 +64,9 @@ export default Mixin.create({
         const controller = this.get('controller');
         controller.set('node', node);
         controller.set('supplementalProjectTitle', node ? node.get('title') : '');
+        if (node && node.get('id')) {
+            controller.set('supplementalPickerState', 'edit');
+        }
     },
 
     _supplementalProjectPermissionDenied() {

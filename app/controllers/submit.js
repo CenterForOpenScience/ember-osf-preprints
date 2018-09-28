@@ -25,6 +25,7 @@ import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 export const State = Object.freeze(EmberObject.create({
     START: 'start',
     NEW: 'new',
+    EDIT: 'edit',
     EXISTING: 'existing',
     VERSION: 'version',
 }));
@@ -271,10 +272,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     moderationType: alias('currentProvider.reviewsWorkflow'),
 
-    supplementalChanged: computed('supplementalProjectTitle', 'pendingSupplementalProjectTitle', 'selectedSupplementalProject', function() {
+    supplementalChanged: computed('supplementalProjectTitle', 'pendingSupplementalProjectTitle', 'selectedSupplementalProject', 'node', function() {
         const savedTitle = this.get('supplementalProjectTitle');
         const pendingNewProjectTitle = this.get('pendingSupplementalProjectTitle');
         const pendingExistingProjectTitle = this.get('selectedSupplementalProject.title');
+
+        if (this.get('node') && this.get('selectedSupplementalProject')) {
+            return this.get('node.id') !== this.get('selectedSupplementalProject.id');
+        }
 
         return (pendingNewProjectTitle && pendingNewProjectTitle !== savedTitle) ||
             (pendingExistingProjectTitle && pendingExistingProjectTitle !== savedTitle);
@@ -950,7 +955,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('supplementalProjectTitle', this.get('selectedSupplementalProject.title'));
             this.set('pendingSupplementalProjectTitle', '');
             this.set('node', this.get('selectedSupplementalProject'));
-            this.send('next', this.get('_names.5'));
+            this._moveFromSupplemental();
         },
 
         setSupplementalProjectTitle() {
@@ -966,7 +971,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.set('supplementalProjectTitle', this.get('pendingSupplementalProjectTitle'));
             this.set('selectedSupplementalProject', null);
             this.set('node', null);
-            this.send('next', this.get('_names.5'));
+            this._moveFromSupplemental();
         },
 
         discardSupplemental() {
@@ -997,6 +1002,17 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             }
         },
 
+        skipSupplemental() {
+            if (this.get('editMode') && this.get('node.id')) {
+                this.send('changeSupplementalPickerState', this.get('_State').EDIT);
+            } else {
+                this.set('node', null);
+                this.set('supplementalProjectTitle', '');
+                this.send('changeSupplementalPickerState', this.get('_State').START);
+            }
+            this._moveFromSupplemental();
+        },
+
         unsetSupplementalNode() {
             const model = this.get('model');
             this.get('metrics')
@@ -1016,7 +1032,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 if (!this.get('editMode')) {
                     this.set('supplementalProjectTitle', '');
                 }
-                this.send('next', this.get('_names.5'));
+                this._moveFromSupplemental();
             }
         },
 
@@ -1375,12 +1391,14 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         // On Submit page - Add mode.  Either creates a new project or uses an existing project,
         // and saves that as the supplemental project on the node. The node is made public.
         const model = this.get('model');
-        const node = this.get('node.id') ? this.get('node') : this._createSupplementalProject(this.get('supplementalProjectTitle'));
-        node.set('public', true);
-        model.set('node', node);
-        return node.save()
-            .then(() => model.save())
-            .then(this._savePreprint.bind(this));
+        if (this.get('node.id') || this.get('supplementalProjectTitle')) {
+            const node = this.get('node.id') ? this.get('node') : this._createSupplementalProject(this.get('supplementalProjectTitle'));
+            node.set('public', true);
+            model.set('node', node);
+            return node.save()
+                .then(() => model.save())
+                .then(this._savePreprint.bind(this));
+        }
     },
 
     _createSupplementalProject(title) {
@@ -1398,6 +1416,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         // to the newly saved supplemental project - advances to next form section
         this.set('node', this.get('model.node'));
         this.set('supplementalProjectTitle', this.get('node.title'));
+        this.send('changeSupplementalPickerState', this.get('_State').EDIT);
         this._moveFromSupplemental();
     },
 
@@ -1417,6 +1436,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         this.set('supplementalProjectTitle', '');
         this.set('selectedSupplementalProject', null);
         this.set('node', null);
+        this.send('changeSupplementalPickerState', this.get('_State').START);
         this.get('toast').success(this.get('i18n').t('submit.success_saving_supplemental'));
         this._moveFromSupplemental();
     },

@@ -1,5 +1,8 @@
 <div class="section-header">
     {{t (concat "components.preprint-form-header.name." name) documentType=currentProvider.documentType}}
+    {{#if (eq name "Supplemental")}}
+        ({{t "global.optional"}})
+    {{/if}}
 </div>
 
 <div class="preprint-section-status pull-right">
