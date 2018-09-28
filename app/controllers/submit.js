@@ -1045,20 +1045,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     action: 'click',
                     label: `Edit - Update supplemental project: ${this.get('selectedSupplementalProject') ? 'Existing Project' : 'New Project'}`,
                 });
-            const model = this.get('model');
-            if (this.get('selectedSupplementalProject')) {
-                model.set('node', this.get('selectedSupplementalProject'));
-                return model.save()
-                    .then(this._finishUpdatingSupplementalNode.bind(this))
-                    .catch(this._errorUpdatingSupplemental.bind(this));
-            } else {
-                const node = this._createSupplementalProject(this.get('pendingSupplementalProjectTitle'));
-                model.set('node', node);
-                return node.save()
-                    .then(() => model.save())
-                    .then(this._finishUpdatingSupplementalNode.bind(this))
-                    .catch(this._errorUpdatingSupplemental.bind(this));
-            }
+            return this._saveSupplementalProject()
+                .then(this._finishUpdatingSupplementalNode.bind(this))
+                .catch(this._errorUpdatingSupplemental.bind(this));
         },
         /*
           Submit tab actions
@@ -1388,20 +1377,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return query.split(/[\s-]+/).map(p => `${this._escapeLucene(p)}*~`).join(' AND ');
     },
 
-    _saveSupplementalProject() {
-        // On Submit page - Add mode.  Either creates a new project or uses an existing project
-        // and saves that as the supplemental project on the node. The node is made public.
-        const model = this.get('model');
-        if (this.get('node.id') || this.get('supplementalProjectTitle')) {
-            const node = this.get('node.id') ? this.get('node') : this._createSupplementalProject(this.get('supplementalProjectTitle'));
-            node.set('public', true);
-            model.set('node', node);
-            return node.save()
-                .then(() => model.save());
-        }
-        return model.save();
-    },
-
     _createSupplementalProject(title) {
         // Creates a project locally
         const node = this.get('store').createRecord('node', {
@@ -1410,6 +1385,29 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             title,
         });
         return node;
+    },
+
+    _saveSupplementalProject() {
+        // Either creates a new project or uses an existing project
+        // and saves that as the supplemental project on the node. The node is made public.
+        const model = this.get('model');
+        const pendingProject = this.get('editMode') ? this.get('selectedSupplementalProject') : this.get('node');
+        const projectExists = pendingProject && pendingProject.get('id');
+        const pendingTitle = this.get('editMode') ? this.get('pendingSupplementalProjectTitle') : this.get('supplementalProjectTitle');
+
+        if (projectExists || pendingTitle) {
+            const node = projectExists ? pendingProject :
+                this._createSupplementalProject(pendingTitle);
+            model.set('node', node);
+            node.set('public', true);
+            if (node.get('hasDirtyAttributes')) {
+                return node.save()
+                    .then(() => model.save());
+            } else {
+                return model.save();
+            }
+        }
+        return model.save();
     },
 
     _finishUpdatingSupplementalNode() {
