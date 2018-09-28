@@ -250,6 +250,7 @@ export default {
                 },
                 cannot_edit: 'You do not have permission to edit this section.',
                 resubmit_button: 'Resubmit',
+                resubmit_help_text: 'Only contributors with admin permissions can resubmit for review.',
                 return_button: 'Return to {{documentType.singular}}',
             },
             save_continue: 'Save and continue',

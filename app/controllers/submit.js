@@ -493,7 +493,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         const reviewsState = this.get('model.reviewsState');
         const moderationType = this.get('moderationType');
         if (reviewsState && moderationType) {
-            return EDIT_MESSAGES.line2[reviewsState][moderationType];
+            let message = EDIT_MESSAGES.line2[reviewsState][moderationType];
+            if (reviewsState === 'rejected' && moderationType === 'pre-moderation' && !(this.get('isAdmin'))) {
+                // Write contribs have permission to edit preprints but cannot resubmit
+                message = 'submit.body.edit.resubmit_help_text';
+            }
+            return message;
         }
     }),
     canResubmit: computed('moderationType', 'model.reviewsState', function() {
