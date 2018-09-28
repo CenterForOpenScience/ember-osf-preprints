@@ -240,6 +240,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // If this form section is ever invalid, something has gone horribly wrong.
     authorsValid: computed.bool('contributors.length'),
 
+    // Determines if Authors panel should be open by default - Read contributors
+    // have this panel open on the Edit page - as this is the only panel they can view
+    authorsOpen: computed.not('canEdit'),
+
     // Must select at least one subject (looking at pending subjects)
     disciplineValid: computed.notEmpty('subjectsList'),
 
@@ -424,11 +428,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // True if the current user has write permissions to the preprint
     isWrite: computed('model.currentUserPermissions', function() {
         return (this.get('model.currentUserPermissions') || []).includes(permissions.WRITE);
-    }),
-
-    // True if the current user has read permissions to the preprint
-    isRead: computed('model.currentUserPermissions', function() {
-        return (this.get('model.currentUserPermissions') || []).includes(permissions.READ);
     }),
 
     canEdit: computed('isWrite', 'editMode', function() {

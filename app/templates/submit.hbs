@@ -206,12 +206,14 @@
                     {{/with}}
 
                     {{#with _names.[4] as |name|}}
-                        {{#preprint-form-section id='preprint-form-authors' editMode=editMode name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                        {{#preprint-form-section id='preprint-form-authors' editMode=editMode name=name allowOpen=uploadValid open=authorsOpen errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
-                                <p class="text-smaller">
-                                    {{t "submit.body.authors.paragraph" documentType=currentProvider.documentType}}
-                                </p>
+                                {{#if isAdmin}}
+                                    <p class="text-smaller">
+                                        {{t "submit.body.authors.paragraph" documentType=currentProvider.documentType}}
+                                    </p>
+                                {{/if}}
                                 {{preprint-form-authors
                                     contributors=contributors
                                     model=model
