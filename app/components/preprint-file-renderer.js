@@ -53,7 +53,7 @@ export default Component.extend(Analytics, {
         });
     }),
 
-    fileDownloadURL: computed('primaryFile', 'selectedVersion', function() {
+    fileDownloadURL: computed('primaryFile', function() {
         return fileDownloadPath(this.get('primaryFile'), this.get('preprint'));
     }),
 
