@@ -50,7 +50,6 @@ export default Controller.extend(Analytics, {
     expandedAuthors: true,
     showLicenseText: false,
     primaryFile: null,
-    chosenFile: null,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
     hasTag: computed.bool('model.tags.length'),
     metricsExtra: computed('model', function() {

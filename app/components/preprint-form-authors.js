@@ -1,4 +1,3 @@
-import { A } from '@ember/array';
 import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
@@ -21,7 +20,6 @@ import Analytics from 'ember-osf/mixins/analytics';
  * {{preprint-form-authors
  *    contributors=contributors
  *    parentContributors=parentContributors
- *    node=node
  *    isAdmin=isAdmin
  *    currentUser=user
  *    findContributors=(action 'findContributors')
@@ -181,30 +179,6 @@ export default CpPanelBodyComponent.extend(Analytics, {
             this.get('model').updateContributor(contributor, permission, '')
                 .then(this._modifyAuthorPermission.bind(this))
                 .catch(this._failModifyAuthorPermission.bind(this));
-        },
-        // Adds all contributors from parent project to current component
-        // as long as they are not current contributors
-        addContributorsFromParentProject() {
-            this.get('metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: 'Submit - Bulk Add Contributors From Parent',
-                });
-            this.set('parentContributorsAdded', true);
-            const contributorsToAdd = A();
-            this.get('parentContributors').toArray().forEach((contributor) => {
-                if (this.get('currentContributorIds').indexOf(contributor.get('userId')) === -1) {
-                    contributorsToAdd.push({
-                        permission: contributor.get('permission'),
-                        bibliographic: contributor.get('bibliographic'),
-                        userId: contributor.get('userId'),
-                    });
-                }
-            });
-            this.get('model').addContributors(contributorsToAdd, this.get('sendEmail'))
-                .then(this._addContributorsFromParent.bind(this))
-                .catch(this._failAddContributorsFromParent.bind(this));
         },
 
         // Updates contributor then redraws contributor list view - updating contributor

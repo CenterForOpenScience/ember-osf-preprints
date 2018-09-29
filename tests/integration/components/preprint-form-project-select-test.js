@@ -17,20 +17,22 @@ test('it renders', function(assert) {
         finishUpload=(action noop)
         highlightSuccessOrFailure=(action noop)
     }}`);
-    assert.equal(this.$('p.text-muted').text().trim(), 'The list of projects appearing in the selector are projects and components for which you have admin access.  Registrations are not included here.');
+    assert.equal(this.$('p.text-muted').text().trim(), 'The list of projects appearing in the selector are projects and components for which you have admin access.');
 });
 
-test('isAdmin computed to false shows warning', function(assert) {
+test('isNodeAdmin computed to false shows warning', function(assert) {
     this.set('selectedNode', {
         currentUserPermissions: [Permissions.ADMIN],
     });
     this.render(hbs`{{preprint-form-project-select
-        changeInitialState=(action noop)
-        finishUpload=(action noop)
-        selectedNode=selectedNode
-        preprintLocked=true
-        highlightSuccessOrFailure=(action noop)
-    }}`);
+            changeInitialState=(action noop)
+            finishUpload=(action noop)
+            selectedNode=selectedNode
+            isNodeAdmin=true
+            preprintLocked=true
+            currentState='existing'
+            highlightSuccessOrFailure=(action noop)
+        }}`);
     assert.ok(!this.$('.alert-danger').length);
 
     this.set('selectedNode', {
@@ -41,6 +43,8 @@ test('isAdmin computed to false shows warning', function(assert) {
         finishUpload=(action noop)
         selectedNode=selectedNode
         preprintLocked=true
+        isNodeAdmin=false
+        currentState='existing'
         highlightSuccessOrFailure=(action noop)
     }}`);
     assert.ok(this.$('.alert-danger').length);

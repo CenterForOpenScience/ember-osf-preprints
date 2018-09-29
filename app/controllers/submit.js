@@ -692,8 +692,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             });
         },
 
-        // If user goes back and changes a section inside Upload,
-        // all fields downstream of that section need to clear.
+        // If user goes back and changes a section inside the File section,
+        // certain fields downstream of that section need to clear.
         clearDownstreamFields(section) {
             // Only clear downstream fields in Add mode!
             if (this.get('preprintLocked')) { return; }
@@ -706,9 +706,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 props.push('node', 'title', 'titleValid');
             case 'belowNode':
                 props.push('selectedFile', 'file');
-                break;
-            case 'belowFile':
-                props.push('title');
                 break;
             default:
             }
