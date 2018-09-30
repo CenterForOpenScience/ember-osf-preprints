@@ -19,14 +19,17 @@ import Analytics from 'ember-osf/mixins/analytics';
  * ```handlebars
  * {{preprint-form-authors
  *    contributors=contributors
- *    parentContributors=parentContributors
+ *    model=model
  *    isAdmin=isAdmin
  *    currentUser=user
  *    findContributors=(action 'findContributors')
  *    searchResults=searchResults
+ *    currentUserRemoved=(action 'currentUserRemoved')
  *    reorderContributors=(action 'reorderContributors')
  *    highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
  *    editMode=editMode
+ *    canEdit=canEdit
+ *    documentType=currentProvider.documentType
 }}
  * ```
  * @class preprint-form-authors
@@ -38,7 +41,6 @@ export default CpPanelBodyComponent.extend(Analytics, {
     // Permissions labels for dropdown
     permissionOptions: permissionSelector,
     permission: null,
-    parentContributorsAdded: false,
     addState: 'emptyView',
     current: null,
     contributor: null,
@@ -51,20 +53,6 @@ export default CpPanelBodyComponent.extend(Analytics, {
     // contributors are emailed as soon as they are added to preprint.
     sendEmail: computed('editMode', function() {
         return this.get('editMode') ? 'preprint' : false;
-    }),
-    // Total contributor search results
-    totalSearchResults: computed('searchResults.[]', function() {
-        const searchResults = this.get('searchResults');
-        if (searchResults && searchResults.meta !== undefined) {
-            return searchResults.meta.total;
-        }
-    }),
-    // Total pages of contributor search results
-    pages: computed('searchResults.[]', function() {
-        const searchResults = this.get('searchResults');
-        if (searchResults && searchResults.meta !== undefined) {
-            return searchResults.meta.total_pages;
-        }
     }),
     // TODO find alternative to jquery selectors. Temporary popover content for authors page.
     didInsertElement() {
