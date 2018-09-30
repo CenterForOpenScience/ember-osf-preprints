@@ -36,6 +36,7 @@ import { State } from '../controllers/submit';
  *   osfFile=selectedFile
  *   hasFile=hasFile
  *   file=file
+ *   model=model
  *   preprintLocked=preprintLocked
  *   titleValid=titleValid
  *   uploadChanged=uploadChanged
@@ -43,6 +44,10 @@ import { State } from '../controllers/submit';
  *   basicsAbstract=basicsAbstract
  *   editMode=editMode
  *   applyLicense=applyLicense
+ *   provider=currentProvider
+ *   uploadedFileId=uploadedFileId
+ *   uploadedFileName=uploadedFileName
+ *   currentState=currentState
 }}
  * @class file-uploader
  */
@@ -53,7 +58,10 @@ export default Component.extend(Analytics, {
     fileManager: service(),
     panelActions: service('panelActions'),
     model: null,
+    // If file added successfully (add mode), id saved here.  Used
+    // for avoiding 409's
     uploadedFileId: null,
+    // If file added successfully (add mode), file name saved here
     uploadedFileName: null,
 
     State,
@@ -120,6 +128,7 @@ export default Component.extend(Analytics, {
             if (this.get('file') === null) { // No new file to upload.
                 this.attrs.finishUpload();
             } else if (this._uploadedFileUnchanged()) {
+                // Add mode - file already uploaded to preprint
                 this.send('fileUploadSuccess', this.get('uploadedFileId'), {});
             } else {
                 return this.get('model.files').then(this._setUploadProperties.bind(this));
@@ -127,6 +136,9 @@ export default Component.extend(Analytics, {
         },
 
         createPreprintAndUploadFile() {
+            // Run when "Save and continue" pressed on "Upload to your computer" section
+            // Creates preprint on server with specified title and provider,
+            // uploads file to preprint, and then sets preprint as primary file
             this.get('metrics')
                 .trackEvent({
                     category: 'button',
@@ -274,6 +286,7 @@ export default Component.extend(Analytics, {
             if (file.xhr === undefined) return;
 
             if (Math.floor(file.xhr.status / 100) === 2) {
+                // Saves uploadedFileId and uploadedFile name in case of downstream error
                 this.set('uploadedFileId', JSON.parse(file.xhr.response).data.id.split('/')[1]);
                 this.set('uploadedFileName', JSON.parse(file.xhr.response).data.attributes.name);
                 // File upload success
@@ -284,7 +297,6 @@ export default Component.extend(Analytics, {
                 dropzone.removeAllFiles();
                 this.set('file', null);
                 // Error uploading file. Clear downstream fields.
-                this.attrs.clearDownstreamFields('belowNode');
                 this.set('uploadInProgress', false);
                 this.get('toast').error(this.get('i18n').t('components.file-uploader.upload_error'));
             }
@@ -331,7 +343,8 @@ export default Component.extend(Analytics, {
     _uploadedFileUnchanged() {
         // Returns true if a file of the same name was already uploaded successfully (Add mode),
         // but perhaps a request to the preprint failed. When attempting to retry the request,
-        // we can pull this uploadedFileId to set as the preprint's primary file
+        // we can pull this uploadedFileId to set as the preprint's primary file instead of
+        // reuploading the file which would 409.
         if (this.get('preprintLocked')) {
             return false;
         }

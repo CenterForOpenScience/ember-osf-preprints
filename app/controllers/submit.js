@@ -150,6 +150,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     _State: State,
     // Project that preprint file was copied from, or supplemental project (in edit mode)
+    // Same variable used for both.
     node: null,
     // Preuploaded file - file dragged to dropzone, but not uploaded to preprint
     file: null,
@@ -195,6 +196,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     titleValid: null,
     // If updated supplemental project title is valid.
     supplementalProjectTitleValid: null,
+    // Used to determine whether supplemental project title should be prepopulated
     firstSupplementalOpen: true,
     // Set to true when upload step is underway
     uploadInProgress: false,
@@ -401,8 +403,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     originalPublicationDateChanged: computed('model.originalPublicationDate', 'basicsOriginalPublicationDate', function () {
         const basicsOriginalPublicationDate = this.get('basicsOriginalPublicationDate');
         const modelOriginalPublicationDate = this.get('model.originalPublicationDate');
-        return (basicsOriginalPublicationDate || modelOriginalPublicationDate)
-            && basicsOriginalPublicationDate !== modelOriginalPublicationDate;
+        return (basicsOriginalPublicationDate && !modelOriginalPublicationDate)
+        || (modelOriginalPublicationDate && !basicsOriginalPublicationDate)
+        || (((basicsOriginalPublicationDate && modelOriginalPublicationDate)
+        && modelOriginalPublicationDate.getTime() !== basicsOriginalPublicationDate.getTime()));
     }),
 
     // Pending subjects
@@ -431,6 +435,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     canEdit: computed('isWrite', 'editMode', function() {
+        // If logged in user has permission to edit - true
+        // on editMode for both admin and write authors
         return this.get('editMode') ? this.get('isWrite') : true;
     }),
 
@@ -508,7 +514,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     actions: {
         getProjectContributors(node) {
-            // Returns all contributors of node.  Can be optionally added to the preprint.
+            // Returns all contributors of the node.  Are copied over to the preprint.
             // Makes sequential requests to API until all pages of contributors have been loaded
             // and combines into one array
 
@@ -565,7 +571,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             this.send('changesSaved', currentPanelName);
         },
         nextUploadSection(currentUploadPanel, nextUploadPanel) {
-            // Opens next panel within the Upload Sectiod - Selecting a file
+            // Opens next panel within the Upload Section - Selecting a file
             // from an existing project
             // (Choose Project - Choose File - Finalize Upload)
             this.get('panelActions')._panelFor(currentUploadPanel).set('apiOpenState', false);

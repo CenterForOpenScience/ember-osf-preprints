@@ -98,18 +98,19 @@ export default Component.extend(Analytics, {
                     label: 'Submit - Choose Project',
                     extra: node.id,
                 });
+            // When project is selected, its title is pre-populated as the preprint's title
             this.set('title', node.get('title'));
-            this.set('description', node.get('description'));
-            this.set('tags', node.get('tags'));
             this.set('titleValid', true);
+            // The project's contributors are loaded.  They will be copied to the preprint
+            // upon "Save and Continue"
             this.getProjectContributors(node);
         },
 
         selectFile(file) {
             // Select existing node file from file-browser -
             // This file will be eventually copied to the preprint
-            this.attrs.nextUploadSection('selectExistingFile', 'finalizeUpload');
             this.attrs.selectFile(file);
+            this.attrs.nextUploadSection('selectExistingFile', 'finalizeUpload');
             this.get('metrics')
                 .trackEvent({
                     category: 'file browser',
@@ -120,7 +121,7 @@ export default Component.extend(Analytics, {
         },
 
         supplementalProjectSelected(node) {
-            // Sets selectedSupplementalProject
+            // Sets selectedSupplementalProject as existing project, locally
             // These are pending values until the preprint form is submitted
             this.set('selectedSupplementalProject', node);
             this.get('metrics')

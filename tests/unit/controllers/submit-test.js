@@ -557,12 +557,12 @@ test('originalPublicationDateChanged', function(assert) {
     const { store } = this;
     run(() => {
         const preprint = store.createRecord('preprint', {
-            originalPublicationDate: moment(),
+            originalPublicationDate: moment()._d,
         });
         assert.equal(ctrl.get('originalPublicationDateChanged'), undefined);
         ctrl.set('model', preprint);
         assert.equal(ctrl.get('originalPublicationDateChanged'), false);
-        ctrl.set('basicsOriginalPublicationDate', moment());
+        ctrl.set('basicsOriginalPublicationDate', moment()._d);
         assert.equal(ctrl.get('originalPublicationDateChanged'), true);
     });
 });

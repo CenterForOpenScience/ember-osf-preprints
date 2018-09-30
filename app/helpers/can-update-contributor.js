@@ -6,7 +6,7 @@ import { helper } from '@ember/component/helper';
 */
 
 /**
-* permissionToRemoveContributor helper.  Checks to see if user has proper permissions
+* canUpdateContributor helper.  Checks to see if user has proper permissions
 * to update the contributor.  The user must be an admin, and in Submit mode, cannot remove herself.
 *
 * @class canUpdateContributor
@@ -14,7 +14,7 @@ import { helper } from '@ember/component/helper';
 * @param {Object} currentUser Current logged in user.
 * @param {Boolean} isAdmin Whether current user is a preprint admin
 * @param {Boolean} editMode Is the preprint in editMode?
-* @return {Boolean} Does current user have permission to remove this particular contributor?
+* @return {Boolean} Does current user have permission to update the contributor?
 */
 export function canUpdateContributor(params/* , hash */) {
     const [contributor, currentUser, isAdmin, editMode] = params;
@@ -24,7 +24,7 @@ export function canUpdateContributor(params/* , hash */) {
     if (editMode) {
         return isAdmin;
     } else {
-        // On preprint's submit page, not allowing preprint creator to remove themselves as an admin
+        // On preprint's submit page, not allowing preprint creator to modify their permissions
         return (!updateSelf && isAdmin);
     }
 }

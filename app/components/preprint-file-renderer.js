@@ -44,6 +44,7 @@ export default Component.extend(Analytics, {
     }),
 
     versions: computed('primaryFile', function() {
+        // Loads all versions of the primary file
         const primaryFile = this.get('store').peekRecord('file', this.get('primaryFile.id'));
         const versions = A();
 
@@ -62,10 +63,12 @@ export default Component.extend(Analytics, {
     },
 
     setAllowCommenting(provider) {
+        // Allow commenting if preprint is published and public and provider allows commenting
         const publishedAndPublic = this.get('preprint.isPublished') && this.get('preprint.public');
         this.set('allowCommenting', provider.get('allowCommenting') && publishedAndPublic);
     },
     __serializeVersions(versions) {
+        // Serialize file versions for display.
         const downloadUrl = this.get('primaryFile.links.download');
         const primaryFileGuid = this.get('primaryFile.guid');
 
@@ -75,7 +78,6 @@ export default Component.extend(Analytics, {
         );
         const filename = this.get('primaryFile.name');
         this.set('primaryFileHasVersions', versions.length > 1);
-
 
         return versions
             .map((version) => {

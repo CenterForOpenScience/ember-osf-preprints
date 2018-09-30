@@ -1,7 +1,6 @@
 import { A } from '@ember/array';
 import RSVP, { resolve } from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
-import wait from 'ember-test-helpers/wait';
 import Service from '@ember/service';
 import ArrayProxy from '@ember/array/proxy';
 import hbs from 'htmlbars-inline-precompile';
@@ -95,11 +94,9 @@ test('primary file versions exist', function(assert) {
         versions=versions
         dualTrackNonContributors=(action dualTrackNonContributors)
     }}`);
-    return wait().then(() => {
-        assert.ok($('a.dropdown-toggle')[0].innerText.includes('Download previous versions'));
-        assert.ok($('a.dropdown-item')[0].innerText.includes('Version 2'));
-        assert.ok($('a.dropdown-item')[1].innerText.includes('Version 1'));
-    });
+    assert.ok($('a.dropdown-toggle')[0].innerText.includes('Download previous versions'));
+    assert.ok($('a.dropdown-item')[0].innerText.includes('Version 2'));
+    assert.ok($('a.dropdown-item')[1].innerText.includes('Version 1'));
 });
 
 test('primary file one version', function(assert) {

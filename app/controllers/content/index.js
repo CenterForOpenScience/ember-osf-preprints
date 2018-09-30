@@ -111,9 +111,10 @@ export default Controller.extend(Analytics, {
         return false;
     }),
 
-    showStatusBanner: computed('model.{provider.reviewsWorkflow,reviewsState}', 'userIsContrib', function() {
+    showStatusBanner: computed('model.{public,provider.reviewsWorkflow,reviewsState}', 'userIsContrib', function() {
         return (
             this.get('model.provider.reviewsWorkflow')
+            && this.get('model.public')
             && this.get('userIsContrib')
             && this.get('model.reviewsState') !== INITIAL
         );
