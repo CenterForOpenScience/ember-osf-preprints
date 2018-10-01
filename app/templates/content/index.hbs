@@ -132,7 +132,7 @@
                     </div>
 
                     {{#if (or (eq model.provider.reviewsWorkflow "pre-moderation") (eq model.provider.reviewsWorkflow "post-moderation"))}}
-                        {{#if (and userIsContrib (eq model.reviewsState "accepted"))}}
+                        {{#if (and isAdmin (eq model.reviewsState "accepted"))}}
                             <div class="p-t-xs">
                                 {{chronos-submission-panel preprint=model}}
                             </div>
