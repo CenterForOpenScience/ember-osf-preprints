@@ -13,6 +13,22 @@ export default Component.extend({
     keyword: '',
     preprint: null,
     journals: A(),
+
+    actions: {
+        getInitialJournals(keyword) {
+            this.get('_fetchInitialJournals').perform(keyword);
+        },
+        getMoreJournals() {
+            this.get('_fetchMoreJournals').perform();
+        },
+        journalSelected(journal) {
+            this.set('selectedJournal', journal);
+        },
+        cancelSubmission() {
+            this.set('journals', A());
+            this.set('selectedJournal', null);
+        },
+    },
     _fetchInitialJournals: task(function* (keyword) {
         // Wait a bit for the user to finish typing.
         yield timeout(500);
@@ -29,21 +45,6 @@ export default Component.extend({
         this.set('canLoadMore', canLoadMore);
         this.set('journals', journals);
     }).restartable(),
-    actions: {
-        getInitialJournals(keyword) {
-            this.get('_fetchInitialJournals').perform(keyword);
-        },
-        getMoreJournals() {
-            this.get('_fetchMoreJournals').perform();
-        },
-        journalSelected(journal) {
-            this.set('selectedJournal', journal);
-        },
-        cancelSubmission() {
-            this.set('journals', A());
-            this.set('selectedJournal', null);
-        },
-    },
     _fetchMoreJournals: task(function* () {
         const journals = this.get('journals');
         const page = this.get('page');

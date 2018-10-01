@@ -293,6 +293,9 @@ export default {
             rejected: 'Rejected from {{title}}',
             published: 'Published in {{title}}',
         },
+        'chronos-submission-panel': {
+            helper_text: 'A new tab will open to complete submission on Chronos',
+        },
         'error-page': {
             email_message: 'If this should not have occurred and the issue persists, please report it to',
             go_to: 'Go to {{brand}}',
