@@ -6,7 +6,7 @@
     {{#cp-panel-body}}
         <div>
             {{#power-select search=(perform _fetchInitialJournals) optionsComponent=(component 'lazy-options' loadMore=(action "getMoreJournals") isLoading=isLoading canLoadMore=canLoadMore) options=journals placeholder="Select a journal" selected=selectedJournal onfocus=(action "getInitialJournals" "") oninput=(action "getInitialJournals") onchange=(action "journalSelected") as |journal|}}
-                <strong> {{journal.title}}</strong>
+                <strong>{{journal.title}}</strong>
             {{/power-select}}
         </div>
         {{#if selectedJournal}}
