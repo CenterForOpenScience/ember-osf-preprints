@@ -69,13 +69,15 @@ export default Mixin.create({
         }
     },
 
-    _supplementalProjectPermissionDenied() {
+    _supplementalProjectPermissionDenied(error) {
         // Permissions on the node and preprint are separate.
-        // A preprint author may not necessarily have permissions to the supplemental project.
+        // The supplemental project may have been made private or deleted.
         const controller = this.get('controller');
         controller.set('node', null);
-        // Just a placeholder title to indicate to the user that they can't view this project
-        controller.set('supplementalProjectTitle', '<Private Supplemental Project>');
+        // If 403 error received, put placeholder title, to tell the user that something is there.
+        if (error.errors[0].detail === 'You do not have permission to perform this action.') {
+            controller.set('supplementalProjectTitle', '<Private Supplemental Project>');
+        }
     },
 
     _getAvailableLicenses(provider) {
