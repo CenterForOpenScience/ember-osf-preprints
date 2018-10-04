@@ -363,6 +363,8 @@ export default {
                 remove_author: 'Remove author from authors list',
             },
             remove: 'Remove',
+            remove_confirm: 'Are you sure you want to remove yourself from {{title}}?',
+            remove_title: 'Remove Author',
         },
         'preprint-form-body': {
             // Nothing to translate

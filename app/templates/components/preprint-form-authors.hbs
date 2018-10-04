@@ -129,9 +129,15 @@
                                     <span class="visible-xs-inline">
                                         <span class="pull-right remove-contributor-padding-xs">
                                             {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin editMode) (conditions-for-contrib-removal contrib contributors authorModification))}}
-                                                <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
-                                                    <i class="fa fa-times"> </i>
-                                                </button>
+                                                {{#if (contributor-is-current-user contrib currentUser)}}
+                                                    <button class="remove-contributor-xs" {{action 'removeContributorConfirm' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
+                                                        <i class="fa fa-times"> </i>
+                                                    </button>
+                                                {{else}}
+                                                    <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
+                                                        <i class="fa fa-times"> </i>
+                                                    </button>
+                                                {{/if}}
                                             {{/if}}
                                         </span>
                                     </span>
@@ -167,7 +173,11 @@
                             <td>
                                 <div class="delete-contrib-button form-group vert-align nudge-right hidden-xs hidden-md">
                                     {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin editMode) (conditions-for-contrib-removal contrib contributors authorModification))}}
-                                        <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm" > {{t "components.preprint-form-authors.remove"}} </button>
+                                        {{#if (contributor-is-current-user contrib currentUser)}}
+                                            <button {{action 'removeContributorConfirm' contrib}} class="btn btn-danger btn-sm" > {{t "components.preprint-form-authors.remove"}}</button>
+                                        {{else}}
+                                            <button {{action 'removeContributor' contrib}} class="btn btn-danger btn-sm" > {{t "components.preprint-form-authors.remove"}}</button>
+                                        {{/if}}
                                     {{else}}
                                         <button class="btn btn-danger btn-sm disabled"> {{t "components.preprint-form-authors.remove"}} </button>
                                     {{/if}}
@@ -184,6 +194,16 @@
                     {{/each}}
                 {{/sortable-group}}
             </table>
+            <div>
+                {{confirm-remove-self
+                    isOpen=showRemoveSelfModal
+                    removeButtonDisabled=removeButtonDisabled
+                    removeContributor=(action 'removeContributor')
+                    buttonLabel="components.preprint-form-authors.remove"
+                    contrib=currentContrib
+                    model=model
+                }}
+            </div>
         </div>
     </div>
 </div>

@@ -681,6 +681,9 @@ $color-border-light: #DDDDDD;
     color: #333;
 }
 
+.in {
+    background: rgba(0, 0, 0, 0.8);
+}
 
 // FOR SUBJECTS LIST ON INDEX
 .subjectList img {
@@ -850,6 +853,10 @@ hr {
     textarea {
         resize: none;
     }
+}
+
+.fade.in {
+    background: rgba(0, 0, 0, 0.08);
 }
 
 #supplemental-materials {

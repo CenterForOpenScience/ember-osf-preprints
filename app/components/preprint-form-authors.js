@@ -45,6 +45,9 @@ export default CpPanelBodyComponent.extend(Analytics, {
     current: null,
     contributor: null,
     draggedContrib: null,
+    showRemoveSelfModal: false,
+    removeButtonDisabled: false,
+    removeContributorModalTitle: 'Are you sure you want to remove this contributor?',
     user: null,
     // There are 3 view states on left side of Authors panel. Default state just shows search bar.
     query: null,
@@ -53,6 +56,9 @@ export default CpPanelBodyComponent.extend(Analytics, {
     // contributors are emailed as soon as they are added to preprint.
     sendEmail: computed('editMode', function() {
         return this.get('editMode') ? 'preprint' : false;
+    }),
+    currentContrib: computed('contributors', 'currentUser', function() {
+        return this.get('contributors').filter(contrib => contrib.get('userId') === this.get('currentUser').id)[0];
     }),
     // TODO find alternative to jquery selectors. Temporary popover content for authors page.
     didInsertElement() {
@@ -146,10 +152,14 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 });
 
             this.set('contributor', contrib);
+            this.toggleProperty('removeButtonDisabled');
 
             this.model.removeContributor(contrib)
                 .then(this._removeContributor.bind(this))
                 .catch(this._failRemoveContributor.bind(this));
+        },
+        removeContributorConfirm() {
+            this.toggleProperty('showRemoveSelfModal');
         },
         // Updates contributor then redraws contributor list view - updating contributor
         // permissions may change which additional update/remove requests are permitted.
@@ -287,6 +297,8 @@ export default CpPanelBodyComponent.extend(Analytics, {
 
     _removeContributor() {
         const contributor = this.get('contributor');
+        this.toggleProperty('showRemoveSelfModal');
+        this.toggleProperty('removeButtonDisabled');
         this.toggleAuthorModification();
         this.get('contributors').removeObject(contributor);
         this.modifiedSelf(contributor, contributor.get('permission'), true);
@@ -309,7 +321,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
 
     _failRemoveContributor() {
         const contributor = this.get('contributor');
-
+        this.toggleProperty('removeButtonDisabled');
         this.get('toast').error(this.get('i18n').t('submit.error_removing_author'));
         this.highlightSuccessOrFailure(contributor.id, this, 'error');
         contributor.rollbackAttributes();

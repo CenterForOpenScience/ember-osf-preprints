@@ -1,0 +1,14 @@
+{{#bs-modal backdrop=true open=isOpen title=(t title documentType=documentType) as |modal|}}
+    {{#modal.header}}
+        <h3 class="modal-title">{{t "components.preprint-form-authors.remove_title"}}</h3>
+    {{/modal.header}}
+    {{#modal.body}}
+        {{t "components.preprint-form-authors.remove_confirm" title=model.title}}
+    {{/modal.body}}
+    {{#modal.footer}}
+        <div align="right">
+            <button {{action 'close'}} class="btn btn-default">{{t "global.cancel"}}</button>
+            <button class="btn btn-danger" autofocus disabled={{removeButtonDisabled}} {{action removeContributor contrib}}>{{t buttonLabel}}</button>
+        </div>
+    {{/modal.footer}}
+{{/bs-modal}}
