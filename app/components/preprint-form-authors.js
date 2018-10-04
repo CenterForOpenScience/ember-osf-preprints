@@ -297,7 +297,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
 
     _removeContributor() {
         const contributor = this.get('contributor');
-        this.toggleProperty('showRemoveSelfModal');
+        this.set('showRemoveSelfModal', false);
         this.toggleProperty('removeButtonDisabled');
         this.toggleAuthorModification();
         this.get('contributors').removeObject(contributor);
