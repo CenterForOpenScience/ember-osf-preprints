@@ -1327,11 +1327,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             });
         const contributorsToAdd = A();
         this.get('projectContributors').toArray().forEach((contributor) => {
-            if (this.get('user.id') !== contributor.get('userId')) {
+            if (this.get('user.id') !== contributor.get('userId') &&
+                !('errors' in contributor.get('data.links.relationships.users'))) {
                 contributorsToAdd.push({
                     permission: contributor.get('permission'),
                     bibliographic: contributor.get('bibliographic'),
                     userId: contributor.get('userId'),
+                    unregisteredContributor: contributor.get('unregisteredContributor'),
                 });
             }
         });
