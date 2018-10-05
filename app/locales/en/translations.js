@@ -306,6 +306,11 @@ export default {
             convert_confirmation_details_project: 'Changes you make on this page are saved immediately.  Create a new component under this project to avoid overwriting its details.',
             convert_confirmation_details_component: 'Changes you make on this page are saved immediately.  Create a new component under this component to avoid overwriting its details.',
         },
+        'claim-user': {
+            tooltip_message: 'Is this you? Click to claim.',
+            title: 'Claim Account',
+            success_message: 'Email will arrive shortly. Please check {{email}}',
+        },
         'error-page': {
             email_message: 'If this should not have occurred and the issue persists, please report it to',
             go_to: 'Go to {{brand}}',
@@ -451,7 +456,7 @@ export default {
         },
         'unregistered-contributor-form': {
             full_name: 'Full Name',
-            email: 'Email',
+            email: 'Enter email',
             paragraph: 'We will notify the user that they have been added to your {{documentType.singular}}.',
         },
         'validated-input': {

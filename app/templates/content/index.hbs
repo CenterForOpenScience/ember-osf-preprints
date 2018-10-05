@@ -16,12 +16,22 @@
                             {{#if authors}}
                                 {{#each authors as |author| ~}}
                                     {{#if author.bibliographic}}
-                                        {{#if author.unregisteredContributor}}
-                                            <li>{{author.unregisteredContributor}}</li>
-                                        {{else if (user-errors author)}}
-                                            <li>{{disabled-user-name author}}</li>
+                                        {{#if currentUser.currentUserId}}
+                                            {{#if author.unregisteredContributor}}
+                                                <li><span>{{author.users.name}}</span></li>
+                                            {{else if (user-errors author)}}
+                                                <li>{{disabled-user-name author}}</li>
+                                            {{else}}
+                                                <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.name}}</a></li>
+                                            {{/if}}
                                         {{else}}
-                                            <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.name}}</a></li>
+                                            {{#if author.unregisteredContributor}}
+                                                {{claim-user author=author preprintId=model.id}}
+                                            {{else if (user-errors author)}}
+                                                <li>{{disabled-user-name author}}</li>
+                                            {{else}}
+                                                <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.name}}</a></li>
+                                            {{/if}}
                                         {{/if}}
                                     {{/if}}
                                 {{~/each}}
