@@ -257,7 +257,7 @@ export default {
         },
         could_not_update_title: 'Error updating title. Please try again.',
         error_copying_file: 'Error copying file; please try again.',
-        error_accessing_parent_files: 'Error accessing parent files. Please try again.',
+        error_accessing_files: 'Error accessing files. Please try again.',
         error_saving_supplemental: 'Error saving supplemental project. Please try again.',
         error_removing_supplemental: 'Error disconnecting supplemental project. Please try again.',
         success_saving_supplemental: 'Supplemental project disconnected.',

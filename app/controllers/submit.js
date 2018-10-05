@@ -1219,6 +1219,15 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         const preprint = this.get('model');
         const osfstorage = fileProviders.findBy('name', 'osfstorage');
 
+        if (this.get('uploadedFileName') === this.get('selectedFile.name')) {
+            // If file was successfully copied to preprint and then subsequent request failed
+            // Do not attempt to recopy to the preprint
+            return this.get('store')
+                .findRecord('file', this.get('uploadedFileId'))
+                .then(this._setPrimaryFileAndNodeAttributes.bind(this))
+                .catch(this._failCopyFile.bind(this));
+        }
+
         this.get('fileManager').copy(this.get('selectedFile'), osfstorage, { data: { resource: preprint.id, provider: 'osfstorage', conflict: 'replace' } })
             .then(this._setPrimaryFileAndNodeAttributes.bind(this))
             .catch(this._failCopyFile.bind(this));
@@ -1228,11 +1237,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         // Copied file from node is set as the preprint's primary file
         // Also copies over node description and tags
         this.set('selectedFile', copiedFile);
+        this.set('uploadedFileName', copiedFile.get('name'));
+        this.set('uploadedFileId', copiedFile.get('id'));
         const model = this.get('model');
         model.set('description', this.get('node.description'));
         this.set('basicsAbstract', this.get('node.description'));
         model.set('tags', this.get('node.tags'));
-        model.set('primaryFile', this.get('selectedFile'));
+        model.set('primaryFile', copiedFile);
         return model.save()
             .then(this._addContributorsFromFileProject.bind(this))
             .then(this._finishUpload.bind(this))
@@ -1244,7 +1255,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     },
 
     _failGetFiles() {
-        this.get('toast').error(this.get('i18n').t('submit.error_accessing_parent_files'));
+        this.get('toast').error(this.get('i18n').t('submit.error_accessing_files'));
     },
 
     _finishUpload() {
