@@ -50,6 +50,7 @@ export default Controller.extend(Analytics, {
     expandedAuthors: true,
     showLicenseText: false,
     primaryFile: null,
+    showModalClaimUser: false,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
     hasTag: computed.bool('model.tags.length'),
     metricsExtra: computed('model', function() {
@@ -207,6 +208,10 @@ export default Controller.extend(Analytics, {
 
             window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
             return false;
+        },
+        claimUser(author) {
+            this.set('userToClaim', author);
+            this.toggleProperty('showModalClaimUser');
         },
         // Sends Event to GA/Keen as normal. Sends second event to Keen under
         // "non-contributor-preprint-downloads" collection to track non contributor

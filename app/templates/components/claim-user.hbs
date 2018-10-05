@@ -1,0 +1,10 @@
+<li {{action 'togglePopup'}}>{{author.unregisteredContributor}}
+    {{#bs-popover placement='bottom' local-class='Popover' title="Claim Account" visible=showPopup}}
+        {{#click-outside action=(action 'hidePopup') }}
+            {{validated-input model=this valuePath='username' placeholder=(t "components.unregistered-contributor-form.email") value=email}}
+            <button type="button" class="btn btn-default btn-small" {{action 'togglePopup'}}> {{t "global.cancel"}} </button>
+            <button type="submit" class="btn btn-success btn-small"> {{t "global.add"}} </button>
+            {{!-- <button type="submit" disabled={{not isFormValid}} {{action "addUnregistered" fullName email}} class="btn btn-success btn-small"> {{t "global.add"}} </button> --}}
+        {{/click-outside}}
+    {{/bs-popover}}
+</li>
