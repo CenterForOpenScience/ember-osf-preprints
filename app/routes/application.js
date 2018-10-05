@@ -23,7 +23,7 @@ export default Route.extend(Analytics, OSFAgnosticAuthRouteMixin, {
                     'preprint-provider',
                     {
                         filter: {
-                            domain: `${window.location.origin}/`,
+                            // domain: `${window.location.origin}/`,
                         },
                     },
                 ).then(this.setTheme.bind(this));
