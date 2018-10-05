@@ -17,7 +17,7 @@
                                 {{#each authors as |author| ~}}
                                     {{#if author.bibliographic}}
                                         {{#if author.unregisteredContributor}}
-                                            <li>{{author.unregisteredContributor}}</li>
+                                            {{claim-user author=author}}
                                         {{else}}
                                             <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.name}}</a></li>
                                         {{/if}}
