@@ -5,7 +5,7 @@ const arxivTrademarkLicense = 'arXiv is a trademark of Cornell University, used 
 export default {
     global: {
         share: 'Share',
-        skip: 'Skip',
+        continue: 'Continue',
         complete: 'Complete',
         cancel: 'Cancel',
         optional: 'Optional',
@@ -183,7 +183,7 @@ export default {
             supplemental_description: 'Connect an OSF project to share data, code, protocols, or other supplemental materials.',
             supplemental_new_project: 'Create a new OSF project',
             supplemental_connect_existing: 'Connect an existing OSF project',
-            supplemental_title: 'Project Title',
+            supplemental_title: 'Project title',
             remove_subject_aria: 'Remove subject',
             disconnect_supplemental: 'Disconnect the project',
             supplemental_change_saved: 'Change the connected project',
@@ -219,7 +219,7 @@ export default {
                     line1: {
                         default: 'When you create this {{documentType.singular}}, it will be assigned a DOI and become publicly accessible via {{name}}. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified.',
                         pre: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. If your {{documentType.singular}} is accepted, it will be assigned a DOI and become publicly accessible via {{name}}. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified.',
-                        post: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. When you submit this {{documentType.singular}}, it will be assigned a DOI and become publicly accessible via {{name}} . Your {{documentType.singular}} will only become private if rejected by a moderator. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified.',
+                        post: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. When you submit this {{documentType.singular}}, it will be assigned a DOI and become publicly accessible via {{name}}. Your {{documentType.singular}} will only become private if rejected by a moderator. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified.',
                     },
                     line2: {
                         create: 'By creating this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.',
@@ -312,17 +312,13 @@ export default {
         },
         'file-uploader': {
             dropzone_message: 'Drop {{documentType.singular}} file here to upload',
-            dropzone_supplemental_message: 'Drop supplementary file here to upload',
             title_placeholder: 'Enter {{documentType.singular}} title',
             update_version: 'Update {{documentType.singular}} file version.  File must have the same name as the original.',
-            could_not_create_project: 'Could not create project. Please try again.',
             could_not_create_preprint: 'Could not create preprint. Please try again.',
-            could_not_create_component: 'Could not create component. Please try again.',
             could_not_update_title: 'Could not update title. Please try again.',
             version_error: 'This is not a version of the current {{documentType.singular}} file.',
             preprint_file_updated: '{{documentType.singularCapitalized}} file updated!',
             preprint_file_error: 'Could not set {{documentType.singular}} file. Please try again.',
-            file_exists_error: 'A file with that name already exists',
             upload_error: 'Upload Failed',
             dropzone_text_override: 'Click or drag another {{documentType.singular}} file to replace',
         },
@@ -337,6 +333,9 @@ export default {
             arxivTrademarkLicense,
             arxiv_non_endorsement: 'arXiv is a trademark of Cornell University, used under license. This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.',
             no_trademark: '',
+        },
+        'preprint-file-renderer': {
+            download_previous_versions: 'Download previous versions',
         },
         'preprint-form-authors': {
             search: {
@@ -432,16 +431,6 @@ export default {
                 base: 'This {{documentType.singular}}',
             },
         },
-        'project-chooser': {
-            file_upload_create: 'Upload a file and create an OSF project',
-            provide_title: 'Please provide a title for your project',
-            continue: 'Continue',
-            choose_project_component: 'Choose an existing project or component',
-            file_upload_existing: 'Upload a file to an existing OSF project',
-            choose_project: 'Choose project',
-            file_choose_existing: 'Choose a file from an existing OSF project',
-            choose_file: 'Choose file',
-        },
         'search-preprints': {
             // Nothing to translate
         },
@@ -453,10 +442,6 @@ export default {
             post_facebook: 'Post to Facebook',
             share_linkedin: 'Share on LinkedIn',
             send_email: 'Send in email',
-        },
-        'supplementary-file-browser': {
-            primary: 'Primary',
-            download_previous_versions: 'Download previous versions',
         },
         'taxonomy-top-list': {
             // Nothing to translate

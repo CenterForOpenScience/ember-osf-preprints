@@ -219,6 +219,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Must have year and copyrightHolders filled if those are required by the licenseType selected
     licenseValid: false,
 
+    _names: ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'Supplemental'], // Form section headers
     hasFile: computed.or('file', 'selectedFile'),
     isAddingPreprint: computed.not('editMode'),
     // Contributors on preprint
@@ -226,7 +227,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     projectContributors: A(),
     userNodes: A(),
     availableLicenses: A(),
-    _names: ['server', 'file', 'basics', 'discipline', 'authors', 'supplemental'].map(str => str.capitalize()), // Form section headers
     uploadValid: alias('preprintLocked'), // Once the preprint has been locked (happens in step one of upload section), users are free to navigate through form unrestricted
     abstractValid: alias('validations.attrs.basicsAbstract.isValid'),
 
@@ -403,10 +403,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     originalPublicationDateChanged: computed('model.originalPublicationDate', 'basicsOriginalPublicationDate', function () {
         const basicsOriginalPublicationDate = this.get('basicsOriginalPublicationDate');
         const modelOriginalPublicationDate = this.get('model.originalPublicationDate');
-        return (basicsOriginalPublicationDate && !modelOriginalPublicationDate)
-        || (modelOriginalPublicationDate && !basicsOriginalPublicationDate)
-        || (((basicsOriginalPublicationDate && modelOriginalPublicationDate)
-        && modelOriginalPublicationDate.getTime() !== basicsOriginalPublicationDate.getTime()));
+
+        const basicsNoModel = basicsOriginalPublicationDate && !modelOriginalPublicationDate;
+        const modelNoBasics = modelOriginalPublicationDate && !basicsOriginalPublicationDate;
+        const basicsAndModel = basicsOriginalPublicationDate && modelOriginalPublicationDate;
+
+        return basicsNoModel || modelNoBasics || (basicsAndModel &&
+            modelOriginalPublicationDate.getTime() !== basicsOriginalPublicationDate.getTime());
     }),
 
     // Pending subjects
