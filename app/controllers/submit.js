@@ -1348,8 +1348,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 });
             }
         });
-        this.get('model').addContributors(contributorsToAdd, false)
-            .then(this._addContributorsFromProject.bind(this));
+
+        if (contributorsToAdd.length !== 0) {
+            this.get('model').addContributors(contributorsToAdd, false)
+                .then(this._addContributorsFromProject.bind(this));
+        }
     },
 
     _addContributorsFromProject(contributors) {
