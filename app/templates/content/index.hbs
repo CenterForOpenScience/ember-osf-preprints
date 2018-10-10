@@ -18,6 +18,8 @@
                                     {{#if author.bibliographic}}
                                         {{#if author.unregisteredContributor}}
                                             <li>{{author.unregisteredContributor}}</li>
+                                        {{else if author.data.links.relationships.users.errors}}
+                                            <li>{{disabled-user-name author}}</li>
                                         {{else}}
                                             <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.name}}</a></li>
                                         {{/if}}

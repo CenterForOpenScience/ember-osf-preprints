@@ -85,6 +85,8 @@
                         <li>
                             {{~#if contrib.unregisteredContributor~}}
                                 {{~contrib.unregisteredContributor~}}
+                            {{else if contrib.data.links.relationships.users.errors}}
+                                {{~disabled-user-name contrib~}}
                             {{else}}
                                 {{~contrib.users.fullName~}}
                             {{~/if~}}

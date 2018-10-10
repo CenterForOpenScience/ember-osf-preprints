@@ -116,11 +116,13 @@
                             <td class="text-nowrap author-cols" title={{if contrib.unregisteredContributor contrib.unregisteredContributor contrib.users.fullName}}>
                                 <div class="form-group drag-drop-contrib">
                                     <span class={{if isAdmin "fa fa-bars sortable-bars handle small" ""}}></span>
-                                    <img alt="author profile image" class="m-l-xs" src={{contrib.users.profileImage}} height=30 width=30>
+                                    <img alt="author profile image" class="m-l-xs" src={{profile-image-link contrib}} height=30 width=30>
                                     {{!CONTRIBUTOR NAME - XS Screen}}
                                     <span class="vert-align-contributor-name">
                                         {{#if contrib.unregisteredContributor}}
                                             {{contrib.unregisteredContributor}}
+                                        {{else if contrib.data.links.relationships.users.errors}}
+                                            {{disabled-user-name contrib}}
                                         {{else}}
                                             <a href={{contrib.users.links.html}} target="_blank" rel="noopener"> {{contrib.users.fullName}} </a>
                                         {{/if}}
