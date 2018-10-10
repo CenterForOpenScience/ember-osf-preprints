@@ -121,7 +121,7 @@
                                     <span class="vert-align-contributor-name">
                                         {{#if contrib.unregisteredContributor}}
                                             {{contrib.unregisteredContributor}}
-                                        {{else if contrib.data.links.relationships.users.errors}}
+                                        {{else if (user-errors contrib)}}
                                             {{disabled-user-name contrib}}
                                         {{else}}
                                             <a href={{contrib.users.links.html}} target="_blank" rel="noopener"> {{contrib.users.fullName}} </a>
