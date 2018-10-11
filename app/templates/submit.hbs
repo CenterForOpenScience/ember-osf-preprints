@@ -229,7 +229,7 @@
                                     documentType=currentProvider.documentType
                                 }}
                                 <div class="p-t-xs pull-right">
-                                    <button {{action 'next' name}} class="btn btn-primary">{{t "components.project-chooser.continue"}}</button>
+                                    <button {{action 'next' name}} class="btn btn-primary">{{t "global.continue"}}</button>
                                 </div>
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
@@ -257,7 +257,7 @@
                                                 </div>
                                             </div>
                                             <div class="p-t-xs m-t-sm pull-right">
-                                                <button {{action 'skipSupplemental' name}} class="btn btn-primary">{{t "global.skip"}}</button>
+                                                <button {{action 'skipSupplemental' name}} class="btn btn-primary">{{t "global.continue"}}</button>
                                             </div>
                                         {{else if (eq supplementalState _State.START)}}
                                             <div class="row">
@@ -272,7 +272,7 @@
                                                 {{#if (and editMode node)}}
                                                     <button {{action 'changeSupplementalPickerState' _State.EDIT}} class="btn btn-default">{{t "global.back"}}</button>
                                                 {{/if}}
-                                                <button {{action 'skipSupplemental' name}} class="btn btn-primary">{{t "global.skip"}}</button>
+                                                <button {{action 'skipSupplemental' name}} class="btn btn-primary">{{t "global.continue"}}</button>
                                             </div>
                                         {{else if (eq supplementalState _State.EXISTING)}}
                                             {{preprint-form-project-select
