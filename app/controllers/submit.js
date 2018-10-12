@@ -938,7 +938,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             run.later(() => context.$(`#${elementId}`).removeClass(highlightClass), 2000);
         },
         currentUserRemoved() {
-            this.send('cancel');
+            this.replaceRoute('index');
         },
 
         /*
