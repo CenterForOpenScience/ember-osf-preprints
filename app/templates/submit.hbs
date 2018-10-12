@@ -84,7 +84,6 @@
                                                 nextUploadSection=(action 'nextUploadSection')
                                                 setPrimaryFile=(action 'setPrimaryFile')
                                                 discardUploadChanges=(action 'discardUploadChanges')
-                                                newPreprintFile=true
                                                 startState=_State.START
                                                 title=title
                                                 currentUser=user
@@ -250,7 +249,7 @@
                                         {{#if (eq supplementalState _State.EDIT)}}
                                             <div class="row">
                                                 <div class="col-xs-6">
-                                                    <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.START}}>{{t "submit.body.supplemental_change_saved"}}</button>
+                                                    <button class="btn btn-block btn-big" {{action 'changeConnectedProject'}}>{{t "submit.body.supplemental_change_saved"}}</button>
                                                 </div>
                                                 <div class="col-xs-6">
                                                     <button class="btn btn-block btn-big btn-big-danger" {{action 'removeSupplementalNode'}}>{{t "submit.body.disconnect_supplemental"}}</button>
@@ -270,7 +269,7 @@
                                             </div>
                                             <div class="p-t-xs m-t-sm pull-right">
                                                 {{#if (and editMode node)}}
-                                                    <button {{action 'changeSupplementalPickerState' _State.EDIT}} class="btn btn-default">{{t "global.back"}}</button>
+                                                    <button {{action 'backSupplemental' _State.EDIT}} class="btn btn-default">{{t "global.back"}}</button>
                                                 {{/if}}
                                                 <button {{action 'skipSupplemental' name}} class="btn btn-primary">{{t "global.continue"}}</button>
                                             </div>
@@ -279,6 +278,7 @@
                                               updateSupplementalNode=(action 'updateSupplementalNode')
                                               changeSupplementalPickerState=(action 'changeSupplementalPickerState')
                                               setSupplementalTitleFromSelected=(action 'setSupplementalTitleFromSelected')
+                                              backSupplemental=(action 'backSupplemental')
                                               supplementalProjectTitle=supplementalProjectTitle
                                               currentUser=user
                                               model=model
@@ -300,7 +300,7 @@
                                                 </p>
                                             </form>
                                             <div class="p-t-xs pull-right">
-                                                <button {{action 'changeSupplementalPickerState' _State.START}} class="btn btn-default">{{t "global.back"}}</button>
+                                                <button {{action 'backSupplemental' _State.START}} class="btn btn-default">{{t "global.back"}}</button>
                                                 {{#if editMode}}
                                                     <button {{action 'updateSupplementalNode'}} disabled={{not supplementalProjectTitleValid}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
                                                 {{else}}

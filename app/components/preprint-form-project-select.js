@@ -128,7 +128,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'dropdown',
                     action: 'select',
-                    label: 'Submit - Choose Supplemental Project',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Select Supplemental Project`,
                     extra: node.id,
                 });
         },

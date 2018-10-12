@@ -144,21 +144,35 @@ export default CpPanelBodyComponent.extend(Analytics, {
         // Removes contributor then redraws contributor list view -
         // removal of contributor may change which additional update/remove requests are permitted.
         removeContributor(contrib) {
-            this.get('metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Author`,
-                });
+            if (this.get('currentUser').id === contrib.get('userId')) {
+                this.get('metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Confirm Remove Self from Preprint`,
+                    });
+            } else {
+                this.get('metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Author`,
+                    });
+            }
 
             this.set('contributor', contrib);
             this.toggleProperty('removeButtonDisabled');
-
             this.model.removeContributor(contrib)
                 .then(this._removeContributor.bind(this))
                 .catch(this._failRemoveContributor.bind(this));
         },
         removeContributorConfirm() {
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: 'Edit - Open remove self modal',
+                });
             this.toggleProperty('showRemoveSelfModal');
         },
         // Updates contributor then redraws contributor list view - updating contributor

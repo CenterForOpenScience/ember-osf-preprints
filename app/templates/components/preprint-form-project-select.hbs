@@ -38,7 +38,7 @@
                                     <p class="text-muted text-smaller m-t-xs">
                                         {{t "components.preprint-form-project-select.edit_preprint_title" documentType=provider.documentType}}:
                                     </p>
-                                    <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Connect preprint to existing project'}}>
+                                    <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Create preprint with existing file'}}>
                                         {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action createPreprintCopyFile name)}}
                                     </form>
                                 {{/preprint-form-body}}
@@ -78,7 +78,7 @@
                 <div class="row m-t-md">
                     <div class="col-md-12">
                         <div class="pull-right">
-                            <button {{action changeSupplementalPickerState startState}} class="btn btn-default">{{t "global.back"}}</button>
+                            <button {{action backSupplemental startState}} class="btn btn-default">{{t "global.back"}}</button>
                             {{#if editMode}}
                                 <button {{action updateSupplementalNode}} disabled={{not selectedSupplementalProject}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
                             {{else}}

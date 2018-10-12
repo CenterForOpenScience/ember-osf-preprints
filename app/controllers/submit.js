@@ -654,7 +654,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Save and Continue, Create preprint and copy node file to preprint',
+                    label: 'Submit - Save and Continue, Create Preprint and Copy Node File to Preprint',
                 });
             this.set('uploadInProgress', true);
             const model = this.get('model');
@@ -946,6 +946,19 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         */
         changeSupplementalPickerState(state) {
             // Sets supplementalPickerState to edit, start, new, or existing
+            const buttonLabel = {
+                existing: 'Choose Connect an existing OSF Project',
+                new: 'Choose Create a new OSF project',
+            };
+            if (state === this.get('_State').NEW || state === this.get('_State').EXISTING) {
+                this.get('metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - ${buttonLabel[state]}`,
+                    });
+            }
+
             this.set('supplementalPickerState', state);
             this.send('discardSupplemental');
             if (this.get('firstSupplementalOpen') && state === this.get('_State').NEW) {
@@ -991,13 +1004,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
         discardSupplemental() {
             // Locally resets supplemental project UI to latest save state
-            this.get('metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Supplemental Project Changes`,
-                });
-
             if (this.get('editMode')) {
                 if (this.get('selectedSupplementalProject') !== this.get('node')) {
                     this.set('selectedSupplementalProject', null);
@@ -1016,14 +1022,38 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 this.set('supplementalProjectTitleValid', false);
             }
         },
-
+        changeConnectedProject() {
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Choose Change the connected project`,
+                });
+            this.send('changeSupplementalPickerState', this.get('_State').START);
+        },
+        backSupplemental(state) {
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Back Button, Supplemental Section`,
+                });
+            this.send('changeSupplementalPickerState', state);
+        },
         skipSupplemental() {
-            // If "skip" is clicked, reset to proper form state.
+            // If "continue" is clicked, reset to proper form state.
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Continue Button, Supplemental Section`,
+                });
             if (this.get('editMode') && this.get('node.id')) {
                 this.send('changeSupplementalPickerState', this.get('_State').EDIT);
             } else {
                 this.set('node', null);
                 this.set('supplementalProjectTitle', '');
+                // State set as "continue" temporarily for analytics purposes
                 this.send('changeSupplementalPickerState', this.get('_State').START);
             }
             this._moveFromSupplemental();
@@ -1333,12 +1363,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     _addContributorsFromFileProject() {
         // Not catching errors adding contributors - not crucial that
         // those node contributors were copied over
-        this.get('metrics')
-            .trackEvent({
-                category: 'button',
-                action: 'click',
-                label: 'Submit - Bulk Add Contributors From File Node',
-            });
         const contributorsToAdd = A();
         this.get('projectContributors').toArray().forEach((contributor) => {
             if (this.get('user.id') !== contributor.get('userId') &&

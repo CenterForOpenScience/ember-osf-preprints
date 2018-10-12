@@ -31,7 +31,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Edit - Confirm Remove Self from Preprint',
+                    label: 'Edit - Close remove self modal',
                 });
             this.set('isOpen', false);
         },

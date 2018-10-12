@@ -96,7 +96,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'div',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${this.panelName} section`,
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Click to edit, ${panelName} section`,
                 });
             this.get('panelActions').open(panelName);
             this.set('currentPanelName', panelName);
@@ -161,7 +161,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('preprintLocked') ? 'Save File/Title Edits' : 'Uploads New Version'}`,
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save File/Title Edits`,
                 });
             this.set('uploadInProgress', true);
 
@@ -330,10 +330,10 @@ export default Component.extend(Analytics, {
                 action: 'drop',
             };
 
-            if (this.get('newPreprintFile')) {
-                eventData.label = 'Submit - Drop File, New Preprint';
-            } else if (this.get('preprintLocked')) {
+            if (this.get('preprintLocked')) {
                 eventData.label = `${this.get('editMode') ? 'Edit' : 'Submit'} - Drop File, New Version`;
+            } else {
+                eventData.label = 'Submit - Drop File, New Preprint';
             }
             this.get('metrics')
                 .trackEvent(eventData);
