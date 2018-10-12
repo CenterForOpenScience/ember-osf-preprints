@@ -31,7 +31,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Edit - Confirm remove self from preprint',
+                    label: 'Edit - Confirm Remove Self from Preprint',
                 });
             this.set('isOpen', false);
         },

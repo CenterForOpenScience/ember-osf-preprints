@@ -143,7 +143,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: 'Submit - Save and Continue, Uploads new preprint',
+                    label: 'Submit - Save and Continue, Uploads New Preprint',
                 });
             this.set('uploadInProgress', true);
             const preprint = this.get('model');
@@ -161,7 +161,7 @@ export default Component.extend(Analytics, {
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('preprintLocked') ? 'Save File/Title Edits' : 'Uploads new version'}`,
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue, ${this.get('preprintLocked') ? 'Save File/Title Edits' : 'Uploads New Version'}`,
                 });
             this.set('uploadInProgress', true);
 
