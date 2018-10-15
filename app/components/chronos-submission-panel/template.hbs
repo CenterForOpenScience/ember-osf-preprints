@@ -1,0 +1,23 @@
+{{#cp-panel}}
+    {{#cp-panel-toggle}}
+        <p>Submit to journals on Chronos</p>
+    {{/cp-panel-toggle}}
+
+    {{#cp-panel-body}}
+        <div>
+            {{#power-select search=(perform _fetchInitialJournals) optionsComponent=(component 'lazy-options' loadMore=(action "getMoreJournals") isLoading=isLoading canLoadMore=canLoadMore) options=journals placeholder="Select a journal" selected=selectedJournal onfocus=(action "getInitialJournals" "") oninput=(action "getInitialJournals") onchange=(action "journalSelected") as |journal|}}
+                <strong>{{journal.title}}</strong>
+            {{/power-select}}
+        </div>
+        {{#if selectedJournal}}
+            <div style="padding-top: 5px">
+                <p>{{t 'components.chronos-submission-panel.helper_text'}}</p>
+            </div>
+
+            <div class="pull-right">
+                <button class="btn btn-default" onClick={{action 'cancelSubmission'}}>Cancel</button>
+                <button class="btn btn-success" onClick={{perform _submit}}>Submit</button>
+            </div>
+        {{/if}}
+    {{/cp-panel-body}}
+{{/cp-panel}}
