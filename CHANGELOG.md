@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.122.1] - 2018-10-10
+### Changed
+- meta tag for Google Scholar indexing
+
 ## [0.122.0] - 2018-09-20
 ### Added
 - add `isWithdrawn` to google anlaytics pageTracking
