@@ -185,7 +185,11 @@
                                     {{/if}}
                                 </div>
                                 <span class="visible-md-inline">
-                                    {{#if (and (permission-to-remove-contributor contrib currentUser isAdmin editMode) (conditions-for-contrib-removal contrib contributors authorModification))}}
+                                    {{#if (contributor-is-current-user contrib currentUser)}}
+                                        <button class="remove-contributor-xs" {{action 'removeContributorConfirm' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
+                                            <i class="fa fa-times"> </i>
+                                        </button>
+                                    {{else}}
                                         <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
                                             <i class="fa fa-times"> </i>
                                         </button>
