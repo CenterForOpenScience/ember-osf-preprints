@@ -60,13 +60,14 @@ export default Component.extend({
         this.set('canLoadMore', canLoadMore);
     }).enqueue(),
     _submit: task(function* () {
+        const newTab = window.open();
         const submission = this.get('store').createRecord('chronos-submission', {
             journal: this.get('selectedJournal'),
             preprint: this.get('preprint'),
         });
         try {
             yield submission.save();
-            window.open(submission.get('submissionUrl'));
+            newTab.location.href = submission.get('submissionUrl');
             window.location.reload(true);
         } catch (e) {
             this.get('toast').error(e.errors[0].detail);
