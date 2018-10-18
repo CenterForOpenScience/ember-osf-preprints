@@ -13,6 +13,7 @@ export default Component.extend({
     keyword: '',
     preprint: null,
     journals: A(),
+    publisherFilterKeyword: null,
 
     actions: {
         getInitialJournals(keyword) {
@@ -37,7 +38,7 @@ export default Component.extend({
         // Reset page number
         this.set('page', 1);
         this.set('isLoading', true);
-        const journals = yield this.get('store').query('chronos-journal', { page: 1, 'filter[title]': keyword });
+        const journals = yield this.get('store').query('chronos-journal', { page: 1, 'filter[title]': keyword, 'filter[name]': this.get('publisherFilterKeyword') });
         this.set('isLoading', false);
         const canLoadMore = !(journals.get('meta.total_pages') === this.get('page'));
         // Set the keyword
@@ -50,7 +51,7 @@ export default Component.extend({
         const page = this.get('page');
         const keyword = this.get('keyword');
         this.set('isLoading', true);
-        const moreJournals = yield this.get('store').query('chronos-journal', { page: page + 1, 'filter[title]': keyword });
+        const moreJournals = yield this.get('store').query('chronos-journal', { page: page + 1, 'filter[title]': keyword, 'filter[name]': this.get('publisherFilterKeyword') });
         journals.pushObjects(moreJournals.toArray().map(item => item._internalModel));
         this.set('isLoading', false);
         const canLoadMore = page + 1 < journals.get('meta.total_pages');
@@ -70,6 +71,7 @@ export default Component.extend({
             newTab.location.href = submission.get('submissionUrl');
             window.location.reload(true);
         } catch (e) {
+            newTab.close();
             this.get('toast').error(e.errors[0].detail);
         }
     }).drop(),
