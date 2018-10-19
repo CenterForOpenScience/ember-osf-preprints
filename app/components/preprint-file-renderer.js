@@ -5,7 +5,6 @@ import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import loadAll from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
-import fileDownloadPath from '../utils/file-download-path';
 
 /**
  * @module ember-preprints
@@ -52,10 +51,6 @@ export default Component.extend(Analytics, {
             promise: loadAll(primaryFile, 'versions', versions, { sort: '-id', 'page[size]': 50 })
                 .then(this.__serializeVersions.bind(this, versions)),
         });
-    }),
-
-    fileDownloadURL: computed('primaryFile', function() {
-        return fileDownloadPath(this.get('primaryFile'), this.get('preprint'));
     }),
 
     didReceiveAttrs() {
