@@ -1,4 +1,6 @@
-<span {{action 'togglePopup'}}>{{author.unregisteredContributor}}
+{{! template-lint-disable no-nested-interactive }}
+<span role="button" {{action 'togglePopup'}}>
+    {{author.unregisteredContributor}}
     {{#bs-tooltip}}{{t 'components.claim-user.tooltip_message'}}{{/bs-tooltip}}
     {{#bs-popover placement='bottom' title=(t 'components.claim-user.title') visible=showPopup}}
         {{#click-outside action=(action 'hidePopup') }}
@@ -10,3 +12,4 @@
         {{/click-outside}}
     {{/bs-popover}}
 </span>
+{{! template-lint-enable no-nested-interactive }}

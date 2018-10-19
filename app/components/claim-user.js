@@ -3,8 +3,6 @@ import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import Analytics from 'ember-osf/mixins/analytics';
 import { task } from 'ember-concurrency';
-import config from 'ember-get-config';
-import $ from 'jquery';
 import { validator, buildValidations }
     from 'ember-cp-validations';
 
@@ -21,32 +19,26 @@ const Validations = buildValidations({
 });
 
 /**
- * @module ember-preprints
+ * @module ember-osf-preprints
  * @submodule components
  */
 
 /**
- * Confirm share preprint modal
- *
- * Requires user to confirm they wish to submit their preprint,
- * thus making it public and searchable
+ * Allow not-logged-in users to claim an unregistered user
  *
  * Sample usage:
  * ```handlebars
- * {{confirm-share-preprint
- *  isOpen=showModalSharePreprint
- *  shareButtonDisabled=shareButtonDisabled
- *  savePreprint=(action 'savePreprint')
- *  title=title
- *  buttonLabel=buttonLabel
- *}}
+ * {{claim-user
+ *      author=author
+ *      preprintId=preprintId
+ * }}
  * ```
- * @class confirm-share-preprint
+ * @class claim-user
  */
 export default Component.extend(Validations, Analytics, {
-    tagName: 'li',
     toast: service(),
     i18n: service(),
+    tagName: 'li',
     showPopup: false,
     email: null,
     preprintId: null,
@@ -61,26 +53,11 @@ export default Component.extend(Validations, Analytics, {
         },
     },
     claimUser: task(function* () {
-        const userId = this.get('author.userId');
-        const url = `${config.OSF.apiUrl}/v2/users/${userId}/claim/`;
+        const preprintId = this.get('preprintId');
         const email = this.get('email');
-        const id = this.get('preprintId');
-        const payload = {
-            data: {
-                attributes: {
-                    email,
-                    id,
-                },
-            },
-        };
+        const author = yield this.get('author.users');
         try {
-            yield $.ajax({
-                url,
-                crossDomain: true,
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(payload),
-            });
+            yield author.claimUnregisteredUser(preprintId, email);
             this.get('toast').success(this.get('i18n').t('components.claim-user.success_message', { email }));
         } catch (xhr) {
             const errorMsg = JSON.parse(xhr.responseText).errors[0].detail;
