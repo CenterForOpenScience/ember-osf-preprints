@@ -100,14 +100,15 @@
                         {{chronos-submission-status-list preprintId=model.id isContributor=userIsContrib}}
                     </div>
 
-                    {{#if (or (eq model.provider.reviewsWorkflow "pre-moderation") (eq model.provider.reviewsWorkflow "post-moderation"))}}
-                        {{#if (and isAdmin (eq model.reviewsState "accepted"))}}
-                            <div class="p-t-xs">
-                                {{chronos-submission-panel preprint=model}}
-                            </div>
+                    {{#if (eq model.provider.id "psyarxiv")}}
+                        {{#if (or (eq model.provider.reviewsWorkflow "pre-moderation") (eq model.provider.reviewsWorkflow "post-moderation"))}}
+                            {{#if (and isAdmin (eq model.reviewsState "accepted"))}}
+                                <div class="p-t-xs">
+                                    {{chronos-submission-panel preprint=model publisherFilterKeyword="American Psychological Association"}}
+                                </div>
+                            {{/if}}
                         {{/if}}
                     {{/if}}
-
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
                         <p class="abstract {{if useShortenedDescription 'abstract-truncated'}}">
