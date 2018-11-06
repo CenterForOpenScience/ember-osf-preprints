@@ -71,11 +71,7 @@ export default Controller.extend(Analytics, {
             DATE_LABEL.submitted :
             DATE_LABEL.created;
     }),
-    relevantDate: computed('model.provider.reviewsWorkflow', function() {
-        return this.get('model.provider.reviewsWorkflow') ?
-            this.get('model.dateLastTransitioned') :
-            this.get('model.dateCreated');
-    }),
+    relevantDate: computed.alias('model.dateCreated'),
 
     editButtonLabel: computed('model.{provider.reviewsWorkflow,reviewsState}', function () {
         const editPreprint = 'content.project_button.edit_preprint';
