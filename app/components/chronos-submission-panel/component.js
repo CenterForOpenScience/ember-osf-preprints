@@ -3,6 +3,16 @@ import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
 import { A } from '@ember/array';
 
+const approvedJournalTitles = [
+    'Asian American Journal of Psychology',
+    'Canadian Journal of Experimental Psychology',
+    'Cultural Diversity and Ethnic Minority Psychology',
+    'Law and Human Behavior',
+    'Psychological Methods',
+    'Psychology and Neuroscience',
+    'Psychology of Popular Media Culture',
+];
+
 export default Component.extend({
     store: service(),
     toast: service(),
@@ -15,10 +25,20 @@ export default Component.extend({
     journals: A(),
     publisherFilterKeyword: null,
 
+    didReceiveAttrs() {
+        this.get('_fetchAllPublisherJournals').perform();
+    },
+
     actions: {
+        /*
+            This action is not used because we only need 7 journals from APA
+         */
         getInitialJournals(keyword) {
             this.get('_fetchInitialJournals').perform(keyword);
         },
+        /*
+            This action is not used because we only need 7 journals from APA
+         */
         getMoreJournals() {
             this.get('_fetchMoreJournals').perform();
         },
@@ -30,6 +50,19 @@ export default Component.extend({
             this.set('selectedJournal', null);
         },
     },
+
+    _fetchAllPublisherJournals: task(function* () {
+        const apaJournals = yield this.get('store').query('chronos-journal', { page: 1, 'filter[name]': this.get('publisherFilterKeyword'), 'page[size]': 100 });
+        const cpaJournals = yield this.get('store').query('chronos-journal', { page: 1, 'filter[name]': 'Canadian Psychological Association', 'page[size]': 100 });
+        const allJournals = apaJournals.toArray().concat(cpaJournals.toArray());
+        const approvedJournals = allJournals.filter((item) => {
+            return approvedJournalTitles.contains(item.get('title'));
+        });
+        this.set('journals', approvedJournals);
+    }),
+    /*
+        This function is not used because we only need 7 journals for APA.
+     */
     _fetchInitialJournals: task(function* (keyword) {
         // Wait a bit for the user to finish typing.
         yield timeout(500);
@@ -46,6 +79,10 @@ export default Component.extend({
         this.set('canLoadMore', canLoadMore);
         this.set('journals', journals);
     }).restartable(),
+
+    /*
+        This function is not used because we only need 7 journals for APA.
+     */
     _fetchMoreJournals: task(function* () {
         const journals = this.get('journals');
         const page = this.get('page');
