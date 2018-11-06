@@ -294,6 +294,7 @@ export default {
             published: 'Published in {{title}}',
         },
         'chronos-submission-panel': {
+            link_text: 'Submit to an APA-published journal',
             helper_text: 'A new tab will open to complete submission on Chronos',
         },
         'error-page': {
