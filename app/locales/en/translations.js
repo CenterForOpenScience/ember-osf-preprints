@@ -287,15 +287,15 @@ export default {
             convert_confirmation_details_component: 'Changes you make on this page are saved immediately.  Create a new component under this component to avoid overwriting its details.',
         },
         'chronos-submission-status-list-row': {
-            drafted: 'Drafted to {{title}}',
-            submitted: 'Submitted to {{title}}',
-            accepted: 'Accepted to {{title}}',
-            rejected: 'Rejected from {{title}}',
-            published: 'Published in {{title}}',
+            drafted: 'Drafted to <i>{{title}}</i>',
+            submitted: 'Submitted to <i>{{title}}</i>',
+            accepted: 'Accepted to <i>{{title}}</i>',
+            rejected: 'Rejected from <i>{{title}}</i>',
+            published: 'Published in <i>{{title}}</i>',
         },
         'chronos-submission-panel': {
             link_text: 'Submit to an APA-published journal',
-            helper_text: 'A new tab will open to complete submission on Chronos',
+            helper_text: 'A new tab will open to complete submission on Chronos.',
         },
         'error-page': {
             email_message: 'If this should not have occurred and the issue persists, please report it to',
