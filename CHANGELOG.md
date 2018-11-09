@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.122.2] - 2018-11-09
+### Changed
+- Updated to use latest provider assets
+
 ## [0.122.1] - 2018-10-10
 ### Changed
 - meta tag for Google Scholar indexing
