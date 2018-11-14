@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.121.0",
+  "version": "0.122.2",
   "description": "Center for Open Science Preprint Service",
   "license": "Apache-2.0",
   "author": "",
@@ -25,7 +25,7 @@
     "hotfix": "git flow hotfix start rename-me && npm --no-git-tag-version version patch && git ci package.json -m 'Bump version' && git br -m \"hotfix/$(npm version | head -1 | grep -o '[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+')\""
   },
   "devDependencies": {
-    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf#0441332e7ca78dc266dd071f25cfd97ab236cfa5",
+    "@centerforopenscience/ember-osf": "0.21.0",
     "@centerforopenscience/eslint-config": "^2.0.0",
     "@centerforopenscience/osf-style": "https://github.com/CenterForOpenScience/osf-style#370b544affcdafc5734cdd388587575895e4b33a",
     "autoprefixer": "^7.1.2",

@@ -202,7 +202,7 @@ export default Route.extend(Analytics, ResetScrollMixin, {
             ['citation_title', title],
             ['citation_description', description],
             ['citation_public_url', canonicalUrl],
-            ['citation_publication_date', `${dateCreated.getFullYear()}/${dateCreated.getMonth() + 1}/${dateCreated.getDate()}`],
+            ['citation_online_date', `${dateCreated.getFullYear()}/${dateCreated.getMonth() + 1}/${dateCreated.getDate()}`],
         ];
         if (doi) {
             highwirePress.push(['citation_doi', doi]);
