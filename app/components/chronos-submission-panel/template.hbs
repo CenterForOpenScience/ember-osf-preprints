@@ -1,11 +1,16 @@
 {{#cp-panel}}
     {{#cp-panel-toggle}}
-        <p>Submit to journals on Chronos</p>
+        <p>{{t 'components.chronos-submission-panel.link_text'}}</p>
     {{/cp-panel-toggle}}
 
     {{#cp-panel-body}}
         <div>
+            {{!-- This section is commented out because we only need 7 APA journals.
             {{#power-select search=(perform _fetchInitialJournals) optionsComponent=(component 'lazy-options' loadMore=(action "getMoreJournals") isLoading=isLoading canLoadMore=canLoadMore) options=journals placeholder="Select a journal" selected=selectedJournal onfocus=(action "getInitialJournals" "") oninput=(action "getInitialJournals") onchange=(action "journalSelected") as |journal|}}
+                <strong>{{journal.title}}</strong>
+            {{/power-select}}
+            --}}
+            {{#power-select options=journals placeholder="Select a journal" selected=selectedJournal onchange=(action "journalSelected") as |journal|}}
                 <strong>{{journal.title}}</strong>
             {{/power-select}}
         </div>
