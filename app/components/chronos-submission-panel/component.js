@@ -2,16 +2,7 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
 import { A } from '@ember/array';
-
-const approvedJournalTitles = [
-    'Asian American Journal of Psychology',
-    'Canadian Journal of Experimental Psychology',
-    'Cultural Diversity and Ethnic Minority Psychology',
-    'Law and Human Behavior',
-    'Psychological Methods',
-    'Psychology and Neuroscience',
-    'Psychology of Popular Media Culture',
-];
+import config from 'ember-get-config';
 
 export default Component.extend({
     store: service(),
@@ -26,7 +17,7 @@ export default Component.extend({
     publisherFilterKeyword: null,
 
     didReceiveAttrs() {
-        this.get('_fetchAllPublisherJournals').perform();
+        this.get('_fetchAllApprovedJournals').perform();
     },
 
     actions: {
@@ -51,13 +42,15 @@ export default Component.extend({
         },
     },
 
-    _fetchAllPublisherJournals: task(function* () {
-        const apaJournals = yield this.get('store').query('chronos-journal', { page: 1, 'filter[name]': this.get('publisherFilterKeyword'), 'page[size]': 100 });
-        const cpaJournals = yield this.get('store').query('chronos-journal', { page: 1, 'filter[name]': 'Canadian Psychological Association', 'page[size]': 100 });
-        const allJournals = apaJournals.toArray().concat(cpaJournals.toArray());
-        const approvedJournals = allJournals.filter((item) => {
-            return approvedJournalTitles.contains(item.get('title'));
-        });
+    _fetchAllApprovedJournals: task(function* () {
+        const approvedJournals = yield this.get('store').query(
+            'chronos-journal',
+            {
+                page: 1,
+                'filter[id]': config.approvedChronosJournalIds.join(','),
+                'page[size]': 100,
+            },
+        );
         this.set('journals', approvedJournals);
     }),
     /*
