@@ -43,6 +43,8 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
     preprint: null,
     contributors: A(),
 
+    waitForMetaData: navigator.userAgent.includes('Prerender'),
+
     afterModel(preprint) {
         const { location: { origin } } = window;
 
@@ -59,10 +61,12 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         this.set('fileDownloadURL', downloadUrl);
         this.set('preprint', preprint);
 
-        return preprint.get('provider')
+        const setupMetaData = preprint.get('provider')
             .then(this._getProviderDetails.bind(this))
             .then(this._getUserPermissions.bind(this))
             .then(this._setupMetaData.bind(this));
+
+        return this.get('waitForMetaData') ? setupMetaData : undefined;
     },
 
     setupController(controller, model) {
