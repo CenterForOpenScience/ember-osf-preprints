@@ -5,7 +5,6 @@ import Route from '@ember/routing/route';
 import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
-import loadAll from 'ember-osf/utils/load-relationship';
 import permissions from 'ember-osf/const/permissions';
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
