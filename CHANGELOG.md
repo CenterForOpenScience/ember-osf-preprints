@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.122.4] - 2018-11-19
+### Changed
+- revert 0.122.3 and don't load contribs at all for meta
+
 ## [0.122.3] - 2018-11-19
 ### Changed
 - don't block render waiting for meta tag data
