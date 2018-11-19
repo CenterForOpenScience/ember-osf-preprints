@@ -116,7 +116,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
     },
 
     _getUserPermissions([provider, node]) {
-        const contributors = this.get('contributors');
+        // const contributors = this.get('contributors');
         const preprint = this.get('preprint');
 
         this.set('node', node);
@@ -133,7 +133,8 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
             provider,
             node,
             preprint.get('license'),
-            loadAll(node, 'contributors', contributors, { filter: { bibliographic: true } }),
+            // Don't bother putting contributors in <meta> tags to avoid blocking page render
+            // loadAll(node, 'contributors', contributors, { filter: { bibliographic: true } }),
         ]);
     },
 
