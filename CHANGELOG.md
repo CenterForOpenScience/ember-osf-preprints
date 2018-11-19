@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.122.5] - 2018-11-19
+### Changed
+- fix linting
+
+## [0.122.4] - 2018-11-19
+### Changed
+- revert 0.122.3 and don't load contribs at all for meta
+
+## [0.122.3] - 2018-11-19
+### Changed
+- don't block render waiting for meta tag data
+
 ## [0.122.2] - 2018-11-09
 ### Changed
 - Updated to use latest provider assets

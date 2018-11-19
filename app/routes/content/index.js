@@ -5,7 +5,6 @@ import Route from '@ember/routing/route';
 import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
-import loadAll from 'ember-osf/utils/load-relationship';
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
 import ResetScrollMixin from '../../mixins/reset-scroll';
@@ -149,13 +148,14 @@ export default Route.extend(Analytics, ResetScrollMixin, {
     },
 
     _getUserPermissions([provider]) {
-        const contributors = this.get('contributors');
+        // const contributors = this.get('contributors');
         const preprint = this.get('preprint');
 
         return Promise.all([
             provider,
             preprint.get('license'),
-            loadAll(preprint, 'contributors', contributors, { filter: { bibliographic: true } }),
+            // Don't bother putting contributors in <meta> tags to avoid blocking page render
+            // loadAll(preprint, 'contributors', contributors, { filter: { bibliographic: true } }),
         ]);
     },
 
