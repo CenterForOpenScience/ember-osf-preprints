@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.122.6] - 2018-11-21
+### Changed
+- add contributors back to metatags (but only block for prerender)
+
 ## [0.122.5] - 2018-11-19
 ### Changed
 - fix linting
