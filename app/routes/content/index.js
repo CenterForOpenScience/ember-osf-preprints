@@ -1,6 +1,7 @@
 import { A, isArray } from '@ember/array';
 import { inject as service } from '@ember/service';
 import { run } from '@ember/runloop';
+import loadAll from 'ember-osf/utils/load-relationship';
 import Route from '@ember/routing/route';
 import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -40,6 +41,7 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
 
     downloadUrl: '',
     preprint: null,
+    waitForMetaData: navigator.userAgent.includes('Prerender'),
     contributors: A(),
 
     afterModel(preprint) {
@@ -58,10 +60,14 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         this.set('fileDownloadURL', downloadUrl);
         this.set('preprint', preprint);
 
-        return preprint.get('provider')
+        const setupMetaData = preprint.get('provider')
             .then(this._getProviderDetails.bind(this))
             .then(this._getUserPermissions.bind(this))
             .then(this._setupMetaData.bind(this));
+
+        const setupNode = preprint.get('node').then(this._setupNode.bind(this));
+
+        return this.get('waitForMetaData') ? setupMetaData : setupNode;
     },
 
     setupController(controller, model) {
@@ -115,9 +121,8 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
     },
 
     _getUserPermissions([provider, node]) {
-        // const contributors = this.get('contributors');
+        const contributors = this.get('contributors');
         const preprint = this.get('preprint');
-
         this.set('node', node);
 
         if (this.get('editMode')) {
@@ -130,10 +135,8 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
 
         return Promise.all([
             provider,
-            node,
             preprint.get('license'),
-            // Don't bother putting contributors in <meta> tags to avoid blocking page render
-            // loadAll(node, 'contributors', contributors, { filter: { bibliographic: true } }),
+            loadAll(node, 'contributors', contributors, { filter: { bibliographic: true } }),
         ]);
     },
 
@@ -284,5 +287,9 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
 
         this.set('headTags', headTags);
         this.get('headTagsService').collectHeadTags();
+    },
+
+    _setupNode(node) {
+        this.set('node', node);
     },
 });
