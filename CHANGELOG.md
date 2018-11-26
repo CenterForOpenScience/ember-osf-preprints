@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.122.6] - 2018-11-21
+### Changed
+- add contributors back to metatags (but only block for prerender)
+
 ## [0.122.5] - 2018-11-19
 ### Changed
 - fix linting

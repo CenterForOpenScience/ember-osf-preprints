@@ -1,6 +1,7 @@
 import { A, isArray } from '@ember/array';
 import { inject as service } from '@ember/service';
 import { run } from '@ember/runloop';
+import loadAll from 'ember-osf/utils/load-relationship';
 import Route from '@ember/routing/route';
 import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -41,6 +42,7 @@ export default Route.extend(Analytics, ResetScrollMixin, {
     downloadUrl: '',
     preprint: null,
     node: null,
+    waitForMetaData: navigator.userAgent.includes('Prerender'),
     contributors: A(),
 
     afterModel(preprint) {
@@ -59,12 +61,14 @@ export default Route.extend(Analytics, ResetScrollMixin, {
         this.set('fileDownloadURL', downloadUrl);
         this.set('preprint', preprint);
 
-        return preprint.get('provider')
+        const setupMetaData = preprint.get('provider')
             .then(this._getProviderDetails.bind(this))
             .then(this._getUserPermissions.bind(this))
-            .then(this._setupMetaData.bind(this))
-            .then(this._getPrimaryFile.bind(this))
-            .then(this._loadSupplementalNode.bind(this));
+            .then(this._setupMetaData.bind(this));
+
+        const setupPreprint = this._getPrimaryFile().then(this._loadSupplementalNode.bind(this));
+
+        return this.get('waitForMetaData') ? setupMetaData : setupPreprint;
     },
 
     setupController(controller, model) {
@@ -148,14 +152,13 @@ export default Route.extend(Analytics, ResetScrollMixin, {
     },
 
     _getUserPermissions([provider]) {
-        // const contributors = this.get('contributors');
+        const contributors = this.get('contributors');
         const preprint = this.get('preprint');
 
         return Promise.all([
             provider,
             preprint.get('license'),
-            // Don't bother putting contributors in <meta> tags to avoid blocking page render
-            // loadAll(preprint, 'contributors', contributors, { filter: { bibliographic: true } }),
+            loadAll(preprint, 'contributors', contributors, { filter: { bibliographic: true } }),
         ]);
     },
 
