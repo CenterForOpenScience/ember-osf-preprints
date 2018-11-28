@@ -8,7 +8,7 @@ const TitleValidation = buildValidations({
             validator('presence', true),
             validator('length', {
                 // minimum length for title?
-                max: 200,
+                max: 512,
             }),
         ],
     },
@@ -36,7 +36,6 @@ const TitleValidation = buildValidations({
 
 export default Component.extend(TitleValidation, {
     title: null,
-    titlePlaceholder: 'Enter preprint title',
 
     actions: {
         isValid() {

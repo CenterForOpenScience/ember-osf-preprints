@@ -4,10 +4,10 @@ import EmberObject from '@ember/object';
 
 module('Unit | Helper | permission to remove contributor');
 
-test('cannot remove self as a contributor', function(assert) {
+test('can remove self as a contributor', function(assert) {
     const contrib = EmberObject.create({
         userId: '12345',
-        permission: 'admin',
+        permission: 'write',
         unregisteredContributor: null,
         bibliographic: true,
 
@@ -17,12 +17,10 @@ test('cannot remove self as a contributor', function(assert) {
         currentUserId: '12345',
     });
     const isAdmin = false;
-    const node = EmberObject.create({
-        registration: false,
-    });
+    const editMode = true;
 
-    const result = permissionToRemoveContributor([contrib, currentUser, isAdmin, node]);
-    assert.equal(result, false);
+    const result = permissionToRemoveContributor([contrib, currentUser, isAdmin, editMode]);
+    assert.equal(result, true);
 });
 
 
@@ -39,11 +37,9 @@ test('cannot remove contributor if you are not admin', function(assert) {
         currentUserId: '12345',
     });
     const isAdmin = false;
-    const node = EmberObject.create({
-        registration: false,
-    });
+    const editMode = true;
 
-    const result = permissionToRemoveContributor([contrib, currentUser, isAdmin, node]);
+    const result = permissionToRemoveContributor([contrib, currentUser, isAdmin, editMode]);
     assert.equal(result, false);
 });
 
@@ -69,11 +65,10 @@ test('can remove another contributor if you are admin', function(assert) {
     assert.equal(result, true);
 });
 
-test('cannot remove contributor from registration', function(assert) {
-    // This scenario should never be happening.
+test('cannot remove self in editMode', function(assert) {
     const contrib = EmberObject.create({
-        userId: 'abcde',
-        permission: 'admin',
+        userId: '12345',
+        permission: 'write',
         unregisteredContributor: null,
         bibliographic: true,
 
@@ -82,11 +77,9 @@ test('cannot remove contributor from registration', function(assert) {
         id: '12345',
         currentUserId: '12345',
     });
-    const isAdmin = true;
-    const node = EmberObject.create({
-        registration: true,
-    });
+    const isAdmin = false;
+    const editMode = false;
 
-    const result = permissionToRemoveContributor([contrib, currentUser, isAdmin, node]);
+    const result = permissionToRemoveContributor([contrib, currentUser, isAdmin, editMode]);
     assert.equal(result, false);
 });
