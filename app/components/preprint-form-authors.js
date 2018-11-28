@@ -49,6 +49,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
     removeButtonDisabled: false,
     removeContributorModalTitle: 'Are you sure you want to remove this contributor?',
     user: null,
+    searchResults: null,
     // There are 3 view states on left side of Authors panel. Default state just shows search bar.
     query: null,
     valid: alias('newContributorId'),
@@ -56,6 +57,13 @@ export default CpPanelBodyComponent.extend(Analytics, {
     // contributors are emailed as soon as they are added to preprint.
     sendEmail: computed('editMode', function() {
         return this.get('editMode') ? 'preprint' : false;
+    }),
+    // Total pages of contributor search results
+    pages: computed('searchResults.[]', function() {
+        const searchResults = this.get('searchResults');
+        if (searchResults && searchResults.meta !== undefined) {
+            return searchResults.meta.total_pages;
+        }
     }),
     currentContrib: computed('contributors', 'currentUser', function() {
         return this.get('contributors').filter(contrib => contrib.get('userId') === this.get('currentUser').id)[0];
