@@ -884,7 +884,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discipline Save and Continue`,
                 });
 
-            const sendNext = this._moveFromDisciplines;
+            const sendNext = () => this.send('next', this.get('_names.3'));
 
             if (!hasChanged) {
                 return sendNext();
