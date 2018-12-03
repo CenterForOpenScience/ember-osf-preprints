@@ -148,7 +148,6 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         const facebookAppId = provider.get('facebookAppId') || config.FB_APP_ID;
         const mintDoi = extractDoiFromString(preprint.get('preprintDoiUrl'));
         const peerDoi = preprint.get('doi');
-        const doi = peerDoi || mintDoi;
         const image = this.get('theme.logoSharing');
         const imageUrl = /^https?:\/\//.test(image.path) ? image.path : origin + image.path;
         const dateCreated = new Date(preprint.get('dateCreated') || null);
@@ -185,8 +184,8 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
             ['citation_public_url', canonicalUrl],
             ['citation_online_date', `${dateCreated.getFullYear()}/${dateCreated.getMonth() + 1}/${dateCreated.getDate()}`],
         ];
-        if (doi) {
-            highwirePress.push(['citation_doi', doi]);
+        if (mintDoi) {
+            highwirePress.push(['citation_doi', mintDoi]);
         }
 
         // TODO map Eprints fields
