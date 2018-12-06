@@ -295,10 +295,26 @@ $logo-dir: 'img/provider_logos/';
         padding-top: 40px;
     }
     .view-authors {
-        color: white;
+       color: white;
+       padding-bottom: 15px;
         a {
-            color: #6dd1de;
-        }
+           color: #6dd1de;
+       }
+    }
+    .detail-header-info {
+       font-size: 14px;
+       display: flex;
+        .detail-header-item {
+           margin-right: 25px;
+       }
+        a {
+           color: #6dd1de;
+       }
+    }
+    .detail-header-label {
+       font-size: 11px;
+       text-transform: uppercase;
+       padding-bottom: 2px;
     }
     .round-btn {
         border-radius: 25px;
@@ -559,7 +575,7 @@ $color-border-light: #DDDDDD;
         }
     }
 }
-#preprint-form-upload {
+.preprint-form-upload {
     .btn-big {
         height: 80px;
         font-size: 16px;
@@ -679,7 +695,6 @@ $color-border-light: #DDDDDD;
 .modal {
     color: #333;
 }
-
 
 // FOR SUBJECTS LIST ON INDEX
 .subjectList img {
@@ -851,7 +866,14 @@ hr {
     }
 }
 
-
+#supplemental-materials {
+    span.required:after {
+        content: "(required)";
+        color: lighten(red, 30%);
+        font-weight: normal;
+        float: right;
+    }
+}
 
 #preprint-form-basics {
     span.required:after {
@@ -1262,7 +1284,7 @@ label.title-label {
 
 // Narrow views for submit
 @media (max-width: 768px) {
-    #preprint-form-upload .btn-big {
+    .preprint-form-upload .btn-big {
         min-height: 100px;
         font-size: 14px;
     }
@@ -1318,6 +1340,12 @@ label.title-label {
       }
 }
 
+@media (min-width: 769px) {
+    .edit-button-and-logo {
+        padding-top: 30px !important;
+    }
+}
+
 @media (max-width: 768px) {
     .edit-button-and-logo {
         padding-top: 20px;
@@ -1330,6 +1358,10 @@ label.title-label {
     }
     #preprintTitle {
         text-align: center;
+    }
+    .detail-header-info {
+        text-align: center;
+        justify-content: center;
     }
     .view-authors {
         text-align: center;
@@ -1387,6 +1419,7 @@ label.title-label {
 .content-provider-logo {
     min-height: 80px;
     min-width: 120px;
+    margin-bottom: 20px;
 }
 
 .discover-provider-logo {
@@ -1397,10 +1430,6 @@ label.title-label {
 .submit-provider-logo {
     min-height: 50px;
     min-width: 50px;
-}
-
-.edit-btn {
-    margin-bottom: 20px;
 }
 
 nav.preprint-navbar {

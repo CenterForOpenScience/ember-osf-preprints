@@ -8,11 +8,6 @@ test('can edit organize section', function(assert) {
     assert.equal(result, true);
 });
 
-test('cannot edit location_of_preprint section', function(assert) {
-    const result = isSectionEditable(['location_of_preprint']);
-    assert.equal(result, false);
-});
-
 test('cannot edit Update section', function(assert) {
     const result = isSectionEditable(['Update']);
     assert.equal(result, false);

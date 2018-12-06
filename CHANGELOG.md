@@ -5,6 +5,38 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- section to attach supplemental projects to preprints on submit page
+
+### Changed
+- overhauls to submit/edit preprint form for node-preprint divorce
+- preprints are no longer dependent on osf projects
+- write contributors can now edit preprints
+- upgrade to osf-style@1.8.0
+
+### Removed
+- upload choices on preprint form reduced
+- removed supplemental files browser/visit project section from preprint detail page
+
+## [0.122.6] - 2018-11-21
+### Changed
+- add contributors back to metatags (but only block for prerender)
+
+## [0.122.5] - 2018-11-19
+### Changed
+- fix linting
+
+## [0.122.4] - 2018-11-19
+### Changed
+- revert 0.122.3 and don't load contribs at all for meta
+
+## [0.122.3] - 2018-11-19
+### Changed
+- don't block render waiting for meta tag data
+
+## [0.122.2] - 2018-11-09
+### Changed
+- Updated to use latest provider assets
 
 ## [0.122.1] - 2018-10-10
 ### Changed
