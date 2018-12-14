@@ -6,11 +6,9 @@ import Route from '@ember/routing/route';
 import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
-import permissions from 'ember-osf/const/permissions';
 import extractDoiFromString from 'ember-osf/utils/extract-doi-from-string';
 
 import ResetScrollMixin from '../../mixins/reset-scroll';
-import SetupSubmitControllerMixin from '../../mixins/setup-submit-controller';
 
 const {
     OSF: { url: osfUrl },
@@ -34,13 +32,16 @@ const handlers = new Map([
  * Fetches current preprint. Redirects to preprint provider route if necessary.
  * @class Content Route Handler
  */
-export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMixin, {
+export default Route.extend(Analytics, ResetScrollMixin, {
     theme: service(),
     headTagsService: service('head-tags'),
     currentUser: service('currentUser'),
+    toast: service('toast'),
+    i18n: service(),
 
     downloadUrl: '',
     preprint: null,
+    node: null,
     waitForMetaData: navigator.userAgent.includes('Prerender'),
     contributors: A(),
 
@@ -65,14 +66,14 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
             .then(this._getUserPermissions.bind(this))
             .then(this._setupMetaData.bind(this));
 
-        const setupNode = preprint.get('node').then(this._setupNode.bind(this));
+        const setupPreprint = this._getPrimaryFile().then(this._loadSupplementalNode.bind(this));
 
-        return this.get('waitForMetaData') ? setupMetaData : setupNode;
+        return this.get('waitForMetaData') ? setupMetaData : setupPreprint;
     },
 
     setupController(controller, model) {
         controller.setProperties({
-            activeFile: model.get('primaryFile'),
+            primaryFile: model.get('primaryFile'),
             node: this.get('node'),
             fileDownloadURL: this.get('fileDownloadURL'),
         });
@@ -112,7 +113,6 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         if (themeId === providerId) {
             return Promise.all([
                 provider,
-                preprint.get('node'),
             ]);
         }
 
@@ -120,23 +120,45 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
         return Promise.reject();
     },
 
-    _getUserPermissions([provider, node]) {
+    _getPrimaryFile() {
+        return this.store.findRecord('file', this.get('preprint.primaryFile.id'), { reload: true })
+            .then(this._successLoadingPrimaryFile.bind(this))
+            .catch(this._errorLoadingPrimaryFile.bind(this));
+    },
+
+    _loadSupplementalNode() {
+        if (this.get('preprint.node.id')) {
+            return this.store.findRecord('node', this.get('preprint.node.id'))
+                .then(this._successLoadingSupplemental.bind(this))
+                .catch(this._errorLoadingSupplemental.bind(this));
+        }
+    },
+
+    _successLoadingPrimaryFile(primaryFile) {
+        return this.set('primaryFile', primaryFile);
+    },
+
+    _errorLoadingPrimaryFile() {
+        this.get('toast').error(this.get('i18n').t('content.error_loading_preprint_file'));
+    },
+
+    _successLoadingSupplemental(node) {
+        return this.set('node', node);
+    },
+
+    _errorLoadingSupplemental() {
+        // User does not have permission to view the supplemental node - is private
+        return this.set('node', null);
+    },
+
+    _getUserPermissions([provider]) {
         const contributors = this.get('contributors');
         const preprint = this.get('preprint');
-        this.set('node', node);
-
-        if (this.get('editMode')) {
-            const userPermissions = this.get('node.currentUserPermissions') || [];
-
-            if (!userPermissions.includes(permissions.ADMIN)) {
-                this.replaceWith('forbidden'); // Non-admin trying to access edit form.
-            }
-        }
 
         return Promise.all([
             provider,
             preprint.get('license'),
-            loadAll(node, 'contributors', contributors, { filter: { bibliographic: true } }),
+            loadAll(preprint, 'contributors', contributors, { filter: { bibliographic: true } }),
         ]);
     },
 
@@ -287,9 +309,5 @@ export default Route.extend(Analytics, ResetScrollMixin, SetupSubmitControllerMi
 
         this.set('headTags', headTags);
         this.get('headTagsService').collectHeadTags();
-    },
-
-    _setupNode(node) {
-        this.set('node', node);
     },
 });

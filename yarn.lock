@@ -78,9 +78,10 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@0.21.0":
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/@centerforopenscience/ember-osf/-/ember-osf-0.21.0.tgz#2130c1f1b35c2dfc10dd875d1537a562859acc3c"
+"@centerforopenscience/ember-osf@0.22.0":
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/@centerforopenscience/ember-osf/-/ember-osf-0.22.0.tgz#b5c74123d9d70e4c57b9842ccc70c0792645c595"
+  integrity sha512-0LP3uv4rMgIgCELQcFgH9N7Sva7XXzbi9e99f0vfErn1n21ji2zZbENjFLnmV35FhnlB61QVeam48TpVq6tuBg==
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
@@ -130,9 +131,10 @@
     eslint-plugin-eslint-comments "^1.0.0"
     eslint-plugin-import "^2.7.0"
 
-"@centerforopenscience/osf-style@https://github.com/CenterForOpenScience/osf-style#370b544affcdafc5734cdd388587575895e4b33a":
-  version "1.7.0"
-  resolved "https://github.com/CenterForOpenScience/osf-style#370b544affcdafc5734cdd388587575895e4b33a"
+"@centerforopenscience/osf-style@1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@centerforopenscience/osf-style/-/osf-style-1.8.0.tgz#adde9771ec09d930b408a39a121ff10b925f2fd5"
+  integrity sha512-s6rwcQN44CVUuRpRihZHEMaDiQ7SBj6rXxisKORCGCq8BEd0GlogGYGHnTIUnNF/aJxufaVwjmLXRcI63FavJA==
 
 "@ember-decorators/argument@^0.8.13":
   version "0.8.15"
@@ -4054,6 +4056,16 @@ ember-maybe-in-element@^0.1.3:
   resolved "https://registry.yarnpkg.com/ember-maybe-in-element/-/ember-maybe-in-element-0.1.3.tgz#1c89be49246e580c1090336ad8be31e373f71b60"
   dependencies:
     ember-cli-babel "^6.11.0"
+
+"ember-metrics@git+https://github.com/cos-forks/ember-metrics.git#v0.12.1+cos0":
+  version "0.12.1"
+  uid "32fcc6eec0c4bc1974c854435401f94f660c6e74"
+  resolved "git+https://github.com/cos-forks/ember-metrics.git#32fcc6eec0c4bc1974c854435401f94f660c6e74"
+  dependencies:
+    broccoli-funnel "^1.0.1"
+    ember-cli-babel "^6.1.0"
+    ember-getowner-polyfill "^2.0.0"
+    ember-runtime-enumerable-includes-polyfill "^2.0.0"
 
 "ember-metrics@https://github.com/cos-forks/ember-metrics#v0.12.1+cos0":
   version "0.12.1"

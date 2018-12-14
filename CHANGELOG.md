@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.123.0] - 2018-12-13
+### Added
+- section to attach supplemental projects to preprints on submit page
+
+### Changed
+- overhauls to submit/edit preprint form for node-preprint divorce
+- preprints are no longer dependent on osf projects
+- write contributors can now edit preprints
+- upgrade to osf-style@1.8.0
+
+### Removed
+- upload choices on preprint form reduced
+- removed supplemental files browser/visit project section from preprint detail page
+
 ## [0.122.6] - 2018-11-21
 ### Changed
 - add contributors back to metatags (but only block for prerender)

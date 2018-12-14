@@ -5,7 +5,6 @@ import { inject as service } from '@ember/service';
 import Permissions from 'ember-osf/const/permissions';
 import { loadPage } from 'ember-osf/utils/load-relationship';
 import Analytics from 'ember-osf/mixins/analytics';
-import { stripDiacritics } from 'ember-power-select/utils/group-utils';
 import { task, timeout } from 'ember-concurrency';
 /**
  * @module ember-preprints
@@ -13,76 +12,50 @@ import { task, timeout } from 'ember-concurrency';
  */
 
 /**
- * Preprint form project select widget - handles all ADD mode cases where the first step is to
- * select an existing OSF project to contain your preprint.  Also used in EDIT mode - as we
- * keep the project locked after preprint has been published.
- * Therefore, you must use an existing project!
+ * Preprint form project select widget - used wherever you need to load a list of user projects
+ * Used in two places - where the user is selecting a file from an existing project
+ * (to copy to their preprint), and where a user is choosing their supplemental project
  *
- *  Uses the file-uploader component, hence the large number of properties for this component,
- *  that are passed along to the file-uploader. Cases not needing the file-uploader are where
- *  you are selecting an existing file on an existing node, or copying a file into
- *  a newly-created component - no file uploading needed.
  *
  * {{preprint-form-project-select
  * ```handlebars
  *      changeInitialState=(action 'changeInitialState')
- *      finishUpload=(action 'finishUpload')
  *     clearDownstreamFields=(action 'clearDownstreamFields')
  *     nextUploadSection=(action 'nextUploadSection')
- *     existingNodeExistingFile=(action 'existingNodeExistingFile')
- *     createComponentCopyFile=(action "createComponentCopyFile")
  *     selectFile=(action "selectExistingFile")
- *     highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
- *     startPreprint=(action 'startPreprint')
  *     discardUploadChanges=(action 'discardUploadChanges')
  *     startState=_State.START
- *     existingState=existingState
- *     _existingState=_existingState
+ *     uploadInProgress=uploadInProgress
  *     title=title
  *     currentUser=user
  *     selectedFile=selectedFile
  *     hasFile=hasFile
- *     file=file
- *     node=node
- *     userNodes=userNodes
  *     selectedNode=node
- *     contributors=contributors
- *     fileSelect=true
- *     currentState=filePickerState
- *     parentNode=parentNode
- *     convertProjectConfirmed=convertProjectConfirmed
- *     userNodesLoaded=userNodesLoaded
- *     convertOrCopy=convertOrCopy
- *     isTopLevelNode=isTopLevelNode
- *     nodeLocked=nodeLocked
+ *     currentState=currentState
+ *     preprintLocked=preprintLocked
  *     osfStorageProvider=osfStorageProvider
  *     osfProviderLoaded=osfProviderLoaded
  *     titleValid=titleValid
- *     uploadChanged=uploadChanged
- *     uploadInProgress=uploadInProgress
- *     abandonedPreprint=abandonedPreprint
- *     resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
  *     basicsAbstract=basicsAbstract
  *     editMode=editMode
- *     newNode=newNode
- *     applyLicense=applyLicense
+ *     getProjectContributors=(action 'getProjectContributors')
+ *     provider=currentProvider
+ *     createPreprintCopyFile=(action 'createPreprintCopyFile')
  * }}
  * @class preprint-form-project-select
  */
 export default Component.extend(Analytics, {
     panelActions: service('panelActions'),
     selectedNode: null,
+    selectedSupplementalProject: null,
     currentPage: 1,
     searchTerm: '',
     canLoadMore: false,
     isLoading: false,
     currentPanelName: null,
 
-    // Whether to show the file selection dropdown box
-    fileSelect: false,
-
     userNodes: A(),
-    isAdmin: computed('selectedNode', function() {
+    isNodeAdmin: computed('selectedNode', function() {
         return this.get('selectedNode') ? (this.get('selectedNode.currentUserPermissions') || []).includes(Permissions.ADMIN) : false;
     }),
 
@@ -116,9 +89,8 @@ export default Component.extend(Analytics, {
             this.attrs.clearDownstreamFields('belowNode');
             this.set('selectedNode', node);
             this.set('osfProviderLoaded', false);
-            this.send('changeExistingState', this.get('_existingState').CHOOSE);
             this.get('selectedNode.files').then(this._setStorageProvider.bind(this));
-            this.attrs.nextUploadSection('chooseProject', 'chooseFile');
+            this.attrs.nextUploadSection('chooseProject', 'selectExistingFile');
             this.get('metrics')
                 .trackEvent({
                     category: 'dropdown',
@@ -126,14 +98,19 @@ export default Component.extend(Analytics, {
                     label: 'Submit - Choose Project',
                     extra: node.id,
                 });
-            this.getNodePreprints(node);
-            this.getContributors(node);
+            // When project is selected, its title is pre-populated as the preprint's title
+            this.set('title', node.get('title'));
+            this.set('titleValid', true);
+            // The project's contributors are loaded.  They will be copied to the preprint
+            // upon "Save and Continue"
+            this.getProjectContributors(node);
         },
+
         selectFile(file) {
-            // Select existing file from file-browser
-            this.attrs.clearDownstreamFields('belowFile');
+            // Select existing node file from file-browser -
+            // This file will be eventually copied to the preprint
             this.attrs.selectFile(file);
-            this.attrs.nextUploadSection('selectExistingFile', 'organize');
+            this.attrs.nextUploadSection('selectExistingFile', 'finalizeUpload');
             this.get('metrics')
                 .trackEvent({
                     category: 'file browser',
@@ -142,28 +119,18 @@ export default Component.extend(Analytics, {
                     extra: file.id,
                 });
         },
-        changeExistingState(newState) {
-            // Toggles existingState between 'existing' or 'new',
-            // meaning user wants to select existing file from file browser or upload a new file.
-            this.attrs.clearDownstreamFields('belowNode');
-            this.set('existingState', newState);
-            if (newState === this.get('_existingState').EXISTINGFILE) {
-                this.attrs.nextUploadSection('chooseFile', 'selectExistingFile');
-                this.get('metrics')
-                    .trackEvent({
-                        category: 'button',
-                        action: 'click',
-                        label: 'Submit - Choose Select Existing File as Preprint',
-                    });
-            } else if (newState === this.get('_existingState').NEWFILE) {
-                this.attrs.nextUploadSection('chooseFile', 'uploadNewFile');
-                this.get('metrics')
-                    .trackEvent({
-                        category: 'button',
-                        action: 'click',
-                        label: 'Submit - Choose Upload Preprint',
-                    });
-            }
+
+        supplementalProjectSelected(node) {
+            // Sets selectedSupplementalProject as existing project, locally
+            // These are pending values until the preprint form is submitted
+            this.set('selectedSupplementalProject', node);
+            this.get('metrics')
+                .trackEvent({
+                    category: 'dropdown',
+                    action: 'select',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Select Supplemental Project`,
+                    extra: node.id,
+                });
         },
     },
 
@@ -181,7 +148,6 @@ export default Component.extend(Analytics, {
         const currentUser = this.get('currentUser');
         const results = yield loadPage(currentUser, 'nodes', 10, 1, {
             filter: {
-                preprint: false,
                 title: searchTerm,
             },
             embed: 'parent',
@@ -205,7 +171,6 @@ export default Component.extend(Analytics, {
         const nextPage = currentPage + 1;
         const results = yield loadPage(currentUser, 'nodes', 10, nextPage, {
             filter: {
-                preprint: false,
                 title: searchTerm,
             },
             embed: 'parent',
@@ -223,28 +188,4 @@ export default Component.extend(Analytics, {
         this.set('isLoading', false);
     }).enqueue(),
 
-    titleMatcher(node, term) {
-        // Passed into power-select component for customized searching.
-        // Returns results if match in node, root, or parent title
-        const fields = [
-            'title',
-            'root.title',
-            'parent.title',
-        ];
-
-        const sanitizedTerm = stripDiacritics(term).toLowerCase();
-
-        for (const field of fields) {
-            const fieldValue = node.get(field) || '';
-
-            if (!fieldValue) continue;
-
-            const sanitizedValue = stripDiacritics(fieldValue).toLowerCase();
-
-            if (sanitizedValue.includes(sanitizedTerm)) {
-                return 1;
-            }
-        }
-        return -1;
-    },
 });

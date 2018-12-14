@@ -35,8 +35,7 @@ test('Initial properties', function (assert) {
     const expected = {
         fullScreenMFR: false,
         showLicenseText: false,
-        activeFile: null,
-        chosenFile: null,
+        primaryFile: null,
     };
 
     const propKeys = Object.keys(expected);
@@ -52,13 +51,13 @@ test('isAdmin computed property', function (assert) {
     const ctrl = this.subject();
 
     run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             currentUserPermissions: ['admin'],
         });
 
         assert.strictEqual(ctrl.get('isAdmin'), false);
 
-        ctrl.set('node', node);
+        ctrl.set('model', preprint);
 
         assert.strictEqual(ctrl.get('isAdmin'), true);
     });
@@ -211,6 +210,9 @@ test('editButtonLabel computed property', function (assert) {
         });
 
         ctrl.setProperties({ model });
+        ctrl.setProperties({
+            isAdmin: true,
+        });
 
         const workflowTypes = ['pre-moderation', 'post-moderation'];
         const stateTypes = ['pending', 'accepted', 'rejected'];
@@ -334,23 +336,6 @@ test('expandAbstract action', function (assert) {
 
     ctrl.send('expandAbstract');
     assert.strictEqual(ctrl.get('expandedAbstract'), initialValue);
-});
-
-test('chooseFile action', function (assert) {
-    this.inject.service('store');
-
-    const { store } = this;
-    const ctrl = this.subject();
-
-    run(() => {
-        const fileItem = store.createRecord('file', {
-            id: 'test1',
-        });
-
-        ctrl.send('chooseFile', fileItem);
-        assert.strictEqual(ctrl.get('chosenFile'), 'test1');
-        assert.strictEqual(ctrl.get('activeFile'), fileItem);
-    });
 });
 
 // Don't try to test shareLink, since it includes a window.open call. No good way to test that.

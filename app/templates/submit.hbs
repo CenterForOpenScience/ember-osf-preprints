@@ -13,13 +13,10 @@
     <div class="container">
         <div class="row m-t-lg">
             <div class="col-xs-12 col-md-10 col-md-offset-1 ">
-                <p class="instructions">
-                    {{if editMode (t "submit.body.p_edit" documentType=currentProvider.documentType) (t "submit.body.p_add" documentType=currentProvider.documentType name=(if theme.isProvider theme.provider.name (t "global.brand_name")))}}
-                </p>
                 {{#cp-panels accordion=true}}
                     {{#if (not (or editMode theme.isProvider))}}
                         {{#with _names.[0] as |name|}}
-                            {{#preprint-form-section id='preprint-form-server' editMode=editMode class="preprint-form-block" open=true name=name allowOpen=(not uploadValid) denyOpenMessage=(t 'submit.server_locked') errorAction=(action 'error')}}
+                            {{#preprint-form-section id='preprint-form-server' editMode=editMode canEdit=canEdit open=true name=name allowOpen=(not uploadValid) denyOpenMessage=(t 'submit.server_locked') errorAction=(action 'error')}}
                                 {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=(and providerSaved (not uploadValid)) currentProvider=currentProvider valid=(not providerChanged)}}
                                 {{#preprint-form-body}}
                                     {{provider-carousel providers=allProviders selectable=true activeProvider=selectedProvider selectAction=(action 'selectProvider')}}
@@ -56,110 +53,80 @@
 
                     {{#with _names.[1] as |name|}}
                         {{#preprint-form-section
-                            id='preprint-form-upload'
                             editMode=editMode
-                            class="preprint-form-block"
+                            class="preprint-form-upload"
                             name=name
                             allowOpen=(or providerSaved editMode)
                             open=(and theme.isProvider (not editMode))
                             denyOpenMessage=(t 'submit.please_select_server')
                             errorAction=(action 'error')
+                            canEdit=canEdit
                             as |hasOpened|
                         }}
-                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprintNode=node preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode nodeLocked hasOpened) preprintTitle=node.title valid=(not uploadChanged) currentProvider=currentProvider}}
+                            {{preprint-form-header editMode=editMode uploadSaveState=uploadSaveState showValidationIndicator=true name=name preprint=model preprintFile=model.primaryFile isValidationActive=(upload-validation-active editMode preprintLocked hasOpened) preprintTitle=model.title valid=(not uploadChanged) currentProvider=currentProvider canEdit=canEdit}}
                             {{#preprint-form-body}}
                                 {{#liquid-bind filePickerState class='translate' as |currentState|}}
                                     <div class={{currentState}}>
                                         {{#if (eq currentState _State.START)}}
                                             <div class="row">
                                                 <div class="col-xs-6">
-                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.NEW}}>{{t "submit.body.upload" documentType=currentProvider.documentType}}</button>
+                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.NEW}}>{{t "submit.body.upload"}}</button>
                                                 </div>
                                                 <div class="col-xs-6">
-                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.EXISTING}}>{{t "submit.body.connect" documentType=currentProvider.documentType}}</button>
+                                                    <button class="btn btn-block btn-big" {{action 'changeInitialState' _State.EXISTING}}>{{t "submit.body.connect"}}</button>
                                                 </div>
                                             </div>
-                                        {{else if (eq currentState _State.NEW)}}
+                                        {{else if (or (eq currentState _State.NEW) (eq currentState _State.VERSION))}}
                                             {{file-uploader
                                                 changeInitialState=(action 'changeInitialState')
                                                 finishUpload=(action 'finishUpload')
                                                 clearDownstreamFields=(action 'clearDownstreamFields')
                                                 nextUploadSection=(action 'nextUploadSection')
-                                                startPreprint=(action 'startPreprint')
+                                                setPrimaryFile=(action 'setPrimaryFile')
                                                 discardUploadChanges=(action 'discardUploadChanges')
-                                                newNodeNewFile=true
                                                 startState=_State.START
-                                                existingState=existingState
-                                                _existingState=_existingState
                                                 title=title
                                                 currentUser=user
                                                 osfFile=selectedFile
                                                 hasFile=hasFile
                                                 file=file
-                                                node=node
-                                                parentNode=parentNode
-                                                convertProjectConfirmed=convertProjectConfirmed
-                                                convertOrCopy=convertOrCopy
-                                                isTopLevelNode=isTopLevelNode
-                                                nodeLocked=nodeLocked
+                                                model=model
+                                                preprintLocked=preprintLocked
                                                 titleValid=titleValid
                                                 uploadChanged=uploadChanged
                                                 uploadInProgress=uploadInProgress
-                                                abandonedPreprint=abandonedPreprint
-                                                resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
                                                 basicsAbstract=basicsAbstract
                                                 editMode=editMode
-                                                newNode=newNode
                                                 applyLicense=applyLicense
-                                                getContributors=(action 'getContributors')
                                                 provider=currentProvider
+                                                uploadedFileId=uploadedFileId
+                                                uploadedFileName=uploadedFileName
+                                                currentState=currentState
                                             }}
                                         {{else if (eq currentState _State.EXISTING)}}
                                             {{preprint-form-project-select
                                               changeInitialState=(action 'changeInitialState')
-                                              finishUpload=(action 'finishUpload')
                                               clearDownstreamFields=(action 'clearDownstreamFields')
                                               nextUploadSection=(action 'nextUploadSection')
-                                              existingNodeExistingFile=(action 'existingNodeExistingFile')
-                                              createComponentCopyFile=(action "createComponentCopyFile")
                                               selectFile=(action "selectExistingFile")
-                                              highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
-                                              startPreprint=(action 'startPreprint')
                                               discardUploadChanges=(action 'discardUploadChanges')
+                                              uploadInProgress=uploadInProgress
                                               startState=_State.START
-                                              existingState=existingState
-                                              _existingState=_existingState
                                               title=title
                                               currentUser=user
                                               selectedFile=selectedFile
                                               hasFile=hasFile
-                                              file=file
-                                              node=node
-                                              model=model
                                               selectedNode=node
-                                              contributors=contributors
-                                              fileSelect=true
-                                              currentState=filePickerState
-                                              parentNode=parentNode
-                                              convertProjectConfirmed=convertProjectConfirmed
-                                              userNodesLoaded=userNodesLoaded
-                                              convertOrCopy=convertOrCopy
-                                              isTopLevelNode=isTopLevelNode
-                                              nodeLocked=nodeLocked
+                                              currentState=currentState
+                                              preprintLocked=preprintLocked
                                               osfStorageProvider=osfStorageProvider
                                               osfProviderLoaded=osfProviderLoaded
                                               titleValid=titleValid
-                                              uploadChanged=uploadChanged
-                                              uploadInProgress=uploadInProgress
-                                              abandonedPreprint=abandonedPreprint
-                                              resumeAbandonedPreprint=(action 'resumeAbandonedPreprint')
                                               basicsAbstract=basicsAbstract
                                               editMode=editMode
-                                              newNode=newNode
-                                              applyLicense=applyLicense
-                                              getNodePreprints=(action 'getNodePreprints')
-                                              getContributors=(action 'getContributors')
+                                              getProjectContributors=(action 'getProjectContributors')
                                               provider=currentProvider
+                                              createPreprintCopyFile=(action 'createPreprintCopyFile')
                                               }}
                                         {{/if}}
                                     </div>
@@ -169,25 +136,7 @@
                     {{/with}}
 
                     {{#with _names.[2] as |name|}}
-                        {{#preprint-form-section id='preprint-form-subjects' editMode=editMode class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
-                            {{#preprint-form-body}}
-                                <p class="m-b-lg text-smaller">{{t "submit.body.subjects_description"}}</p>
-
-                                {{subject-picker
-                                    editMode=editMode
-                                    initialSubjects=model.subjects
-                                    currentSubjects=subjectsList
-                                    saveSubjects=(action 'saveSubjects')
-                                    provider=currentProvider
-                                }}
-
-                            {{/preprint-form-body}}
-                        {{/preprint-form-section}}
-                    {{/with}}
-
-                    {{#with _names.[3] as |name|}}
-                        {{#preprint-form-section id='preprint-form-basics' editMode=editMode class="preprint-form-block" name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                        {{#preprint-form-section id='preprint-form-basics' editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=model.tags abstract=model.description name=name valid=(not basicsChanged) license=model.license isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div class='row'>
@@ -233,37 +182,134 @@
                                         </div>
                                     </div>
                                 </div>
+                            {{/preprint-form-body}}
+                        {{/preprint-form-section}}
+                    {{/with}}
+
+                    {{#with _names.[3] as |name|}}
+                        {{#preprint-form-section id='preprint-form-subjects' editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
+                            {{#preprint-form-body}}
+                                <p class="m-b-lg text-smaller">{{t "submit.body.subjects_description"}}</p>
+
+                                {{subject-picker
+                                    editMode=editMode
+                                    initialSubjects=model.subjects
+                                    currentSubjects=subjectsList
+                                    saveSubjects=(action 'saveSubjects')
+                                    provider=currentProvider
+                                }}
 
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
 
                     {{#with _names.[4] as |name|}}
-                        {{#preprint-form-section id='preprint-form-authors' editMode=editMode class="preprint-form-block"  name=name allowOpen=uploadValid errorAction=(action 'error') as |hasOpened|}}
+                        {{#preprint-form-section id='preprint-form-authors' editMode=editMode name=name allowOpen=uploadValid open=authorsOpen errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
-                                <p class="text-smaller">
-                                    {{t "submit.body.authors.paragraph" documentType=currentProvider.documentType}}
-                                </p>
+                                {{#if isAdmin}}
+                                    <p class="text-smaller">
+                                        {{t "submit.body.authors.paragraph" documentType=currentProvider.documentType}}
+                                    </p>
+                                {{/if}}
                                 {{preprint-form-authors
                                     contributors=contributors
-                                    parentContributors=parentContributors
-                                    node=node
+                                    model=model
                                     isAdmin=isAdmin
-                                    canEdit=canEdit
                                     currentUser=user
-                                    addContributor=(action 'addContributor')
-                                    addContributors=(action 'addContributors')
                                     findContributors=(action 'findContributors')
                                     searchResults=searchResults
-                                    removeContributor=(action 'removeContributor')
-                                    editContributor=(action 'updateContributor')
+                                    currentUserRemoved=(action 'currentUserRemoved')
                                     reorderContributors=(action 'reorderContributors')
                                     highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
-                                    parentNode=parentNode
                                     editMode=editMode
+                                    canEdit=canEdit
                                     documentType=currentProvider.documentType
                                 }}
+                                <div class="p-t-xs pull-right">
+                                    <button {{action 'next' name}} class="btn btn-primary">{{t "global.continue"}}</button>
+                                </div>
+                            {{/preprint-form-body}}
+                        {{/preprint-form-section}}
+                    {{/with}}
+                    {{#with _names.[5] as |name|}}
+                        {{#preprint-form-section id="supplemental-materials" editMode=editMode class="preprint-form-upload" name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle node=node name=name valid=(not supplementalChanged) isValidationActive=hasOpened}}
+                            {{#preprint-form-body}}
+                                <p class="m-b-lg text-smaller">
+                                    {{#if (eq supplementalPickerState _State.EDIT)}}
+                                        {{t "components.preprint-form-header.connected_project"}}: <a target='_blank' rel="noopener noreferrer" href="{{node.links.html}}">{{supplementalProjectTitle}}</a>
+                                    {{else}}
+                                        {{t "submit.body.supplemental_description"}}
+                                    {{/if}}
+                                </p>
+                                {{#liquid-bind supplementalPickerState class='supplemental' as |supplementalState|}}
+                                    <div class={{supplementalState}}>
+                                        {{#if (eq supplementalState _State.EDIT)}}
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <button class="btn btn-block btn-big" {{action 'changeConnectedProject'}}>{{t "submit.body.supplemental_change_saved"}}</button>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <button class="btn btn-block btn-big" {{action 'removeSupplementalNode'}}>{{t "submit.body.disconnect_supplemental"}}</button>
+                                                </div>
+                                            </div>
+                                            <div class="p-t-xs m-t-sm pull-right">
+                                                <button {{action 'skipSupplemental' name}} class="btn btn-primary">{{t "global.continue"}}</button>
+                                            </div>
+                                        {{else if (eq supplementalState _State.START)}}
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.EXISTING}}>{{t "submit.body.supplemental_connect_existing"}}</button>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <button class="btn btn-block btn-big" {{action 'changeSupplementalPickerState' _State.NEW}}>{{t "submit.body.supplemental_new_project"}}</button>
+                                                </div>
+                                            </div>
+                                            <div class="p-t-xs m-t-sm pull-right">
+                                                {{#if (and editMode node)}}
+                                                    <button {{action 'backSupplemental' _State.EDIT}} class="btn btn-default">{{t "global.back"}}</button>
+                                                {{/if}}
+                                                <button {{action 'skipSupplemental' name}} class="btn btn-primary">{{t "global.continue"}}</button>
+                                            </div>
+                                        {{else if (eq supplementalState _State.EXISTING)}}
+                                            {{preprint-form-project-select
+                                              updateSupplementalNode=(action 'updateSupplementalNode')
+                                              changeSupplementalPickerState=(action 'changeSupplementalPickerState')
+                                              setSupplementalTitleFromSelected=(action 'setSupplementalTitleFromSelected')
+                                              backSupplemental=(action 'backSupplemental')
+                                              supplementalProjectTitle=supplementalProjectTitle
+                                              currentUser=user
+                                              model=model
+                                              selectedSupplementalProject=selectedSupplementalProject
+                                              currentState=supplementalState
+                                              preprintLocked=preprintLocked
+                                              editMode=editMode
+                                              chooseSupplementalProject=true
+                                              startState=_State.START
+                                              }}
+                                        {{else if (eq supplementalState _State.NEW)}}
+                                            <label>
+                                                <span class="required">{{t "submit.body.supplemental_title"}}:</span>
+                                            </label>
+                                            <form role="button" onchange={{action 'track' 'input' 'onchange' 'Submit - Add supplemental project title'}}>
+                                                {{preprint-title-editor documentType=supplementalDocumentType title=pendingSupplementalProjectTitle titleValid=supplementalProjectTitleValid pressSubmit=(action 'setSupplementalProjectTitle' name)}}
+                                                <p class="text-smaller">
+                                                    <strong>{{t "submit.body.supplemental_new_help_text"}}</strong>
+                                                </p>
+                                            </form>
+                                            <div class="p-t-xs pull-right">
+                                                <button {{action 'backSupplemental' _State.START}} class="btn btn-default">{{t "global.back"}}</button>
+                                                {{#if editMode}}
+                                                    <button {{action 'updateSupplementalNode'}} disabled={{not supplementalProjectTitleValid}} class="btn btn-primary">{{t "submit.body.save_continue"}}</button>
+                                                {{else}}
+                                                    <button class="btn btn-primary" disabled={{not supplementalProjectTitleValid}} {{action 'setSupplementalProjectTitle' name}}>{{t "submit.body.save_continue"}}</button>
+                                                {{/if}}
+                                            </div>
+                                        {{/if}}
+                                    </div>
+                                {{/liquid-bind}}
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
@@ -301,6 +347,7 @@
                             </button>
                         </div>
                     {{else}}
+                        <strong><p class="information">{{t permissionInformation documentType=currentProvider.documentType name=providerName}}</p></strong>
                         {{#if moderationType}}
                             <p class="information">
                                 {{t moderationInformation documentType=currentProvider.documentType name=providerName reviewsWorkflow=(t workflow)}}
@@ -308,14 +355,13 @@
                         {{else}}
                             <p class="information">{{t generalInformation documentType=currentProvider.documentType name=providerName}}</p>
                         {{/if}}
-                        <p class="information">{{t permissionInformation documentType=currentProvider.documentType name=providerName}}</p>
                         <div class="text-center">
                             {{#if showValidationErrors}}
                                 <span id="validation-errors">
                                     <p class="m-t-md"><strong>{{t "submit.body.submit.invalid.description" documentType=currentProvider.documentType}}</strong></p>
                                     <p class="text-danger">{{if (not (and savedTitle savedFile)) (t "submit.body.submit.invalid.upload")}}</p>
-                                    <p class="text-danger">{{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
                                     <p class="text-danger">{{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
+                                    <p class="text-danger">{{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
                                     <p class="text-danger">{{unless authorsValid (t "global.authors")}}</p>
                                 </span>
                             {{/if}}
