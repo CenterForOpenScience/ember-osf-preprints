@@ -78,9 +78,10 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop#2018-11-28T16:49:41Z":
-  version "0.21.0"
-  resolved "https://github.com/CenterForOpenScience/ember-osf.git#3506566e37b594aceeee60a684a7b0d1b3580109"
+"@centerforopenscience/ember-osf@0.22.0":
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/@centerforopenscience/ember-osf/-/ember-osf-0.22.0.tgz#b5c74123d9d70e4c57b9842ccc70c0792645c595"
+  integrity sha512-0LP3uv4rMgIgCELQcFgH9N7Sva7XXzbi9e99f0vfErn1n21ji2zZbENjFLnmV35FhnlB61QVeam48TpVq6tuBg==
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
@@ -4055,6 +4056,16 @@ ember-maybe-in-element@^0.1.3:
   resolved "https://registry.yarnpkg.com/ember-maybe-in-element/-/ember-maybe-in-element-0.1.3.tgz#1c89be49246e580c1090336ad8be31e373f71b60"
   dependencies:
     ember-cli-babel "^6.11.0"
+
+"ember-metrics@git+https://github.com/cos-forks/ember-metrics.git#v0.12.1+cos0":
+  version "0.12.1"
+  uid "32fcc6eec0c4bc1974c854435401f94f660c6e74"
+  resolved "git+https://github.com/cos-forks/ember-metrics.git#32fcc6eec0c4bc1974c854435401f94f660c6e74"
+  dependencies:
+    broccoli-funnel "^1.0.1"
+    ember-cli-babel "^6.1.0"
+    ember-getowner-polyfill "^2.0.0"
+    ember-runtime-enumerable-includes-polyfill "^2.0.0"
 
 "ember-metrics@https://github.com/cos-forks/ember-metrics#v0.12.1+cos0":
   version "0.12.1"
