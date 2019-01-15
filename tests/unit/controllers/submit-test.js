@@ -17,7 +17,7 @@ const panels = EmberObject.create();
 
 for (const panelName of panelNames) {
     panels.set(panelName, EmberObject.create({
-        isOpen: panelName === 'Discipline',
+        isOpen: panelName === 'Basics',
     }));
 }
 
@@ -96,22 +96,21 @@ test('Initial properties', function (assert) {
         '_State.NEW': 'new',
         '_State.EXISTING': 'existing',
         filePickerState: 'start',
-        '_existingState.CHOOSE': 'choose',
-        '_existingState.EXISTINGFILE': 'existing',
-        '_existingState.NEWFILE': 'new',
-        existingState: 'choose',
-        '_names.length': 5,
+        supplementalPickerState: 'start',
+        '_names.length': 6,
         user: null,
-        'userNodes.length': 0,
-        userNodesLoaded: false,
         'availableLicenses.length': 0,
-        newNode: false,
         node: null,
         file: null,
+        uploadedFileId: null,
+        uploadedFileName: false,
         selectedFile: null,
+        selectedSupplementalProject: null,
         'contributors.length': 0,
         title: '',
-        nodeLocked: false,
+        supplementalProjectTitle: '',
+        pendingSupplementalProjectTitle: '',
+        preprintLocked: false,
         'searchResults.length': 0,
         savingPreprint: false,
         showModalSharePreprint: false,
@@ -119,16 +118,13 @@ test('Initial properties', function (assert) {
         disciplineSaveState: false,
         basicsSaveState: false,
         authorsSaveState: false,
-        parentNode: null,
-        'parentContributors.length': 0,
-        convertProjectConfirmed: false,
-        convertOrCopy: null,
+        supplementalSaveState: false,
         osfStorageProvider: null,
         osfProviderLoaded: false,
         titleValid: null,
+        supplementalProjectTitleValid: null,
+        firstSupplementalOpen: true,
         uploadInProgress: false,
-        'existingPreprints.length': 0,
-        abandonedPreprint: null,
         editMode: false,
         shareButtonDisabled: false,
         licenseValid: false,
@@ -146,23 +142,6 @@ test('Initial properties', function (assert) {
 
 // Test COMPUTED PROPERTIES > SUBMIT CONTROLLER
 
-test('isTopLevelNode computed property', function(assert) {
-    this.inject.service('store');
-    const { store } = this;
-    const ctrl = this.subject();
-    run(() => {
-        const node = store.createRecord('node', {
-            parent: store.createRecord('node', {
-                id: '12345',
-            }),
-            contributors: [],
-        });
-        assert.equal(ctrl.get('isTopLevelNode'), true);
-        ctrl.set('node', node);
-        assert.equal(ctrl.get('isTopLevelNode'), false);
-    });
-});
-
 test('hasFile computed property', function(assert) {
     const ctrl = this.subject();
     assert.notOk(ctrl.get('hasFile'));
@@ -175,7 +154,7 @@ test('hasFile computed property', function(assert) {
 test('uploadValid computed property', function(assert) {
     const ctrl = this.subject();
     assert.equal(ctrl.get('uploadValid'), false);
-    ctrl.set('nodeLocked', true);
+    ctrl.set('preprintLocked', true);
     assert.equal(ctrl.get('uploadValid'), true);
 });
 
@@ -578,12 +557,12 @@ test('originalPublicationDateChanged', function(assert) {
     const { store } = this;
     run(() => {
         const preprint = store.createRecord('preprint', {
-            originalPublicationDate: moment(),
+            originalPublicationDate: moment()._d,
         });
         assert.equal(ctrl.get('originalPublicationDateChanged'), undefined);
         ctrl.set('model', preprint);
         assert.equal(ctrl.get('originalPublicationDateChanged'), false);
-        ctrl.set('basicsOriginalPublicationDate', moment());
+        ctrl.set('basicsOriginalPublicationDate', moment()._d);
         assert.equal(ctrl.get('originalPublicationDateChanged'), true);
     });
 });
@@ -663,30 +642,16 @@ test('isAdmin', function(assert) {
     this.inject.service('store');
     const { store } = this;
     run(() => {
-        const node = store.createRecord('node', {
+        const preprint = store.createRecord('preprint', {
             currentUserPermissions: 'administrator',
         });
-        const readNode = store.createRecord('node', {
+        const readPreprint = store.createRecord('preprint', {
             currentUserPermissions: 'read',
         });
-        ctrl.set('node', node);
+        ctrl.set('model', preprint);
         assert.equal(ctrl.get('isAdmin'), true);
-        ctrl.set('node', readNode);
+        ctrl.set('model', readPreprint);
         assert.equal(ctrl.get('isAdmin'), false);
-    });
-});
-
-test('canEdit', function(assert) {
-    const ctrl = this.subject();
-    this.inject.service('store');
-    const { store } = this;
-    run(() => {
-        const node = store.createRecord('node', {
-            currentUserPermissions: 'administrator',
-            registration: true,
-        });
-        ctrl.set('node', node);
-        assert.equal(ctrl.get('canEdit'), false);
     });
 });
 
@@ -708,7 +673,7 @@ test('next opens next panel and flashes changes saved', function(assert) {
     // TODO fix: Error: Assertion Failed: calling set on destroyed object:
 
     const ctrl = this.subject();
-    const currentPanelName = 'Discipline';
+    const currentPanelName = 'Basics';
 
     run(() => {
         panels.setProperties({
@@ -716,27 +681,30 @@ test('next opens next panel and flashes changes saved', function(assert) {
             Basics: EmberObject.create({ isOpen: false }),
         });
 
-        assert.equal('Basics', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
+        assert.equal('Discipline', ctrl.get(`_names.${ctrl.get('_names').indexOf(currentPanelName) + 1}`));
 
         ctrl.send('next', currentPanelName);
         run.cancelTimers();
 
-        assert.equal(panels.get('Discipline.isOpen'), false);
-        assert.equal(panels.get('Basics.isOpen'), true);
+        assert.equal(panels.get('Discipline.isOpen'), true);
+        assert.equal(panels.get('Basics.isOpen'), false);
     });
 });
 
-test('nextUploadSection closes current panel and opens next panel', function(assert) {
-    // TODO not really testing anything except the stub
-    const ctrl = this.subject();
-    panels.setProperties({
-        Discipline: EmberObject.create({ isOpen: true }),
-        Basics: EmberObject.create({ isOpen: false }),
-    });
-    ctrl.send('nextUploadSection', 'Discipline', 'Basics');
-    assert.equal(panels.get('Discipline.isOpen'), false);
-    assert.equal(panels.get('Basics.isOpen'), true);
-});
+// test('nextUploadSection closes current panel and opens next panel', function(assert) {
+//     // TODO not really testing anything except the stub
+//     const ctrl = this.subject();
+//
+//     run(() => {
+//         panels.setProperties({
+//             Basics: EmberObject.create({ isOpen: true }),
+//             Discipline: EmberObject.create({ isOpen: false }),
+//         });
+//         ctrl.send('nextUploadSection', 'Basics', 'Discipline');
+//         assert.equal(panels.get('Discipline.isOpen'), true);
+//         assert.equal(panels.get('Basics.isOpen'), false);
+//     });
+// });
 
 skip('changesSaved temporarily changes currentPanelSaveState to true', function(assert) {
     assert.expect(2);
@@ -766,70 +734,18 @@ skip('changeInitialState', function(assert) {
 
 skip('finishUpload', function(assert) {
     const ctrl = this.subject();
-    assert.equal(ctrl.get('nodeLocked'), false);
+    assert.equal(ctrl.get('preprintLocked'), false);
 
     run(() => {
         ctrl.send('finishUpload');
 
-        assert.equal(ctrl.get('nodeLocked'), true);
+        assert.equal(ctrl.get('preprintLocked'), true);
         assert.equal(ctrl.get('file'), null);
 
         run.cancelTimers();
     });
 });
 
-skip('existingNodeExistingFile', function(assert) {
-    // TODO Many actions get called by this action. Sending POST to localhost:7357/nodeTags
-    // Getting Assertion Failed: You can only unload a record which is not inFlight
-    this.inject.service('store');
-    const { store } = this;
-    const ctrl = this.subject();
-
-    const node = store.createRecord('node', {
-        title: 'hello',
-        // tags: ['first tag'],
-        description: 'The best abstract',
-    });
-
-    run(() => {
-        ctrl.set('nodeTitle', 'New title');
-        ctrl.set('node', node);
-
-        ctrl.send('existingNodeExistingFile');
-
-        run.next(() => {
-            assert.equal(ctrl.get('node.title'), 'New title');
-            assert.equal(ctrl.get('basicsAbstract'), node.get('description'));
-        });
-    });
-});
-
-
-skip('createComponentCopyFile', function() {
-    // TODO - same error with You can only unload a record which is not inFlight.
-    // Assert that node has a child
-    this.inject.service('store');
-    const { store } = this;
-    const ctrl = this.subject();
-    run(() => {
-        const node = store.createRecord('node', {
-            title: 'hello',
-            tags: ['first tag'],
-            description: 'The best abstract',
-        });
-        ctrl.set('nodeTitle', 'New title');
-        ctrl.set('node', node);
-        ctrl.send('createComponentCopyFile');
-    });
-});
-
-skip('resumeAbandonedPreprint', function() {
-    // TODO class startPreprint, which haven't figured out how to test yet
-});
-
-skip('startPreprint', function() {
-    // TODO
-});
 
 test('selectExistingFile', function(assert) {
     const ctrl = this.subject();
@@ -864,60 +780,6 @@ test('discardUploadChanges', function(assert) {
     });
 });
 
-test('clearDownstreamFields action - belowConvertOrCopy', function(assert) {
-    this.inject.service('store');
-
-    const { store } = this;
-    const ctrl = this.subject();
-
-    run(() => {
-        const preprint = store.createRecord('preprint', {
-            title: 'hello',
-        });
-
-        ctrl.set('model', preprint);
-        ctrl.set('selectedFile', 'Test file');
-        ctrl.set('file', 'file');
-        ctrl.set('convertOrCopy', 'copy');
-        ctrl.set('title', 'Test title');
-
-        ctrl.send('clearDownstreamFields', 'belowConvertOrCopy');
-
-        assert.equal(ctrl.get('model'), preprint);
-        assert.equal(ctrl.get('selectedFile'), 'Test file');
-        assert.equal(ctrl.get('file'), 'file');
-        assert.equal(ctrl.get('convertOrCopy'), 'copy');
-        assert.equal(ctrl.get('title'), null);
-    });
-});
-
-test('clearDownstreamFields action - belowFile', function(assert) {
-    this.inject.service('store');
-
-    const { store } = this;
-    const ctrl = this.subject();
-
-    run(() => {
-        const preprint = store.createRecord('preprint', {
-            title: 'hello',
-        });
-
-        ctrl.set('model', preprint);
-        ctrl.set('selectedFile', 'Test file');
-        ctrl.set('file', 'file');
-        ctrl.set('convertOrCopy', 'copy');
-        ctrl.set('title', 'Test title');
-
-        ctrl.send('clearDownstreamFields', 'belowFile');
-
-        assert.equal(ctrl.get('model'), preprint);
-        assert.equal(ctrl.get('selectedFile'), 'Test file');
-        assert.equal(ctrl.get('file'), 'file');
-        assert.equal(ctrl.get('convertOrCopy'), null);
-        assert.equal(ctrl.get('title'), null);
-    });
-});
-
 test('clearDownstreamFields action - belowNode', function(assert) {
     this.inject.service('store');
 
@@ -932,7 +794,6 @@ test('clearDownstreamFields action - belowNode', function(assert) {
         ctrl.set('model', preprint);
         ctrl.set('selectedFile', 'Test file');
         ctrl.set('file', 'file');
-        ctrl.set('convertOrCopy', 'copy');
         ctrl.set('title', 'Test title');
 
         ctrl.send('clearDownstreamFields', 'belowNode');
@@ -940,8 +801,7 @@ test('clearDownstreamFields action - belowNode', function(assert) {
         assert.equal(ctrl.get('model'), preprint);
         assert.equal(ctrl.get('selectedFile'), null);
         assert.equal(ctrl.get('file'), null);
-        assert.equal(ctrl.get('convertOrCopy'), null);
-        assert.equal(ctrl.get('title'), null);
+        assert.equal(ctrl.get('title'), 'Test title');
     });
 });
 
@@ -955,19 +815,26 @@ test('clearDownstreamFields action - allUpload', function(assert) {
         const preprint = store.createRecord('preprint', {
             title: 'hello',
         });
+        const node = store.createRecord('node', {
+            title: 'hello',
+        });
+
 
         ctrl.set('model', preprint);
         ctrl.set('selectedFile', 'Test file');
         ctrl.set('file', 'file');
-        ctrl.set('convertOrCopy', 'copy');
         ctrl.set('title', 'Test title');
+        ctrl.set('node', node);
+        ctrl.set('titleValid', true);
+
 
         ctrl.send('clearDownstreamFields', 'allUpload');
 
         assert.equal(ctrl.get('selectedFile'), null);
         assert.equal(ctrl.get('file'), null);
-        assert.equal(ctrl.get('convertOrCopy'), null);
         assert.equal(ctrl.get('title'), null);
+        assert.equal(ctrl.get('node'), null);
+        assert.equal(ctrl.get('titleValid'), null);
     });
 });
 

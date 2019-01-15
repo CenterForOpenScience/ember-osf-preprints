@@ -14,7 +14,7 @@ import CpPanelToggleComponent from 'ember-collapsible-panel/components/cp-panel-
  * Sample usage:
  * ```handlebars
  * {{preprint-form-header}}
- *    name=(if nodeLocked 'preprint_file' 'choose_file')
+ *    name=(if preprintLocked 'preprint_file' 'choose_file')
  *    selectedFile=osfFile
  *    fileVersion=fileVersion
  *    file=file

@@ -71,22 +71,27 @@ export default Route.extend(ConfirmationMixin, Analytics, ResetScrollMixin, Setu
         const isOSF = providerId === 'osf';
 
         // If we're on the proper branded site, stay here.
-        if (themeId === providerId) { return preprint.get('node'); }
+        if (themeId === providerId) { return preprint; }
 
         window.location.replace(`${config.OSF.url}${isOSF ? '' : `preprints/${providerId}/`}${preprint.get('id')}/edit/`);
         return Promise.reject();
     },
 
-    _getContributors(node) {
+    _getContributors(preprint) {
         const controller = this.controllerFor('submit');
-        this.set('node', node);
-        controller.set('node', node);
-        controller.send('getContributors', node);
+        controller.set('model', preprint);
+        controller.send('getPreprintContributors');
+        // Unsetting here, because setting model to this loaded preprint is
+        // causing errors elsewhere.
+        controller.set('model', null);
+        controller.set('node', preprint.get('node'));
 
-        const userPermissions = this.get('node.currentUserPermissions') || [];
+        const userPermissions = this.get('preprint.currentUserPermissions') || [];
 
-        if (!userPermissions.includes(permissions.ADMIN)) {
-            this.replaceWith('forbidden'); // Non-admin trying to access edit form.
+        if (!userPermissions.includes(permissions.READ)) {
+            this.replaceWith('forbidden'); // Non-contributor trying to access edit form.
+            // All contributors can access the edit form, but read contributors can
+            // only do so to remove themselves as contributors.
         }
     },
 });

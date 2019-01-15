@@ -6,14 +6,14 @@ moduleForComponent('preprint-form-header', 'Integration | Component | preprint f
 });
 
 test('it renders', function(assert) {
-    this.render(hbs`{{preprint-form-header name='Upload'}}`);
-    assert.equal(this.$('.section-header').text().trim(), 'Upload');
+    this.render(hbs`{{preprint-form-header name='File'}}`);
+    assert.equal(this.$('.section-header').text().trim(), 'File');
 });
 
 test('clicking on header triggers isOpen', function(assert) {
     this.render(hbs`
         {{#preprint-form-section allowOpen=true}}
-            {{#preprint-form-header name='Upload'}}Title{{/preprint-form-header}}
+            {{#preprint-form-header name='File'}}Title{{/preprint-form-header}}
             {{#preprint-form-body}}Body{{/preprint-form-body}}
         {{/preprint-form-section}}
     `);
