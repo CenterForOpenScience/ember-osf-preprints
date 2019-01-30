@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.123.3] - 2019-01-30
+### Changed
+- always use preprint DOI for `citation_doi` meta tag
+
+## [0.123.2] - 2019-01-14
+### Changed
+- update assets
+
 ## [0.123.1] - 2018-12-13
 ### Changed
 - update to ember-osf@0.22.1
