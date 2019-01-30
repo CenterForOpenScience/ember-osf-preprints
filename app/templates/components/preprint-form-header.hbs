@@ -1,17 +1,17 @@
 <div class="section-header">
-    {{#if (eq name 'location_of_preprint')}}
-        <span class='text-muted'> {{t (concat "components.preprint-form-header.name." name) documentType=currentProvider.documentType}} </span>
-    {{else}}
-        {{t (concat "components.preprint-form-header.name." name) documentType=currentProvider.documentType}}
+    {{t (concat "components.preprint-form-header.name." name) documentType=currentProvider.documentType}}
+    {{#if (eq name "Supplemental")}}
+        ({{t "global.optional"}})
     {{/if}}
 </div>
 
 <div class="preprint-section-status pull-right">
     {{#if (or
         (and serverSaveState (eq name 'Server'))
-        (and uploadSaveState (eq name 'Upload'))
+        (and uploadSaveState (eq name 'File'))
         (and basicsSaveState (eq name 'Basics'))
         (and authorsSaveState (eq name 'Authors'))
+        (and supplementalSaveState (eq name 'Supplemental'))
         (and disciplineSaveState (eq name 'Discipline')) )}}
         <span class="text-success text-smaller m-r-md"> {{t "components.preprint-form-header.changes_saved"}} </span>
     {{/if}}
@@ -32,16 +32,21 @@
     </div>
 {{/if}}
 
-{{#if (and (not isOpen) (eq name 'Upload'))}}
+{{#if (and (not isOpen) (eq name 'File'))}}
     <div class="m-t-md preprint-header-preview">
-        {{#if preprintNode}}
-            <p><em class="m-r-md"> {{t "components.preprint-form-header.location" documentType=currentProvider.documentType}}: </em> {{get-ancestor-descriptor preprintNode}} {{preprintNode.title}}</p>
-        {{/if}}
         {{#if preprintFile}}
             <p><em class="m-r-md"> {{t "components.preprint-form-header.file" documentType=currentProvider.documentType}}: </em> {{preprintFile.name}} <em>(Version: {{preprintFile.currentVersion}})</em>  </p>
         {{/if}}
         {{#if preprintTitle}}
             <p><em class="m-r-md"> {{t "components.preprint-form-header.title" documentType=currentProvider.documentType}}: </em> {{preprintTitle}} </p>
+        {{/if}}
+    </div>
+{{/if}}
+
+{{#if (and (not isOpen) (eq name 'Supplemental'))}}
+    <div class="m-t-md preprint-header-preview">
+        {{#if supplementalProjectTitle}}
+            <p><em class="m-r-md"> {{t "components.preprint-form-header.connected_project"}}: </em> {{supplementalProjectTitle}} </p>
         {{/if}}
     </div>
 {{/if}}
@@ -80,18 +85,14 @@
                         <li>
                             {{~#if contrib.unregisteredContributor~}}
                                 {{~contrib.unregisteredContributor~}}
+                            {{else if (user-errors contrib)}}
+                                {{~disabled-user-name contrib~}}
                             {{else}}
                                 {{~contrib.users.fullName~}}
                             {{~/if~}}
                         </li>
                     {{~/each}}
                 </ul>
-            {{/if}}
-        {{/if}}
-
-        {{#if (eq name 'location_of_preprint')}}
-            {{#if node}}
-                <p class='text-muted'> <span class='lock-span p-r-xs'><i class='fa fa-lock'></i></span> {{get-ancestor-descriptor node}} {{node.title}} </p>
             {{/if}}
         {{/if}}
 
@@ -112,24 +113,6 @@
                 {{#if file}}
                     <p> {{file.name}} </p>
                 {{/if}}
-            {{/if}}
-        {{/if}}
-
-        {{#if (eq name 'organize')}}
-            {{#if (eq convertOrCopy 'convert')}}
-                <p>
-                    {{#if isTopLevelNode}}
-                        {{t "global.convert_project" documentType=currentProvider.documentType}}
-                    {{else}}
-                        {{t "global.convert_component" documentType=currentProvider.documentType}}
-                    {{/if}}
-                </p>
-            {{/if}}
-
-            {{#if (eq convertOrCopy 'copy')}}
-                <p>
-                    {{t "global.copy_inside_project" documentType=currentProvider.documentType}}
-                </p>
             {{/if}}
         {{/if}}
 

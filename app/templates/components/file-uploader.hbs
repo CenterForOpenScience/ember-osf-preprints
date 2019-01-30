@@ -1,5 +1,5 @@
-{{!UPLOAD NEW FILE SECTION - NEW OSF USERS}}
-{{#if newNodeNewFile}}
+{{!UPLOAD NEW FILE SECTION}}
+{{#if (eq currentState 'new')}}
     {{dropzone-widget
         url=url
         options=dropzoneOptions
@@ -12,33 +12,21 @@
     }}
     {{#if hasFile}}
         <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Upload new preprint'}} role="button">
-            {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action 'setNodeAndFile')}}
+            {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action 'createPreprintAndUploadFile')}}
         </form>
     {{/if}}
 
     <div class="p-t-xs pull-right">
-        <button class="btn btn-default" {{action changeInitialState startState}}>Back</button>
-        <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>{{t "submit.body.save_continue"}}</button>
+        <button class="btn btn-default" {{action changeInitialState startState}}>{{t "global.back"}}</button>
+        <button class="btn btn-primary" disabled={{not (and (not uploadInProgress)(and hasFile titleValid))}} {{action 'createPreprintAndUploadFile'}}>{{t "submit.body.save_continue"}}</button>
     </div>
-{{else}}
-    {{!UPLOAD NEW FILE SECTION}}
-    {{#preprint-form-section editMode=editMode class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}
-        {{preprint-form-header name=(if nodeLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" 'uploadNewFile') currentProvider=provider}}
+{{else if (eq currentState 'version')}}
+    {{!UPLOAD NEW VERSION SECTION}}
+    {{#preprint-form-section innerForm=true editMode=editMode class="upload-section-block" allowOpen=true name='uploadNewFile' open=false}}
+        {{preprint-form-header name=(if preprintLocked 'preprint_file' 'choose_file') selectedFile=osfFile fileVersion=fileVersion file=file showValidationIndicator=false click=(action "toggleIsOpen" 'uploadNewFile') currentProvider=provider}}
         {{#preprint-form-body}}
-            {{#if nodeLocked}}
+            {{#if preprintLocked}}
                 <p class='text-muted m-v-sm text-smaller'> {{t "components.file-uploader.update_version" documentType=provider.documentType}}</p>
-            {{else}}
-                <div class="m-t-sm">
-                    <form class="form">
-                        <div class="toggle-button">
-                            <input id='existing' onchange={{action changeExistingState _existingState.NEWFILE}} type="radio" checked={{eq existingState _existingState.NEWFILE}}>
-                            <label for="existing"><i class="fa fa-cloud-upload"></i></label>
-
-                            <input id='newfile' onchange={{action changeExistingState _existingState.EXISTINGFILE}} type="radio" checked={{eq existingState _existingState.EXISTINGFILE}}>
-                            <label for="newfile"><i class="fa fa-th-list"></i></label>
-                        </div>
-                    </form>
-                </div>
             {{/if}}
             {{dropzone-widget
                 url=url
@@ -53,52 +41,22 @@
         {{/preprint-form-body}}
     {{/preprint-form-section}}
 
-    {{#if (and selectedNode (or hasFile osfFile)) use='crossFade'}}
-        {{#if nodeLocked}}
+    {{#if (or hasFile osfFile) use='crossFade'}}
+        {{#if preprintLocked}}
             {{!EDIT MODE - UPDATE TITLE/SAVE CHANGES SECTION}}
-            {{#preprint-form-section editMode=editMode class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}}
-                {{preprint-form-header title=title name='title_of_preprint' showValidationIndicator=false toggleIsOpen=(action "toggleIsOpen" 'titleOfPreprint') currentProvider=provider}}
+            {{#preprint-form-section  innerForm=true editMode=editMode class="upload-section-block bottom-title-underline" allowOpen=true name='titleOfPreprint' open=false}}
+                {{preprint-form-header title=title name='title_of_preprint' showValidationIndicator=false click=(action "toggleIsOpen" 'titleOfPreprint') currentProvider=provider}}
                 {{#preprint-form-body}}
-                    <label class="text-muted title-label text-smaller">  {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project" documentType=provider.documentType) (t "components.preprint-form-project-select.edit_preprint_title_component" documentType=provider.documentType)}} </label>
+                    <label class="text-muted title-label text-smaller">  {{t "components.preprint-form-project-select.edit_preprint_title_project" documentType=provider.documentType}} </label>
                     <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Edit title') (action 'track' 'input' 'onchange' 'Submit - Edit title')}}>
-                        {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action 'uploadFileToExistingNode')}}
+                        {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action 'uploadNewPreprintVersion')}}
                     </form>
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
-            <div class="m-v-md text-center">
-                <p>{{t "components.preprint-form-project-select.edit_organize_section" documentType=provider.documentType}}  </p>
+            <div class="m-v-md pull-right">
                 <button {{action "discardUploadChanges"}} class="btn btn-default" disabled={{unless uploadChanged true}} >{{t "global.discard"}}</button>
-                <button class="btn btn-primary" disabled={{not (and hasFile titleValid)}} {{action 'uploadFileToExistingNode'}}>Save and continue</button>
+                <button class="btn btn-primary" disabled={{not (and (not uploadInProgress)(and hasFile titleValid))}} {{action 'uploadNewPreprintVersion'}}>{{t "submit.body.save_continue"}}</button>
             </div>
-        {{else}}
-            {{!ORGANIZE DECISION SECTION}}
-            {{#preprint-form-section class="upload-section-block" allowOpen=true name='organize' open=false}}
-                {{preprint-form-header name='organize' isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy showValidationIndicator=false currentProvider=provider}}
-                {{#preprint-form-body}}
-                    {{convert-or-copy-project documentType=provider.documentType nextUploadSection=nextUploadSection clearDownstreamFields=clearDownstreamFields isTopLevelNode=isTopLevelNode convertOrCopy=convertOrCopy title=title node=node titleValid=titleValid convertProjectConfirmed=convertProjectConfirmed}}
-                {{/preprint-form-body}}
-            {{/preprint-form-section}}
-            {{#if (or (eq convertOrCopy 'copy') (and (eq convertOrCopy 'convert') convertProjectConfirmed)) use='crossFade'}}
-                {{!FINALIZE UPLOAD SECTION - NEW FILE}}
-                {{#preprint-form-section class="upload-section-block" allowOpen=true name='finalizeUpload' open=false}}
-                    {{preprint-form-header name='finalize_upload' title=title showValidationIndicator=false currentProvider=provider}}
-                    {{#preprint-form-body}}
-                        {{#if (eq convertOrCopy 'convert')}}
-                            {{#if convertProjectConfirmed}}
-                                <label class="text-muted title-label text-smaller"> {{if isTopLevelNode (t "components.preprint-form-project-select.edit_preprint_title_project" documentType=provider.documentType) (t "components.preprint-form-project-select.edit_preprint_title_component" documentType=provider.documentType)}} </label>
-                            {{/if}}
-                        {{/if}}
-                        <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Connect preprint to existing project'}} role="button">
-                            {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action 'setNodeAndFile')}}
-                        </form>
-
-                        <div class="row text-center m-v-md">
-                            <p> {{t "components.preprint-form-project-select.initiate_preprint_process" documentType=provider.documentType}} </p>
-                            <button class="btn btn-primary" disabled={{or (and (eq convertOrCopy 'convert') (not convertProjectConfirmed))(not (and (not uploadInProgress)(and hasFile titleValid)))}} {{action 'setNodeAndFile'}}>Save and continue</button>
-                        </div>
-                    {{/preprint-form-body}}
-                {{/preprint-form-section}}
-            {{/if}}
         {{/if}}
     {{/if}}
 {{/if}}

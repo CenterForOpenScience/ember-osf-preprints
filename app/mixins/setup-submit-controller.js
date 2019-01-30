@@ -35,18 +35,20 @@ export default Mixin.create({
 
         // If editMode, these initial fields are set to pre-populate form with preprint/node data.
         if (this.get('editMode')) {
-            this.loadEditModeDefaults(controller, model, this.get('node'));
+            this.loadEditModeDefaults(controller, model);
         }
     },
     // This function helps prepopulate all the preprint fields in Edit mode.
-    loadEditModeDefaults(controller, model, node) {
-        controller.set('filePickerState', 'existing'); // In edit mode, dealing with existing project
-        controller.set('existingState', 'new'); // In edit mode, only option to change file is to upload a NEW file
-        controller.set('node', node);
+    loadEditModeDefaults(controller, model) {
+        controller.set('filePickerState', 'version'); // In edit mode, can only upload new version
+        controller.set('model', model);
         controller.set('title', model.get('title'));
-        controller.set('nodeLocked', true);
+        controller.set('preprintLocked', true);
         controller.set('titleValid', true);
         model.get('primaryFile').then(this._setSelectedFile.bind(this));
+        model.get('node')
+            .then(this._setSupplementalProject.bind(this))
+            .catch(this._supplementalProjectPermissionDenied.bind(this));
         this.get('panelActions').close('Upload');
         this.get('panelActions').open('Submit');
     },
@@ -54,6 +56,28 @@ export default Mixin.create({
     _setProviders(providers) {
         const controller = this.get('controller');
         controller.set('providers', providers);
+    },
+
+    _setSupplementalProject(node) {
+        // If supplemental project exists, set the node and supplementalProjectTitle
+        // to the supplementalProject's values
+        const controller = this.get('controller');
+        controller.set('node', node);
+        controller.set('supplementalProjectTitle', node ? node.get('title') : '');
+        if (node && node.get('id')) {
+            controller.set('supplementalPickerState', 'edit');
+        }
+    },
+
+    _supplementalProjectPermissionDenied(error) {
+        // Permissions on the node and preprint are separate.
+        // The supplemental project may have been made private or deleted.
+        const controller = this.get('controller');
+        controller.set('node', null);
+        // If 403 error received, put placeholder title, to tell the user that something is there.
+        if (error.errors[0].detail === 'You do not have permission to perform this action.') {
+            controller.set('supplementalProjectTitle', '<Private Supplemental Project>');
+        }
     },
 
     _getAvailableLicenses(provider) {
