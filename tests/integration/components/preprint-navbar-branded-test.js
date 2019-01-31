@@ -8,6 +8,12 @@ const fakeProvider = {
     id: 'pandaXriv',
     name: 'The Panda Archive of bamboo',
     isProvider: true,
+    documentType: {
+        singular: 'fake',
+        plural: 'fakes',
+        singularCapitalized: 'Fake',
+        pluralCapitalized: 'Fakes',
+    },
 };
 
 // Stub theme service
