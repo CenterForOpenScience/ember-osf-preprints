@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.123.4] - 2019-01-31
+### Changed
+- update assets
+
 ## [0.123.3] - 2019-01-30
 ### Changed
 - always use preprint DOI for `citation_doi` meta tag
