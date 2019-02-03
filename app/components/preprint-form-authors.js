@@ -1,4 +1,3 @@
-import { A } from '@ember/array';
 import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
@@ -20,21 +19,17 @@ import Analytics from 'ember-osf/mixins/analytics';
  * ```handlebars
  * {{preprint-form-authors
  *    contributors=contributors
- *    parentContributors=parentContributors
- *    node=node
+ *    model=model
  *    isAdmin=isAdmin
- *    canEdit=canEdit
  *    currentUser=user
- *    addContributor=(action 'addContributor')
- *    addContributors=(action 'addContributors')
  *    findContributors=(action 'findContributors')
  *    searchResults=searchResults
- *    removeContributor=(action 'removeContributor')
- *    editContributor=(action 'updateContributor')
+ *    currentUserRemoved=(action 'currentUserRemoved')
  *    reorderContributors=(action 'reorderContributors')
  *    highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
- *    parentNode=parentNode
  *    editMode=editMode
+ *    canEdit=canEdit
+ *    documentType=currentProvider.documentType
 }}
  * ```
  * @class preprint-form-authors
@@ -46,41 +41,22 @@ export default CpPanelBodyComponent.extend(Analytics, {
     // Permissions labels for dropdown
     permissionOptions: permissionSelector,
     permission: null,
-    parentContributorsAdded: false,
     addState: 'emptyView',
     current: null,
     contributor: null,
     draggedContrib: null,
+    showRemoveSelfModal: false,
+    removeButtonDisabled: false,
+    removeContributorModalTitle: 'Are you sure you want to remove this contributor?',
     user: null,
+    searchResults: null,
     // There are 3 view states on left side of Authors panel. Default state just shows search bar.
     query: null,
     valid: alias('newContributorId'),
-    // Returns list of user ids associated with current node
-    currentContributorIds: computed('contributors', function() {
-        const contribIds = [];
-        this.get('contributors').forEach((contrib) => {
-            contribIds.push(contrib.get('userId'));
-        });
-        return contribIds;
-    }),
     // In Add mode, contributors are emailed on creation of preprint. In Edit mode,
     // contributors are emailed as soon as they are added to preprint.
     sendEmail: computed('editMode', function() {
         return this.get('editMode') ? 'preprint' : false;
-    }),
-    numParentContributors: computed('parentNode', function() {
-        if (this.get('parentNode')) {
-            return this.get('parentNode').get('contributors').get('length');
-        } else {
-            return 0;
-        }
-    }),
-    // Total contributor search results
-    totalSearchResults: computed('searchResults.[]', function() {
-        const searchResults = this.get('searchResults');
-        if (searchResults && searchResults.meta !== undefined) {
-            return searchResults.meta.total;
-        }
     }),
     // Total pages of contributor search results
     pages: computed('searchResults.[]', function() {
@@ -88,6 +64,9 @@ export default CpPanelBodyComponent.extend(Analytics, {
         if (searchResults && searchResults.meta !== undefined) {
             return searchResults.meta.total_pages;
         }
+    }),
+    currentContrib: computed('contributors', 'currentUser', function() {
+        return this.get('contributors').filter(contrib => contrib.get('userId') === this.get('currentUser').id)[0];
     }),
     // TODO find alternative to jquery selectors. Temporary popover content for authors page.
     didInsertElement() {
@@ -97,7 +76,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                 '<dt>Read</dt>' +
                     '<dd><ul><li>View preprint</li></ul></dd>' +
                 '<dt>Read + Write</dt>' +
-                    '<dd><ul><li>Read privileges</li> ' +
+                    '<dd><ul><li>Read and write privileges</li> ' +
                         '<li>Add and configure preprint</li> ' +
                         '<li>Add and edit content</li></ul></dd>' +
                 '<dt>Administrator</dt><dd><ul>' +
@@ -129,39 +108,15 @@ export default CpPanelBodyComponent.extend(Analytics, {
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Add Author`,
                 });
             this.set('user', user);
-            this.attrs.addContributor(user.id, 'write', true, this.get('sendEmail'), undefined, undefined, true)
+            this.get('model').addContributor(user.id, 'write', true, this.get('sendEmail'), undefined, undefined, true)
                 .then(this._addContributor.bind(this))
                 .catch(this._failAddContributor.bind(this));
-        },
-        // Adds all contributors from parent project to current component
-        // as long as they are not current contributors
-        addContributorsFromParentProject() {
-            this.get('metrics')
-                .trackEvent({
-                    category: 'button',
-                    action: 'click',
-                    label: 'Submit - Bulk Add Contributors From Parent',
-                });
-            this.set('parentContributorsAdded', true);
-            const contributorsToAdd = A();
-            this.get('parentContributors').toArray().forEach((contributor) => {
-                if (this.get('currentContributorIds').indexOf(contributor.get('userId')) === -1) {
-                    contributorsToAdd.push({
-                        permission: contributor.get('permission'),
-                        bibliographic: contributor.get('bibliographic'),
-                        userId: contributor.get('userId'),
-                    });
-                }
-            });
-            this.attrs.addContributors(contributorsToAdd, this.get('sendEmail'))
-                .then(this._addContributorsFromParent.bind(this))
-                .catch(this._failAddContributorsFromParent.bind(this));
         },
         // Adds unregistered contributor, then clears form and switches back to search view.
         // Should wait to transition until request has completed.
         addUnregisteredContributor(fullName, email) {
             if (fullName && email) {
-                const res = this.attrs.addContributor(null, 'write', true, this.get('sendEmail'), fullName, email, true);
+                const res = this.get('model').addContributor(null, 'write', true, this.get('sendEmail'), fullName, email, true);
                 res.then((contributor) => {
                     this.get('contributors').pushObject(contributor);
                     this.toggleAuthorModification();
@@ -197,18 +152,36 @@ export default CpPanelBodyComponent.extend(Analytics, {
         // Removes contributor then redraws contributor list view -
         // removal of contributor may change which additional update/remove requests are permitted.
         removeContributor(contrib) {
+            if (this.get('currentUser').id === contrib.get('userId')) {
+                this.get('metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Confirm Remove Self from Preprint`,
+                    });
+            } else {
+                this.get('metrics')
+                    .trackEvent({
+                        category: 'button',
+                        action: 'click',
+                        label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Author`,
+                    });
+            }
+
+            this.set('contributor', contrib);
+            this.toggleProperty('removeButtonDisabled');
+            this.model.removeContributor(contrib)
+                .then(this._removeContributor.bind(this))
+                .catch(this._failRemoveContributor.bind(this));
+        },
+        removeContributorConfirm() {
             this.get('metrics')
                 .trackEvent({
                     category: 'button',
                     action: 'click',
-                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Remove Author`,
+                    label: 'Edit - Open remove self modal',
                 });
-
-            this.set('contributor', contrib);
-
-            this.attrs.removeContributor(contrib)
-                .then(this._removeContributor.bind(this))
-                .catch(this._failRemoveContributor.bind(this));
+            this.toggleProperty('showRemoveSelfModal');
         },
         // Updates contributor then redraws contributor list view - updating contributor
         // permissions may change which additional update/remove requests are permitted.
@@ -223,10 +196,11 @@ export default CpPanelBodyComponent.extend(Analytics, {
             this.set('contributor', contributor);
             this.set('permission', permission);
 
-            this.attrs.editContributor(contributor, permission, '')
+            this.get('model').updateContributor(contributor, permission, '')
                 .then(this._modifyAuthorPermission.bind(this))
                 .catch(this._failModifyAuthorPermission.bind(this));
         },
+
         // Updates contributor then redraws contributor list view - updating contributor
         // bibliographic info may change which additional update/remove requests are permitted.
         updateBibliographic(contributor, isBibliographic) {
@@ -238,7 +212,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                     action: 'select',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Update Bibliographic Author`,
                 });
-            this.attrs.editContributor(contributor, '', isBibliographic)
+            this.get('model').updateContributor(contributor, '', isBibliographic)
                 .then(this._successUpdateCitation.bind(this))
                 .catch(this._failUpdateCitation.bind(this));
         },
@@ -301,28 +275,25 @@ export default CpPanelBodyComponent.extend(Analytics, {
         },
     },
     /* If user removes their own admin permissions, many things on the page must become
-    disabled.  Changing the isAdmin flag to false will remove many of the options
-    on the page. */
-    removedSelfAsAdmin(contributor, permission) {
-        if (this.get('currentUser').id === contributor.get('userId') && permission !== 'ADMIN') {
-            this.set('isAdmin', false);
+    disabled.  Changing the isAdmin flag to false will remove many options on the
+    contributor section. If the user is downgraded to write, they can still edit
+    most of the page, but cannot update authors */
+    modifiedSelf(contributor, permission, removed) {
+        if (this.get('currentUser').id === contributor.get('userId')) {
+            if (removed) {
+                this.attrs.currentUserRemoved();
+            } else if (permission !== 'admin') {
+                this.set('isAdmin', false);
+                if (permission === 'read') {
+                    this.set('canEdit', false);
+                }
+            }
         }
     },
     /* Toggling this property, authorModification, updates several items on the page -
     disabling elements, enabling others, depending on what requests are permitted */
     toggleAuthorModification() {
         this.toggleProperty('authorModification');
-    },
-
-    _addContributorsFromParent(contributors) {
-        contributors.forEach((contrib) => {
-            this.get('contributors').pushObject(contrib);
-        });
-        this.toggleAuthorModification();
-    },
-
-    _failAddContributorsFromParent() {
-        this.get('toast').error('Some contributors may not have been added. Try adding manually.');
     },
 
     _addContributor(res) {
@@ -348,11 +319,17 @@ export default CpPanelBodyComponent.extend(Analytics, {
 
     _removeContributor() {
         const contributor = this.get('contributor');
-
+        this.set('showRemoveSelfModal', false);
+        this.toggleProperty('removeButtonDisabled');
         this.toggleAuthorModification();
-        this.removedSelfAsAdmin(contributor, contributor.get('permission'));
         this.get('contributors').removeObject(contributor);
-        this.get('toast').success(this.get('i18n').t(
+        this.modifiedSelf(contributor, contributor.get('permission'), true);
+        return this._currentUserModified(contributor) ? this.get('toast').success(this.get('i18n').t(
+            'submit.preprint_self_removed',
+            {
+                documentType: this.get('documentType'),
+            },
+        )) : this.get('toast').success(this.get('i18n').t(
             'submit.preprint_author_removed',
             {
                 documentType: this.get('documentType'),
@@ -360,10 +337,14 @@ export default CpPanelBodyComponent.extend(Analytics, {
         ));
     },
 
+    _currentUserModified(contributor) {
+        return (this.get('currentUser').id === contributor.get('userId'));
+    },
+
     _failRemoveContributor() {
         const contributor = this.get('contributor');
-
-        this.get('toast').error(this.get('i18n').t('submit.error_adding_author'));
+        this.toggleProperty('removeButtonDisabled');
+        this.get('toast').error(this.get('i18n').t('submit.error_removing_author'));
         this.highlightSuccessOrFailure(contributor.id, this, 'error');
         contributor.rollbackAttributes();
     },
@@ -374,7 +355,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
 
         this.toggleAuthorModification();
         this.highlightSuccessOrFailure(contributor.id, this, 'success');
-        this.removedSelfAsAdmin(contributor, permission);
+        this.modifiedSelf(contributor, permission, false);
     },
 
     _failModifyAuthorPermission() {

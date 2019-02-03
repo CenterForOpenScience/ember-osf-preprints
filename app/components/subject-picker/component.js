@@ -27,7 +27,7 @@ const Column = EmberObject.extend({
             return subjects;
         }
 
-        return subjects !== null ? subjects.filter(item => item.get('text').toLowerCase().includes(filterTextLowerCase)) : null;
+        return subjects.filter(item => item.get('text').toLowerCase().includes(filterTextLowerCase));
     }),
     init() {
         this._super(...arguments);

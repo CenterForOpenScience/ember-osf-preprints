@@ -7,6 +7,8 @@ import loadAll from 'ember-osf/utils/load-relationship';
 import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 import permissions from 'ember-osf/const/permissions';
+import fileDownloadPath from '../../utils/file-download-path';
+
 
 const { PromiseArray } = DS;
 
@@ -47,8 +49,7 @@ export default Controller.extend(Analytics, {
     fullScreenMFR: false,
     expandedAuthors: true,
     showLicenseText: false,
-    activeFile: null,
-    chosenFile: null,
+    primaryFile: null,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
     hasTag: computed.bool('model.tags.length'),
     metricsExtra: computed('model', function() {
@@ -63,32 +64,35 @@ export default Controller.extend(Analytics, {
     hyperlink: computed('model', function() {
         return window.location.href;
     }),
+    fileDownloadURL: computed('model', function() {
+        return fileDownloadPath(this.get('model.primaryFile'), this.get('model'));
+    }),
     facebookAppId: computed('model', function() {
         return this.get('model.provider.facebookAppId') ? this.get('model.provider.facebookAppId') : config.FB_APP_ID;
+    }),
+    supplementalMaterialDisplayLink: computed('node.links.html', function() {
+        const supplementalLink = this.get('node.links.html');
+        return supplementalLink.replace(/^https?:\/\//i, '');
     }),
     dateLabel: computed('model.provider.reviewsWorkflow', function() {
         return this.get('model.provider.reviewsWorkflow') === PRE_MODERATION ?
             DATE_LABEL.submitted :
             DATE_LABEL.created;
     }),
-    relevantDate: computed('model.provider.reviewsWorkflow', function() {
-        return this.get('model.provider.reviewsWorkflow') ?
-            this.get('model.dateLastTransitioned') :
-            this.get('model.dateCreated');
-    }),
+    relevantDate: computed.alias('model.dateCreated'),
 
     editButtonLabel: computed('model.{provider.reviewsWorkflow,reviewsState}', function () {
         const editPreprint = 'content.project_button.edit_preprint';
         const editResubmitPreprint = 'content.project_button.edit_resubmit_preprint';
         return (
             this.get('model.provider.reviewsWorkflow') === PRE_MODERATION
-            && this.get('model.reviewsState') === REJECTED
+            && this.get('model.reviewsState') === REJECTED && this.get('isAdmin')
         ) ? editResubmitPreprint : editPreprint;
     }),
 
-    isAdmin: computed('node', function() {
+    isAdmin: computed('model', function() {
         // True if the current user has admin permissions for the node that contains the preprint
-        return (this.get('node.currentUserPermissions') || []).includes(permissions.ADMIN);
+        return (this.get('model.currentUserPermissions') || []).includes(permissions.ADMIN);
     }),
 
     userIsContrib: computed('authors.[]', 'isAdmin', 'currentUser.currentUserId', function() {
@@ -103,10 +107,10 @@ export default Controller.extend(Analytics, {
         return false;
     }),
 
-    showStatusBanner: computed('model.{provider.reviewsWorkflow,reviewsState}', 'userIsContrib', 'node.public', function() {
+    showStatusBanner: computed('model.{public,provider.reviewsWorkflow,reviewsState}', 'userIsContrib', function() {
         return (
             this.get('model.provider.reviewsWorkflow')
-            && this.get('node.public')
+            && this.get('model.public')
             && this.get('userIsContrib')
             && this.get('model.reviewsState') !== INITIAL
         );
@@ -183,15 +187,6 @@ export default Controller.extend(Analytics, {
         expandAbstract() {
             this.toggleProperty('expandedAbstract');
         },
-        // Metrics are handled in the component
-        chooseFile(fileItem) {
-            if (!fileItem) return;
-
-            this.setProperties({
-                chosenFile: fileItem.get('id'),
-                activeFile: fileItem,
-            });
-        },
         shareLink(href, category, action, label, extra) {
             const metrics = this.get('metrics');
 
@@ -222,9 +217,9 @@ export default Controller.extend(Analytics, {
                         id: this.get('model.id'),
                     },
                     file: {
-                        id: primary ? this.get('model.primaryFile.id') : this.get('activeFile.id'),
+                        id: primary ? this.get('model.primaryFile.id') : this.get('primaryFile.id'),
                         primaryFile: primary,
-                        version: primary ? this.get('model.primaryFile.currentVersion') : this.get('activeFile.currentVersion'),
+                        version: primary ? this.get('model.primaryFile.currentVersion') : this.get('primaryFile.currentVersion'),
                     },
                 },
                 interaction: {

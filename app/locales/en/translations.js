@@ -5,8 +5,10 @@ const arxivTrademarkLicense = 'arXiv is a trademark of Cornell University, used 
 export default {
     global: {
         share: 'Share',
+        continue: 'Continue',
         complete: 'Complete',
         cancel: 'Cancel',
+        optional: 'Optional',
         discard: 'Discard changes',
         back: 'Back',
         prev: 'Prev',
@@ -45,6 +47,7 @@ export default {
     content: {
         header: {
             last_edited: 'Last edited',
+            authors_label: 'Authors',
         },
         date_label: {
             created_on: 'Created on',
@@ -64,17 +67,19 @@ export default {
         preprint_pending_doi: 'DOI created after {{documentType.singular}} is made public',
         preprint_pending_doi_moderation: 'DOI created after moderator approval',
         preprint_pending_doi_minted: 'DOIs are minted by a third party, and may take up to 24 hours to be registered.',
+        error_loading_preprint_file: 'Error loading preprint file. Please refresh the page.',
         original_publication_date: 'Original publication date',
         citations: 'Citations',
         disciplines: 'Disciplines',
+        supplemental_materials: {
+            title: 'Supplemental Materials',
+        },
         project_button: {
-            paragraph: 'The project for this {{documentType.singular}} is available on the OSF.',
-            button: 'Visit project',
             edit_preprint: 'Edit {{documentType.singular}}',
             edit_resubmit_preprint: 'Edit and resubmit',
         },
         orphan_preprint: 'The user has removed this file.',
-        private_preprint_warning: 'This {{documentType.singular}} is private. Make it discoverable by making',
+        private_preprint_warning: 'This {{documentType.singular}} is private. Contact {{supportEmail}} if this is in error.',
         public: 'public',
     },
     discover: {
@@ -172,12 +177,18 @@ export default {
         submit_heading: 'Submit {{documentType.singularCapitalized}}',
         edit_heading: 'Edit {{documentType.singularCapitalized}}',
         body: {
-            p_add: 'For each section below, "Save and continue" will update your {{documentType.singular}}\'s associated OSF project.',
-            p_edit: 'For each section below, "Save and continue" will update your {{documentType.singular}} and the associated OSF project.',
-            upload: 'Upload new {{documentType.singular}}',
-            connect: 'Connect {{documentType.singular}} to existing OSF project',
+            upload: 'Upload from your computer',
+            connect: 'Select from an existing OSF project',
             subjects_description: 'Select a discipline and subdiscipline, if relevant. Add more by clicking on a new discipline or subdiscipline.',
+            supplemental_description: 'Connect an OSF project to share data, code, protocols, or other supplemental materials.',
+            supplemental_new_project: 'Create a new OSF project',
+            supplemental_connect_existing: 'Connect an existing OSF project',
+            supplemental_title: 'Project title',
             remove_subject_aria: 'Remove subject',
+            disconnect_supplemental: 'Disconnect the project',
+            supplemental_change_saved: 'Change the connected project',
+            supplemental_new_help_text: 'This creates a public project for your supplemental materials. Upload files and manage contributors on the project.',
+            supplemental_existing_help_text: 'This will make your project public, if it is not already.',
             basics: {
                 doi: {
                     label: 'Peer-reviewed publication DOI (optional)',
@@ -201,17 +212,17 @@ export default {
                 },
             },
             authors: {
-                paragraph: 'Add {{documentType.singular}} authors and order them appropriately. All changes to authors are saved immediately. Search looks for authors that have OSF accounts already. Unregistered users can be added and invited to join the {{documentType.singular}}.',
+                paragraph: 'Add {{documentType.singular}} authors and order them appropriately. Search for authors that have OSF accounts or invite unregistered users to join by entering their email addresses.',
             },
             submit: {
                 information: {
                     line1: {
-                        default: 'When you add this {{documentType.singular}}, it will become publicly accessible via {{name}} and assigned a DOI. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.',
-                        pre: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. If your {{documentType.singular}} is accepted, it will become publicly accessible via {{name}} and assigned a DOI. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.',
-                        post: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. When you submit this {{documentType.singular}}, it will become publicly accessible via {{name}} and assigned a DOI. Your {{documentType.singular}} will only become private if rejected by a moderator. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified. The related OSF project can be used to manage supplementary materials, appendices, data, or protocols for your {{documentType.singular}}.',
+                        default: 'When you create this {{documentType.singular}}, it will be assigned a DOI and become publicly accessible via {{name}}. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified.',
+                        pre: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. If your {{documentType.singular}} is accepted, it will be assigned a DOI and become publicly accessible via {{name}}. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified.',
+                        post: '{{name}} uses <strong>{{reviewsWorkflow}}</strong>. When you submit this {{documentType.singular}}, it will be assigned a DOI and become publicly accessible via {{name}}. Your {{documentType.singular}} will only become private if rejected by a moderator. The {{documentType.singular}} file cannot be deleted, but it can be updated or modified.',
                     },
                     line2: {
-                        create: 'By adding this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.',
+                        create: 'By creating this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.',
                         submit: 'By submitting this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.',
                     },
                 },
@@ -222,7 +233,7 @@ export default {
                     upload: 'Upload',
                 },
                 submit_button: 'Submit {{documentType.singular}}',
-                create_button: 'Add {{documentType.singular}}',
+                create_button: 'Create {{documentType.singular}}',
 
             },
             edit: {
@@ -237,31 +248,40 @@ export default {
                         post_rejected: 'If you have addressed all moderator concerns or believe there has been a mistake, please email <a>{{email}}</a> to discuss resubmission.',
                     },
                 },
+                cannot_edit: 'You do not have permission to edit this section.',
                 resubmit_button: 'Resubmit',
+                resubmit_help_text: 'Only contributors with admin permissions can resubmit for review.',
                 return_button: 'Return to {{documentType.singular}}',
             },
             save_continue: 'Save and continue',
         },
         could_not_update_title: 'Error updating title. Please try again.',
         error_copying_file: 'Error copying file; please try again.',
-        error_accessing_parent_files: 'Error accessing parent files. Please try again.',
+        error_accessing_files: 'Error accessing files. Please try again.',
+        error_saving_supplemental: 'Error saving supplemental project. Please try again.',
+        error_removing_supplemental: 'Error disconnecting supplemental project. Please try again.',
+        success_saving_supplemental: 'Supplemental project disconnected.',
         could_not_create_component: 'Could not create component. Please try again.',
         abandoned_preprint_error: 'Error with abandoned {{documentType.singular}}.',
         abandon_preprint_confirmation: 'Are you sure you want to abandon changes to this preprint?',
         preprint_file_uploaded: '{{documentType.singularCapitalized}} file uploaded!',
         preprint_author_added: '{{documentType.singularCapitalized}} author added!',
         preprint_author_removed: '{{documentType.singularCapitalized}} author removed!',
+        preprint_self_removed: 'You have removed yourself from the {{documentType.singular}}!',
         preprint_unregistered_author_added: '{{documentType.singularCaptalized}} unregistered author added!',
         error_adding_author: 'Could not add author. Please try again.',
+        error_removing_author: 'Could not remove author. Please try again.',
         error_adding_unregistered_author: 'Could not add unregistered author. Please try again.',
         error_initiating_preprint: 'Could not initiate {{documentType.singular}}. Please try again.',
+        error_saving_preprint: 'Could not save {{documentType.singular}}. Please try again.',
+        error_creating_preprint: 'Could not create {{documentType.singular}}. Please try again.',
         doi_error: 'Error saving DOI',
         basics_error: 'Error saving basics fields.',
         disciplines_error: 'Error saving discipline(s).',
         search_contributors_error: 'Could not perform search query.',
         server_locked: 'You cannot change the paper service after a file has been uploaded',
         please_select_server: 'Please select a paper service before continuing',
-        please_complete_upload: 'Please complete upload section before continuing',
+        please_complete_upload: 'Please complete file section before continuing',
     },
     components: {
         'confirm-share-preprint': {
@@ -294,13 +314,11 @@ export default {
             dropzone_message: 'Drop {{documentType.singular}} file here to upload',
             title_placeholder: 'Enter {{documentType.singular}} title',
             update_version: 'Update {{documentType.singular}} file version.  File must have the same name as the original.',
-            could_not_create_project: 'Could not create project. Please try again.',
-            could_not_create_component: 'Could not create component. Please try again.',
+            could_not_create_preprint: 'Could not create preprint. Please try again.',
             could_not_update_title: 'Could not update title. Please try again.',
             version_error: 'This is not a version of the current {{documentType.singular}} file.',
             preprint_file_updated: '{{documentType.singularCapitalized}} file updated!',
             preprint_file_error: 'Could not set {{documentType.singular}} file. Please try again.',
-            file_exists_error: 'A file with that name already exists',
             upload_error: 'Upload Failed',
             dropzone_text_override: 'Click or drag another {{documentType.singular}} file to replace',
         },
@@ -315,6 +333,9 @@ export default {
             arxivTrademarkLicense,
             arxiv_non_endorsement: 'arXiv is a trademark of Cornell University, used under license. This license should not be understood to indicate endorsement of content on {{provider}} by Cornell University or arXiv.',
             no_trademark: '',
+        },
+        'preprint-file-renderer': {
+            download_previous_versions: 'Download previous versions',
         },
         'preprint-form-authors': {
             search: {
@@ -341,6 +362,8 @@ export default {
                 remove_author: 'Remove author from authors list',
             },
             remove: 'Remove',
+            remove_confirm: 'Are you sure you want to remove yourself from {{title}}?',
+            remove_title: 'Remove Author',
         },
         'preprint-form-body': {
             // Nothing to translate
@@ -352,32 +375,32 @@ export default {
             location: '{{documentType.singularCapitalized}} location',
             click_edit: 'Click to edit',
             server: 'Paper service',
+            connected_project: 'Connected OSF project',
             name: {
                 Server: 'Select a service',
-                Upload: 'Upload',
+                File: 'File',
                 Discipline: 'Discipline',
                 Basics: 'Basics',
                 Authors: 'Authors',
                 Submit: 'Submit',
                 Update: 'Update',
+                Supplemental: 'Supplemental materials',
                 choose_project: 'Choose Project',
                 choose_file: 'Choose File',
                 organize: 'Organize',
                 finalize_upload: 'Finalize Upload',
-                location_of_preprint: '{{documentType.singularCapitalized}} Location',
                 title_of_preprint: '{{documentType.singularCapitalized}} Title',
                 preprint_file: '{{documentType.singularCapitalized}} File',
             },
         },
         'preprint-form-project-select': {
-            existing_project_selector: 'The list of projects appearing in the selector are projects and components for which you have admin access.  Registrations are not included here.',
+            existing_project_selector: 'The list of projects appearing in the selector are projects and components for which you have admin access.',
             upload_preprint: 'Upload {{documentType.singular}}',
             select_existing_file: 'Select existing file as {{documentType.singular}}',
-            edit_preprint_title_project: 'Edit {{documentType.singular}} title (will also become the name of the project)',
-            edit_preprint_title_component: 'Edit {{documentType.singular}} title (will also become the name of the component)',
-            initiate_preprint_process: 'You have selected and organized your {{documentType.singular}} file. Clicking "Save and continue" will immediately make changes to your OSF project. You will not be able to delete your {{documentType.singular}} file, but you will be able to update or modify it.',
-            edit_organize_section: 'Edits to this {{documentType.singular}} will update both the {{documentType.singular}} and the OSF project.',
-            admin_only: 'You must be the admin of this component to share it.  Please ask the admin of this project to make you an admin so you may share this component.',
+            edit_preprint_title_project: 'Edit {{documentType.singular}} title',
+            copy_file_help_text: 'This will make a copy of your file to become your {{documentType.singular}}.',
+            edit_preprint_title: 'Edit your {{documentType.singular}} title',
+            admin_only: 'You must be the admin of this project to copy a file.  Please ask the admin of this project to make you an admin so you may copy a file.',
         },
         'preprint-form-section': {
             // Nothing to translate
@@ -408,16 +431,6 @@ export default {
                 base: 'This {{documentType.singular}}',
             },
         },
-        'project-chooser': {
-            file_upload_create: 'Upload a file and create an OSF project',
-            provide_title: 'Please provide a title for your project',
-            continue: 'Continue',
-            choose_project_component: 'Choose an existing project or component',
-            file_upload_existing: 'Upload a file to an existing OSF project',
-            choose_project: 'Choose project',
-            file_choose_existing: 'Choose a file from an existing OSF project',
-            choose_file: 'Choose file',
-        },
         'search-preprints': {
             // Nothing to translate
         },
@@ -429,10 +442,6 @@ export default {
             post_facebook: 'Post to Facebook',
             share_linkedin: 'Share on LinkedIn',
             send_email: 'Send in email',
-        },
-        'supplementary-file-browser': {
-            primary: 'Primary',
-            download_previous_versions: 'Download previous versions',
         },
         'taxonomy-top-list': {
             // Nothing to translate

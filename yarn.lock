@@ -78,9 +78,9 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@0.21.0":
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/@centerforopenscience/ember-osf/-/ember-osf-0.21.0.tgz#2130c1f1b35c2dfc10dd875d1537a562859acc3c"
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop#2018-12-28T20:04:29Z":
+  version "0.22.1"
+  resolved "https://github.com/CenterForOpenScience/ember-osf.git#4af4c0c7c7391fc6ddd5d69431004d30363b3d8d"
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
@@ -130,9 +130,9 @@
     eslint-plugin-eslint-comments "^1.0.0"
     eslint-plugin-import "^2.7.0"
 
-"@centerforopenscience/osf-style@https://github.com/CenterForOpenScience/osf-style#370b544affcdafc5734cdd388587575895e4b33a":
-  version "1.7.0"
-  resolved "https://github.com/CenterForOpenScience/osf-style#370b544affcdafc5734cdd388587575895e4b33a"
+"@centerforopenscience/osf-style@1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@centerforopenscience/osf-style/-/osf-style-1.8.0.tgz#adde9771ec09d930b408a39a121ff10b925f2fd5"
 
 "@ember-decorators/argument@^0.8.13":
   version "0.8.15"

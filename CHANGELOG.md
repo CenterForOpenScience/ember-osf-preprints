@@ -6,6 +6,60 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.123.4] - 2019-01-31
+### Changed
+- update assets
+
+## [0.123.3] - 2019-01-30
+### Changed
+- always use preprint DOI for `citation_doi` meta tag
+
+## [0.123.2] - 2019-01-14
+### Changed
+- update assets
+
+## [0.123.1] - 2018-12-13
+### Changed
+- update to ember-osf@0.22.1
+
+## [0.123.0] - 2018-12-13
+### Added
+- section to attach supplemental projects to preprints on submit page
+
+### Changed
+- overhauls to submit/edit preprint form for node-preprint divorce
+- preprints are no longer dependent on osf projects
+- write contributors can now edit preprints
+- upgrade to osf-style@1.8.0
+
+### Removed
+- upload choices on preprint form reduced
+- removed supplemental files browser/visit project section from preprint detail page
+
+## [0.122.6] - 2018-11-21
+### Changed
+- add contributors back to metatags (but only block for prerender)
+
+## [0.122.5] - 2018-11-19
+### Changed
+- fix linting
+
+## [0.122.4] - 2018-11-19
+### Changed
+- revert 0.122.3 and don't load contribs at all for meta
+
+## [0.122.3] - 2018-11-19
+### Changed
+- don't block render waiting for meta tag data
+
+## [0.122.2] - 2018-11-09
+### Changed
+- Updated to use latest provider assets
+
+## [0.122.1] - 2018-10-10
+### Changed
+- meta tag for Google Scholar indexing
+
 ## [0.122.0] - 2018-09-20
 ### Added
 - add `isWithdrawn` to google anlaytics pageTracking

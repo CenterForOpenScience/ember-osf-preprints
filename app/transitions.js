@@ -6,4 +6,18 @@ export default function() {
         this.use('toRight'),
         this.reverse('toLeft'),
     );
+
+    this.transition(
+        this.hasClass('supplemental'),
+        this.toValue(value => value === 'edit'),
+        this.use('toRight'),
+        this.reverse('toLeft'),
+    );
+
+    this.transition(
+        this.hasClass('supplemental'),
+        this.toValue(value => value === 'start'),
+        this.use('toRight'),
+        this.reverse('toLeft'),
+    );
 }
