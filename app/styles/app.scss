@@ -1431,16 +1431,10 @@ nav.preprint-navbar {
         margin-right: 16px;
     }
 
-    // Hacks for very small preprints windows breaking navbar into two lines
-    // Don't display the preprint word on small screens and force the margin of the button over a bit
-    // The margin hack should be removed in this ticket: https://openscience.atlassian.net/browse/IN-368]
-    // the preprint word display:none will probably need to stay
+    // Don't display the preprint word on small screens
     @media (max-width: 520px) {
         .navbar-preprint-word {
             display: none;
-        }
-        #preprint-branded-collapse-button {
-            margin-right: -15px;
         }
     }
 
@@ -1454,10 +1448,6 @@ nav.preprint-navbar {
 
     .sign-in {
         padding-top: 8px;
-    }
-
-    .navbar-title {
-        padding-right: 50px;
     }
 }
 
