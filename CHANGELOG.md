@@ -5,6 +5,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Removed
+- Remove margin hack to fix navbar on smaller screens
+
+### Changed
+- Moved some navbar styling to `osf-style`
+
+## [0.123.4] - 2019-01-31
+### Changed
+- update assets
+
+## [0.123.3] - 2019-01-30
+### Changed
+- always use preprint DOI for `citation_doi` meta tag
+
+## [0.123.2] - 2019-01-14
+### Changed
+- update assets
 
 ## [0.123.1] - 2018-12-13
 ### Changed
