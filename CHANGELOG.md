@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Moved some navbar styling to `osf-style`
+- Added service:current-user to submit controller and preprint-status-banner unit test needs
 
 ## [0.123.4] - 2019-01-31
 ### Changed
