@@ -1,0 +1,15 @@
+{{! template-lint-disable no-nested-interactive }}
+<span role="button" {{action 'togglePopup'}}>
+    {{author.unregisteredContributor}}
+    {{#bs-tooltip}}{{t 'components.claim-user.tooltip_message'}}{{/bs-tooltip}}
+    {{#bs-popover placement='bottom' title=(t 'components.claim-user.title') visible=showPopup}}
+        {{#click-outside action=(action 'hidePopup') }}
+            <div style="display: flex">
+                {{validated-input model=this valuePath='email' placeholder=(t "components.unregistered-contributor-form.email") value=email}}
+                <button type="submit" class="btn btn-success btn-small popover-button" onclick={{perform claimUser}} disabled={{not isValid}}> {{t "global.add"}} </button>
+                <button type="button" class="btn btn-default btn-small popover-button" {{action 'togglePopup'}}> {{t "global.cancel"}} </button>
+            </div>
+        {{/click-outside}}
+    {{/bs-popover}}
+</span>
+{{! template-lint-enable no-nested-interactive }}

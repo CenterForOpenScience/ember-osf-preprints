@@ -12,6 +12,7 @@
 @import 'validated-input';
 @import 'error-page';
 @import 'search-facets';
+@import 'preprint-detail-page';
 
 
 /* GLOBAL to PREPRINTS, these may be used in multiple pages */
@@ -38,6 +39,9 @@ ul.comma-list {
     }
     li:last-child:after {
         content: "";
+    }
+    span:hover {
+        background: gray;
     }
 }
 
