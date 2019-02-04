@@ -172,6 +172,10 @@ export default {
         heading: 'Resource deleted',
         message: 'User has deleted this content.',
     },
+    'error-no-api': {
+        heading: 'API Unavailable',
+        message: 'Our API is currently unavailable. Try again in a few minutes. If the issue persists, please report it to <a href="mailto:support@osf.io">support@osf.io</a>.',
+    },
     submit: {
         create_heading: 'Create {{documentType.singularCapitalized}}',
         submit_heading: 'Submit {{documentType.singularCapitalized}}',
