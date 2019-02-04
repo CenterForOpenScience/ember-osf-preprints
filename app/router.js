@@ -102,6 +102,8 @@ Router.map(function() {
     this.route('content', { path: '/:preprint_id' }, function() {
         this.route('edit');
     });
+
+    this.route('error-no-api', { path: '*no_api' });
 });
 
 export default Router;
