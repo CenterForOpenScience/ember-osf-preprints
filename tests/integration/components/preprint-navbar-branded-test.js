@@ -43,7 +43,9 @@ moduleForComponent('preprint-navbar-branded', 'Integration | Component | preprin
     beforeEach() {
         this.registry.register('helper:t', tHelper);
         this.register('service:i18n', i18nStub);
+        this.inject.service('i18n');
         this.register('service:theme', themeStub);
+        this.inject.service('theme');
     },
 });
 
