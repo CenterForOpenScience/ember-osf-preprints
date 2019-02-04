@@ -54,6 +54,7 @@ moduleForComponent('preprint-status-banner', 'Unit | Component | preprint status
         'model:taxonomy',
         'model:license',
         'model:wiki',
+        'service:current-user',
         'service:i18n',
         'service:theme',
         'service:session',
