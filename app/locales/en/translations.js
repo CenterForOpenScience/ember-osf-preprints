@@ -311,6 +311,9 @@ export default {
             convert_confirmation_details_component: 'Changes you make on this page are saved immediately.  Create a new component under this component to avoid overwriting its details.',
         },
         'claim-user': {
+            modal_title: 'Claim as {{email}}?',
+            claim_button: 'Claim',
+            modal_body: 'If you claim this account, a contributor of this project will be emailed to confirm your identity.',
             tooltip_message: 'Is this you? Click to claim.',
             title: 'Claim Account',
             success_message: 'Email will arrive shortly. Please check {{email}}',

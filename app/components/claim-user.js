@@ -40,10 +40,19 @@ export default Component.extend(Validations, Analytics, {
     i18n: service(),
     tagName: 'li',
     showPopup: false,
+    showModal: false,
     email: null,
     preprintId: null,
     author: null,
+    username: null,
+    currentUser: null,
     isValid: alias('validations.isValid'),
+    didReceiveAttrs() {
+        this._super(...arguments);
+        if (this.get('isLoggedIn')) {
+            this.get('getUserEmail').perform();
+        }
+    },
     actions: {
         hidePopup() {
             this.set('showPopup', false);
@@ -51,7 +60,15 @@ export default Component.extend(Validations, Analytics, {
         togglePopup() {
             this.toggleProperty('showPopup');
         },
+        toggleModal() {
+            this.toggleProperty('showModal');
+        },
     },
+    getUserEmail: task(function* () {
+        const primary = true;
+        const primaryEmail = yield this.get('currentUser').queryHasMany('emails', { filter: { primary } });
+        this.set('username', primaryEmail[0].get('emailAddress'));
+    }),
     claimUser: task(function* () {
         const preprintId = this.get('preprintId');
         const email = this.get('email');
