@@ -91,7 +91,7 @@ export default Route.extend(Analytics, ResetScrollMixin, {
             if (error && error.errors && isArray(error.errors)) {
                 const { detail } = error.errors[0];
                 const page = handlers.get(detail) || 'page-not-found';
-
+                
                 return this.intermediateTransitionTo(page);
             }
         },

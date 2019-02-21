@@ -18,10 +18,12 @@ export default Route.extend(Analytics, ResetScrollMixin, {
             .query('preprint-provider', { reload: true })
             .then(this._loadAllProviders.bind(this));
     },
+
     setupController(controller, { preprintProviders, meta }) {
         this._super(controller, preprintProviders);
         controller.set('meta', meta);
     },
+
     _loadAllProviders(providers) {
         return {
             preprintProviders: providers,
