@@ -28,7 +28,8 @@ export default Route.extend({
     actions: {
         error(error) {
             // Handle API Errors
-            if (error && !(error instanceof DS.AbortError) && error.errors && isArray(error.errors)) {
+            if (error && !(error instanceof DS.AbortError)
+                && error.errors && isArray(error.errors)) {
                 // If  the error is not a AbortError (no connection), we handle it here.
                 const { detail } = error.errors[0];
                 const page = handlers.get(detail) || 'page-not-found';

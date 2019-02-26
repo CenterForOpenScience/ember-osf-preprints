@@ -53,6 +53,7 @@ export default Controller.extend(Analytics, {
     showModalClaimUser: false,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
     hasTag: computed.bool('model.tags.length'),
+    relevantDate: computed.alias('model.dateCreated'),
     metricsExtra: computed('model', function() {
         return this.get('model.id');
     }),
@@ -80,7 +81,6 @@ export default Controller.extend(Analytics, {
             DATE_LABEL.submitted :
             DATE_LABEL.created;
     }),
-    relevantDate: computed.alias('model.dateCreated'),
 
     editButtonLabel: computed('model.{provider.reviewsWorkflow,reviewsState}', function () {
         const editPreprint = 'content.project_button.edit_preprint';

@@ -36,10 +36,11 @@ export default Route.extend({
         error(error) {
             const slug = this.get('slug');
             this.set('theme.id', config.PREPRINTS.defaultProvider);
-            
+
             // If the `findRecord` fails and the slug is a five-letter id
             if (slug.length === 5) {
-                // It is possible that the user is trying to go to a preprint detail page, not a provider landing page
+                // It is possible that the user is trying to go to a preprint detail page, not a
+                // provider landing page
                 // So we try to transition to a preprint detail view with the slug as preprint id
                 return this.transitionTo('content', slug);
             } else if (error && !(error instanceof DS.AbortError)) {
@@ -51,7 +52,7 @@ export default Route.extend({
                 // We bubble the error up to the parent route's error handler
                 return true;
             }
-        }
+        },
     },
     _getThemeId() {
         const slug = this.get('slug');
