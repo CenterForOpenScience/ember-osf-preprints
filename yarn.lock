@@ -131,9 +131,9 @@
     eslint-plugin-eslint-comments "^1.0.0"
     eslint-plugin-import "^2.7.0"
 
-"@centerforopenscience/osf-style@https://github.com/CenterForOpenScience/osf-style.git#develop#2019-02-03T06:25:02Z":
+"@centerforopenscience/osf-style@https://github.com/CenterForOpenScience/osf-style.git#develop#2019-02-27T18:44:42Z":
   version "1.8.0"
-  resolved "https://github.com/CenterForOpenScience/osf-style.git#4eb320aa3e9d587a1ad07b98c395c0ddb29027bf"
+  resolved "https://github.com/CenterForOpenScience/osf-style.git#b1d529aeddf9fe47c1cdf18554ad634b1b5cd9a2"
 
 "@ember-decorators/argument@^0.8.13":
   version "0.8.15"
