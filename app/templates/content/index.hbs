@@ -16,22 +16,12 @@
                             {{#if authors}}
                                 {{#each authors as |author| ~}}
                                     {{#if author.bibliographic}}
-                                        {{#if currentUser.currentUserId}}
-                                            {{#if author.unregisteredContributor}}
-                                                <li><span>{{author.users.name}}</span></li>
-                                            {{else if (user-errors author)}}
-                                                <li>{{disabled-user-name author}}</li>
-                                            {{else}}
-                                                <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.name}}</a></li>
-                                            {{/if}}
+                                        {{#if author.unregisteredContributor}}
+                                            {{claim-user author=author preprintId=model.id isLoggedIn=(if currentUser.currentUserId true false) currentUser=currentUser.user.content}}
+                                        {{else if (user-errors author)}}
+                                            <li>{{disabled-user-name author}}</li>
                                         {{else}}
-                                            {{#if author.unregisteredContributor}}
-                                                {{claim-user author=author preprintId=model.id}}
-                                            {{else if (user-errors author)}}
-                                                <li>{{disabled-user-name author}}</li>
-                                            {{else}}
-                                                <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.name}}</a></li>
-                                            {{/if}}
+                                            <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.name}}</a></li>
                                         {{/if}}
                                     {{/if}}
                                 {{~/each}}
