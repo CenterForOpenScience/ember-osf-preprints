@@ -27,7 +27,7 @@
   "devDependencies": {
     "@centerforopenscience/ember-osf": "0.23.0",
     "@centerforopenscience/eslint-config": "^2.0.0",
-    "@centerforopenscience/osf-style": "https://github.com/CenterForOpenScience/osf-style.git#develop#2019-02-27T18:44:42Z",
+    "@centerforopenscience/osf-style": "1.9.0",
     "autoprefixer": "^7.1.2",
     "bootstrap-daterangepicker": "^2.1.23",
     "bootstrap-sass": "^3.3.7",
