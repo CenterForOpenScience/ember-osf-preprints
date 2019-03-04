@@ -76,6 +76,7 @@ const Router = EmberRouter.extend({
 // eslint-disable-next-line array-callback-return
 Router.map(function() {
     this.route('page-not-found', { path: '/*bad_url' });
+    this.route('error-no-api', { path: '*no_api' });
     if (window.isProviderDomain) {
         this.route('index', { path: '/' });
         this.route('submit');

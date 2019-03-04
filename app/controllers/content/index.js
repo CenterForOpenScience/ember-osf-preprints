@@ -50,8 +50,10 @@ export default Controller.extend(Analytics, {
     expandedAuthors: true,
     showLicenseText: false,
     primaryFile: null,
+    showModalClaimUser: false,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
     hasTag: computed.bool('model.tags.length'),
+    relevantDate: computed.alias('model.dateCreated'),
     metricsExtra: computed('model', function() {
         return this.get('model.id');
     }),
@@ -78,11 +80,6 @@ export default Controller.extend(Analytics, {
         return this.get('model.provider.reviewsWorkflow') === PRE_MODERATION ?
             DATE_LABEL.submitted :
             DATE_LABEL.created;
-    }),
-    relevantDate: computed('model.provider.reviewsWorkflow', function() {
-        return this.get('model.provider.reviewsWorkflow') ?
-            this.get('model.dateLastTransitioned') :
-            this.get('model.dateCreated');
     }),
 
     editButtonLabel: computed('model.{provider.reviewsWorkflow,reviewsState}', function () {
