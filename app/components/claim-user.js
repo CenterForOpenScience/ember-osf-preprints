@@ -73,6 +73,7 @@ export default Component.extend(Validations, Analytics, {
         const preprintId = this.get('preprintId');
         const email = this.get('email');
         const author = yield this.get('author.users');
+        this.set('showModal', false);
         try {
             yield author.claimUnregisteredUser(preprintId, email);
             this.get('toast').success(this.get('i18n').t('components.claim-user.success_message', { email }));
