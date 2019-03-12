@@ -172,6 +172,10 @@ export default {
         heading: 'Resource deleted',
         message: 'User has deleted this content.',
     },
+    'error-no-api': {
+        heading: 'API Unavailable',
+        message: 'Our API is currently unavailable. Try again in a few minutes. If the issue persists, please report it to <a href="mailto:support@osf.io">support@osf.io</a>.',
+    },
     submit: {
         create_heading: 'Create {{documentType.singularCapitalized}}',
         submit_heading: 'Submit {{documentType.singularCapitalized}}',
@@ -305,6 +309,14 @@ export default {
             header_convert_confirmation_component: 'Your component details will be saved as you continue to work on this form.',
             convert_confirmation_details_project: 'Changes you make on this page are saved immediately.  Create a new component under this project to avoid overwriting its details.',
             convert_confirmation_details_component: 'Changes you make on this page are saved immediately.  Create a new component under this component to avoid overwriting its details.',
+        },
+        'claim-user': {
+            modal_title: 'Claim as {{email}}?',
+            claim_button: 'Claim',
+            modal_body: 'If you claim this account, a contributor of this project will be emailed to confirm your identity.',
+            tooltip_message: 'Is this you? Click to claim.',
+            title: 'Claim Account',
+            success_message: 'Email will arrive shortly. Please check {{email}}',
         },
         'chronos-submission-status-list-row': {
             drafted: 'Drafted to <i>{{title}}</i>',
@@ -462,7 +474,7 @@ export default {
         },
         'unregistered-contributor-form': {
             full_name: 'Full Name',
-            email: 'Email',
+            email: 'Enter email',
             paragraph: 'We will notify the user that they have been added to your {{documentType.singular}}.',
         },
         'validated-input': {

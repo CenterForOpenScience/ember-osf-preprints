@@ -44,6 +44,7 @@ moduleFor('controller:submit', 'Unit | Controller | submit', {
         'validator:length',
         'validator:format',
         'validator:date',
+        'service:current-user',
         'service:metrics',
         'service:panel-actions',
         'service:session',

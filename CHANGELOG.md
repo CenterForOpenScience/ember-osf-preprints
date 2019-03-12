@@ -5,6 +5,41 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.124.0] - 2019-03-04
+### Removed
+- Remove margin hack to fix navbar on smaller screens
+- Claim unregistered contributor
+
+### Changed
+- Moved some navbar styling to `osf-style`
+- Added service:current-user to submit controller and preprint-status-banner unit test needs
+- Upgraded to ember-osf@0.23.0
+- Upgraded to osf-style@1.9.0
+
+### Fixed
+- 401 error on landing page
+- API unavailable message not displaying when API is unavailable
+- Preprints rendering from correct region
+- Correct "Created on" date for moderated Preprints
+
+## [0.123.4] - 2019-01-31
+### Changed
+- update assets
+
+## [0.123.3] - 2019-01-30
+### Changed
+- always use preprint DOI for `citation_doi` meta tag
+
+## [0.123.2] - 2019-01-14
+### Changed
+- update assets
+
+## [0.123.1] - 2018-12-13
+### Changed
+- update to ember-osf@0.22.1
+
+## [0.123.0] - 2018-12-13
 ### Added
 - section to attach supplemental projects to preprints on submit page
 

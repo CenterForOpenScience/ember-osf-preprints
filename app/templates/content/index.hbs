@@ -17,7 +17,7 @@
                                 {{#each authors as |author| ~}}
                                     {{#if author.bibliographic}}
                                         {{#if author.unregisteredContributor}}
-                                            <li>{{author.unregisteredContributor}}</li>
+                                            {{claim-user author=author preprintId=model.id isLoggedIn=(if currentUser.currentUserId true false) currentUser=currentUser.user.content}}
                                         {{else if (user-errors author)}}
                                             <li>{{disabled-user-name author}}</li>
                                         {{else}}

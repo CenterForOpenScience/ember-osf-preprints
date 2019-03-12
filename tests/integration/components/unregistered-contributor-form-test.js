@@ -18,7 +18,7 @@ test('form renders', function(assert) {
 
 
     assert.equal(this.$('label')[0].textContent.trim(), 'Full Name');
-    assert.equal(this.$('label')[1].textContent.trim(), 'Email');
+    assert.equal(this.$('label')[1].textContent.trim(), 'Enter email');
     assert.equal(this.$('p').text(), 'We will notify the user that they have been added to your .'); // preprint words needs to be run with ember osf
     assert.equal(this.$('button')[0].textContent.trim(), 'Cancel');
     assert.equal(this.$('button')[1].textContent.trim(), 'Add');
