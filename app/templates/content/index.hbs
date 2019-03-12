@@ -127,18 +127,18 @@
                         </div>
                     </div>
 
-                    <div class="p-t-xs">
-                        {{#chronos-widget preprint=model isContributor=userIsContrib isAdmin=isAdmin as | preprint submissions isAllowSubmissions isContributor | }}
-                            {{chronos-submission-status-list submissions=submissions isContributor=isContributor}}
-                            {{#if (eq preprint.provider.id "psyarxiv")}}
+                    {{#if this.isChronosProvider}}
+                        <div class="p-t-xs">
+                            {{#chronos-widget preprint=model isContributor=userIsContrib isAdmin=isAdmin as | preprint submissions isAllowSubmissions isContributor | }}
+                                {{chronos-submission-status-list submissions=submissions isContributor=isContributor}}
                                 {{#if isAllowSubmissions }}
                                     <div class="p-t-xs">
                                         {{chronos-submission-panel preprint=preprint publisherFilterKeyword="American Psychological Association"}}
                                     </div>
                                 {{/if}}
-                            {{/if}}
-                        {{/chronos-widget}}
-                    </div>
+                            {{/chronos-widget}}
+                        </div>
+                    {{/if}}
 
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>

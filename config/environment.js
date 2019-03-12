@@ -93,6 +93,8 @@ module.exports = function(environment) {
             'Research Papers in Economics',
             'Preprints.org',
         ],
+        chronosProviders: [
+        ],
         approvedChronosJournalIds: [
             '0147-7307',
             '1099-9809',
