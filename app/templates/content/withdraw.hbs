@@ -1,0 +1,40 @@
+{{title 'Withdraw'}}
+<div class="preprint-submit-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-10 col-md-offset-1 ">
+                {{#if editMode}}
+                    <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+                    <a role="button" {{action 'returnToSubmission'}}>{{t "submit.body.edit.return_button" documentType=currentProvider.documentType}}</a>
+                {{/if}}
+            </div>
+            <div class="col-xs-12 text-center">
+                <h1>{{t "withdraw.heading" documentType=theme.provider.documentType}}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="preprint-submit-body">
+    <div class="container">
+        <div class="row m-t-lg">
+            <div class="col-xs-12 col-md-10 col-md-offset-1">
+                <p> {{ notice }} </p>
+                <section class="preprint-form-block preprint-form-section-withdraw-comment">
+                    <header>
+                        {{ t 'withdraw.withdrawal_form_heading' }}
+                    </header>
+                    {{textarea value=explanation class="form-control"}}
+                </section>
+
+                <div class="submit-section">
+                    <button class="btn btn-danger btn-md m-t-md pull-right" onclick={{perform submitWithdrawalRequest}}>
+                        {{ t withdrawButtonLabel }}
+                    </button>
+                    <button class="btn btn-default btn-md m-t-md pull-right" onclick={{action 'cancel'}}>
+                        {{ t 'withdraw.cancel_button_label' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1112,6 +1112,12 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
                 this.set('attemptedSubmit', true);
             }
         },
+        clickWithdraw() {
+            this.transitionToRoute(
+                `${this.get('theme.isSubRoute') ? 'provider.' : ''}content.withdraw`,
+                this.get('model'),
+            );
+        },
         savePreprint() {
             // Finalizes saving of preprint.  Publishes preprint.
             this.get('metrics')

@@ -16,6 +16,7 @@ export default {
         none: 'None',
         abstract: 'Abstract',
         doi: 'DOI',
+        reason_for_withdrawal: 'Reason for withdrawal',
         tags: 'Tags',
         search: 'Search',
         preprints,
@@ -48,6 +49,7 @@ export default {
         header: {
             last_edited: 'Last edited',
             authors_label: 'Authors',
+            withdrawn_on: 'Withdrawn on',
         },
         date_label: {
             created_on: 'Created on',
@@ -255,6 +257,7 @@ export default {
                 cannot_edit: 'You do not have permission to edit this section.',
                 resubmit_button: 'Resubmit',
                 resubmit_help_text: 'Only contributors with admin permissions can resubmit for review.',
+                withdraw_button: 'Withdraw {{documentType.singular}}',
                 return_button: 'Return to {{documentType.singular}}',
             },
             save_continue: 'Save and continue',
@@ -286,6 +289,17 @@ export default {
         server_locked: 'You cannot change the paper service after a file has been uploaded',
         please_select_server: 'Please select a paper service before continuing',
         please_complete_upload: 'Please complete file section before continuing',
+    },
+    withdraw: {
+        heading: 'Withdraw {{documentType.singularCapitalized}}',
+        withdrawal_form_heading: 'Reason for withdrawal (optional):',
+        pre_moderation_notice: 'This service uses pre-moderation. Because of that, your {{documentType.singular}} can be withdrawn at any time even if it\'s still pending approval. If moderation is still pending at the time of withdrawal, your {{documentType.singular}} will be withdrawn without needing moderator approval. It will not have a tombstone page with metadata and the reason for withdrawal and it will not be searchable.',
+        post_moderation_notice: 'This service uses post-moderation. Because of that, your request will need to be approved by a moderation administrator before your {{documentType.singular}} can be withdrawn. If you request is approved, your {{documentType.singular}} will be replaced with a tombstone page with metadata and the reason for withdrawal (if included). Your {{documentType.singular}} will still be searchable by other users.',
+        no_moderation_notice: 'This request will be submitted to support@cos.io for review and removal. Upon removal, this {{documentType.singular}} will be replaced with a tombstone page with metadata and the reason for withdrawal (if included). This {{documentType.singular}} will still be searchable by other users after removal.',
+        withdraw_button_not_published: 'Withdraw',
+        withdraw_button_published: 'Request withdrawal',
+        cancel_button_label: 'Cancel',
+        successfully_withdrawn: 'Your {{documentType.singular}} has been successfully withdrawn.',
     },
     components: {
         'confirm-share-preprint': {
@@ -444,10 +458,13 @@ export default {
                 pending_post: 'is publicly available and searchable but is subject to removal by a moderator',
                 accepted: 'has been accepted by a moderator and is publicly available and searchable',
                 rejected: 'has been rejected by a moderator and is not publicly available or searchable',
+                pending_withdrawal: 'This {{documentType.singular}} has been requested by the authors to be withdrawn. It will still be publicly searchable until the request has been approved.',
+                withdrawn: 'This {{documentType.singular}} has been withdrawn by the author(s).',
             },
             pending: 'pending',
             accepted: 'accepted',
             rejected: 'rejected',
+            pending_withdrawal: 'pending withdrawal',
             feedback: {
                 moderator_feedback: 'Moderator feedback',
                 moderator: 'Moderator',
