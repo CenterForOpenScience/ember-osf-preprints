@@ -115,15 +115,31 @@
                         <a class="btn btn-primary p-v-xs" href={{fileDownloadURL}} onclick={{action 'dualTrackNonContributors' 'link' 'Content - Download' model.primaryFile.links.download true}}>{{t "content.share.download_preprint" documentType=model.provider.documentType}} </a>
                         <div class=" p-v-xs pull-right">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}} </div>
                     </div>
-                    <div class="p-t-md pull-right">
-                        {{sharing-icons
-                            title=title
-                            description=fullDescription
-                            hyperlink=hyperlink
-                            facebookAppId=facebookAppId
-                            metricsExtra=metricsExtra
-                        }}
+                    <div class="clearfix">
+                        <div class="p-t-md pull-right">
+                            {{sharing-icons
+                                title=title
+                                description=fullDescription
+                                hyperlink=hyperlink
+                                facebookAppId=facebookAppId
+                                metricsExtra=metricsExtra
+                            }}
+                        </div>
                     </div>
+
+                    {{#if this.isChronosProvider}}
+                        <div class="p-t-xs">
+                            {{#chronos-widget preprint=model isContributor=userIsContrib isAdmin=isAdmin as | preprint submissions isAllowSubmissions isContributor | }}
+                                {{chronos-submission-status-list submissions=submissions isContributor=isContributor}}
+                                {{#if isAllowSubmissions }}
+                                    <div class="p-t-xs">
+                                        {{chronos-submission-panel preprint=preprint publisherFilterKeyword="American Psychological Association"}}
+                                    </div>
+                                {{/if}}
+                            {{/chronos-widget}}
+                        </div>
+                    {{/if}}
+
                     <div class="p-t-xs">
                         <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
                         <p class="abstract {{if useShortenedDescription 'abstract-truncated'}}">
