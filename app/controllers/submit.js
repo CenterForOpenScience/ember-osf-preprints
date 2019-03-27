@@ -514,6 +514,10 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         const state = this.get('model.reviewsState');
         return this.get('moderationType') === PRE_MODERATION && (state === PENDING || state === REJECTED) && this.get('isAdmin');
     }),
+    canWithdraw: computed('moderationType', 'model.reviewsState', function() {
+        const state = this.get('model.reviewsState');
+        return (state === PENDING || state === ACCEPTED) && this.get('isAdmin');
+    }),
 
     actions: {
         getProjectContributors(node) {

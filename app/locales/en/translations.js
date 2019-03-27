@@ -293,7 +293,8 @@ export default {
     withdraw: {
         heading: 'Withdraw {{documentType.singularCapitalized}}',
         withdrawal_form_heading: 'Reason for withdrawal (optional):',
-        pre_moderation_notice: 'This service uses pre-moderation. Because of that, your {{documentType.singular}} can be withdrawn at any time even if it\'s still pending approval. If moderation is still pending at the time of withdrawal, your {{documentType.singular}} will be withdrawn without needing moderator approval. It will not have a tombstone page with metadata and the reason for withdrawal and it will not be searchable.',
+        pre_moderation_notice_pending: 'Your {{documentType.singular}} is still pending approval and thus private, but can be withdrawn immediately. If you wish to provide a reason for withdrawal, it will be displayed only to service moderators. Once withdrawn, your preprint will never be made public.',
+        pre_moderation_notice_accepted: 'This service uses pre-moderation. Your {{documentType.singular}} must be approved by a moderator. Once approved, your {{documentType.singular}} will be removed, but basic metadata (like title, authors, and reason for withdrawal, if provided) will remain.',
         post_moderation_notice: 'This service uses post-moderation. Because of that, your request will need to be approved by a moderation administrator before your {{documentType.singular}} can be withdrawn. If you request is approved, your {{documentType.singular}} will be replaced with a tombstone page with metadata and the reason for withdrawal (if included). Your {{documentType.singular}} will still be searchable by other users.',
         no_moderation_notice: 'This request will be submitted to support@cos.io for review and removal. Upon removal, this {{documentType.singular}} will be replaced with a tombstone page with metadata and the reason for withdrawal (if included). This {{documentType.singular}} will still be searchable by other users after removal.',
         withdraw_button_not_published: 'Withdraw',
@@ -459,7 +460,7 @@ export default {
                 accepted: 'has been accepted by a moderator and is publicly available and searchable',
                 rejected: 'has been rejected by a moderator and is not publicly available or searchable',
                 pending_withdrawal: 'This {{documentType.singular}} has been requested by the authors to be withdrawn. It will still be publicly searchable until the request has been approved.',
-                withdrawn: 'This {{documentType.singular}} has been withdrawn by the author(s).',
+                withdrawn: 'This {{documentType.singular}} has been withdrawn.',
             },
             pending: 'pending',
             accepted: 'accepted',

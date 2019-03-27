@@ -3,12 +3,15 @@ import { task } from 'ember-concurrency';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 
+const PRE_MODERATION_ACCEPTED = 'pre-moderation-accepted';
+const PRE_MODERATION_PENDING = 'pre-moderation-pending';
 const PRE_MODERATION = 'pre-moderation';
 const POST_MODERATION = 'post-moderation';
 const NO_MODERATION = 'no-moderation';
 
 const NOTICE_MESSAGE = {
-    [PRE_MODERATION]: 'withdraw.pre_moderation_notice',
+    [PRE_MODERATION_ACCEPTED]: 'withdraw.pre_moderation_notice_accepted',
+    [PRE_MODERATION_PENDING]: 'withdraw.pre_moderation_notice_pending',
     [POST_MODERATION]: 'withdraw.post_moderation_notice',
     [NO_MODERATION]: 'withdraw.no_moderation_notice',
 };
@@ -23,7 +26,8 @@ export default Controller.extend({
 
     notice: computed('model.provider.{reviewsWorkflow,documentType}', function () {
         const reviewsWorkflow = this.get('model.provider.reviewsWorkflow');
-        return this.get('i18n').t(NOTICE_MESSAGE[reviewsWorkflow || NO_MODERATION], {
+        const reviewsState = this.get('model.reviewsState');
+        return this.get('i18n').t(NOTICE_MESSAGE[`${reviewsWorkflow}-${reviewsState}` || NO_MODERATION], {
             documentType: this.get('model.provider.documentType'),
         });
     }),
