@@ -267,7 +267,7 @@
                     </div>
 
                     {{#if model.license.name}}
-                        <div class="p-t-xs">
+                        <div class="p-t-xs license-text">
                             <h4 class="p-v-md f-w-md"><strong>{{t "global.license"}}</strong></h4>
                             {{model.license.name}}
                             <span style='cursor: pointer'>
@@ -278,7 +278,7 @@
                                 {{/if}}
                             </span>
                             {{#if showLicenseText}}
-                                <pre style='white-space: pre-wrap; font-size:75%; border:none; width:100%; text-align:justify; max-height: 300px;'>{{fullLicenseText}}</pre>
+                                <pre>{{fullLicenseText}}</pre>
                             {{/if}}
                         </div>
                     {{/if}}
