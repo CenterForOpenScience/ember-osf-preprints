@@ -25,9 +25,13 @@ export default Controller.extend({
     explanation: '',
 
     notice: computed('model.provider.{reviewsWorkflow,documentType}', function () {
-        const reviewsWorkflow = this.get('model.provider.reviewsWorkflow');
+        const reviewsWorkflow = this.get('model.provider.reviewsWorkflow') || NO_MODERATION;
         const reviewsState = this.get('model.reviewsState');
-        return this.get('i18n').t(NOTICE_MESSAGE[`${reviewsWorkflow}-${reviewsState}` || NO_MODERATION], {
+        let noticeKey = reviewsWorkflow;
+        if (reviewsWorkflow === PRE_MODERATION) {
+            noticeKey = `${noticeKey}-${reviewsState}`;
+        }
+        return this.get('i18n').t(NOTICE_MESSAGE[noticeKey], {
             documentType: this.get('model.provider.documentType'),
         });
     }),
