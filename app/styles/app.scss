@@ -40,6 +40,9 @@ ul.comma-list {
     li:last-child:after {
         content: "";
     }
+    li div.unclaimed-user-modal {
+        display: inline;
+    }
     span:hover {
         background: gray;
     }

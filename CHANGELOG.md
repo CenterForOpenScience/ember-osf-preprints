@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.124.2] - 2019-04-08
+### Fixed
+- make sure there are no line breaks or extra spaces in author list
+
+## [0.124.1] - 2019-03-19
+### Changed
+- update assets
+
 ## [0.124.0] - 2019-03-04
 ### Removed
 - Remove margin hack to fix navbar on smaller screens
