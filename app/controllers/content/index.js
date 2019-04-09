@@ -51,7 +51,10 @@ export default Controller.extend(Analytics, {
     showLicenseText: false,
     primaryFile: null,
     showModalClaimUser: false,
+    isPendingWithdrawal: false,
+    isWithdrawn: null,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
+
     hasTag: computed.bool('model.tags.length'),
     relevantDate: computed.alias('model.dateCreated'),
     metricsExtra: computed('model', function() {
@@ -108,13 +111,13 @@ export default Controller.extend(Analytics, {
         return false;
     }),
 
-    showStatusBanner: computed('model.{public,provider.reviewsWorkflow,reviewsState}', 'userIsContrib', function() {
+    showStatusBanner: computed('model.{public,provider.reviewsWorkflow,reviewsState}', 'userIsContrib', 'isPendingWithdrawal', function() {
         return (
             this.get('model.provider.reviewsWorkflow')
             && this.get('model.public')
             && this.get('userIsContrib')
             && this.get('model.reviewsState') !== INITIAL
-        );
+        ) || this.get('isPendingWithdrawal');
     }),
 
     disciplineReduced: computed('model.subjects', function() {
@@ -162,6 +165,11 @@ export default Controller.extend(Analytics, {
         const titleEncoded = encodeURIComponent(this.get('model.title'));
         const hrefEncoded = encodeURIComponent(window.location.href);
         return `mailto:?subject=${titleEncoded}&body=${hrefEncoded}`;
+    }),
+
+    isChronosProvider: computed('model.provider.id', function() {
+        const { chronosProviders } = config;
+        return Array.isArray(chronosProviders) && chronosProviders.includes(this.get('model.provider.id'));
     }),
 
     actions: {

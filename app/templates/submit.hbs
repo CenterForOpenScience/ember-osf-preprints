@@ -316,72 +316,79 @@
                 {{/cp-panels}}
 
                 <div class="submit-section">
-                    {{#if editMode}}
-                        <div>
-                            {{#if showInformation}}
-                                <p>{{t editInformation1 documentType=currentProvider.documentType name=providerName reviewsWorkflow=(t workflow)}}</p>
-                                <p>
-                                    {{t editInformation2
-                                        name=providerName
-                                        reviewsWorkflow=(t workflow)
-                                        email=theme.provider.emailSupport}}
+                    {{#if currentProvider}}
+                        {{#if editMode}}
+                            <div>
+                                {{#if showInformation}}
+                                    <p>{{t editInformation1 documentType=currentProvider.documentType name=providerName reviewsWorkflow=(t workflow)}}</p>
+                                    <p>
+                                        {{t editInformation2
+                                            name=providerName
+                                            reviewsWorkflow=(t workflow)
+                                            email=theme.provider.emailSupport}}
+                                    </p>
+                                {{/if}}
+                                <button class="btn btn-default btn-md m-t-md pull-right" {{action 'returnToSubmission'}}>{{t "submit.body.edit.return_button" documentType=currentProvider.documentType}}</button>
+                                {{#if canResubmit}}
+                                    <button class="btn btn-success btn-md m-t-md pull-right" disabled={{unless allSectionsValid true}} {{action 'clickSubmit'}}>
+                                        {{t "submit.body.edit.resubmit_button"}}
+                                    </button>
+                                    <div>
+                                        {{confirm-share-preprint
+                                            isOpen=showModalSharePreprint
+                                            shareButtonDisabled=shareButtonDisabled
+                                            savePreprint=(action 'resubmit')
+                                            buttonLabel="submit.body.edit.resubmit_button"
+                                            title=modalTitle
+                                            documentType=currentProvider.documentType
+                                        }}
+                                    </div>
+                                {{/if}}
+
+                                {{#if (not (eq model.reviewsState 'rejected'))}}
+                                    {{#if canWithdraw}}
+                                        {{!-- Only shows the 'Withdraw preprint' button iff the preprint is not in a rejected state, and the user has permission --}}
+                                        <button class="btn btn-danger btn-md m-t-md pull-right" {{action 'clickWithdraw'}}> {{t "submit.body.edit.withdraw_button" documentType=currentProvider.documentType}} </button>
+                                    {{/if}}
+                                {{/if}}
+                            </div>
+                        {{else}}
+                            <strong><p class="information">{{t permissionInformation documentType=currentProvider.documentType name=providerName}}</p></strong>
+                            {{#if moderationType}}
+                                <p class="information">
+                                    {{t moderationInformation documentType=currentProvider.documentType name=providerName reviewsWorkflow=(t workflow)}}
                                 </p>
+                            {{else}}
+                                <p class="information">{{t generalInformation documentType=currentProvider.documentType name=providerName}}</p>
                             {{/if}}
-                            {{#if canResubmit}}
-                                <button class="btn btn-success btn-md m-t-md pull-right" disabled={{unless allSectionsValid true}} {{action 'clickSubmit'}}>
-                                    {{t "submit.body.edit.resubmit_button"}}
+                            <div class="text-center">
+                                {{#if showValidationErrors}}
+                                    <span id="validation-errors">
+                                        <p class="m-t-md"><strong>{{t "submit.body.submit.invalid.description" documentType=currentProvider.documentType}}</strong></p>
+                                        <p class="text-danger">{{if (not (and savedTitle savedFile)) (t "submit.body.submit.invalid.upload")}}</p>
+                                        <p class="text-danger">{{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
+                                        <p class="text-danger">{{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
+                                        <p class="text-danger">{{unless authorsValid (t "global.authors")}}</p>
+                                    </span>
+                                {{/if}}
+                                <button class="btn btn-success btn-md m-t-md pull-right" disabled={{showValidationErrors}} {{action 'clickSubmit'}}>
+                                    {{t buttonLabel documentType=currentProvider.documentType}}
+                                </button>
+                                <button class="btn btn-default btn-md m-t-md pull-right" {{action 'cancel'}}>
+                                    {{t "global.cancel"}}
                                 </button>
                                 <div>
                                     {{confirm-share-preprint
                                         isOpen=showModalSharePreprint
                                         shareButtonDisabled=shareButtonDisabled
-                                        savePreprint=(action 'resubmit')
-                                        buttonLabel="submit.body.edit.resubmit_button"
+                                        savePreprint=(action 'savePreprint')
+                                        buttonLabel=buttonLabel
                                         title=modalTitle
                                         documentType=currentProvider.documentType
                                     }}
                                 </div>
-                            {{/if}}
-                            <button class="btn btn-primary btn-md m-t-md pull-right" disabled={{unless allSectionsValid true}} {{action 'returnToSubmission'}}>
-                                {{t "submit.body.edit.return_button" documentType=currentProvider.documentType}}
-                            </button>
-                        </div>
-                    {{else}}
-                        <strong><p class="information">{{t permissionInformation documentType=currentProvider.documentType name=providerName}}</p></strong>
-                        {{#if moderationType}}
-                            <p class="information">
-                                {{t moderationInformation documentType=currentProvider.documentType name=providerName reviewsWorkflow=(t workflow)}}
-                            </p>
-                        {{else}}
-                            <p class="information">{{t generalInformation documentType=currentProvider.documentType name=providerName}}</p>
-                        {{/if}}
-                        <div class="text-center">
-                            {{#if showValidationErrors}}
-                                <span id="validation-errors">
-                                    <p class="m-t-md"><strong>{{t "submit.body.submit.invalid.description" documentType=currentProvider.documentType}}</strong></p>
-                                    <p class="text-danger">{{if (not (and savedTitle savedFile)) (t "submit.body.submit.invalid.upload")}}</p>
-                                    <p class="text-danger">{{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
-                                    <p class="text-danger">{{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
-                                    <p class="text-danger">{{unless authorsValid (t "global.authors")}}</p>
-                                </span>
-                            {{/if}}
-                            <button class="btn btn-success btn-md m-t-md pull-right" disabled={{showValidationErrors}} {{action 'clickSubmit'}}>
-                                {{t buttonLabel documentType=currentProvider.documentType}}
-                            </button>
-                            <button class="btn btn-default btn-md m-t-md pull-right" {{action 'cancel'}}>
-                                {{t "global.cancel"}}
-                            </button>
-                            <div>
-                                {{confirm-share-preprint
-                                    isOpen=showModalSharePreprint
-                                    shareButtonDisabled=shareButtonDisabled
-                                    savePreprint=(action 'savePreprint')
-                                    buttonLabel=buttonLabel
-                                    title=modalTitle
-                                    documentType=currentProvider.documentType
-                                }}
                             </div>
-                        </div>
+                        {{/if}}
                     {{/if}}
                 </div>
             </div>

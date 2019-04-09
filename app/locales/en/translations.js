@@ -16,6 +16,7 @@ export default {
         none: 'None',
         abstract: 'Abstract',
         doi: 'DOI',
+        reason_for_withdrawal: 'Reason for withdrawal',
         tags: 'Tags',
         search: 'Search',
         preprints,
@@ -48,6 +49,7 @@ export default {
         header: {
             last_edited: 'Last edited',
             authors_label: 'Authors',
+            withdrawn_on: 'Withdrawn on',
         },
         date_label: {
             created_on: 'Created on',
@@ -255,6 +257,7 @@ export default {
                 cannot_edit: 'You do not have permission to edit this section.',
                 resubmit_button: 'Resubmit',
                 resubmit_help_text: 'Only contributors with admin permissions can resubmit for review.',
+                withdraw_button: 'Withdraw {{documentType.singular}}',
                 return_button: 'Return to {{documentType.singular}}',
             },
             save_continue: 'Save and continue',
@@ -287,6 +290,18 @@ export default {
         please_select_server: 'Please select a paper service before continuing',
         please_complete_upload: 'Please complete file section before continuing',
     },
+    withdraw: {
+        heading: 'Withdraw {{documentType.singularCapitalized}}',
+        withdrawal_form_heading: 'Reason for withdrawal (optional):',
+        pre_moderation_notice_pending: 'Your {{documentType.singular}} is still pending approval and thus private, but can be withdrawn immediately. If you wish to provide a reason for withdrawal, it will be displayed only to service moderators. Once withdrawn, your preprint will never be made public.',
+        pre_moderation_notice_accepted: 'This service uses pre-moderation. Your {{documentType.singular}} withdrawal must be approved by a moderator. Once approved, your {{documentType.singular}} will be removed, but basic metadata (like title, authors, and reason for withdrawal, if provided) will remain.',
+        post_moderation_notice: 'This service uses post-moderation. Because of that, your request will need to be approved by a moderation administrator before your {{documentType.singular}} can be withdrawn. If you request is approved, your {{documentType.singular}} will be replaced with a tombstone page with metadata and the reason for withdrawal (if included). Your {{documentType.singular}} will still be searchable by other users.',
+        no_moderation_notice: 'This request will be submitted to support@cos.io for review and removal. Upon removal, this {{documentType.singular}} will be replaced with a tombstone page with metadata and the reason for withdrawal (if included). This {{documentType.singular}} will still be searchable by other users after removal.',
+        withdraw_button_not_published: 'Withdraw',
+        withdraw_button_published: 'Request withdrawal',
+        cancel_button_label: 'Cancel',
+        successfully_withdrawn: 'Your {{documentType.singular}} has been successfully withdrawn.',
+    },
     components: {
         'confirm-share-preprint': {
             body: 'Once this {{documentType.singular}} is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.',
@@ -317,6 +332,17 @@ export default {
             tooltip_message: 'Is this you? Click to claim.',
             title: 'Claim Account',
             success_message: 'Email will arrive shortly. Please check {{email}}',
+        },
+        'chronos-submission-status-list-row': {
+            drafted: 'Drafted to <i>{{title}}</i>',
+            submitted: 'Submitted to <i>{{title}}</i>',
+            accepted: 'Accepted to <i>{{title}}</i>',
+            rejected: 'Rejected from <i>{{title}}</i>',
+            published: 'Published in <i>{{title}}</i>',
+        },
+        'chronos-submission-panel': {
+            link_text: 'Submit to an APA-published journal',
+            helper_text: 'A new tab will open to complete submission on Chronos.',
         },
         'error-page': {
             email_message: 'If this should not have occurred and the issue persists, please report it to',
@@ -433,10 +459,13 @@ export default {
                 pending_post: 'is publicly available and searchable but is subject to removal by a moderator',
                 accepted: 'has been accepted by a moderator and is publicly available and searchable',
                 rejected: 'has been rejected by a moderator and is not publicly available or searchable',
+                pending_withdrawal: 'This {{documentType.singular}} has been requested by the authors to be withdrawn. It will still be publicly searchable until the request has been approved.',
+                withdrawn: 'This {{documentType.singular}} has been withdrawn.',
             },
             pending: 'pending',
             accepted: 'accepted',
             rejected: 'rejected',
+            pending_withdrawal: 'pending withdrawal',
             feedback: {
                 moderator_feedback: 'Moderator feedback',
                 moderator: 'Moderator',
