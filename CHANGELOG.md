@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.125.0] - 2019-04-10
+### Added
+- Chronos submission
+- Preprint withdrawals
+
 ## [0.124.2] - 2019-04-08
 ### Fixed
 - make sure there are no line breaks or extra spaces in author list
