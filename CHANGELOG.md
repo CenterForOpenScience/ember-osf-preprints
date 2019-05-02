@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.125.1] - 2019-05-02
+### Fixed
+- use ember-osf@0.24.1 to get fix for hypthesis postMessage and non-US preprints
+
 ## [0.125.0] - 2019-04-10
 ### Added
 - Chronos submission
