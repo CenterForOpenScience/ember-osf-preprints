@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.125.2] - 2019-05-08
+### Fixed
+- use ember-osf@0.24.2 to get fix for hypothesis postMessage callback
+
 ## [0.125.1] - 2019-05-02
 ### Fixed
-- use ember-osf@0.24.1 to get fix for hypthesis postMessage and non-US preprints
+- use ember-osf@0.24.1 to get fix for hypothesis postMessage and non-US preprints
 
 ## [0.125.0] - 2019-04-10
 ### Added
