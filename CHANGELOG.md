@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.125.3] - 2019-06-06
+### Changed
+- update assets
+
 ## [0.125.2] - 2019-05-08
 ### Fixed
 - use ember-osf@0.24.2 to get fix for hypothesis postMessage callback
