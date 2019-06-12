@@ -17,7 +17,7 @@
                     <header>
                         {{ t 'withdraw.withdrawal_form_heading' }}
                     </header>
-                    {{textarea value=explanation class="form-control"}}
+                    {{validated-input inputType='textarea' model=this valuePath='explanation' value=explanation showErrorMessage=didValidate}}
                 </section>
 
                 <div class="submit-section">
