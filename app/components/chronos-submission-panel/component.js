@@ -37,7 +37,6 @@ export default Component.extend({
             this.set('selectedJournal', journal);
         },
         cancelSubmission() {
-            this.set('journals', A());
             this.set('selectedJournal', null);
         },
     },

@@ -10,7 +10,7 @@
                 <strong>{{journal.title}}</strong>
             {{/power-select}}
             --}}
-            {{#power-select options=journals placeholder="Select a journal" selected=selectedJournal onchange=(action "journalSelected") as |journal|}}
+            {{#power-select options=journals placeholder="Select a journal" selected=selectedJournal onchange=(action "journalSelected") searchField="title" as |journal|}}
                 <strong>{{journal.title}}</strong>
             {{/power-select}}
         </div>
