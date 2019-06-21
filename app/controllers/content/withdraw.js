@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { task } from 'ember-concurrency';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { validator, buildValidations } from 'ember-cp-validations';
 
 const PRE_MODERATION_ACCEPTED = 'pre-moderation-accepted';
 const PRE_MODERATION_PENDING = 'pre-moderation-pending';
@@ -16,13 +17,26 @@ const NOTICE_MESSAGE = {
     [NO_MODERATION]: 'withdraw.no_moderation_notice',
 };
 
-export default Controller.extend({
+const WithdrawValidations = buildValidations({
+    explanation: {
+        description: 'Explanation',
+        validators: [
+            validator('presence', true),
+            validator('length', {
+                min: 25,
+            }),
+        ],
+    },
+});
+
+export default Controller.extend(WithdrawValidations, {
     theme: service(),
     store: service(),
     currentUser: service(),
     toast: service(),
     i18n: service(),
     explanation: '',
+    didValidate: false,
 
     notice: computed('model.provider.{reviewsWorkflow,documentType}', function () {
         const reviewsWorkflow = this.get('model.provider.reviewsWorkflow') || NO_MODERATION;
@@ -50,6 +64,10 @@ export default Controller.extend({
     },
 
     submitWithdrawalRequest: task(function* () {
+        this.set('didValidate', true);
+        if (!this.get('validations.isValid')) {
+            return;
+        }
         const request = this.store.createRecord('preprint-request', {
             comment: this.get('explanation'),
             requestType: 'withdrawal',
