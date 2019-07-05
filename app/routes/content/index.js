@@ -69,8 +69,7 @@ export default Route.extend(Analytics, ResetScrollMixin, {
                 .then(this._setupMetaData.bind(this));
 
             const setupPreprint = this._getPrimaryFile()
-                .then(this._loadSupplementalNode.bind(this))
-                .then(this.get('fetchWithdrawalRequest').perform());
+                .then(this._loadSupplementalNode.bind(this));
 
             return this.get('waitForMetaData') ? setupMetaData : setupPreprint;
         }
@@ -315,12 +314,4 @@ export default Route.extend(Analytics, ResetScrollMixin, {
         this.set('headTags', headTags);
         this.get('headTagsService').collectHeadTags();
     },
-
-    fetchWithdrawalRequest: task(function* () {
-        let withdrawalRequest = yield this.get('preprint.requests');
-        withdrawalRequest = withdrawalRequest.toArray();
-        if (withdrawalRequest.length >= 1 && withdrawalRequest[0].get('machineState') === 'pending') {
-            this.set('isPendingWithdrawal', true);
-        }
-    }),
 });
