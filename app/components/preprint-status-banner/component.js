@@ -144,7 +144,7 @@ export default Component.extend({
         if (this.get('isPendingWithdrawal')) {
             currentState = PENDING_WITHDRAWAL;
         } else if (this.get('isWithdrawalRejected')) {
-            currentState = WITHDRAWAL_REJECTED
+            currentState = WITHDRAWAL_REJECTED;
         } else if (this.get('isWithdrawn')) {
             currentState = WITHDRAWN;
         }

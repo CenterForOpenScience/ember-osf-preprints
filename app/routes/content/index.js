@@ -2,7 +2,6 @@ import { A, isArray } from '@ember/array';
 import { inject as service } from '@ember/service';
 import { run } from '@ember/runloop';
 import loadAll from 'ember-osf/utils/load-relationship';
-import { task } from 'ember-concurrency';
 import Route from '@ember/routing/route';
 import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
