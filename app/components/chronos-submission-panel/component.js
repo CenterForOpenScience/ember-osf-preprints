@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { task, timeout } from 'ember-concurrency';
+import { task, timeout, all } from 'ember-concurrency';
 import { A } from '@ember/array';
 import config from 'ember-get-config';
 
@@ -15,6 +15,7 @@ export default Component.extend({
     preprint: null,
     journals: A(),
     publisherFilterKeyword: null,
+    isOpen: false,
 
     didReceiveAttrs() {
         this.get('_fetchAllApprovedJournals').perform();
@@ -89,6 +90,34 @@ export default Component.extend({
         }
         this.set('canLoadMore', canLoadMore);
     }).enqueue(),
+    /*
+        Update all chronos-submissions status
+     */
+    _updateChronosSubmissions: task(function* () {
+        if (this.get('isOpen')) {
+            this.set('isOpen', false);
+            return;
+        } else {
+            this.set('isOpen', true);
+        }
+        const submissions = yield this.get('store').peekAll('chronos-submission');
+        const childTasks = [];
+        submissions.forEach(function (item) {
+            if (item.get('preprint.id') === this.get('preprint.id')) {
+                childTasks.push(this.get('_updateStatus').perform(item));
+            }
+        }.bind(this));
+        yield all(childTasks);
+    }).drop(),
+    /*
+        Update status of a single chronos-submission, called by _updateChronosSubmissions.
+     */
+    _updateStatus: task(function* (chronosSubmission) {
+        yield chronosSubmission.save();
+    }).drop().maxConcurrency(7),
+    /*
+        Task to submit to chronos
+     */
     _submit: task(function* () {
         const newTab = window.open();
         const submission = this.get('store').createRecord('chronos-submission', {
