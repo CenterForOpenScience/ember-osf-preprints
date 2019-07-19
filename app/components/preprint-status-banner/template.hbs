@@ -1,6 +1,6 @@
 <div id="preprint-status" class="container p-md">
     <div class="flex-container">
-        {{#if submission.provider.isPending}}
+        {{#if (or submission.provider.isPending _loadPreprintState.isRunning)}}
             Loading...
         {{else}}
             {{#if isWithdrawn}}
@@ -28,7 +28,7 @@
                             </div>
                             <div class="status p-md">
                                 <strong>{{t status}}</strong>
-                                <div>{{t feedbackBaseMessage documentType=submission.provider.documentType}} {{t statusExplanation}}.</div>
+                                <div>{{feedbackBaseMessage}} {{t statusExplanation documentType=submission.provider.documentType}}</div>
                             </div>
                             <div class="moderator-comment" aria-labelledby="moderator-feedback">
                                 <p>{{reviewerComment}}</p>

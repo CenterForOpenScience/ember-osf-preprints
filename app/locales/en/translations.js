@@ -455,17 +455,19 @@ export default {
         'preprint-status-banner': {
             message: {
                 base: '{{name}} uses {{reviewsWorkflow}}. This {{documentType.singular}}',
-                pending_pre: 'is not publicly available or searchable until approved by a moderator',
-                pending_post: 'is publicly available and searchable but is subject to removal by a moderator',
-                accepted: 'has been accepted by a moderator and is publicly available and searchable',
-                rejected: 'has been rejected by a moderator and is not publicly available or searchable',
+                pending_pre: 'is not publicly available or searchable until approved by a moderator.',
+                pending_post: 'is publicly available and searchable but is subject to removal by a moderator.',
+                accepted: 'has been accepted by a moderator and is publicly available and searchable.',
+                rejected: 'has been rejected by a moderator and is not publicly available or searchable.',
                 pending_withdrawal: 'This {{documentType.singular}} has been requested by the authors to be withdrawn. It will still be publicly searchable until the request has been approved.',
                 withdrawn: 'This {{documentType.singular}} has been withdrawn.',
+                withdrawal_rejected: 'Your request to withdraw this {{documentType.singular}} from the service has been denied by the moderator.',
             },
             pending: 'pending',
             accepted: 'accepted',
             rejected: 'rejected',
             pending_withdrawal: 'pending withdrawal',
+            withdrawal_rejected: 'withdrawal rejected',
             feedback: {
                 moderator_feedback: 'Moderator feedback',
                 moderator: 'Moderator',
