@@ -1,6 +1,6 @@
 {{#cp-panel}}
     {{#cp-panel-toggle}}
-        <p>{{t 'components.chronos-submission-panel.link_text'}}</p>
+        <p onClick={{perform _updateChronosSubmissions}}>{{t 'components.chronos-submission-panel.link_text'}}</p>
     {{/cp-panel-toggle}}
 
     {{#cp-panel-body}}
@@ -21,7 +21,7 @@
 
             <div class="pull-right">
                 <button class="btn btn-default" onClick={{action 'cancelSubmission'}}>Cancel</button>
-                <button class="btn btn-success" onClick={{perform _submit}}>Submit</button>
+                <button class="btn btn-success" onClick={{perform _submit}} disabled={{_updateChronosSubmissions.isRunning}}>Submit</button>
             </div>
         {{/if}}
     {{/cp-panel-body}}
