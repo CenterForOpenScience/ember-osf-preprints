@@ -168,7 +168,9 @@ export default Component.extend({
         const withdrawalRequests = yield this.get('submission.requests');
         const withdrawalRequest = withdrawalRequests.get('firstObject');
         if (withdrawalRequest) {
-            const requestActions = yield withdrawalRequest.get('actions');
+            const requestActions = yield withdrawalRequest.queryHasMany('actions', {
+                sort: '-modified',
+            });
             const latestRequestAction = requestActions.get('firstObject');
             if (latestRequestAction && latestRequestAction.get('actionTrigger') === 'reject') {
                 this.set('isWithdrawalRejected', true);
