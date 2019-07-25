@@ -2,11 +2,13 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
+import { task } from 'ember-concurrency';
 
 const PENDING = 'pending';
 const ACCEPTED = 'accepted';
 const REJECTED = 'rejected';
 const PENDING_WITHDRAWAL = 'pendingWithdrawal';
+const WITHDRAWAL_REJECTED = 'withdrawalRejected';
 const WITHDRAWN = 'withdrawn';
 
 const PRE_MODERATION = 'pre-moderation';
@@ -17,6 +19,7 @@ const ICONS = {
     [ACCEPTED]: 'fa-check-circle-o',
     [REJECTED]: 'fa-times-circle-o',
     [PENDING_WITHDRAWAL]: 'fa-hourglass-o',
+    [WITHDRAWAL_REJECTED]: 'fa-times-circle-o',
     [WITHDRAWN]: 'fa-exclamation-triangle',
 };
 
@@ -25,6 +28,7 @@ const STATUS = {
     [ACCEPTED]: 'components.preprint-status-banner.accepted',
     [REJECTED]: 'components.preprint-status-banner.rejected',
     [PENDING_WITHDRAWAL]: 'components.preprint-status-banner.pending_withdrawal',
+    [WITHDRAWAL_REJECTED]: 'components.preprint-status-banner.withdrawal_rejected',
 };
 
 const MESSAGE = {
@@ -33,6 +37,7 @@ const MESSAGE = {
     [ACCEPTED]: 'components.preprint-status-banner.message.accepted',
     [REJECTED]: 'components.preprint-status-banner.message.rejected',
     [PENDING_WITHDRAWAL]: 'components.preprint-status-banner.message.pending_withdrawal',
+    [WITHDRAWAL_REJECTED]: 'components.preprint-status-banner.message.withdrawal_rejected',
     [WITHDRAWN]: 'components.preprint-status-banner.message.withdrawn',
 };
 
@@ -47,6 +52,7 @@ const CLASS_NAMES = {
     [ACCEPTED]: 'preprint-status-accepted',
     [REJECTED]: 'preprint-status-rejected',
     [PENDING_WITHDRAWAL]: 'preprint-status-rejected',
+    [WITHDRAWAL_REJECTED]: 'preprint-status-rejected',
     [WITHDRAWN]: 'preprint-status-withdrawn',
 };
 
@@ -55,11 +61,12 @@ export default Component.extend({
     theme: service(),
 
     isWithdrawn: false,
+    isPendingWithdrawal: false,
+    isWithdrawalRejected: false,
 
     // translations
     labelModeratorFeedback: 'components.preprint-status-banner.feedback.moderator_feedback',
     moderator: 'components.preprint-status-banner.feedback.moderator',
-    feedbackBaseMessage: 'components.preprint-status-banner.feedback.base',
     baseMessage: 'components.preprint-status-banner.message.base',
 
     classNames: ['preprint-status-component'],
@@ -70,11 +77,13 @@ export default Component.extend({
     reviewerComment: alias('latestAction.comment'),
     reviewerName: alias('latestAction.creator.fullName'),
 
-    getClassName: computed('submission.{provider.reviewsWorkflow,reviewsState}', 'isPendingWithdrawal', 'isWithdrawn', function() {
+    getClassName: computed('submission.{provider.reviewsWorkflow,reviewsState}', 'isPendingWithdrawal', 'isWithdrawn', 'isWithdrawalRejected', function() {
         if (this.get('isPendingWithdrawal')) {
             return CLASS_NAMES[PENDING_WITHDRAWAL];
         } else if (this.get('isWithdrawn')) {
             return CLASS_NAMES[WITHDRAWN];
+        } else if (this.get('isWithdrawalRejected')) {
+            return CLASS_NAMES[WITHDRAWAL_REJECTED];
         } else {
             return this.get('submission.reviewsState') === PENDING ?
                 CLASS_NAMES[this.get('submission.provider.reviewsWorkflow')] :
@@ -82,25 +91,37 @@ export default Component.extend({
         }
     }),
 
-    bannerContent: computed('statusExplanation', 'workflow', 'theme.{isProvider,provider.name}', 'isPendingWithdrawal', 'isWithdrawn', function() {
+    bannerContent: computed('statusExplanation', 'workflow', 'theme.{isProvider,provider.name}', 'isPendingWithdrawal', 'isWithdrawn', 'isWithdrawalRejected', function() {
         const i18n = this.get('i18n');
         if (this.get('isPendingWithdrawal')) {
             return i18n.t(this.get('statusExplanation'), { documentType: this.get('submission.provider.documentType') });
         } else if (this.get('isWithdrawn')) {
             return i18n.t(MESSAGE[WITHDRAWN], { documentType: this.get('submission.provider.documentType') });
+        } else if (this.get('isWithdrawalRejected')) {
+            return i18n.t(MESSAGE[WITHDRAWAL_REJECTED], { documentType: this.get('submission.provider.documentType') });
         } else {
             const tName = this.get('theme.isProvider') ?
                 this.get('theme.provider.name') :
                 i18n.t('global.brand_name');
             const tWorkflow = i18n.t(this.get('workflow'));
             const tStatusExplanation = i18n.t(this.get('statusExplanation'));
-            return `${i18n.t(this.get('baseMessage'), { name: tName, reviewsWorkflow: tWorkflow, documentType: this.get('submission.provider.documentType') })} ${tStatusExplanation}.`;
+            return `${i18n.t(this.get('baseMessage'), { name: tName, reviewsWorkflow: tWorkflow, documentType: this.get('submission.provider.documentType') })} ${tStatusExplanation}`;
         }
     }),
 
-    statusExplanation: computed('submission.{provider.reviewsWorkflow,reviewsState}', 'isPendingWithdrawal', function() {
+    feedbackBaseMessage: computed('isWithdrawalRejected', function () {
+        const i18n = this.get('i18n');
+        if (this.get('isWithdrawalRejected')) {
+            return '';
+        }
+        return i18n.t('components.preprint-status-banner.feedback.base', { documentType: this.get('submission.provider.documentType') });
+    }),
+
+    statusExplanation: computed('submission.{provider.reviewsWorkflow,reviewsState}', 'isPendingWithdrawal', 'isWithdrawalRejected', function() {
         if (this.get('isPendingWithdrawal')) {
             return MESSAGE[PENDING_WITHDRAWAL];
+        } else if (this.get('isWithdrawalRejected')) {
+            return MESSAGE[WITHDRAWAL_REJECTED];
         } else {
             return this.get('submission.reviewsState') === PENDING ?
                 MESSAGE[this.get('submission.provider.reviewsWorkflow')] :
@@ -108,15 +129,22 @@ export default Component.extend({
         }
     }),
 
-    status: computed('submission.reviewsState', 'isPendingWithdrawal', function() {
-        const currentState = this.get('isPendingWithdrawal') ? PENDING_WITHDRAWAL : this.get('submission.reviewsState');
-        return STATUS[currentState];
-    }),
-
-    icon: computed('submission.reviewsState', 'isPendingWithdrawal', 'isWithdrawn', function() {
+    status: computed('submission.reviewsState', 'isPendingWithdrawal', 'isWithdrawalRejected', function() {
         let currentState = this.get('submission.reviewsState');
         if (this.get('isPendingWithdrawal')) {
             currentState = PENDING_WITHDRAWAL;
+        } else if (this.get('isWithdrawalRejected')) {
+            currentState = WITHDRAWAL_REJECTED;
+        }
+        return STATUS[currentState];
+    }),
+
+    icon: computed('submission.reviewsState', 'isPendingWithdrawal', 'isWithdrawn', 'isWithdrawalRejected', function() {
+        let currentState = this.get('submission.reviewsState');
+        if (this.get('isPendingWithdrawal')) {
+            currentState = PENDING_WITHDRAWAL;
+        } else if (this.get('isWithdrawalRejected')) {
+            currentState = WITHDRAWAL_REJECTED;
         } else if (this.get('isWithdrawn')) {
             currentState = WITHDRAWN;
         }
@@ -128,22 +156,34 @@ export default Component.extend({
     }),
 
     didReceiveAttrs() {
-        if (this.get('submission.provider.reviewsCommentsPrivate')) {
-            this.set('latestAction', null);
-        } else {
-            const submissionActions = this.get('submission.reviewActions');
-            if (submissionActions) {
-                submissionActions.then((reviewActions) => {
-                    if (reviewActions.length) {
-                        this.set('latestAction', reviewActions.get('firstObject'));
-                    } else {
-                        this.set('latestAction', null);
-                    }
-                });
-            } else {
-                this.set('latestAction', null);
-            }
-        }
+        this.get('_loadPreprintState').perform();
     },
 
+    _loadPreprintState: task(function* () {
+        if (this.get('isWithdrawn')) {
+            return;
+        }
+        const submissionActions = yield this.get('submission.reviewActions');
+        const latestSubmissionAction = submissionActions.get('firstObject');
+        const withdrawalRequests = yield this.get('submission.requests');
+        const withdrawalRequest = withdrawalRequests.get('firstObject');
+        if (withdrawalRequest) {
+            const requestActions = yield withdrawalRequest.queryHasMany('actions', {
+                sort: '-modified',
+            });
+            const latestRequestAction = requestActions.get('firstObject');
+            if (latestRequestAction && latestRequestAction.get('actionTrigger') === 'reject') {
+                this.set('isWithdrawalRejected', true);
+                this.set('latestAction', latestRequestAction);
+                return;
+            } else {
+                this.set('isPendingWithdrawal', true);
+                return;
+            }
+        }
+        if (this.get('submission.provider.reviewsCommentsPrivate')) {
+            return;
+        }
+        this.set('latestAction', latestSubmissionAction);
+    }),
 });

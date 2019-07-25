@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.127.0] - 2019-07-25
+## Changed
+- use ember-osf@0.25.0
+- modify preprint status banner to show corresponding statuses and reviewer comments
+- synchronize chronos-submission status when user clicks the expand button
+
 ## [0.126.1] - 2019-07-02
 ### Fixed
 - use ember-osf@0.24.3 to get fix for support links
