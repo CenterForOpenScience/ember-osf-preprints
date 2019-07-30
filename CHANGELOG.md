@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.128.0] - 2019-07-30
+## Changed
+- use ember-osf@0.26.0
+- add version as custom dimension 5
+
 ## [0.127.0] - 2019-07-25
 ## Changed
 - use ember-osf@0.25.0
