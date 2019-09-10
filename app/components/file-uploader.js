@@ -57,6 +57,7 @@ export default Component.extend(Analytics, {
     toast: service(),
     fileManager: service(),
     panelActions: service('panelActions'),
+    currentUser: service('current-user'),
     model: null,
     // If file added successfully (add mode), id saved here.  Used
     // for avoiding 409's
@@ -75,6 +76,7 @@ export default Component.extend(Analytics, {
         uploadMultiple: false,
         autoDiscover: false,
     },
+    newFileName: null,
 
     fileVersion: computed('osfFile', function() {
         // Helps communicate to user that there may be a pending, unsaved version
@@ -131,6 +133,7 @@ export default Component.extend(Analytics, {
                 // Add mode - file already uploaded to preprint
                 this.send('fileUploadSuccess', this.get('uploadedFileId'), {});
             } else {
+                this.set('newFileName', this.get('file.name'));
                 return this.get('model.files').then(this._setUploadProperties.bind(this));
             }
         },
@@ -212,11 +215,11 @@ export default Component.extend(Analytics, {
             // preUpload or "stage" file. Has yet to be uploaded to preprint.
             this.set('uploadInProgress', false);
             if (this.get('preprintLocked')) { // Edit mode
-                if (file.name !== this.get('osfFile.name')) { // Invalid File - throw error.
-                    this.send('mustModifyCurrentPreprintFile');
-                } else { // Valid file - can be staged.
-                    this.send('setPreUploadedFileAttributes', file, this.get('osfFile.currentVersion') + 1);
-                }
+                // if (file.name !== this.get('osfFile.name')) { // Invalid File - throw error.
+                //     this.send('mustModifyCurrentPreprintFile');
+                // } else { // Valid file - can be staged.
+                this.send('setPreUploadedFileAttributes', file, this.get('osfFile.currentVersion') + 1);
+                // }
             } else { // Add mode
                 this.attrs.clearDownstreamFields('belowFile');
                 this.send('setPreUploadedFileAttributes', file, this.get('osfFile.currentVersion'));
@@ -292,6 +295,7 @@ export default Component.extend(Analytics, {
                 // File upload success
                 const resp = JSON.parse(file.xhr.response);
                 this.send('fileUploadSuccess', this.get('uploadedFileId'), resp);
+                this._renameFileAfterSuccessfulUpload();
             } else {
                 // File upload failure
                 dropzone.removeAllFiles();
@@ -374,5 +378,10 @@ export default Component.extend(Analytics, {
         this.set('model.title', currentPreprintTitle);
         this.set('uploadInProgress', false);
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
+    },
+    _renameFileAfterSuccessfulUpload() {
+        console.log(this.get('newFileName'));
+        console.log(this.get('osfFile'));
+        this.get('fileManager').rename(this.get('osfFile'), this.get('newFileName'));
     },
 });
