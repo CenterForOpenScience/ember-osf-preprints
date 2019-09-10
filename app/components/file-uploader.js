@@ -57,7 +57,6 @@ export default Component.extend(Analytics, {
     toast: service(),
     fileManager: service(),
     panelActions: service('panelActions'),
-    currentUser: service('current-user'),
     model: null,
     // If file added successfully (add mode), id saved here.  Used
     // for avoiding 409's
@@ -214,12 +213,9 @@ export default Component.extend(Analytics, {
         preUpload(_, dropzone, file) {
             // preUpload or "stage" file. Has yet to be uploaded to preprint.
             this.set('uploadInProgress', false);
-            if (this.get('preprintLocked')) { // Edit mode
-                // if (file.name !== this.get('osfFile.name')) { // Invalid File - throw error.
-                //     this.send('mustModifyCurrentPreprintFile');
-                // } else { // Valid file - can be staged.
+            if (this.get('preprintLocked')) {
+                // Edit mode
                 this.send('setPreUploadedFileAttributes', file, this.get('osfFile.currentVersion') + 1);
-                // }
             } else { // Add mode
                 this.attrs.clearDownstreamFields('belowFile');
                 this.send('setPreUploadedFileAttributes', file, this.get('osfFile.currentVersion'));
@@ -380,8 +376,6 @@ export default Component.extend(Analytics, {
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
     },
     _renameFileAfterSuccessfulUpload() {
-        console.log(this.get('newFileName'));
-        console.log(this.get('osfFile'));
         this.get('fileManager').rename(this.get('osfFile'), this.get('newFileName'));
     },
 });
