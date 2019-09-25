@@ -54,6 +54,7 @@ export default Controller.extend(Analytics, {
     isPendingWithdrawal: false,
     isWithdrawn: null,
     expandedAbstract: navigator.userAgent.includes('Prerender'),
+    isPlauditReady: false,
 
     hasTag: computed.bool('model.tags.length'),
     relevantDate: computed.alias('model.dateCreated'),
