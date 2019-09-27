@@ -53,8 +53,8 @@ export default Controller.extend(Analytics, {
     showModalClaimUser: false,
     isPendingWithdrawal: false,
     isWithdrawn: null,
-    expandedAbstract: navigator.userAgent.includes('Prerender'),
     isPlauditReady: false,
+    expandedAbstract: navigator.userAgent.includes('Prerender'),
 
     hasTag: computed.bool('model.tags.length'),
     relevantDate: computed.alias('model.dateCreated'),
