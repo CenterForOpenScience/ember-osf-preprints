@@ -125,8 +125,13 @@
                             <a class="btn btn-primary p-v-xs" href={{fileDownloadURL}} onclick={{action 'dualTrackNonContributors' 'link' 'Content - Download' model.primaryFile.links.download true}}>{{t "content.share.download_preprint" documentType=model.provider.documentType}} </a>
                             <div class=" p-v-xs pull-right">{{t "content.share.downloads"}}: {{model.primaryFile.extra.downloads}} </div>
                         </div>
-                        <div class="clearfix">
-                            <div class="p-t-md pull-right">
+                        <div class="flexbox">
+                            <div class="plaudit-widget">
+                                {{#if isPlauditReady}}
+                                    {{plaudit-widget}}
+                                {{/if}}
+                            </div>
+                            <div class="social-icons">
                                 {{sharing-icons
                                     title=title
                                     description=fullDescription
@@ -305,7 +310,4 @@
         {{/if}}
     </div>
     {{!END DIV CONTAINER}}
-    {{#if isPlauditReady}}
-        {{plaudit-widget}}
-    {{/if}}
 </div>
