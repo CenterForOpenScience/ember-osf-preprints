@@ -314,7 +314,8 @@ export default Route.extend(Analytics, ResetScrollMixin, {
         this.set('headTags', headTags);
         this.get('headTagsService').collectHeadTags();
         run.scheduleOnce('afterRender', this, function() {
-            this.controller.set('isPlauditReady', true);
+            const controller = this.controllerFor('content.index');
+            controller.set('isPlauditReady', true);
         });
     },
 });
