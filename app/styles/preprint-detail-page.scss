@@ -16,3 +16,18 @@
         width: 150px;
     }
 }
+
+.flexbox {
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+}
+
+.social-icons {
+    padding: 15px 0px 15px 0px;
+}
+
+.plaudit-widget {
+    flex: auto;
+    padding-right: 33px;
+}

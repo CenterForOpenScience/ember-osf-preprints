@@ -105,6 +105,7 @@ module.exports = function(environment) {
             '2160-4134',
             '1196-1961',
         ],
+        plauditWidgetUrl: 'https://osf-review.plaudit.pub/embed/endorsements.js',
     };
 
     if (environment === 'development') {
