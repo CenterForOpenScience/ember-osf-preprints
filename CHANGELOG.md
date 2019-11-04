@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- remove `whiteListedProviders` from the config since it now comes from the API
 
 ## [0.129.0] - 2019-11-04
 - add Plaudit widget and use on overview page after meta tags are ready
