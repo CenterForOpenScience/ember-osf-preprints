@@ -45,6 +45,7 @@ export default Route.extend(Analytics, ResetScrollMixin, {
     waitForMetaData: navigator.userAgent.includes('Prerender'),
     contributors: A(),
 
+
     afterModel(preprint) {
         const { location: { origin } } = window;
 
@@ -312,5 +313,9 @@ export default Route.extend(Analytics, ResetScrollMixin, {
 
         this.set('headTags', headTags);
         this.get('headTagsService').collectHeadTags();
+        run.scheduleOnce('afterRender', this, function() {
+            const controller = this.controllerFor('content.index');
+            controller.set('isPlauditReady', true);
+        });
     },
 });
