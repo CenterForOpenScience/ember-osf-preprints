@@ -1,7 +1,6 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { later } from '@ember/runloop';
 import { defer } from 'rsvp';
 import $ from 'jquery';
 import Analytics from 'ember-osf/mixins/analytics';
@@ -370,6 +369,7 @@ export default Component.extend(Analytics, {
         this.set('uploadInProgress', false);
         this.get('toast').error(this.get('i18n').t('components.file-uploader.could_not_update_title'));
     },
+
     _renameFileAfterSuccessfulUpload() {
         this.get('fileManager').rename(this.get('osfFile'), this.get('newFileName'));
     },
