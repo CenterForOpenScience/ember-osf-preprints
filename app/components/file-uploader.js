@@ -222,11 +222,6 @@ export default Component.extend(Analytics, {
             }
             this.send('preUploadMetrics');
             this.set('callback', defer());
-            // Delays so user can see that file has been preuploaded before
-            // advancing to next panel
-            later(() => {
-                this.attrs.nextUploadSection('uploadNewFile', 'finalizeUpload');
-            }, 1500);
             return this.get('callback.promise');
         },
         discardUploadChanges() {
