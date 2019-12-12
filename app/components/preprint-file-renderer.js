@@ -71,13 +71,13 @@ export default Component.extend(Analytics, {
             `download/${primaryFileGuid}`,
             `${primaryFileGuid}/download`,
         );
-        const filename = this.get('primaryFile.name');
+
         this.set('primaryFileHasVersions', versions.length > 1);
 
         return versions
             .map((version) => {
                 const dateFormatted = encodeURIComponent(version.get('dateCreated').toISOString());
-                const displayName = filename.replace(/(\.\w+)?$/, ext => `-${dateFormatted}${ext}`);
+                const displayName = version.get('name').replace(/(\.\w+)?$/, ext => `-${dateFormatted}${ext}`);
                 version.set('downloadUrl', `${directDownloadUrl}?version=${version.id}&displayName=${displayName}`);
                 return version;
             });
