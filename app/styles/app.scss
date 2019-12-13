@@ -612,9 +612,9 @@ $color-border-light: #DDDDDD;
         text-align: center;
     }
 
-    .dz-progress {
+    .dropzone .dz-progress {
         z-index: 10;
-        display: none !important;
+        display: none;
     }
 
     .dropzone.dz-started .dz-message {
@@ -635,10 +635,11 @@ $color-border-light: #DDDDDD;
 }
 
 .preprint-form-upload.upload-in-progress {
-    .dz-progress {
-        display: block !important;
+    .dropzone .dz-progress {
+        display: block;
     }
 }
+
 .file-browser-header {
     display: none;
 }
