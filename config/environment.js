@@ -86,14 +86,6 @@ module.exports = function(environment) {
 
         ],
         FB_APP_ID: process.env.FB_APP_ID,
-        whiteListedProviders: [
-            'arXiv',
-            'bioRxiv',
-            'Cogprints',
-            'PeerJ',
-            'Research Papers in Economics',
-            'Preprints.org',
-        ],
         chronosProviders: [
         ],
         approvedChronosJournalIds: [
