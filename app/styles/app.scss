@@ -611,8 +611,10 @@ $color-border-light: #DDDDDD;
         margin-top: 10px;
         text-align: center;
     }
+
     .dz-progress {
-        z-index : 10;
+        z-index: 10;
+        display: none !important;
     }
 
     .dropzone.dz-started .dz-message {
@@ -629,6 +631,12 @@ $color-border-light: #DDDDDD;
     .radio-option {
         background: #f5f5f5;
         border-radius: 2px;
+    }
+}
+
+.preprint-form-upload.upload-in-progress {
+    .dz-progress {
+        display: block !important;
     }
 }
 .file-browser-header {

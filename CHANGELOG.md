@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## Changed
+- remove the upload bar on preprints submission unless the file is in the process of being uploaded
 
 ## [0.129.0] - 2019-11-04
 - add Plaudit widget and use on overview page after meta tags are ready

@@ -54,7 +54,7 @@
                     {{#with _names.[1] as |name|}}
                         {{#preprint-form-section
                             editMode=editMode
-                            class="preprint-form-upload"
+                            class=(if uploadInProgress "preprint-form-upload upload-in-progress" "preprint-form-upload")
                             name=name
                             allowOpen=(or providerSaved editMode)
                             open=(and theme.isProvider (not editMode))
