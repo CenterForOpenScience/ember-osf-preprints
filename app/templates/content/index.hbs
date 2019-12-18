@@ -142,7 +142,7 @@
                             </div>
                         </div>
 
-                        {{#if this.isChronosProvider}}
+                        {{#if (and this.isChronosProvider this.features.enableChronos)}}
                             <div class="p-t-xs">
                                 {{#chronos-widget preprint=model isContributor=userIsContrib isAdmin=isAdmin as | preprint submissions isAllowSubmissions isContributor | }}
                                     {{chronos-submission-status-list submissions=submissions isContributor=isContributor}}

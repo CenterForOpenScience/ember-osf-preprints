@@ -43,6 +43,7 @@ const INITIAL = 'initial';
 export default Controller.extend(Analytics, {
     theme: service(),
     currentUser: service(),
+    features: service(),
     queryParams: {
         chosenFile: 'file',
     },
