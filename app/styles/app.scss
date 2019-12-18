@@ -611,8 +611,14 @@ $color-border-light: #DDDDDD;
         margin-top: 10px;
         text-align: center;
     }
-    .dz-progress {
-        z-index : 10;
+
+    .dropzone .dz-progress {
+        z-index: 10;
+        display: none;
+    }
+
+    &.upload-in-progress .dropzone .dz-progress {
+        display: block;
     }
 
     .dropzone.dz-started .dz-message {
@@ -631,6 +637,7 @@ $color-border-light: #DDDDDD;
         border-radius: 2px;
     }
 }
+
 .file-browser-header {
     display: none;
 }
