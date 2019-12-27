@@ -5,9 +5,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.130.0] - 2019-12-27
 ## Changed
+- enable uploading of a preprint with different name and extension
 - remove `whiteListedProviders` from the config since it now comes from the API
 - remove the upload bar on preprints submission unless the file is in the process of being uploaded
+- add beta label to Chronos widget
+- add waffle for Chronos widget
+- use ember-osf@0.27.0
+
+## Fixed
+- do not close panel after preupload
 
 ## [0.129.1] - 2019-12-23
 ### Changed
