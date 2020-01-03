@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.130.1] - 2020-01-02
+### Changed
+- skip probalistic file uploader tests
+
 ## [0.130.0] - 2019-12-27
 ## Changed
 - enable uploading of a preprint with different name and extension
