@@ -351,7 +351,7 @@ export default {
         'file-uploader': {
             dropzone_message: 'Drop {{documentType.singular}} file here to upload',
             title_placeholder: 'Enter {{documentType.singular}} title',
-            update_version: 'Update {{documentType.singular}} file version.  File must have the same name as the original.',
+            update_version: 'Update {{documentType.singular}} file version.',
             could_not_create_preprint: 'Could not create preprint. Please try again.',
             could_not_update_title: 'Could not update title. Please try again.',
             version_error: 'This is not a version of the current {{documentType.singular}} file.',
