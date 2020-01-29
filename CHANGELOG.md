@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- pin node@10.18.1 and yarn@1.21.1 with volta
+
+### Changed
+- Configure nvm to to use Node 10.
 
 ## [0.130.2] - 2020-01-03
 ## Fixed
