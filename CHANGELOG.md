@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - pin node@10.18.1 and yarn@1.21.1 with volta
 
+### Changed
+- Configure nvm to to use Node 10.
+
 ## [0.130.2] - 2020-01-03
 ## Fixed
 - removed errant text regarding updated preprint file needing to have the same name
