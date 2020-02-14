@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Configure nvm to to use Node 10.
 
+## [0.130.3] - 2020-02-14
+## Fixed
+- add `swiss` to list of TLDs in email regex in unregistered-contributor-form component
+
 ## [0.130.2] - 2020-01-03
 ## Fixed
 - removed errant text regarding updated preprint file needing to have the same name
