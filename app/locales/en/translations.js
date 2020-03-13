@@ -61,6 +61,9 @@ export default {
             download_file: 'Download file',
             download_preprint: 'Download {{documentType.singular}}',
         },
+        'author-assertions': {
+            title: 'Author Assertions',
+        },
         see_more: 'See more',
         see_less: 'See less',
         version: 'Version',
@@ -472,6 +475,22 @@ export default {
                 moderator_feedback: 'Moderator feedback',
                 moderator: 'Moderator',
                 base: 'This {{documentType.singular}}',
+            },
+        },
+        'author-assertions': {
+            conflict_of_interest: {
+                title: 'Conflict of Interest',
+                no: 'Author asserted no Conflict of Interest',
+            },
+            public_data: {
+                title: 'Public Data',
+                no: 'No additional information provided by author.',
+                'not-applicable': 'Author asserted there is no data associated with this work.',
+            },
+            prereg: {
+                title: 'Preregistration',
+                no: 'No additional information provided by author.',
+                'not-applicable': 'Author asserted that preregistration was not applicable because no data collection, extraction, or analysis is reported in this paper.',
             },
         },
         'search-preprints': {

@@ -1,0 +1,14 @@
+{{#basic-dropdown
+    horizontalPosition='center'
+    onOpen=(action 'onOpen' analyticsName)
+    as |dropdown|
+}}
+    {{#dropdown.trigger class='assertions-dropdown-trigger'}}
+        {{this.availability}}
+        {{fa-icon (concat 'caret-' (if dropdown.isOpen 'up' 'down')) fixedWidth=true}}
+    {{/dropdown.trigger}}
+    {{yield (hash
+        isOpen=dropdown.isOpen
+        content=(component dropdown.content defaultClass='assertions-dropdown-content'))
+    }}
+{{/basic-dropdown}}
