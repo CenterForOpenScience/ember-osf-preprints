@@ -35,40 +35,6 @@
                         </ul>
                     </h5>
                     {{author-assertions preprint=model provider=model.provider}}
-                    <div class='detail-header-div'>
-                        <h6 class="detail-header-info">
-                            <div class="detail-header-item">
-                                <div class="detail-header-label">
-                                    <strong>{{t dateLabel}}</strong>
-                                </div>
-                                {{moment-format relevantDate "MMMM DD, YYYY"}}
-                            </div>
-                            <div class={{if model "detail-header-item" ""}}>
-                                {{#if (not isWithdrawn)}}
-                                    <div class="detail-header-label">
-                                        <strong>{{t "content.header.last_edited"}}</strong>
-                                    </div>
-                                    {{moment-format model.dateModified "MMMM DD, YYYY"}}
-                                {{else}}
-                                    <div class="detail-header-label">
-                                        <strong>{{t "content.header.withdrawn_on"}}</strong>
-                                    </div>
-                                    {{moment-format model.dateWithdrawn "MMMM DD, YYYY"}}
-                                {{/if}}
-                            </div>
-                            {{#if node}}
-                                <div>
-                                    <div class="detail-header-label">
-                                        <strong>{{t "content.supplemental_materials.title"}}</strong>
-                                    </div>
-                                    <a href={{node.links.html}} target="_blank" rel="noopener noreferrer" onclick={{action "click" "link" "Content - Visit Project" node.id}}>
-                                        {{supplementalMaterialDisplayLink}}
-                                        <i class="fa fa-external-link" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            {{/if}}
-                        </h6>
-                    </div>
                 </div>
                 {{#if (not isWithdrawn)}}
                     <div class="col-xs-12 col-sm-2 edit-button-and-logo text-center">
@@ -112,6 +78,14 @@
                             </div>
                         {{/if}}
                         {{preprint-file-renderer provider=model.provider preprint=model primaryFile=primaryFile dualTrackNonContributors=(action 'dualTrackNonContributors')}}
+                        <div>
+                            <span>{{t dateLabel}}: {{moment-format relevantDate "MMMM DD, YYYY"}}</span>
+                            {{#if (not isWithdrawn)}}
+                                | <span>{{t "content.header.last_edited"}}: {{moment-format model.dateModified "MMMM DD, YYYY"}}</span>
+                            {{else}}
+                                | <span>{{t "content.header.withdrawn_on"}}: {{moment-format model.dateWithdrawn "MMMM DD, YYYY"}}</span>
+                            {{/if}}
+                        </div>
                         <button class="expand-mfr-carrot hidden-xs hidden-sm" {{action 'expandMFR'}}>
                             <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                         </button>
@@ -164,6 +138,16 @@
                                 {{~t (if expandedAbstract 'content.see_less' 'content.see_more')~}}
                             </button>
                         </div>
+
+                        {{#if node}}
+                            <div class="p-t-xs">
+                                <h4 class="p-v-md f-w-md"><strong>{{t "content.supplemental_materials.title"}}</strong></h4>
+                                <a href={{node.links.html}} target="_blank" rel="noopener noreferrer" onclick={{action "click" "link" "Content - Visit Project" node.id}}>
+                                    {{supplementalMaterialDisplayLink}}
+                                    <i class="fa fa-external-link" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        {{/if}}
 
                         <div class="p-t-xs">
                             <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi" documentType=model.provider.documentType}}</strong></h4>

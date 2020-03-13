@@ -49,11 +49,11 @@ export default {
         header: {
             last_edited: 'Last edited',
             authors_label: 'Authors',
-            withdrawn_on: 'Withdrawn on',
+            withdrawn_on: 'Withdrawn',
         },
         date_label: {
-            created_on: 'Created on',
-            submitted_on: 'Submitted on',
+            created_on: 'Created',
+            submitted_on: 'Submitted',
         },
         share: {
             download: 'Download',
