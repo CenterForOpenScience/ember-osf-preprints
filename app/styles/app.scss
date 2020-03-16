@@ -1357,7 +1357,6 @@ label.title-label {
 }
 
 .discover-provider-logo,
-.content-provider-logo,
 .submit-provider-logo {
     background-position-x: center;
     background-position-y: center;
@@ -1393,16 +1392,7 @@ label.title-label {
       }
 }
 
-@media (min-width: 769px) {
-    .edit-button-and-logo {
-        padding-top: 30px !important;
-    }
-}
-
 @media (max-width: 768px) {
-    .edit-button-and-logo {
-        padding-top: 20px;
-    }
     .preprint-image {
         margin-top: 0 !important;
     }
@@ -1467,12 +1457,6 @@ label.title-label {
             margin-bottom: 40px !important;
         }
     }
-}
-
-.content-provider-logo {
-    min-height: 80px;
-    min-width: 120px;
-    margin-bottom: 20px;
 }
 
 .discover-provider-logo {

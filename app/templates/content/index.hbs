@@ -6,8 +6,27 @@
         {{!CONTAINER DIV}}
         <div class="container">
             <div class="row">
+                <div class="col-xs-12 preprint-title-container">
+                    <h1 id="preprintTitle">{{model.title}}</h1>
+                    {{#if (not isWithdrawn)}}
+                        <div class="p-b-md edit-preprint-button">
+                            {{#if (and userIsContrib (not isPendingWithdrawal))}}
+                                {{! TODO This link will need to be updated for phase 2 of branding }}
+                                <a type="button"
+                                   class="btn btn-success edit-btn"
+                                   href={{concat theme.guidPathPrefix model.id '/edit'}}
+                                       onclick={{action "click" 'link' "Content - Edit Preprint" (concat model.links.html 'edit')}}
+                                >
+                                    {{t editButtonLabel documentType=model.provider.documentType}}
+                                </a>
+                            {{/if}}
+                            <br>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-xs-12 col-sm-12">
-                    <h1 id="preprintTitle" class="p-b-md">{{model.title}}</h1>
                     <h5 class="view-authors">
                         <div class="detail-header-label">
                             <strong>{{t "content.header.authors_label"}}</strong>
@@ -34,25 +53,9 @@
                             {{/if}}
                         </ul>
                     </h5>
-                    {{author-assertions preprint=model provider=model.provider}}
                 </div>
-                {{!-- {{#if (not isWithdrawn)}}
-                    <div class="col-xs-12 col-sm-2 edit-button-and-logo text-center">
-                        <div class="content-provider-logo provider-{{model.provider.id}} hidden-xs" title="{{model.provider.name}}"></div>
-                        {{#if (and userIsContrib (not isPendingWithdrawal))}}
-                            {{! TODO This link will need to be updated for phase 2 of branding }}
-                            <a type="button"
-                               class="btn btn-success edit-btn"
-                               href={{concat theme.guidPathPrefix model.id '/edit'}}
-                                   onclick={{action "click" 'link' "Content - Edit Preprint" (concat model.links.html 'edit')}}
-                            >
-                                {{t editButtonLabel documentType=model.provider.documentType}}
-                            </a>
-                        {{/if}}
-                        <br>
-                    </div>
-                {{/if}} --}}
             </div>
+            {{author-assertions preprint=model provider=model.provider}}
         </div>
         {{!END CONTAINER DIV}}
     </div>
