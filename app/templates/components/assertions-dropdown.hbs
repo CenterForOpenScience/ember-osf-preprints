@@ -1,10 +1,12 @@
 {{#basic-dropdown
-    horizontalPosition='center'
-    onOpen=(action 'onOpen' analyticsName)
+    onOpen=(action 'onOpen' assertionName)
     as |dropdown|
 }}
     {{#dropdown.trigger class='assertions-dropdown-trigger'}}
-        {{this.availability}}
+        <span class='assertion-name'>
+            {{~assertionName~}}
+        </span>
+        {{~this.availability}}
         {{fa-icon (concat 'caret-' (if dropdown.isOpen 'up' 'down')) fixedWidth=true}}
     {{/dropdown.trigger}}
     {{yield (hash

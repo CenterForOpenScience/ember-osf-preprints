@@ -478,6 +478,8 @@ export default {
             },
         },
         'author-assertions': {
+            no: 'No',
+            yes: 'Yes',
             conflict_of_interest: {
                 title: 'Conflict of Interest',
                 no: 'Author asserted no Conflict of Interest',

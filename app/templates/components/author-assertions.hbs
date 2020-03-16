@@ -1,17 +1,15 @@
 {{#if this.shouldShowSloanIcons}}
-    <div class='detail-header-label'>
+    <div class='author-assertions-header-label'>
         <strong>{{~t 'content.author-assertions.title'~}}</strong>
     </div>
     <div class='author-assertions'>
-        {{!-- COI --}}
         {{#if this.shouldShowCoi}}
             <div class='assertions-container'>
-                <span class='assertion-name'>
-                    {{~t 'components.author-assertions.conflict_of_interest.title'~}}
-                </span>
                 {{#assertions-dropdown
-                    available=(if preprint.hasCoi 'Yes' 'No')
-                    analyticsName='Conflict of Interest'
+                    available=(if preprint.hasCoi
+                        (t 'components.author-assertions.yes')
+                        (t 'components.author-assertions.no'))
+                    assertionName=(t 'components.author-assertions.conflict_of_interest.title')
                     as |dropdown|
                 }}
                     {{#dropdown.content}}
@@ -24,22 +22,20 @@
                 {{/assertions-dropdown}}
             </div>
         {{/if}}
-        {{!-- COI --}}
 
-        {{!-- DATA --}}
         {{#if this.shouldShowDataLinks}}
             <div class='assertions-container'>
-                <span class='assertion-name'>
-                    {{~t 'components.author-assertions.public_data.title'~}}
-                </span>
                 {{#assertions-dropdown
                     available=preprint.hasDataLinks
-                    analyticsName='Public data'
+                    assertionName=(t 'components.author-assertions.public_data.title')
                     as |dropdown|
                 }}
                     {{#dropdown.content}}
                         {{#if (eq preprint.hasDataLinks 'available')}}
-                            {{assertions-links links=preprint.dataLinks analyticsName='Public data'}}
+                            {{assertions-links
+                                links=preprint.dataLinks
+                                analyticsName=(t 'components.author-assertions.public_data.title')
+                            }}
                         {{else if (eq preprint.hasDataLinks 'no')}}
                             {{~t 'components.author-assertions.public_data.no'~}}
                         {{else}}
@@ -49,22 +45,20 @@
                 {{/assertions-dropdown}}
             </div>
         {{/if}}
-        {{!-- DATA --}}
 
-        {{!-- PREREG --}}
         {{#if this.shouldShowPreregLinks}}
             <div class='assertions-container'>
-                <span class='assertion-name'>
-                    {{~t 'components.author-assertions.prereg.title'~}}
-                </span>
                 {{#assertions-dropdown
                     available=preprint.hasPreregLinks
-                    analyticsName='Preregistration'
+                    assertionName=(t 'components.author-assertions.prereg.title')
                     as |dropdown|
                 }}
                     {{#dropdown.content}}
                         {{#if (eq preprint.hasDataLinks 'available')}}
-                            {{assertions-links links=preprint.preregLinks analyticsName='Preregistration'}}
+                            {{assertions-links
+                                links=preprint.preregLinks
+                                analyticsName=(t 'components.author-assertions.prereg.title')
+                            }}
                         {{else if (eq preprint.hasDataLinks 'no')}}
                             {{~t 'components.author-assertions.prereg.no'~}}
                         {{else}}
@@ -74,6 +68,5 @@
                 {{/assertions-dropdown}}
             </div>
         {{/if}}
-        {{!-- PREREG --}}
     </div>
 {{/if}}

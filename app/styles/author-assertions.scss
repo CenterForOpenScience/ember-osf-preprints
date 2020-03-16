@@ -1,9 +1,32 @@
 .author-assertions {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+}
+
+.author-assertions-header-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    padding-bottom: 2px;
+}
+
+@media (max-width: 768px) {
+    .author-assertions-header-label {
+        text-align: center;
+    }
+
+    .author-assertions {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+
+        .assertions-container {
+            margin-bottom: 5px;
+            justify-content: center;
+        }
+    }
 }
 
 .assertion-name {
@@ -11,12 +34,15 @@
     font-weight: 700;
 
     &::after {
-        content: ":\a0\a0";
+        content: ":\a0";
     }
 }
 
 .assertions-container {
     display: flex;
+    flex-basis: 30%;
+    max-width: 350px;
+    min-width: 250px;
 }
 
 .assertions-dropdown-content {
@@ -38,6 +64,11 @@
 
     &:hover {
         color: #6dd1de;
+        outline: 0;
+
+        .assertion-name {
+            color: #ffffff;
+        }
     }
 }
 

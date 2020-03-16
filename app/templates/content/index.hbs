@@ -6,7 +6,7 @@
         {{!CONTAINER DIV}}
         <div class="container">
             <div class="row">
-                <div class="col-xs-12 col-sm-10">
+                <div class="col-xs-12 col-sm-12">
                     <h1 id="preprintTitle" class="p-b-md">{{model.title}}</h1>
                     <h5 class="view-authors">
                         <div class="detail-header-label">
@@ -36,7 +36,7 @@
                     </h5>
                     {{author-assertions preprint=model provider=model.provider}}
                 </div>
-                {{#if (not isWithdrawn)}}
+                {{!-- {{#if (not isWithdrawn)}}
                     <div class="col-xs-12 col-sm-2 edit-button-and-logo text-center">
                         <div class="content-provider-logo provider-{{model.provider.id}} hidden-xs" title="{{model.provider.name}}"></div>
                         {{#if (and userIsContrib (not isPendingWithdrawal))}}
@@ -51,7 +51,7 @@
                         {{/if}}
                         <br>
                     </div>
-                {{/if}}
+                {{/if}} --}}
             </div>
         </div>
         {{!END CONTAINER DIV}}
