@@ -219,7 +219,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Must have year and copyrightHolders filled if those are required by the licenseType selected
     licenseValid: false,
 
-    _names: ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'Supplemental'], // Form section headers
+    _names: ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'], // Form section headers
     hasFile: computed.or('file', 'selectedFile'),
     isAddingPreprint: computed.not('editMode'),
     // Contributors on preprint

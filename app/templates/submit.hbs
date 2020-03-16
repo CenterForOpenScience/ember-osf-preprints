@@ -135,7 +135,25 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
+                    {{! ===== AUTHOR ASSERTIONS HERE ===== }}
                     {{#with _names.[2] as |name|}}
+                        {{#preprint-form-section id='preprint-form-author-assertions' editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header editMode=editMode doi=model.doi tags=model.tags name=name license=model.license isValidationActive=hasOpened}}
+                            {{#preprint-form-body}}
+                                <label>{{t "submit.body.author_assertions.public_data.label"}}:</label>
+                                <input type="radio" name="data" value="No"> {{t "submit.body.general.no"}}
+                                <input type="radio" name="data" value="NA"> {{t "submit.body.general.not_applicable"}}
+                                <input type="radio" name="data" value="Available"> {{t "submit.body.general.available"}}
+                                
+                                <label>{{t "submit.body.author_assertions.preregistration.label"}}:</label>
+                                <input type="radio" name="preregistration" value="No"> {{t "submit.body.general.no"}}
+                                <input type="radio" name="preregistration" value="NA"> {{t "submit.body.general.not_applicable"}}
+                                <input type="radio" name="preregistration" value="Available"> {{t "submit.body.general.available"}}
+                            {{/preprint-form-body}}
+                        {{/preprint-form-section}}
+                    {{/with}}
+
+                    {{#with _names.[3] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=model.tags abstract=model.description name=name valid=(not basicsChanged) license=model.license isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -186,7 +204,7 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{#with _names.[3] as |name|}}
+                    {{#with _names.[4] as |name|}}
                         {{#preprint-form-section id='preprint-form-subjects' editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -204,7 +222,7 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{#with _names.[4] as |name|}}
+                    {{#with _names.[5] as |name|}}
                         {{#preprint-form-section id='preprint-form-authors' editMode=editMode name=name allowOpen=uploadValid open=authorsOpen errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -233,7 +251,17 @@
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
-                    {{#with _names.[5] as |name|}}
+
+                    {{! ==== COI HERE ==== }}
+                    {{#with _names.[6] as |name|}}
+                        {{#preprint-form-section id="author-assertions" editMode=editMode class="preprint-form-upload" name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
+                            {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle node=node name=name valid=(not supplementalChanged) isValidationActive=hasOpened}}
+                            {{#preprint-form-body}}
+                                {{! TODO: add content here}}
+                            {{/preprint-form-body}}
+                        {{/preprint-form-section}}
+                    {{/with}}
+                    {{#with _names.[7] as |name|}}
                         {{#preprint-form-section id="supplemental-materials" editMode=editMode class="preprint-form-upload" name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle node=node name=name valid=(not supplementalChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}

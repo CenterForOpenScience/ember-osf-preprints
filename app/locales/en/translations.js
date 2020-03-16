@@ -220,6 +220,32 @@ export default {
             authors: {
                 paragraph: 'Add {{documentType.singular}} authors and order them appropriately. Search for authors that have OSF accounts or invite unregistered users to join by entering their email addresses.',
             },
+            author_assertions: {
+                public_data: {
+                    label: 'Public Data',
+                    placeholder: 'Author asserted there is no data associated with this work.',
+                    description: 'Data refers to raw and/or processed information (quantitative or qualitative) used for the analyses, case studies, and/or descriptive interpretation in the <preprint_word>. Public data could include data posted to open-access repositories, public archival library collection, or government archive. For data that is available under limited circumstances (e.g., after signing a data sharing agreement), choose the ‘No’ option and use the comment box to explain how others could access the data.',
+                },
+                preregistration: {
+                    label: 'Preregistration',
+                    placeholder: 'Author asserted no data was collected, extracted, or analyzed.',
+                    description: 'A preregistration is a description of the research design and/or analysis plan that is created and registered before researchers collected data or before they have seen/interacted with preexisting data. The description should appear in a public registry (e.g., clinicaltrials.gov, OSF, AEA registry).',
+                },
+            },
+            conflict_of_interest: {
+                label: 'Conflict of Interest',
+                placeholder: 'Author asserted no Conflict of Interest.',
+                description: 'The Conflict of Interest (COI) assertion is made on behalf of all the authors listed for this {{documentType.singular}}. COI’s include: financial involvement in any entity such as honoraria, grants, speaking fees, employment, consultancies, stock ownership, expert testimony, and patents or licenses. COI’s can also include non-financial interests such as personal or professional relationships or pre-existing beliefs in the subject matter or materials discussed in this {{documentType.singular}}',
+            },
+            general: {
+                required: '(required)',
+                yes: 'Yes',
+                no: 'No',
+                not_applicable: 'Not applicable',
+                available: 'Available',
+                describe: 'Describe',
+                links_to_data: 'Links to data',
+            },
             submit: {
                 information: {
                     line1: {
@@ -417,12 +443,14 @@ export default {
             name: {
                 Server: 'Select a service',
                 File: 'File',
+                Assertions: 'Author Assertions',
                 Discipline: 'Discipline',
                 Basics: 'Basics',
                 Authors: 'Authors',
                 Submit: 'Submit',
                 Update: 'Update',
                 Supplemental: 'Supplemental materials',
+                COI: 'Conflicts of Interest',
                 choose_project: 'Choose Project',
                 choose_file: 'Choose File',
                 organize: 'Organize',
