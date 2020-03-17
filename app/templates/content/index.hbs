@@ -11,11 +11,10 @@
                     {{#if (not isWithdrawn)}}
                         <div class="p-b-md edit-preprint-button">
                             {{#if (and userIsContrib (not isPendingWithdrawal))}}
-                                {{! TODO This link will need to be updated for phase 2 of branding }}
                                 <a type="button"
                                    class="btn btn-success edit-btn"
                                    href={{concat theme.guidPathPrefix model.id '/edit'}}
-                                       onclick={{action "click" 'link' "Content - Edit Preprint" (concat model.links.html 'edit')}}
+                                   onclick={{action "click" 'link' "Content - Edit Preprint" (concat model.links.html 'edit')}}
                                 >
                                     {{t editButtonLabel documentType=model.provider.documentType}}
                                 </a>
@@ -55,7 +54,7 @@
                     </h5>
                 </div>
             </div>
-            {{author-assertions preprint=model provider=model.provider}}
+            {{author-assertions preprint=model}}
         </div>
         {{!END CONTAINER DIV}}
     </div>

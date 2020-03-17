@@ -7,7 +7,8 @@ export default Component.extend({
     features: service(),
 
     preprint: null,
-    provider: null,
+    provider: alias('preprint.provider'),
+    documentType: alias('provider.documentType'),
 
     shouldShowSloanIcons: and('provider.inSloanStudy', 'hasASloanFlagEnabled', 'hasSloanData'),
     hasASloanFlagEnabled: or('sloanCoiDisplayEnabled', 'sloanDataDisplayEnabled', 'sloanPreregDisplayEnabled'),

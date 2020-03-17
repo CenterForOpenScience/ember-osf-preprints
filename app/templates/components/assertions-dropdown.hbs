@@ -6,7 +6,7 @@
         <span class='assertion-name'>
             {{~assertionName~}}
         </span>
-        {{~this.availability}}
+        {{~available}}
         {{fa-icon (concat 'caret-' (if dropdown.isOpen 'up' 'down')) fixedWidth=true}}
     {{/dropdown.trigger}}
     {{yield (hash
