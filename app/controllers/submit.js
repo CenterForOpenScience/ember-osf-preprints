@@ -235,9 +235,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     originalPublicationDateValid: alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
 
     // Sloan waffles
-    sloanCoiDisplayEnabled: alias('features.sloanCoiDisplay'),
-    sloanDataDisplayEnabled: alias('features.sloanDataDisplay'),
-    sloanPreregDisplayEnabled: alias('features.sloanPreregDisplay'),
+    sloanCoiInputEnabled: alias('features.sloanCoiInput'),
+    sloanDataInputEnabled: alias('features.sloanDataInput'),
+    sloanPreregInputEnabled: alias('features.sloanPreregInput'),
 
     // Basics fields that are being validated are abstract, license and doi
     // (title validated in upload section). If validation
