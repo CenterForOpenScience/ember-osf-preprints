@@ -138,6 +138,7 @@ function subjectIdMap(subjectArray) {
  * @class Submit Controller
  */
 export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
+    features: service(),
     i18n: service(),
     store: service(),
     theme: service(),
@@ -232,6 +233,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     doiValid: alias('validations.attrs.basicsDOI.isValid'),
     originalPublicationDateValid: alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
+
+    // Sloan waffles
+    sloanCoiDisplayEnabled: alias('features.sloanCoiDisplay'),
+    sloanDataDisplayEnabled: alias('features.sloanDataDisplay'),
+    sloanPreregDisplayEnabled: alias('features.sloanPreregDisplay'),
 
     // Basics fields that are being validated are abstract, license and doi
     // (title validated in upload section). If validation
