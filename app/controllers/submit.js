@@ -138,6 +138,7 @@ function subjectIdMap(subjectArray) {
  * @class Submit Controller
  */
 export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
+    features: service(),
     i18n: service(),
     store: service(),
     theme: service(),
@@ -219,7 +220,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Must have year and copyrightHolders filled if those are required by the licenseType selected
     licenseValid: false,
 
-    _names: ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'Supplemental'], // Form section headers
+    _names: ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'], // Form section headers
     hasFile: computed.or('file', 'selectedFile'),
     isAddingPreprint: computed.not('editMode'),
     // Contributors on preprint
@@ -232,6 +233,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     doiValid: alias('validations.attrs.basicsDOI.isValid'),
     originalPublicationDateValid: alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
+
+    // Sloan waffles
+    sloanCoiInputEnabled: alias('features.sloanCoiInput'),
+    sloanDataInputEnabled: alias('features.sloanDataInput'),
+    sloanPreregInputEnabled: alias('features.sloanPreregInput'),
 
     // Basics fields that are being validated are abstract, license and doi
     // (title validated in upload section). If validation
