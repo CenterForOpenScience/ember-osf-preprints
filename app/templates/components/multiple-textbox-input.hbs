@@ -1,21 +1,21 @@
-<div class="multi-textbox row">
+<div class="row">
     {{#each textFields key="id" as |field index|}}
-        <div class="col-xs-9 text-line">
+        <div class="col-xs-11 p-t-xs">
             {{input class="form-control ember-text-field" type="text" placeholder=placeholder key-up=(perform onFieldChange index) value=field }} {{! key-up=(perform onFieldChange index) }}
         </div>
-        <div class="col-xs-3 text-line">
+        <div class="col-xs-1 p-t-xs">
             {{#if (and (gt textFields.length 1) (gt textFieldsLastIndex index) )}}
-                <button class="btn btn-danger btn-small" onClick={{action 'removeTextField' index}}>Remove</button>
+                <button class="btn btn-danger btn-small" onClick={{action 'removeTextField' index}}>{{fa-icon 'minus'}}</button>
             {{else}}
-                <button class="btn btn-success btn-small" onClick={{action 'addTextField'}}>Add</button>
+                <button class="btn btn-success btn-small" onClick={{action 'addTextField'}}>{{fa-icon 'plus'}}</button>
             {{/if}}
         </div>
     {{else}}
-        <div class="col-xs-9">
+        <div class="col-xs-11">
             {{input class="form-control ember-text-field" type="text" key-up=(perform onFieldChange index) placeholder=placeholder }} {{! key-up=(perform onFieldChange 0) }}
         </div>
-        <div class="col-xs-3">
-            <button class="btn btn-success btn-small" onClick={{action 'addTextField'}}>Add</button>
+        <div class="col-xs-1">
+            <button class="btn btn-success btn-small" onClick={{action 'addTextField'}}>{{fa-icon 'plus'}}</button>
         </div> 
     {{/each}}
 </div>

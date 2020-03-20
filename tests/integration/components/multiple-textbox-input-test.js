@@ -27,13 +27,13 @@ test('Can add and remove fields', function(assert) {
     this.$('.btn-danger')[0].click();
     assert.equal($('.ember-text-field').length, 3, 'has three text fields after single remove');
     assert.equal($('.btn-danger').length, 2, 'has two remove buttons after single remove');
-    assert.equal($('.ember-text-field')[0].value, "ni", 'old index 1 now index 0 after single remove');
-    assert.equal($('.ember-text-field')[2].value, "yon", 'old index 3 now index 2 after single remove');
+    assert.equal($('.ember-text-field')[0].value, 'ni', 'old index 1 now index 0 after single remove');
+    assert.equal($('.ember-text-field')[2].value, 'yon', 'old index 3 now index 2 after single remove');
     this.$('.btn-success')[0].click();
     assert.equal($('.ember-text-field').length, 4, 'has 4 text fields after single add');
     assert.equal($('.btn-danger').length, 3, 'has three remove buttons after single remove');
-    assert.equal($('.ember-text-field')[0].value, "ni", 'existing index 0 unchanged by add');
-    assert.equal($('.ember-text-field')[2].value, "yon", 'existing index 2 unchanged by add');
-    assert.equal($('.ember-text-field')[3].value, "", 'new text field is empty');
+    assert.equal($('.ember-text-field')[0].value, 'ni', 'existing index 0 unchanged by add');
+    assert.equal($('.ember-text-field')[2].value, 'yon', 'existing index 2 unchanged by add');
+    assert.equal($('.ember-text-field')[3].value, '', 'new text field is empty');
     assert.equal($('.btn-success').length, 1);
-})
+});

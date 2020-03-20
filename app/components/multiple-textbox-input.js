@@ -5,7 +5,6 @@ import Analytics from 'ember-osf/mixins/analytics';
 
 export default Component.extend(Analytics, {
     textFields: null, // passed in array of text fields on invocation, default to null
-    alphabet: 'abcdefghijklmnop',
     textFieldsLastIndex: computed('textFields.[]', function() {
         return this.get('textFields').length - 1;
     }),
