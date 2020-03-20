@@ -1673,6 +1673,13 @@ button.provider.inactive-provider {
     margin-top: 20px;
 }
 
+.multi-textbox.row {
+    margin-top: 10px;
+    .text-line {
+        margin-bottom: 10px;
+    }
+}
+
 img.current-provider {
     vertical-align: middle;
     height: 30px;
