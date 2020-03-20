@@ -919,15 +919,32 @@ hr {
     }
 }
 
-#supplemental-materials {
+#author-coi-assertion {
     span.required:after {
         content: "(required)";
         color: lighten(red, 30%);
         font-weight: normal;
         float: right;
     }
+
+    label.coiRadioLabel {
+        display: inline;
+        font-weight: normal;
+    }
+
+    label.coiRadioLabel:first-of-type {
+        margin-right: 15px;
+    }
+
+    .assertionDescription {
+        background-color: #eee;
+        color: #263947;
+        padding: 20px;
+        margin-bottom: 15px;
+    }
 }
 
+#supplemental-materials,
 #preprint-form-basics {
     span.required:after {
         content: "(required)";

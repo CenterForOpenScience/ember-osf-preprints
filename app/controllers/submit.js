@@ -212,6 +212,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     providerSaved: false,
     preprintSaved: false,
     submitAction: null,
+    // Auther assertion properties
+    // initialCoi: undefined,
 
     // Validation rules and changed states for form sections
 
@@ -523,6 +525,11 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     canWithdraw: computed('moderationType', 'model.reviewsState', function() {
         const state = this.get('model.reviewsState');
         return (state === PENDING || state === ACCEPTED) && this.get('isAdmin');
+    }),
+    // Assertion panels
+    hasCoi: computed('model.hasCoi', function() {
+        const modelHasCoi = this.get('model.hasCoi');
+        return modelHasCoi;
     }),
 
     actions: {
@@ -949,6 +956,13 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         },
         currentUserRemoved() {
             this.replaceRoute('index');
+        },
+
+        /*
+        Update Auther Assertion Sections
+        */
+        updateCoi(val) {
+            this.set('hasCoi', val);
         },
 
         /*
