@@ -135,7 +135,22 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{#with _names.[2] as |name|}}
+                    {{! ===== AUTHOR ASSERTIONS HERE ===== }}
+                    {{!-- Add logic for Data availability here --}}
+                    {{!-- No: Optional textarea
+                        NA: Disabled Textbox with placeholder
+                        Available: required multiple textbox for links
+                    --}}
+                    {{!-- Section explaining Data Avaliability here --}}
+
+                    {{!-- Add logic for Prereg here --}}
+                    {{!-- No: Optional textarea
+                        NA: Disabled Textbox with placeholder
+                        Available: required multiple textbox for links, dropdown to denote type
+                    --}}
+                    {{!-- Section explaining Prereg here --}}
+
+                    {{#with _names.[3] as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=model.tags abstract=model.description name=name valid=(not basicsChanged) license=model.license isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -186,7 +201,7 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{#with _names.[3] as |name|}}
+                    {{#with _names.[4] as |name|}}
                         {{#preprint-form-section id='preprint-form-subjects' editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -204,7 +219,7 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{#with _names.[4] as |name|}}
+                    {{#with _names.[5] as |name|}}
                         {{#preprint-form-section id='preprint-form-authors' editMode=editMode name=name allowOpen=uploadValid open=authorsOpen errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -233,7 +248,15 @@
                             {{/preprint-form-body}}
                         {{/preprint-form-section}}
                     {{/with}}
-                    {{#with _names.[5] as |name|}}
+
+                    {{! ==== COI HERE ==== }}
+                    {{!-- Add logic for COI here --}}
+                    {{!-- No: Disabled Textbox with placeholder
+                        Yes: Required textarea to describe
+                    --}}
+                    {{!-- Section explaining COI here --}}
+
+                    {{#with _names.[7] as |name|}}
                         {{#preprint-form-section id="supplemental-materials" editMode=editMode class="preprint-form-upload" name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle node=node name=name valid=(not supplementalChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
