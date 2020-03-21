@@ -766,6 +766,16 @@ $color-border-light: #DDDDDD;
 
 // FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE
 
+.text-input-row{
+    width: 100%;
+    padding: 10px;
+    display: inline-flex;
+
+    .btn {
+        margin-left: 5px;
+    }
+}
+
 .show-more-button {
     background: 0;
     border: 0;
