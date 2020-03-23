@@ -766,7 +766,12 @@ $color-border-light: #DDDDDD;
 
 // FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE
 
-.text-input-row{
+.text-fields-legend {
+    font-size: 16px;
+    border-bottom: none;
+}
+
+.text-input-row {
     width: 100%;
     padding: 10px;
     display: inline-flex;
