@@ -67,6 +67,19 @@ const BasicsValidations = buildValidations({
 
 });
 
+const COIValidations = buildValidations({
+    coiStatement: {
+        description: 'COI',
+        validators: [
+            validator('presence', true),
+            validator('length', {
+                min: 10,
+                max: 5000,
+            }),
+        ],
+    },
+});
+
 const PENDING = 'pending';
 const ACCEPTED = 'accepted';
 const REJECTED = 'rejected';
@@ -137,7 +150,7 @@ function subjectIdMap(subjectArray) {
 /**
  * @class Submit Controller
  */
-export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
+export default Controller.extend(Analytics, BasicsValidations, COIValidations, NodeActionsMixin, TaggableMixin, {
     features: service(),
     i18n: service(),
     store: service(),
@@ -236,6 +249,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     doiValid: alias('validations.attrs.basicsDOI.isValid'),
     originalPublicationDateValid: alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
 
+    coiStatementValid: alias('validations.attrs.coiStatement.isValid'),
+
     // Sloan waffles
     sloanCoiInputEnabled: alias('features.sloanCoiInput'),
     sloanDataInputEnabled: alias('features.sloanDataInput'),
@@ -284,6 +299,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Are there any unsaved changes in the basics section?
     basicsChanged: computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
 
+    // Are there any unsaved changes in the coi section?
+    coiChanged: computed.or('coiStatementChanged', 'coiOptionChanged'),
+
     moderationType: alias('currentProvider.reviewsWorkflow'),
 
     supplementalChanged: computed('supplementalProjectTitle', 'pendingSupplementalProjectTitle', 'selectedSupplementalProject', 'node', function() {
@@ -308,9 +326,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     // True if fields have been changed
-    hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
+    hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', 'coiChanged', function() {
         const preprintStarted = this.get('theme.isProvider') ? this.get('hasFile') : this.get('providerSaved');
-        const fieldsChanged = this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged');
+        const fieldsChanged = this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged') || this.get('coiChanged');
         return !this.get('preprintSaved') && ((this.get('isAddingPreprint') && preprintStarted) || fieldsChanged);
     }),
 
@@ -527,9 +545,19 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         return (state === PENDING || state === ACCEPTED) && this.get('isAdmin');
     }),
     // Assertion panels
+    coiStatement: computed('model.conflictOfInterestStatement', function() {
+        return this.get('model.conflictOfInterestStatement') || null;
+    }),
     hasCoi: computed('model.hasCoi', function() {
-        const modelHasCoi = this.get('model.hasCoi');
-        return modelHasCoi;
+        return this.get('model.hasCoi') || undefined;
+    }),
+    coiOptionChanged: computed('coiOption', 'model.hasCoi', function() {
+        const coiOption = this.get('coiOption');
+        return coiOption !== undefined && coiOption !== this.get('model.hasCoi');
+    }),
+    coiStatementChanged: computed('coiStatement', 'model.conflictOfInterestStatement', function() {
+        const coiStatement = this.get('coiStatement');
+        return coiStatement !== null && coiStatement !== undefined && coiStatement.trim() !== this.get('model.conflictOfInterestStatement');
     }),
 
     actions: {
@@ -661,7 +689,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             });
             // Closes section, so all panels closed if Upload section revisited
             this.get('panelActions').close('uploadNewFile');
-            this.send('next', this.get('_names.1'));
+            this.send('next', this.get('_names.2'));
         },
 
         createPreprintCopyFile() {
@@ -964,7 +992,39 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         updateCoi(val) {
             this.set('hasCoi', val);
         },
+        discardCoi() {
+            // Discards changes to basic fields. (No requests sent, front-end only.)
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Coi Changes`,
+                });
+            this.set('coiStatement', this.get('model.conflictOfInterestStatement'));
+        },
+        saveCoi() {
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue Coi Section`,
+                });
+            // Saves the description on the node
+            // then advances to next panel
+            if (!this.get('coiStatementValid')) {
+                return;
+            }
 
+            const model = this.get('model');
+
+            if (this.get('coiStatementChanged')) { model.set('conflictOfInterestStatement', this.get('coiStatement')); }
+
+            this.set('model', model);
+
+            model.save()
+                .then(this._moveFromBasics.bind(this))
+                .catch(this._failMoveFromBasics.bind(this));
+        },
         /*
         Supplemental Project Section
         */
@@ -1353,11 +1413,20 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     },
 
     _moveFromBasics() {
-        this.send('next', this.get('_names.2'));
+        this.send('next', this.get('_names.3'));
+    },
+
+    _moveFromCoi() {
+        this.send('next', this.get('_names.6'));
+    },
+
+    _failMoveFromCoi() {
+        // If model save fails, do not transition, save original vales
+        this.get('toast').error(this.get('i18n').t('submit.coi_error'));
     },
 
     _moveFromSupplemental() {
-        this.send('next', this.get('_names.5'));
+        this.send('next', this.get('_names.7'));
     },
 
     _failMoveFromBasics() {
@@ -1367,7 +1436,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     },
 
     _moveFromDisciplines() {
-        this.send('next', this.get('_names.3'));
+        this.send('next', this.get('_names.4'));
     },
 
     _failMoveFromDisciplines() {

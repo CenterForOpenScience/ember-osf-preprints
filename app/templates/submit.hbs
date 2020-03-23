@@ -252,7 +252,7 @@
                     {{! ==== COI HERE ==== }}
                     {{#with _names.[6] as |name|}}
                         {{#preprint-form-section id="author-coi-assertion" editMode=editMode name=name allowOpen=true canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode node=node name=name valid=true isValidationActive=hasOpened}}
+                            {{preprint-form-header editMode=editMode node=node name=name valid=coiStatementValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div role='radiogroup'>
                                     <input
@@ -263,7 +263,7 @@
                                         onchange={{action "updateCoi" true}}
                                         checked={{hasCoi}}
                                     >
-                                    <label class='coiRadioLabel' for="coiyes">{{t "submit.body.general.yes"}}</label>
+                                    <label class='coiRadioLabel' for="coiYes">{{t "submit.body.general.yes"}}</label>
                                     <input
                                         type="radio"
                                         id="coiNo"
@@ -277,7 +277,7 @@
                                 <br>
                                 {{#if hasCoi}}
                                     <label for='coiStatement'>Describe: <span class='required' /></label>
-                                    {{validated-input id='coiStatement' inputType='textarea' model=model valuePath='conflictOfInterestStatement' documentType=currentProvider.documentType value=model.conflictOfInterestStatement}}
+                                    {{validated-input id='coiStatement' inputType='textarea' model=this valuePath='coiStatement' documentType=currentProvider.documentType value=coiStatement}}
                                 {{else if (and (not hasCoi) (not-eq hasCoi undefined))}}
                                     <div class='form-group'>
                                         <input type="text" class='form-control' disabled={{true}} placeholder={{t "submit.body.conflict_of_interest.placeholder"}}>
@@ -289,8 +289,8 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">
-                                            <button {{action 'discardBasics'}} class="btn btn-default" disabled={{unless basicsChanged true}} >{{t "global.discard"}}</button>
-                                            <button {{action 'saveBasics'}} class="btn btn-primary" disabled={{unless basicsValid true}} >{{t "submit.body.save_continue"}}</button>
+                                            <button {{action 'discardCoi'}} class="btn btn-default" disabled={{unless coiStatementChanged true}} >{{t "global.discard"}}</button>
+                                            <button {{action 'saveCoi'}} class="btn btn-primary" disabled={{unless coiStatementValid true}} >{{t "submit.body.save_continue"}}</button>
                                         </div>
                                     </div>
                                 </div>
