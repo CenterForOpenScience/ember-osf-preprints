@@ -1,6 +1,5 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-import { task, timeout } from 'ember-concurrency';
 import Analytics from 'ember-osf/mixins/analytics';
 
 export default Component.extend(Analytics, {
@@ -10,13 +9,19 @@ export default Component.extend(Analytics, {
         return this.get('textFields').length - 1;
     }),
 
+    didReceiveAttrs() {
+        if (!this.textFields) {
+            this.set('textFields', [{ value: '' }]);
+        }
+    },
+
     actions: {
         addTextField() {
             let fields = this.get('textFields');
             if (!fields) {
-                fields = [$('.ember-text-field')[0].value];
+                fields = [{ value: '' }];
             }
-            fields.pushObject('');
+            fields.pushObject({ value: '' });
             this.set('textFields', fields);
         },
         removeTextField(index) {
@@ -25,13 +30,4 @@ export default Component.extend(Analytics, {
             this.set('textFields', fields);
         },
     },
-    onFieldChange: task(function* (index) {
-        yield timeout(200); // debounce
-        let fields = this.get('textFields');
-        if (!fields) {
-            fields = [$('.ember-text-field')[0].value];
-        }
-        fields[index] = $('.ember-text-field')[index].value;
-        this.set('textFields', fields);
-    }).restartable(),
 });

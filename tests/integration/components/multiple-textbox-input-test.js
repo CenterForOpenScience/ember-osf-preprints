@@ -4,7 +4,7 @@ import hbs from 'htmlbars-inline-precompile';
 moduleForComponent('multiple-textbox-input', 'Integration | Component | multiple textbox input', {
     integration: true,
     beforeEach() {
-        this.set('textFields', ['ichi', 'ni', 'san', 'yon']);
+        this.set('textFields', [{ value: 'ichi' }, { value: 'ni' }, { value: 'san' }, { value: 'yon' }]);
     },
 });
 
