@@ -1033,6 +1033,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
                 model.set('hasCoi', this.get('hasCoi'));
                 model.set('conflictOfInterestStatement', this.get('coiStatement'));
             } else {
+                model.set('conflictOfInterestStatement', undefined);
                 model.set('hasCoi', this.get('hasCoi'));
             }
 
