@@ -551,13 +551,24 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     hasCoi: computed('model.hasCoi', function() {
         return this.get('model.hasCoi') || undefined;
     }),
-    coiOptionChanged: computed('coiOption', 'model.hasCoi', function() {
-        const coiOption = this.get('coiOption');
-        return coiOption !== undefined && coiOption !== this.get('model.hasCoi');
+    coiOptionChanged: computed('hasCoi', 'model.hasCoi', function() {
+        const hasCoi = this.get('hasCoi');
+        return hasCoi !== undefined && hasCoi !== this.get('model.hasCoi');
     }),
     coiStatementChanged: computed('coiStatement', 'model.conflictOfInterestStatement', function() {
         const coiStatement = this.get('coiStatement');
         return coiStatement !== null && coiStatement !== undefined && coiStatement.trim() !== this.get('model.conflictOfInterestStatement');
+    }),
+    // Checks if the coi section is valid
+    coiValid: computed('coiStatementValid', 'hasCoi', function() {
+        const hasCoi = this.get('hasCoi');
+        const coiStatementValid = this.get('coiStatementValid');
+
+        if ((hasCoi && coiStatementValid) || hasCoi === false) {
+            return true;
+        }
+
+        return false;
     }),
 
     actions: {
@@ -1000,6 +1011,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
                     action: 'click',
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Coi Changes`,
                 });
+            this.set('hasCoi', this.get('model.hasCoi'));
             this.set('coiStatement', this.get('model.conflictOfInterestStatement'));
         },
         saveCoi() {
@@ -1011,19 +1023,24 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
                 });
             // Saves the description on the node
             // then advances to next panel
-            if (!this.get('coiStatementValid')) {
+            if (!this.get('coiValid')) {
                 return;
             }
 
             const model = this.get('model');
 
-            if (this.get('coiStatementChanged')) { model.set('conflictOfInterestStatement', this.get('coiStatement')); }
+            if (this.get('hasCoi')) {
+                model.set('hasCoi', this.get('hasCoi'));
+                model.set('conflictOfInterestStatement', this.get('coiStatement'));
+            } else {
+                model.set('hasCoi', this.get('hasCoi'));
+            }
 
             this.set('model', model);
 
             model.save()
-                .then(this._moveFromBasics.bind(this))
-                .catch(this._failMoveFromBasics.bind(this));
+                .then(this._moveFromCoi.bind(this))
+                .catch(this._failMoveFromCoi.bind(this));
         },
         /*
         Supplemental Project Section

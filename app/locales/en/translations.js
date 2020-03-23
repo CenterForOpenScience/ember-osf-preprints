@@ -220,6 +220,12 @@ export default {
             authors: {
                 paragraph: 'Add {{documentType.singular}} authors and order them appropriately. Search for authors that have OSF accounts or invite unregistered users to join by entering their email addresses.',
             },
+            conflict_of_interest: {
+                yes: 'Yes',
+                no: 'No',
+                placeholder: 'Author asserted no Conflict of Interest',
+                description: 'The Conflict of Interest (COI) assertion is made on behalf of all the authors listed for this {{documentType.singular}}. COI’s include: financial involvement in any entity such as honoraria, grants, speaking fees, employment, consultancies, stock ownership, expert testimony, and patents or licenses. COI’s can also include non-financial interests such as personal or professional relationships or pre-existing beliefs in the subject matter or materials discussed in this {{documentType.singular}}.',
+            },
             submit: {
                 information: {
                     line1: {
@@ -420,6 +426,7 @@ export default {
                 Discipline: 'Discipline',
                 Basics: 'Basics',
                 Authors: 'Authors',
+                COI: 'Conflict of Interest',
                 Submit: 'Submit',
                 Update: 'Update',
                 Supplemental: 'Supplemental materials',
