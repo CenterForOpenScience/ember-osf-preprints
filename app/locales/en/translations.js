@@ -49,11 +49,11 @@ export default {
         header: {
             last_edited: 'Last edited',
             authors_label: 'Authors',
-            withdrawn_on: 'Withdrawn on',
+            withdrawn_on: 'Withdrawn',
         },
         date_label: {
-            created_on: 'Created on',
-            submitted_on: 'Submitted on',
+            created_on: 'Created',
+            submitted_on: 'Submitted',
         },
         share: {
             download: 'Download',
@@ -472,6 +472,29 @@ export default {
                 moderator_feedback: 'Moderator feedback',
                 moderator: 'Moderator',
                 base: 'This {{documentType.singular}}',
+            },
+        },
+        'author-assertions': {
+            available: {
+                yes: 'Yes',
+                no: 'No',
+                available: 'Available',
+                not_applicable: 'Not applicable',
+            },
+            header_label: 'Author Assertions',
+            conflict_of_interest: {
+                title: 'Conflict of Interest',
+                no: 'Author asserted no Conflict of Interest',
+            },
+            public_data: {
+                title: 'Public Data',
+                no: 'No additional information provided by author.',
+                'not-applicable': 'Author asserted there is no data associated with this {{documentType.singular}}.',
+            },
+            prereg: {
+                title: 'Preregistration',
+                no: 'No additional information provided by author.',
+                'not-applicable': 'Author asserted that preregistration was not applicable because no data collection, extraction, or analysis is reported in this {{documentType.singular}}.',
             },
         },
         'search-preprints': {
