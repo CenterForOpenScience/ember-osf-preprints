@@ -291,6 +291,7 @@ export default {
         doi_error: 'Error saving DOI',
         basics_error: 'Error saving basics fields.',
         disciplines_error: 'Error saving discipline(s).',
+        coi_error: 'Error saving COI field(s).',
         search_contributors_error: 'Could not perform search query.',
         server_locked: 'You cannot change the paper service after a file has been uploaded',
         please_select_server: 'Please select a paper service before continuing',
