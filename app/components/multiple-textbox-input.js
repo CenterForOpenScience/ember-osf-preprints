@@ -4,6 +4,7 @@ import { task, timeout } from 'ember-concurrency';
 import Analytics from 'ember-osf/mixins/analytics';
 
 export default Component.extend(Analytics, {
+    legend: 'Text Fields',
     textFields: null, // passed in array of text fields on invocation, default to null
     textFieldsLastIndex: computed('textFields.[]', function() {
         return this.get('textFields').length - 1;

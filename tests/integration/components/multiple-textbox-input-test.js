@@ -10,13 +10,15 @@ moduleForComponent('multiple-textbox-input', 'Integration | Component | multiple
 
 test('it renders', function(assert) {
     this.render(hbs`{{multiple-textbox-input}}`);
+    assert.equal($('.text-fields-legend').text(), 'Text Fields', 'renders default legend');
     assert.equal($('.ember-text-field').length, 1, 'one text field by default');
     assert.equal($('.btn-danger').length, 0, 'no remove button for single text field');
     assert.equal($('.btn-success').length, 1, 'one add button');
 });
 
 test('it loads passed in fields', function(assert) {
-    this.render(hbs`{{multiple-textbox-input textFields=textFields}}`);
+    this.render(hbs`{{multiple-textbox-input textFields=textFields legend='Count in Japanese'}}`);
+    assert.equal($('legend').text(), 'Count in Japanese', 'renders passed in legend');
     assert.equal($('.ember-text-field').length, 4, 'has four text fields when passed in an array of four');
     assert.equal($('.btn-danger').length, 3, 'has three remove buttons when passed in array of four');
     assert.equal($('.btn-success').length, 1, 'one add button');
