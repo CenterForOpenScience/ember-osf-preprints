@@ -549,7 +549,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         return this.get('model.conflictOfInterestStatement') || null;
     }),
     hasCoi: computed('model.hasCoi', function() {
-        return this.get('model.hasCoi') || undefined;
+        return this.get('model.hasCoi');
     }),
     coiOptionChanged: computed('hasCoi', 'model.hasCoi', function() {
         const hasCoi = this.get('hasCoi');
@@ -1029,16 +1029,14 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
 
             const model = this.get('model');
 
-            if (this.get('hasCoi')) {
-                model.set('hasCoi', this.get('hasCoi'));
-                model.set('conflictOfInterestStatement', this.get('coiStatement'));
-            } else {
-                model.set('conflictOfInterestStatement', undefined);
-                model.set('hasCoi', this.get('hasCoi'));
+            if (!this.get('hasCoi')) {
+                this.set('coiStatement', undefined);
             }
 
-            this.set('model', model);
+            model.set('hasCoi', this.get('hasCoi'));
+            model.set('conflictOfInterestStatement', this.get('coiStatement'));
 
+            this.set('model', model);
             model.save()
                 .then(this._moveFromCoi.bind(this))
                 .catch(this._failMoveFromCoi.bind(this));

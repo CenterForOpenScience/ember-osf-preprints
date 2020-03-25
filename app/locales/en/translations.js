@@ -221,6 +221,7 @@ export default {
                 paragraph: 'Add {{documentType.singular}} authors and order them appropriately. Search for authors that have OSF accounts or invite unregistered users to join by entering their email addresses.',
             },
             conflict_of_interest: {
+                title: 'Conflict of Interest',
                 yes: 'Yes',
                 no: 'No',
                 placeholder: 'Author asserted no Conflict of Interest',

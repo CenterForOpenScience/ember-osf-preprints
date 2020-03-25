@@ -434,6 +434,7 @@
                                         <p class="text-danger">{{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
                                         <p class="text-danger">{{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
                                         <p class="text-danger">{{unless authorsValid (t "global.authors")}}</p>
+                                        <p class="text-danger">{{unless coiValid (t "global.body.submit.conflict_of_interest.title")}}</p>
                                     </span>
                                 {{/if}}
                                 <button class="btn btn-success btn-md m-t-md pull-right" disabled={{showValidationErrors}} {{action 'clickSubmit'}}>
