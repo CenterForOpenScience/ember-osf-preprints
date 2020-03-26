@@ -96,15 +96,7 @@
                 </ul>
             {{else if (eq name 'COI')}}
                 <p>
-                    <em class="m-r-md">
-                        {{t "submit.body.conflict_of_interest.title"}}: 
-                    </em>
-                    {{if hasCoi (t "submit.body.conflict_of_interest.yes") (t "submit.body.conflict_of_interest.no")}}
-                </p>
-                <p>
-                    <em class="m-r-md">
-                        {{t "submit.body.conflict_of_interest.coi_statement"}}: 
-                    </em>
+                    {{if hasCoi (t "submit.body.conflict_of_interest.yes") (t "submit.body.conflict_of_interest.no")}}: 
                     {{if (and hasCoi coiStatement) coiStatement (t "submit.body.conflict_of_interest.placeholder")}}
                 </p>
             {{/if}}
