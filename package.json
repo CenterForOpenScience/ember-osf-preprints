@@ -39,6 +39,7 @@
     "dropzone": "^5.3.0",
     "ember-ajax": "^2.0.1",
     "ember-autosave": "^2.0.1",
+    "ember-basic-dropdown": "^1.1.2",
     "ember-bootstrap": "^1.0.0-rc.1",
     "ember-browserify": "^1.2.0",
     "ember-cli": "2.18.0",

@@ -1,0 +1,9 @@
+<ul class='assertions-links'>
+    {{#each links as |href|}}
+        <li>
+            <a href={{href}} onclick={{action 'click' 'link' '{{analyticsName}}'}}>
+                {{href}}
+            </a>
+        </li>
+    {{/each}}
+</ul>
