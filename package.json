@@ -25,7 +25,7 @@
     "hotfix": "git flow hotfix start rename-me && npm --no-git-tag-version version patch && git ci package.json -m 'Bump version' && git br -m \"hotfix/$(npm version | head -1 | grep -o '[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+')\""
   },
   "devDependencies": {
-    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#0.27.0",
+    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#f815723f23a78e78e0c5cffcc12362dd0d2682ce",
     "@centerforopenscience/eslint-config": "^2.0.0",
     "@centerforopenscience/osf-style": "1.9.0",
     "autoprefixer": "^7.1.2",

@@ -924,7 +924,7 @@ hr {
         content: "(required)";
         color: lighten(red, 30%);
         font-weight: normal;
-        float: right;
+        margin-left: 5px;
     }
 
     label.coiRadioLabel {
@@ -941,6 +941,11 @@ hr {
         color: #263947;
         padding: 20px;
         margin-bottom: 15px;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 52px;
     }
 }
 

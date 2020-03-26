@@ -12,7 +12,8 @@
         (and basicsSaveState (eq name 'Basics'))
         (and authorsSaveState (eq name 'Authors'))
         (and supplementalSaveState (eq name 'Supplemental'))
-        (and disciplineSaveState (eq name 'Discipline')) )}}
+        (and disciplineSaveState (eq name 'Discipline'))
+        (and coiSaveState (eq name 'COI')) )}}
         <span class="text-success text-smaller m-r-md"> {{t "components.preprint-form-header.changes_saved"}} </span>
     {{/if}}
     {{#if showValidationIndicator}}
@@ -93,6 +94,19 @@
                         </li>
                     {{~/each}}
                 </ul>
+            {{else if (eq name 'COI')}}
+                <p>
+                    <em class="m-r-md">
+                        {{t "submit.body.conflict_of_interest.title"}}: 
+                    </em>
+                    {{if hasCoi (t "submit.body.conflict_of_interest.yes") (t "submit.body.conflict_of_interest.no")}}
+                </p>
+                <p>
+                    <em class="m-r-md">
+                        {{t "submit.body.conflict_of_interest.coi_statement"}}: 
+                    </em>
+                    {{if (and hasCoi coiStatement) coiStatement (t "submit.body.conflict_of_interest.placeholder")}}
+                </p>
             {{/if}}
         {{/if}}
 

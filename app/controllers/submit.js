@@ -200,6 +200,8 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     basicsSaveState: false,
     // True temporarily when changes have been saved in authors section
     authorsSaveState: false,
+    // True temporarily when changes have been saved in coi section
+    coiSaveState: false,
     // True temporarily when changes have been saved in the supplemental section
     supplementalSaveState: false,
     // Preprint node's osfStorage object
@@ -284,8 +286,11 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     // Does preprint have saved subjects?
     savedSubjects: computed.notEmpty('model.subjects'),
 
+    // Does preprint have saved coi?
+    savedCoi: computed.notEmpty('model.hasCoi'),
+
     // Preprint can be published once all required sections have been saved.
-    allSectionsValid: computed.and('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid'),
+    allSectionsValid: computed.and('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi'),
 
     // Are there any unsaved changes in the upload section?
     uploadChanged: computed.or('preprintFileChanged', 'titleChanged'),
@@ -563,7 +568,6 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     coiValid: computed('coiStatementValid', 'hasCoi', function() {
         const hasCoi = this.get('hasCoi');
         const coiStatementValid = this.get('coiStatementValid');
-
         if ((hasCoi && coiStatementValid) || hasCoi === false) {
             return true;
         }
@@ -1638,6 +1642,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
             disciplineSaveState: false,
             basicsSaveState: false,
             authorsSaveState: false,
+            coiSaveState: false,
             supplementalSaveState: false,
             osfStorageProvider: null,
             osfProviderLoaded: false,

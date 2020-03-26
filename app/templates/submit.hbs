@@ -252,7 +252,7 @@
                     {{! ==== COI HERE ==== }}
                     {{#with _names.[6] as |name|}}
                         {{#preprint-form-section id="author-coi-assertion" editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode node=node name=name valid=coiValid isValidationActive=hasOpened}}
+                            {{preprint-form-header editMode=editMode coiSaveState=coiSaveState hasCoi=model.hasCoi coiStatement=model.conflictOfInterestStatement node=node name=name valid=coiValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
                                 <div role='radiogroup'>
                                     <input
@@ -270,15 +270,16 @@
                                         name="coi"
                                         value="No"
                                         onchange={{action "updateCoi" false}}
-                                        checked={{if (and (not hasCoi) (not-eq hasCoi undefined)) true}}
+                                        checked={{if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null))) true}}
                                     >
                                     <label class='coiRadioLabel' for="coiNo">{{t "submit.body.conflict_of_interest.no"}}</label>
+                                    <span class='required' />
                                 </div>
                                 <br>
                                 {{#if hasCoi}}
-                                    <label for='coiStatement'>Describe: <span class='required' /></label>
+                                    <label for='coiStatement'>{{t "submit.body.conflict_of_interest.describe"}} <span class='required' /></label>
                                     {{validated-input id='coiStatement' inputType='textarea' model=this valuePath='coiStatement' documentType=currentProvider.documentType value=coiStatement}}
-                                {{else if (and (not hasCoi) (not-eq hasCoi undefined))}}
+                                {{else if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null)))}}
                                     <div class='form-group'>
                                         <input type="text" class='form-control' disabled={{true}} placeholder={{t "submit.body.conflict_of_interest.placeholder"}}>
                                     </div>
@@ -434,7 +435,7 @@
                                         <p class="text-danger">{{unless savedAbstract (t "submit.body.submit.invalid.basics")}}</p>
                                         <p class="text-danger">{{unless savedSubjects (t "submit.body.submit.invalid.discipline")}}</p>
                                         <p class="text-danger">{{unless authorsValid (t "global.authors")}}</p>
-                                        <p class="text-danger">{{unless coiValid (t "global.body.submit.conflict_of_interest.title")}}</p>
+                                        <p class="text-danger">{{unless savedCoi (t "submit.body.conflict_of_interest.title")}}</p>
                                     </span>
                                 {{/if}}
                                 <button class="btn btn-success btn-md m-t-md pull-right" disabled={{showValidationErrors}} {{action 'clickSubmit'}}>

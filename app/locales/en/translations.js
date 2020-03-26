@@ -224,8 +224,10 @@ export default {
                 title: 'Conflict of Interest',
                 yes: 'Yes',
                 no: 'No',
+                describe: 'Describe: ',
                 placeholder: 'Author asserted no Conflict of Interest',
-                description: 'The Conflict of Interest (COI) assertion is made on behalf of all the authors listed for this {{documentType.singular}}. COI’s include: financial involvement in any entity such as honoraria, grants, speaking fees, employment, consultancies, stock ownership, expert testimony, and patents or licenses. COI’s can also include non-financial interests such as personal or professional relationships or pre-existing beliefs in the subject matter or materials discussed in this {{documentType.singular}}.',
+                coi_statement: 'Conflict of Interest statement',
+                description: 'The Conflict of Interest (COI) assertion is made on behalf of all the authors listed for this {{documentType.singular}}. COIs include: financial involvement in any entity such as honoraria, grants, speaking fees, employment, consultancies, stock ownership, expert testimony, and patents or licenses. COIs can also include non-financial interests such as personal or professional relationships or pre-existing beliefs in the subject matter or materials discussed in this {{documentType.singular}}.',
             },
             submit: {
                 information: {
