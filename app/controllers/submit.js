@@ -237,7 +237,15 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     // Must have year and copyrightHolders filled if those are required by the licenseType selected
     licenseValid: false,
 
-    _names: ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'], // Form section headers
+    _names: computed('shouldShowCoiPanel', 'shouldShowAuthorAssertionsPanel', function() {
+        if (this.get('shouldShowCoiPanel')) {
+            return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
+        }
+        if (this.get('shouldShowCoiPanel') && this.get('shouldShowAuthorAssertionsPanel')) {
+            return ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
+        }
+        return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'Supplemental'];
+    }),
     hasFile: computed.or('file', 'selectedFile'),
     isAddingPreprint: computed.not('editMode'),
     // Contributors on preprint
@@ -257,6 +265,16 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     sloanCoiInputEnabled: alias('features.sloanCoiInput'),
     sloanDataInputEnabled: alias('features.sloanDataInput'),
     sloanPreregInputEnabled: alias('features.sloanPreregInput'),
+
+    // Variable controlled by sloan waffle flags
+    shouldShowAuthorAssertionsPanel: computed('sloanDataInputEnabled', 'sloanPreregInputEnabled', 'currentProvider.inSloanStudy', function () {
+        if (!this.get('currentProvider.inSloanStudy')) {
+            return false;
+        }
+        return this.get('sloanPreregInputEnabled') || this.get('sloanDataInputEnabled');
+    }),
+
+    shouldShowCoiPanel: computed.and('sloanCoiInputEnabled', 'currentProvider.inSloanStudy'),
 
     // Basics fields that are being validated are abstract, license and doi
     // (title validated in upload section). If validation
@@ -704,7 +722,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
             });
             // Closes section, so all panels closed if Upload section revisited
             this.get('panelActions').close('uploadNewFile');
-            this.send('next', this.get('_names.2'));
+            this.send('next', this.get('_names.1'));
         },
 
         createPreprintCopyFile() {
@@ -1433,11 +1451,11 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     },
 
     _moveFromBasics() {
-        this.send('next', this.get('_names.3'));
+        this.send('next', 'Basics');
     },
 
     _moveFromCoi() {
-        this.send('next', this.get('_names.6'));
+        this.send('next', 'COI');
     },
 
     _failMoveFromCoi() {
@@ -1446,7 +1464,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     },
 
     _moveFromSupplemental() {
-        this.send('next', this.get('_names.7'));
+        this.send('next', 'Supplemental');
     },
 
     _failMoveFromBasics() {
@@ -1456,7 +1474,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     },
 
     _moveFromDisciplines() {
-        this.send('next', this.get('_names.4'));
+        this.send('next', 'Discipline');
     },
 
     _failMoveFromDisciplines() {

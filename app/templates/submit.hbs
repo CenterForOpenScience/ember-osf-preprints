@@ -15,7 +15,7 @@
             <div class="col-xs-12 col-md-10 col-md-offset-1 ">
                 {{#cp-panels accordion=true}}
                     {{#if (not (or editMode theme.isProvider))}}
-                        {{#with _names.[0] as |name|}}
+                        {{#with "Server" as |name|}}
                             {{#preprint-form-section id='preprint-form-server' editMode=editMode canEdit=canEdit open=true name=name allowOpen=(not uploadValid) denyOpenMessage=(t 'submit.server_locked') errorAction=(action 'error')}}
                                 {{preprint-form-header editMode=editMode serverSaveState=serverSaveState showValidationIndicator=true name=name isValidationActive=(and providerSaved (not uploadValid)) currentProvider=currentProvider valid=(not providerChanged)}}
                                 {{#preprint-form-body}}
@@ -51,7 +51,7 @@
                         {{/with}}
                     {{/if}}
 
-                    {{#with _names.[1] as |name|}}
+                    {{#with "File" as |name|}}
                         {{#preprint-form-section
                             editMode=editMode
                             class=(concat 'preprint-form-upload' (if uploadInProgress ' upload-in-progress'))
@@ -136,21 +136,23 @@
                     {{/with}}
 
                     {{! ===== AUTHOR ASSERTIONS HERE ===== }}
-                    {{!-- Add logic for Data availability here --}}
-                    {{!-- No: Optional textarea
-                        NA: Disabled Textbox with placeholder
-                        Available: required multiple textbox for links
-                    --}}
-                    {{!-- Section explaining Data Avaliability here --}}
+                    {{#if shouldShowAuthorAssertionsPanel}}
+                        {{!-- Add logic for Data availability here --}}
+                        {{!-- No: Optional textarea
+                            NA: Disabled Textbox with placeholder
+                            Available: required multiple textbox for links
+                        --}}
+                        {{!-- Section explaining Data Avaliability here --}}
 
-                    {{!-- Add logic for Prereg here --}}
-                    {{!-- No: Optional textarea
-                        NA: Disabled Textbox with placeholder
-                        Available: required multiple textbox for links, dropdown to denote type
-                    --}}
-                    {{!-- Section explaining Prereg here --}}
+                        {{!-- Add logic for Prereg here --}}
+                        {{!-- No: Optional textarea
+                            NA: Disabled Textbox with placeholder
+                            Available: required multiple textbox for links, dropdown to denote type
+                        --}}
+                        {{!-- Section explaining Prereg here --}}
+                    {{/if}}
 
-                    {{#with _names.[3] as |name|}}
+                    {{#with "Basics" as |name|}}
                         {{#preprint-form-section id='preprint-form-basics' editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode doi=model.doi basicsSaveState=basicsSaveState tags=model.tags abstract=model.description name=name valid=(not basicsChanged) license=model.license isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -201,7 +203,7 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{#with _names.[4] as |name|}}
+                    {{#with "Discipline" as |name|}}
                         {{#preprint-form-section id='preprint-form-subjects' editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode disciplineSaveState=disciplineSaveState subjects=disciplineReduced name=name valid=(not disciplineChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -219,7 +221,7 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{#with _names.[5] as |name|}}
+                    {{#with "Authors" as |name|}}
                         {{#preprint-form-section id='preprint-form-authors' editMode=editMode name=name allowOpen=uploadValid open=authorsOpen errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode authorsSaveState=authorsSaveState authors=contributors name=name valid=authorsValid isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
@@ -250,56 +252,58 @@
                     {{/with}}
 
                     {{! ==== COI HERE ==== }}
-                    {{#with _names.[6] as |name|}}
-                        {{#preprint-form-section id="author-coi-assertion" editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
-                            {{preprint-form-header editMode=editMode coiSaveState=coiSaveState hasCoi=model.hasCoi coiStatement=model.conflictOfInterestStatement node=node name=name valid=coiValid isValidationActive=hasOpened}}
-                            {{#preprint-form-body}}
-                                <div role='radiogroup'>
-                                    <input
-                                        type="radio"
-                                        id="coiYes"
-                                        name="coi"
-                                        value="Yes"
-                                        onchange={{action "updateCoi" true}}
-                                        checked={{hasCoi}}
-                                    >
-                                    <label class='coiRadioLabel' for="coiYes">{{t "submit.body.conflict_of_interest.yes"}}</label>
-                                    <input
-                                        type="radio"
-                                        id="coiNo"
-                                        name="coi"
-                                        value="No"
-                                        onchange={{action "updateCoi" false}}
-                                        checked={{if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null))) true}}
-                                    >
-                                    <label class='coiRadioLabel' for="coiNo">{{t "submit.body.conflict_of_interest.no"}}</label>
-                                    <span class='required' />
-                                </div>
-                                <br>
-                                {{#if hasCoi}}
-                                    <label for='coiStatement'>{{t "submit.body.conflict_of_interest.describe"}} <span class='required' /></label>
-                                    {{validated-input id='coiStatement' inputType='textarea' model=this valuePath='coiStatement' documentType=currentProvider.documentType value=coiStatement}}
-                                {{else if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null)))}}
-                                    <div class='form-group'>
-                                        <input type="text" class='form-control' disabled={{true}} placeholder={{t "submit.body.conflict_of_interest.placeholder"}}>
+                    {{#if shouldShowCoiPanel}}
+                        {{#with "COI" as |name|}}
+                            {{#preprint-form-section id="author-coi-assertion" editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
+                                {{preprint-form-header editMode=editMode coiSaveState=coiSaveState hasCoi=model.hasCoi coiStatement=model.conflictOfInterestStatement node=node name=name valid=coiValid isValidationActive=hasOpened}}
+                                {{#preprint-form-body}}
+                                    <div role='radiogroup'>
+                                        <input
+                                            type="radio"
+                                            id="coiYes"
+                                            name="coi"
+                                            value="Yes"
+                                            onchange={{action "updateCoi" true}}
+                                            checked={{hasCoi}}
+                                        >
+                                        <label class='coiRadioLabel' for="coiYes">{{t "submit.body.conflict_of_interest.yes"}}</label>
+                                        <input
+                                            type="radio"
+                                            id="coiNo"
+                                            name="coi"
+                                            value="No"
+                                            onchange={{action "updateCoi" false}}
+                                            checked={{if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null))) true}}
+                                        >
+                                        <label class='coiRadioLabel' for="coiNo">{{t "submit.body.conflict_of_interest.no"}}</label>
+                                        <span class='required' />
                                     </div>
-                                {{/if}}
-                                <div class="assertionDescription">
-                                    {{t "submit.body.conflict_of_interest.description" documentType=currentProvider.documentType}}
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="pull-right">
-                                            <button {{action 'discardCoi'}} class="btn btn-default" disabled={{unless coiChanged true}} >{{t "global.discard"}}</button>
-                                            <button {{action 'saveCoi'}} class="btn btn-primary" disabled={{unless coiValid true}} >{{t "submit.body.save_continue"}}</button>
+                                    <br>
+                                    {{#if hasCoi}}
+                                        <label for='coiStatement'>{{t "submit.body.conflict_of_interest.describe"}} <span class='required' /></label>
+                                        {{validated-input id='coiStatement' inputType='textarea' model=this valuePath='coiStatement' documentType=currentProvider.documentType value=coiStatement}}
+                                    {{else if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null)))}}
+                                        <div class='form-group'>
+                                            <input type="text" class='form-control' disabled={{true}} placeholder={{t "submit.body.conflict_of_interest.placeholder"}}>
+                                        </div>
+                                    {{/if}}
+                                    <div class="assertionDescription">
+                                        {{t "submit.body.conflict_of_interest.description" documentType=currentProvider.documentType}}
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="pull-right">
+                                                <button {{action 'discardCoi'}} class="btn btn-default" disabled={{unless coiChanged true}} >{{t "global.discard"}}</button>
+                                                <button {{action 'saveCoi'}} class="btn btn-primary" disabled={{unless coiValid true}} >{{t "submit.body.save_continue"}}</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {{/preprint-form-body}}
-                        {{/preprint-form-section}}
-                    {{/with}}
+                                {{/preprint-form-body}}
+                            {{/preprint-form-section}}
+                        {{/with}}
+                    {{/if}}
 
-                    {{#with _names.[7] as |name|}}
+                    {{#with "Supplemental" as |name|}}
                         {{#preprint-form-section id="supplemental-materials" editMode=editMode class="preprint-form-upload" name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                             {{preprint-form-header editMode=editMode supplementalSaveState=supplementalSaveState supplementalProjectTitle=supplementalProjectTitle node=node name=name valid=(not supplementalChanged) isValidationActive=hasOpened}}
                             {{#preprint-form-body}}
