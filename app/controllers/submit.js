@@ -308,7 +308,16 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     savedCoi: computed.notEmpty('model.hasCoi'),
 
     // Preprint can be published once all required sections have been saved.
-    allSectionsValid: computed.and('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi'),
+    allSectionsValid: computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi', function() {
+        if (this.get('shouldShowCoiPanel')) {
+            return this.get('savedTitle') && this.get('savedFile')
+            && this.get('savedAbstract') && this.get('savedSubjects')
+            && this.get('authorsValid') && this.get('savedCoi');
+        }
+        return this.get('savedTitle') && this.get('savedFile')
+            && this.get('savedAbstract') && this.get('savedSubjects')
+            && this.get('authorsValid');
+    }),
 
     // Are there any unsaved changes in the upload section?
     uploadChanged: computed.or('preprintFileChanged', 'titleChanged'),
