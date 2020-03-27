@@ -264,7 +264,6 @@
                                             name="coi"
                                             value="Yes"
                                             onchange={{action "updateCoi" true}}
-                                            checked={{hasCoi}}
                                         >
                                         <label class='coiRadioLabel' for="coiYes">{{t "submit.body.conflict_of_interest.yes"}}</label>
                                         <input
@@ -284,7 +283,7 @@
                                         {{validated-input id='coiStatement' inputType='textarea' model=this valuePath='coiStatement' documentType=currentProvider.documentType value=coiStatement}}
                                     {{else if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null)))}}
                                         <div class='form-group'>
-                                            <input type="text" class='form-control' disabled={{true}} placeholder={{t "submit.body.conflict_of_interest.placeholder"}}>
+                                            <input type="text" class='form-control' disabled placeholder={{t "submit.body.conflict_of_interest.placeholder"}}>
                                         </div>
                                     {{/if}}
                                     <div class="assertionDescription">
