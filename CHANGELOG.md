@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.130.4] - 2020-03-27
+## Changed
+- update assets
+
 ## [0.130.3] - 2020-02-14
 ## Fixed
 - add `swiss` to list of TLDs in email regex in unregistered-contributor-form component
