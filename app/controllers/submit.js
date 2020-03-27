@@ -237,15 +237,6 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     // Must have year and copyrightHolders filled if those are required by the licenseType selected
     licenseValid: false,
 
-    _names: computed('shouldShowCoiPanel', 'shouldShowAuthorAssertionsPanel', function() {
-        if (this.get('shouldShowCoiPanel') && !this.get('shouldShowAuthorAssertionsPanel')) {
-            return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
-        }
-        if (this.get('shouldShowCoiPanel') && this.get('shouldShowAuthorAssertionsPanel')) {
-            return ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
-        }
-        return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'Supplemental'];
-    }),
     hasFile: computed.or('file', 'selectedFile'),
     isAddingPreprint: computed.not('editMode'),
     // Contributors on preprint
@@ -265,14 +256,6 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     sloanCoiInputEnabled: alias('features.sloanCoiInput'),
     sloanDataInputEnabled: alias('features.sloanDataInput'),
     sloanPreregInputEnabled: alias('features.sloanPreregInput'),
-
-    // Variable controlled by sloan waffle flags
-    shouldShowAuthorAssertionsPanel: computed('sloanDataInputEnabled', 'sloanPreregInputEnabled', 'currentProvider.inSloanStudy', function () {
-        if (!this.get('currentProvider.inSloanStudy')) {
-            return false;
-        }
-        return this.get('sloanPreregInputEnabled') || this.get('sloanDataInputEnabled');
-    }),
 
     shouldShowCoiPanel: computed.and('sloanCoiInputEnabled', 'currentProvider.inSloanStudy'),
 
@@ -307,18 +290,6 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     // Does preprint have saved coi?
     savedCoi: computed.notEmpty('model.hasCoi'),
 
-    // Preprint can be published once all required sections have been saved.
-    allSectionsValid: computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi', function() {
-        if (this.get('shouldShowCoiPanel')) {
-            return this.get('savedTitle') && this.get('savedFile')
-            && this.get('savedAbstract') && this.get('savedSubjects')
-            && this.get('authorsValid') && this.get('savedCoi');
-        }
-        return this.get('savedTitle') && this.get('savedFile')
-            && this.get('savedAbstract') && this.get('savedSubjects')
-            && this.get('authorsValid');
-    }),
-
     // Are there any unsaved changes in the upload section?
     uploadChanged: computed.or('preprintFileChanged', 'titleChanged'),
 
@@ -335,6 +306,36 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     coiChanged: computed.or('coiStatementChanged', 'coiOptionChanged'),
 
     moderationType: alias('currentProvider.reviewsWorkflow'),
+
+    _names: computed('shouldShowCoiPanel', 'shouldShowAuthorAssertionsPanel', function() {
+        if (this.get('shouldShowCoiPanel') && !this.get('shouldShowAuthorAssertionsPanel')) {
+            return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
+        }
+        if (this.get('shouldShowCoiPanel') && this.get('shouldShowAuthorAssertionsPanel')) {
+            return ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
+        }
+        return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'Supplemental'];
+    }),
+
+    // Variable controlled by sloan waffle flags
+    shouldShowAuthorAssertionsPanel: computed('sloanDataInputEnabled', 'sloanPreregInputEnabled', 'currentProvider.inSloanStudy', function () {
+        if (!this.get('currentProvider.inSloanStudy')) {
+            return false;
+        }
+        return this.get('sloanPreregInputEnabled') || this.get('sloanDataInputEnabled');
+    }),
+
+    // Preprint can be published once all required sections have been saved.
+    allSectionsValid: computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi', function() {
+        if (this.get('shouldShowCoiPanel')) {
+            return this.get('savedTitle') && this.get('savedFile')
+            && this.get('savedAbstract') && this.get('savedSubjects')
+            && this.get('authorsValid') && this.get('savedCoi');
+        }
+        return this.get('savedTitle') && this.get('savedFile')
+            && this.get('savedAbstract') && this.get('savedSubjects')
+            && this.get('authorsValid');
+    }),
 
     supplementalChanged: computed('supplementalProjectTitle', 'pendingSupplementalProjectTitle', 'selectedSupplementalProject', 'node', function() {
         const savedTitle = this.get('supplementalProjectTitle');
