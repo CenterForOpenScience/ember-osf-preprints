@@ -238,7 +238,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     licenseValid: false,
 
     _names: computed('shouldShowCoiPanel', 'shouldShowAuthorAssertionsPanel', function() {
-        if (this.get('shouldShowCoiPanel')) {
+        if (this.get('shouldShowCoiPanel') && !this.get('shouldShowAuthorAssertionsPanel')) {
             return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
         }
         if (this.get('shouldShowCoiPanel') && this.get('shouldShowAuthorAssertionsPanel')) {
