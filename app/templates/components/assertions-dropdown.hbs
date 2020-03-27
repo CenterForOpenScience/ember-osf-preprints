@@ -1,5 +1,6 @@
 {{#basic-dropdown
     onOpen=(action 'onOpen' assertionName)
+    calculatePosition=(action 'calculatePosition')
     as |dropdown|
 }}
     {{#dropdown.trigger class='assertions-dropdown-trigger'}}
