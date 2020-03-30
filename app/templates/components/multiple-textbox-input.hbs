@@ -1,0 +1,15 @@
+<fieldset>
+    <legend class="text-fields-legend">{{legend}}</legend>
+    <div class="row">
+        {{#each textFields key="id" as |field index|}}
+            <div class="col-xs-12 p-t-xs text-input-row">
+                {{input class="form-control ember-text-field" type="text" placeholder=placeholder value=field.value }}
+                {{#if (and (gt textFields.length 1) (gt textFieldsLastIndex index) )}}
+                    <button class="btn btn-danger btn-small" onClick={{action 'removeTextField' index}} aria-label='Remove text field'>{{fa-icon 'minus'}}</button>
+                {{else}}
+                    <button class="btn btn-success btn-small" onClick={{action 'addTextField'}} aria-label='Add another text field'>{{fa-icon 'plus'}}</button>
+                {{/if}}
+            </div>
+        {{/each}}
+    </div>
+</fieldset>
