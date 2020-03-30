@@ -227,8 +227,6 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     providerSaved: false,
     preprintSaved: false,
     submitAction: null,
-    // Auther assertion properties
-    // initialCoi: undefined,
 
     // Validation rules and changed states for form sections
 
@@ -1030,7 +1028,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         },
 
         /*
-        Update Auther Assertion Sections
+        Update Author Assertion Sections
         */
         updateCoi(val) {
             this.set('hasCoi', val);
