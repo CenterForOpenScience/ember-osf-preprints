@@ -325,14 +325,11 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
 
     // Preprint can be published once all required sections have been saved.
     allSectionsValid: computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi', function() {
+        const allSectionsValid = this.get('savedTitle') && this.get('savedFile') &&  this.get('savedAbstract') && this.get('savedSubjects') && this.get('authorsValid');
         if (this.get('shouldShowCoiPanel')) {
-            return this.get('savedTitle') && this.get('savedFile')
-            && this.get('savedAbstract') && this.get('savedSubjects')
-            && this.get('authorsValid') && this.get('savedCoi');
+            return allSectionsValid && this.get('savedCoi');
         }
-        return this.get('savedTitle') && this.get('savedFile')
-            && this.get('savedAbstract') && this.get('savedSubjects')
-            && this.get('authorsValid');
+        return allSectionsValid;
     }),
 
     supplementalChanged: computed('supplementalProjectTitle', 'pendingSupplementalProjectTitle', 'selectedSupplementalProject', 'node', function() {
