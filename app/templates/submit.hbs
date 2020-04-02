@@ -264,6 +264,7 @@
                                             name="coi"
                                             value="Yes"
                                             onchange={{action "updateCoi" true}}
+                                            checked={{eq hasCoi true}}
                                         >
                                         <label class='coiRadioLabel' for="coiYes">{{t "submit.body.conflict_of_interest.yes"}}</label>
                                         <input
@@ -272,7 +273,7 @@
                                             name="coi"
                                             value="No"
                                             onchange={{action "updateCoi" false}}
-                                            checked={{if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null))) true}}
+                                            checked={{eq hasCoi false}}
                                         >
                                         <label class='coiRadioLabel' for="coiNo">{{t "submit.body.conflict_of_interest.no"}}</label>
                                         <span class='required' />
