@@ -16,6 +16,7 @@ export default Component.extend(Analytics, {
             this.set('textFields', valuesFromModel.map((x) => {
                 return { value: x };
             }));
+            return;
         }
         this.set('textFields', [{ value: '' }]);
     },
