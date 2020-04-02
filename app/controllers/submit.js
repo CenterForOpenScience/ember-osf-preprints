@@ -80,6 +80,17 @@ const COIValidations = buildValidations({
     },
 });
 
+// const AuthorAssertionsValidations = buildValidations({
+//     hasDataLinks: {
+//         description: 'hasDataLinks',
+//         validators: [
+//             validator('inclusion', {
+//                 in: ['available', 'no', 'not_applicable']
+//             })
+//         ]
+//     },
+// });
+
 const PENDING = 'pending';
 const ACCEPTED = 'accepted';
 const REJECTED = 'rejected';
@@ -301,7 +312,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     basicsChanged: computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
 
     // Are there any unsaved changes in the coi section?
-    coiChanged: computed.or('coiStatementChanged', 'coiOptionChanged'),
+    coiChanged: computed.or('coiStatementChanged', 'hasCoiChanged'),
 
     moderationType: alias('currentProvider.reviewsWorkflow'),
 
@@ -579,7 +590,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     hasCoi: computed('model.hasCoi', function() {
         return this.get('model.hasCoi');
     }),
-    coiOptionChanged: computed('hasCoi', 'model.hasCoi', function() {
+    hasCoiChanged: computed('hasCoi', 'model.hasCoi', function() {
         const hasCoi = this.get('hasCoi');
         return hasCoi !== undefined && hasCoi !== this.get('model.hasCoi');
     }),
@@ -596,6 +607,49 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         }
 
         return false;
+    }),
+    hasDataLinks: computed('model.hasDataLinks', function() {
+        return this.get('model.hasDataLinks');
+    }),
+    hasDataLinksChanged: computed('hasDataLinks', 'model.hasDataLinks', function() {
+        const hasDataLinks = this.get('hasDataLinks');
+        return hasDataLinks !== this.get('model.hasDataLinks');
+    }),
+    dataLinks: computed('model.dataLinks', function() {
+        return this.get('model.dataLinks');
+    }),
+    dataLinksChanged: computed('dataLinks', 'model.dataLinks', function() {
+        const dataLinks = this.get('dataLinks');
+        return dataLinks !== this.get('model.dataLinks');
+    }),
+    whyNoData: computed('model.whyNoData', function(){
+        return this.get('model.whyNoData');
+    }),
+    whyNoDataChanged: computed('whyNoData', 'model.whyNoData', function() {
+        const whyNoData = this.get('whyNoData');
+        return whyNoData !== this.get('model.whyNoData');
+    }),
+    authorAssertionsChanged: computed('hasDataLinksChanged', 'dataLinksChanged', 'whyNoDataChanged', function() {
+        return this.get('hasDataLinksChanged') || this.get('dataLinksChanged') || this.get('whyNoDataChanged');
+    }),
+    dataLinksValid: computed('dataLinks', function() {
+        const dataLinks = this.get('dataLinks');
+        if (dataLinks && dataLinks.length > 0) {
+            return true;
+        }
+        return false;
+    }),
+    publicDataSectionValid: computed('hasDataLinks','dataLinksValid', function() {
+        const hasDataLinks = this.get('hasDataLinks');
+        if (hasDataLinks === 'no' || hasDataLinks === 'not_applicable') {
+            return true;
+        } else if (hasDataLinks === 'available') {
+            return this.get('dataLinksValid');
+        }
+        return false;
+    }),
+    authorAssertionsValid: computed('publicDataSectionValid', function() {
+        return this.get('publicDataSectionValid');
     }),
 
     actions: {
@@ -1027,7 +1081,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         /*
         Update Author Assertion Sections
         */
-        updateCoi(val) {
+        updateHasCoi(val) {
             this.set('hasCoi', val);
         },
         discardCoi() {
@@ -1067,6 +1121,9 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
             model.save()
                 .then(this._moveFromCoi.bind(this))
                 .catch(this._failMoveFromCoi.bind(this));
+        },
+        updateHasDataLinks(value) {
+            this.set('hasDataLinks', value);
         },
         /*
         Supplemental Project Section
@@ -1315,6 +1372,28 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
             this.set('selectedProvider', this.get('currentProvider'));
             this.set('providerChanged', false);
         },
+        saveAuthorAssertions() {
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue Author Assertions Section`,
+                });
+            const model = this.get('model');
+            model.set('hasDataLinks', this.get('hasDataLinks'));
+            model.set('dataLinks', this.get('dataLinks'));
+            model.set('whyNoData', this.get('whyNoData'));
+            model.save().then(
+                    this._moveFromAuthorAssertions.bind(this)
+                ).catch(
+                    this._failMoveFromAuthorAssertions.bind(this)
+                );
+        },
+        discardAuthorAssertions() {
+            this.set('hasDataLinks', this.get('model.hasDataLinks'));
+            this.set('dataLinks', this.get('model.dataLinks'));
+            this.set('whyNoData', this.get('model.whyNoData'));
+        },
     },
 
     _setCurrentProvider() {
@@ -1458,7 +1537,12 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     _moveFromBasics() {
         this.send('next', 'Basics');
     },
-
+    _moveFromAuthorAssertions() {
+        this.send('next', 'Assertions');
+    },
+    _failMoveFromAuthorAssertions() {
+        this.get('toast').error(this.get('i18n').t('submit.author_assertions_error'));
+    },
     _moveFromCoi() {
         this.send('next', 'COI');
     },

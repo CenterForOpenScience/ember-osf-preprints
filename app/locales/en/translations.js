@@ -295,6 +295,7 @@ export default {
         basics_error: 'Error saving basics fields.',
         disciplines_error: 'Error saving discipline(s).',
         coi_error: 'Error saving COI field(s).',
+        author_assertions_error: 'Error saving Author Assertions field(s).',
         search_contributors_error: 'Could not perform search query.',
         server_locked: 'You cannot change the paper service after a file has been uploaded',
         please_select_server: 'Please select a paper service before continuing',
@@ -430,6 +431,7 @@ export default {
                 Discipline: 'Discipline',
                 Basics: 'Basics',
                 Authors: 'Authors',
+                Assertions: 'Assertions',
                 COI: 'Conflict of Interest',
                 Submit: 'Submit',
                 Update: 'Update',
@@ -486,6 +488,7 @@ export default {
             },
         },
         'author-assertions': {
+            describe: 'Describe',
             available: {
                 yes: 'Yes',
                 no: 'No',
@@ -498,9 +501,11 @@ export default {
                 no: 'Author asserted no Conflict of Interest',
             },
             public_data: {
+                linksToData: 'Links to data:',
                 title: 'Public Data',
                 no: 'No additional information provided by author.',
                 'not-applicable': 'Author asserted there is no data associated with this {{documentType.singular}}.',
+                description: 'Data refers to raw and/or processed information (quantitative or qualitative) used for the analyses, case studies, and/or descriptive interpretation in the {{documentType.singular}}. Public data could include data posted to open-access repositories, public archival library collection, or government archive. For data that is available under limited circumstances (e.g., after signing a data sharing agreement), choose the ‘No’ option and use the comment box to explain how others could access the data.',
             },
             prereg: {
                 title: 'Preregistration',

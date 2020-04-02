@@ -137,19 +137,96 @@
 
                     {{! ===== AUTHOR ASSERTIONS HERE ===== }}
                     {{#if shouldShowAuthorAssertionsPanel}}
-                        {{!-- Add logic for Data availability here --}}
-                        {{!-- No: Optional textarea
-                            NA: Disabled Textbox with placeholder
-                            Available: required multiple textbox for links
-                        --}}
-                        {{!-- Section explaining Data Avaliability here --}}
-
-                        {{!-- Add logic for Prereg here --}}
-                        {{!-- No: Optional textarea
-                            NA: Disabled Textbox with placeholder
-                            Available: required multiple textbox for links, dropdown to denote type
-                        --}}
-                        {{!-- Section explaining Prereg here --}}
+                        {{#with "Assertions" as |name|}}
+                            {{#preprint-form-section
+                                id="author-assertions"
+                                editMode=editMode
+                                name=name
+                                allowOpen=uploadValid
+                                canEdit=canEdit
+                                errorAction=(action 'error')
+                                as |hasOpened|
+                            }}
+                                {{preprint-form-header
+                                    editMode=editMode
+                                    assertionsSaveState=basicsSaveState
+                                    name=name
+                                    valid=authorAssertionsValid
+                                }}
+                                {{#preprint-form-body class="sloan-assertions"}}
+                                    {{#if sloanDataInputEnabled}}
+                                        <div role='radiogroup'>
+                                            <label>{{t "components.author-assertions.public_data.title"}}:</label>
+                                            <input
+                                                type="radio"
+                                                id="hasDataLinksAvailable"
+                                                name="hasDataLinks"
+                                                onchange={{action "updateHasDataLinks" "available"}}
+                                                checked={{eq hasDataLinks "available"}}
+                                            >
+                                            <label class="radioButtonLabel" for="hasDataLinksAvailable">{{t "components.author-assertions.available.available"}}</label>
+                                            <input
+                                                type="radio"
+                                                id="hasDataLinksNo"
+                                                name="hasDataLinks"
+                                                onchange={{action "updateHasDataLinks" "no"}}
+                                                checked={{eq hasDataLinks "no"}}
+                                            >
+                                            <label class="radioButtonLabel" for="hasDataLinksNo">{{t "components.author-assertions.available.no"}}</label>
+                                            <input
+                                                type="radio"
+                                                id="hasDataLinksNotApplicable"
+                                                name="hasDataLinks"
+                                                onchange={{action "updateHasDataLinks" "not_applicable"}}
+                                                checked={{eq hasDataLinks "not_applicable"}}
+                                            >
+                                            <label class="radioButtonLabel" for="hasDataLinsNotApplicable">{{t "components.author-assertions.available.not_applicable"}}</label>
+                                            <span class='required' />
+                                        </div>
+                                        <br>
+                                        {{#if (eq hasDataLinks 'available')}}
+                                            {{#multiple-textbox-input
+                                                model=this
+                                                valuePath='dataLinks'
+                                            }}
+                                                {{t 'components.author-assertions.public_data.linksToData'}}: <span class='required' />
+                                            {{/multiple-textbox-input}}
+                                        {{/if}}
+                                        {{#if (eq hasDataLinks 'no')}}
+                                            <label>{{t 'components.author-assertions.describe'}}:</label>
+                                            {{validated-input
+                                                id='whyNoData' 
+                                                inputType='textarea'
+                                                model=this
+                                                valuePath='whyNoData'
+                                                value=whyNoData
+                                            }}
+                                        {{/if}}
+                                        {{#if (eq hasDataLinks 'not_applicable')}}
+                                            <div class='form-group'>
+                                                <input
+                                                    type="text"
+                                                    class='form-control'
+                                                    disabled
+                                                    placeholder={{t "components.author-assertions.public_data.not-applicable" documentType=currentProvider.documentType}}
+                                                >
+                                            </div>
+                                        {{/if}}
+                                        <div class="assertionDescription">
+                                            {{t "components.author-assertions.public_data.description" documentType=currentProvider.documentType}}
+                                        </div>
+                                    {{/if}}
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="pull-right">
+                                                <button {{action 'discardAuthorAssertions'}} class="btn btn-default" disabled={{unless authorAssertionsChanged true}} >{{t "global.discard"}}</button>
+                                                <button {{action 'saveAuthorAssertions'}} class="btn btn-primary" disabled={{unless authorAssertionsValid true}} >{{t "submit.body.save_continue"}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/preprint-form-body}}
+                            {{/preprint-form-section}}
+                        {{/with}}
                     {{/if}}
 
                     {{#with "Basics" as |name|}}
@@ -165,7 +242,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div>
-                                            <label>{{t "submit.body.basics.doi.label"}}:</label>
+                                            <label>{{t "submit.body.basics.doi.label"}}:</label> 
                                             <form role="button" onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
                                                 {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
                                             </form>
@@ -254,7 +331,7 @@
                     {{! ==== COI HERE ==== }}
                     {{#if shouldShowCoiPanel}}
                         {{#with "COI" as |name|}}
-                            {{#preprint-form-section id="author-coi-assertion" editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
+                            {{#preprint-form-section class="sloan-assertions" editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                                 {{preprint-form-header editMode=editMode coiSaveState=coiSaveState hasCoi=model.hasCoi coiStatement=model.conflictOfInterestStatement node=node name=name valid=coiValid isValidationActive=hasOpened}}
                                 {{#preprint-form-body}}
                                     <div role='radiogroup'>
@@ -263,18 +340,18 @@
                                             id="coiYes"
                                             name="coi"
                                             value="Yes"
-                                            onchange={{action "updateCoi" true}}
+                                            onchange={{action "updateHasCoi" true}}
                                         >
-                                        <label class='coiRadioLabel' for="coiYes">{{t "submit.body.conflict_of_interest.yes"}}</label>
+                                        <label class="radioButtonLabel" for="coiYes">{{t "submit.body.conflict_of_interest.yes"}}</label>
                                         <input
                                             type="radio"
                                             id="coiNo"
                                             name="coi"
                                             value="No"
-                                            onchange={{action "updateCoi" false}}
+                                            onchange={{action "updateHasCoi" false}}
                                             checked={{if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null))) true}}
                                         >
-                                        <label class='coiRadioLabel' for="coiNo">{{t "submit.body.conflict_of_interest.no"}}</label>
+                                        <label class="radioButtonLabel" for="coiNo">{{t "submit.body.conflict_of_interest.no"}}</label>
                                         <span class='required' />
                                     </div>
                                     <br>

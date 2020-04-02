@@ -934,7 +934,7 @@ hr {
     }
 }
 
-#author-coi-assertion {
+.sloan-assertions {
     span.required:after {
         content: "(required)";
         color: lighten(red, 30%);
@@ -942,13 +942,20 @@ hr {
         margin-left: 5px;
     }
 
-    label.coiRadioLabel {
+    label.radioButtonLabel {
         display: inline;
         font-weight: normal;
+        margin-right: 15px;
     }
 
-    label.coiRadioLabel:first-of-type {
-        margin-right: 15px;
+    label.radioButtonLabel:last-of-type {
+        margin-right: 0px;
+    }
+    
+    legend {
+        margin-bottom: 0px;
+        font-size: 14px;
+        font-weight: bold;
     }
 
     .assertionDescription {
