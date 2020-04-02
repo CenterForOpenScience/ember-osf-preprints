@@ -13,7 +13,9 @@ export default Component.extend(Analytics, {
     didReceiveAttrs() {
         const valuesFromModel = this.model.get(this.valuePath);
         if (valuesFromModel) {
-            this.set('textFields', valuesFromModel.map( x => { value: x }));
+            this.set('textFields', valuesFromModel.map((x) => {
+                return { value: x };
+            }));
         }
         this.set('textFields', [{ value: '' }]);
     },
@@ -34,12 +36,12 @@ export default Component.extend(Analytics, {
             this.send('onChange');
         },
         onChange() {
-            this.model.set(this.valuePath, this.get('textFields').filter( item => {
+            this.model.set(this.valuePath, this.get('textFields').filter((item) => {
                 if (!item.value) {
                     return false;
                 }
                 return true;
-            }).map( x => x.value ));
-        }
+            }).map(x => x.value));
+        },
     },
 });

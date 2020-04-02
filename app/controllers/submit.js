@@ -622,7 +622,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         const dataLinks = this.get('dataLinks');
         return dataLinks !== this.get('model.dataLinks');
     }),
-    whyNoData: computed('model.whyNoData', function(){
+    whyNoData: computed('model.whyNoData', function() {
         return this.get('model.whyNoData');
     }),
     whyNoDataChanged: computed('whyNoData', 'model.whyNoData', function() {
@@ -639,7 +639,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         }
         return false;
     }),
-    publicDataSectionValid: computed('hasDataLinks','dataLinksValid', function() {
+    publicDataSectionValid: computed('hasDataLinks', 'dataLinksValid', function() {
         const hasDataLinks = this.get('hasDataLinks');
         if (hasDataLinks === 'no' || hasDataLinks === 'not_applicable') {
             return true;
@@ -1383,11 +1383,8 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
             model.set('hasDataLinks', this.get('hasDataLinks'));
             model.set('dataLinks', this.get('dataLinks'));
             model.set('whyNoData', this.get('whyNoData'));
-            model.save().then(
-                    this._moveFromAuthorAssertions.bind(this)
-                ).catch(
-                    this._failMoveFromAuthorAssertions.bind(this)
-                );
+            model.save().then(this._moveFromAuthorAssertions.bind(this))
+                .catch(this._failMoveFromAuthorAssertions.bind(this));
         },
         discardAuthorAssertions() {
             this.set('hasDataLinks', this.get('model.hasDataLinks'));
