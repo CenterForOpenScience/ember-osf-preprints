@@ -500,6 +500,7 @@ export default {
                 title: 'Conflict of Interest',
                 no: 'Author asserted no Conflict of Interest',
             },
+            assertions: 'Assertions',
             public_data: {
                 linksToData: 'Links to data:',
                 title: 'Public Data',

@@ -299,6 +299,16 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     // Does preprint have saved coi?
     savedCoi: computed.notEmpty('model.hasCoi'),
 
+    // Does preprint have saved hasDataLinks?
+    savedAuthorAssertions: computed('model.{hasDataLinks,hasPreregLinks}', 'sloanDataInputEnabled', 'sloanPreregInputEnabled', function() {
+        if (this.get('sloanDataInputEnabled') && !this.get('sloanPreregInputEnabled')) {
+            return this.get('model.hasDataLinks');
+        }
+        if (this.get('sloanDataInputEnabled') && this.get('sloanPreregInputEnabled')) {
+            return this.get('model.hasDataLinks') && this.get('model.hasPreregLinks');
+        }
+    }),
+
     // Are there any unsaved changes in the upload section?
     uploadChanged: computed.or('preprintFileChanged', 'titleChanged'),
 
@@ -335,10 +345,13 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     }),
 
     // Preprint can be published once all required sections have been saved.
-    allSectionsValid: computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi', function() {
+    allSectionsValid: computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi', 'savedAuthorAssertions', function() {
         const allSectionsValid = this.get('savedTitle') && this.get('savedFile') && this.get('savedAbstract') && this.get('savedSubjects') && this.get('authorsValid');
-        if (this.get('shouldShowCoiPanel')) {
+        if (this.get('shouldShowCoiPanel') && !this.get('shouldShowAuthorAssertionsPanel')) {
             return allSectionsValid && this.get('savedCoi');
+        }
+        if (this.get('shouldShowCoiPanel') && this.get('shouldShowAuthorAssertionsPanel')) {
+            return allSectionsValid && this.get('savedCoi') && this.get('savedAuthorAssertions');
         }
         return allSectionsValid;
     }),
@@ -650,6 +663,9 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     }),
     authorAssertionsValid: computed('publicDataSectionValid', function() {
         return this.get('publicDataSectionValid');
+    }),
+    hasPreregLinks: computed('model.hasPreregLinks', function() {
+        return this.get('model.hasPreregLinks');
     }),
 
     actions: {

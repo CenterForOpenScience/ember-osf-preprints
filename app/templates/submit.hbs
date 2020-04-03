@@ -517,6 +517,9 @@
                                         {{#if shouldShowCoiPanel}}
                                             <p class="text-danger">{{unless savedCoi (t "submit.body.conflict_of_interest.title")}}</p>
                                         {{/if}}
+                                        {{#if shouldShowAuthorAssertionsPanel}}
+                                            <p class="text-danger">{{unless savedAuthorAssertions (t "components.author-assertions.assertions")}}</p>
+                                        {{/if}}
                                     </span>
                                 {{/if}}
                                 <button class="btn btn-success btn-md m-t-md pull-right" disabled={{showValidationErrors}} {{action 'clickSubmit'}}>
