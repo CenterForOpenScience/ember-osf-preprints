@@ -148,6 +148,12 @@ const ACTION = {
     },
 };
 
+const PREREG_LINK_INFO_CHOICES = [
+    'prereg_designs',
+    'prereg_analysis',
+    'prereg_both',
+];
+
 function subjectIdMap(subjectArray) {
     // Maps array of arrays of disciplines into array of arrays of discipline ids.
     return subjectArray.map(subjectBlock => subjectBlock.map(subject => subject.id));
@@ -172,7 +178,6 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
 
     // Data for project picker; tracked internally on load
     user: null,
-
     _State: State,
     // Project that preprint file was copied from, or supplemental project (in edit mode)
     // Same variable used for both.
@@ -213,6 +218,8 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     authorsSaveState: false,
     // True temporarily when changes have been saved in coi section
     coiSaveState: false,
+    // True temporarily when changes have been saved in author assertions section
+    authorAssertionsSaveState: false,
     // True temporarily when changes have been saved in the supplemental section
     supplementalSaveState: false,
     // Preprint node's osfStorage object
@@ -238,6 +245,8 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     providerSaved: false,
     preprintSaved: false,
     submitAction: null,
+
+    preregLinkInfoChoices: PREREG_LINK_INFO_CHOICES,
 
     // Validation rules and changed states for form sections
 
@@ -666,6 +675,15 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     }),
     hasPreregLinks: computed('model.hasPreregLinks', function() {
         return this.get('model.hasPreregLinks');
+    }),
+    preregLinks: computed('model.preregLinks', function() {
+        return this.get('model.preregLinks');
+    }),
+    preregLinkInfo: computed('model.preregLinkInfo', function() {
+        return this.get('model.preregLinkInfo');
+    }),
+    whyNoPrereg: computed('model.whyNoPrereg', function() {
+        return this.get('model.whyNoPrereg');
     }),
 
     actions: {
@@ -1141,6 +1159,13 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         updateHasDataLinks(value) {
             this.set('hasDataLinks', value);
         },
+        updateHasPreregLinks(value) {
+            this.set('hasPreregLinks', value);
+        },
+        updatePreregLinkInfo(value) {
+            console.log(value);
+            this.set('preregLinkInfo', value);
+        },
         /*
         Supplemental Project Section
         */
@@ -1396,9 +1421,17 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue Author Assertions Section`,
                 });
             const model = this.get('model');
-            model.set('hasDataLinks', this.get('hasDataLinks'));
-            model.set('dataLinks', this.get('dataLinks'));
-            model.set('whyNoData', this.get('whyNoData'));
+            if (this.get('sloanDataInputEnabled')) {
+                model.set('hasDataLinks', this.get('hasDataLinks'));
+                model.set('dataLinks', this.get('dataLinks'));
+                model.set('whyNoData', this.get('whyNoData'));
+            }
+            if (this.get('sloanPreregInputEnabled')) {
+                model.set('hasPreregLinks', this.get('hasPreregLinks'));
+                model.set('preregLinks', this.get('preregLinks'));
+                model.set('preregLinkInfo', this.get('preregLinkInfo'));
+                model.set('whyNoPrereg', this.get('whyNoPrereg'));
+            }
             model.save().then(this._moveFromAuthorAssertions.bind(this))
                 .catch(this._failMoveFromAuthorAssertions.bind(this));
         },
@@ -1763,6 +1796,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
             basicsSaveState: false,
             authorsSaveState: false,
             coiSaveState: false,
+            authorAssertionsSaveState: false,
             supplementalSaveState: false,
             osfStorageProvider: null,
             osfProviderLoaded: false,

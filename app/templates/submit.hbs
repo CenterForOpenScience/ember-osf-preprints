@@ -148,14 +148,14 @@
                             }}
                                 {{preprint-form-header
                                     editMode=editMode
-                                    assertionsSaveState=basicsSaveState
+                                    authorAssertionsSaveState=authorAssertionsSaveState
                                     name=name
                                     valid=authorAssertionsValid
                                 }}
                                 {{#preprint-form-body class="sloan-assertions"}}
                                     {{#if sloanDataInputEnabled}}
                                         <div role='radiogroup'>
-                                            <label>{{t "components.author-assertions.public_data.title"}}:</label>
+                                            <label>{{t "components.author-assertions.public_data.title"}}: <span class='required' /></label>
                                             <input
                                                 type="radio"
                                                 id="hasDataLinksAvailable"
@@ -179,8 +179,7 @@
                                                 onchange={{action "updateHasDataLinks" "not_applicable"}}
                                                 checked={{eq hasDataLinks "not_applicable"}}
                                             >
-                                            <label class="radioButtonLabel" for="hasDataLinsNotApplicable">{{t "components.author-assertions.available.not_applicable"}}</label>
-                                            <span class='required' />
+                                            <label class="radioButtonLabel" for="hasDataLinksNotApplicable">{{t "components.author-assertions.available.not_applicable"}}</label>
                                         </div>
                                         <br>
                                         {{#if (eq hasDataLinks 'available')}}
@@ -213,6 +212,79 @@
                                         {{/if}}
                                         <div class="assertionDescription">
                                             {{t "components.author-assertions.public_data.description" documentType=currentProvider.documentType}}
+                                        </div>
+                                    {{/if}}
+                                    {{#if sloanPreregInputEnabled}}
+                                        <div role='radiogroup'>
+                                            <label>{{t "components.author-assertions.prereg.title"}}: <span class='required' /></label>
+                                            <input
+                                                type="radio"
+                                                id="hasPreregLinksAvailable"
+                                                name="hasPreregLinks"
+                                                onchange={{action "updateHasPreregLinks" "available"}}
+                                                checked={{eq hasPreregLinks "available"}}
+                                            >
+                                            <label class="radioButtonLabel" for="hasPreregLinksAvailable">{{t "components.author-assertions.available.available"}}</label>
+                                            <input
+                                                type="radio"
+                                                id="hasPreregLinksNo"
+                                                name="hasPreregLinks"
+                                                onchange={{action "updateHasPreregLinks" "no"}}
+                                                checked={{eq hasPreregLinks "no"}}
+                                            >
+                                            <label class="radioButtonLabel" for="hasPreregLinksNo">{{t "components.author-assertions.available.no"}}</label>
+                                            <input
+                                                type="radio"
+                                                id="hasPreregLinksNotApplicable"
+                                                name="hasPreregLinks"
+                                                onchange={{action "updateHasPreregLinks" "not_applicable"}}
+                                                checked={{eq hasPreregLinks "not_applicable"}}
+                                            >
+                                            <label class="radioButtonLabel" for="hasPreregLinksNotApplicable">{{t "components.author-assertions.available.not_applicable"}}</label>
+                                        </div>
+                                        <br>
+                                        {{#if (eq hasPreregLinks 'available')}}
+                                            <div class='form-group'>
+                                                {{#multiple-textbox-input
+                                                    model=this
+                                                    valuePath='preregLinks'
+                                                }}
+                                                    {{t 'components.author-assertions.prereg.links'}}: <span class='required' />
+                                                {{/multiple-textbox-input}}
+                                                <label for="preregLinkInfo">{{t 'components.author-assertions.prereg.type'}}: <span class='required' /></label>
+                                                {{#power-select
+                                                    options=preregLinkInfoChoices
+                                                    placeholder=(t 'components.author-assertions.prereg.chooseOne')
+                                                    selected=preregLinkInfo
+                                                    onchange=(action "updatePreregLinkInfo")
+                                                    as |option|
+                                                }}
+                                                    <strong>{{t (concat 'components.author-assertions.prereg.' option)}}</strong>
+                                                {{/power-select}}
+                                            </div>
+                                        {{/if}}
+                                        {{#if (eq hasPreregLinks 'no')}}
+                                            <label>{{t 'components.author-assertions.describe'}}:</label>
+                                            {{validated-input
+                                                id='whyNoPrereg' 
+                                                inputType='textarea'
+                                                model=this
+                                                valuePath='whyNoPrereg'
+                                                value=whyNoPrereg
+                                            }}
+                                        {{/if}}
+                                        {{#if (eq hasPreregLinks 'not_applicable')}}
+                                            <div class='form-group'>
+                                                <input
+                                                    type="text"
+                                                    class='form-control'
+                                                    disabled
+                                                    placeholder={{t "components.author-assertions.prereg.not-applicable" documentType=currentProvider.documentType}}
+                                                >
+                                            </div>
+                                        {{/if}}
+                                        <div class="assertionDescription">
+                                            {{t "components.author-assertions.prereg.description" documentType=currentProvider.documentType}}
                                         </div>
                                     {{/if}}
                                     <div class="row">
@@ -518,7 +590,7 @@
                                             <p class="text-danger">{{unless savedCoi (t "submit.body.conflict_of_interest.title")}}</p>
                                         {{/if}}
                                         {{#if shouldShowAuthorAssertionsPanel}}
-                                            <p class="text-danger">{{unless savedAuthorAssertions (t "components.author-assertions.assertions")}}</p>
+                                            <p class="text-danger">{{unless savedAuthorAssertions (t "components.preprint-form-header.name.Assertions")}}</p>
                                         {{/if}}
                                     </span>
                                 {{/if}}
