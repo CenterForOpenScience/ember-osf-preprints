@@ -80,17 +80,6 @@ const COIValidations = buildValidations({
     },
 });
 
-// const AuthorAssertionsValidations = buildValidations({
-//     hasDataLinks: {
-//         description: 'hasDataLinks',
-//         validators: [
-//             validator('inclusion', {
-//                 in: ['available', 'no', 'not_applicable']
-//             })
-//         ]
-//     },
-// });
-
 const PENDING = 'pending';
 const ACCEPTED = 'accepted';
 const REJECTED = 'rejected';
@@ -219,7 +208,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     // True temporarily when changes have been saved in coi section
     coiSaveState: false,
     // True temporarily when changes have been saved in author assertions section
-    authorAssertionsSaveState: false,
+    assertionsSaveState: false,
     // True temporarily when changes have been saved in the supplemental section
     supplementalSaveState: false,
     // Preprint node's osfStorage object
@@ -651,8 +640,37 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         const whyNoData = this.get('whyNoData');
         return whyNoData !== this.get('model.whyNoData');
     }),
-    authorAssertionsChanged: computed('hasDataLinksChanged', 'dataLinksChanged', 'whyNoDataChanged', function() {
-        return this.get('hasDataLinksChanged') || this.get('dataLinksChanged') || this.get('whyNoDataChanged');
+    hasPreregLinks: computed('model.hasPreregLinks', function() {
+        return this.get('model.hasPreregLinks');
+    }),
+    hasPreregLinksChanged: computed('hasPreregLinks', 'model.hasPreregLinks', function() {
+        const hasPreregLinks = this.get('hasPreregLinks');
+        return hasPreregLinks !== this.get('model.hasPreregLinks');
+    }),
+    preregLinks: computed('model.preregLinks', function() {
+        return this.get('model.preregLinks');
+    }),
+    preregLinksChanged: computed('preregLinks', 'model.preregLinks', function() {
+        const preregLinks = this.get('preregLinks');
+        return preregLinks !== this.get('model.preregLinks');
+    }),
+    preregLinkInfo: computed('model.preregLinkInfo', function() {
+        return this.get('model.preregLinkInfo');
+    }),
+    preregLinkInfoChanged: computed('preregLinkInfo', 'model.preregLinkInfo', function() {
+        const preregLinkInfo = this.get('preregLinkInfo');
+        return preregLinkInfo !== this.get('model.preregLinkInfo');
+    }),
+    whyNoPrereg: computed('model.whyNoPrereg', function() {
+        return this.get('model.whyNoPrereg');
+    }),
+    whyNoPreregChanged: computed('whyNoPrereg', 'model.whyNoPrereg', function() {
+        const whyNoPrereg = this.get('whyNoPrereg');
+        return whyNoPrereg !== this.get('model.whyNoPrereg');
+    }),
+    authorAssertionsChanged: computed('hasDataLinksChanged', 'dataLinksChanged', 'whyNoPreregChanged', 'hasPreregLinksChanged', 'preregLinksChanged', 'preregLinkInfoChanged', 'whyNoPreregChanged', function() {
+        return this.get('hasDataLinksChanged') || this.get('dataLinksChanged') || this.get('whyNoDataChanged')
+        || this.get('hasPreregLinksChanged') || this.get('preregLinksChanged') || this.get('preregLinkInfoChanged') || this.get('whyNoPreregChanged');
     }),
     dataLinksValid: computed('dataLinks', function() {
         const dataLinks = this.get('dataLinks');
@@ -670,20 +688,34 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         }
         return false;
     }),
-    authorAssertionsValid: computed('publicDataSectionValid', function() {
-        return this.get('publicDataSectionValid');
+    preregLinksValid: computed('preregLinks', function() {
+        const preregLinks = this.get('preregLinks');
+        if (preregLinks && preregLinks.length > 0) {
+            return true;
+        }
+        return false;
     }),
-    hasPreregLinks: computed('model.hasPreregLinks', function() {
-        return this.get('model.hasPreregLinks');
+    preregLinkInfoValid: computed('preregLinkInfo', function() {
+        const preregLinkInfo = this.get('preregLinkInfo');
+        return this.preregLinkInfoChoices.includes(preregLinkInfo);
     }),
-    preregLinks: computed('model.preregLinks', function() {
-        return this.get('model.preregLinks');
+    preregSectionValid: computed('hasPreregLinks', 'preregLinksValid', 'preregLinkInfoValid', function() {
+        const hasPreregLinks = this.get('hasPreregLinks');
+        if (hasPreregLinks === 'no' || hasPreregLinks === 'not_applicable') {
+            return true;
+        } else if (hasPreregLinks === 'available') {
+            return this.get('preregLinksValid') && this.get('preregLinkInfoValid');
+        }
+        return false;
     }),
-    preregLinkInfo: computed('model.preregLinkInfo', function() {
-        return this.get('model.preregLinkInfo');
-    }),
-    whyNoPrereg: computed('model.whyNoPrereg', function() {
-        return this.get('model.whyNoPrereg');
+    authorAssertionsValid: computed('publicDataSectionValid', 'preregSectionValid', 'sloanDataInputEnabled', 'sloanPreregInputEnabled', function() {
+        if (this.get('sloanDataInputEnabled') && !this.get('sloanPreregInputEnabled')) {
+            return this.get('publicDataSectionValid');
+        }
+        if (this.get('sloanDataInputEnabled') && this.get('sloanPreregInputEnabled')) {
+            return this.get('publicDataSectionValid') && this.get('preregSectionValid');
+        }
+        
     }),
 
     actions: {
@@ -1163,7 +1195,6 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
             this.set('hasPreregLinks', value);
         },
         updatePreregLinkInfo(value) {
-            console.log(value);
             this.set('preregLinkInfo', value);
         },
         /*
@@ -1439,6 +1470,10 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
             this.set('hasDataLinks', this.get('model.hasDataLinks'));
             this.set('dataLinks', this.get('model.dataLinks'));
             this.set('whyNoData', this.get('model.whyNoData'));
+            this.set('hasPreregLinks', this.get('model.hasPreregLinks'));
+            this.set('preregLinks', this.get('model.preregLinks'));
+            this.set('preregLinkInfo', this.get('model.preregLinkInfo'));
+            this.set('whyNoPrereg', this.get('model.whyNoPrereg'));
         },
     },
 
@@ -1796,7 +1831,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
             basicsSaveState: false,
             authorsSaveState: false,
             coiSaveState: false,
-            authorAssertionsSaveState: false,
+            assertionsSaveState: false,
             supplementalSaveState: false,
             osfStorageProvider: null,
             osfProviderLoaded: false,

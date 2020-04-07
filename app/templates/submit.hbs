@@ -145,12 +145,18 @@
                                 allowOpen=uploadValid
                                 canEdit=canEdit
                                 errorAction=(action 'error')
+                                as |hasOpened|
                             }}
                                 {{preprint-form-header
                                     editMode=editMode
-                                    authorAssertionsSaveState=authorAssertionsSaveState
+                                    assertionsSaveState=assertionsSaveState
+                                    sloanPreregInputEnabled=sloanPreregInputEnabled
+                                    sloanDataInputEnabled=sloanDataInputEnabled
+                                    hasDataLinks=model.hasDataLinks
+                                    hasPreregLinks=model.hasPreregLinks
                                     name=name
                                     valid=authorAssertionsValid
+                                    isValidationActive=hasOpened
                                 }}
                                 {{#preprint-form-body class="sloan-assertions"}}
                                     {{#if sloanDataInputEnabled}}
@@ -257,6 +263,7 @@
                                                     placeholder=(t 'components.author-assertions.prereg.chooseOne')
                                                     selected=preregLinkInfo
                                                     onchange=(action "updatePreregLinkInfo")
+                                                    searchEnabled=false
                                                     as |option|
                                                 }}
                                                     <strong>{{t (concat 'components.author-assertions.prereg.' option)}}</strong>
