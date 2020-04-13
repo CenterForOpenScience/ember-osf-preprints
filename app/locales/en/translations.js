@@ -488,6 +488,7 @@ export default {
             },
         },
         'author-assertions': {
+            header_label: 'Author Assertions',
             describe: 'Describe',
             available: {
                 yes: 'Yes',

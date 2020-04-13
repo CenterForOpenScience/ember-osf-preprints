@@ -1,6 +1,6 @@
 {{#if this.shouldShowSloanIcons}}
     <div class='author-assertions-header-label'>
-        {{~t 'components.preprint-form-header.name.Assertions'~}}
+        {{~t 'components.author-assertions.header_label'~}}
     </div>
     <div class='author-assertions'>
         {{#if this.shouldShowCoi}}
@@ -64,7 +64,11 @@
                                 analyticsName=(t 'components.author-assertions.prereg.title')
                             }}
                         {{else if (eq preprint.hasDataLinks 'no')}}
-                            {{~t 'components.author-assertions.prereg.no'~}}
+                            {{#if preprint.whyNoPrereg}}
+                                {{preprint.whyNoPrereg}}
+                            {{else}}
+                                {{~t 'components.author-assertions.prereg.no'~}}
+                            {{/if}}
                         {{else}}
                             {{~t 'components.author-assertions.prereg.not-applicable' documentType=this.documentType~}}
                         {{/if}}

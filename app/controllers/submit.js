@@ -297,7 +297,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     // Does preprint have saved coi?
     savedCoi: computed.notEmpty('model.hasCoi'),
 
-    // Does preprint have saved hasDataLinks?
+    // Does preprint have saved hasDataLinks and hasPreregLinks?
     savedAuthorAssertions: computed('model.{hasDataLinks,hasPreregLinks}', 'sloanDataInputEnabled', 'sloanPreregInputEnabled', function() {
         if (this.get('sloanDataInputEnabled') && !this.get('sloanPreregInputEnabled')) {
             return this.get('model.hasDataLinks');
@@ -715,7 +715,6 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         if (this.get('sloanDataInputEnabled') && this.get('sloanPreregInputEnabled')) {
             return this.get('publicDataSectionValid') && this.get('preregSectionValid');
         }
-        
     }),
 
     actions: {

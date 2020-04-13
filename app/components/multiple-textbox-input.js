@@ -13,8 +13,8 @@ export default Component.extend(Analytics, {
     didReceiveAttrs() {
         const valuesFromModel = this.model.get(this.valuePath);
         if (valuesFromModel) {
-            this.set('textFields', valuesFromModel.map((x) => {
-                return { value: x };
+            this.set('textFields', valuesFromModel.map((value) => {
+                return { value };
             }));
             return;
         }
