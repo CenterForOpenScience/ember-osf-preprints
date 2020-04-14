@@ -37,7 +37,11 @@
                                 analyticsName=(t 'components.author-assertions.public_data.title')
                             }}
                         {{else if (eq preprint.hasDataLinks 'no')}}
-                            {{~t 'components.author-assertions.public_data.no'~}}
+                            {{#if preprint.whyNoData}}
+                                {{preprint.whyNoData}}
+                            {{else}}
+                                {{~t 'components.author-assertions.public_data.no'~}}
+                            {{/if}}
                         {{else}}
                             {{~t 'components.author-assertions.public_data.not-applicable' documentType=this.documentType~}}
                         {{/if}}
@@ -60,7 +64,11 @@
                                 analyticsName=(t 'components.author-assertions.prereg.title')
                             }}
                         {{else if (eq preprint.hasDataLinks 'no')}}
-                            {{~t 'components.author-assertions.prereg.no'~}}
+                            {{#if preprint.whyNoPrereg}}
+                                {{preprint.whyNoPrereg}}
+                            {{else}}
+                                {{~t 'components.author-assertions.prereg.no'~}}
+                            {{/if}}
                         {{else}}
                             {{~t 'components.author-assertions.prereg.not-applicable' documentType=this.documentType~}}
                         {{/if}}
