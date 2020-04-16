@@ -31,30 +31,19 @@ export default Route.extend({
             dataType: 'json',
             contentType: 'application/json',
             xhrFields: {
-                withCredentials: true
-            }
-        }
+                withCredentials: true,
+            },
+        };
 
-        this.get('currentUser').authenticatedAJAX(opts).then(res => {
+        this.get('currentUser').authenticatedAJAX(opts).then((res) => {
             if (Array.isArray(res.meta.active_flags)) {
-                this.get('features').setup(
-                    res.meta.active_flags.reduce(function(acc, flag) {
-                        acc[flag] = true;
-                        return acc;
-                    }, {})
-                )
+                this.get('features').setup(res.meta.active_flags.reduce(function(acc, flag) {
+                    acc[flag] = true;
+                    return acc;
+                }, {}));
             }
-            // Push the result into the store for later use by the current-user service
-            // Note: we have to deepcopy res because pushPayload mutates our data
-            // and causes an infinite loop because reasons
-            if (res['meta']['current_user'] !== null ){
-                this.get('store').pushPayload(Ember.copy(res['meta']['current_user'], true));
-            } else {
-                return Ember.RSVP.reject();
-            }
-            return res['meta']['current_user']['data'];
         });
-        
+
         return this
             .store
             .findRecord('preprint', params.preprint_id);
