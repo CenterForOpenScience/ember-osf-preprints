@@ -5,7 +5,7 @@
 @import 'daterangepicker.scss';
 @import 'c3';
 @import 'hint';
-
+@import 'ember-basic-dropdown';
 @import 'osf-style';
 
 @import 'authors';
@@ -13,6 +13,7 @@
 @import 'error-page';
 @import 'search-facets';
 @import 'preprint-detail-page';
+@import 'author-assertions';
 
 
 /* GLOBAL to PREPRINTS, these may be used in multiple pages */
@@ -766,6 +767,21 @@ $color-border-light: #DDDDDD;
 
 // FOR FORMS ON THE PREPRINTS AND ADD-PREPRINTS PAGE
 
+.text-fields-legend {
+    font-size: 16px;
+    border-bottom: none;
+}
+
+.text-input-row {
+    width: 100%;
+    padding: 10px;
+    display: inline-flex;
+
+    .btn {
+        margin-left: 5px;
+    }
+}
+
 .show-more-button {
     background: 0;
     border: 0;
@@ -918,15 +934,37 @@ hr {
     }
 }
 
-#supplemental-materials {
+#author-coi-assertion {
     span.required:after {
         content: "(required)";
         color: lighten(red, 30%);
         font-weight: normal;
-        float: right;
+        margin-left: 5px;
+    }
+
+    label.coiRadioLabel {
+        display: inline;
+        font-weight: normal;
+    }
+
+    label.coiRadioLabel:first-of-type {
+        margin-right: 15px;
+    }
+
+    .assertionDescription {
+        background-color: #eee;
+        color: #263947;
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 52px;
     }
 }
 
+#supplemental-materials,
 #preprint-form-basics {
     span.required:after {
         content: "(required)";
@@ -1356,7 +1394,6 @@ label.title-label {
 }
 
 .discover-provider-logo,
-.content-provider-logo,
 .submit-provider-logo {
     background-position-x: center;
     background-position-y: center;
@@ -1392,16 +1429,7 @@ label.title-label {
       }
 }
 
-@media (min-width: 769px) {
-    .edit-button-and-logo {
-        padding-top: 30px !important;
-    }
-}
-
 @media (max-width: 768px) {
-    .edit-button-and-logo {
-        padding-top: 20px;
-    }
     .preprint-image {
         margin-top: 0 !important;
     }
@@ -1466,12 +1494,6 @@ label.title-label {
             margin-bottom: 40px !important;
         }
     }
-}
-
-.content-provider-logo {
-    min-height: 80px;
-    min-width: 120px;
-    margin-bottom: 20px;
 }
 
 .discover-provider-logo {

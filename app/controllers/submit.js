@@ -67,6 +67,19 @@ const BasicsValidations = buildValidations({
 
 });
 
+const COIValidations = buildValidations({
+    coiStatement: {
+        description: 'COI',
+        validators: [
+            validator('presence', true),
+            validator('length', {
+                min: 10,
+                max: 5000,
+            }),
+        ],
+    },
+});
+
 const PENDING = 'pending';
 const ACCEPTED = 'accepted';
 const REJECTED = 'rejected';
@@ -137,7 +150,8 @@ function subjectIdMap(subjectArray) {
 /**
  * @class Submit Controller
  */
-export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin, TaggableMixin, {
+export default Controller.extend(Analytics, BasicsValidations, COIValidations, NodeActionsMixin, TaggableMixin, {
+    features: service(),
     i18n: service(),
     store: service(),
     theme: service(),
@@ -186,6 +200,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     basicsSaveState: false,
     // True temporarily when changes have been saved in authors section
     authorsSaveState: false,
+    // True temporarily when changes have been saved in coi section
+    coiSaveState: false,
     // True temporarily when changes have been saved in the supplemental section
     supplementalSaveState: false,
     // Preprint node's osfStorage object
@@ -219,7 +235,6 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Must have year and copyrightHolders filled if those are required by the licenseType selected
     licenseValid: false,
 
-    _names: ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'Supplemental'], // Form section headers
     hasFile: computed.or('file', 'selectedFile'),
     isAddingPreprint: computed.not('editMode'),
     // Contributors on preprint
@@ -232,6 +247,15 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
 
     doiValid: alias('validations.attrs.basicsDOI.isValid'),
     originalPublicationDateValid: alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
+
+    coiStatementValid: alias('validations.attrs.coiStatement.isValid'),
+
+    // Sloan waffles
+    sloanCoiInputEnabled: alias('features.sloanCoiInput'),
+    sloanDataInputEnabled: alias('features.sloanDataInput'),
+    sloanPreregInputEnabled: alias('features.sloanPreregInput'),
+
+    shouldShowCoiPanel: computed.and('sloanCoiInputEnabled', 'currentProvider.inSloanStudy'),
 
     // Basics fields that are being validated are abstract, license and doi
     // (title validated in upload section). If validation
@@ -261,8 +285,8 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Does preprint have saved subjects?
     savedSubjects: computed.notEmpty('model.subjects'),
 
-    // Preprint can be published once all required sections have been saved.
-    allSectionsValid: computed.and('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid'),
+    // Does preprint have saved coi?
+    savedCoi: computed.notEmpty('model.hasCoi'),
 
     // Are there any unsaved changes in the upload section?
     uploadChanged: computed.or('preprintFileChanged', 'titleChanged'),
@@ -276,7 +300,37 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     // Are there any unsaved changes in the basics section?
     basicsChanged: computed.or('tagsChanged', 'abstractChanged', 'doiChanged', 'licenseChanged', 'originalPublicationDateChanged'),
 
+    // Are there any unsaved changes in the coi section?
+    coiChanged: computed.or('coiStatementChanged', 'coiOptionChanged'),
+
     moderationType: alias('currentProvider.reviewsWorkflow'),
+
+    _names: computed('shouldShowCoiPanel', 'shouldShowAuthorAssertionsPanel', function() {
+        if (this.get('shouldShowCoiPanel') && !this.get('shouldShowAuthorAssertionsPanel')) {
+            return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
+        }
+        if (this.get('shouldShowCoiPanel') && this.get('shouldShowAuthorAssertionsPanel')) {
+            return ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
+        }
+        return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'Supplemental'];
+    }),
+
+    // Variable controlled by sloan waffle flags
+    shouldShowAuthorAssertionsPanel: computed('sloanDataInputEnabled', 'sloanPreregInputEnabled', 'currentProvider.inSloanStudy', function () {
+        if (!this.get('currentProvider.inSloanStudy')) {
+            return false;
+        }
+        return this.get('sloanPreregInputEnabled') || this.get('sloanDataInputEnabled');
+    }),
+
+    // Preprint can be published once all required sections have been saved.
+    allSectionsValid: computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi', function() {
+        const allSectionsValid = this.get('savedTitle') && this.get('savedFile') && this.get('savedAbstract') && this.get('savedSubjects') && this.get('authorsValid');
+        if (this.get('shouldShowCoiPanel')) {
+            return allSectionsValid && this.get('savedCoi');
+        }
+        return allSectionsValid;
+    }),
 
     supplementalChanged: computed('supplementalProjectTitle', 'pendingSupplementalProjectTitle', 'selectedSupplementalProject', 'node', function() {
         const savedTitle = this.get('supplementalProjectTitle');
@@ -300,9 +354,9 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     }),
 
     // True if fields have been changed
-    hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', function() {
+    hasDirtyFields: computed('theme.isProvider', 'hasFile', 'preprintSaved', 'isAddingPreprint', 'providerSaved', 'uploadChanged', 'basicsChanged', 'disciplineChanged', 'coiChanged', function() {
         const preprintStarted = this.get('theme.isProvider') ? this.get('hasFile') : this.get('providerSaved');
-        const fieldsChanged = this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged');
+        const fieldsChanged = this.get('uploadChanged') || this.get('basicsChanged') || this.get('disciplineChanged') || this.get('coiChanged');
         return !this.get('preprintSaved') && ((this.get('isAddingPreprint') && preprintStarted) || fieldsChanged);
     }),
 
@@ -517,6 +571,31 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     canWithdraw: computed('moderationType', 'model.reviewsState', function() {
         const state = this.get('model.reviewsState');
         return (state === PENDING || state === ACCEPTED) && this.get('isAdmin');
+    }),
+    // Assertion panels
+    coiStatement: computed('model.conflictOfInterestStatement', function() {
+        return this.get('model.conflictOfInterestStatement') || null;
+    }),
+    hasCoi: computed('model.hasCoi', function() {
+        return this.get('model.hasCoi');
+    }),
+    coiOptionChanged: computed('hasCoi', 'model.hasCoi', function() {
+        const hasCoi = this.get('hasCoi');
+        return hasCoi !== undefined && hasCoi !== this.get('model.hasCoi');
+    }),
+    coiStatementChanged: computed('coiStatement', 'model.conflictOfInterestStatement', function() {
+        const coiStatement = this.get('coiStatement');
+        return coiStatement !== null && coiStatement !== undefined && coiStatement.trim() !== this.get('model.conflictOfInterestStatement');
+    }),
+    // Checks if the coi section is valid
+    coiValid: computed('coiStatementValid', 'hasCoi', function() {
+        const hasCoi = this.get('hasCoi');
+        const coiStatementValid = this.get('coiStatementValid');
+        if ((hasCoi && coiStatementValid) || hasCoi === false) {
+            return true;
+        }
+
+        return false;
     }),
 
     actions: {
@@ -946,6 +1025,50 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
         },
 
         /*
+        Update Author Assertion Sections
+        */
+        updateCoi(val) {
+            this.set('hasCoi', val);
+        },
+        discardCoi() {
+            // Discards changes to basic fields. (No requests sent, front-end only.)
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Discard Coi Changes`,
+                });
+            this.set('hasCoi', this.get('model.hasCoi'));
+            this.set('coiStatement', this.get('model.conflictOfInterestStatement'));
+        },
+        saveCoi() {
+            this.get('metrics')
+                .trackEvent({
+                    category: 'button',
+                    action: 'click',
+                    label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue Coi Section`,
+                });
+            // Saves the description on the node
+            // then advances to next panel
+            if (!this.get('coiValid')) {
+                return;
+            }
+
+            const model = this.get('model');
+
+            if (!this.get('hasCoi')) {
+                this.set('coiStatement', undefined);
+            }
+
+            model.set('hasCoi', this.get('hasCoi'));
+            model.set('conflictOfInterestStatement', this.get('coiStatement'));
+
+            this.set('model', model);
+            model.save()
+                .then(this._moveFromCoi.bind(this))
+                .catch(this._failMoveFromCoi.bind(this));
+        },
+        /*
         Supplemental Project Section
         */
         changeSupplementalPickerState(state) {
@@ -1333,11 +1456,20 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     },
 
     _moveFromBasics() {
-        this.send('next', this.get('_names.2'));
+        this.send('next', 'Basics');
+    },
+
+    _moveFromCoi() {
+        this.send('next', 'COI');
+    },
+
+    _failMoveFromCoi() {
+        // If model save fails, do not transition, save original vales
+        this.get('toast').error(this.get('i18n').t('submit.coi_error'));
     },
 
     _moveFromSupplemental() {
-        this.send('next', this.get('_names.5'));
+        this.send('next', 'Supplemental');
     },
 
     _failMoveFromBasics() {
@@ -1347,7 +1479,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
     },
 
     _moveFromDisciplines() {
-        this.send('next', this.get('_names.3'));
+        this.send('next', 'Discipline');
     },
 
     _failMoveFromDisciplines() {
@@ -1533,6 +1665,7 @@ export default Controller.extend(Analytics, BasicsValidations, NodeActionsMixin,
             disciplineSaveState: false,
             basicsSaveState: false,
             authorsSaveState: false,
+            coiSaveState: false,
             supplementalSaveState: false,
             osfStorageProvider: null,
             osfProviderLoaded: false,

@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.131.0] - 2020-04-20
+### Added
+- Sloan COI input and display
+- pin node@10.18.1 and yarn@1.21.1 with volta
+
+### Changed
+- Configure nvm to to use Node 10.
+
 ## [0.130.4] - 2020-03-27
 ## Changed
 - update assets

@@ -8,6 +8,8 @@ moduleFor('route:provider/content', 'Unit | Route | provider/content', {
         'service:metrics',
         'service:theme',
         'service:session',
+        'service:current-user',
+        'service:features',
     ],
 });
 

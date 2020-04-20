@@ -49,11 +49,11 @@ export default {
         header: {
             last_edited: 'Last edited',
             authors_label: 'Authors',
-            withdrawn_on: 'Withdrawn on',
+            withdrawn_on: 'Withdrawn',
         },
         date_label: {
-            created_on: 'Created on',
-            submitted_on: 'Submitted on',
+            created_on: 'Created',
+            submitted_on: 'Submitted',
         },
         share: {
             download: 'Download',
@@ -220,6 +220,15 @@ export default {
             authors: {
                 paragraph: 'Add {{documentType.singular}} authors and order them appropriately. Search for authors that have OSF accounts or invite unregistered users to join by entering their email addresses.',
             },
+            conflict_of_interest: {
+                title: 'Conflict of Interest',
+                yes: 'Yes',
+                no: 'No',
+                describe: 'Describe: ',
+                placeholder: 'Author asserted no Conflict of Interest',
+                coi_statement: 'Conflict of Interest statement',
+                description: 'The Conflict of Interest (COI) assertion is made on behalf of all the authors listed for this {{documentType.singular}}. COIs include: financial involvement in any entity such as honoraria, grants, speaking fees, employment, consultancies, stock ownership, expert testimony, and patents or licenses. COIs can also include non-financial interests such as personal or professional relationships or pre-existing beliefs in the subject matter or materials discussed in this {{documentType.singular}}.',
+            },
             submit: {
                 information: {
                     line1: {
@@ -285,6 +294,7 @@ export default {
         doi_error: 'Error saving DOI',
         basics_error: 'Error saving basics fields.',
         disciplines_error: 'Error saving discipline(s).',
+        coi_error: 'Error saving COI field(s).',
         search_contributors_error: 'Could not perform search query.',
         server_locked: 'You cannot change the paper service after a file has been uploaded',
         please_select_server: 'Please select a paper service before continuing',
@@ -420,6 +430,7 @@ export default {
                 Discipline: 'Discipline',
                 Basics: 'Basics',
                 Authors: 'Authors',
+                COI: 'Conflict of Interest',
                 Submit: 'Submit',
                 Update: 'Update',
                 Supplemental: 'Supplemental materials',
@@ -472,6 +483,29 @@ export default {
                 moderator_feedback: 'Moderator feedback',
                 moderator: 'Moderator',
                 base: 'This {{documentType.singular}}',
+            },
+        },
+        'author-assertions': {
+            available: {
+                yes: 'Yes',
+                no: 'No',
+                available: 'Available',
+                not_applicable: 'Not applicable',
+            },
+            header_label: 'Author Assertions',
+            conflict_of_interest: {
+                title: 'Conflict of Interest',
+                no: 'Author asserted no Conflict of Interest',
+            },
+            public_data: {
+                title: 'Public Data',
+                no: 'No additional information provided by author.',
+                'not-applicable': 'Author asserted there is no data associated with this {{documentType.singular}}.',
+            },
+            prereg: {
+                title: 'Preregistration',
+                no: 'No additional information provided by author.',
+                'not-applicable': 'Author asserted that preregistration was not applicable because no data collection, extraction, or analysis is reported in this {{documentType.singular}}.',
             },
         },
         'search-preprints': {

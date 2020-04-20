@@ -1,0 +1,72 @@
+{{#if this.shouldShowSloanIcons}}
+    <div class='author-assertions-header-label'>
+        {{~t 'components.author-assertions.header_label'~}}
+    </div>
+    <div class='author-assertions'>
+        {{#if this.shouldShowCoi}}
+            <div class='assertions-container'>
+                {{#assertions-dropdown
+                    available=(if preprint.hasCoi
+                        (t 'components.author-assertions.available.yes')
+                        (t 'components.author-assertions.available.no'))
+                    assertionName=(t 'components.author-assertions.conflict_of_interest.title')
+                    as |dropdown|
+                }}
+                    {{#dropdown.content}}
+                        {{#if preprint.hasCoi}}
+                            {{~preprint.conflictOfInterestStatement~}}
+                        {{else}}
+                            {{~t 'components.author-assertions.conflict_of_interest.no'~}}
+                        {{/if}}
+                    {{/dropdown.content}}
+                {{/assertions-dropdown}}
+            </div>
+        {{/if}}
+
+        {{#if this.shouldShowDataLinks}}
+            <div class='assertions-container'>
+                {{#assertions-dropdown
+                    available=(t (concat 'components.author-assertions.available.' preprint.hasDataLinks))
+                    assertionName=(t 'components.author-assertions.public_data.title')
+                    as |dropdown|
+                }}
+                    {{#dropdown.content}}
+                        {{#if (eq preprint.hasDataLinks 'available')}}
+                            {{assertions-links
+                                links=preprint.dataLinks
+                                analyticsName=(t 'components.author-assertions.public_data.title')
+                            }}
+                        {{else if (eq preprint.hasDataLinks 'no')}}
+                            {{~t 'components.author-assertions.public_data.no'~}}
+                        {{else}}
+                            {{~t 'components.author-assertions.public_data.not-applicable' documentType=this.documentType~}}
+                        {{/if}}
+                    {{/dropdown.content}}
+                {{/assertions-dropdown}}
+            </div>
+        {{/if}}
+
+        {{#if this.shouldShowPreregLinks}}
+            <div class='assertions-container'>
+                {{#assertions-dropdown
+                    available=(t (concat 'components.author-assertions.available.' preprint.hasPreregLinks))
+                    assertionName=(t 'components.author-assertions.prereg.title')
+                    as |dropdown|
+                }}
+                    {{#dropdown.content}}
+                        {{#if (eq preprint.hasPreregLinks 'available')}}
+                            {{assertions-links
+                                links=preprint.preregLinks
+                                analyticsName=(t 'components.author-assertions.prereg.title')
+                            }}
+                        {{else if (eq preprint.hasDataLinks 'no')}}
+                            {{~t 'components.author-assertions.prereg.no'~}}
+                        {{else}}
+                            {{~t 'components.author-assertions.prereg.not-applicable' documentType=this.documentType~}}
+                        {{/if}}
+                    {{/dropdown.content}}
+                {{/assertions-dropdown}}
+            </div>
+        {{/if}}
+    </div>
+{{/if}}
