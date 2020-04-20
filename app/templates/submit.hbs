@@ -203,7 +203,7 @@
                                         {{#if (eq hasDataLinks 'no')}}
                                             <label>{{t 'components.author-assertions.describe'}}:</label>
                                             {{validated-input
-                                                id='whyNoData' 
+                                                id='whyNoData'
                                                 inputType='textarea'
                                                 model=this
                                                 valuePath='whyNoData'
@@ -277,7 +277,7 @@
                                         {{#if (eq hasPreregLinks 'no')}}
                                             <label>{{t 'components.author-assertions.describe'}}:</label>
                                             {{validated-input
-                                                id='whyNoPrereg' 
+                                                id='whyNoPrereg'
                                                 inputType='textarea'
                                                 model=this
                                                 valuePath='whyNoPrereg'
@@ -324,7 +324,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div>
-                                            <label>{{t "submit.body.basics.doi.label"}}:</label> 
+                                            <label>{{t "submit.body.basics.doi.label"}}:</label>
                                             <form role="button" onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
                                                 {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
                                             </form>
@@ -422,7 +422,8 @@
                                             id="coiYes"
                                             name="coi"
                                             value="Yes"
-                                            onchange={{action "updateHasCoi" true}}
+                                            onchange={{action "updateCoi" true}}
+                                            checked={{eq hasCoi true}}
                                         >
                                         <label class="radioButtonLabel" for="coiYes">{{t "submit.body.conflict_of_interest.yes"}}</label>
                                         <input
@@ -430,8 +431,8 @@
                                             id="coiNo"
                                             name="coi"
                                             value="No"
-                                            onchange={{action "updateHasCoi" false}}
-                                            checked={{if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null))) true}}
+                                            onchange={{action "updateCoi" false}}
+                                            checked={{eq hasCoi false}}
                                         >
                                         <label class="radioButtonLabel" for="coiNo">{{t "submit.body.conflict_of_interest.no"}}</label>
                                         <span class='required' />
