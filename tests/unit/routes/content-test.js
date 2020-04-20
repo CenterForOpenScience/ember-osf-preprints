@@ -6,6 +6,8 @@ moduleFor('route:content', 'Unit | Route | content', {
         'service:metrics',
         'service:theme',
         'service:session',
+        'service:current-user',
+        'service:features',
     ],
 });
 

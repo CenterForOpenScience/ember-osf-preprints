@@ -1,6 +1,8 @@
 import { isArray } from '@ember/array';
 import Route from '@ember/routing/route';
 import DS from 'ember-data';
+import { inject as service } from '@ember/service';
+import config from 'ember-get-config';
 
 // Error handling for API
 const handlers = new Map([
@@ -20,7 +22,28 @@ const handlers = new Map([
  * @class Content Route Handler
  */
 export default Route.extend({
+    currentUser: service(),
+    features: service(),
     model(params) {
+        const opts = {
+            method: 'GET',
+            url: `${config.OSF.apiUrl}/${config.OSF.apiNamespace}/`,
+            dataType: 'json',
+            contentType: 'application/json',
+            xhrFields: {
+                withCredentials: true,
+            },
+        };
+
+        this.get('currentUser').authenticatedAJAX(opts).then((res) => {
+            if (Array.isArray(res.meta.active_flags)) {
+                this.get('features').setup(res.meta.active_flags.reduce(function(acc, flag) {
+                    acc[flag] = true;
+                    return acc;
+                }, {}));
+            }
+        });
+
         return this
             .store
             .findRecord('preprint', params.preprint_id);
