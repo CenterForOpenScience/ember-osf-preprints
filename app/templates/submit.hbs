@@ -422,7 +422,7 @@
                                             id="coiYes"
                                             name="coi"
                                             value="Yes"
-                                            onchange={{action "updateCoi" true}}
+                                            onchange={{action "updateHasCoi" true}}
                                             checked={{eq hasCoi true}}
                                         >
                                         <label class="radioButtonLabel" for="coiYes">{{t "submit.body.conflict_of_interest.yes"}}</label>
@@ -431,7 +431,7 @@
                                             id="coiNo"
                                             name="coi"
                                             value="No"
-                                            onchange={{action "updateCoi" false}}
+                                            onchange={{action "updateHasCoi" false}}
                                             checked={{eq hasCoi false}}
                                         >
                                         <label class="radioButtonLabel" for="coiNo">{{t "submit.body.conflict_of_interest.no"}}</label>
