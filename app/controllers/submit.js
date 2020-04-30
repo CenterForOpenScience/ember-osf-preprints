@@ -1189,9 +1189,12 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         },
         updateHasDataLinks(value) {
             this.set('hasDataLinks', value);
+            this.set('dataLinks', null);
         },
         updateHasPreregLinks(value) {
             this.set('hasPreregLinks', value);
+            this.set('preregLinks', null);
+            this.set('preregLinkInfo', null);
         },
         updatePreregLinkInfo(value) {
             this.set('preregLinkInfo', value);
