@@ -212,12 +212,13 @@
                                         {{/if}}
                                         {{#if (eq hasDataLinks 'not_applicable')}}
                                             <div class='form-group'>
-                                                <input
+                                                <textarea
                                                     type="text"
                                                     class='form-control'
                                                     disabled
-                                                    placeholder={{t "components.author-assertions.public_data.not-applicable" documentType=currentProvider.documentType}}
                                                 >
+                                                    {{~t "components.author-assertions.public_data.not-applicable" documentType=currentProvider.documentType~}}
+                                                </textarea>
                                             </div>
                                         {{/if}}
                                         <div class="assertionDescription">
@@ -286,12 +287,13 @@
                                         {{/if}}
                                         {{#if (eq hasPreregLinks 'not_applicable')}}
                                             <div class='form-group'>
-                                                <input
+                                                <textarea
                                                     type="text"
                                                     class='form-control'
                                                     disabled
-                                                    placeholder={{t "components.author-assertions.prereg.not-applicable" documentType=currentProvider.documentType}}
                                                 >
+                                                    {{~t "components.author-assertions.prereg.not-applicable" documentType=currentProvider.documentType~}}
+                                                </textarea>
                                             </div>
                                         {{/if}}
                                         <div class="assertionDescription">
