@@ -969,6 +969,10 @@ hr {
         resize: vertical;
         min-height: 52px;
     }
+
+    textarea:disabled {
+        resize: none;
+    }
 }
 
 #supplemental-materials,
