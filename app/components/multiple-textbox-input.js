@@ -4,21 +4,20 @@ import Analytics from 'ember-osf/mixins/analytics';
 
 export default Component.extend(Analytics, {
     model: null,
-    valuePath: null,
     textFields: null,
     textFieldsLastIndex: computed('textFields.[]', function() {
         return this.get('textFields').length - 1;
     }),
 
     didReceiveAttrs() {
-        const valuesFromModel = this.model.get(this.valuePath);
-        if (valuesFromModel) {
+        const valuesFromModel = this.model;
+        if (valuesFromModel.length > 0) {
             this.set('textFields', valuesFromModel.map((value) => {
                 return { value };
             }));
-            return;
+        } else {
+            this.set('textFields', [{ value: '' }]);
         }
-        this.set('textFields', [{ value: '' }]);
     },
 
     actions: {
@@ -37,7 +36,7 @@ export default Component.extend(Analytics, {
             this.send('onChange');
         },
         onChange() {
-            this.model.set(this.valuePath, this.get('textFields').filter((item) => {
+            this.set('model', this.get('textFields').filter((item) => {
                 if (!item.value) {
                     return false;
                 }
