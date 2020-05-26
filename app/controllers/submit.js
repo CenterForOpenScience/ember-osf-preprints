@@ -1466,7 +1466,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
                 model.set('whyNoPrereg', this.get('whyNoPrereg'));
             }
             model.save().then(this._moveFromAuthorAssertions.bind(this))
-                .catch(this._failMoveFromAuthorAssertions.bind(this));
+                .catch(error => this._failMoveFromAuthorAssertions.bind(this)(error));
         },
         discardAuthorAssertions() {
             this.set('hasDataLinks', this.get('model.hasDataLinks'));
@@ -1623,8 +1623,12 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     _moveFromAuthorAssertions() {
         this.send('next', 'Assertions');
     },
-    _failMoveFromAuthorAssertions() {
-        this.get('toast').error(this.get('i18n').t('submit.author_assertions_error'));
+    _failMoveFromAuthorAssertions(error) {
+        if (error.errors[0].detail[0]) {
+            this.get('toast').error(error.errors[0].detail[0]);
+        } else {
+            this.get('toast').error(this.get('i18n').t('submit.author_assertions_error'));
+        }
     },
     _moveFromCoi() {
         this.send('next', 'COI');
