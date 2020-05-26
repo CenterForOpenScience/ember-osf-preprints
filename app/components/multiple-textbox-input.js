@@ -11,7 +11,7 @@ export default Component.extend(Analytics, {
 
     didReceiveAttrs() {
         const valuesFromModel = this.model;
-        if (valuesFromModel.length > 0) {
+        if (valuesFromModel && valuesFromModel.length > 0) {
             this.set('textFields', valuesFromModel.map((value) => {
                 return { value };
             }));

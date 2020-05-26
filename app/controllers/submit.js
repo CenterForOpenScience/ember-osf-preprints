@@ -1189,20 +1189,9 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         },
         updateHasDataLinks(value) {
             this.set('hasDataLinks', value);
-            if (value === 'available') {
-                this.set('dataLinks', []);
-            } else {
-                this.set('dataLinks', null);
-            }
         },
         updateHasPreregLinks(value) {
             this.set('hasPreregLinks', value);
-            if (value === 'available') {
-                this.set('preregLinks', []);
-            } else {
-                this.set('preregLinks', null);
-            }
-            this.set('preregLinkInfo', null);
         },
         updatePreregLinkInfo(value) {
             this.set('preregLinkInfo', value);
@@ -1484,7 +1473,6 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
             this.set('preregLinks', this.get('model.preregLinks'));
             this.set('preregLinkInfo', this.get('model.preregLinkInfo'));
             this.set('whyNoPrereg', this.get('model.whyNoPrereg'));
-
         },
     },
 
