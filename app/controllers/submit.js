@@ -1189,9 +1189,12 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         },
         updateHasDataLinks(value) {
             this.set('hasDataLinks', value);
+            this.set('dataLinks', []);
         },
         updateHasPreregLinks(value) {
             this.set('hasPreregLinks', value);
+            this.set('preregLinks', []);
+            this.set('preregLinkInfo', '');
         },
         updatePreregLinkInfo(value) {
             this.set('preregLinkInfo', value);
@@ -1621,8 +1624,8 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         this.send('next', 'Assertions');
     },
     _failMoveFromAuthorAssertions(error) {
-        if (error.errors[0].detail[0]) {
-            this.get('toast').error(error.errors[0].detail[0]);
+        if (error.errors[0].detail) {
+            this.get('toast').error(error.errors[0].detail);
         } else {
             this.get('toast').error(this.get('i18n').t('submit.author_assertions_error'));
         }
