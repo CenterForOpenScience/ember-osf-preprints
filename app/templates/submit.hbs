@@ -194,8 +194,7 @@
                                         <br>
                                         {{#if (eq hasDataLinks 'available')}}
                                             {{#multiple-textbox-input
-                                                model=this
-                                                valuePath='dataLinks'
+                                                model=dataLinks
                                             }}
                                                 {{t 'components.author-assertions.public_data.linksToData'}}: <span class='required' />
                                             {{/multiple-textbox-input}}
@@ -257,8 +256,7 @@
                                         {{#if (eq hasPreregLinks 'available')}}
                                             <div class='form-group'>
                                                 {{#multiple-textbox-input
-                                                    model=this
-                                                    valuePath='preregLinks'
+                                                    model=preregLinks
                                                 }}
                                                     {{t 'components.author-assertions.prereg.links'}}: <span class='required' />
                                                 {{/multiple-textbox-input}}
