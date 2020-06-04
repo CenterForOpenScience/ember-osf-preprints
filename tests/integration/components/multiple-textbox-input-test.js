@@ -1,32 +1,31 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import EmberObject from '@ember/object';
 
 moduleForComponent('multiple-textbox-input', 'Integration | Component | multiple textbox input', {
     integration: true,
     beforeEach() {
-        this.set('model', EmberObject.create({ value: null }));
-        this.set('modelWithExistingValues', EmberObject.create({ value: ['ichi', 'ni', 'san', 'yon'] }));
+        this.set('model', []);
+        this.set('modelWithExistingValues', ['ichi', 'ni', 'san', 'yon']);
         this.set('valuePath', 'value');
     },
 });
 
 test('it renders', function(assert) {
-    this.render(hbs`{{multiple-textbox-input model=model valuePath=valuePath}}`);
+    this.render(hbs`{{multiple-textbox-input model=model}}`);
     assert.equal($('.ember-text-field').length, 1, 'one text field by default');
     assert.equal($('.btn-danger').length, 0, 'no remove button for single text field');
     assert.equal($('.btn-success').length, 1, 'one add button');
 });
 
 test('it loads passed in fields', function(assert) {
-    this.render(hbs`{{multiple-textbox-input model=modelWithExistingValues valuePath=valuePath}}`);
+    this.render(hbs`{{multiple-textbox-input model=modelWithExistingValues}}`);
     assert.equal($('.ember-text-field').length, 4, 'has four text fields when passed in an array of four');
     assert.equal($('.btn-danger').length, 3, 'has three remove buttons when passed in array of four');
     assert.equal($('.btn-success').length, 1, 'one add button');
 });
 
 test('Can add and remove fields', function(assert) {
-    this.render(hbs`{{multiple-textbox-input model=modelWithExistingValues valuePath=valuePath}}`);
+    this.render(hbs`{{multiple-textbox-input model=modelWithExistingValues}}`);
     this.$('.btn-danger')[0].click();
     assert.equal($('.ember-text-field').length, 3, 'has three text fields after single remove');
     assert.equal($('.btn-danger').length, 2, 'has two remove buttons after single remove');

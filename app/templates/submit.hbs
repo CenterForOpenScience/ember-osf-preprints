@@ -194,8 +194,7 @@
                                         <br>
                                         {{#if (eq hasDataLinks 'available')}}
                                             {{#multiple-textbox-input
-                                                model=this
-                                                valuePath='dataLinks'
+                                                model=dataLinks
                                             }}
                                                 {{t 'components.author-assertions.public_data.linksToData'}}: <span class='required' />
                                             {{/multiple-textbox-input}}
@@ -212,12 +211,13 @@
                                         {{/if}}
                                         {{#if (eq hasDataLinks 'not_applicable')}}
                                             <div class='form-group'>
-                                                <input
+                                                <textarea
                                                     type="text"
                                                     class='form-control'
                                                     disabled
-                                                    placeholder={{t "components.author-assertions.public_data.not-applicable" documentType=currentProvider.documentType}}
                                                 >
+                                                    {{~t "components.author-assertions.public_data.not-applicable" documentType=currentProvider.documentType~}}
+                                                </textarea>
                                             </div>
                                         {{/if}}
                                         <div class="assertionDescription">
@@ -256,8 +256,7 @@
                                         {{#if (eq hasPreregLinks 'available')}}
                                             <div class='form-group'>
                                                 {{#multiple-textbox-input
-                                                    model=this
-                                                    valuePath='preregLinks'
+                                                    model=preregLinks
                                                 }}
                                                     {{t 'components.author-assertions.prereg.links'}}: <span class='required' />
                                                 {{/multiple-textbox-input}}
@@ -286,12 +285,13 @@
                                         {{/if}}
                                         {{#if (eq hasPreregLinks 'not_applicable')}}
                                             <div class='form-group'>
-                                                <input
+                                                <textarea
                                                     type="text"
                                                     class='form-control'
                                                     disabled
-                                                    placeholder={{t "components.author-assertions.prereg.not-applicable" documentType=currentProvider.documentType}}
                                                 >
+                                                    {{~t "components.author-assertions.prereg.not-applicable" documentType=currentProvider.documentType~}}
+                                                </textarea>
                                             </div>
                                         {{/if}}
                                         <div class="assertionDescription">
