@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.131.3",
+  "version": "0.132.0",
   "description": "Center for Open Science Preprint Service",
   "license": "Apache-2.0",
   "author": "",
@@ -81,7 +81,7 @@
     "ember-onbeforeunload": "^1.1.2",
     "ember-page-title": "^3.2.2",
     "ember-parachute": "^0.3.7",
-    "ember-power-select": "^2.0.0",
+    "ember-power-select": "2.2.1",
     "ember-read-more": "^0.0.13",
     "ember-resolver": "^4.0.0",
     "ember-sanitize": "^2.0.2",

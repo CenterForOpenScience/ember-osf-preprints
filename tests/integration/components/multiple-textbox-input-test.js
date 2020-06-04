@@ -4,28 +4,28 @@ import hbs from 'htmlbars-inline-precompile';
 moduleForComponent('multiple-textbox-input', 'Integration | Component | multiple textbox input', {
     integration: true,
     beforeEach() {
-        this.set('textFields', [{ value: 'ichi' }, { value: 'ni' }, { value: 'san' }, { value: 'yon' }]);
+        this.set('model', []);
+        this.set('modelWithExistingValues', ['ichi', 'ni', 'san', 'yon']);
+        this.set('valuePath', 'value');
     },
 });
 
 test('it renders', function(assert) {
-    this.render(hbs`{{multiple-textbox-input}}`);
-    assert.equal($('.text-fields-legend').text(), 'Text Fields', 'renders default legend');
+    this.render(hbs`{{multiple-textbox-input model=model}}`);
     assert.equal($('.ember-text-field').length, 1, 'one text field by default');
     assert.equal($('.btn-danger').length, 0, 'no remove button for single text field');
     assert.equal($('.btn-success').length, 1, 'one add button');
 });
 
 test('it loads passed in fields', function(assert) {
-    this.render(hbs`{{multiple-textbox-input textFields=textFields legend='Count in Japanese'}}`);
-    assert.equal($('legend').text(), 'Count in Japanese', 'renders passed in legend');
+    this.render(hbs`{{multiple-textbox-input model=modelWithExistingValues}}`);
     assert.equal($('.ember-text-field').length, 4, 'has four text fields when passed in an array of four');
     assert.equal($('.btn-danger').length, 3, 'has three remove buttons when passed in array of four');
     assert.equal($('.btn-success').length, 1, 'one add button');
 });
 
 test('Can add and remove fields', function(assert) {
-    this.render(hbs`{{multiple-textbox-input textFields=textFields}}`);
+    this.render(hbs`{{multiple-textbox-input model=modelWithExistingValues}}`);
     this.$('.btn-danger')[0].click();
     assert.equal($('.ember-text-field').length, 3, 'has three text fields after single remove');
     assert.equal($('.btn-danger').length, 2, 'has two remove buttons after single remove');

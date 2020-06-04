@@ -1,7 +1,7 @@
 <ul class='assertions-links'>
     {{#each links as |href|}}
         <li>
-            <a href={{href}} onclick={{action 'click' 'link' '{{analyticsName}}'}}>
+            <a href={{href}} target='_blank' rel='noopener' onclick={{action 'click' 'link' '{{analyticsName}}'}}>
                 {{href}}
             </a>
         </li>
