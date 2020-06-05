@@ -31,7 +31,7 @@
     "autoprefixer": "^7.1.2",
     "bootstrap-daterangepicker": "^2.1.23",
     "bootstrap-sass": "^3.4.1",
-    "bower": "^1.8.2",
+    "bower": "^1.8.8",
     "broccoli-asset-rev": "^2.4.5",
     "c3": "^0.4.23",
     "coveralls": "2.11.16",
