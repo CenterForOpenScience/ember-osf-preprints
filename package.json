@@ -69,7 +69,7 @@
     "ember-cp-validations": "^3.5.1",
     "ember-data": "2.18.0",
     "ember-data-factory-guy": "^2.11.6",
-    "ember-export-application-global": "^2.0.0",
+    "ember-export-application-global": "^2.0.1",
     "ember-faker": "^1.1.1",
     "ember-font-awesome": "^3.0.0",
     "ember-get-config": "^0.2.4",
