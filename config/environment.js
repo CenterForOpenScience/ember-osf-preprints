@@ -69,21 +69,6 @@ module.exports = function(environment) {
                     version: 'dimension5',
                 },
             },
-            {
-                name: 'Keen',
-                environments: [process.env.KEEN_ENVIRONMENT || 'production'],
-                config: {
-                    private: {
-                        projectId: process.env.PREPRINTS_PRIVATE_PROJECT_ID,
-                        writeKey: process.env.PREPRINTS_PRIVATE_WRITE_KEY,
-                    },
-                    public: {
-                        projectId: process.env.PREPRINTS_PUBLIC_PROJECT_ID,
-                        writeKey: process.env.PREPRINTS_PUBLIC_WRITE_KEY,
-                    },
-                },
-            },
-
         ],
         FB_APP_ID: process.env.FB_APP_ID,
         chronosProviders: [
