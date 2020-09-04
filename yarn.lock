@@ -968,20 +968,20 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#0.30.1":
-  version "0.30.1"
-  resolved "https://github.com/CenterForOpenScience/ember-osf.git#81f3b20c6c2f0c3c42e3fbd33b44d828da71aced"
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#0.31.0":
+  version "0.31.0"
+  resolved "https://github.com/CenterForOpenScience/ember-osf.git#e9d52b8b2a03eabe03be9dee9eed8e528435de2f"
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
     broccoli-sass-source-maps "2.0.0"
     config "1.26.1"
-    ember-ace "^1.2.0"
+    ember-ace "^2.0.1"
     ember-bootstrap-datepicker "^2.0.3"
     ember-cli-babel "^6.8.1"
     ember-cli-clipboard "0.8.1"
     ember-cli-htmlbars "2.0.1"
-    ember-cli-htmlbars-inline-precompile "0.4.3"
+    ember-cli-htmlbars-inline-precompile "1.0.5"
     ember-cli-sass "^7.0.0"
     ember-cli-shims "1.0.2"
     ember-collapsible-panel "^2.1.1"
@@ -992,7 +992,7 @@
     ember-cp-validations "^3.5.0"
     ember-diff-attrs "^0.2.0"
     ember-feature-flags "^5.0.0"
-    ember-get-config "0.2.1"
+    ember-get-config "0.2.4"
     ember-i18n "5.0.1"
     ember-in-viewport "^3.1.3"
     ember-metrics "https://github.com/cos-forks/ember-metrics#v0.12.1+cos0"
@@ -1004,10 +1004,7 @@
     ember-sinon-qunit "1.6.0"
     ember-toastr "1.7.0"
     ember-truth-helpers "1.3.0"
-    js-cookie "2.1.4"
-    js-md5 "0.4.2"
     js-yaml "3.8.4"
-    keen-tracking "1.1.3"
     langs "1.0.2"
     moment-timezone "^0.5.13"
     node-sass "4.9.0"
@@ -1366,9 +1363,10 @@ accepts@~1.3.4, accepts@~1.3.5:
     mime-types "~2.1.18"
     negotiator "0.6.1"
 
-ace-builds@^1.2.8:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/ace-builds/-/ace-builds-1.3.3.tgz#c9746028d1485e5d7595fb2e825e665bd6648970"
+ace-builds@^1.4.1:
+  version "1.4.12"
+  resolved "https://registry.yarnpkg.com/ace-builds/-/ace-builds-1.4.12.tgz#888efa386e36f4345f40b5233fcc4fe4c588fae7"
+  integrity sha512-G+chJctFPiiLGvs3+/Mly3apXTcfgE45dT5yp12BcWZ1kUs+gm0qd3/fv4gsz6fVag4mM0moHVpjHDIgph6Psg==
 
 acorn-dynamic-import@^3.0.0:
   version "3.0.0"
@@ -2073,7 +2071,7 @@ babel-plugin-filter-imports@^1.1.1:
     babel-types "^6.26.0"
     lodash "^4.17.10"
 
-babel-plugin-htmlbars-inline-precompile@^0.2.3, babel-plugin-htmlbars-inline-precompile@^0.2.5:
+babel-plugin-htmlbars-inline-precompile@^0.2.5:
   version "0.2.5"
   resolved "https://registry.yarnpkg.com/babel-plugin-htmlbars-inline-precompile/-/babel-plugin-htmlbars-inline-precompile-0.2.5.tgz#7a7c37cf22c73fb57a1f828c76520f0360c5c5f3"
 
@@ -3895,7 +3893,7 @@ component-emitter@1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.1.2.tgz#296594f2753daa63996d2af08d15a95116c9aec3"
 
-component-emitter@1.2.1, component-emitter@^1.2.0, component-emitter@^1.2.1:
+component-emitter@1.2.1, component-emitter@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.2.1.tgz#137918d6d78283f7df7a6b7c5a63e140e69425e6"
 
@@ -4510,11 +4508,12 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-ember-ace@^1.2.0:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/ember-ace/-/ember-ace-1.3.1.tgz#b690cd1fe09a65a264dec40f9a54050af982a8da"
+ember-ace@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ember-ace/-/ember-ace-2.0.1.tgz#075842fc26b8f5b71ccb49ebec5571cd85ec7b5e"
+  integrity sha512-L6YnP3l1LSTfji9heX5PpxNppXsxM3uUkzDLjCukH8u06vBoXPjSQ7Jg0z8hEldxv56CInsb26SR9ZORGWwKcA==
   dependencies:
-    ace-builds "^1.2.8"
+    ace-builds "^1.4.1"
     broccoli-merge-trees "^2.0.0"
     broccoli-plugin "^1.2.1"
     ember-cli-babel "^6.6.0"
@@ -4842,13 +4841,15 @@ ember-cli-head@^0.3.0, ember-cli-head@^0.3.1:
     ember-cli-babel "^6.1.0"
     ember-cli-htmlbars "^2.0.1"
 
-ember-cli-htmlbars-inline-precompile@0.4.3:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/ember-cli-htmlbars-inline-precompile/-/ember-cli-htmlbars-inline-precompile-0.4.3.tgz#4123f507fea6c59ba4c272ef7e713a6d55ba06c9"
+ember-cli-htmlbars-inline-precompile@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/ember-cli-htmlbars-inline-precompile/-/ember-cli-htmlbars-inline-precompile-1.0.5.tgz#312e050c9e3dd301c55fb399fd706296cd0b1d6a"
+  integrity sha512-/CNEqPxroIcbY6qejrt704ZaghHLCntZKYLizFfJ2esirXoJx6fuYKBY1YyJ8GOgjfbHHKjBZuK4vFFJpkGqkQ==
   dependencies:
-    babel-plugin-htmlbars-inline-precompile "^0.2.3"
-    ember-cli-version-checker "^2.0.0"
-    hash-for-dep "^1.0.2"
+    babel-plugin-htmlbars-inline-precompile "^0.2.5"
+    ember-cli-version-checker "^2.1.2"
+    hash-for-dep "^1.2.3"
+    heimdalljs-logger "^0.1.9"
     silent-error "^1.1.0"
 
 ember-cli-htmlbars-inline-precompile@^1.0.0, ember-cli-htmlbars-inline-precompile@^1.0.2:
@@ -5437,16 +5438,10 @@ ember-font-awesome@^3.0.0:
     ember-cli-htmlbars "^2.0.2"
     font-awesome "^4.7.0"
 
-ember-get-config@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/ember-get-config/-/ember-get-config-0.2.1.tgz#a1325cceefcb4534c78fc6ccb2be87a3feda6817"
-  dependencies:
-    broccoli-file-creator "^1.1.1"
-    ember-cli-babel "^5.1.6"
-
-ember-get-config@^0.2.3, ember-get-config@^0.2.4:
+ember-get-config@0.2.4, ember-get-config@^0.2.3, ember-get-config@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/ember-get-config/-/ember-get-config-0.2.4.tgz#118492a2a03d73e46004ed777928942021fe1ecd"
+  integrity sha1-EYSSoqA9c+RgBO13eSiUICH+Hs0=
   dependencies:
     broccoli-file-creator "^1.1.1"
     ember-cli-babel "^6.3.0"
@@ -7988,18 +7983,6 @@ js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.4.5"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.5.tgz#e293cd3c7c82f070d700fc7a1ca0a2e69f101f92"
 
-js-cookie@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.1.0.tgz#479c20d0a0bb6cab81491f917788cd025d6452f0"
-
-js-cookie@2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.1.4.tgz#da4ec503866f149d164cf25f579ef31015025d8d"
-
-js-md5@0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/js-md5/-/js-md5-0.4.2.tgz#8a1231e60ab392a6d3a75db6d532ec0c59667bc3"
-
 js-reporters@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/js-reporters/-/js-reporters-1.2.1.tgz#f88c608e324a3373a95bcc45ad305e5c979c459b"
@@ -8161,20 +8144,6 @@ jsprim@^1.2.2:
 just-extend@^1.1.27:
   version "1.1.27"
   resolved "https://registry.yarnpkg.com/just-extend/-/just-extend-1.1.27.tgz#ec6e79410ff914e472652abfa0e603c03d60e905"
-
-keen-core@0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/keen-core/-/keen-core-0.1.2.tgz#e8c107fdef227f56e6cf12eb59ef41ff38c37778"
-  dependencies:
-    component-emitter "^1.2.0"
-
-keen-tracking@1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/keen-tracking/-/keen-tracking-1.1.3.tgz#1159d2066b90474472fb611ac31c37bc51d94b72"
-  dependencies:
-    component-emitter "^1.2.0"
-    js-cookie "2.1.0"
-    keen-core "0.1.2"
 
 keyv@3.0.0:
   version "3.0.0"

@@ -135,7 +135,6 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{! ===== AUTHOR ASSERTIONS HERE ===== }}
                     {{#if shouldShowAuthorAssertionsPanel}}
                         {{#with "Assertions" as |name|}}
                             {{#preprint-form-section
@@ -193,11 +192,13 @@
                                         </div>
                                         <br>
                                         {{#if (eq hasDataLinks 'available')}}
-                                            {{#multiple-textbox-input
-                                                model=dataLinks
-                                            }}
-                                                {{t 'components.author-assertions.public_data.linksToData'}}: <span class='required' />
-                                            {{/multiple-textbox-input}}
+                                            <div data-test-data-links-available>
+                                                {{#multiple-textbox-input
+                                                    model=dataLinks
+                                                }}
+                                                    {{t 'components.author-assertions.public_data.linksToData'}}: <span class='required' />
+                                                {{/multiple-textbox-input}}
+                                            </div>
                                         {{/if}}
                                         {{#if (eq hasDataLinks 'no')}}
                                             <label>{{t 'components.author-assertions.describe'}}:</label>
@@ -210,7 +211,7 @@
                                             }}
                                         {{/if}}
                                         {{#if (eq hasDataLinks 'not_applicable')}}
-                                            <div class='form-group'>
+                                            <div data-test-data-links-not-applicable class='form-group'>
                                                 <textarea
                                                     type="text"
                                                     class='form-control'
@@ -254,7 +255,7 @@
                                         </div>
                                         <br>
                                         {{#if (eq hasPreregLinks 'available')}}
-                                            <div class='form-group'>
+                                            <div data-test-prereg-links-available class='form-group'>
                                                 {{#multiple-textbox-input
                                                     model=preregLinks
                                                 }}
@@ -284,7 +285,7 @@
                                             }}
                                         {{/if}}
                                         {{#if (eq hasPreregLinks 'not_applicable')}}
-                                            <div class='form-group'>
+                                            <div data-test-prereg-links-not-applicable class='form-group'>
                                                 <textarea
                                                     type="text"
                                                     class='form-control'
@@ -301,8 +302,8 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="pull-right">
-                                                <button {{action 'discardAuthorAssertions'}} class="btn btn-default" disabled={{unless authorAssertionsChanged true}} >{{t "global.discard"}}</button>
-                                                <button {{action 'saveAuthorAssertions'}} class="btn btn-primary" disabled={{unless authorAssertionsValid true}} >{{t "submit.body.save_continue"}}</button>
+                                                <button {{action 'discardAuthorAssertions'}} data-test-author-assertions-discard class="btn btn-default" disabled={{unless authorAssertionsChanged true}} >{{t "global.discard"}}</button>
+                                                <button {{action 'saveAuthorAssertions'}} data-test-author-assertions-continue class="btn btn-primary" disabled={{unless authorAssertionsValid true}} >{{t "submit.body.save_continue"}}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -410,10 +411,9 @@
                         {{/preprint-form-section}}
                     {{/with}}
 
-                    {{! ==== COI HERE ==== }}
                     {{#if shouldShowCoiPanel}}
                         {{#with "COI" as |name|}}
-                            {{#preprint-form-section class="sloan-assertions" editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
+                            {{#preprint-form-section id="preprint-form-coi" class="sloan-assertions" editMode=editMode name=name allowOpen=uploadValid canEdit=canEdit errorAction=(action 'error') as |hasOpened|}}
                                 {{preprint-form-header editMode=editMode coiSaveState=coiSaveState hasCoi=model.hasCoi coiStatement=model.conflictOfInterestStatement node=node name=name valid=coiValid isValidationActive=hasOpened}}
                                 {{#preprint-form-body}}
                                     <div role='radiogroup'>
@@ -442,7 +442,7 @@
                                         <label for='coiStatement'>{{t "submit.body.conflict_of_interest.describe"}} <span class='required' /></label>
                                         {{validated-input id='coiStatement' inputType='textarea' model=this valuePath='coiStatement' documentType=currentProvider.documentType value=coiStatement}}
                                     {{else if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null)))}}
-                                        <div class='form-group'>
+                                        <div data-test-has-no-coi class='form-group'>
                                             <input type="text" class='form-control' disabled placeholder={{t "submit.body.conflict_of_interest.placeholder"}}>
                                         </div>
                                     {{/if}}
@@ -452,8 +452,8 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="pull-right">
-                                                <button {{action 'discardCoi'}} class="btn btn-default" disabled={{unless coiChanged true}} >{{t "global.discard"}}</button>
-                                                <button {{action 'saveCoi'}} class="btn btn-primary" disabled={{unless coiValid true}} >{{t "submit.body.save_continue"}}</button>
+                                                <button {{action 'discardCoi'}} data-test-coi-discard class="btn btn-default" disabled={{unless coiChanged true}} >{{t "global.discard"}}</button>
+                                                <button {{action 'saveCoi'}} data-test-coi-continue class="btn btn-primary" disabled={{unless coiValid true}} >{{t "submit.body.save_continue"}}</button>
                                             </div>
                                         </div>
                                     </div>

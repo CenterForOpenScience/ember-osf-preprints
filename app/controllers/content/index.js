@@ -215,41 +215,11 @@ export default Controller.extend(Analytics, {
             window.open(href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=600,height=400');
             return false;
         },
-        // Sends Event to GA/Keen as normal. Sends second event to Keen under
-        // "non-contributor-preprint-downloads" collection to track non contributor
-        // preprint downloads specifically.
-        dualTrackNonContributors(category, label, url, primary) {
-            this.send('click', category, label, url); // Sends event to both Google Analytics and Keen.
-
-            const eventData = {
-                download_info: {
-                    preprint: {
-                        type: 'preprint',
-                        id: this.get('model.id'),
-                    },
-                    file: {
-                        id: primary ? this.get('model.primaryFile.id') : this.get('primaryFile.id'),
-                        primaryFile: primary,
-                        version: primary ? this.get('model.primaryFile.currentVersion') : this.get('primaryFile.currentVersion'),
-                    },
-                },
-                interaction: {
-                    category,
-                    action: 'click',
-                    label: `${label} as Non-Contributor`,
-                    url,
-                },
-            };
-
-            const keenPayload = {
-                collection: 'non-contributor-preprint-downloads',
-                eventData,
-                node: this.get('node'),
-            };
-
-            if (!this.get('userIsContrib')) {
-                this.get('metrics').invoke('trackSpecificCollection', 'Keen', keenPayload); // Sends event to Keen if logged-in user is not a contributor or non-authenticated user
-            }
+        // Sends Event to GA.  Previously sent a second event to Keen to track non-contributor
+        // downloads, but that functionality has been removed.  Stub left in place in case we want
+        // to double-log later.
+        trackNonContributors(category, label, url) {
+            this.send('click', category, label, url);
         },
     },
 
