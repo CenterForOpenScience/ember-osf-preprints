@@ -95,7 +95,7 @@
     "hint.css": "^2.5.0",
     "liquid-fire": "^0.27.3",
     "loader.js": "^4.2.3",
-    "node-sass": "4.7.2",
+    "node-sass": "4.13.1",
     "pagination-pager": "^3.0.0",
     "postcss": "^5.1.0",
     "toastr": "^2.1.2",
