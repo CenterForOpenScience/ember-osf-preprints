@@ -36,7 +36,7 @@
     "c3": "^0.4.23",
     "coveralls": "2.11.16",
     "d3": "~3.5.0",
-    "dropzone": "^5.7.1",
+    "dropzone": "^5.7.2",
     "ember-ajax": "^2.0.1",
     "ember-autosave": "^2.0.1",
     "ember-basic-dropdown": "^1.1.2",
