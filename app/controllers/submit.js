@@ -1481,7 +1481,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
 
     _setCurrentProvider() {
         this.get('store')
-            .findAll('preprint-provider', { reload: true })
+            .query('preprint-provider', { filter: { allow_submissions: true } })
             .then(this._getProviders.bind(this));
     },
 
