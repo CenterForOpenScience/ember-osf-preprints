@@ -1481,7 +1481,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
 
     _setCurrentProvider() {
         this.get('store')
-            .query('preprint-provider', { 'filter[allow_submissions]': true, reload: true })
+            .findAll('preprint-provider', { adapterOptions: { query: { 'filter[allow_submissions]': true } }, reload: true })
             .then(this._getProviders.bind(this));
     },
 
@@ -1523,7 +1523,6 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     },
 
     _getProviders(providers) {
-        console.log('_getProviders -> providers', providers);
         this.set(
             'allProviders',
             // OSF first, then all the rest
