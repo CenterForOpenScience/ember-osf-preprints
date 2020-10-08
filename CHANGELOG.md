@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.133.3] - 2020-10-08
+### Fixed
+- preprints/hypothes.is integration in Chrome
+
 ## [0.133.2] - 2020-09-22
 ### Fixed
 - wrong placeholder text for 'no' prereg links - sloan author assertions
