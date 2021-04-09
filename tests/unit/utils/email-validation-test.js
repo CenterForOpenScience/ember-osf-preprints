@@ -9,6 +9,10 @@ test('check against allowed email domains', function(assert) {
         'tsukahara@email.domain.edu',
         'kasa!matsu@[123.321.456.789]',
         'yama#waki@0ph1.1pb2.hb',
+        'kenzo_shirai@phs.scot',
+        'shun.fujimoto@mfn.berlin',
+        'takashi-ono@alumni.ubc.ca',
+        'ouagadougou@berkina.faso',
         '=@03.zz',
     ];
     allowedDomains.forEach((domain) => {
