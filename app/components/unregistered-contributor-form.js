@@ -4,6 +4,7 @@ import Analytics from 'ember-osf/mixins/analytics';
 
 import { validator, buildValidations }
     from 'ember-cp-validations';
+import emailValidationRegex from '../utils/email-validation';
 
 /* Validations for adding unregistered contributor form.  fullName must be present
 and have three letters, and the username (email) must be present and of appropriate format.
@@ -23,7 +24,7 @@ const Validations = buildValidations({
             validator('presence', true),
             validator('format', {
                 type: 'email',
-                regex: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, // for more context https://emailregex.com/
+                regex: emailValidationRegex,
             }),
         ],
     },
