@@ -5,6 +5,7 @@ import Analytics from 'ember-osf/mixins/analytics';
 import { task } from 'ember-concurrency';
 import { validator, buildValidations }
     from 'ember-cp-validations';
+import emailValidationRegex from '../utils/email-validation';
 
 const Validations = buildValidations({
     email: {
@@ -12,7 +13,7 @@ const Validations = buildValidations({
             validator('presence', true),
             validator('format', {
                 type: 'email',
-                regex: /^[-a-z0-9~!$%^&*_=+}{'?]+(\.[-a-z0-9~!$%^&*_=+}{'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i,
+                regex: emailValidationRegex,
             }),
         ],
     },
