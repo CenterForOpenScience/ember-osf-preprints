@@ -39,7 +39,7 @@
                                         {{else if (user-errors author)}}
                                             <li>{{disabled-user-name author}}</li>
                                         {{else}}
-                                            <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.name}}</a></li>
+                                            <li><a href={{author.users.profileURL}} onclick={{action 'click' 'link' 'Content - Author' author.users.profileURL}}>{{author.users.fullName}}</a></li>
                                         {{/if}}
                                     {{/if}}
                                 {{~/each}}
