@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.136.0] - 2021-05-10
+### Fixed
+- Show users full name (including middle name) for preprints detail page
+
 ## [0.135.0] - 2021-04-26
 ### Changed
 - email validation regex to remove hard-coded allowed domains and use a more generalized email validation regex
