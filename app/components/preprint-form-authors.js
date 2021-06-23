@@ -131,7 +131,7 @@ export default CpPanelBodyComponent.extend(Analytics, {
                     ));
                     this.highlightSuccessOrFailure(contributor.id, this, 'success');
                 }, (error) => {
-                    if (error.errors[0] && error.errors[0].detail && error.errors[0].detail.indexOf('is already a contributor') > -1) {
+                    if (error.errors[0] && error.errors[0].detail) {
                         this.get('toast').error(error.errors[0].detail);
                     } else {
                         this.get('toast').error(this.get('i18n').t('submit.error_adding_unregistered_author'));
