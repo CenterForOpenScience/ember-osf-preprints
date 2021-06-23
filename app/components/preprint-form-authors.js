@@ -132,7 +132,11 @@ export default CpPanelBodyComponent.extend(Analytics, {
                     this.highlightSuccessOrFailure(contributor.id, this, 'success');
                 }, (error) => {
                     if (error.errors[0] && error.errors[0].detail) {
-                        this.get('toast').error(error.errors[0].detail);
+                        if (error.errors[0].detail.indexOf('is already a contributor') > -1) {
+                            this.get('toast').error(this.get('i18n').t('submit.error_adding_existing_user'));
+                        } else if (error.errors[0].detail.indexOf('Deactivated users') > -1) {
+                            this.get('toast').error(this.get('i18n').t('submit.error_adding_deactivated_user'));
+                        }
                     } else {
                         this.get('toast').error(this.get('i18n').t('submit.error_adding_unregistered_author'));
                     }

@@ -287,6 +287,8 @@ export default {
         preprint_unregistered_author_added: '{{documentType.singularCaptalized}} unregistered author added!',
         error_adding_author: 'Could not add author. Please try again.',
         error_removing_author: 'Could not remove author. Please try again.',
+        error_adding_existing_user: 'User is already a contributor.',
+        error_adding_deactivated_user: 'Deactivated users cannot be added as contributors.',
         error_adding_unregistered_author: 'Could not add unregistered author. Please try again.',
         error_initiating_preprint: 'Could not initiate {{documentType.singular}}. Please try again.',
         error_saving_preprint: 'Could not save {{documentType.singular}}. Please try again.',
