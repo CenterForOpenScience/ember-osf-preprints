@@ -41,6 +41,8 @@ export default {
         license: 'License',
         pre_moderation: 'pre-moderation',
         post_moderation: 'post-moderation',
+        collapse: 'Collapse',
+        expand: 'Expand',
     },
     application: {
         separator: ' | ',
