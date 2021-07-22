@@ -94,6 +94,7 @@ export default {
             partner: 'Partner Repositories',
             placeholder: 'Search {{documentType.plural}}...',
             repository_placeholder: 'Search repository...',
+            search_input_box: 'Search input box',
         },
         sort_by: 'Sort by',
         sort_newest_oldest: 'Modified Date (newest to oldest)',
