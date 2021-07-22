@@ -44,7 +44,10 @@ jobs:
 
     - run: yarn bower install --config.interactive=false
     - run: yarn test:cover
-    - run: yarn coveralls
+    - name: run coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      run: yarn coveralls
     - name: Send coverage report to coveralls
       uses: coverallsapp/github-action@master
       with:
