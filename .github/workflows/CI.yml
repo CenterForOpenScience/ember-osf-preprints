@@ -29,7 +29,7 @@ jobs:
       id: cache-bower-dependencies
       uses: actions/cache@v2
       with:
-        path: ./bower-components
+        path: ./bower_components
         key: cached_bower_dependencies_${{ hashFiles('**/bower.json') }}
         restore-keys: cached_bower_dependencies_
     - if: steps.cache-bower-dependencies.outputs.cache-hit != 'true'
@@ -51,7 +51,7 @@ jobs:
     - id: cache-bower-dependencies
       uses: actions/cache@v2
       with:
-        path: ./bower-components
+        path: ./bower_components
         key: cached_bower_components_${{ hashFiles('**/bower.json') }}
         restore-keys: cached_bower_components_
     - run: yarn test:cover
