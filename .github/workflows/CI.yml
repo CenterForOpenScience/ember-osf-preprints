@@ -33,7 +33,7 @@ jobs:
         key: cached_bower_dependencies_${{ hashFiles('**/bower.json') }}
         restore-keys: cached_bower_dependencies_
     - if: steps.cache-bower-dependencies.outputs.cache-hit != 'true'
-      run: bower install --config.interactive=false
+      run: yarn bower install --config.interactive=false
 
   test-with-coverage:
     runs-on: ubuntu-latest
