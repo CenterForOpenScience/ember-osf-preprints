@@ -44,22 +44,27 @@ jobs:
 
     - run: yarn bower install --config.interactive=false
     - run: yarn test:cover
-    - name: Save code coverage artifact
-      uses: actions/upload-artifact@v2
+    - run: yarn coveralls
+    - name: Send coverage report to coveralls
+      uses: coverallsapp/github-action@master
       with:
-        name: coverage-info
-        path: ./coverage/lcov.info
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Save code coverage artifact
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: coverage-info
+    #     path: ./coverage/lcov.info
 
-  send-coverage:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: test-with-coverage
-    steps:
-    - uses: volta-cli/action@v1
-    - uses: actions/download-artifact@v2
-      with:
-        name: coverage-info
-        path: ./coverage/lcov.info
+  # send-coverage:
+    # runs-on: ubuntu-latest
+    # timeout-minutes: 10
+    # needs: test-with-coverage
+    # steps:
+    # - uses: volta-cli/action@v1
+    # - uses: actions/download-artifact@v2
+    #   with:
+    #     name: coverage-info
+    #     path: ./coverage/lcov.info
     # - uses: actions/cache@v2
     #   with:
     #     path: ./node_modules
@@ -69,7 +74,7 @@ jobs:
     #   env:
     #     COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
     #   run: yarn coveralls
-    - name: Send coverage report to coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Send coverage report to coveralls
+    #   uses: coverallsapp/github-action@master
+    #   with:
+    #     github-token: ${{ secrets.GITHUB_TOKEN }}
