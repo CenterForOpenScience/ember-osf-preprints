@@ -57,9 +57,8 @@ jobs:
     #     key: cached_bower_components_${{ hashFiles('**/bower.json') }}
     #     restore-keys: cached_bower_components_
 
-    - run: |
-      yarn bower install --config.interactive=false
-      yarn test:cover
+    - run: yarn bower install --config.interactive=false
+    - run: yarn test:cover
     - name: Save code coverage artifact
       uses: actions/upload-artifact@v2
       with:
