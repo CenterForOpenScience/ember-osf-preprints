@@ -13,5 +13,5 @@ moduleFor('route:provider/discover', 'Unit | Route | provider/discover', {
 
 test('it exists', function(assert) {
     const route = this.subject();
-    assert.ok(route);
+    assert.notOk(route);
 });
