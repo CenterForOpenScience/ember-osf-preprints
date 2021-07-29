@@ -44,16 +44,7 @@ jobs:
 
     - run: yarn bower install --config.interactive=false
     - run: yarn test:cover
-    # - name: run coveralls
-    #   env:
-    #     COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-    #   run: yarn coveralls
     - name: Send coverage report to coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-    # - name: Save code coverage artifact
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: coverage-info
-    #     path: ./coverage/lcov.info
