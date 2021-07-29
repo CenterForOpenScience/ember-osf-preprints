@@ -1,8 +1,8 @@
 # ember-osf-preprints
 
-`master` Build Status: [![Master Build Status](https://github.com/CenterForOpenScience/ember-osf-preprints/workflows/CI.yml/badge.svg?branch=master)
+`master` Build Status: ![Master Build Status](https://github.com/CenterForOpenScience/ember-osf-preprints/workflows/CI/badge.svg?branch=master)
 
-`develop` Build Status: [![Develop Build Status](https://github.com/CenterForOpenScience/ember-osf-preprints/workflows/CI.yml/badge.svg?branch=develop)
+`develop` Build Status: ![Develop Build Status](https://github.com/CenterForOpenScience/ember-osf-preprints/workflows/CI/badge.svg?branch=develop)
 
 [![Coverage Status](https://coveralls.io/repos/github/CenterForOpenScience/ember-osf-preprints/badge.svg?branch=develop)](https://coveralls.io/github/CenterForOpenScience/ember-osf-preprints?branch=develop)
 
