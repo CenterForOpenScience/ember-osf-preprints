@@ -134,9 +134,9 @@ export default {
         },
         subjects: {
             heading: {
-                provider: 'Browse <small>by provider</small>',
-                hasHighlightedSubjects: 'Browse <small>by featured subjects</small>',
-                noHighlightedSubjects: 'Browse <small>by subjects</small>',
+                provider: 'Browse by provider',
+                hasHighlightedSubjects: 'Browse by featured subjects',
+                noHighlightedSubjects: 'Browse by subjects',
             },
             links: {
                 seeAllSubjects: 'See all subjects available',
