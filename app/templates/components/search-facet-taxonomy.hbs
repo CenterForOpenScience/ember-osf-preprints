@@ -7,6 +7,7 @@
                     class="pointer m-r-xs {{if item.showChildren 'taxonomy-show-children'}}"
                     {{action 'expand' item}}
                     aria-label="{{if item.showChildren (t 'global.collapse') (t 'global.expand')}} {{item.text}}"
+                    tabindex=0
                 >
                     <i class="taxonomy-caret fa {{if item.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
                 </span>
