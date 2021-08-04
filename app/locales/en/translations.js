@@ -41,6 +41,8 @@ export default {
         license: 'License',
         pre_moderation: 'pre-moderation',
         post_moderation: 'post-moderation',
+        collapse: 'Collapse',
+        expand: 'Expand',
     },
     application: {
         separator: ' | ',
@@ -92,6 +94,7 @@ export default {
             partner: 'Partner Repositories',
             placeholder: 'Search {{documentType.plural}}...',
             repository_placeholder: 'Search repository...',
+            search_input_box: 'Search input box',
         },
         sort_by: 'Sort by',
         sort_newest_oldest: 'Modified Date (newest to oldest)',
@@ -131,9 +134,9 @@ export default {
         },
         subjects: {
             heading: {
-                provider: 'Browse <small>by provider</small>',
-                hasHighlightedSubjects: 'Browse <small>by featured subjects</small>',
-                noHighlightedSubjects: 'Browse <small>by subjects</small>',
+                provider: 'Browse by provider',
+                hasHighlightedSubjects: 'Browse by featured subjects',
+                noHighlightedSubjects: 'Browse by subjects',
             },
             links: {
                 seeAllSubjects: 'See all subjects available',
