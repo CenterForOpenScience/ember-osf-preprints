@@ -16,6 +16,8 @@
 /libpeerconnection.log
 npm-debug.log
 testem.log
+.yalc
+yalc.lock
 
 # idea
 .idea
