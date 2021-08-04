@@ -32,7 +32,6 @@ module.exports = function(defaults) {
         Object.assign(css, { [`brands/${brandId}`]: `/assets/css/${brandId}.css` });
     }
 
-    // Reference: https://github.com/travis-ci/travis-web/blob/master/ember-cli-build.js
     const app = new EmberApp(defaults, {
         sourcemaps: {
             enabled: true,

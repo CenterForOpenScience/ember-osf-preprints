@@ -63,7 +63,7 @@
                                 links=preprint.preregLinks
                                 analyticsName=(t 'components.author-assertions.prereg.title')
                             }}
-                        {{else if (eq preprint.hasDataLinks 'no')}}
+                        {{else if (eq preprint.hasPreregLinks 'no')}}
                             {{#if preprint.whyNoPrereg}}
                                 {{preprint.whyNoPrereg}}
                             {{else}}
