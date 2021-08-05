@@ -142,7 +142,7 @@
                         </div>
 
                         {{#if node}}
-                            <div class="p-t-xs">
+                            <div class="p-t-xs supplemental-material-section">
                                 <h4 class="p-v-md f-w-md"><strong>{{t "content.supplemental_materials.title"}}</strong></h4>
                                 <a href={{node.links.html}} target="_blank" rel="noopener noreferrer" onclick={{action "click" "link" "Content - Visit Project" node.id}}>
                                     {{supplementalMaterialDisplayLink}}
@@ -151,7 +151,7 @@
                             </div>
                         {{/if}}
 
-                        <div class="p-t-xs">
+                        <div class="p-t-xs doi-section">
                             <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi" documentType=model.provider.documentType}}</strong></h4>
                             {{#if model.preprintDoiUrl}}
                                 {{#if model.preprintDoiCreated}}

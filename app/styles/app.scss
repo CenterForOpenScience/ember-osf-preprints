@@ -278,6 +278,12 @@ $logo-dir: 'img/provider_logos/';
     }
 }
 
+.lead {
+    a:hover.source_code_link {
+        color: #6dd1de;
+    }
+}
+
 /* VIEW page */
 
 .subject-preview {
@@ -347,6 +353,12 @@ $logo-dir: 'img/provider_logos/';
 
     button.btn-link {
         color: #255884;
+    }
+
+    .supplemental-material-section {
+        a{
+            color: #255884;
+        }
     }
 
     .doi-section {
