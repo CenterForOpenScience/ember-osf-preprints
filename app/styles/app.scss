@@ -1254,6 +1254,11 @@ hr {
     text-decoration: underline;
 }
 
+.taxonomy-caret-button {
+    border: none;
+    background: none;
+}
+
 .taxonomy-show-children {
     margin-right: 2px;
 }
@@ -1652,7 +1657,7 @@ nav.branded-navbar {
         word-wrap: break-word;
     }
     .taxonomy-right-padding {
-        padding-right: 14px;
+        padding-right: 23px;
     }
     .taxonomy-left-padding {
         padding-left: 40px;
