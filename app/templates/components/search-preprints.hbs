@@ -1,5 +1,11 @@
 <div class="input-group input-group-lg">
-    <input id="searchBox" type="search" class="form-control" placeholder={{if theme.provider.additionalProviders (t 'discover.search.repository_placeholder')(t "global.search_preprints" documentType=theme.provider.documentType) }}>
+    <input
+        id="searchBox"
+        type="search"
+        class="form-control"
+        aria-label={{t 'discover.search.search_input_box'}}
+        placeholder={{if theme.provider.additionalProviders (t 'discover.search.repository_placeholder')(t "global.search_preprints" documentType=theme.provider.documentType) }}
+    >
     <span class="input-group-btn">
         <button class="btn btn-default" type="button" {{action "search" this}}>{{t "global.search"}}</button>
     </span>
