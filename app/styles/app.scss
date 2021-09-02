@@ -17,6 +17,11 @@
 
 
 /* GLOBAL to PREPRINTS, these may be used in multiple pages */
+
+.ember-text-field::placeholder {
+    color: #757575;
+}
+
 .pointer {
     cursor: pointer;
 }
@@ -622,7 +627,7 @@ $color-border-light: #DDDDDD;
         color: #444;
         font-size: 15px;
         i {
-            color: #888;
+            color: rgb(51, 51, 51);
             display: block;
         }
         .abstract {
@@ -970,7 +975,7 @@ hr {
 .sloan-assertions {
     span.required:after {
         content: "(required)";
-        color: lighten(red, 30%);
+        color: #e50000;
         font-weight: normal;
         margin-left: 5px;
     }
@@ -1012,7 +1017,7 @@ hr {
 #preprint-form-basics {
     span.required:after {
         content: "(required)";
-        color: lighten(red, 30%);
+        color: #e50000;
         font-weight: normal;
         float: right;
     }
