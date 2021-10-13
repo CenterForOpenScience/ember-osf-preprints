@@ -17,13 +17,18 @@
 <div class="row">
     {{#each columns as |column tier|}}
         <div class="col-md-4">
-            <ul style="overflow: scroll" role="listbox">
-                {{input value=column.filterText class="form-control" placeholder="Search"}}
+            {{input
+                (html-attributes aria-label='Search')
+                value=column.filterText class="form-control"
+                placeholder="Search"
+            }}
+            <ul style="overflow: scroll" role={{if column.subjectsFiltered "listbox"}} aria-label={{t 'components.preprint-form-header.name.Discipline'}}>
                 {{#each column.subjectsFiltered as |subject|}}
-                    <li {{action 'select' subject tier}} class={{if (eq subject column.selection) 'selected'}} role="button">
+                    <li {{action 'select' subject tier}} class={{if (eq subject column.selection) 'selected'}} role="option">
                         {{subject.text}}
                     </li>
                 {{/each}}
+                
             </ul>
         </div>
     {{/each}}
