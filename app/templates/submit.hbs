@@ -195,6 +195,7 @@
                                             <div data-test-data-links-available>
                                                 {{#multiple-textbox-input
                                                     model=dataLinks
+                                                    labelAria=(t 'components.author-assertions.public_data.linksToData')
                                                 }}
                                                     {{t 'components.author-assertions.public_data.linksToData'}}: <span class='required' />
                                                 {{/multiple-textbox-input}}
@@ -258,6 +259,7 @@
                                             <div data-test-prereg-links-available class='form-group'>
                                                 {{#multiple-textbox-input
                                                     model=preregLinks
+                                                    labelAria=(t 'components.author-assertions.prereg.links')
                                                 }}
                                                     {{t 'components.author-assertions.prereg.links'}}: <span class='required' />
                                                 {{/multiple-textbox-input}}
@@ -326,14 +328,18 @@
                                     <div class="col-md-6">
                                         <div>
                                             <label>{{t "submit.body.basics.doi.label"}}:</label>
-                                            <form role="button" onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
+                                            {{!-- template-lint-disable no-invalid-interactive --}}
+                                            <form onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
                                                 {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
                                             </form>
+                                            {{!-- template-lint-enable no-invalid-interactive --}}
                                         </div>
                                         <div>
-                                            <label>{{t "submit.body.basics.original_publication_date.label"}}:</label>
                                             <form>
-                                                {{validated-input inputType='date' model=this valuePath='basicsOriginalPublicationDate' value=basicsOriginalPublicationDate}}
+                                                <label>
+                                                    {{t "submit.body.basics.original_publication_date.label"}}:
+                                                    {{validated-input inputType='date' model=this valuePath='basicsOriginalPublicationDate' value=basicsOriginalPublicationDate}}
+                                                </label>
                                             </form>
                                         </div>
                                         <div class="clearfix">
@@ -343,11 +349,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>
-                                            <span class="required">{{t "global.abstract"}}:</span>
-                                        </label>
                                         <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Abstract Text Change') (action 'track' 'input' 'onchange' 'Submit - Abstract Text Change')}}>
-                                            {{validated-input inputType='textarea' model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder" documentType=currentProvider.documentType) value=basicsAbstract}}
+                                            <label>
+                                                <span class="required">{{t "global.abstract"}}:</span>
+                                                {{validated-input inputType='textarea' model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder" documentType=currentProvider.documentType) value=basicsAbstract}}
+                                            </label>
                                         </form>
                                     </div>
                                 </div>
@@ -439,8 +445,15 @@
                                     </div>
                                     <br>
                                     {{#if hasCoi}}
-                                        <label for='coiStatement'>{{t "submit.body.conflict_of_interest.describe"}} <span class='required' /></label>
-                                        {{validated-input id='coiStatement' inputType='textarea' model=this valuePath='coiStatement' documentType=currentProvider.documentType value=coiStatement}}
+                                        <label>
+                                            {{t "submit.body.conflict_of_interest.describe"}} <span class='required' />
+                                            {{validated-input
+                                                inputType='textarea'
+                                                model=this valuePath='coiStatement'
+                                                documentType=currentProvider.documentType
+                                                value=coiStatement
+                                            }}
+                                        </label>
                                     {{else if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null)))}}
                                         <div data-test-has-no-coi class='form-group'>
                                             <input type="text" class='form-control' disabled placeholder={{t "submit.body.conflict_of_interest.placeholder"}}>
