@@ -319,6 +319,9 @@ export default {
         successfully_withdrawn: 'Your {{documentType.singular}} has been successfully withdrawn.',
     },
     components: {
+        'provider-carousel': {
+            select_service: 'Select service',
+        },
         'confirm-share-preprint': {
             body: 'Once this {{documentType.singular}} is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.',
             title: {
@@ -367,6 +370,7 @@ export default {
         'file-uploader': {
             dropzone_message: 'Drop {{documentType.singular}} file here to upload',
             title_placeholder: 'Enter {{documentType.singular}} title',
+            title_label: 'Title',
             update_version: 'Update {{documentType.singular}} file version.',
             could_not_create_preprint: 'Could not create preprint. Please try again.',
             could_not_update_title: 'Could not update title. Please try again.',

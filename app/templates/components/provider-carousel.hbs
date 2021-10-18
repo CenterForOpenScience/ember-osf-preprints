@@ -1,6 +1,6 @@
 {{!Provider Carousel}}
 <div id="providerCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
-    <div class="carousel-inner" role="listbox">
+    <div class="carousel-inner" role="listbox" aria-label={{t 'components.provider-carousel.select_service'}}>
         {{#each slides as |slide index|}}
             <div class={{if (not index) "item active" "item"}}>
                 {{#each slide as |provider index|}}
