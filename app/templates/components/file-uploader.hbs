@@ -11,9 +11,11 @@
         maxfilesexceeded=(action 'maxfilesexceeded')
     }}
     {{#if hasFile}}
-        <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Upload new preprint'}} role="button">
+        {{!-- template-lint-disable no-invalid-interactive --}}
+        <form onchange={{action 'track' 'input' 'onchange' 'Submit - Add title, Upload new preprint'}}>
             {{preprint-title-editor documentType=provider.documentType title=title titleValid=titleValid pressSubmit=(action 'createPreprintAndUploadFile')}}
         </form>
+        {{!-- template-lint-enable no-invalid-interactive --}}
     {{/if}}
 
     <div class="p-t-xs pull-right">

@@ -202,14 +202,16 @@
                                             </div>
                                         {{/if}}
                                         {{#if (eq hasDataLinks 'no')}}
-                                            <label>{{t 'components.author-assertions.describe'}}:</label>
-                                            {{validated-input
-                                                id='whyNoData'
-                                                inputType='textarea'
-                                                model=this
-                                                valuePath='whyNoData'
-                                                value=whyNoData
-                                            }}
+                                            <label>
+                                                {{t 'components.author-assertions.describe'}}:
+                                                {{validated-input
+                                                    id='whyNoData'
+                                                    inputType='textarea'
+                                                    model=this
+                                                    valuePath='whyNoData'
+                                                    value=whyNoData
+                                                }}
+                                            </label>
                                         {{/if}}
                                         {{#if (eq hasDataLinks 'not_applicable')}}
                                             <div data-test-data-links-not-applicable class='form-group'>
@@ -277,14 +279,16 @@
                                             </div>
                                         {{/if}}
                                         {{#if (eq hasPreregLinks 'no')}}
-                                            <label>{{t 'components.author-assertions.describe'}}:</label>
-                                            {{validated-input
-                                                id='whyNoPrereg'
-                                                inputType='textarea'
-                                                model=this
-                                                valuePath='whyNoPrereg'
-                                                value=whyNoPrereg
-                                            }}
+                                            <label>
+                                                {{t 'components.author-assertions.describe'}}:
+                                                {{validated-input
+                                                    id='whyNoPrereg'
+                                                    inputType='textarea'
+                                                    model=this
+                                                    valuePath='whyNoPrereg'
+                                                    value=whyNoPrereg
+                                                }}
+                                            </label>
                                         {{/if}}
                                         {{#if (eq hasPreregLinks 'not_applicable')}}
                                             <div data-test-prereg-links-not-applicable class='form-group'>
@@ -327,10 +331,12 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div>
-                                            <label>{{t "submit.body.basics.doi.label"}}:</label>
                                             {{!-- template-lint-disable no-invalid-interactive --}}
                                             <form onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
-                                                {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
+                                                <label>
+                                                    {{t "submit.body.basics.doi.label"}}:
+                                                    {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
+                                                </label>
                                             </form>
                                             {{!-- template-lint-enable no-invalid-interactive --}}
                                         </div>
