@@ -63,7 +63,7 @@
         {{preprint-status-banner submission=model isWithdrawn=isWithdrawn}}
     {{/if}}
     {{!CONTAINER DIV}}
-    <div id="view-page" class="container">
+    <div class="container">
         {{#if (not isWithdrawn)}}
             {{!CONTENT ROW}}
             <div class="row p-md">
@@ -79,7 +79,7 @@
                                 {{t "content.private_preprint_warning" documentType=model.provider.documentType supportEmail='support@osf.io'}}
                             </div>
                         {{/if}}
-                        {{preprint-file-renderer provider=model.provider preprint=model primaryFile=primaryFile dualTrackNonContributors=(action 'dualTrackNonContributors')}}
+                        {{preprint-file-renderer provider=model.provider preprint=model primaryFile=primaryFile}}
                         <div>
                             <span>{{t dateLabel}}: {{moment-format relevantDate "MMMM DD, YYYY"}}</span>
                             {{#if (not isWithdrawn)}}
@@ -88,7 +88,11 @@
                                 | <span>{{t "content.header.withdrawn_on"}}: {{moment-format model.dateWithdrawn "MMMM DD, YYYY"}}</span>
                             {{/if}}
                         </div>
-                        <button class="expand-mfr-carrot hidden-xs hidden-sm" {{action 'expandMFR'}}>
+                        <button
+                            class="expand-mfr-carrot hidden-xs hidden-sm"
+                            {{action 'expandMFR'}}
+                            aria-label={{if fullScreenMFR (t 'global.collapse') (t 'global.expand')}}
+                        >
                             <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                         </button>
                     {{/if}}
@@ -142,7 +146,7 @@
                         </div>
 
                         {{#if node}}
-                            <div class="p-t-xs">
+                            <div class="p-t-xs supplemental-material-section">
                                 <h4 class="p-v-md f-w-md"><strong>{{t "content.supplemental_materials.title"}}</strong></h4>
                                 <a href={{node.links.html}} target="_blank" rel="noopener noreferrer" onclick={{action "click" "link" "Content - Visit Project" node.id}}>
                                     {{supplementalMaterialDisplayLink}}
@@ -151,7 +155,7 @@
                             </div>
                         {{/if}}
 
-                        <div class="p-t-xs">
+                        <div class="p-t-xs doi-section">
                             <h4 class="p-v-md f-w-md"><strong>{{t "content.preprint_doi" documentType=model.provider.documentType}}</strong></h4>
                             {{#if model.preprintDoiUrl}}
                                 {{#if model.preprintDoiCreated}}
@@ -170,7 +174,7 @@
                         </div>
 
                         {{#if model.articleDoiUrl}}
-                            <div class="p-t-xs">
+                            <div class="p-t-xs doi-section">
                                 <h4 class="p-v-md f-w-md"><strong>{{t "content.article_doi"}}</strong></h4>
                                 <a href={{model.articleDoiUrl}} onlick={{action "click" "link" "Content - DOI" model.articleDoiUrl}}>{{extract-doi model.articleDoiUrl}}</a>
                             </div>
@@ -199,8 +203,8 @@
                                 <span class='subject-preview'>{{subject.text}}</span>
                             {{/each}}
                         </div>
-                        <div class="p-t-xs">
-                            <h4 class=" f-w-md p-v-md"><strong>{{t "global.tags"}}</strong></h4>
+                        <div class="tag-section p-t-xs">
+                            <h4 class="f-w-md p-v-md"><strong>{{t "global.tags"}}</strong></h4>
                             {{#if hasTag}}
                                 {{#each model.tags as |tag|}}
                                     <span class="badge">{{fix-special-char tag}}</span>

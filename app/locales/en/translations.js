@@ -41,6 +41,8 @@ export default {
         license: 'License',
         pre_moderation: 'pre-moderation',
         post_moderation: 'post-moderation',
+        collapse: 'Collapse',
+        expand: 'Expand',
     },
     application: {
         separator: ' | ',
@@ -92,6 +94,7 @@ export default {
             partner: 'Partner Repositories',
             placeholder: 'Search {{documentType.plural}}...',
             repository_placeholder: 'Search repository...',
+            search_input_box: 'Search input box',
         },
         sort_by: 'Sort by',
         sort_newest_oldest: 'Modified Date (newest to oldest)',
@@ -131,9 +134,9 @@ export default {
         },
         subjects: {
             heading: {
-                provider: 'Browse <small>by provider</small>',
-                hasHighlightedSubjects: 'Browse <small>by featured subjects</small>',
-                noHighlightedSubjects: 'Browse <small>by subjects</small>',
+                provider: 'Browse by provider',
+                hasHighlightedSubjects: 'Browse by featured subjects',
+                noHighlightedSubjects: 'Browse by subjects',
             },
             links: {
                 seeAllSubjects: 'See all subjects available',
@@ -287,6 +290,8 @@ export default {
         preprint_unregistered_author_added: '{{documentType.singularCaptalized}} unregistered author added!',
         error_adding_author: 'Could not add author. Please try again.',
         error_removing_author: 'Could not remove author. Please try again.',
+        error_adding_existing_user: 'User is already a contributor.',
+        error_adding_deactivated_user: 'Deactivated users cannot be added as contributors.',
         error_adding_unregistered_author: 'Could not add unregistered author. Please try again.',
         error_initiating_preprint: 'Could not initiate {{documentType.singular}}. Please try again.',
         error_saving_preprint: 'Could not save {{documentType.singular}}. Please try again.',
@@ -314,6 +319,9 @@ export default {
         successfully_withdrawn: 'Your {{documentType.singular}} has been successfully withdrawn.',
     },
     components: {
+        'provider-carousel': {
+            select_service: 'Select service',
+        },
         'confirm-share-preprint': {
             body: 'Once this {{documentType.singular}} is made public, you should assume that it will always be public. Even if you delete it, search engines or others may access the files before you do so.',
             title: {
@@ -362,6 +370,7 @@ export default {
         'file-uploader': {
             dropzone_message: 'Drop {{documentType.singular}} file here to upload',
             title_placeholder: 'Enter {{documentType.singular}} title',
+            title_label: 'Title',
             update_version: 'Update {{documentType.singular}} file version.',
             could_not_create_preprint: 'Could not create preprint. Please try again.',
             could_not_update_title: 'Could not update title. Please try again.',

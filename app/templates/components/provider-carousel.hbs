@@ -1,6 +1,6 @@
 {{!Provider Carousel}}
 <div id="providerCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
-    <div class="carousel-inner" role="listbox">
+    <div class="carousel-inner" role="listbox" aria-label={{t 'components.provider-carousel.select_service'}}>
         {{#each slides as |slide index|}}
             <div class={{if (not index) "item active" "item"}}>
                 {{#each slide as |provider index|}}
@@ -10,12 +10,14 @@
                                 onclick={{action 'selectProvider' provider}}
                                 disabled={{eq provider activeProvider}}
                                 title="{{provider.name}}"
+                                role='option'
                                 style={{safe-markup (concat "background-image: url('" (provider-asset provider.id 'square_color_no_transparent.png') "')")}} />
                         </div>
                     {{else}}
                         <div class={{if (not index) (concat "col-sm-2 " columnOffset) "col-sm-2"}}>
                             <a href="{{branded-preprint-url provider path=(if lightLogo '' '/discover')}}"
                                 title={{provider.name}}
+                                role='option'
                                 onclick={{action 'click' 'link' (concat 'Index - Provider Carousel - ' provider.name)}}
                                 >
                                 {{#if lightLogo}}

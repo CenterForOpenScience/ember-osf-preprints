@@ -17,6 +17,19 @@
 
 
 /* GLOBAL to PREPRINTS, these may be used in multiple pages */
+
+.ember-text-field::placeholder {
+    color: #757575;
+}
+
+.ember-power-select-placeholder {
+    color: #555;
+}
+
+.text-muted {
+    color: #555;
+}
+
 .pointer {
     cursor: pointer;
 }
@@ -278,6 +291,12 @@ $logo-dir: 'img/provider_logos/';
     }
 }
 
+.lead {
+    a:hover.source_code_link {
+        color: #6dd1de;
+    }
+}
+
 /* VIEW page */
 
 .subject-preview {
@@ -343,6 +362,32 @@ $logo-dir: 'img/provider_logos/';
     }
     .abstract {
         white-space: pre-line;
+    }
+
+    button.btn-link {
+        color: #255884;
+    }
+
+    .supplemental-material-section {
+        a{
+            color: #255884;
+        }
+    }
+
+    .doi-section {
+        a{
+            color: #255884;
+        }
+    }
+
+    .tag-section {
+        span.badge {
+            background-color: #555;
+        }
+    }
+
+    .ember-power-select-placeholder {
+        color: #555;
     }
     .abstract-truncated:after {
         content: ' \2026';
@@ -590,7 +635,7 @@ $color-border-light: #DDDDDD;
         color: #444;
         font-size: 15px;
         i {
-            color: #888;
+            color: rgb(51, 51, 51);
             display: block;
         }
         .abstract {
@@ -841,6 +886,7 @@ hr {
 .preprint-form-section {
     header {
         @extend a;
+
         cursor: pointer;
         font: {
             size: 16px;
@@ -937,7 +983,7 @@ hr {
 .sloan-assertions {
     span.required:after {
         content: "(required)";
-        color: lighten(red, 30%);
+        color: #e50000;
         font-weight: normal;
         margin-left: 5px;
     }
@@ -979,7 +1025,7 @@ hr {
 #preprint-form-basics {
     span.required:after {
         content: "(required)";
-        color: lighten(red, 30%);
+        color: #e50000;
         font-weight: normal;
         float: right;
     }
@@ -1252,6 +1298,11 @@ hr {
 .source_code_link {
     color: white;
     text-decoration: underline;
+}
+
+.taxonomy-caret-button {
+    border: none;
+    background: none;
 }
 
 .taxonomy-show-children {
@@ -1652,7 +1703,7 @@ nav.branded-navbar {
         word-wrap: break-word;
     }
     .taxonomy-right-padding {
-        padding-right: 14px;
+        padding-right: 23px;
     }
     .taxonomy-left-padding {
         padding-left: 40px;

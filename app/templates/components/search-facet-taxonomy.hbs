@@ -2,9 +2,13 @@
     <ul>
         {{#each topLevelItem as |item|}}
             <li>
-                <span role="button" class="pointer m-r-xs {{if item.showChildren 'taxonomy-show-children'}}" {{action 'expand' item}}>
+                <button
+                    class="pointer m-r-xs taxonomy-caret-button {{if item.showChildren 'taxonomy-show-children'}}"
+                    {{action 'expand' item}}
+                    aria-label="{{if item.showChildren (t 'global.collapse') (t 'global.expand')}} {{item.text}}"
+                >
                     <i class="taxonomy-caret fa {{if item.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
-                </span>
+                </button>
                 <label class="taxonomy-checkbox">
                     <input type="checkbox" checked="{{if (if-filter (concat item.shareTitle "|" item.text) state.value) 'checked'}}" onclick={{action updateFilters 'subject' (concat item.shareTitle "|" item.text)}}>
                     {{item.text}}
@@ -15,9 +19,13 @@
                     {{#each item.children as |child|}}
                         <li>
                             {{#if child.childCount }}
-                                <span role="button" class="pointer m-r-xs {{if item.showChildren 'taxonomy-show-children'}}" {{action 'expand' child}}>
+                                <button
+                                    class="pointer m-r-xs taxonomy-caret-button {{if item.showChildren 'taxonomy-show-children'}}"
+                                    {{action 'expand' child}}
+                                    aria-label="{{if child.showChildren (t 'global.collapse') (t 'global.expand')}} {{child.text}}"
+                                >
                                     <i class="taxonomy-caret fa {{if child.showChildren 'fa-caret-down' 'fa-caret-right'}}"></i>
-                                </span>
+                                </button>
                             {{else}}
                                 <span class="taxonomy-right-padding"></span>
                             {{/if}}

@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.136.0",
+  "version": "0.137.0",
   "description": "Center for Open Science Preprint Service",
   "license": "Apache-2.0",
   "author": "",
@@ -22,10 +22,11 @@
     "update-assets-hotfix": "yarn hotfix && yarn update-assets && git ci public/assets/osf-assets -m 'Updated assets'",
     "use-ember-osf-develop": "yarn upgrade @centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#develop#$(date -u +%FT%TZ)",
     "use-ember-osf-next-interfaces": "yarn upgrade @centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#release/next-interfaces#$(date -u +%FT%TZ)",
-    "hotfix": "git flow hotfix start rename-me && npm --no-git-tag-version version patch && git ci package.json -m 'Bump version' && git br -m \"hotfix/$(npm version | head -1 | grep -o '[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+')\""
+    "hotfix": "git flow hotfix start rename-me && npm --no-git-tag-version version patch && git ci package.json -m 'Bump version' && git br -m \"hotfix/$(npm version | head -1 | grep -o '[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+')\"",
+    "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "devDependencies": {
-    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#0.31.1",
+    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#0.32.0",
     "@centerforopenscience/eslint-config": "^2.0.0",
     "@centerforopenscience/osf-style": "1.9.0",
     "autoprefixer": "^7.1.2",
@@ -66,6 +67,7 @@
     "ember-click-outside": "^0.1.12",
     "ember-collapsible-panel": "~1.0.0",
     "ember-collection": "^1.0.0-alpha.7",
+    "ember-component-attributes": "^0.1.3",
     "ember-cp-validations": "^3.5.1",
     "ember-data": "2.18.0",
     "ember-data-factory-guy": "^2.11.6",
