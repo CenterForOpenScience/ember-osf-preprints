@@ -5,7 +5,13 @@
     <div class="row">
         {{#each textFields key="id" as |field index|}}
             <div data-test-multiple-textbox-index={{index}} class="col-xs-12 p-t-xs text-input-row">
-                {{input class="form-control ember-text-field" type="text" placeholder=placeholder value=field.value change=(action 'onChange') }}
+                {{input
+                    (html-attributes aria-label=labelAria)
+                    class="form-control ember-text-field"
+                    type="text" placeholder=placeholder
+                    value=field.value
+                    change=(action 'onChange') 
+                }}
                 {{#if (and (gt textFields.length 1) (gt textFieldsLastIndex index) )}}
                     <button data-test-multiple-textbox-input-remove={{index}} class="btn btn-danger btn-small" onClick={{action 'removeTextField' index}} aria-label='Remove text field'>{{fa-icon 'minus'}}</button>
                 {{else}}

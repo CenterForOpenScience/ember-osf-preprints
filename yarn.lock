@@ -1188,9 +1188,9 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#0.31.2":
-  version "0.31.2"
-  resolved "https://github.com/CenterForOpenScience/ember-osf.git#a75e9505f654f92549c52facdfa3b32cbc7852c3"
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#0.32.0":
+  version "0.32.0"
+  resolved "https://github.com/CenterForOpenScience/ember-osf.git#898d0d976099c70bf1428b114b9ab7b5a735b267"
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
@@ -1205,6 +1205,7 @@
     ember-cli-sass "^7.0.0"
     ember-cli-shims "1.0.2"
     ember-collapsible-panel "^2.1.1"
+    ember-component-attributes "^0.1.3"
     ember-component-css "^0.6.0"
     ember-computed-style "^0.2.0"
     ember-concurrency "^0.8.12"
@@ -4946,7 +4947,7 @@ ember-cli-babel@^5.0.0, ember-cli-babel@^5.1.3, ember-cli-babel@^5.1.5, ember-cl
     ember-cli-version-checker "^1.0.2"
     resolve "^1.1.2"
 
-ember-cli-babel@^6.0.0, ember-cli-babel@^6.0.0-beta.4, ember-cli-babel@^6.1.0, ember-cli-babel@^6.10.0, ember-cli-babel@^6.11.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.4.1, ember-cli-babel@^6.6.0, ember-cli-babel@^6.7.1, ember-cli-babel@^6.7.2, ember-cli-babel@^6.8.0, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2, ember-cli-babel@^6.9.0, ember-cli-babel@^6.9.2:
+ember-cli-babel@^6.0.0, ember-cli-babel@^6.0.0-beta.4, ember-cli-babel@^6.1.0, ember-cli-babel@^6.10.0, ember-cli-babel@^6.11.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.4.1, ember-cli-babel@^6.6.0, ember-cli-babel@^6.7.0, ember-cli-babel@^6.7.1, ember-cli-babel@^6.7.2, ember-cli-babel@^6.8.0, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2, ember-cli-babel@^6.9.0, ember-cli-babel@^6.9.2:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.18.0.tgz#3f6435fd275172edeff2b634ee7b29ce74318957"
   dependencies:
@@ -5526,6 +5527,13 @@ ember-compatibility-helpers@^1.0.0, ember-compatibility-helpers@^1.0.0-beta.2:
     babel-plugin-debug-macros "^0.1.11"
     ember-cli-version-checker "^2.1.1"
     semver "^5.4.1"
+
+ember-component-attributes@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/ember-component-attributes/-/ember-component-attributes-0.1.3.tgz#39866f934dd6307c40b9a6a96daf93f17d82cbca"
+  integrity sha512-UtuDOouUKT+QU8ZyCGyPmNaY0hPy3GmpanUIdt3Jx6KQcLxRhya18xh6R3aTkdTulucqk1XULkpkMfDJWOIxLg==
+  dependencies:
+    ember-cli-babel "^6.7.0"
 
 ember-component-css@^0.6.0:
   version "0.6.3"

@@ -193,20 +193,23 @@
                                     <div data-test-data-links-available>
                                         {{#multiple-textbox-input
                                             model=dataLinks
+                                                    labelAria=(t 'components.author-assertions.public_data.linksToData')
                                         }}
                                             {{t 'components.author-assertions.public_data.linksToData'}}: <span class='required' />
                                         {{/multiple-textbox-input}}
                                     </div>
                                 {{/if}}
                                 {{#if (eq hasDataLinks 'no')}}
-                                    <label>{{t 'components.author-assertions.describe'}}:</label>
-                                    {{validated-input
-                                        id='whyNoData'
-                                        inputType='textarea'
-                                        model=this
-                                        valuePath='whyNoData'
-                                        value=whyNoData
-                                    }}
+                                    <label>
+                                        {{t 'components.author-assertions.describe'}}:
+                                        {{validated-input
+                                            id='whyNoData'
+                                            inputType='textarea'
+                                            model=this
+                                            valuePath='whyNoData'
+                                            value=whyNoData
+                                        }}
+                                    </label>
                                 {{/if}}
                                 {{#if (eq hasDataLinks 'not_applicable')}}
                                     <div data-test-data-links-not-applicable class='form-group'>
@@ -255,6 +258,7 @@
                                     <div data-test-prereg-links-available class='form-group'>
                                         {{#multiple-textbox-input
                                             model=preregLinks
+                                                    labelAria=(t 'components.author-assertions.prereg.links')
                                         }}
                                             {{t 'components.author-assertions.prereg.links'}}: <span class='required' />
                                         {{/multiple-textbox-input}}
@@ -272,14 +276,16 @@
                                     </div>
                                 {{/if}}
                                 {{#if (eq hasPreregLinks 'no')}}
-                                    <label>{{t 'components.author-assertions.describe'}}:</label>
-                                    {{validated-input
-                                        id='whyNoPrereg'
-                                        inputType='textarea'
-                                        model=this
-                                        valuePath='whyNoPrereg'
-                                        value=whyNoPrereg
-                                    }}
+                                    <label>
+                                        {{t 'components.author-assertions.describe'}}:
+                                        {{validated-input
+                                            id='whyNoPrereg'
+                                            inputType='textarea'
+                                            model=this
+                                            valuePath='whyNoPrereg'
+                                            value=whyNoPrereg
+                                        }}
+                                    </label>
                                 {{/if}}
                                 {{#if (eq hasPreregLinks 'not_applicable')}}
                                     <div data-test-prereg-links-not-applicable class='form-group'>
@@ -321,15 +327,21 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div>
-                                            <label>{{t "submit.body.basics.doi.label"}}:</label>
-                                            <form role="button" onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
-                                                {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
+                                            {{!-- template-lint-disable no-invalid-interactive --}}
+                                            <form onchange={{action 'stripDOI'}} onsubmit={{action 'preventDefault'}}>
+                                                <label>
+                                                    {{t "submit.body.basics.doi.label"}}:
+                                                    {{validated-input model=this valuePath='basicsDOI' placeholder=(t "global.doi") value=basicsDOI pressSubmit=(action 'saveBasics')}}
+                                                </label>
                                             </form>
+                                            {{!-- template-lint-enable no-invalid-interactive --}}
                                         </div>
                                         <div>
-                                            <label>{{t "submit.body.basics.original_publication_date.label"}}:</label>
                                             <form>
-                                                {{validated-input inputType='date' model=this valuePath='basicsOriginalPublicationDate' value=basicsOriginalPublicationDate}}
+                                                <label>
+                                                    {{t "submit.body.basics.original_publication_date.label"}}:
+                                                    {{validated-input inputType='date' model=this valuePath='basicsOriginalPublicationDate' value=basicsOriginalPublicationDate}}
+                                                </label>
                                             </form>
                                         </div>
                                         <div class="clearfix">
@@ -339,11 +351,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>
-                                            <span class="required">{{t "global.abstract"}}:</span>
-                                        </label>
                                         <form onchange={{if editMode (action 'track' 'input' 'onchange' 'Edit - Abstract Text Change') (action 'track' 'input' 'onchange' 'Submit - Abstract Text Change')}}>
-                                            {{validated-input inputType='textarea' model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder" documentType=currentProvider.documentType) value=basicsAbstract}}
+                                            <label>
+                                                <span class="required">{{t "global.abstract"}}:</span>
+                                                {{validated-input inputType='textarea' model=this valuePath='basicsAbstract' placeholder=(t "submit.body.basics.abstract.placeholder" documentType=currentProvider.documentType) value=basicsAbstract}}
+                                            </label>
                                         </form>
                                     </div>
                                 </div>
@@ -435,8 +447,15 @@
                                 </div>
                                 <br>
                                 {{#if hasCoi}}
-                                    <label for='coiStatement'>{{t "submit.body.conflict_of_interest.describe"}} <span class='required' /></label>
-                                    {{validated-input id='coiStatement' inputType='textarea' model=this valuePath='coiStatement' documentType=currentProvider.documentType value=coiStatement}}
+                                    <label>
+                                        {{t "submit.body.conflict_of_interest.describe"}} <span class='required' />
+                                        {{validated-input
+                                            inputType='textarea'
+                                            model=this valuePath='coiStatement'
+                                            documentType=currentProvider.documentType
+                                            value=coiStatement
+                                        }}
+                                    </label>
                                 {{else if (and (not hasCoi) (and (not-eq hasCoi undefined) (not-eq hasCoi null)))}}
                                     <div data-test-has-no-coi class='form-group'>
                                         <input type="text" class='form-control' disabled placeholder={{t "submit.body.conflict_of_interest.placeholder"}}>

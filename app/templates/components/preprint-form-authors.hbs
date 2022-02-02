@@ -2,9 +2,23 @@
     <div class="col-xs-12 col-md-5 col-division-right">
         <form {{action 'findContributors' 1 on='submit'}}>
             <div class="input-group author-search-box">
-                <input id="author-search-box" type="text" disabled={{not isAdmin}} class="form-control searchQuery" onchange={{action (mut query) value="target.value"}} placeholder={{t "components.preprint-form-authors.search.placeholder"}}>
+                <input
+                    id="author-search-box"
+                    type="text"
+                    disabled={{not isAdmin}}
+                    class="form-control searchQuery"
+                    onchange={{action (mut query) value="target.value"}}
+                    placeholder={{t "components.preprint-form-authors.search.placeholder"}}
+                    aria-label={{t "components.preprint-form-authors.search.placeholder"}}
+                >
                 <span class="input-group-btn">
-                    <button class="btn btn-default authors-search-button" disabled={{not isAdmin}} type="button" {{action 'findContributors' 1}} >
+                    <button
+                        aria-label={{t 'global.search'}}
+                        class="btn btn-default authors-search-button"
+                        disabled={{not isAdmin}}
+                        type="button"
+                        {{action 'findContributors' 1}}
+                    >
                         <i class="glyphicon glyphicon-search"></i>
                     </button>
                 </span>
@@ -168,7 +182,14 @@
                             <td class="bib-padding">
                                 <div class="form-group vert-align">
                                     <span class="visible-xs-inline checkbox-padding"><em>{{t "components.preprint-form-authors.authors.in_citation"}}:</em></span>
-                                    <input disabled={{if (and isAdmin (min-bibliographic contrib contributors authorModification)) false true}} onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}} checked={{eq contrib.bibliographic true}} type="checkbox" name="bibliographic">
+                                    <input
+                                        disabled={{if (and isAdmin (min-bibliographic contrib contributors authorModification)) false true}}
+                                        onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}}
+                                        checked={{eq contrib.bibliographic true}}
+                                        type="checkbox"
+                                        name="bibliographic"
+                                        aria-label={{t "components.preprint-form-authors.authors.in_citation"}}
+                                    >
                                 </div>
                             </td>
                             {{!REMOVE CONTRIBUTOR - LARGE SCREEN}}

@@ -63,7 +63,7 @@
         {{preprint-status-banner submission=model isWithdrawn=isWithdrawn}}
     {{/if}}
     {{!CONTAINER DIV}}
-    <div id="view-page" class="container">
+    <div class="container">
         {{#if (not isWithdrawn)}}
             {{!CONTENT ROW}}
             <div class="row p-md">
@@ -88,7 +88,11 @@
                                 | <span>{{t "content.header.withdrawn_on"}}: {{moment-format model.dateWithdrawn "MMMM DD, YYYY"}}</span>
                             {{/if}}
                         </div>
-                        <button class="expand-mfr-carrot hidden-xs hidden-sm" {{action 'expandMFR'}}>
+                        <button
+                            class="expand-mfr-carrot hidden-xs hidden-sm"
+                            {{action 'expandMFR'}}
+                            aria-label={{if fullScreenMFR (t 'global.collapse') (t 'global.expand')}}
+                        >
                             <i class="fa fa-chevron-{{if fullScreenMFR 'left' 'right'}}"></i>
                         </button>
                     {{/if}}
@@ -281,7 +285,7 @@
                         {{/each}}
                     </div>
 
-                    <div class="p-t-xs">
+                    <div class="tag-section p-t-xs">
                         <h4 class=" f-w-md p-v-md"><strong>{{t "global.tags"}}</strong></h4>
                         {{#if hasTag}}
                             {{#each model.tags as |tag|}}

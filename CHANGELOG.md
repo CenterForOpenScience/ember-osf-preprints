@@ -5,11 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [0.137.0] - TBD
--   Accessibility fixes for discover and landing pages
+## [0.137.0] - 2021-10-19
+
+### Fixed
+-   Accessibility fixes
 
 ### Changed
-
 -   Switch to Github Actions for CI
 
 ## [0.136.0] - 2021-05-10
