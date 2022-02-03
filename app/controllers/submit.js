@@ -312,15 +312,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
 
     moderationType: alias('currentProvider.reviewsWorkflow'),
 
-    _names: computed('shouldShowCoiPanel', 'shouldShowAuthorAssertionsPanel', function() {
-        if (this.get('shouldShowCoiPanel') && !this.get('shouldShowAuthorAssertionsPanel')) {
-            return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
-        }
-        if (this.get('shouldShowCoiPanel') && this.get('shouldShowAuthorAssertionsPanel')) {
-            return ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
-        }
-        return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'Supplemental'];
-    }),
+    _names: ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'],
 
     // Preprint can be published once all required sections have been saved.
     allSectionsValid: computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi', 'savedAuthorAssertions', function() {
