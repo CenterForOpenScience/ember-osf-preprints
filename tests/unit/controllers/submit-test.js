@@ -99,7 +99,7 @@ test('Initial properties', function (assert) {
         '_State.EXISTING': 'existing',
         filePickerState: 'start',
         supplementalPickerState: 'start',
-        '_names.length': 6,
+        '_names.length': 8,
         user: null,
         'availableLicenses.length': 0,
         node: null,
@@ -136,8 +136,8 @@ test('Initial properties', function (assert) {
     const actual = ctrl.getProperties(propKeys);
 
     propKeys.forEach(key => assert.strictEqual(
-        expected[key],
         actual[key],
+        expected[key],
         `Initial value for "${key}" does not match expected value`,
     ));
 });
