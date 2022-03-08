@@ -44,9 +44,17 @@ export default Route.extend({
             }
         });
 
-        return this
-            .store
-            .findRecord('preprint', params.preprint_id);
+        return this.store.findRecord(
+            'preprint', params.preprint_id,
+            {
+                adapterOptions: {
+                    query: {
+                        'metrics[views]': 'total',
+                        'metrics[downloads]': 'total',
+                    },
+                },
+            },
+        );
     },
     actions: {
         error(error) {
