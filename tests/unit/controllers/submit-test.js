@@ -99,7 +99,7 @@ test('Initial properties', function (assert) {
         '_State.EXISTING': 'existing',
         filePickerState: 'start',
         supplementalPickerState: 'start',
-        '_names.length': 6,
+        '_names.length': 8,
         user: null,
         'availableLicenses.length': 0,
         node: null,
@@ -136,8 +136,8 @@ test('Initial properties', function (assert) {
     const actual = ctrl.getProperties(propKeys);
 
     propKeys.forEach(key => assert.strictEqual(
-        expected[key],
         actual[key],
+        expected[key],
         `Initial value for "${key}" does not match expected value`,
     ));
 });
@@ -291,17 +291,21 @@ test('savedSubjects computed property', function(assert) {
 
 test('allSectionsValid computed property', function(assert) {
     const ctrl = this.subject();
-    assert.equal(ctrl.get('allSectionsValid'), false);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Nothing set - should be false');
     ctrl.set('savedTitle', true);
-    assert.equal(ctrl.get('allSectionsValid'), false);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Title set - should be false');
     ctrl.set('savedFile', true);
-    assert.equal(ctrl.get('allSectionsValid'), false);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'File saved - should be false');
     ctrl.set('savedAbstract', true);
-    assert.equal(ctrl.get('allSectionsValid'), false);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Abstract saved - should be false');
     ctrl.set('savedSubjects', true);
-    assert.equal(ctrl.get('allSectionsValid'), false);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Subjects saved - should be false');
     ctrl.set('authorsValid', true);
-    assert.equal(ctrl.get('allSectionsValid'), true);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Authors valid - should be false');
+    ctrl.set('savedAuthorAssertions', true);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Author assertions saved - should be false');
+    ctrl.set('savedCoi', true);
+    assert.equal(ctrl.get('allSectionsValid'), true, 'COI saved - should be true');
 });
 
 test('preprintFileChanged computed property', function(assert) {
