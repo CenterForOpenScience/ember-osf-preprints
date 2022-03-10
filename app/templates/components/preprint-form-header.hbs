@@ -102,54 +102,50 @@
                     {{if (and hasCoi coiStatement) coiStatement (t "submit.body.conflict_of_interest.placeholder")}}
                 </p>
             {{else if (eq name 'Assertions')}}
-                {{#if sloanDataInputEnabled}}
-                    <p> <em class="m-r-md">{{t "components.author-assertions.public_data.title"}}:</em>
-                        {{#if (eq hasDataLinks "available")}}
-                            {{t "components.author-assertions.available.available"}}
-                            {{#each dataLinks as |item|}}
-                                <br>
-                                {{item}}
-                            {{/each}}
+                <p> <em class="m-r-md">{{t "components.author-assertions.public_data.title"}}:</em>
+                    {{#if (eq hasDataLinks "available")}}
+                        {{t "components.author-assertions.available.available"}}
+                        {{#each dataLinks as |item|}}
+                            <br>
+                            {{item}}
+                        {{/each}}
+                    {{/if}}
+                    {{#if (eq hasDataLinks "no")}}
+                        {{t "components.author-assertions.available.no"}}
+                        {{#if whyNoData}}
+                            <br>
+                            {{whyNoData}}
+                        {{else}}
+                            <br>
+                            {{~t 'components.author-assertions.public_data.no'~}}
                         {{/if}}
-                        {{#if (eq hasDataLinks "no")}}
-                            {{t "components.author-assertions.available.no"}}
-                            {{#if whyNoData}}
-                                <br>
-                                {{whyNoData}}
-                            {{else}}
-                                <br>
-                                {{~t 'components.author-assertions.public_data.no'~}}
-                            {{/if}}
+                    {{/if}}
+                    {{#if (eq hasDataLinks "not_applicable")}}
+                        {{t "components.author-assertions.available.not_applicable"}}
+                    {{/if}}
+                </p>
+                <p> <em class="m-r-md">{{t "components.author-assertions.prereg.title"}}:</em>
+                    {{#if (eq hasPreregLinks "available")}}
+                        {{t "components.author-assertions.available.available"}}
+                        {{#each preregLinks as |item|}}
+                            <br>
+                            {{item}}
+                        {{/each}}
+                    {{/if}}
+                    {{#if (eq hasPreregLinks "no")}}
+                        {{t "components.author-assertions.available.no"}}
+                        {{#if whyNoPrereg}}
+                            <br>
+                            {{whyNoPrereg}}
+                        {{else}}
+                            <br>
+                            {{~t 'components.author-assertions.public_data.no'~}}
                         {{/if}}
-                        {{#if (eq hasDataLinks "not_applicable")}}
-                            {{t "components.author-assertions.available.not_applicable"}}
-                        {{/if}}
-                    </p>
-                {{/if}}
-                {{#if sloanPreregInputEnabled}}
-                    <p> <em class="m-r-md">{{t "components.author-assertions.prereg.title"}}:</em>
-                        {{#if (eq hasPreregLinks "available")}}
-                            {{t "components.author-assertions.available.available"}}
-                            {{#each preregLinks as |item|}}
-                                <br>
-                                {{item}}
-                            {{/each}}
-                        {{/if}}
-                        {{#if (eq hasPreregLinks "no")}}
-                            {{t "components.author-assertions.available.no"}}
-                            {{#if whyNoPrereg}}
-                                <br>
-                                {{whyNoPrereg}}
-                            {{else}}
-                                <br>
-                                {{~t 'components.author-assertions.public_data.no'~}}
-                            {{/if}}
-                        {{/if}}
-                        {{#if (eq hasPreregLinks "not_applicable")}}
-                            {{t "components.author-assertions.available.not_applicable"}}
-                        {{/if}}
-                    </p>
-                {{/if}}
+                    {{/if}}
+                    {{#if (eq hasPreregLinks "not_applicable")}}
+                        {{t "components.author-assertions.available.not_applicable"}}
+                    {{/if}}
+                </p>
             {{/if}}
         {{/if}}
 

@@ -262,13 +262,6 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
 
     coiStatementValid: alias('validations.attrs.coiStatement.isValid'),
 
-    // Sloan waffles
-    sloanCoiInputEnabled: alias('features.sloanCoiInput'),
-    sloanDataInputEnabled: alias('features.sloanDataInput'),
-    sloanPreregInputEnabled: alias('features.sloanPreregInput'),
-
-    shouldShowCoiPanel: computed.and('sloanCoiInputEnabled', 'currentProvider.inSloanStudy'),
-
     // Basics fields that are being validated are abstract, license and doi
     // (title validated in upload section). If validation
     // added for other fields, expand basicsValid definition.
@@ -301,13 +294,8 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     savedCoi: computed.notEmpty('model.hasCoi'),
 
     // Does preprint have saved hasDataLinks and hasPreregLinks?
-    savedAuthorAssertions: computed('model.{hasDataLinks,hasPreregLinks}', 'sloanDataInputEnabled', 'sloanPreregInputEnabled', function() {
-        if (this.get('sloanDataInputEnabled') && !this.get('sloanPreregInputEnabled')) {
-            return this.get('model.hasDataLinks');
-        }
-        if (this.get('sloanDataInputEnabled') && this.get('sloanPreregInputEnabled')) {
-            return this.get('model.hasDataLinks') && this.get('model.hasPreregLinks');
-        }
+    savedAuthorAssertions: computed('model.{hasDataLinks,hasPreregLinks}', function() {
+        return this.get('model.hasDataLinks') && this.get('model.hasPreregLinks');
     }),
 
     // Are there any unsaved changes in the upload section?
@@ -327,34 +315,12 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
 
     moderationType: alias('currentProvider.reviewsWorkflow'),
 
-    _names: computed('shouldShowCoiPanel', 'shouldShowAuthorAssertionsPanel', function() {
-        if (this.get('shouldShowCoiPanel') && !this.get('shouldShowAuthorAssertionsPanel')) {
-            return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
-        }
-        if (this.get('shouldShowCoiPanel') && this.get('shouldShowAuthorAssertionsPanel')) {
-            return ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
-        }
-        return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'Supplemental'];
-    }),
-
-    // Variable controlled by sloan waffle flags
-    shouldShowAuthorAssertionsPanel: computed('sloanDataInputEnabled', 'sloanPreregInputEnabled', 'currentProvider.inSloanStudy', function () {
-        if (!this.get('currentProvider.inSloanStudy')) {
-            return false;
-        }
-        return this.get('sloanPreregInputEnabled') || this.get('sloanDataInputEnabled');
-    }),
+    _names: ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'],
 
     // Preprint can be published once all required sections have been saved.
     allSectionsValid: computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi', 'savedAuthorAssertions', function() {
         const allSectionsValid = this.get('savedTitle') && this.get('savedFile') && this.get('savedAbstract') && this.get('savedSubjects') && this.get('authorsValid');
-        if (this.get('shouldShowCoiPanel') && !this.get('shouldShowAuthorAssertionsPanel')) {
-            return allSectionsValid && this.get('savedCoi');
-        }
-        if (this.get('shouldShowCoiPanel') && this.get('shouldShowAuthorAssertionsPanel')) {
-            return allSectionsValid && this.get('savedCoi') && this.get('savedAuthorAssertions');
-        }
-        return allSectionsValid;
+        return allSectionsValid && this.get('savedCoi') && this.get('savedAuthorAssertions');
     }),
 
     supplementalChanged: computed('supplementalProjectTitle', 'pendingSupplementalProjectTitle', 'selectedSupplementalProject', 'node', function() {
@@ -711,13 +677,8 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
         }
         return false;
     }),
-    authorAssertionsValid: computed('publicDataSectionValid', 'preregSectionValid', 'sloanDataInputEnabled', 'sloanPreregInputEnabled', function() {
-        if (this.get('sloanDataInputEnabled') && !this.get('sloanPreregInputEnabled')) {
-            return this.get('publicDataSectionValid');
-        }
-        if (this.get('sloanDataInputEnabled') && this.get('sloanPreregInputEnabled')) {
-            return this.get('publicDataSectionValid') && this.get('preregSectionValid');
-        }
+    authorAssertionsValid: computed('publicDataSectionValid', 'preregSectionValid', function() {
+        return this.get('publicDataSectionValid') && this.get('preregSectionValid');
     }),
 
     actions: {
@@ -1457,17 +1418,15 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue Author Assertions Section`,
                 });
             const model = this.get('model');
-            if (this.get('sloanDataInputEnabled')) {
-                model.set('hasDataLinks', this.get('hasDataLinks'));
-                model.set('dataLinks', this.get('dataLinks'));
-                model.set('whyNoData', this.get('whyNoData'));
-            }
-            if (this.get('sloanPreregInputEnabled')) {
-                model.set('hasPreregLinks', this.get('hasPreregLinks'));
-                model.set('preregLinks', this.get('preregLinks'));
-                model.set('preregLinkInfo', this.get('preregLinkInfo'));
-                model.set('whyNoPrereg', this.get('whyNoPrereg'));
-            }
+            model.set('hasDataLinks', this.get('hasDataLinks'));
+            model.set('dataLinks', this.get('dataLinks'));
+            model.set('whyNoData', this.get('whyNoData'));
+
+            model.set('hasPreregLinks', this.get('hasPreregLinks'));
+            model.set('preregLinks', this.get('preregLinks'));
+            model.set('preregLinkInfo', this.get('preregLinkInfo'));
+            model.set('whyNoPrereg', this.get('whyNoPrereg'));
+
             model.save().then(this._moveFromAuthorAssertions.bind(this))
                 .catch(error => this._failMoveFromAuthorAssertions.bind(this)(error));
         },
