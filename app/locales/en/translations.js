@@ -61,7 +61,7 @@ export default {
             download: 'Download',
             downloads: 'Downloads',
             download_file: 'Download file',
-            download_preprint: 'Download {{documentType.singular}}',
+            views: 'Views',
         },
         see_more: 'See more',
         see_less: 'See less',

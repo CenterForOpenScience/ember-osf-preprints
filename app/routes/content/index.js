@@ -61,6 +61,7 @@ export default Route.extend(Analytics, ResetScrollMixin, {
 
         this.set('fileDownloadURL', downloadUrl);
         this.set('preprint', preprint);
+        this.set('apiMeta', preprint.get('apiMeta'));
 
         if (!preprint.get('dateWithdrawn')) {
             const setupMetaData = preprint.get('provider')
@@ -82,6 +83,7 @@ export default Route.extend(Analytics, ResetScrollMixin, {
             fileDownloadURL: this.get('fileDownloadURL'),
             isPendingWithdrawal: this.get('isPendingWithdrawal'),
             isWithdrawn: model.get('dateWithdrawn') !== null,
+            apiMeta: this.get('apiMeta'),
         });
 
         run.scheduleOnce('afterRender', this, function() {
