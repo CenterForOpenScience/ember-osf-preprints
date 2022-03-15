@@ -1188,9 +1188,9 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#0.32.0":
-  version "0.32.0"
-  resolved "https://github.com/CenterForOpenScience/ember-osf.git#898d0d976099c70bf1428b114b9ab7b5a735b267"
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#0.33.0":
+  version "0.33.0"
+  resolved "https://github.com/CenterForOpenScience/ember-osf.git#12c5ff4ed2c6b1ac79e8f71ada2978e8493d3c5e"
   dependencies:
     broccoli-funnel "1.2.0"
     broccoli-merge-trees "2.0.0"
@@ -1225,6 +1225,7 @@
     ember-sinon-qunit "1.6.0"
     ember-toastr "1.7.0"
     ember-truth-helpers "1.3.0"
+    faker "~3.0.0"
     js-yaml "3.13.1"
     langs "1.0.2"
     moment-timezone "^0.5.13"
@@ -6762,6 +6763,11 @@ fake-xml-http-request@^1.4.0, fake-xml-http-request@^1.6.0:
 faker@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/faker/-/faker-3.1.0.tgz#0f908faf4e6ec02524e54a57e432c5c013e08c9f"
+
+faker@~3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/faker/-/faker-3.0.1.tgz#c36278cd423f3c5375bc270466a223485c0e7bb2"
+  integrity sha1-w2J4zUI/PFN1vCcEZqIjSFwOe7I=
 
 fast-deep-equal@^1.0.0:
   version "1.1.0"
