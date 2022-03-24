@@ -106,7 +106,9 @@
                             <a class="btn btn-primary p-v-xs" href={{fileDownloadURL}} onclick={{action 'trackNonContributors' 'link' 'Content - Download' model.primaryFile.links.download}}>{{t "content.share.download" documentType=model.provider.documentType}} </a>
                             <div class=" p-v-xs pull-right">
                                 {{t "content.share.views"}}: {{apiMeta.metrics.views}} | {{t "content.share.downloads"}}: {{apiMeta.metrics.downloads}}
-                                {{#bs-tooltip}}{{t "content.share.metrics_disclaimer"}}{{/bs-tooltip}}
+                                {{#bs-tooltip}}
+                                    {{t "content.share.metrics_disclaimer" date=(moment-format this.metricsStartDate "YYYY-MM-DD")}}
+                                {{/bs-tooltip}}
                             </div>
                         </div>
                         <div class="flexbox">

@@ -226,4 +226,6 @@ export default Controller.extend(Analytics, {
     _returnContributors(contributors) {
         return contributors;
     },
+
+    metricsStartDate: config.OSF.metricsStartDate,
 });
