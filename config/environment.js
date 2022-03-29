@@ -83,6 +83,9 @@ module.exports = function(environment) {
             '1196-1961',
         ],
         plauditWidgetUrl: 'https://osf-review.plaudit.pub/embed/endorsements.js',
+        OSF: {
+            metricsStartDate: '2019-01-01',
+        },
     };
 
     if (environment === 'development') {
