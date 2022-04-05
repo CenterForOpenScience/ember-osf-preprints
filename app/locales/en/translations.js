@@ -62,6 +62,7 @@ export default {
             downloads: 'Downloads',
             download_file: 'Download file',
             views: 'Views',
+            metrics_disclaimer: 'Metrics collected since:',
         },
         see_more: 'See more',
         see_less: 'See less',
