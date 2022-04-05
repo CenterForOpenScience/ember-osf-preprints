@@ -107,7 +107,9 @@
                             <div class=" p-v-xs pull-right">
                                 {{t "content.share.views"}}: {{apiMeta.metrics.views}} | {{t "content.share.downloads"}}: {{apiMeta.metrics.downloads}}
                                 {{#bs-tooltip}}
-                                    {{t "content.share.metrics_disclaimer" date=(moment-format this.metricsStartDate "YYYY-MM-DD")}}
+                                    {{t "content.share.metrics_disclaimer"}}
+                                    <br>
+                                    {{moment-format this.metricsStartDate "YYYY-MM-DD"}}
                                 {{/bs-tooltip}}
                             </div>
                         </div>
