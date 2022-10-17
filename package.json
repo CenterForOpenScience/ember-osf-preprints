@@ -1,6 +1,6 @@
 {
   "name": "preprint-service",
-  "version": "0.140.4",
+  "version": "0.141.0",
   "description": "Center for Open Science Preprint Service",
   "license": "Apache-2.0",
   "author": "",
@@ -26,7 +26,7 @@
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "devDependencies": {
-    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#0.35.0",
+    "@centerforopenscience/ember-osf": "https://github.com/CenterForOpenScience/ember-osf.git#v0.36.0",
     "@centerforopenscience/eslint-config": "^2.0.0",
     "@centerforopenscience/osf-style": "1.9.0",
     "autoprefixer": "^7.1.2",
