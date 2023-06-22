@@ -112,8 +112,7 @@
   },
   "homepage": "https://github.com/CenterForOpenScience/ember-osf-preprints#readme",
   "dependencies": {
-    "jquery-tags-input": "^1.3.5",
-    "sanitize.js": "^1.0.0"
+    "jquery-tags-input": "^1.3.5"
   },
   "volta": {
     "node": "10.18.1",

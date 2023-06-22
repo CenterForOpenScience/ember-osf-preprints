@@ -11124,11 +11124,6 @@ sane@^2.2.0, sane@^2.4.1:
   optionalDependencies:
     fsevents "^1.2.3"
 
-sanitize.js@^1.0.0:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/sanitize.js/-/sanitize.js-1.0.8.tgz#f82d0b342a2d911b934e9b82798e786d9803a7ce"
-  integrity sha512-78WoqYp0fvemRYh+mbYWut+zMk0AfOuRJ8V9z/SY12VBE8xCRaG5XeQbkgX8GjpTbJMLSlASUEI/K9rrIiS+hw==
-
 sass-graph@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/sass-graph/-/sass-graph-2.2.4.tgz#13fbd63cd1caf0908b9fd93476ad43a51d1e0b49"
