@@ -1,15 +1,8 @@
-import EmberObject from '@ember/object';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import sanitizer from 'preprint-service/sanitizers/footer-links';
 
 moduleForComponent('preprint-footer-branded', 'Integration | Component | preprint footer branded', {
     integration: true,
-
-    setup() {
-        this.container.registry.register('sanitizer:footer-links', EmberObject.extend(sanitizer));
-    },
-
 });
 
 test('shows all social', function(assert) {
