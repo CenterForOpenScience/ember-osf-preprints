@@ -80,7 +80,6 @@ Router.map(function() {
     if (window.isProviderDomain) {
         this.route('index', { path: '/' });
         this.route('submit');
-        this.route('discover');
         this.route('page-not-found');
         this.route('forbidden');
         this.route('resource-deleted');
@@ -93,7 +92,6 @@ Router.map(function() {
                 this.route('edit');
                 this.route('withdraw');
             });
-            this.route('discover');
             this.route('submit');
         });
         this.route('page-not-found', { path: 'preprints/page-not-found' });
