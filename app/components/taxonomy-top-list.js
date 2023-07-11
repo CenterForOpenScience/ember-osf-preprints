@@ -2,6 +2,8 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Analytics from 'ember-osf/mixins/analytics';
+import config from 'ember-get-config';
+
 /**
  * @module ember-preprints
  * @submodule components
@@ -47,4 +49,5 @@ export default Component.extend(Analytics, {
         }
         return pairedList;
     }),
+    osfUrl: config.OSF.url,
 });
