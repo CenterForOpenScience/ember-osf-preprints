@@ -99,7 +99,7 @@ module.exports = function(defaults) {
                             function gtag(){dataLayer.push(arguments);}
                             gtag('js', new Date());
 
-                            gtag('config', configObject.googleTagManagerId);
+                            gtag('config', config.googleTagManagerId);
                         }
                     </script>
                 `.trim(),
