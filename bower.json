@@ -1,7 +1,0 @@
-{
-  "name": "preprint-service",
-  "dependencies": {
-    "sanitize.js": "^1.0.0",
-    "jquery.tagsinput": "1.3.6"
-  }
-}

@@ -31,7 +31,7 @@
                                                             {{ selectedProvider.name }}
                                                         {{/if}}
                                                     </dt>
-                                                    <dd>{{sanitize-html selectedProvider.description}}</dd>
+                                                    <dd>{{html-safe selectedProvider.description}}</dd>
                                                 </dl>
                                             </div>
                                         </div>
