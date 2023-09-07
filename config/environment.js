@@ -50,6 +50,7 @@ module.exports = function(environment) {
         i18n: {
             defaultLocale: 'en',
         },
+        googleTagManagerId: null,
         metricsAdapters: [
             {
                 name: 'GoogleAnalytics',
@@ -67,6 +68,13 @@ module.exports = function(environment) {
                     isPublic: 'dimension3',
                     isWithdrawn: 'dimension4',
                     version: 'dimension5',
+                },
+            },
+            {
+                name: 'GoogleTagManager',
+                environments: process.env.GOOGLE_TAG_MANAGER_ID ? ['all'] : [],
+                config: {
+                    id: process.env.GOOGLE_TAG_MANAGER_ID,
                 },
             },
         ],

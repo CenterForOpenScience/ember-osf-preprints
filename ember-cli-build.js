@@ -88,6 +88,22 @@ module.exports = function(defaults) {
                     <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/2.18.0/ember.min.js"></script>
                 `.trim(),
             },
+            gtm: {
+                enabled: useCdn,
+                content: `
+                    <script>
+                        var encodedConfig = document.head.querySelector("meta[name$='/config/environment']").content;
+                        var config = JSON.parse(unescape(encodedConfig));
+                        if (config.googleTagManagerId) {
+                            window.dataLayer = window.dataLayer || [];
+                            function gtag(){dataLayer.push(arguments);}
+                            gtag('js', new Date());
+
+                            gtag('config', config.googleTagManagerId);
+                        }
+                    </script>
+                `.trim(),
+            },
         },
         postcssOptions: {
             compile: {
