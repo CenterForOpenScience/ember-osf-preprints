@@ -18,7 +18,7 @@
                     {{/if}}
                     <p class="lead">
                         {{#if theme.isProvider}}
-                            {{sanitize-html theme.provider.description "description"}}
+                            {{html-safe theme.provider.description}}
                             <br>
                             <small>
                                 <a href="{{host}}preprints" onbeforeclick={{action "click" "link" "Index - Powered By"}}>
@@ -139,7 +139,7 @@
         <div class="preprint-advisory p-v-md">
             <div class="container">
                 <div class="row">
-                    {{sanitize-html theme.provider.advisoryBoard "advisory-board"}}
+                    {{html-safe theme.provider.advisoryBoard}}
                 </div>
             </div>
         </div>
