@@ -260,6 +260,7 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
     doiValid: alias('validations.attrs.basicsDOI.isValid'),
     originalPublicationDateValid: alias('validations.attrs.basicsOriginalPublicationDate.isValid'),
 
+    assertionsEnabled: alias('selectedProvider.assertionsEnabled'),
     coiStatementValid: alias('validations.attrs.coiStatement.isValid'),
 
     // Basics fields that are being validated are abstract, license and doi
@@ -315,12 +316,20 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
 
     moderationType: alias('currentProvider.reviewsWorkflow'),
 
-    _names: ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'],
+    _names: computed('assertionsEnabled', function () {
+        if (this.get('assertionsEnabled')) {
+            return ['Server', 'File', 'Assertions', 'Basics', 'Discipline', 'Authors', 'COI', 'Supplemental'];
+        }
+        return ['Server', 'File', 'Basics', 'Discipline', 'Authors', 'Supplemental'];
+    }),
 
     // Preprint can be published once all required sections have been saved.
-    allSectionsValid: computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi', 'savedAuthorAssertions', function() {
+    allSectionsValid: computed('savedTitle', 'savedFile', 'savedAbstract', 'savedSubjects', 'authorsValid', 'savedCoi', 'savedAuthorAssertions', 'assertionsEnabled', function() {
         const allSectionsValid = this.get('savedTitle') && this.get('savedFile') && this.get('savedAbstract') && this.get('savedSubjects') && this.get('authorsValid');
-        return allSectionsValid && this.get('savedCoi') && this.get('savedAuthorAssertions');
+        if (this.get('assertionsEnabled')) {
+            return allSectionsValid && this.get('savedCoi') && this.get('savedAuthorAssertions');
+        }
+        return allSectionsValid;
     }),
 
     supplementalChanged: computed('supplementalProjectTitle', 'pendingSupplementalProjectTitle', 'selectedSupplementalProject', 'node', function() {
@@ -1418,14 +1427,16 @@ export default Controller.extend(Analytics, BasicsValidations, COIValidations, N
                     label: `${this.get('editMode') ? 'Edit' : 'Submit'} - Save and Continue Author Assertions Section`,
                 });
             const model = this.get('model');
-            model.set('hasDataLinks', this.get('hasDataLinks'));
-            model.set('dataLinks', this.get('dataLinks'));
-            model.set('whyNoData', this.get('whyNoData'));
+            if (this.get('assertionsEnabled')) {
+                model.set('hasDataLinks', this.get('hasDataLinks'));
+                model.set('dataLinks', this.get('dataLinks'));
+                model.set('whyNoData', this.get('whyNoData'));
 
-            model.set('hasPreregLinks', this.get('hasPreregLinks'));
-            model.set('preregLinks', this.get('preregLinks'));
-            model.set('preregLinkInfo', this.get('preregLinkInfo'));
-            model.set('whyNoPrereg', this.get('whyNoPrereg'));
+                model.set('hasPreregLinks', this.get('hasPreregLinks'));
+                model.set('preregLinks', this.get('preregLinks'));
+                model.set('preregLinkInfo', this.get('preregLinkInfo'));
+                model.set('whyNoPrereg', this.get('whyNoPrereg'));
+            }
 
             model.save().then(this._moveFromAuthorAssertions.bind(this))
                 .catch(error => this._failMoveFromAuthorAssertions.bind(this)(error));
