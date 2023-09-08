@@ -99,7 +99,7 @@ test('Initial properties', function (assert) {
         '_State.EXISTING': 'existing',
         filePickerState: 'start',
         supplementalPickerState: 'start',
-        '_names.length': 8,
+        '_names.length': 6,
         user: null,
         'availableLicenses.length': 0,
         node: null,
@@ -301,11 +301,7 @@ test('allSectionsValid computed property', function(assert) {
     ctrl.set('savedSubjects', true);
     assert.equal(ctrl.get('allSectionsValid'), false, 'Subjects saved - should be false');
     ctrl.set('authorsValid', true);
-    assert.equal(ctrl.get('allSectionsValid'), false, 'Authors valid - should be false');
-    ctrl.set('savedAuthorAssertions', true);
-    assert.equal(ctrl.get('allSectionsValid'), false, 'Author assertions saved - should be false');
-    ctrl.set('savedCoi', true);
-    assert.equal(ctrl.get('allSectionsValid'), true, 'COI saved - should be true');
+    assert.equal(ctrl.get('allSectionsValid'), true, 'Authors valid - should be true');
 });
 
 test('preprintFileChanged computed property', function(assert) {
