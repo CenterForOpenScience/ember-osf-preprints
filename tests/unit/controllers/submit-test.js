@@ -144,6 +144,15 @@ test('Initial properties', function (assert) {
 
 // Test COMPUTED PROPERTIES > SUBMIT CONTROLLER
 
+test('assertionsEnabled updates _names', function (assert) {
+    const ctrl = this.subject();
+    ctrl.set('selectedProvider', { assertionsEnabled: true });
+
+    assert.equal(ctrl.get('_names.length'), 8, 'assertionsEnabled adds 2 panels');
+    assert.ok(ctrl.get('_names').includes('COI'), 'assertionsEnabled adds COI panel');
+    assert.ok(ctrl.get('_names').includes('Assertions'), 'assertionsEnabled adds Assertions panel');
+});
+
 test('hasFile computed property', function(assert) {
     const ctrl = this.subject();
     assert.notOk(ctrl.get('hasFile'));
@@ -289,7 +298,7 @@ test('savedSubjects computed property', function(assert) {
     });
 });
 
-test('allSectionsValid computed property', function(assert) {
+test('allSectionsValid computed property for assertionsEnabled === false', function(assert) {
     const ctrl = this.subject();
     assert.equal(ctrl.get('allSectionsValid'), false, 'Nothing set - should be false');
     ctrl.set('savedTitle', true);
@@ -302,6 +311,26 @@ test('allSectionsValid computed property', function(assert) {
     assert.equal(ctrl.get('allSectionsValid'), false, 'Subjects saved - should be false');
     ctrl.set('authorsValid', true);
     assert.equal(ctrl.get('allSectionsValid'), true, 'Authors valid - should be true');
+});
+
+test('allSectionsValid computed property for assertionsEnabled === true', function(assert) {
+    const ctrl = this.subject();
+    ctrl.set('selectedProvider', { assertionsEnabled: true });
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Nothing set - should be false');
+    ctrl.set('savedTitle', true);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Title set - should be false');
+    ctrl.set('savedFile', true);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'File saved - should be false');
+    ctrl.set('savedAbstract', true);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Abstract saved - should be false');
+    ctrl.set('savedSubjects', true);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Subjects saved - should be false');
+    ctrl.set('authorsValid', true);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Authors valid - should be false');
+    ctrl.set('savedAuthorAssertions', true);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Author assertions saved - should be false');
+    ctrl.set('savedCoi', true);
+    assert.equal(ctrl.get('allSectionsValid'), true, 'COI saved - should be true');
 });
 
 test('preprintFileChanged computed property', function(assert) {
