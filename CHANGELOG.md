@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.143] - 2023-09-15
+### Changed
+- Update assets
+- Bump ember-osf version
+- Preprint custom citations
+- Enable Sloan features to be toggleable by preprint service
+- Remove Chronos
+
 ## [0.142.2] - 2023-09-07
 ### Changed
 - Remove bower
