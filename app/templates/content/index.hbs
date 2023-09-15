@@ -129,19 +129,6 @@
                                 }}
                             </div>
                         </div>
-
-                        {{#if (and this.isChronosProvider this.features.enableChronos)}}
-                            <div class="p-t-xs">
-                                {{#chronos-widget preprint=model isContributor=userIsContrib isAdmin=isAdmin as | preprint submissions isAllowSubmissions isContributor | }}
-                                    {{chronos-submission-status-list submissions=submissions isContributor=isContributor}}
-                                    {{#if isAllowSubmissions }}
-                                        <div class="p-t-xs">
-                                            {{chronos-submission-panel preprint=preprint publisherFilterKeyword="American Psychological Association"}}
-                                        </div>
-                                    {{/if}}
-                                {{/chronos-widget}}
-                            </div>
-                        {{/if}}
                         <div class="p-t-xs">
                             <h4 class="p-v-md f-w-md"><strong>{{t "global.abstract"}}</strong></h4>
                             <p class="abstract {{if useShortenedDescription 'abstract-truncated'}}">
