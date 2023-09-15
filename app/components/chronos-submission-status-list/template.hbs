@@ -1,9 +1,0 @@
-{{#each submissions as |submission|}}
-    {{#if isContributor}}
-        {{chronos-submission-status-list-row submission=submission isContributor=isContributor}}
-    {{else}}
-        {{#if (or (eq submission.status "ACCEPTED") (eq submission.status "PUBLISHED"))}}
-            {{chronos-submission-status-list-row submission=submission isContributor=isContributor}}
-        {{/if}}
-    {{/if}}
-{{/each}}

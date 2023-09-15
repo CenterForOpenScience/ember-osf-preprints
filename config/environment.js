@@ -79,17 +79,6 @@ module.exports = function(environment) {
             },
         ],
         FB_APP_ID: process.env.FB_APP_ID,
-        chronosProviders: [
-        ],
-        approvedChronosJournalIds: [
-            '0147-7307',
-            '1099-9809',
-            '1948-1985',
-            '1984-3054',
-            '1082-989X',
-            '2160-4134',
-            '1196-1961',
-        ],
         plauditWidgetUrl: 'https://osf-review.plaudit.pub/embed/endorsements.js',
         OSF: {
             metricsStartDate: '2019-01-01',

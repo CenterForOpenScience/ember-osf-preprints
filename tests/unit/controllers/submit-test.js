@@ -99,7 +99,7 @@ test('Initial properties', function (assert) {
         '_State.EXISTING': 'existing',
         filePickerState: 'start',
         supplementalPickerState: 'start',
-        '_names.length': 8,
+        '_names.length': 6,
         user: null,
         'availableLicenses.length': 0,
         node: null,
@@ -143,6 +143,15 @@ test('Initial properties', function (assert) {
 });
 
 // Test COMPUTED PROPERTIES > SUBMIT CONTROLLER
+
+test('assertionsEnabled updates _names', function (assert) {
+    const ctrl = this.subject();
+    ctrl.set('selectedProvider', { assertionsEnabled: true });
+
+    assert.equal(ctrl.get('_names.length'), 8, 'assertionsEnabled adds 2 panels');
+    assert.ok(ctrl.get('_names').includes('COI'), 'assertionsEnabled adds COI panel');
+    assert.ok(ctrl.get('_names').includes('Assertions'), 'assertionsEnabled adds Assertions panel');
+});
 
 test('hasFile computed property', function(assert) {
     const ctrl = this.subject();
@@ -289,8 +298,24 @@ test('savedSubjects computed property', function(assert) {
     });
 });
 
-test('allSectionsValid computed property', function(assert) {
+test('allSectionsValid computed property for assertionsEnabled === false', function(assert) {
     const ctrl = this.subject();
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Nothing set - should be false');
+    ctrl.set('savedTitle', true);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Title set - should be false');
+    ctrl.set('savedFile', true);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'File saved - should be false');
+    ctrl.set('savedAbstract', true);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Abstract saved - should be false');
+    ctrl.set('savedSubjects', true);
+    assert.equal(ctrl.get('allSectionsValid'), false, 'Subjects saved - should be false');
+    ctrl.set('authorsValid', true);
+    assert.equal(ctrl.get('allSectionsValid'), true, 'Authors valid - should be true');
+});
+
+test('allSectionsValid computed property for assertionsEnabled === true', function(assert) {
+    const ctrl = this.subject();
+    ctrl.set('selectedProvider', { assertionsEnabled: true });
     assert.equal(ctrl.get('allSectionsValid'), false, 'Nothing set - should be false');
     ctrl.set('savedTitle', true);
     assert.equal(ctrl.get('allSectionsValid'), false, 'Title set - should be false');
