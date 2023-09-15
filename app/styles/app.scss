@@ -435,27 +435,6 @@ $color-bg-color-grey: #333333;
 $color-bg-color-light: #EEEEEE;
 $color-border-light: #DDDDDD;
 
-/* Chronos Submission Status */
-.chronos-status-drafted {
-    color: $color-alert-text-warning;
-}
-
-.chronos-status-submitted {
-    color: $color-alert-text-warning;
-}
-
-.chronos-status-accepted {
-    color: $color-alert-text-success;
-}
-
-.chronos-status-rejected {
-    color: $color-alert-text-danger;
-}
-
-.chronos-status-published {
-    color: $color-alert-text-success;
-}
-
 .preprint-status-pending-pre {
     background-color: $color-alert-bg-warning;
     border: 1px solid $color-alert-border-warning;
