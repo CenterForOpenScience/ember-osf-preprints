@@ -36,13 +36,13 @@ export default Route.extend(Analytics, ResetScrollMixin, {
     },
     actions: {
         search(q) {
+            // remove trailing slash if it exists
+            const host = this.host.replace(/\/$/, '');
             if (this.get('theme.isSubRoute')) {
-                // TODO Phase2 search improvement: reroute users to new branded preprint discover page
-                const route = 'provider.discover';
-                this.transitionTo(route, { queryParams: { q } });
+                const { id } = this.get('theme');
+                window.location.href = `${host}/preprints/${id}/discover?q=${q}`;
             } else {
-                // If OSF, reroute to new search page
-                window.location.href = `${this.host}/search?q=${q}&resourceType=osf:Preprints`;
+                window.location.href = `${host}/search?q=${q}&resourceType=Preprint`;
             }
         },
     },
