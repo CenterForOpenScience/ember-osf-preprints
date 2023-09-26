@@ -34,14 +34,14 @@ export default Component.extend(Analytics, {
             // subject param in the discover controller is expecting
             const subjectOdd = sortedList.objectAt(i);
             pair.pushObject({
-                path: `activeFilters=[{"propertyVisibleLabel":"Subject","propertyShortFormLabel":"subject","label":"${subjectOdd.get('text')}","value":"${subjectOdd.get('links.iri')}"}]`,
+                path: `activeFilters=[{"propertyVisibleLabel":"Subject","propertyPathKey":"subject","label":"${subjectOdd.get('text')}","value":"${subjectOdd.get('links.iri')}"}]`,
                 text: subjectOdd.get('text'),
             });
 
             if (sortedList.objectAt(i + 1)) {
                 const subjectEven = sortedList.objectAt(i + 1);
                 pair.pushObject({
-                    path: `activeFilters=[{"propertyVisibleLabel":"Subject","propertyShortFormLabel":"subject","label":"${subjectEven.get('text')}","value":"${subjectEven.get('links.iri')}"}]`,
+                    path: `activeFilters=[{"propertyVisibleLabel":"Subject","propertyPathKey":"subject","label":"${subjectEven.get('text')}","value":"${subjectEven.get('links.iri')}"}]`,
                     text: subjectEven.get('text'),
                 });
             }
