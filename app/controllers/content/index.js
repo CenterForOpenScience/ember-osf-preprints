@@ -169,11 +169,6 @@ export default Controller.extend(Analytics, {
         return `mailto:?subject=${titleEncoded}&body=${hrefEncoded}`;
     }),
 
-    isChronosProvider: computed('model.provider.id', function() {
-        const { chronosProviders } = config;
-        return Array.isArray(chronosProviders) && chronosProviders.includes(this.get('model.provider.id'));
-    }),
-
     actions: {
         toggleLicenseText() {
             const licenseState = this.toggleProperty('showLicenseText') ? 'Expand' : 'Contract';

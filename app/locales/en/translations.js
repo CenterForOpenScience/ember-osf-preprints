@@ -353,17 +353,6 @@ export default {
             title: 'Claim Account',
             success_message: 'Email will arrive shortly. Please check {{email}}',
         },
-        'chronos-submission-status-list-row': {
-            drafted: 'Drafted to <i>{{title}}</i>',
-            submitted: 'Submitted to <i>{{title}}</i>',
-            accepted: 'Accepted to <i>{{title}}</i>',
-            rejected: 'Rejected from <i>{{title}}</i>',
-            published: 'Published in <i>{{title}}</i>',
-        },
-        'chronos-submission-panel': {
-            link_text: 'Submit to an APA-published journal (beta)',
-            helper_text: 'A new tab will open to complete submission on Chronos.',
-        },
         'error-page': {
             email_message: 'If this should not have occurred and the issue persists, please report it to',
             go_to: 'Go to {{brand}}',
