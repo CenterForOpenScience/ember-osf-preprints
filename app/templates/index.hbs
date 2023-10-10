@@ -69,9 +69,12 @@
                         {{/if}}
                     </h2>
                     {{#if theme.provider.hasHighlightedSubjects}}
-                        {{#link-to (route-prefix 'discover') class="seeAllSubjects"}}
+                        <a
+                            class="seeAllSubjects"
+                            href="{{host}}preprints/{{theme.provider.id}}/discover"
+                        >
                             {{t 'index.subjects.links.seeAllSubjects'}}
-                        {{/link-to}}
+                        </a>
                     {{/if}}
                     <div class="subjectsList p-lg">
                         {{#if theme.provider.additionalProviders}}
