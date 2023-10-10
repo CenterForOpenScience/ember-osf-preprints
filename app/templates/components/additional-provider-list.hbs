@@ -2,12 +2,11 @@
     <div class="subject row m-b-sm">
         {{#each pair as |provider|}}
             <div class="col-xs-12 col-sm-6 subject-item">
-                {{#link-to (route-prefix 'discover') (query-params sources=provider)
+                <a
                     class='btn btn-primary p-sm'
-                    invokeAction=(action "click" "link" (concat 'Index - Browse Additional Providers ' provider))
-                }}
+                    href="{{osfUrl}}preprints/{{theme.provider.id}}/discover?sources={{provider}}">
                     {{provider}}
-                {{/link-to}}
+                </a>
             </div>
         {{/each}}
     </div>

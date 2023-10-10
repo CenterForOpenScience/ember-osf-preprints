@@ -1,10 +1,22 @@
 import EmberObject from '@ember/object';
-
+import Service from '@ember/service';
+import RSVP from 'rsvp';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
+const themeStub = Service.extend({
+    isProvider: true,
+    provider: RSVP.resolve(EmberObject.create({
+        name: 'OSF',
+        allowCommenting: false,
+    })),
+});
+
 moduleForComponent('taxonomy-top-list', 'Integration | Component | taxonomy top list', {
     integration: true,
+    beforeEach() {
+        this.register('service:theme', themeStub);
+    },
 });
 
 test('it renders', function(assert) {

@@ -2141,9 +2141,9 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#v0.38.0":
-  version "0.38.0"
-  resolved "https://github.com/CenterForOpenScience/ember-osf.git#dbb4e9d7e631fa8eecbd87ab3fb7511625d6a438"
+"@centerforopenscience/ember-osf@https://github.com/CenterForOpenScience/ember-osf.git#v0.39.0":
+  version "0.39.0"
+  resolved "https://github.com/CenterForOpenScience/ember-osf.git#c556e34c126b35aa32eba7790185d99ab5b36c66"
   dependencies:
     bootstrap-daterangepicker "2.1.23"
     broccoli-funnel "1.2.0"
