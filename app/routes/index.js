@@ -1,6 +1,7 @@
 import RSVP from 'rsvp';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
+import config from 'ember-get-config';
 import Analytics from 'ember-osf/mixins/analytics';
 
 import ResetScrollMixin from '../mixins/reset-scroll';
@@ -35,11 +36,15 @@ export default Route.extend(Analytics, ResetScrollMixin, {
     },
     actions: {
         search(q) {
-            let route = 'discover';
-
-            if (this.get('theme.isSubRoute')) { route = `provider.${route}`; }
-
-            this.transitionTo(route, { queryParams: { q } });
+            // remove trailing slash if it exists
+            const host = this.host.replace(/\/$/, '');
+            if (this.get('theme.isSubRoute')) {
+                const { id } = this.get('theme');
+                window.location.href = `${host}/preprints/${id}/discover?q=${q}`;
+            } else {
+                window.location.href = `${host}/search?q=${q}&resourceType=Preprint`;
+            }
         },
     },
+    host: config.OSF.url,
 });
