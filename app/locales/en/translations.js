@@ -244,6 +244,7 @@ export default {
                         create: 'By creating this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.',
                         submit: 'By submitting this {{documentType.singular}}, you confirm that all contributors agree with sharing it and that you have the right to share this {{documentType.singular}}.',
                     },
+                    osf_moderation_policy: 'You can read more about <a target="_blank" rel="noopener noreferrer" href="https://help.osf.io/article/592-preprint-moderation">OSF Preprints moderation policies</a> on the OSF Support Center',
                 },
                 invalid: {
                     description: 'The following section(s) must be completed before submitting this {{documentType.singular}}.',

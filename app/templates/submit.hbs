@@ -603,6 +603,11 @@
                                 <p class="information">
                                     {{t moderationInformation documentType=currentProvider.documentType name=providerName reviewsWorkflow=(t workflow)}}
                                 </p>
+                                {{#if (eq currentProvider.id 'osf')}}
+                                    <p class="information">
+                                        {{t 'submit.body.submit.information.osf_moderation_policy'}}
+                                    </p>
+                                {{/if}}
                             {{else}}
                                 <p class="information">{{t generalInformation documentType=currentProvider.documentType name=providerName}}</p>
                             {{/if}}
