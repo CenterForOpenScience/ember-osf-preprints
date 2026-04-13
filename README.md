@@ -1,3 +1,13 @@
+# Repository Archived
+
+> [!WARNING]
+> **Archived Repository**
+>
+> This project is no longer maintained and is read-only.
+>
+>  Please see our new frontend repository instead at https://github.com/CenterForOpenScience/angular-osf/
+> 
+
 # ember-osf-preprints
 
 `master` Build Status: ![Master Build Status](https://github.com/CenterForOpenScience/ember-osf-preprints/workflows/CI/badge.svg?branch=master)
